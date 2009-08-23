@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group android:enabled="true" android:visible="true"
+		android:orderInCategory="2" android:id="@+id/roster_groups_group">
+
+		<item android:id="@+id/roster_rename_group" android:visible="true"
+			android:enabled="true" android:orderInCategory="7"
+			android:title="@string/MenuContext_renameGroup">
+		</item>
+
+	</group>
+
+	<group android:enabled="true" android:visible="true"
+		android:id="@+id/roster_contacts_group" android:orderInCategory="1">
+
+		<item android:id="@+id/roster_openchat" android:visible="true"
+			android:enabled="true" android:orderInCategory="1"
+			android:title="@string/MenuContext_openChat">
+		</item>
+
+		<item android:visible="true" android:enabled="true"
+			android:orderInCategory="2" android:id="@+id/roster_delete_contact"
+			android:title="@string/MenuContext_deleteContact">
+		</item>
+
+		<item android:id="@+id/roster_rename_contact" android:visible="true"
+			android:enabled="true" android:orderInCategory="3"
+			android:title="@string/MenuContext_rename">
+		</item>
+
+		<item android:visible="true" android:enabled="true"
+			android:orderInCategory="4" android:id="@+id/roster_editContactGroup"
+			android:title="@string/MenuContext_changeContactGroup">
+		</item>
+
+	</group>
+
+	<item android:id="@+id/roster_exit" android:visible="true"
+		android:enabled="true" android:orderInCategory="8" android:title="@string/Global_Cancel">
+	</item>
+
+</menu>

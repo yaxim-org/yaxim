@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>							
+	<LinearLayout android:id="@+id/details"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:stretchColumns="1"
+		>
+	
+		<EditText android:id="@+id/Chat_UserInput" 
+			android:layout_width="fill_parent"
+			android:layout_marginRight="60sp"
+			android:layout_toLeftOf="@id/Chat_UserInput"
+			android:layout_height="wrap_content"
+			android:singleLine="true"
+		/>
+		<Button android:id="@+id/Chat_SendButton"
+			android:layout_width="60sp"
+			android:layout_marginLeft="-60sp"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/Chat_UserInput"
+			android:text="@string/Global_OK" 
+			android:layout_alignParentRight="true"/>
+		
+	</LinearLayout>
+				
+		<ListView android:id="@android:id/list"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:stackFromBottom="true"
+			android:layout_above="@id/details" 
+			android:transcriptMode="alwaysScroll">
+		</ListView>
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="de.hdmstuttgart.yaxim" android:versionCode="1"
+	android:versionName="1.0.0">
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission." />
+	<application android:icon="@drawable/icon"
+		android:debuggable="true" android:label="@string/app_name">
+
+		<activity android:name=".MainWindow" android:label="@string/app_name"
+			android:launchMode="singleTask">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
+		<activity android:name=".chat.ChatWindow" android:label="@string/app_name"
+			android:alwaysRetainTaskState="true">
+		</activity>
+
+		<activity android:name=".preferences.MainPrefs"
+			android:label="@string/app_name">
+		</activity>
+
+		<activity android:name=".preferences.AccountPrefs"
+			android:label="@string/app_name">
+		</activity>
+
+		<service android:name=".service.XMPPService">
+			<intent-filter>
+				<action android:name="de.hdmstuttgart.yaxim.XMPPSERVICE" />
+			</intent-filter>
+		</service>
+	</application>
+</manifest> 

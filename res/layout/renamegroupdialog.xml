@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+ android:id="@+id/RenameGroup_Layout" 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:minWidth="200px" 
+		android:layout_height="fill_parent">
+  <TextView
+			android:id="@+id/RenameGroup_summary"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/RenameGroup_summ"
+			android:padding="10px"
+	/>
+	<EditText
+			android:id="@+id/RenameGroup_EditTextField"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="10px"
+			android:gravity="left"
+			android:singleLine="true"
+			android:textSize="18sp"
+			android:maxWidth="200sp"
+			android:hint="Groupname"/>
+	/>
+	<LinearLayout
+			android:id="@+id/AddContact_ButtonLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal">
+		<Button
+				android:id="@+id/RenameGroup_OkButton"
+				android:layout_width="120sp"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_OK"
+		/>
+		<Button
+				android:id="@+id/RenameGroup_CancelButton"
+				android:layout_width="120sp"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_Cancel"
+		/>
+	</LinearLayout>
+</LinearLayout>

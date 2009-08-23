@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+		android:id="@+id/statusLayout" 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+	
+	
+	<TextView
+			android:id="@+id/StartupDialog_Summary"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/icon"
+			android:text="@string/StartupDialog_Summary"
+			android:padding="10sp"
+		/>
+	<ScrollView android:layout_marginBottom="50dip" 
+     				android:id="@+id/StartupDialog_ScrollView" 
+     				android:layout_height="wrap_content" 
+     				android:layout_width="fill_parent" >
+    <LinearLayout
+		android:id="@+id/AddContact_ScrollLayout"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		>
+	<TextView
+			android:id="@+id/StartupDialog_Username_title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/StartupDialog_Username_title"
+			android:padding="2sp"
+		/>
+	<EditText
+			android:id="@+id/StartupDialog_JID_EditTextField"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="10sp"
+			android:gravity="left"
+			android:singleLine="true"
+			android:textSize="18sp"
+			android:maxWidth="200sp"
+			android:hint="@string/Global_JID_hint"/>
+	<TextView
+			android:id="@+id/StartupDialog_passwd_title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/StartupDialog_passwd_title"
+			android:padding="2sp"
+		/>
+	<EditText
+			android:id="@+id/StartupDialog_PASSWD_EditTextField"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:password="true"
+			android:padding="10sp"
+			android:gravity="left"
+			android:singleLine="true"
+			android:textSize="18sp"
+			android:maxWidth="200sp"
+			android:hint="@string/StartupDialog_pwHint"
+			/>
+	<TextView
+			android:id="@+id/StartupDialog_port_title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/StartupDialog_port_title"
+			android:padding="2sp"
+		/>
+	<EditText
+			android:id="@+id/StartupDialog_PORT_EditTextField"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="10sp"
+			android:gravity="left"
+			android:numeric="integer"
+			android:singleLine="true"
+			android:textSize="18sp"
+			android:maxWidth="200sp"
+			android:text="@string/StartupDialog_portHint"
+			/>
+	</LinearLayout>
+	</ScrollView>	
+	
+	<LinearLayout
+			android:layout_marginTop="-50dip"
+			android:id="@+id/StartupDialog_ButtonLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal">
+		<Button
+				android:id="@+id/StartupDialog_OkButton"
+				android:layout_width="120sp"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_OK"
+				android:clickable="false"
+		/>
+
+		<Button
+				android:id="@+id/StartupDialog_CancelButton"
+				android:layout_width="120sp"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_Cancel"
+		/>
+
+	</LinearLayout>
+</LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/preftitle_notify">
+		<CheckBoxPreference
+			android:id="@+id/led"
+			android:key="led"
+			android:title="@string/led_title"
+			android:summaryOn="@string/led_summOn"
+			android:summaryOff="@string/led_summOff"
+			android:defaultValue="true"
+		/>
+		<CheckBoxPreference
+			android:id="@+id/vibration"
+			android:key="vibration"
+			android:title="Notify via vibration"
+			android:summaryOff="@string/vibr_summOff"
+			android:summaryOn="@string/vibr_summOn"
+		/>
+		<RingtonePreference
+			android:id="@+id/ringtone"
+			android:key="ringtone"
+			android:title="@string/ringtone_title"
+			android:ringtoneType="notification"
+			android:showDefault="true"
+			android:showSilent="true"
+			android:summary="@string/ringtone_summ"
+		/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/preftitle_boot">
+		<CheckBoxPreference
+			android:id="@+id/bootstart"
+			android:key="bootstart"
+			android:title="@string/boot_title"
+			android:summaryOff="@string/boot_summOff"
+			android:summaryOn="@string/boot_summOn"
+		/>
+<!--		<ListPreference-->
+<!--			android:id="@+id/statuslist"-->
+<!--			android:key="statuslist"-->
+<!--			android:title="@string/status_title"-->
+<!--			android:summary="@string/status_summ"-->
+<!--			android:negativeButtonText="@string/Global_Cancel"-->
+<!--			android:entries="@array/statuslist"-->
+<!--			android:entryValues="@array/statusCodes"-->
+<!--			android:dialogTitle="@string/status_dialog"-->
+<!--		/>-->
+		<CheckBoxPreference
+			android:id="@+id/showOffline"
+			android:key="showOffline"
+			android:title="@string/showOffline_title"
+			android:summaryOn="@string/showOffline_summ_on"
+			android:summaryOff="@string/showOffline_summ_off"
+			android:defaultValue="true"
+		/>	
+	</PreferenceCategory>
+	<!--<PreferenceCategory android:title="@string/preftitle_app">
+		<ListPreference
+			android:id="@+id/setSizeChat"
+			android:key="setSizeChat"
+			android:title="@string/FontChat_title"
+			android:summary="@string/FontChat_summ"
+			android:entries="@array/fontSizesChat"
+			android:entryValues="@array/fontSizesChatCodes"
+			android:dialogTitle="@string/FontChat_dialog"
+		/>
+		<ListPreference
+			android:id="@+id/setSizeClist"
+			android:key="setSizeClist"
+			android:title="@string/FontRost_title"
+			android:summary="@string/FontChat_summ"
+			android:entries="@array/fontSizesClist"
+			android:entryValues="@array/fontSizesClistCodes"
+			android:dialogTitle="@string/FontChat_dialog"
+		/>
+	</PreferenceCategory>
+--></PreferenceScreen>
+
+

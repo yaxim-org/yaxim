@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="statuslist">
+		<item>Online</item>
+		<item>Away</item>
+		<item>Chat</item>
+		<item>Do not disturb</item>
+		<item>Not available</item>
+		<item>Offline</item>
+	</string-array>
+	<string-array name="statusCodes">
+		<item>available</item>
+		<item>away</item>
+		<item>chat</item>
+		<item>dnd</item>
+		<item>xa</item>
+		<item>offline</item>
+	</string-array>
+	<string-array name="fontSizesChat">
+		<item>6px</item>
+		<item>8px</item>
+		<item>10px</item>
+		<item>12px</item>
+		<item>14px</item>
+	</string-array>
+	<string-array name="fontSizesChatCodes">
+		<item>6</item>
+		<item>8</item>
+		<item>10</item>
+		<item>12</item>
+		<item>14</item>
+	</string-array>
+	<string-array name="fontSizesClist">
+		<item>6px</item>
+		<item>8px</item>
+		<item>10px</item>
+		<item>12px</item>
+		<item>14px</item>
+	</string-array>
+	<string-array name="fontSizesClistCodes">
+		<item>6</item>
+		<item>8</item>
+		<item>10</item>
+		<item>12</item>
+		<item>14</item>
+	</string-array>
+</resources>

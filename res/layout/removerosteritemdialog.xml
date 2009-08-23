@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  		android:orientation="vertical"
+		android:layout_width="wrap_content" 
+		android:minWidth="200px" 
+		android:layout_height="fill_parent"
+		>
+	
+  	<TextView
+			android:id="@+id/DeleteRosterItem_summary"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/deleteRosterItem_text"
+			android:padding="10px"
+	/>
+	<LinearLayout
+			android:id="@+id/DeleteRosterItem_ButtonLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:padding="10sp"
+			>
+		<Button
+				android:id="@+id/DeleteRosterItem_OkButton"
+				android:layout_width="120sp"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_OK"
+				android:clickable="true"
+		/>
+
+		<Button
+				android:id="@+id/DeleteRosterItem_CancelButton"
+				android:layout_width="120sp"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_Cancel"
+		/>
+
+	</LinearLayout>
+</LinearLayout>
