@@ -1,6 +1,7 @@
 package de.hdmstuttgart.yaxim.chat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -44,7 +45,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private EditText userInput = null;
 	private String jabberID = null;
 	private List<ChatItem> chatItemList;
-	private ChatWindowAdapter adapter;
+	private static HashMap<String, ChatWindowAdapter> adapters = new HashMap<String, ChatWindowAdapter>();
 	private Intent xmppServiceIntent;
 	private ServiceConnection xmppServiceConnection;
 	private XMPPChatServiceAdapter serviceAdapter;
@@ -67,8 +68,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		setNotificationManager();
 		setUserInput();
 		setSendButton();
-		setChatItems();
 		setContactFromUri();
+		setChatItems();
 		setTitle(getText(R.string.chat_titlePrefix) + " " + jabberID);
 	}
 
@@ -108,7 +109,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				+ ": " + from, message);
 		handler.post(new Runnable() {
 			public void run() {
-				adapter.add(newChatItem);
+				adapters.get(jabberID).add(newChatItem);
 
 			}
 		});
@@ -160,8 +161,9 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private void setChatItems() {
 		chatView = (ListView) findViewById(android.R.id.list);
-		adapter = new ChatWindowAdapter();
-		chatView.setAdapter(adapter);
+		if (!adapters.containsKey(jabberID))
+			adapters.put(jabberID, new ChatWindowAdapter());
+		chatView.setAdapter(adapters.get(jabberID));
 	}
 
 	private void setUserInput() {
@@ -196,7 +198,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 		ChatItem newChatItem = new ChatItem(GetDateTimeHelper.setDate() + ": "
 				+ getString(R.string.Global_Me), message);
-		adapter.add(newChatItem);
+		adapters.get(jabberID).add(newChatItem);
 		userInput.setText(null);
 		send.setEnabled(false);
 		serviceAdapter.sendMessage(jabberID, message);
