@@ -389,7 +389,7 @@ public class SmackableImp implements Smackable {
 				if (arg0 instanceof Message) {
 					Message message = (Message) arg0;
 					String msg = message.getBody();
-					String jabberID = getJabberID(message.getFrom());
+					String jabberID = getJabberID(message.getFrom()).toLowerCase();
 
 					if (!callBack.isBoundTo(jabberID)) {
 						ArrayList<String> queue = getMessageQueueForContact(jabberID);
