@@ -36,6 +36,8 @@ public class XMPPService extends GenericService {
 	private int jabPort;
 	private int jabPriority;
 	private boolean connStartup;
+	private boolean jabReconnect;
+	private int jabReconnectCount;
 
 	private boolean connectionDemanded;
 	private Thread connectingThread;
@@ -269,6 +271,7 @@ public class XMPPService extends GenericService {
 			try {
 				xmppAdapter.doConnect();
 				connectionEstablished();
+				jabReconnectCount = 0;
 			} catch (YaximXMPPException e) {
 				connectionFailed();
 				Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
@@ -288,6 +291,15 @@ public class XMPPService extends GenericService {
 			}
 		}
 		rosterCallbacks.finishBroadcast();
+		if (jabReconnect && jabReconnectCount <= 5) {
+			jabReconnectCount++;
+			Log.i(TAG, "connectionFailed(" + jabReconnectCount + "/5): " +
+					"attempting reconnect in 5s...");
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {};
+			doConnect();
+		}
 	}
 
 	private void connectionEstablished() {
@@ -324,6 +336,7 @@ public class XMPPService extends GenericService {
 		this.jabPriority = XMPPHelper.tryToParseInt(prefs.getString(
 				"account_prio", "0"), 0);
 		this.connStartup = prefs.getBoolean(PreferenceConstants.CONN_STARTUP, false);
+		this.jabReconnect = prefs.getBoolean(PreferenceConstants.AUTO_RECONNECT, false);
 
 		String jid = prefs.getString(PreferenceConstants.JID, "");
 
