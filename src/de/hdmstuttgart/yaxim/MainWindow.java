@@ -314,6 +314,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case EXIT:
+			stopService(xmppServiceIntent);
 			finish();
 			return true;
 
