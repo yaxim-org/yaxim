@@ -7,6 +7,7 @@ public class PreferenceConstants {
 	public final static String RESSOURCE = "account_resource";
 	public final static String DEFAULT_PORT = "5222";
 	public final static int DEFAULT_PORT_INT = 5222;
+	public final static String CONN_STARTUP = "connstartup";
 	public final static String SHOW_OFFLINE = "showOffline";
 	public final static String LEDNOTIFY = "led";
 	public final static String VIBRATIONNOTIFY = "vibration";

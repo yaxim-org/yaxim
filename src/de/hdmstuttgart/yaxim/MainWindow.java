@@ -38,6 +38,7 @@ import de.hdmstuttgart.yaxim.preferences.MainPrefs;
 import de.hdmstuttgart.yaxim.service.IXMPPRosterService;
 import de.hdmstuttgart.yaxim.service.XMPPService;
 import de.hdmstuttgart.yaxim.util.AdapterConstants;
+import de.hdmstuttgart.yaxim.util.ConnectionState;
 import de.hdmstuttgart.yaxim.util.ExpandableRosterAdapter;
 import de.hdmstuttgart.yaxim.util.PreferenceConstants;
 import de.hdmstuttgart.yaxim.util.StatusMode;
@@ -404,6 +405,11 @@ public class MainWindow extends GenericExpandableListActivity {
 				serviceAdapter.registerUICallback(rosterCallback);
 				createRosterIfConnected();
 				setIsConnected();
+				Log.i(TAG, "getConnectionState(): " + serviceAdapter.getConnectionState());
+				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING)
+					showDialog(DIALOG_CONNECTING);
+				else if (progressDialog != null && progressDialog.isShowing())
+					dismissDialog(DIALOG_CONNECTING);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
