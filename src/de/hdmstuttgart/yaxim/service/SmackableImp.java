@@ -33,6 +33,7 @@ import de.hdmstuttgart.yaxim.util.StatusMode;
 public class SmackableImp implements Smackable {
 
 	final static private int PACKET_TIMEOUT = 12000;
+	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min
 
 	final private String jabServer;
 	final private String jabUserName;
@@ -146,6 +147,7 @@ public class SmackableImp implements Smackable {
 	private void tryToConnect() throws YaximXMPPException {
 		try {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
+			SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
 			conn.connect();
 			conn.login(jabUserName, jabPassword, jabRessource);
 		} catch (XMPPException e) {
