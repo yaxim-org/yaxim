@@ -5,6 +5,7 @@ import java.util.List;
 import android.os.RemoteException;
 import android.util.Log;
 import de.hdmstuttgart.yaxim.service.IXMPPChatService;
+import de.hdmstuttgart.yaxim.util.ConnectionState;
 
 public class XMPPChatServiceAdapter {
 

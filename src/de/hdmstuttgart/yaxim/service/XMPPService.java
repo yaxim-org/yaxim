@@ -19,6 +19,7 @@ import de.hdmstuttgart.yaxim.data.RosterItem;
 import de.hdmstuttgart.yaxim.exceptions.YaximXMPPAdressMalformedException;
 import de.hdmstuttgart.yaxim.exceptions.YaximXMPPException;
 import de.hdmstuttgart.yaxim.util.PreferenceConstants;
+import de.hdmstuttgart.yaxim.util.ConnectionState;
 import de.hdmstuttgart.yaxim.util.StatusMode;
 import de.hdmstuttgart.yaxim.util.XMPPHelper;
 
@@ -34,6 +35,8 @@ public class XMPPService extends GenericService {
 	private String jabRessource;
 	private int jabPort;
 	private int jabPriority;
+
+	private boolean connectionDemanded;
 
 	private Smackable xmppAdapter;
 	private IXMPPRosterService.Stub service2RosterConnection;
@@ -148,11 +151,12 @@ public class XMPPService extends GenericService {
 					rosterCallbacks.unregister(callback);
 			}
 
-			public boolean isAuthenticated() throws RemoteException {
-				if (xmppAdapter != null)
-					return xmppAdapter.isAuthenticated();
-				
-				return false;
+			public int getConnectionState() throws RemoteException {
+				if (xmppAdapter != null && xmppAdapter.isAuthenticated())
+					return ConnectionState.AUTHENTICATED;
+				else if (connectionDemanded)
+					return ConnectionState.CONNECTING;
+				else return ConnectionState.OFFLINE;
 			}
 
 			public void setStatus(String status, String statusMsg)

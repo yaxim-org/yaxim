@@ -8,7 +8,8 @@ import de.hdmstuttgart.yaxim.IXMPPRosterCallback;
 import de.hdmstuttgart.yaxim.data.RosterItem;
 
 interface IXMPPRosterService {
-	boolean isAuthenticated();
+	/* hack: use int because enums are not trivially parcellable */
+	int getConnectionState();
 	
 	/* xmpp methods */
 	

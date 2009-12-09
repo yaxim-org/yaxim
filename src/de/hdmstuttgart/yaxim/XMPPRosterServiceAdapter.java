@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import de.hdmstuttgart.yaxim.data.RosterItem;
 import de.hdmstuttgart.yaxim.service.IXMPPRosterService;
+import de.hdmstuttgart.yaxim.util.ConnectionState;
 import de.hdmstuttgart.yaxim.util.StatusMode;
 
 public class XMPPRosterServiceAdapter {
@@ -131,12 +132,17 @@ public class XMPPRosterServiceAdapter {
 		}
 	}
 
-	public boolean isAuthenticated() {
+	public int getConnectionState() {
 		try {
-			return xmppServiceStub.isAuthenticated();
+			return xmppServiceStub.getConnectionState();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return ConnectionState.OFFLINE;
 	}
+
+	public boolean isAuthenticated() {
+		return getConnectionState() == ConnectionState.AUTHENTICATED;
+	}
+
 }
