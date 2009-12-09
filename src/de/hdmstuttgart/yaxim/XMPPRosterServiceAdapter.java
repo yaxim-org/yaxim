@@ -18,15 +18,6 @@ public class XMPPRosterServiceAdapter {
 		this.xmppServiceStub = xmppServiceStub;
 	}
 	
-	public boolean isServiceAuthenticated() {
-		try {
-			return xmppServiceStub.isAuthenticated();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	public void setStatus(StatusMode status, String statusMsg) {
 		try {
 			xmppServiceStub.setStatus(status.name(), statusMsg);

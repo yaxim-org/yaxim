@@ -97,14 +97,14 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void createRosterIfConnected() {
 		if ((serviceAdapter != null)
-				&& (serviceAdapter.isServiceAuthenticated())) {
+				&& (serviceAdapter.isAuthenticated())) {
 			createRoster();
 		}
 	}
 
 	private void setIsConnected() {
 		if (serviceAdapter != null)
-			isConnected = serviceAdapter.isServiceAuthenticated();
+			isConnected = serviceAdapter.isAuthenticated();
 		else
 			isConnected = false;
 	}
@@ -291,7 +291,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case ADD_FRIEND:
-			if (serviceAdapter.isServiceAuthenticated()) {
+			if (serviceAdapter.isAuthenticated()) {
 				new AddRosterItemDialog(this, serviceAdapter).show();
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
@@ -306,7 +306,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case STATUS:
-			if (serviceAdapter.isServiceAuthenticated()) {
+			if (serviceAdapter.isAuthenticated()) {
 				new ChangeStatusDialog(this, serviceAdapter).show();
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
@@ -344,7 +344,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void toggleConnection(MenuItem item) {
-		if (serviceAdapter.isServiceAuthenticated()) {
+		if (serviceAdapter.isAuthenticated()) {
 			(new Thread() {
 				public void run() {
 					serviceAdapter.disconnect();
@@ -476,7 +476,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	public void createRoster() {
 		Log.i(TAG, "called createRoster()");
-		if (serviceAdapter.isServiceAuthenticated()) {
+		if (serviceAdapter.isAuthenticated()) {
 			clearRoster();
 			registerListAdapter();
 			expandGroups();
