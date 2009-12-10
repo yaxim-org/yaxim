@@ -380,8 +380,12 @@ public class XMPPService extends GenericService {
 
 			public void rosterChanged() {
 				if (!xmppAdapter.isAuthenticated()) {
-					if (isConnected)
+					if (isConnected) {
+						/* XXX: hack - it seems we need to reset the connection */
+						xmppAdapter.unRegisterCallback();
+						registerAdapterCallback();
 						connectionFailed();
+					}
 					return;
 				}
 				final int broadCastItems = rosterCallbacks.beginBroadcast();
