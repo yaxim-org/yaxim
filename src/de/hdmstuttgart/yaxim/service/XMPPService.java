@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
@@ -48,6 +49,8 @@ public class XMPPService extends GenericService {
 	private RemoteCallbackList<IXMPPRosterCallback> rosterCallbacks;
 	private HashMap<String, RemoteCallbackList<IXMPPChatCallback>> chatCallbacks;
 
+	private Handler mainHandler;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		super.onBind(intent);
@@ -69,6 +72,7 @@ public class XMPPService extends GenericService {
 		rosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
 		chatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
 		isBoundTo = new HashSet<String>();
+		mainHandler = new Handler();
 		createServiceRosterStub();
 		createServiceChatStub();
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
@@ -295,10 +299,11 @@ public class XMPPService extends GenericService {
 			jabReconnectCount++;
 			Log.i(TAG, "connectionFailed(" + jabReconnectCount + "/5): " +
 					"attempting reconnect in 5s...");
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {};
-			doConnect();
+			mainHandler.postDelayed(new Runnable() {
+				public void run() {
+					doConnect();
+				}
+			}, 5000);
 		}
 	}
 
