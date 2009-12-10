@@ -41,6 +41,7 @@ public class XMPPService extends GenericService {
 	private int jabReconnectCount;
 
 	private boolean connectionDemanded;
+	private boolean isConnected;
 	private Thread connectingThread;
 
 	private Smackable xmppAdapter;
@@ -276,6 +277,7 @@ public class XMPPService extends GenericService {
 				xmppAdapter.doConnect();
 				connectionEstablished();
 				jabReconnectCount = 0;
+				isConnected = true;
 			} catch (YaximXMPPException e) {
 				connectionFailed();
 				Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
@@ -296,6 +298,7 @@ public class XMPPService extends GenericService {
 			}
 		}
 		rosterCallbacks.finishBroadcast();
+		isConnected = false;
 		if (jabReconnect && jabReconnectCount <= 5) {
 			jabReconnectCount++;
 			Log.i(TAG, "connectionFailed(" + jabReconnectCount + "/5): " +
@@ -377,6 +380,11 @@ public class XMPPService extends GenericService {
 			}
 
 			public void rosterChanged() {
+				if (!xmppAdapter.isAuthenticated()) {
+					if (isConnected)
+						connectionFailed();
+					return;
+				}
 				final int broadCastItems = rosterCallbacks.beginBroadcast();
 				for (int i = 0; i < broadCastItems; ++i) {
 					try {
