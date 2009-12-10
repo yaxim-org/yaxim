@@ -274,10 +274,12 @@ public class XMPPService extends GenericService {
 			return;
 		connectingThread = new Thread() { public void run() {
 			try {
-				xmppAdapter.doConnect();
-				connectionEstablished();
-				jabReconnectCount = 0;
-				isConnected = true;
+				if (xmppAdapter.doConnect()) {
+					connectionEstablished();
+					jabReconnectCount = 0;
+					isConnected = true;
+				} else
+					connectionFailed();
 			} catch (YaximXMPPException e) {
 				connectionFailed();
 				Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
@@ -315,10 +317,7 @@ public class XMPPService extends GenericService {
 		final int broadCastItems = rosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
-				if (xmppAdapter.isAuthenticated())
-					rosterCallbacks.getBroadcastItem(i).connectionSuccessful();
-				else
-					connectionFailed();
+				rosterCallbacks.getBroadcastItem(i).connectionSuccessful();
 			} catch (RemoteException e) {
 				Log.e(TAG, "caught RemoteException: " + e.getMessage());
 			}
