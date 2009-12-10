@@ -6,6 +6,6 @@ package de.hdmstuttgart.yaxim;
 
 interface IXMPPRosterCallback {
 	void connectionSuccessful();
-	void connectionFailed();
+	void connectionFailed(boolean willReconnect);
 	void rosterChanged();
 }

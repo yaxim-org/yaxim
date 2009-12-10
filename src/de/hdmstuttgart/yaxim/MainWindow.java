@@ -513,12 +513,14 @@ public class MainWindow extends GenericExpandableListActivity {
 				});
 			}
 
-			public void connectionFailed() throws RemoteException {
+			public void connectionFailed(final boolean willReconnect) throws RemoteException {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
 						isConnected = false;
-						if (progressDialog.isShowing())
+						if (willReconnect)
+							showDialog(DIALOG_CONNECTING);
+						else if (progressDialog.isShowing())
 							dismissDialog(DIALOG_CONNECTING);
 					}
 				});
