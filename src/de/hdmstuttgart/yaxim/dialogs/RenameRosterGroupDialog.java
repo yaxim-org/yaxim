@@ -2,6 +2,8 @@ package de.hdmstuttgart.yaxim.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -9,44 +11,36 @@ import android.widget.EditText;
 import de.hdmstuttgart.yaxim.R;
 import de.hdmstuttgart.yaxim.XMPPRosterServiceAdapter;
 
-public class RenameRosterGroupDialog extends GenericDialog implements OnClickListener {
-	
-	private Button cancelButton;
-	private Button okButton;
-	private EditText renameGroupTextField;
-	private String groupTitle;
-	
-	public RenameRosterGroupDialog(Context mainWindow, XMPPRosterServiceAdapter serviceAdapter, String groupTitle) {
-		super(mainWindow,serviceAdapter);
-		this.groupTitle=groupTitle;
+public class RenameRosterGroupDialog extends GenericDialog implements
+		OnClickListener, TextWatcher {
+
+	private final Button okButton = (Button) findViewById(R.id.RenameGroup_OkButton);
+	private final Button cancelButton = (Button) findViewById(R.id.RenameGroup_CancelButton);;
+	private final EditText renameGroupTextField = (EditText) findViewById(R.id.RenameGroup_EditTextField);;
+	private final String groupTitle;
+
+	public RenameRosterGroupDialog(Context mainWindow,
+			XMPPRosterServiceAdapter serviceAdapter, String groupTitle) {
+		super(mainWindow, serviceAdapter);
+		this.groupTitle = groupTitle;
 	}
-	
+
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.renamegroupdialog);
 		setTitle(R.string.RenameGroup_title);
 
-		setRenameGroupTextField();
-		setOkButton();
-		setCancelButton();
+		setupListeners();
 	}
-	
-	private void setCancelButton() {
-		cancelButton = (Button) findViewById(R.id.RenameGroup_CancelButton);
+
+	private void setupListeners() {
 		cancelButton.setOnClickListener(this);
-	}
-	
-	private void setOkButton() {
-		okButton = (Button) findViewById(R.id.RenameGroup_OkButton);
 		okButton.setOnClickListener(this);
 		
-	}
-	
-	private void setRenameGroupTextField() {
-		renameGroupTextField = (EditText) findViewById(R.id.RenameGroup_EditTextField);
 		renameGroupTextField.setText(groupTitle);
+		renameGroupTextField.addTextChangedListener(this);
 	}
-	
+
 	public void onClick(View view) {
 
 		switch (view.getId()) {
@@ -55,9 +49,23 @@ public class RenameRosterGroupDialog extends GenericDialog implements OnClickLis
 			break;
 
 		case R.id.RenameGroup_OkButton:
-			serviceAdapter.renameRosterGroup(groupTitle, renameGroupTextField.getText().toString());
+			serviceAdapter.renameRosterGroup(groupTitle, renameGroupTextField
+					.getText().toString());
 			cancel();
 			break;
 		}
+	}
+
+	public void afterTextChanged(Editable s) {
+		// TODO Auto-generated method stub
+	}
+
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+		// TODO Auto-generated method stub
+	}
+
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		okButton.setEnabled(s.length() > 0);
 	}
 }
