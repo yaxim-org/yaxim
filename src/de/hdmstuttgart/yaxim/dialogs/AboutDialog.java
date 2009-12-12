@@ -18,9 +18,12 @@ public class AboutDialog extends GenericDialog implements OnClickListener,
 		super(mainWindow, serviceAdapter);
 	}
 
+
+
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.aboutdialog);
+		
 		setTitle(R.string.AboutDialog_title);
 		Button okButton = (Button) findViewById(R.id.AboutDialog_OkButton);
 		okButton.setOnClickListener(this);

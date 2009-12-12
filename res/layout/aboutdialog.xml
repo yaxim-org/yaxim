@@ -39,15 +39,25 @@
 			android:id="@+id/AboutDialog_LicenceTitle"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/gnuicon"
+			android:drawablePadding="15sp"
 			android:text="@string/AboutDialog_LicenceTitle"
 			android:textSize="20sp"
+			android:padding="10sp"
+		/>
+	<TextView
+			android:id="@+id/AboutDialog_LicenceText"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:autoLink="web"
+			android:text="@string/AboutDialog_LicenceText"
 			android:padding="2sp"
 		/>
 	<TextView
 			android:id="@+id/AboutDialog_LicenceText"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/AboutDialog_LicenceText"
+			android:text="@string/AboutDialog_greetings"
 			android:padding="2sp"
 		/>
 	</LinearLayout>
@@ -60,11 +70,11 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal">
 		<Button
-				android:id="@+id/AboutDialog_OkButton"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/Global_OK"
-				android:clickable="true"
+			android:id="@+id/AboutDialog_OkButton"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/Global_OK"
+			android:clickable="true"
 		/>
 	</LinearLayout>
 </LinearLayout>
