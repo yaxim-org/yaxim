@@ -90,7 +90,8 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
+		mConfig = new YaximConfiguration(PreferenceManager
+				.getDefaultSharedPreferences(this));
 		initiateConnection();
 	}
 

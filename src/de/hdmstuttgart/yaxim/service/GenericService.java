@@ -6,12 +6,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import de.hdmstuttgart.yaxim.R;
@@ -55,7 +53,6 @@ public abstract class GenericService extends Service {
 		Log.i(TAG, "called onCreate()");
 		super.onCreate();
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		addNotificationMGR();
 	}
 
@@ -77,7 +74,6 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String from, String message) {
-
 		notificationCounter++;
 		String title = "Message from " + from;
 		notification = new Notification(R.drawable.icon, APP_NAME + ": "
@@ -109,10 +105,6 @@ public abstract class GenericService extends Service {
 		if (mConfig.isVibraNotify) {
 			vibrator.vibrate(500);
 		}
-	}
-
-	protected void getPreferences(SharedPreferences prefs) {
-		
 	}
 
 	protected void shortToastNotify(String msg) {
