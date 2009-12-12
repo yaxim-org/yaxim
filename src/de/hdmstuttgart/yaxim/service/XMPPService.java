@@ -75,6 +75,7 @@ public class XMPPService extends GenericService {
 		createServiceChatStub();
 
 		
+		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		connectionDemanded = connStartup;
 		if (connStartup) {
 			/*
