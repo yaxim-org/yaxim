@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
@@ -43,8 +45,8 @@ public class SmackableImp implements Smackable {
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
 
-	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> rosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
-	private final HashMap<String, ArrayList<String>> incomingMessageQueue = new HashMap<String, ArrayList<String>>();
+	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> mRosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
+	private final HashMap<String, ArrayList<String>> mIncomingMessageQueue = new HashMap<String, ArrayList<String>>();
 
 	public SmackableImp(YaximConfiguration config) {
 		this.mConfig = config;
@@ -100,7 +102,7 @@ public class SmackableImp implements Smackable {
 	public void renameRosterGroup(String group, String newGroup) {
 		mRoster = mXMPPConnection.getRoster();
 		RosterGroup groupToRename = mRoster.getGroup(group);
-		rosterItemsByGroup.remove(group);
+		mRosterItemsByGroup.remove(group);
 		groupToRename.setName(newGroup);
 	}
 
@@ -110,17 +112,17 @@ public class SmackableImp implements Smackable {
 	}
 
 	private ArrayList<String> getMessageQueueForContact(String jabberID) {
-		if (!incomingMessageQueue.containsKey(jabberID)) {
+		if (!mIncomingMessageQueue.containsKey(jabberID)) {
 			ArrayList<String> queue = new ArrayList<String>();
-			incomingMessageQueue.put(jabberID, queue);
+			mIncomingMessageQueue.put(jabberID, queue);
 			return queue;
 		}
-		return incomingMessageQueue.get(jabberID);
+		return mIncomingMessageQueue.get(jabberID);
 	}
 
 	public ArrayList<String> pullMessagesForContact(String jabberID) {
 		ArrayList<String> queue = getMessageQueueForContact(jabberID);
-		incomingMessageQueue.remove(jabberID);
+		mIncomingMessageQueue.remove(jabberID);
 		return queue;
 	}
 
@@ -136,27 +138,21 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private void tryToMoveRosterEntryToGroup(String user, String group)
+	private void tryToMoveRosterEntryToGroup(String userName, String groupName)
 			throws YaximXMPPException {
 
-		if (!(group.length() > 0)) {
-			throw new YaximXMPPException("Can't move " + user
+		if (!(groupName.length() > 0)) {
+			throw new YaximXMPPException("Can't move " + userName
 					+ " to a group without a name!");
 		}
 
 		mRoster = mXMPPConnection.getRoster();
-		RosterGroup rosterGroup = mRoster.getGroup(group);
-
-		if (!(group.equals(AdapterConstants.EMPTY_GROUP))) {
-			if (rosterGroup == null)
-				rosterGroup = mRoster.createGroup(group);
-		}
-
-		RosterEntry rosterEntry = mRoster.getEntry(user);
-		unSetRosterEntry(rosterEntry);
+		RosterGroup rosterGroup = getRosterGroup(groupName);
+		RosterEntry rosterEntry = mRoster.getEntry(userName);
+		// unSetRosterEntry(rosterEntry);
 		removeRosterEntryFromGroups(rosterEntry);
 
-		if (group.equals(AdapterConstants.EMPTY_GROUP))
+		if (groupName.equals(AdapterConstants.EMPTY_GROUP))
 			return;
 		else {
 			try {
@@ -167,13 +163,24 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
+	private RosterGroup getRosterGroup(String groupName) {
+		RosterGroup rosterGroup = mRoster.getGroup(groupName);
+
+		if (!(groupName.equals(AdapterConstants.EMPTY_GROUP))) {
+			if (rosterGroup == null) {
+				rosterGroup = mRoster.createGroup(groupName);
+			}
+		}
+		return rosterGroup;
+
+	}
+
 	private void removeRosterEntryFromGroups(RosterEntry rosterEntry)
 			throws YaximXMPPException {
 		Collection<RosterGroup> oldGroups = rosterEntry.getGroups();
+
 		for (RosterGroup group : oldGroups) {
 			tryToRemoveUserFromGroup(group, rosterEntry);
-			if (group.getEntries().size() < 1)
-				rosterItemsByGroup.remove(group.getName());
 		}
 	}
 
@@ -181,6 +188,9 @@ public class SmackableImp implements Smackable {
 			RosterEntry rosterEntry) throws YaximXMPPException {
 		try {
 			group.removeEntry(rosterEntry);
+			if (group.getEntries().size() < 1) {
+				mRosterItemsByGroup.remove(group.getName());
+			}
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getMessage());
 		}
@@ -190,7 +200,7 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 		try {
 			RosterEntry rosterEntry = mRoster.getEntry(user);
-			unSetRosterEntry(rosterEntry);
+//			unSetRosterEntry(rosterEntry);
 			mRoster.removeEntry(rosterEntry);
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getMessage());
@@ -223,23 +233,31 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void unSetRosterEntry(RosterEntry rosterEntry) {
-		String groupName = getGroup(rosterEntry.getGroups());
-		ConcurrentMap<String, RosterItem> entryMap = getEntryMapForGroup(groupName);
 		String jabberID = rosterEntry.getUser();
-		if (entryMap.containsKey(jabberID))
-			entryMap.remove(jabberID);
-		if (entryMap.size() < 1)
-			rosterItemsByGroup.remove(groupName);
+
+		Set<Entry<String, ConcurrentHashMap<String, RosterItem>>> groupMaps = mRosterItemsByGroup.entrySet();
+		
+		for (Entry<String, ConcurrentHashMap<String, RosterItem>> entry : groupMaps) {
+			ConcurrentHashMap<String, RosterItem> entryMap = entry.getValue();
+			String groupName = entry.getKey();
+			
+			if (entryMap.containsKey(jabberID)) {
+				entryMap.remove(jabberID);
+			}
+			if (entryMap.size() < 1) {
+				mRosterItemsByGroup.remove(groupName);
+			}
+		}
 	}
 
 	private ConcurrentMap<String, RosterItem> getEntryMapForGroup(
 			String groupName) {
 		ConcurrentHashMap<String, RosterItem> tmpItemList;
-		if (rosterItemsByGroup.containsKey(groupName))
-			return rosterItemsByGroup.get(groupName);
+		if (mRosterItemsByGroup.containsKey(groupName))
+			return mRosterItemsByGroup.get(groupName);
 		else {
 			tmpItemList = new ConcurrentHashMap<String, RosterItem>();
-			rosterItemsByGroup.put(groupName, tmpItemList);
+			mRosterItemsByGroup.put(groupName, tmpItemList);
 		}
 		return tmpItemList;
 	}
@@ -247,7 +265,7 @@ public class SmackableImp implements Smackable {
 	public ArrayList<RosterItem> getRosterEntriesByGroup(String group) {
 		ArrayList<RosterItem> groupItems = new ArrayList<RosterItem>();
 
-		ConcurrentHashMap<String, RosterItem> rosterItemMap = rosterItemsByGroup
+		ConcurrentHashMap<String, RosterItem> rosterItemMap = mRosterItemsByGroup
 				.get(group);
 
 		if (rosterItemMap != null) {
@@ -272,7 +290,7 @@ public class SmackableImp implements Smackable {
 
 	public ArrayList<String> getRosterGroups() {
 		ArrayList<String> rosterGroups = new ArrayList<String>(
-				rosterItemsByGroup.keySet());
+				mRosterItemsByGroup.keySet());
 		Collections.sort(rosterGroups, new Comparator<String>() {
 			public int compare(String object1, String object2) {
 				if (object1.equals(AdapterConstants.EMPTY_GROUP))
@@ -317,7 +335,7 @@ public class SmackableImp implements Smackable {
 
 	public void unRegisterCallback() {
 		mXMPPConnection.disconnect();
-		rosterItemsByGroup.clear();
+		mRosterItemsByGroup.clear();
 		this.mServiceCallBack = null;
 	}
 
