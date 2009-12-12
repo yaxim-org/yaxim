@@ -68,8 +68,7 @@ public class SmackableImp implements Smackable {
 				setRosterEntries();
 			}
 		}
-		return (mXMPPConnection.isConnected() && mXMPPConnection
-				.isAuthenticated());
+		return isAuthenticated();
 	}
 
 	public void addRosterItem(String user, String alias, String group)
@@ -247,7 +246,7 @@ public class SmackableImp implements Smackable {
 
 	public ArrayList<RosterItem> getRosterEntriesByGroup(String group) {
 		ArrayList<RosterItem> groupItems = new ArrayList<RosterItem>();
-		
+
 		ConcurrentHashMap<String, RosterItem> rosterItemMap = rosterItemsByGroup
 				.get(group);
 
@@ -306,7 +305,8 @@ public class SmackableImp implements Smackable {
 
 	public boolean isAuthenticated() {
 		if (mXMPPConnection != null) {
-			return mXMPPConnection.isAuthenticated();
+			return (mXMPPConnection.isConnected() && mXMPPConnection
+					.isAuthenticated());
 		}
 		return false;
 	}
