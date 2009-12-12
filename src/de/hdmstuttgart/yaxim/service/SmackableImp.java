@@ -39,17 +39,17 @@ public class SmackableImp implements Smackable {
 	private final YaximConfiguration mConfig;
 	private final ConnectionConfiguration mXMPPConfig;
 	private final XMPPConnection mXMPPConnection;
-	
+
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
 
 	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> rosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
 	private final HashMap<String, ArrayList<String>> incomingMessageQueue = new HashMap<String, ArrayList<String>>();
 
-
 	public SmackableImp(YaximConfiguration config) {
 		this.mConfig = config;
-		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server, mConfig.port);
+		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
+				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 	}
@@ -68,7 +68,8 @@ public class SmackableImp implements Smackable {
 				setRosterEntries();
 			}
 		}
-		return (mXMPPConnection.isConnected() && mXMPPConnection.isAuthenticated());
+		return (mXMPPConnection.isConnected() && mXMPPConnection
+				.isAuthenticated());
 	}
 
 	public void addRosterItem(String user, String alias, String group)
@@ -129,7 +130,8 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
 			mXMPPConnection.connect();
-			mXMPPConnection.login(mConfig.userName, mConfig.password, mConfig.ressource);
+			mXMPPConnection.login(mConfig.userName, mConfig.password,
+					mConfig.ressource);
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getMessage());
 		}
@@ -244,10 +246,17 @@ public class SmackableImp implements Smackable {
 	}
 
 	public ArrayList<RosterItem> getRosterEntriesByGroup(String group) {
-		ArrayList<RosterItem> rosterItems = new ArrayList<RosterItem>(
-				rosterItemsByGroup.get(group).values());
-		Collections.sort(rosterItems);
-		return rosterItems;
+		ArrayList<RosterItem> groupItems = new ArrayList<RosterItem>();
+		
+		ConcurrentHashMap<String, RosterItem> rosterItemMap = rosterItemsByGroup
+				.get(group);
+
+		if (rosterItemMap != null) {
+			groupItems.addAll(rosterItemMap.values());
+			Collections.sort(groupItems);
+		}
+
+		return groupItems;
 	}
 
 	private RosterItem getRosterItemForRosterEntry(RosterEntry entry) {
