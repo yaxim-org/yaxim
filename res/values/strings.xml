@@ -169,9 +169,9 @@
 	<string name="AboutDialog_title">ABOUT YAXIM</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
 	<string name="AboutDialog_DevelopersText">
-		Acknowledged Developers: Georg Lucas, Sven Pfleiderer, Christian Polzer.
-		Join us, ask for more fancy features or send us some free "club mate"
-		at http://yaxim.org 
+		Acknowledged Developers: Georg Lukas, Sven Pfleiderer, Christian Polzer.
+		Join us, ask for more fancy features or send us some free \"Club Mate\"
+		at http://yaxim.org or on #yaxim on freenode IRC.
     </string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_LicenceText">
