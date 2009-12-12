@@ -179,6 +179,7 @@
 		modify it under the terms of the GNU General Public License version 2
 		as published by the Free Software Foundation.
 		Link: http://www.gnu.org/licenses/gpl-2.0.html
-		The Yaxim Team - 12.12.2009
+		
     </string>
+    <string name="AboutDialog_greetings">The Yaxim Team - 12.12.2009</string>
 </resources>
