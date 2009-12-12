@@ -16,7 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 import de.hdmstuttgart.yaxim.R;
 import de.hdmstuttgart.yaxim.chat.ChatWindow;
-import de.hdmstuttgart.yaxim.util.PreferenceConstants;
+import de.hdmstuttgart.yaxim.data.YaximConfiguration;
 
 public abstract class GenericService extends Service {
 
@@ -26,11 +26,11 @@ public abstract class GenericService extends Service {
 
 	private NotificationManager notificationMGR;
 	private Notification notification;
-	private boolean isLEDNotify;
-	private boolean isVibraNotify;
 	private Vibrator vibrator;
 	private Intent notificationIntent;
 	private int notificationCounter = 0;
+	
+	protected YaximConfiguration mConfig;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -94,7 +94,7 @@ public abstract class GenericService extends Service {
 
 		vibraNotififaction();
 
-		if (isLEDNotify) {
+		if (mConfig.isLEDNotify) {
 			notification.flags |= Notification.DEFAULT_LIGHTS;
 			notification.ledARGB = Color.MAGENTA;
 			notification.ledOnMS = 300;
@@ -106,16 +106,13 @@ public abstract class GenericService extends Service {
 	}
 
 	private void vibraNotififaction() {
-		if (isVibraNotify) {
+		if (mConfig.isVibraNotify) {
 			vibrator.vibrate(500);
 		}
 	}
 
 	protected void getPreferences(SharedPreferences prefs) {
-		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
-				false);
-		this.isVibraNotify = prefs.getBoolean(
-				PreferenceConstants.VIBRATIONNOTIFY, false);
+		
 	}
 
 	protected void shortToastNotify(String msg) {
