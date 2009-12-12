@@ -46,9 +46,9 @@ public class XMPPService extends GenericService {
 	private IXMPPRosterService.Stub service2RosterConnection;
 	private IXMPPChatService.Stub service2ChatConnection;
 	
-	private final RemoteCallbackList<IXMPPRosterCallback> rosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
-	private final HashMap<String, RemoteCallbackList<IXMPPChatCallback>> chatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
-	private final HashSet<String> isBoundTo = new HashSet<String>();
+	private RemoteCallbackList<IXMPPRosterCallback> rosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
+	private HashMap<String, RemoteCallbackList<IXMPPChatCallback>> chatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
+	private HashSet<String> isBoundTo = new HashSet<String>();
 
 	private Handler mainHandler = new Handler();
 
