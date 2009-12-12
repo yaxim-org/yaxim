@@ -385,19 +385,26 @@ public class SmackableImp implements Smackable {
 
 	private void registerMessageHandler() {
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
+		
 		PacketListener myListener = new PacketListener() {
 
-			public void processPacket(Packet arg0) {
-				if (arg0 instanceof Message) {
-					Message message = (Message) arg0;
+			public void processPacket(Packet packet) {
+				if (packet instanceof Message) {
+					Message message = (Message) packet;
 					String msg = message.getBody();
-					String jabberID = getJabberID(message.getFrom()).toLowerCase();
+					
+					if (msg == null ) {
+						return;
+					}
+					
+					String jabberID = getJabberID(message.getFrom())
+							.toLowerCase();
 
 					if (!callBack.isBoundTo(jabberID)) {
 						ArrayList<String> queue = getMessageQueueForContact(jabberID);
 						queue.add(msg);
 					}
-					
+
 					callBack.newMessage(jabberID, msg);
 				}
 			}
