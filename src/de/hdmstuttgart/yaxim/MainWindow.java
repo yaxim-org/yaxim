@@ -26,6 +26,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import de.hdmstuttgart.yaxim.IXMPPRosterCallback.Stub;
 import de.hdmstuttgart.yaxim.data.RosterItem;
+import de.hdmstuttgart.yaxim.dialogs.AboutDialog;
 import de.hdmstuttgart.yaxim.dialogs.AddRosterItemDialog;
 import de.hdmstuttgart.yaxim.dialogs.ChangeStatusDialog;
 import de.hdmstuttgart.yaxim.dialogs.FirstStartDialog;
@@ -45,25 +46,27 @@ import de.hdmstuttgart.yaxim.util.StatusMode;
 
 public class MainWindow extends GenericExpandableListActivity {
 
-	private static final int CONNECT = Menu.FIRST + 1;
-	private static final int ADD_FRIEND = Menu.FIRST + 2;
-	private static final int SHOW_HIDE = Menu.FIRST + 3;
-	private static final int STATUS = Menu.FIRST + 4;
-	private static final int EXIT = Menu.FIRST + 5;
-	private static final int SETTINGS = Menu.FIRST + 6;
-	private static final int ACC_SET = Menu.FIRST + 7;
+	private static final int MENU_CONNECT = Menu.FIRST + 1;
+	private static final int MENU_ADD_FRIEND = Menu.FIRST + 2;
+	private static final int MENU_SHOW_HIDE = Menu.FIRST + 3;
+	private static final int MENU_STATUS = Menu.FIRST + 4;
+	private static final int MENU_EXIT = Menu.FIRST + 5;
+	private static final int MENU_SETTINGS = Menu.FIRST + 6;
+	private static final int MENU_ACC_SET = Menu.FIRST + 7;
+	private static final int MENU_ABOUT = Menu.FIRST + 8;
 
 	private static final String TAG = "MainWindow";
 	private static final int DIALOG_CONNECTING = 1;
-
+	
+	private final List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
+	private final List<HashMap<String, String>> rosterGroupList = new ArrayList<HashMap<String, String>>();
+	private Handler mainHandler = new Handler();
+	
 	private Intent xmppServiceIntent;
 	private ServiceConnection xmppServiceConnection;
 	private XMPPRosterServiceAdapter serviceAdapter;
 	private Stub rosterCallback;
-	private List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList;
-	private List<HashMap<String, String>> rosterGroupList;
 	private ExpandableRosterAdapter rosterListAdapter;
-	private Handler mainHandler;
 	private ProgressDialog progressDialog;
 	private boolean showOffline;
 	private boolean isConnected;
@@ -71,9 +74,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mainHandler = new Handler();
-		rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
-		rosterGroupList = new ArrayList<HashMap<String, String>>();
+
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		showFirstStartUpDialogIfPrefsEmpty();
 		registerXMPPService();
@@ -97,8 +98,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void createRosterIfConnected() {
-		if ((serviceAdapter != null)
-				&& (serviceAdapter.isAuthenticated())) {
+		if ((serviceAdapter != null) && (serviceAdapter.isAuthenticated())) {
 			createRoster();
 		}
 	}
@@ -185,20 +185,23 @@ public class MainWindow extends GenericExpandableListActivity {
 			switch (itemID) {
 			case R.id.roster_openchat:
 				startChatActivity(user);
-
 				return true;
+				
 			case R.id.roster_delete_contact:
 				RemoveRosterItemDialog deleteRosterItem = new RemoveRosterItemDialog(
 						this, serviceAdapter, user);
 				deleteRosterItem.show();
 				return true;
+				
 			case R.id.roster_rename_contact:
 				new RenameRosterItemDialog(this, serviceAdapter, user).show();
 				return true;
+				
 			case R.id.roster_editContactGroup:
 				new MoveRosterItemToGroupDialog(this, serviceAdapter, user)
 						.show();
 				return true;
+				
 			case R.id.roster_exit:
 				closeContextMenu();
 				return true;
@@ -248,38 +251,38 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void populateMainMenu(Menu menu) {
-		menu.add(Menu.NONE, CONNECT, Menu.NONE, (getConnectDisconnectText()))
-				.setIcon(getConnectDisconnectIcon());
-		menu.add(Menu.NONE, ADD_FRIEND, Menu.NONE,
+		menu.add(Menu.NONE, MENU_CONNECT, Menu.NONE,
+				(getConnectDisconnectText())).setIcon(
+				getConnectDisconnectIcon());
+		menu.add(Menu.NONE, MENU_ADD_FRIEND, Menu.NONE,
 				(getString(R.string.Menu_addFriend))).setIcon(
 				android.R.drawable.ic_menu_add);
-		menu.add(Menu.NONE, SHOW_HIDE, Menu.NONE, getShowHideMenuText())
+		menu.add(Menu.NONE, MENU_SHOW_HIDE, Menu.NONE, getShowHideMenuText())
 				.setIcon(getShowHideMenuIcon());
-		menu.add(Menu.NONE, STATUS, Menu.NONE,
+		menu.add(Menu.NONE, MENU_STATUS, Menu.NONE,
 				(getString(R.string.Menu_Status))).setIcon(
 				android.R.drawable.ic_menu_myplaces);
-		menu.add(Menu.NONE, EXIT, Menu.NONE, (getString(R.string.Global_Exit)))
-				.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		menu.add(Menu.NONE, SETTINGS, Menu.NONE,
+		menu.add(Menu.NONE, MENU_EXIT, Menu.NONE,
+				(getString(R.string.Global_Exit))).setIcon(
+				android.R.drawable.ic_menu_close_clear_cancel);
+		menu.add(Menu.NONE, MENU_SETTINGS, Menu.NONE,
 				(getString(R.string.Menu_Settings))).setIcon(
 				android.R.drawable.ic_menu_preferences);
-		menu.add(Menu.NONE, ACC_SET, Menu.NONE,
+		menu.add(Menu.NONE, MENU_ACC_SET, Menu.NONE,
 				(getString(R.string.Menu_AccSettings))).setIcon(
 				android.R.drawable.ic_menu_manage);
+		menu.add(Menu.NONE, MENU_ABOUT, Menu.NONE,
+				(getString(R.string.Menu_about))).setIcon(R.drawable.about);
 	}
 
 	private int getShowHideMenuIcon() {
-		if (showOffline) {
-			return R.drawable.ic_menu_block;
-		}
-		return android.R.drawable.ic_menu_view;
+		return showOffline ? R.drawable.ic_menu_block
+				: android.R.drawable.ic_menu_view;
 	}
 
 	private String getShowHideMenuText() {
-		if (showOffline) {
-			return getString(R.string.Menu_HideOff);
-		}
-		return getString(R.string.Menu_ShowOff);
+		return showOffline ? getString(R.string.Menu_HideOff)
+				: getString(R.string.Menu_ShowOff);
 	}
 
 	private boolean applyMainMenuChoice(MenuItem item) {
@@ -287,11 +290,11 @@ public class MainWindow extends GenericExpandableListActivity {
 		int itemID = item.getItemId();
 
 		switch (itemID) {
-		case CONNECT:
+		case MENU_CONNECT:
 			toggleConnection(item);
 			return true;
 
-		case ADD_FRIEND:
+		case MENU_ADD_FRIEND:
 			if (serviceAdapter.isAuthenticated()) {
 				new AddRosterItemDialog(this, serviceAdapter).show();
 			} else {
@@ -299,14 +302,14 @@ public class MainWindow extends GenericExpandableListActivity {
 			}
 			return true;
 
-		case SHOW_HIDE:
+		case MENU_SHOW_HIDE:
 			showOffline = !showOffline;
 			updateRoster();
 			item.setIcon(getShowHideMenuIcon());
 			item.setTitle(getShowHideMenuText());
 			return true;
 
-		case STATUS:
+		case MENU_STATUS:
 			if (serviceAdapter.isAuthenticated()) {
 				new ChangeStatusDialog(this, serviceAdapter).show();
 			} else {
@@ -314,20 +317,25 @@ public class MainWindow extends GenericExpandableListActivity {
 			}
 			return true;
 
-		case EXIT:
+		case MENU_EXIT:
 			stopService(xmppServiceIntent);
 			finish();
 			return true;
 
-		case SETTINGS:
+		case MENU_SETTINGS:
 			startActivity(new Intent(this, MainPrefs.class));
 			return true;
 
-		case ACC_SET:
+		case MENU_ACC_SET:
 			startActivity(new Intent(this, AccountPrefs.class));
 			return true;
 
+		case MENU_ABOUT:
+			new AboutDialog(this, serviceAdapter).show();
+			return true;
+
 		}
+		
 		return false;
 
 	}
@@ -405,7 +413,8 @@ public class MainWindow extends GenericExpandableListActivity {
 				serviceAdapter.registerUICallback(rosterCallback);
 				createRosterIfConnected();
 				setIsConnected();
-				Log.i(TAG, "getConnectionState(): " + serviceAdapter.getConnectionState());
+				Log.i(TAG, "getConnectionState(): "
+						+ serviceAdapter.getConnectionState());
 				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING)
 					showDialog(DIALOG_CONNECTING);
 				else if (progressDialog != null && progressDialog.isShowing())
@@ -513,7 +522,8 @@ public class MainWindow extends GenericExpandableListActivity {
 				});
 			}
 
-			public void connectionFailed(final boolean willReconnect) throws RemoteException {
+			public void connectionFailed(final boolean willReconnect)
+					throws RemoteException {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);

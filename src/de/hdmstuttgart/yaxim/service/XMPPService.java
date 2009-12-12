@@ -28,8 +28,6 @@ public class XMPPService extends GenericService {
 
 	protected static final String TAG = "XMPPService";
 
-	private HashSet<String> isBoundTo;
-
 	private String jabServer;
 	private String jabUsername;
 	private String jabPassword;
@@ -47,10 +45,12 @@ public class XMPPService extends GenericService {
 	private Smackable xmppAdapter;
 	private IXMPPRosterService.Stub service2RosterConnection;
 	private IXMPPChatService.Stub service2ChatConnection;
-	private RemoteCallbackList<IXMPPRosterCallback> rosterCallbacks;
-	private HashMap<String, RemoteCallbackList<IXMPPChatCallback>> chatCallbacks;
+	
+	private final RemoteCallbackList<IXMPPRosterCallback> rosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
+	private final HashMap<String, RemoteCallbackList<IXMPPChatCallback>> chatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
+	private final HashSet<String> isBoundTo = new HashSet<String>();
 
-	private Handler mainHandler;
+	private Handler mainHandler = new Handler();
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -70,16 +70,17 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		rosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
-		chatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
-		isBoundTo = new HashSet<String>();
-		mainHandler = new Handler();
+
 		createServiceRosterStub();
 		createServiceChatStub();
-		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
+
+		
 		connectionDemanded = connStartup;
 		if (connStartup) {
-			/* start our own service so it remains in background even when unbound */
+			/*
+			 * start our own service so it remains in background even when
+			 * unbound
+			 */
 			Intent xmppServiceIntent = new Intent(this, XMPPService.class);
 			xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
 			startService(xmppServiceIntent);
@@ -99,6 +100,7 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
+		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		initiateConnection();
 	}
 
@@ -152,7 +154,7 @@ public class XMPPService extends GenericService {
 			public boolean isAuthenticated() throws RemoteException {
 				if (xmppAdapter != null)
 					return xmppAdapter.isAuthenticated();
-				
+
 				return false;
 			}
 		};
@@ -178,7 +180,8 @@ public class XMPPService extends GenericService {
 					return ConnectionState.AUTHENTICATED;
 				else if (connectionDemanded)
 					return ConnectionState.CONNECTING;
-				else return ConnectionState.OFFLINE;
+				else
+					return ConnectionState.OFFLINE;
 			}
 
 			public void setStatus(String status, String statusMsg)
@@ -261,7 +264,7 @@ public class XMPPService extends GenericService {
 		};
 	}
 
-	private void splitJabberID(String jid) {
+	private void splitAndSetJabberID(String jid) {
 		Pattern p = Pattern.compile("\\@");
 		String[] res = p.split(jid);
 		this.jabUsername = res[0];
@@ -270,22 +273,26 @@ public class XMPPService extends GenericService {
 
 	private void doConnect() {
 		connectionDemanded = true;
+
 		if (connectingThread != null)
 			return;
-		connectingThread = new Thread() { public void run() {
-			try {
-				if (xmppAdapter.doConnect()) {
-					connectionEstablished();
-					jabReconnectCount = 0;
-					isConnected = true;
-				} else
+		
+		connectingThread = new Thread() {
+			public void run() {
+				try {
+					if (xmppAdapter.doConnect()) {
+						connectionEstablished();
+						jabReconnectCount = 0;
+						isConnected = true;
+					} else
+						connectionFailed();
+				} catch (YaximXMPPException e) {
 					connectionFailed();
-			} catch (YaximXMPPException e) {
-				connectionFailed();
-				Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
+					Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
+				}
+				connectingThread = null;
 			}
-			connectingThread = null;
-		}};
+		};
 		connectingThread.start();
 	}
 
@@ -303,8 +310,8 @@ public class XMPPService extends GenericService {
 		isConnected = false;
 		if (jabReconnect && jabReconnectCount <= 5) {
 			jabReconnectCount++;
-			Log.i(TAG, "connectionFailed(" + jabReconnectCount + "/5): " +
-					"attempting reconnect in 5s...");
+			Log.i(TAG, "connectionFailed(" + jabReconnectCount + "/5): "
+					+ "attempting reconnect in 5s...");
 			mainHandler.postDelayed(new Runnable() {
 				public void run() {
 					doConnect();
@@ -343,14 +350,16 @@ public class XMPPService extends GenericService {
 				PreferenceConstants.DEFAULT_PORT_INT);
 		this.jabPriority = XMPPHelper.tryToParseInt(prefs.getString(
 				"account_prio", "0"), 0);
-		this.connStartup = prefs.getBoolean(PreferenceConstants.CONN_STARTUP, false);
-		this.jabReconnect = prefs.getBoolean(PreferenceConstants.AUTO_RECONNECT, false);
+		this.connStartup = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
+				false);
+		this.jabReconnect = prefs.getBoolean(
+				PreferenceConstants.AUTO_RECONNECT, false);
 
 		String jid = prefs.getString(PreferenceConstants.JID, "");
 
 		try {
 			XMPPHelper.verifyJabberID(jid);
-			splitJabberID(jid);
+			splitAndSetJabberID(jid);
 		} catch (YaximXMPPAdressMalformedException e) {
 			shortToastNotify("Malformed JabberID!");
 			Log.e(TAG, "Exception in getPreferences(): " + e);

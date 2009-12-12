@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+		android:id="@+id/AboutDialogLayout" 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+		
+	<TextView
+			android:id="@+id/AboutDialog_Summary"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/icon"
+			android:text="@string/AboutDialog_title"
+			android:textSize="23sp"
+			android:padding="10sp"
+		/>
+		
+	<ScrollView android:layout_marginBottom="50dip" 
+     				android:id="@+id/AboutDialog_ScrollView" 
+     				android:layout_height="wrap_content" 
+     				android:layout_width="fill_parent" >
+    <LinearLayout
+		android:id="@+id/AboutDialog_ScrollLayout"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		>
+	<TextView
+			android:id="@+id/AboutDialog_Developers_Title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/AboutDialog_DevelopersTitle"
+			android:textSize="20sp"
+			android:padding="2sp"
+		/>
+    <TextView
+			android:id="@+id/AboutDialog_Developers_Text"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/AboutDialog_DevelopersText"
+			android:padding="2sp"
+		/>
+	<TextView
+			android:id="@+id/AboutDialog_LicenceTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/AboutDialog_LicenceTitle"
+			android:textSize="20sp"
+			android:padding="2sp"
+		/>
+	<TextView
+			android:id="@+id/AboutDialog_LicenceText"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/AboutDialog_LicenceText"
+			android:padding="2sp"
+		/>
+	</LinearLayout>
+	
+	</ScrollView>	
+	<LinearLayout
+			android:layout_marginTop="-50dip"
+			android:id="@+id/AboutDialog_ButtonLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal">
+		<Button
+				android:id="@+id/AboutDialog_OkButton"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/Global_OK"
+				android:clickable="true"
+		/>
+	</LinearLayout>
+</LinearLayout>

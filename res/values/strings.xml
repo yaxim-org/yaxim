@@ -3,16 +3,17 @@
 	<string name="app_name">Yaxim</string>
 	<string name="chat_name">Yaxim-Chat</string>
 	<!-- Global Strings -->
-	<string name="Global_Cancel">"Cancel"</string>
-	<string name="Global_OK">"OK"</string>
-	<string name="Global_Exit">"Exit"</string>
-	<string name="Global_authenticate_first">"Please connect first"</string>
-	<string name="Global_Me">"Me"</string>
-	<string name="Global_Error">"Error: "</string>
+	<string name="Global_Cancel">Cancel</string>
+	<string name="Global_OK">OK</string>
+	<string name="Global_Exit">Exit</string>
+	<string name="Global_authenticate_first">Please connect first</string>
+	<string name="Global_Me">Me</string>
+	<string name="Global_Error">Error: </string>
 	<string name="Global_JID_hint">foo@jabber.bar.com</string>
 	<!--	FirstStartUpDialog-->
 	<string name="StartupDialog_Title">Start Yaxim:</string>
-	<string name="StartupDialog_Summary">"This is the initial Dialog of Yaxim. Please set Your Username, Password and Port"</string>
+	<string name="StartupDialog_Summary">This is the initial dialog of Yaxim. Please set
+		Your Username, Password and Port.</string>
 	<string name="StartupDialog_pwHint">Enter Password</string>
 	<string name="StartupDialog_portHint">5222</string>
 	<string name="StartupDialog_Username_title">Enter your username:</string>
@@ -21,135 +22,163 @@
 	<!-- Mainprefs 	-->
 	<!-- Mainpref real strings 	-->
 	<!-- Notification Settings 	-->
-	<string name="preftitle_notify">"Notification Preferences"</string>
-	<string name="led_title">"Notify via LED"</string>
-	<string name="led_summOn">"LED notification is on"</string>
-	<string name="led_summOff">"LED notification is off"</string>
-	<string name="vibr_title">"Notify via vibration"</string>
-	<string name="vibr_summOn">"Vibration notifications are on"</string>
-	<string name="vibr_summOff">"Vibration notification are off"</string>
-	<string name="ringtone_title">"Ringtone preferences"</string>
-	<string name="ringtone_summ">"Edit ringtone settings"</string>
+	<string name="preftitle_notify">Notification Preferences</string>
+	<string name="led_title">Notify via LED</string>
+	<string name="led_summOn">LED notification is on</string>
+	<string name="led_summOff">LED notification is off</string>
+	<string name="vibr_title">Notify via vibration</string>
+	<string name="vibr_summOn">Vibration notifications are on</string>
+	<string name="vibr_summOff">Vibration notification are off</string>
+	<string name="ringtone_title">Ringtone preferences</string>
+	<string name="ringtone_summ">Edit ringtone settings</string>
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">"Bootoptions"</string>
-	<string name="boot_title">"Load Yaxim at bootup"</string>
-	<string name="boot_summOn">"Yaxim is set to load at bootup"</string>
-	<string name="boot_summOff">"Yaxim is not set to load at bootup"</string>
+	<string name="preftitle_boot">Bootoptions</string>
+	<string name="boot_title">"Load Yaxim at bootup</string>
+	<string name="boot_summOn">Yaxim is set to load at bootup</string>
+	<string name="boot_summOff">Yaxim is not set to load at bootup</string>
 	<string name="statuspopup_name">Set your status</string>
-	<string name="status_title">"Online status after startup"</string>
-	<string name="status_summ">"Select at which status you want to start jabbering"</string>
-	<string name="status_dialog">"Automatically set statusmessage at startup"</string>
-	<string name="showOffline_summ_on">"Showing offline contacts"</string>
-	<string name="showOffline_summ_off">"Hiding offline contacts"</string>
-	<string name="showOffline_title">"Show offline contacts"</string>	
+	<string name="status_title">Online status after startup</string>
+	<string name="status_summ">Select at which status you want to start jabbering
+	</string>
+	<string name="status_dialog">Automatically set statusmessage at startup</string>
+	<string name="showOffline_summ_on">Showing offline contacts</string>
+	<string name="showOffline_summ_off">Hiding offline contacts</string>
+	<string name="showOffline_title">Show offline contacts</string>
+	
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">"Appearance"</string>
-	<string name="FontChat_title">"Chat font size"</string>
-	<string name="FontChat_summ">"Set chat font size"</string>
-	<string name="FontChat_dialog">"Chat font fize"</string>
-	<string name="FontRost_title">"Roster font size"</string>
-	<string name="FontRost_summ">"Set roster font size"</string>
-	<string name="FontRost_dialog">"Roster font fize"</string>
-	<string name="setFontRoster">"Set roster font size"</string>
+	<string name="preftitle_app">Appearance</string>
+	<string name="FontChat_title">Chat font size</string>
+	<string name="FontChat_summ">Set chat font size</string>
+	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">"Add friend"</string>
-	<string name="Menu_ShowOff">"Show offline"</string>
-	<string name="Menu_HideOff">"Hide offline"</string>
-	<string name="Menu_AccSettings">"Edit Accounts"</string>
-	<string name="Menu_Settings">"Settings"</string>
-	<string name="Menu_Status">"Status"</string>
-	<string name="Menu_Connect">"Connect"</string>
-	<string name="Menu_connect">"Connect"</string>
-	<string name="Menu_disconnect">"Disconnect"</string>
-	<!-- AddFriend -->
-	<string name="addFriend_inputPreset">"e.g.: foo@jabber.bar.com"</string>
-	<string name="addFriend_Title">"Please enter Jabber ID"</string>
-	<string name="addFriend_Summ">&quot;Jabber ID will be something like e.g.: foo@jabber.bar.com. As soon as a valid Id is entered the Ok button will become clickable!&quot;</string>
-	<string name="addFriend_posBtn">"Add"</string>
-	<string name="addrosteritemaddgroupchoice">"Add to a new group"</string>
-	<string name="NewGroup_EditTextField_Hint">"Enter a name for the new group"</string>
+	<string name="Menu_addFriend">Add friend</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit Accounts</string>
+	<string name="Menu_Settings">Settings</string>
+	<string name="Menu_Status">Status</string>
+	<string name="Menu_Connect">Connect</string>
+	<string name="Menu_connect">Connect</string>
+	<string name="Menu_disconnect">Disconnect</string>
+	<string name="Menu_about">About Yaxim</string>
 	
+	<!-- AddFriend -->
+	<string name="addFriend_inputPreset">e.g.: foo@jabber.bar.com</string>
+	<string name="addFriend_Title">Please enter Jabber ID</string>
+	<string name="addFriend_Summ">Jabber ID will be something like e.g.:
+		foo@jabber.bar.com. As soon as a valid Id is entered the Ok button
+		will become clickable!</string>
+	<string name="addFriend_posBtn">Add</string>
+	<string name="addrosteritemaddgroupchoice">Add to a new group</string>
+	<string name="NewGroup_EditTextField_Hint">Enter a name for the new group</string>
+
 	<!-- AddFriendAlert -->
-	<string name="addFriendAlert_Title">"No valid ID entered!"</string>
-	<string name="addFriendAlert_Message">"Could not validate ID"</string>
-	<string name="addFriendAlert_Retry">"Retry"</string>
-	<string name="addFriendAlert_Cancel">"Cancel"</string>
+	<string name="addFriendAlert_Title">No valid ID entered!</string>
+	<string name="addFriendAlert_Message">Could not validate ID</string>
+	<string name="addFriendAlert_Retry">Retry</string>
+	<string name="addFriendAlert_Cancel">Cancel</string>
 	<!-- MainPreferences -->
 	<!-- CONTEXTMENU -->
-	<string name="MenuContext_deleteContact">"Delete Contact"</string>
-	<string name="MenuContext_openChat">"Open chat"</string>
-	<string name="MenuContext_rename">"Rename"</string>
-	<string name="MenuContext_renameGroup">"Rename group"</string>
-	<string name="MenuContext_editGroup">"Edit Group"</string>
-	<string name="MenuContext_newGroup">"New Group"</string>
-	<string name="MenuContext_Contactinfo">"Contact info"</string>
-	<string name="MenuContext_changeContactGroup">"Change Group"</string>
-	<string name="MenuContext_GroupsHeaderTitle">"Group options"</string>
-	<string name="MenuContext_ContactHeaderTitle">"Contact options"</string>
-	<string name="MenuContext_HeaderTitleDisabled">"No options available"</string>
-<!-- Accountprefs -->
-	<string name="account_settings_defaultsum">"Please enter a valid JabberId"</string>
-	<string name="account_settings_defaultsum_prefix">"Please enter a valid JabberId"</string>
-	<string name="account_settings_title">"Account settings"</string>
-	<string name="account_options_title">"Account options"</string>
-	<string name="account_summary_prefix">"Value entered: "</string>
-	<string name="connstartup_title">"Connect at startup"</string>
-	<string name="connstartup_summary">"Startup options"</string>
-	<string name="reconnect_title">"Auto-reconnect"</string>
-	<string name="reconnect_summary">"Reconnect if disconnected"</string>
-	<string name="account_jabberID_title">"Enter jabberID"</string>
-	<string name="account_jabberID_sum">"eg.: foo@jabber.bar.com"</string>
-	<string name="account_jabberID_dialog_title">"Enter jabberID"</string>
-	<string name="account_jabberPW_title">"Enter Password"</string>
-	<string name="account_jabberPW_sum">"Enter Password"</string>
-	<string name="account_jabberPW_dialog_title">"Enter Password"</string>
+	<string name="MenuContext_deleteContact">Delete Contact</string>
+	<string name="MenuContext_openChat">Open chat</string>
+	<string name="MenuContext_rename">Rename</string>
+	<string name="MenuContext_renameGroup">Rename group</string>
+	<string name="MenuContext_editGroup">Edit Group</string>
+	<string name="MenuContext_newGroup">New Group</string>
+	<string name="MenuContext_Contactinfo">Contact info</string>
+	<string name="MenuContext_changeContactGroup">Change Group</string>
+	<string name="MenuContext_GroupsHeaderTitle">Group options</string>
+	<string name="MenuContext_ContactHeaderTitle">Contact options</string>
+	<string name="MenuContext_HeaderTitleDisabled">No options available</string>
+	<!-- Accountprefs -->
+	<string name="account_settings_defaultsum">Please enter a valid JabberId</string>
+	<string name="account_settings_defaultsum_prefix">Please enter a valid JabberId</string>
+	<string name="account_settings_title">Account settings</string>
+	<string name="account_options_title">Account options</string>
+	<string name="account_summary_prefix">Value entered: </string>
+	<string name="connstartup_title">Connect at startup</string>
+	<string name="connstartup_summary">Startup options</string>
+	<string name="reconnect_title">Auto-reconnect</string>
+	<string name="reconnect_summary">Reconnect if disconnected</string>
+	<string name="account_jabberID_title">Enter jabberID</string>
+	<string name="account_jabberID_sum">eg.: foo@jabber.bar.com</string>
+	<string name="account_jabberID_dialog_title">Enter jabberID</string>
+	<string name="account_jabberPW_title">Enter Password</string>
+	<string name="account_jabberPW_sum">Enter Password</string>
+	<string name="account_jabberPW_dialog_title">Enter Password</string>
 	<!-- accountprefs -->
-	<string name="account_resource_title">"Modify resource"</string>
-	<string name="account_resource_summ">"Yaxim"</string>
- 	<string name="account_resource_dialog_title">"Modify resource"</string>
-	<string name="account_prio_title">"Priority"</string>
-	<string name="account_prio_summ">"From 0 to 127"</string>
-	<string name="account_prio_dialog_title">"Priority"</string>
-	<string name="account_prio_dialog_errorMessage">"Error! Please enter a value between 0 and 127!"</string>	
-	<string name="account_port_title">"Change Port"</string>
-	<string name="account_port_summ">"Default Port: 5222"</string>
-	
+	<string name="account_resource_title">Modify resource</string>
+	<string name="account_resource_summ">Yaxim</string>
+	<string name="account_resource_dialog_title">Modify resource</string>
+	<string name="account_prio_title">Priority</string>
+	<string name="account_prio_summ">From 0 to 127</string>
+	<string name="account_prio_dialog_title">Priority</string>
+	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!
+	</string>
+	<string name="account_port_title">Change Port</string>
+	<string name="account_port_summ">Default Port: 5222</string>
+
 	<!--StatusPopUp-->
-	<string name="RB_title">"Statussettings"</string>
-	<string name="RB_infotext">"Choose your onlinestatus!"</string>
-	<string name="RB_online">"Online"</string>
-	<string name="RB_away">"Away"</string>
-	<string name="RB_chat">"Chat"</string>
-	<string name="RB_donotdisturb">"Do not disturb"</string>
-	<string name="RB_notavailable">"Not available"</string>
-	<string name="RB_offline">"Offline"</string>
-		
-	<string name="AddContact_NOT_VALID">"Not Valid"</string>
-	<string name="AddContact_SpinnerPrompt">"Choose Group"</string>
-	<string name="addFriend_aliasHint">"Enter desired alias"</string>
-	<string name="setStatusmsgHint">"Enter your statusmessage here"</string>
-	<string name="setStatusmsgDefault">"This is Yaxims default statusmessage!"</string>
-	<string name="setStatusTitle">"Set your status"</string>
-	<string name="newGroup_summ">"Enter the desired name for your new Group"</string>
-	<string name="newGroup_title">"Add New Group"</string>
-	<string name="RenameGroup_summ">"Change the name for this group"</string>
-	<string name="RenameGroup_title">"Rename group"</string>
-	<string name="RenameEntry_summ">"Rename this contact to:"</string>
-	<string name="RenameEntry_title">"Rename contact"</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">"Select a group from the spinner below"</string>
-	<string name="MoveRosterEntryToGroupDialog_title">"Change group"</string>
-	<string name="ConnectProgressMessage">"Please wait while connecting to server ..."</string>
-	<string name="deleteRosterItem_text">"Really remove "</string>
-	<string name="deleteRosterItem_title">"Remove contact"</string>
+	<string name="RB_title">Statussettings</string>
+	<string name="RB_infotext">Choose your onlinestatus!</string>
+	<string name="RB_online">Online</string>
+	<string name="RB_away">Away</string>
+	<string name="RB_chat">Chat</string>
+	<string name="RB_donotdisturb">Do not disturb</string>
+	<string name="RB_notavailable">Not available</string>
+	<string name="RB_offline">Offline</string>
+
+	<string name="AddContact_NOT_VALID">Not Valid</string>
+	<string name="AddContact_SpinnerPrompt">Choose Group</string>
+	<string name="addFriend_aliasHint">Enter desired alias</string>
+	<string name="setStatusmsgHint">Enter your statusmessage here</string>
+	<string name="setStatusmsgDefault">This is Yaxims default statusmessage!</string>
+	<string name="setStatusTitle">Set your status</string>
+	<string name="newGroup_summ">Enter the desired name for your new Group</string>
+	<string name="newGroup_title">Add New Group</string>
+	<string name="RenameGroup_summ">Change the name for this group</string>
+	<string name="RenameGroup_title">Rename group</string>
+	<string name="RenameEntry_summ">Rename this contact to: </string>
+	<string name="RenameEntry_title">Rename contact</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
+	<string name="ConnectProgressMessage">Please wait while connecting to server ...</string>
+	<string name="deleteRosterItem_text">Really remove </string>
+	<string name="deleteRosterItem_title">Remove contact</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_InputFieldHint">"Input text here"</string>
-	<string name="chat_titlePrefix">"Chat with:"</string>
-	<string name="chat_sendButtonTitle">"send"</string>
-	<string name="dialog_connect_title">"Connecting ..."</string>
-	<string name="dialog_connect_message">"Please be patient ..."</string>
-	<string name="toast_connectfail_message">"Connecting Failed!"</string>
-	<string name="toast_connect_before_send">"Please connect before sending a message!"</string>
+	<string name="chat_InputFieldHint">Input text here</string>
+	<string name="chat_titlePrefix">Chat with: </string>
+	<string name="chat_sendButtonTitle">Send</string>
+	<string name="dialog_connect_title">Connecting ...</string>
+	<string name="dialog_connect_message">Please be patient ...</string>
+	<string name="toast_connectfail_message">Connecting Failed!</string>
+	<string name="toast_connect_before_send">Please connect before sending a message!</string>
 
+	<!-- GPS settings -->
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">ABOUT YAXIM</string>
+	<string name="AboutDialog_DevelopersTitle">Developers</string>
+	<string name="AboutDialog_DevelopersText">
+		Acknowledged Developers: Georg Lucas, Sven Pfleiderer, Christian Polzer.
+		Join us, ask for more fancy features or send us some free "club mate"
+		at http://yaxim.org 
+    </string>
+	<string name="AboutDialog_LicenceTitle">Licensing</string>
+	<string name="AboutDialog_LicenceText">
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License version 2
+		as published by the Free Software Foundation.
+		Link: http://www.gnu.org/licenses/gpl-2.0.html
+		The Yaxim Team - 12.12.2009
+    </string>
 </resources>
