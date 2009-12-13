@@ -169,7 +169,7 @@
 	<string name="AboutDialog_title">ABOUT YAXIM</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
 	<string name="AboutDialog_DevelopersText">
-		Acknowledged Developers: Georg Lukas, Sven Pfleiderer, Christian Polzer.
+		Acknowledged Developers:\nGeorg Lukas\nSven Pfleiderer\Christian Polzer\
 		Join us, ask for more fancy features or send us some free \"Club Mate\"
 		at http://yaxim.org or on #yaxim on freenode IRC.
     </string>
@@ -179,7 +179,6 @@
 		modify it under the terms of the GNU General Public License version 2
 		as published by the Free Software Foundation.
 		Link: http://www.gnu.org/licenses/gpl-2.0.html
-		
     </string>
     <string name="AboutDialog_greetings">The Yaxim Team - 12.12.2009</string>
 </resources>
