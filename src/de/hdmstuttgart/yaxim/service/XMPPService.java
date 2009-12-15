@@ -318,6 +318,7 @@ public class XMPPService extends GenericService {
 	}
 
 	public void doDisconnect() {
+		mIsConnected = false; /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
