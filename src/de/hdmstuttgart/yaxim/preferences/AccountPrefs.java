@@ -92,7 +92,7 @@ public class AccountPrefs extends PreferenceActivity {
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						newResourceSummary = (CharSequence) newValue;
-						if (newValue != null) {
+						if (newValue != null && newResourceSummary.length() > 0) {
 							prefResource
 									.setSummary(getString(R.string.account_summary_prefix)
 											+ newResourceSummary);

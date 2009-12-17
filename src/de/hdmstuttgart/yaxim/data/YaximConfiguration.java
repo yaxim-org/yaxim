@@ -43,7 +43,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				PreferenceConstants.VIBRATIONNOTIFY, false);
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs.getString(PreferenceConstants.RESSOURCE,
-				"yaxim");
+				"Yaxim");
 		this.port = XMPPHelper.tryToParseInt(prefs.getString(
 				PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT),
 				PreferenceConstants.DEFAULT_PORT_INT);
