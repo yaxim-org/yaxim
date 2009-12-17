@@ -15,6 +15,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String ressource;
 	public int port;
 	public int priority;
+	public boolean bootstart;
 	public boolean connStartup;
 	public boolean reconnect;
 	public String userName;
@@ -50,6 +51,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.priority = validatePriority(XMPPHelper.tryToParseInt(prefs
 				.getString("account_prio", "0"), 0));
 		
+		this.bootstart = prefs.getBoolean(
+				PreferenceConstants.BOOTSTART, false);
+
 		this.connStartup = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
 		this.reconnect = prefs.getBoolean(
