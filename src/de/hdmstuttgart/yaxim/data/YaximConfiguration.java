@@ -1,7 +1,5 @@
 package de.hdmstuttgart.yaxim.data;
 
-import java.util.regex.Pattern;
-
 import de.hdmstuttgart.yaxim.exceptions.YaximXMPPAdressMalformedException;
 import de.hdmstuttgart.yaxim.util.PreferenceConstants;
 import de.hdmstuttgart.yaxim.util.XMPPHelper;
@@ -55,8 +53,7 @@ public class YaximConfiguration {
 	}
 
 	private void splitAndSetJabberID(String jid) {
-		Pattern p = Pattern.compile("\\@");
-		String[] res = p.split(jid);
+		String[] res = jid.split("@");
 		this.userName = res[0];
 		this.server = res[1];
 	}
