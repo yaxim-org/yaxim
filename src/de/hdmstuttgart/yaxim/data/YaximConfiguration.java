@@ -4,25 +4,38 @@ import de.hdmstuttgart.yaxim.exceptions.YaximXMPPAdressMalformedException;
 import de.hdmstuttgart.yaxim.util.PreferenceConstants;
 import de.hdmstuttgart.yaxim.util.XMPPHelper;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.util.Log;
 
-public class YaximConfiguration {
+public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "YaximConfiguration";
 
-	public final String password;
-	public final String ressource;
-	public final int port;
-	public final int priority;
-	public final boolean connStartup;
-	public final boolean reconnect;
+	public String password;
+	public String ressource;
+	public int port;
+	public int priority;
+	public boolean connStartup;
+	public boolean reconnect;
 	public String userName;
 	public String server;
 
-	public final boolean isLEDNotify;
-	public final boolean isVibraNotify;
+	public boolean isLEDNotify;
+	public boolean isVibraNotify;
 
-	public YaximConfiguration(SharedPreferences prefs) {
+	private final SharedPreferences prefs;
+
+	public YaximConfiguration(SharedPreferences _prefs) {
+		prefs = _prefs;
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		loadPrefs(prefs);
+	}
+
+	public void finalize() {
+		prefs.unregisterOnSharedPreferenceChangeListener(this);
+	}
+
+	public void loadPrefs(SharedPreferences prefs) {
 		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
 				false);
 		this.isVibraNotify = prefs.getBoolean(
@@ -66,4 +79,8 @@ public class YaximConfiguration {
 		return jabPriority;
 	}
 
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
+		loadPrefs(prefs);
+	}
 }
