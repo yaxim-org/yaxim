@@ -470,12 +470,8 @@ public class MainWindow extends GenericExpandableListActivity {
 		for (RosterItem rosterEntryItem : rosterItems) {
 			HashMap<String, RosterItem> rosterEntry = new HashMap<String, RosterItem>();
 			rosterEntry.put(AdapterConstants.CONTACT_ID, rosterEntryItem);
-			if (showOffline) {
+			if (showOffline || (rosterEntryItem.getStatusMode() != StatusMode.offline)) {
 				rosterItemList.add(rosterEntry);
-			} else {
-				if (rosterEntryItem.getStatusMode() != StatusMode.offline) {
-					rosterItemList.add(rosterEntry);
-				}
 			}
 		}
 		return rosterItemList;

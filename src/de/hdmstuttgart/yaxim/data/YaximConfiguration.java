@@ -1,37 +1,49 @@
 package de.hdmstuttgart.yaxim.data;
 
-import java.util.regex.Pattern;
-
 import de.hdmstuttgart.yaxim.exceptions.YaximXMPPAdressMalformedException;
 import de.hdmstuttgart.yaxim.util.PreferenceConstants;
 import de.hdmstuttgart.yaxim.util.XMPPHelper;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.util.Log;
 
-public class YaximConfiguration {
+public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "YaximConfiguration";
 
-	public final String password;
-	public final String ressource;
-	public final int port;
-	public final int priority;
-	public final boolean connStartup;
-	public final boolean reconnect;
+	public String password;
+	public String ressource;
+	public int port;
+	public int priority;
+	public boolean bootstart;
+	public boolean connStartup;
+	public boolean reconnect;
 	public String userName;
 	public String server;
 
-	public final boolean isLEDNotify;
-	public final boolean isVibraNotify;
+	public boolean isLEDNotify;
+	public boolean isVibraNotify;
 
-	public YaximConfiguration(SharedPreferences prefs) {
+	private final SharedPreferences prefs;
+
+	public YaximConfiguration(SharedPreferences _prefs) {
+		prefs = _prefs;
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		loadPrefs(prefs);
+	}
+
+	public void finalize() {
+		prefs.unregisterOnSharedPreferenceChangeListener(this);
+	}
+
+	public void loadPrefs(SharedPreferences prefs) {
 		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
 				false);
 		this.isVibraNotify = prefs.getBoolean(
 				PreferenceConstants.VIBRATIONNOTIFY, false);
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs.getString(PreferenceConstants.RESSOURCE,
-				"yaxim");
+				"Yaxim");
 		this.port = XMPPHelper.tryToParseInt(prefs.getString(
 				PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT),
 				PreferenceConstants.DEFAULT_PORT_INT);
@@ -39,6 +51,9 @@ public class YaximConfiguration {
 		this.priority = validatePriority(XMPPHelper.tryToParseInt(prefs
 				.getString("account_prio", "0"), 0));
 		
+		this.bootstart = prefs.getBoolean(
+				PreferenceConstants.BOOTSTART, false);
+
 		this.connStartup = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
 		this.reconnect = prefs.getBoolean(
@@ -55,8 +70,7 @@ public class YaximConfiguration {
 	}
 
 	private void splitAndSetJabberID(String jid) {
-		Pattern p = Pattern.compile("\\@");
-		String[] res = p.split(jid);
+		String[] res = jid.split("@");
 		this.userName = res[0];
 		this.server = res[1];
 	}
@@ -69,4 +83,8 @@ public class YaximConfiguration {
 		return jabPriority;
 	}
 
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
+		loadPrefs(prefs);
+	}
 }

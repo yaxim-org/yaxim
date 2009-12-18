@@ -40,6 +40,7 @@
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:dialogTitle="@string/account_resource_dialog_title"
 			android:singleLine="true"
+			android:hint="@string/account_resource_summ"
 		 />
 		<EditTextPreference 
 			android:id="@+id/account_prio"

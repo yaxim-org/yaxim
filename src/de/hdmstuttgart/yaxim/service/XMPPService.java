@@ -90,8 +90,6 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		mConfig = new YaximConfiguration(PreferenceManager
-				.getDefaultSharedPreferences(this));
 		initiateConnection();
 	}
 
@@ -318,6 +316,7 @@ public class XMPPService extends GenericService {
 	}
 
 	public void doDisconnect() {
+		mIsConnected = false; /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
