@@ -32,7 +32,7 @@ public class XMPPService extends GenericService {
 
 	private Smackable mSmackable;
 	private IXMPPRosterService.Stub mService2RosterConnection;
-	private IXMPPChatService.Stub mService2ChatConnection;
+	private IXMPPChatService.Stub mServiceChatConnection;
 
 	private RemoteCallbackList<IXMPPRosterCallback> mRosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
 	private HashMap<String, RemoteCallbackList<IXMPPChatCallback>> mChatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
@@ -44,7 +44,7 @@ public class XMPPService extends GenericService {
 		super.onBind(intent);
 		String caller = intent.getDataString();
 		if ((caller != null) && caller.equals("chatwindow"))
-			return mService2ChatConnection;
+			return mServiceChatConnection;
 
 		return mService2RosterConnection;
 	}
@@ -102,7 +102,7 @@ public class XMPPService extends GenericService {
 	}
 
 	private void createServiceChatStub() {
-		mService2ChatConnection = new IXMPPChatService.Stub() {
+		mServiceChatConnection = new IXMPPChatService.Stub() {
 
 			public void registerChatCallback(IXMPPChatCallback callback,
 					String jabberID) throws RemoteException {
@@ -135,14 +135,16 @@ public class XMPPService extends GenericService {
 
 			public List<String> pullMessagesForContact(String jabberID)
 					throws RemoteException {
-				if (mSmackable != null)
+				if (mSmackable != null) {
 					return mSmackable.pullMessagesForContact(jabberID);
+				}
 				return new ArrayList<String>();
 			}
 
 			public boolean isAuthenticated() throws RemoteException {
-				if (mSmackable != null)
+				if (mSmackable != null) {
 					return mSmackable.isAuthenticated();
+				}
 
 				return false;
 			}
@@ -374,7 +376,8 @@ public class XMPPService extends GenericService {
 	private void handleIncomingMessage(String from, String message) {
 		RemoteCallbackList<IXMPPChatCallback> chatCallbackList = mChatCallbacks
 				.get(from);
-		final int broadCastItems = chatCallbackList.beginBroadcast();
+		int broadCastItems = chatCallbackList.beginBroadcast();
+		
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
 				chatCallbackList.getBroadcastItem(i).newMessage(from, message);
@@ -382,6 +385,6 @@ public class XMPPService extends GenericService {
 				Log.e(TAG, "caught RemoteException: " + e.getMessage());
 			}
 		}
-		mRosterCallbacks.finishBroadcast();
+		chatCallbackList.finishBroadcast();
 	}
 }
