@@ -440,8 +440,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void registerListAdapter() {
-//		createRosterEntryList();
-//		createRosterGroupList();
+		createRosterEntryList();
+		createRosterGroupList();
 
 		rosterListAdapter = new ExpandableRosterAdapter(this, rosterGroupList,
 				R.layout.maingroup_row, AdapterConstants.GROUP_NAME,
