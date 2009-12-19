@@ -169,7 +169,7 @@
 	<string name="AboutDialog_title">ABOUT YAXIM</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
 	<string name="AboutDialog_DevelopersText">
-		Acknowledged Developers:\nGeorg Lukas\nSven Pfleiderer\Christian Polzer\
+		Acknowledged Developers:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n
 		Join us, ask for more fancy features or send us some free \"Club Mate\"
 		at http://yaxim.org or on #yaxim on freenode IRC.
     </string>
