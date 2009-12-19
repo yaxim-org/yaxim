@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -24,8 +25,8 @@ public class XMPPService extends GenericService {
 
 	protected static final String TAG = "XMPPService";
 
-	private boolean mConnectionDemanded;
-	private boolean mIsConnected;
+	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false);
+	private AtomicBoolean mIsConnected = new AtomicBoolean(false);
 	private int mReconnectCount;
 	private Thread mConnectingThread;
 
@@ -36,7 +37,6 @@ public class XMPPService extends GenericService {
 	private RemoteCallbackList<IXMPPRosterCallback> mRosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
 	private HashMap<String, RemoteCallbackList<IXMPPChatCallback>> mChatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
 	private HashSet<String> mIsBoundTo = new HashSet<String>();
-
 	private Handler mMainHandler = new Handler();
 
 	@Override
@@ -64,7 +64,7 @@ public class XMPPService extends GenericService {
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
 
-		mConnectionDemanded = mConfig.connStartup;
+		mConnectionDemanded.set(mConfig.connStartup);
 
 		if (mConfig.connStartup) {
 			/*
@@ -167,7 +167,7 @@ public class XMPPService extends GenericService {
 			public int getConnectionState() throws RemoteException {
 				if (mSmackable != null && mSmackable.isAuthenticated())
 					return ConnectionState.AUTHENTICATED;
-				else if (mConnectionDemanded)
+				else if (mConnectionDemanded.get())
 					return ConnectionState.CONNECTING;
 				else
 					return ConnectionState.OFFLINE;
@@ -254,7 +254,7 @@ public class XMPPService extends GenericService {
 	}
 
 	private void doConnect() {
-		mConnectionDemanded = true;
+		mConnectionDemanded.set(true);
 
 		if (mConnectingThread != null)
 			return;
@@ -266,7 +266,7 @@ public class XMPPService extends GenericService {
 					if (mSmackable.doConnect()) {
 						connectionEstablished();
 						mReconnectCount = 0;
-						mIsConnected = true;
+						mIsConnected.set(true);
 					} else
 						connectionFailed();
 				} catch (YaximXMPPException e) {
@@ -290,7 +290,7 @@ public class XMPPService extends GenericService {
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
-		mIsConnected = false;
+		mIsConnected.set(false);
 		if (mConfig.reconnect && mReconnectCount <= 5) {
 			mReconnectCount++;
 			Log.i(TAG, "connectionFailed(" + mReconnectCount + "/5): "
@@ -316,12 +316,12 @@ public class XMPPService extends GenericService {
 	}
 
 	public void doDisconnect() {
-		mIsConnected = false; /* hack to prevent recursion in rosterChanged() */
+		mIsConnected.set(false); /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
 		mSmackable = null;
-		mConnectionDemanded = false;
+		mConnectionDemanded.set(false);
 	}
 
 	private void createAdapter() {
@@ -346,7 +346,7 @@ public class XMPPService extends GenericService {
 
 			public void rosterChanged() {
 				if (!mSmackable.isAuthenticated()) {
-					if (mIsConnected) {
+					if (mIsConnected.get()) {
 						/* XXX: hack - it seems we need to reset the connection */
 						mSmackable.unRegisterCallback();
 						registerAdapterCallback();
