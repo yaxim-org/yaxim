@@ -40,26 +40,25 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private static final String TAG = "ChatWindow";
 	private static final int NOTIFY_ID = 0;
+	
+	private static final HashMap<String, ChatWindowAdapter> mAdapterMap = new HashMap<String, ChatWindowAdapter>();
+	
+	private final ArrayList<ChatItem> mChatItemList = new ArrayList<ChatItem>();
 
-	private Button send = null;
-	private EditText userInput = null;
-	private String jabberID = null;
-	private List<ChatItem> chatItemList;
-	private static HashMap<String, ChatWindowAdapter> adapters = new HashMap<String, ChatWindowAdapter>();
-	private Intent xmppServiceIntent;
-	private ServiceConnection xmppServiceConnection;
-	private XMPPChatServiceAdapter serviceAdapter;
-	private Stub chatCallback;
-	private ListView chatView;
-	private Handler handler;
-	private NotificationManager notificationMGR;
+	private Button mSendButton = null;
+	private EditText mChatInput = null;
+	private String mJabberID = null;
+	private Intent mServiceIntent;
+	private ServiceConnection mServiceConnection;
+	private XMPPChatServiceAdapter mServiceAdapter;
+	private Stub mChatCallback;
+	private ListView mChatView;
+	private Handler mHandler = new Handler();
+	private NotificationManager mNotificationMGR;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		chatItemList = new ArrayList<ChatItem>();
-		handler = new Handler();
 
 		setContentView(R.layout.mainchat);
 		registerForContextMenu(getListView());
@@ -70,32 +69,32 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		setSendButton();
 		setContactFromUri();
 		setChatItems();
-		setTitle(getText(R.string.chat_titlePrefix) + " " + jabberID);
+		setTitle(getText(R.string.chat_titlePrefix) + " " + mJabberID);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		serviceAdapter.unregisterUICallback(chatCallback);
+		mServiceAdapter.unregisterUICallback(mChatCallback);
 		unbindXMPPService();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		notificationMGR.cancel(NOTIFY_ID);
+		mNotificationMGR.cancel(NOTIFY_ID);
 		bindXMPPService();
 	}
 
 	private void processMessageQueue() {
-		List<String> queue = serviceAdapter.pullMessagesForContact(jabberID);
+		List<String> queue = mServiceAdapter.pullMessagesForContact(mJabberID);
 		for (String message : queue) {
-			processIncomingMessageInHandler(jabberID, message);
+			processIncomingMessageInHandler(mJabberID, message);
 		}
 	}
 
 	private void createUICallback() {
-		chatCallback = new IXMPPChatCallback.Stub() {
+		mChatCallback = new IXMPPChatCallback.Stub() {
 
 			public void newMessage(String from, String message)
 					throws RemoteException {
@@ -107,34 +106,33 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private void processIncomingMessageInHandler(String from, String message) {
 		final ChatItem newChatItem = new ChatItem(GetDateTimeHelper.setDate()
 				+ ": " + from, message);
-		handler.post(new Runnable() {
+		mHandler.post(new Runnable() {
 			public void run() {
-				adapters.get(jabberID).add(newChatItem);
-
+				mAdapterMap.get(mJabberID).add(newChatItem);
 			}
 		});
 	}
 
 	private void registerXMPPService() {
 		Log.i(TAG, "called startXMPPService()");
-		xmppServiceIntent = new Intent(this, XMPPService.class);
+		mServiceIntent = new Intent(this, XMPPService.class);
 		Uri chatURI = Uri.parse("chatwindow");
-		xmppServiceIntent.setData(chatURI);
-		xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
+		mServiceIntent.setData(chatURI);
+		mServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
 
-		xmppServiceConnection = new ServiceConnection() {
+		mServiceConnection = new ServiceConnection() {
 
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				Log.i(TAG, "called onServiceConnected()");
-				serviceAdapter = new XMPPChatServiceAdapter(
-						IXMPPChatService.Stub.asInterface(service), jabberID);
-				serviceAdapter.registerUICallback(chatCallback);
+				mServiceAdapter = new XMPPChatServiceAdapter(
+						IXMPPChatService.Stub.asInterface(service), mJabberID);
+				mServiceAdapter.registerUICallback(mChatCallback);
 				processMessageQueue();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
 				Log.i(TAG, "called onServiceDisconnected()");
-				serviceAdapter.unregisterUICallback(chatCallback);
+				mServiceAdapter.unregisterUICallback(mChatCallback);
 			}
 
 		};
@@ -142,38 +140,38 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private void unbindXMPPService() {
 		try {
-			unbindService(xmppServiceConnection);
+			unbindService(mServiceConnection);
 		} catch (IllegalArgumentException e) {
 			Log.e(TAG, "Service wasn't bound!");
 		}
 	}
 
 	private void bindXMPPService() {
-		bindService(xmppServiceIntent, xmppServiceConnection, BIND_AUTO_CREATE);
+		bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 	}
 
 	private void setSendButton() {
-		send = (Button) findViewById(R.id.Chat_SendButton);
+		mSendButton = (Button) findViewById(R.id.Chat_SendButton);
 		View.OnClickListener onSend = getOnSetListener();
-		send.setOnClickListener(onSend);
-		send.setEnabled(false);
+		mSendButton.setOnClickListener(onSend);
+		mSendButton.setEnabled(false);
 	}
 
 	private void setChatItems() {
-		chatView = (ListView) findViewById(android.R.id.list);
-		if (!adapters.containsKey(jabberID))
-			adapters.put(jabberID, new ChatWindowAdapter());
-		chatView.setAdapter(adapters.get(jabberID));
+		mChatView = (ListView) findViewById(android.R.id.list);
+		if (!mAdapterMap.containsKey(mJabberID))
+			mAdapterMap.put(mJabberID, new ChatWindowAdapter());
+		mChatView.setAdapter(mAdapterMap.get(mJabberID));
 	}
 
 	private void setUserInput() {
-		userInput = (EditText) findViewById(R.id.Chat_UserInput);
-		userInput.addTextChangedListener(this);
+		mChatInput = (EditText) findViewById(R.id.Chat_UserInput);
+		mChatInput.addTextChangedListener(this);
 	}
 
 	private void setContactFromUri() {
 		Intent i = getIntent();
-		jabberID = i.getDataString().toLowerCase();
+		mJabberID = i.getDataString().toLowerCase();
 	}
 
 	private View.OnClickListener getOnSetListener() {
@@ -186,9 +184,9 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void sendMessageIfNotNull() {
-		if (userInput.getText().length() >= 1) {
-			if (serviceAdapter.isServiceAuthenticated())
-				sendMessage(userInput.getText().toString());
+		if (mChatInput.getText().length() >= 1) {
+			if (mServiceAdapter.isServiceAuthenticated())
+				sendMessage(mChatInput.getText().toString());
 			else
 				showToastNotification(R.string.toast_connect_before_send);
 		}
@@ -198,16 +196,16 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 		ChatItem newChatItem = new ChatItem(GetDateTimeHelper.setDate() + ": "
 				+ getString(R.string.Global_Me), message);
-		adapters.get(jabberID).add(newChatItem);
-		userInput.setText(null);
-		send.setEnabled(false);
-		serviceAdapter.sendMessage(jabberID, message);
+		mAdapterMap.get(mJabberID).add(newChatItem);
+		mChatInput.setText(null);
+		mSendButton.setEnabled(false);
+		mServiceAdapter.sendMessage(mJabberID, message);
 	}
 
 	class ChatWindowAdapter extends ArrayAdapter<ChatItem> {
 		ChatWindowAdapter() {
 			super(ChatWindow.this, android.R.layout.simple_list_item_1,
-					chatItemList);
+					mChatItemList);
 		}
 
 		@Override
@@ -224,7 +222,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			wrapper.populateFrom(chatItemList.get(position));
+			wrapper.populateFrom(mChatItemList.get(position));
 			return row;
 		}
 	}
@@ -278,9 +276,9 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	public void afterTextChanged(Editable s) {
-		if (userInput.getText().length() >= 1) {
-			userInput.setOnKeyListener(this);
-			send.setEnabled(true);
+		if (mChatInput.getText().length() >= 1) {
+			mChatInput.setOnKeyListener(this);
+			mSendButton.setEnabled(true);
 		}
 	}
 
@@ -295,12 +293,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void setNotificationManager() {
-		notificationMGR = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		mNotificationMGR = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	}
 
 	private void showToastNotification(int message) {
-		Toast tmptoast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-		tmptoast.show();
+		Toast toastNotification = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+		toastNotification.show();
 	}
 
 }
