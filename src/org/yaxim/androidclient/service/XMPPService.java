@@ -97,6 +97,7 @@ public class XMPPService extends GenericService {
 	}
 
 	public void initiateConnection() {
+		setForeground(true);
 		if (mSmackable == null) {
 			createAdapter();
 			registerAdapterCallback();
@@ -327,6 +328,7 @@ public class XMPPService extends GenericService {
 		}
 		mSmackable = null;
 		mConnectionDemanded.set(false);
+		setForeground(false);
 	}
 
 	private void createAdapter() {
