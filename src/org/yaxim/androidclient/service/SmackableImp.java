@@ -52,6 +52,7 @@ public class SmackableImp implements Smackable {
 		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
 				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
+		this.mXMPPConfig.setCompressionEnabled(true);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 	}
 
