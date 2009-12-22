@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Pattern;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketListener;
@@ -379,8 +378,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private String getJabberID(String from) {
-		Pattern p = Pattern.compile("\\/");
-		String[] res = p.split(from);
+		String[] res = from.split("/");
 		return res[0];
 	}
 
