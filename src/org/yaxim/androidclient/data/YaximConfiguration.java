@@ -1,11 +1,14 @@
 package org.yaxim.androidclient.data;
 
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
+import org.yaxim.androidclient.util.DataBaseHelper;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class YaximConfiguration implements OnSharedPreferenceChangeListener {
@@ -32,12 +35,48 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		loadPrefs(prefs);
 	}
+	
+	public void save(SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		values.put("user_name", userName);
+		values.put("password", password);
+		values.put("server", server);
+		values.put("port", port);
+		values.put("ressource", ressource);
+		values.put("default_priority", priority);
+		values.put("auto_reconnect", reconnect);
+		values.put("auto_connect", connStartup);
+		
+		db.insert(DataBaseHelper.ACCOUNTS, "user_name", values);
+	}
 
+	@Override
 	public void finalize() {
 		prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
+	
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
+		loadPrefs(prefs);
+	}
 
-	public void loadPrefs(SharedPreferences prefs) {
+
+	private void splitAndSetJabberID(String jid) {
+		String[] res = jid.split("@");
+		this.userName = res[0];
+		this.server = res[1];
+	}
+
+	private int validatePriority(int jabPriority) {
+		if (jabPriority > 127)
+			return 127;
+		else if (jabPriority < -127)
+			return -127;
+		return jabPriority;
+	}
+
+	private void loadPrefs(SharedPreferences prefs) {
 		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
 				false);
 		this.isVibraNotify = prefs.getBoolean(
@@ -68,24 +107,5 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
-	}
-
-	private void splitAndSetJabberID(String jid) {
-		String[] res = jid.split("@");
-		this.userName = res[0];
-		this.server = res[1];
-	}
-
-	private int validatePriority(int jabPriority) {
-		if (jabPriority > 127)
-			return 127;
-		else if (jabPriority < -127)
-			return -127;
-		return jabPriority;
-	}
-
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
-		loadPrefs(prefs);
 	}
 }
