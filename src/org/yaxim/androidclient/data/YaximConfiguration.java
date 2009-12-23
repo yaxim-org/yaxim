@@ -20,8 +20,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public int port;
 	public int priority;
 	public boolean bootstart;
-	public boolean connStartup;
-	public boolean reconnect;
+	public boolean autoConnect;
+	public boolean autoReconnect;
 	public String userName;
 	public String server;
 
@@ -45,8 +45,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		values.put("port", port);
 		values.put("ressource", ressource);
 		values.put("default_priority", priority);
-		values.put("auto_reconnect", reconnect);
-		values.put("auto_connect", connStartup);
+		values.put("auto_reconnect", autoReconnect);
+		values.put("auto_connect", autoConnect);
 		
 		db.insert(DataBaseHelper.ACCOUNTS, "user_name", values);
 	}
@@ -94,9 +94,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.bootstart = prefs.getBoolean(
 				PreferenceConstants.BOOTSTART, false);
 
-		this.connStartup = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
+		this.autoConnect = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
-		this.reconnect = prefs.getBoolean(
+		this.autoReconnect = prefs.getBoolean(
 				PreferenceConstants.AUTO_RECONNECT, false);
 
 		String jid = prefs.getString(PreferenceConstants.JID, "");

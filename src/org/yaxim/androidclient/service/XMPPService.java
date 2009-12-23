@@ -67,9 +67,9 @@ public class XMPPService extends GenericService {
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
 
-		mConnectionDemanded.set(mConfig.connStartup);
+		mConnectionDemanded.set(mConfig.autoConnect);
 
-		if (mConfig.connStartup) {
+		if (mConfig.autoConnect) {
 			/*
 			 * start our own service so it remains in background even when
 			 * unbound
@@ -290,14 +290,14 @@ public class XMPPService extends GenericService {
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
 				mRosterCallbacks.getBroadcastItem(i).connectionFailed(
-						mConfig.reconnect && mReconnectCount <= 5);
+						mConfig.autoReconnect && mReconnectCount <= 5);
 			} catch (RemoteException e) {
 				Log.e(TAG, "caught RemoteException: " + e.getMessage());
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
 		mIsConnected.set(false);
-		if (mConfig.reconnect && mReconnectCount <= 5) {
+		if (mConfig.autoReconnect && mReconnectCount <= 5) {
 			mReconnectCount++;
 			Log.i(TAG, "connectionFailed(" + mReconnectCount + "/5): "
 					+ "attempting reconnect in 5s...");
