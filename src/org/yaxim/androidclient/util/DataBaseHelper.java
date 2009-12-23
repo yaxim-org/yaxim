@@ -15,7 +15,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "yaxim.db";
 	private static final int DATABASE_VERSION = 1;
 
-	
 	public DataBaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -26,10 +25,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		Log.d(TAG, "created new database");
 
 		db.execSQL("CREATE TABLE " + ACCOUNTS + " ("
-				+ "id INTEGER PRIMARY KEY AUTOINCREMENT," + "jabber_id TEXT,"
-				+ "password TEXT," + "ressource TEXT,"
-				+ "default_priority INTEGER," + "away_priority INTEGER,"
-				+ "status_message TEXT," + "autoconnect BOOLEAN" + ");");
+				+ "id INTEGER PRIMARY KEY AUTOINCREMENT," + "user_name TEXT,"
+				+ "server TEXT," + "port INTEGER," + "password TEXT,"
+				+ "ressource TEXT," + "default_priority INTEGER,"
+				+ "away_priority INTEGER," + "status_message TEXT,"
+				+ "auto_reconnect BOOLEAN" + "auto_connect BOOLEAN" + ");");
 
 		db.execSQL("CREATE TABLE " + ROSTER + " ("
 				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -47,7 +47,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 				+ ");");
 
 	}
-
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
