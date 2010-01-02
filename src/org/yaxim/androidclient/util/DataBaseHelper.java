@@ -35,16 +35,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "account_id INTEGER," + "jabberid TEXT,"
 				+ "screen_name TEXT," + "status_mode INTEGER"
-				+ "status_message TEXT," + "group TEXT"
-				+ " FOREIGN KEY (account_id) REFERENCES " + ACCOUNTS + "(id)"
-				+ ");");
+				+ "status_message TEXT," + "group TEXT" + ");");
 
 		db.execSQL("CREATE TABLE " + CHATS + " ("
-				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "roster_id INTEGER," + "message TEXT," + "time TIMESTAMP,"
-				+ "read BOOLEAN," + "from_user BOOLEAN"
-				+ " FOREIGN KEY (contact_id) REFERENCES " + ROSTER + "(id)"
-				+ ");");
+				+ "id INTEGER PRIMARY KEY AUTOINCREMENT," + "time TIMESTAMP,"
+				+ "fromJID TEXT," + "toJID TEXT," + "message TEXT," + "read BOOLEAN,"
+				+ "from_user BOOLEAN" + ");");
 
 	}
 
