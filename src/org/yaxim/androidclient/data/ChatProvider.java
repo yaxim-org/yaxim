@@ -4,6 +4,7 @@ import org.yaxim.androidclient.data.YaximChats.Chats;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -25,11 +26,11 @@ public class ChatProvider extends ContentProvider {
 			UriMatcher.NO_MATCH);
 
 	private static final int MESSAGES = 1;
-	private static final int MESSAGES_ID = 2;
+	private static final int MESSAGE_ID = 2;
 
 	static {
 		URI_MATCHER.addURI("org.yaxim.chat_item", "chatitem", MESSAGES);
-		URI_MATCHER.addURI("org.yaxim.chat_item", "chatitem/#", MESSAGES_ID);
+		URI_MATCHER.addURI("org.yaxim.chat_item", "chatitem/#", MESSAGE_ID);
 	}
 
 	private static final String TAG = "ChatProvider";
@@ -49,7 +50,7 @@ public class ChatProvider extends ContentProvider {
 		case MESSAGES:
 			count = db.delete(YaximChats.TABLE_NAME, where, whereArgs);
 			break;
-		case MESSAGES_ID:
+		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
 			rowId = Long.parseLong(segment);
 
@@ -75,7 +76,7 @@ public class ChatProvider extends ContentProvider {
 		switch (match) {
 		case MESSAGES:
 			return Chats.CONTENT_TYPE;
-		case MESSAGES_ID:
+		case MESSAGE_ID:
 			return Chats.CONTENT_ITEM_TYPE;
 		default:
 			throw new IllegalArgumentException("Unknown URL");
@@ -91,6 +92,12 @@ public class ChatProvider extends ContentProvider {
 		ContentValues values = (initialValues != null) ? new ContentValues(
 				initialValues) : new ContentValues();
 
+		for (String colName : Chats.getRequiredColumns()) {
+			if (values.containsKey(colName) == false) {
+				throw new IllegalArgumentException("Missing column: " + colName);
+			}
+		}
+
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 		long rowId = db.insert(YaximChats.TABLE_NAME, Chats.TIME, values);
@@ -98,8 +105,10 @@ public class ChatProvider extends ContentProvider {
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
 		}
-
-		return null;
+		
+		Uri noteUri = ContentUris.withAppendedId(YaximChats.CONTENT_URI, rowId);
+		getContext().getContentResolver().notifyChange(noteUri, null);
+		return noteUri;
 	}
 
 	@Override
@@ -119,7 +128,7 @@ public class ChatProvider extends ContentProvider {
 		case MESSAGES:
 			qBuilder.setTables(YaximChats.TABLE_NAME);
 			break;
-		case MESSAGES_ID:
+		case MESSAGE_ID:
 			qBuilder.setTables(YaximChats.TABLE_NAME);
 			qBuilder.appendWhere("_id=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
@@ -158,7 +167,7 @@ public class ChatProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 		switch (match) {
-		case MESSAGES_ID:
+		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
 			rowId = Long.parseLong(segment);
 			count = db.update(YaximChats.TABLE_NAME, values, "_id=" + rowId,
