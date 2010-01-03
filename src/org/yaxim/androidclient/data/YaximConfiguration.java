@@ -1,14 +1,11 @@
 package org.yaxim.androidclient.data;
 
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
-import org.yaxim.androidclient.util.DataBaseHelper;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
-import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class YaximConfiguration implements OnSharedPreferenceChangeListener {
@@ -36,21 +33,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		loadPrefs(prefs);
 	}
 	
-	public void save(SQLiteDatabase db) {
-		ContentValues values = new ContentValues();
-		
-		values.put("user_name", userName);
-		values.put("password", password);
-		values.put("server", server);
-		values.put("port", port);
-		values.put("ressource", ressource);
-		values.put("default_priority", priority);
-		values.put("auto_reconnect", autoReconnect);
-		values.put("auto_connect", autoConnect);
-		
-		db.insert(DataBaseHelper.ACCOUNTS, "user_name", values);
-	}
-
 	@Override
 	public void finalize() {
 		prefs.unregisterOnSharedPreferenceChangeListener(this);
