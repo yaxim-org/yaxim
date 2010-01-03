@@ -21,7 +21,7 @@ public class YaximChats {
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.chat";
 		public static final String DEFAULT_SORT_ORDER = "time DESC";
 
-		public static final String TIME = "time";
+		public static final String DATE = "date";
 		public static final String FROM_JID = "fromJID";
 		public static final String TO_JID = "toJID";
 		public static final String MESSAGE = "message";
@@ -29,11 +29,10 @@ public class YaximChats {
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
-			tmpList.add(TIME);
+			tmpList.add(DATE);
 			tmpList.add(FROM_JID);
 			tmpList.add(TO_JID);
 			tmpList.add(MESSAGE);
-			tmpList.add(HAS_BEEN_READ);
 			return tmpList;
 		}
 

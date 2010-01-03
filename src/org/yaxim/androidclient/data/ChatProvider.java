@@ -29,8 +29,8 @@ public class ChatProvider extends ContentProvider {
 	private static final int MESSAGE_ID = 2;
 
 	static {
-		URI_MATCHER.addURI("org.yaxim.chat_item", "chatitem", MESSAGES);
-		URI_MATCHER.addURI("org.yaxim.chat_item", "chatitem/#", MESSAGE_ID);
+		URI_MATCHER.addURI(YaximChats.AUTHORITY, "chats", MESSAGES);
+		URI_MATCHER.addURI(YaximChats.AUTHORITY, "chats/#", MESSAGE_ID);
 	}
 
 	private static final String TAG = "ChatProvider";
@@ -100,12 +100,12 @@ public class ChatProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-		long rowId = db.insert(YaximChats.TABLE_NAME, Chats.TIME, values);
+		long rowId = db.insert(YaximChats.TABLE_NAME, Chats.DATE, values);
 
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
 		}
-		
+
 		Uri noteUri = ContentUris.withAppendedId(YaximChats.CONTENT_URI, rowId);
 		getContext().getContentResolver().notifyChange(noteUri, null);
 		return noteUri;
@@ -189,7 +189,7 @@ public class ChatProvider extends ContentProvider {
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 1;
+		private static final int DATABASE_VERSION = 2;
 
 		public DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -197,10 +197,14 @@ public class ChatProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			if (LogConstants.LOG_INFO) {
+				Log.i(TAG, "creating new chat table");
+			}
+
 			db.execSQL("CREATE TABLE " + YaximChats.TABLE_NAME + " ("
 					+ Chats._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ Chats.TIME + " TIMESTAMP," + Chats.FROM_JID + " TEXT,"
-					+ Chats.TO_JID + "toJID TEXT," + Chats.MESSAGE + " TEXT,"
+					+ Chats.DATE + " INTEGER," + Chats.FROM_JID + " TEXT,"
+					+ Chats.TO_JID + " TEXT," + Chats.MESSAGE + " TEXT,"
 					+ Chats.HAS_BEEN_READ + " BOOLEAN);");
 		}
 
