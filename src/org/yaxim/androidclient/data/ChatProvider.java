@@ -44,7 +44,6 @@ public class ChatProvider extends ContentProvider {
 	public int delete(Uri url, String where, String[] whereArgs) {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int count;
-		long rowId = 0;
 		switch (URI_MATCHER.match(url)) {
 
 		case MESSAGES:
@@ -52,7 +51,6 @@ public class ChatProvider extends ContentProvider {
 			break;
 		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
-			rowId = Long.parseLong(segment);
 
 			if (TextUtils.isEmpty(where)) {
 				where = "_id=" + segment;
