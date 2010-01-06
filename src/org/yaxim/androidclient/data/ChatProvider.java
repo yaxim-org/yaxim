@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.data;
 
-import org.yaxim.androidclient.data.YaximChats.Chats;
+import java.util.ArrayList;
+
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.content.ContentProvider;
@@ -14,13 +15,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
 public class ChatProvider extends ContentProvider {
 
-	public static final Uri CONTENT_URI = Uri
-			.parse("content://org.yaxim.chat_item/chatitem");
+	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Chats";
+	public static final String TABLE_NAME = "chats";
+	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + TABLE_NAME);
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -29,8 +33,8 @@ public class ChatProvider extends ContentProvider {
 	private static final int MESSAGE_ID = 2;
 
 	static {
-		URI_MATCHER.addURI(YaximChats.AUTHORITY, "chats", MESSAGES);
-		URI_MATCHER.addURI(YaximChats.AUTHORITY, "chats/#", MESSAGE_ID);
+		URI_MATCHER.addURI(AUTHORITY, "chats", MESSAGES);
+		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
 	}
 
 	private static final String TAG = "ChatProvider";
@@ -47,7 +51,7 @@ public class ChatProvider extends ContentProvider {
 		switch (URI_MATCHER.match(url)) {
 
 		case MESSAGES:
-			count = db.delete(YaximChats.TABLE_NAME, where, whereArgs);
+			count = db.delete(TABLE_NAME, where, whereArgs);
 			break;
 		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
@@ -58,7 +62,7 @@ public class ChatProvider extends ContentProvider {
 				where = "_id=" + segment + " AND (" + where + ")";
 			}
 
-			count = db.delete(YaximChats.TABLE_NAME, where, whereArgs);
+			count = db.delete(TABLE_NAME, where, whereArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Cannot delete from URL: " + url);
@@ -98,13 +102,13 @@ public class ChatProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-		long rowId = db.insert(YaximChats.TABLE_NAME, Chats.DATE, values);
+		long rowId = db.insert(TABLE_NAME, Chats.DATE, values);
 
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
 		}
 
-		Uri noteUri = ContentUris.withAppendedId(YaximChats.CONTENT_URI, rowId);
+		Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
 		getContext().getContentResolver().notifyChange(noteUri, null);
 		return noteUri;
 	}
@@ -124,10 +128,10 @@ public class ChatProvider extends ContentProvider {
 
 		switch (match) {
 		case MESSAGES:
-			qBuilder.setTables(YaximChats.TABLE_NAME);
+			qBuilder.setTables(TABLE_NAME);
 			break;
 		case MESSAGE_ID:
-			qBuilder.setTables(YaximChats.TABLE_NAME);
+			qBuilder.setTables(TABLE_NAME);
 			qBuilder.appendWhere("_id=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
 			break;
@@ -168,8 +172,7 @@ public class ChatProvider extends ContentProvider {
 		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
 			rowId = Long.parseLong(segment);
-			count = db.update(YaximChats.TABLE_NAME, values, "_id=" + rowId,
-					null);
+			count = db.update(TABLE_NAME, values, "_id=" + rowId, null);
 			break;
 		default:
 			throw new UnsupportedOperationException("Cannot update URL: " + url);
@@ -199,17 +202,43 @@ public class ChatProvider extends ContentProvider {
 				Log.i(TAG, "creating new chat table");
 			}
 
-			db.execSQL("CREATE TABLE " + YaximChats.TABLE_NAME + " ("
-					+ Chats._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ Chats.DATE + " INTEGER," + Chats.FROM_JID + " TEXT,"
-					+ Chats.TO_JID + " TEXT," + Chats.MESSAGE + " TEXT,"
-					+ Chats.HAS_BEEN_READ + " BOOLEAN);");
+			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + Chats._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + Chats.DATE
+					+ " INTEGER," + Chats.FROM_JID + " TEXT," + Chats.TO_JID
+					+ " TEXT," + Chats.MESSAGE + " TEXT," + Chats.HAS_BEEN_READ
+					+ " BOOLEAN);");
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL("DROP TABLE IF EXISTS " + YaximChats.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 			onCreate(db);
+		}
+
+	}
+
+	public static final class Chats implements BaseColumns {
+
+		private Chats() {
+		}
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.chat";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.chat";
+		public static final String DEFAULT_SORT_ORDER = "time DESC";
+
+		public static final String DATE = "date";
+		public static final String FROM_JID = "fromJID";
+		public static final String TO_JID = "toJID";
+		public static final String MESSAGE = "message";
+		public static final String HAS_BEEN_READ = "read";
+
+		public static ArrayList<String> getRequiredColumns() {
+			ArrayList<String> tmpList = new ArrayList<String>();
+			tmpList.add(DATE);
+			tmpList.add(FROM_JID);
+			tmpList.add(TO_JID);
+			tmpList.add(MESSAGE);
+			return tmpList;
 		}
 
 	}
