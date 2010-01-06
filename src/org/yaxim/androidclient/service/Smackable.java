@@ -27,5 +27,4 @@ public interface Smackable {
 	
 	ArrayList<RosterItem> getRosterEntriesByGroup(String group);
 	ArrayList<String> getRosterGroups();
-	ArrayList<String> pullMessagesForContact(String jabberID);
 }

@@ -49,7 +49,6 @@ public class SmackableImp implements Smackable {
 	private Roster mRoster;
 
 	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> mRosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
-	private final HashMap<String, ArrayList<String>> mIncomingMessageQueue = new HashMap<String, ArrayList<String>>();
 	private final ContentResolver mContentResolver;
 
 	public SmackableImp(YaximConfiguration config,
@@ -115,21 +114,6 @@ public class SmackableImp implements Smackable {
 	public void moveRosterItemToGroup(String user, String group)
 			throws YaximXMPPException {
 		tryToMoveRosterEntryToGroup(user, group);
-	}
-
-	private ArrayList<String> getMessageQueueForContact(String jabberID) {
-		if (!mIncomingMessageQueue.containsKey(jabberID)) {
-			ArrayList<String> queue = new ArrayList<String>();
-			mIncomingMessageQueue.put(jabberID, queue);
-			return queue;
-		}
-		return mIncomingMessageQueue.get(jabberID);
-	}
-
-	public ArrayList<String> pullMessagesForContact(String jabberID) {
-		ArrayList<String> queue = getMessageQueueForContact(jabberID);
-		mIncomingMessageQueue.remove(jabberID);
-		return queue;
 	}
 
 	private void tryToConnect() throws YaximXMPPException {

@@ -1,7 +1,5 @@
 package org.yaxim.androidclient.chat;
 
-import java.util.List;
-
 import android.os.RemoteException;
 import android.util.Log;
 import org.yaxim.androidclient.service.IXMPPChatService;
@@ -26,17 +24,6 @@ public class XMPPChatServiceAdapter {
 		} catch (RemoteException e) {
 			Log.e(TAG, "caught RemoteException: " + e.getMessage());
 		}
-	}
-
-	public List<String> pullMessagesForContact(
-			String jabberID) {
-		List<String>  queue = null;
-		try {
-			queue = xmppServiceStub.pullMessagesForContact(jabberID);
-		} catch (RemoteException e) {
-			Log.e(TAG, "caught RemoteException: " + e.getMessage());
-		}
-		return queue;
 	}
 	
 	public boolean isServiceAuthenticated() {

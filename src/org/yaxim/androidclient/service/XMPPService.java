@@ -1,6 +1,5 @@
 package org.yaxim.androidclient.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -111,14 +110,6 @@ public class XMPPService extends GenericService {
 			public void sendMessage(String user, String message)
 					throws RemoteException {
 				mSmackable.sendMessage(user, message);
-			}
-
-			public List<String> pullMessagesForContact(String jabberID)
-					throws RemoteException {
-				if (mSmackable != null) {
-					return mSmackable.pullMessagesForContact(jabberID);
-				}
-				return new ArrayList<String>();
 			}
 
 			public boolean isAuthenticated() throws RemoteException {
