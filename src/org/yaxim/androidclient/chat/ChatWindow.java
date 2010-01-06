@@ -144,7 +144,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private void setContactFromUri() {
 		Intent i = getIntent();
-		mWithJabberID = i.getDataString().toLowerCase();
+		mWithJabberID = i.getDataString();
 	}
 
 	private View.OnClickListener getOnSetListener() {

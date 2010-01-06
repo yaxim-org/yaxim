@@ -35,7 +35,6 @@ import org.yaxim.androidclient.util.StatusMode;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.net.Uri;
 
 public class SmackableImp implements Smackable {
 
@@ -300,10 +299,10 @@ public class SmackableImp implements Smackable {
 		ArrayList<String> rosterGroups = new ArrayList<String>(
 				mRosterItemsByGroup.keySet());
 		Collections.sort(rosterGroups, new Comparator<String>() {
-			public int compare(String object1, String object2) {
-				if (object1.equals(AdapterConstants.EMPTY_GROUP))
+			public int compare(String group1, String group2) {
+				if (group1.equals(AdapterConstants.EMPTY_GROUP))
 					return -1;
-				return object1.toLowerCase().compareTo(object2.toLowerCase());
+				return group1.toLowerCase().compareTo(group2.toLowerCase());
 			}
 		});
 		return rosterGroups;
@@ -408,7 +407,7 @@ public class SmackableImp implements Smackable {
 
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
-					
+
 					writeToDB(fromJID, toJID, chatMessage, false);
 
 				}

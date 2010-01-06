@@ -66,8 +66,7 @@ public class RosterItem implements Parcelable, Comparable<RosterItem> {
 
 	public int compareTo(RosterItem that) {
 		if (this.getStatusMode() == that.getStatusMode()) {
-			return this.screenName.toLowerCase().compareTo(
-					that.screenName.toLowerCase());
+			return this.screenName.compareTo(that.screenName);
 		} else {
 			return compareStatusModes(that.getStatusMode());
 		}
