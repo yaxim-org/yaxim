@@ -86,6 +86,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		super.onResume();
 		mNotificationMGR.cancel(NOTIFY_ID);
 		bindXMPPService();
+		mChatInput.requestFocus();
+		
 	}
 
 	private void processMessageQueue() {
