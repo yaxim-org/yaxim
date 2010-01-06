@@ -12,7 +12,7 @@
 			<TextView android:id="@+id/chat_date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="0"
 				android:textSize="14sp" android:textStyle="italic"
-				android:ellipsize="end" />
+				android:ellipsize="end" android:padding="4px" />
 
 			<TextView android:id="@+id/chat_from" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="0"
