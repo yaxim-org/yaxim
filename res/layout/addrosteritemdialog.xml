@@ -33,7 +33,8 @@
 			android:singleLine="true"
 			android:textSize="18sp"
 			android:maxWidth="200sp"
-			android:hint="foo@jabber.bar.com"/>
+			android:inputType="textEmailAddress"
+			android:hint="@string/Global_JID_hint" />
 	
 	<EditText
 			android:id="@+id/AddContactAlias_EditTextField"

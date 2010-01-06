@@ -41,6 +41,7 @@
 			android:singleLine="true"
 			android:textSize="18sp"
 			android:maxWidth="200sp"
+			android:inputType="textEmailAddress"
 			android:hint="@string/Global_JID_hint"/>
 	<TextView
 			android:id="@+id/StartupDialog_passwd_title"
