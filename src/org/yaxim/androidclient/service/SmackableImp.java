@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -27,16 +26,11 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.util.StringUtils;
 import org.yaxim.androidclient.data.RosterItem;
-import org.yaxim.androidclient.data.YaximChats;
 import org.yaxim.androidclient.data.YaximConfiguration;
-import org.yaxim.androidclient.data.YaximChats.Chats;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.net.Uri;
 
 public class SmackableImp implements Smackable {
 
@@ -52,16 +46,13 @@ public class SmackableImp implements Smackable {
 
 	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> mRosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
 	private final HashMap<String, ArrayList<String>> mIncomingMessageQueue = new HashMap<String, ArrayList<String>>();
-	private final ContentResolver mContentResolver;
 
-	public SmackableImp(YaximConfiguration config,
-			ContentResolver contentResolver) {
+	public SmackableImp(YaximConfiguration config) {
 		this.mConfig = config;
 		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
 				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
-		this.mContentResolver = contentResolver;
 	}
 
 	public boolean doConnect() throws YaximXMPPException {
@@ -208,7 +199,7 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 		try {
 			RosterEntry rosterEntry = mRoster.getEntry(user);
-			// unSetRosterEntry(rosterEntry);
+//			unSetRosterEntry(rosterEntry);
 			mRoster.removeEntry(rosterEntry);
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getMessage());
@@ -243,13 +234,12 @@ public class SmackableImp implements Smackable {
 	private void unSetRosterEntry(RosterEntry rosterEntry) {
 		String jabberID = rosterEntry.getUser();
 
-		Set<Entry<String, ConcurrentHashMap<String, RosterItem>>> groupMaps = mRosterItemsByGroup
-				.entrySet();
-
+		Set<Entry<String, ConcurrentHashMap<String, RosterItem>>> groupMaps = mRosterItemsByGroup.entrySet();
+		
 		for (Entry<String, ConcurrentHashMap<String, RosterItem>> entry : groupMaps) {
 			ConcurrentHashMap<String, RosterItem> entryMap = entry.getValue();
 			String groupName = entry.getKey();
-
+			
 			if (entryMap.containsKey(jabberID)) {
 				entryMap.remove(jabberID);
 			}
@@ -399,33 +389,22 @@ public class SmackableImp implements Smackable {
 
 			public void processPacket(Packet packet) {
 				if (packet instanceof Message) {
-					Message msg = (Message) packet;
-					String chatMessage = msg.getBody();
+					Message message = (Message) packet;
+					String msg = message.getBody();
 
-					if (chatMessage == null) {
+					if (msg == null) {
 						return;
 					}
 
-					String fromJID = getJabberID(msg.getFrom());
-					String toJID = getJabberID(msg.getTo());
+					String jabberID = getJabberID(message.getFrom())
+							.toLowerCase();
 
-					ContentValues values = new ContentValues();
-
-					values.put(Chats.FROM_JID, fromJID);
-					values.put(Chats.TO_JID, toJID);
-					values.put(Chats.MESSAGE, chatMessage);
-					values.put(Chats.HAS_BEEN_READ, false);
-					values.put(Chats.DATE, System.currentTimeMillis());
-
-					Uri uri = mContentResolver.insert(YaximChats.CONTENT_URI,
-							values);
-
-					if (!mServiceCallBack.isBoundTo(fromJID)) {
-						ArrayList<String> queue = getMessageQueueForContact(fromJID);
-						queue.add(chatMessage);
+					if (!mServiceCallBack.isBoundTo(jabberID)) {
+						ArrayList<String> queue = getMessageQueueForContact(jabberID);
+						queue.add(msg);
 					}
 
-					mServiceCallBack.newMessage(fromJID, chatMessage);
+					mServiceCallBack.newMessage(jabberID, msg);
 				}
 			}
 		};

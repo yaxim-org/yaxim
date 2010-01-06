@@ -333,7 +333,7 @@ public class XMPPService extends GenericService {
 
 	private void createAdapter() {
 		try {
-			mSmackable = new SmackableImp(mConfig, getContentResolver());
+			mSmackable = new SmackableImp(mConfig);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
@@ -382,7 +382,7 @@ public class XMPPService extends GenericService {
 		RemoteCallbackList<IXMPPChatCallback> chatCallbackList = mChatCallbacks
 				.get(from);
 		int broadCastItems = chatCallbackList.beginBroadcast();
-
+		
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
 				chatCallbackList.getBroadcastItem(i).newMessage(from, message);

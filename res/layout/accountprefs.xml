@@ -10,6 +10,7 @@
 			android:dialogTitle="@string/account_jabberID_sum"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
+			android:inputType="textEmailAddress"
 		 />
 		<EditTextPreference 
 			android:id="@+id/account_jabberPW"
