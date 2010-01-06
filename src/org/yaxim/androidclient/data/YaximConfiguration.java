@@ -21,6 +21,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean autoReconnect;
 	public String userName;
 	public String server;
+	public String jabberID;
 
 	public boolean isLEDNotify;
 	public boolean isVibraNotify;
@@ -32,17 +33,16 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		loadPrefs(prefs);
 	}
-	
+
 	@Override
 	public void finalize() {
 		prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
-	
+
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
 		loadPrefs(prefs);
 	}
-
 
 	private void splitAndSetJabberID(String jid) {
 		String[] res = jid.split("@");
@@ -64,28 +64,27 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.isVibraNotify = prefs.getBoolean(
 				PreferenceConstants.VIBRATIONNOTIFY, false);
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
-		this.ressource = prefs.getString(PreferenceConstants.RESSOURCE,
-				"Yaxim");
+		this.ressource = prefs
+				.getString(PreferenceConstants.RESSOURCE, "Yaxim");
 		this.port = XMPPHelper.tryToParseInt(prefs.getString(
 				PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT),
 				PreferenceConstants.DEFAULT_PORT_INT);
 
 		this.priority = validatePriority(XMPPHelper.tryToParseInt(prefs
 				.getString("account_prio", "0"), 0));
-		
-		this.bootstart = prefs.getBoolean(
-				PreferenceConstants.BOOTSTART, false);
+
+		this.bootstart = prefs.getBoolean(PreferenceConstants.BOOTSTART, false);
 
 		this.autoConnect = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
 		this.autoReconnect = prefs.getBoolean(
 				PreferenceConstants.AUTO_RECONNECT, false);
 
-		String jid = prefs.getString(PreferenceConstants.JID, "");
+		jabberID = prefs.getString(PreferenceConstants.JID, "");
 
 		try {
-			XMPPHelper.verifyJabberID(jid);
-			splitAndSetJabberID(jid);
+			XMPPHelper.verifyJabberID(jabberID);
+			splitAndSetJabberID(jabberID);
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
