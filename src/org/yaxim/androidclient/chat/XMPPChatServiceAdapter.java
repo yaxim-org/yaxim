@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.os.RemoteException;
 import android.util.Log;
-import org.yaxim.androidclient.chat.IXMPPChatCallback;
 import org.yaxim.androidclient.service.IXMPPChatService;
 
 public class XMPPChatServiceAdapter {
@@ -18,22 +17,6 @@ public class XMPPChatServiceAdapter {
 		Log.i(TAG, "New XMPPChatServiceAdapter construced");
 		this.xmppServiceStub = xmppServiceStub;
 		this.jabberID = jabberID;
-	}
-
-	public void registerUICallback(IXMPPChatCallback uiCallback) {
-		try {
-			xmppServiceStub.registerChatCallback(uiCallback, jabberID);
-		} catch (RemoteException e) {
-			Log.e(TAG, "caught RemoteException: " + e.getMessage());
-		}
-	}
-
-	public void unregisterUICallback(IXMPPChatCallback uiCallback) {
-		try {
-			xmppServiceStub.unregisterChatCallback(uiCallback, jabberID);
-		} catch (RemoteException e) {
-			Log.e(TAG, "caught RemoteException: " + e.getMessage());
-		}
 	}
 
 	public void sendMessage(String user, String message) {

@@ -1,7 +1,11 @@
 package org.yaxim.androidclient.chat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.ChatProvider;
+import org.yaxim.androidclient.data.ChatProvider.Constants;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 
@@ -44,7 +48,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
-	private String mJabberID = null;
+	private String mWithJabberID = null;
 	private Intent mServiceIntent;
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
@@ -61,13 +65,15 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		setUserInput();
 		setSendButton();
 		setContactFromUri();
-		setTitle(getText(R.string.chat_titlePrefix) + " " + mJabberID);
+		setTitle(getText(R.string.chat_titlePrefix) + " " + mWithJabberID);
 		setChatWindowAdapter();
 	}
 
 	private void setChatWindowAdapter() {
+		String selection = Constants.FROM_JID + "='" + mWithJabberID + "' OR "
+				+ Constants.TO_JID + "='" + mWithJabberID + "'";
 		Cursor cursor = managedQuery(ChatProvider.CONTENT_URI, PROJECTION_FROM,
-				null, null, null);
+				selection, null, null);
 		ListAdapter adapter = new ChatWindowAdapter(cursor, PROJECTION_FROM,
 				PROJECTION_TO);
 
@@ -101,7 +107,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				Log.i(TAG, "called onServiceConnected()");
 				mServiceAdapter = new XMPPChatServiceAdapter(
-						IXMPPChatService.Stub.asInterface(service), mJabberID);
+						IXMPPChatService.Stub.asInterface(service),
+						mWithJabberID);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -137,7 +144,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private void setContactFromUri() {
 		Intent i = getIntent();
-		mJabberID = i.getDataString().toLowerCase();
+		mWithJabberID = i.getDataString().toLowerCase();
 	}
 
 	private View.OnClickListener getOnSetListener() {
@@ -161,7 +168,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private void sendMessage(String message) {
 		mChatInput.setText(null);
 		mSendButton.setEnabled(false);
-		mServiceAdapter.sendMessage(mJabberID, message);
+		mServiceAdapter.sendMessage(mWithJabberID, message);
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -178,8 +185,10 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			Cursor cursor = this.getCursor();
 			cursor.moveToPosition(position);
 
-			int date = cursor.getInt(cursor
+			long dateMilliseconds = cursor.getLong(cursor
 					.getColumnIndex(ChatProvider.Constants.DATE));
+
+			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.Constants.MESSAGE));
 			String from = cursor.getString(cursor
@@ -200,6 +209,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		}
 	}
 
+	private String getDateString(long milliSeconds) {
+		SimpleDateFormat dateFormater = new SimpleDateFormat("yy-MM-dd HH:mm");
+		Date date = new Date(milliSeconds);
+		return dateFormater.format(date);
+	}
+
 	public class ChatItemWrapper {
 		private TextView mDateView = null;
 		private TextView mFromView = null;
@@ -211,7 +226,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			this.mRowView = row;
 		}
 
-		void populateFrom(int date, String from, String message) {
+		void populateFrom(String date, String from, String message) {
 			getDateView().setText(date);
 			getFromView().setText(from);
 			getMessageView().setText(message);

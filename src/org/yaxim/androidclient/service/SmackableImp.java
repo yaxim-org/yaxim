@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -26,10 +25,10 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.util.StringUtils;
+import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
-import org.yaxim.androidclient.data.YaximChats;
 import org.yaxim.androidclient.data.YaximConfiguration;
-import org.yaxim.androidclient.data.YaximChats.Chats;
+import org.yaxim.androidclient.data.ChatProvider.Constants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.StatusMode;
@@ -322,11 +321,12 @@ public class SmackableImp implements Smackable {
 		return Mode.valueOf(modeStr);
 	}
 
-	public void sendMessage(String user, String message) {
-		final Message newMessage = new Message(user, Message.Type.chat);
+	public void sendMessage(String toJID, String message) {
+		final Message newMessage = new Message(toJID, Message.Type.chat);
 		newMessage.setBody(message);
 		if (isAuthenticated()) {
 			mXMPPConnection.sendPacket(newMessage);
+			writeToDB(mConfig.jabberID, toJID, message, true);
 		}
 	}
 
@@ -408,28 +408,26 @@ public class SmackableImp implements Smackable {
 
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
+					
+					writeToDB(fromJID, toJID, chatMessage, false);
 
-					ContentValues values = new ContentValues();
-
-					values.put(Chats.FROM_JID, fromJID);
-					values.put(Chats.TO_JID, toJID);
-					values.put(Chats.MESSAGE, chatMessage);
-					values.put(Chats.HAS_BEEN_READ, false);
-					values.put(Chats.DATE, System.currentTimeMillis());
-
-					Uri uri = mContentResolver.insert(YaximChats.CONTENT_URI,
-							values);
-
-					if (!mServiceCallBack.isBoundTo(fromJID)) {
-						ArrayList<String> queue = getMessageQueueForContact(fromJID);
-						queue.add(chatMessage);
-					}
-
-					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
 			}
 		};
 		mXMPPConnection.addPacketListener(myListener, filter);
+	}
+
+	private void writeToDB(String fromJID, String toJID, String message,
+			boolean read) {
+		ContentValues values = new ContentValues();
+
+		values.put(Constants.FROM_JID, fromJID);
+		values.put(Constants.TO_JID, toJID);
+		values.put(Constants.MESSAGE, message);
+		values.put(Constants.HAS_BEEN_READ, false);
+		values.put(Constants.DATE, System.currentTimeMillis());
+
+		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {

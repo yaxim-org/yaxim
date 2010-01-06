@@ -108,30 +108,6 @@ public class XMPPService extends GenericService {
 	private void createServiceChatStub() {
 		mServiceChatConnection = new IXMPPChatService.Stub() {
 
-			public void registerChatCallback(IXMPPChatCallback callback,
-					String jabberID) throws RemoteException {
-
-				if (callback != null) {
-					resetNotificationCounter();
-					if (mChatCallbacks.containsKey(jabberID))
-						mChatCallbacks.get(jabberID).register(callback);
-					else {
-						RemoteCallbackList<IXMPPChatCallback> chatCallback = new RemoteCallbackList<IXMPPChatCallback>();
-						chatCallback.register(callback);
-						mChatCallbacks.put(jabberID, chatCallback);
-					}
-				}
-				mIsBoundTo.add(jabberID);
-			}
-
-			public void unregisterChatCallback(IXMPPChatCallback callback,
-					String jabberID) throws RemoteException {
-				if (callback != null) {
-					mChatCallbacks.get(jabberID).unregister(callback);
-				}
-				mIsBoundTo.remove(jabberID);
-			}
-
 			public void sendMessage(String user, String message)
 					throws RemoteException {
 				mSmackable.sendMessage(user, message);
