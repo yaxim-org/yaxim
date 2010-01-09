@@ -1,10 +1,10 @@
 package org.yaxim.androidclient.service;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
@@ -18,10 +18,6 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import org.yaxim.androidclient.IXMPPRosterCallback;
-import org.yaxim.androidclient.chat.IXMPPChatCallback;
-import org.yaxim.androidclient.service.IXMPPChatService;
-import org.yaxim.androidclient.service.IXMPPRosterService;
 
 public class XMPPService extends GenericService {
 
@@ -37,7 +33,6 @@ public class XMPPService extends GenericService {
 	private IXMPPChatService.Stub mServiceChatConnection;
 
 	private RemoteCallbackList<IXMPPRosterCallback> mRosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
-	private HashMap<String, RemoteCallbackList<IXMPPChatCallback>> mChatCallbacks = new HashMap<String, RemoteCallbackList<IXMPPChatCallback>>();
 	private HashSet<String> mIsBoundTo = new HashSet<String>();
 	private Handler mMainHandler = new Handler();
 
@@ -83,9 +78,6 @@ public class XMPPService extends GenericService {
 	public void onDestroy() {
 		super.onDestroy();
 		mRosterCallbacks.kill();
-		for (String key : mChatCallbacks.keySet()) {
-			mChatCallbacks.get(key).kill();
-		}
 		doDisconnect();
 	}
 
@@ -313,9 +305,7 @@ public class XMPPService extends GenericService {
 				if (!mIsBoundTo.contains(from)) {
 					Log.i(TAG, "notification: " + from);
 					notifyClient(from, message);
-				} else {
-					handleIncomingMessage(from, message);
-				}
+				} 
 			}
 
 			public void rosterChanged() {
@@ -344,19 +334,5 @@ public class XMPPService extends GenericService {
 			}
 		});
 	}
-
-	private void handleIncomingMessage(String from, String message) {
-		RemoteCallbackList<IXMPPChatCallback> chatCallbackList = mChatCallbacks
-				.get(from);
-		int broadCastItems = chatCallbackList.beginBroadcast();
-
-		for (int i = 0; i < broadCastItems; i++) {
-			try {
-				chatCallbackList.getBroadcastItem(i).newMessage(from, message);
-			} catch (RemoteException e) {
-				Log.e(TAG, "caught RemoteException: " + e.getMessage());
-			}
-		}
-		chatCallbackList.finishBroadcast();
-	}
+	
 }
