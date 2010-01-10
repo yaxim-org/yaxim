@@ -1,0 +1,10 @@
+Yaxim is an Open-Source Jabber client for the Android platform distributed under the GPLv2. It is not yet finished, but we are working on it!
+
+Features
+
+The following is already supported:
+
+    * Connecting to one Jabber server and staying connected
+    * Chat with your contacts
+    * Persistant Message History
+    * Change your roster
