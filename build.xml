@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="yaxim" default="help">
+
+    <!-- The local.properties file is created and updated by the 'android' tool.
+         It contain the path to the SDK. It should *NOT* be checked in in Version
+         Control Systems. -->
+    <property file="local.properties"/>
+
+    <!-- The build.properties file can be created by you and is never touched
+         by the 'android' tool. This is the place to change some of the default property values
+         used by the Ant rules.
+         Here are some properties you may want to change/update:
+
+         application-package
+             the name of your application package as defined in the manifest. Used by the
+             'uninstall' rule.
+         source-folder
+             the name of the source folder. Default is 'src'.
+         out-folder
+             the name of the output folder. Default is 'bin'.
+
+         Properties related to the SDK location or the project target should be updated
+          using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your application and
+         should be checked in in Version Control Systems.
+
+         -->
+    <property file="build.properties"/>
+
+    <!-- The default.properties file is created and updated by the 'android' tool, as well
+         as ADT. 
+         This file is an integral part of the build system for your application and
+         should be checked in in Version Control Systems. -->
+    <property file="default.properties"/>
+
+    <!-- Custom Android task to deal with the project target, and import the proper rules.
+         This requires ant 1.6.0 or above. -->
+    <path id="android.antlibs">
+        <pathelement path="${sdk-location}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk-location}/tools/lib/sdklib.jar" />
+        <pathelement path="${sdk-location}/tools/lib/androidprefs.jar" />
+        <pathelement path="${sdk-location}/tools/lib/apkbuilder.jar" />
+        <pathelement path="${sdk-location}/tools/lib/jarutils.jar" />
+    </path>
+
+    <taskdef name="setup"
+        classname="com.android.ant.SetupTask"
+        classpathref="android.antlibs"/>
+
+    <!-- Execute the Android Setup task that will setup some properties specific to the target,
+         and import the build rules files.
+
+         The rules file is imported from
+            <SDK>/platforms/<target_platform>/templates/android_rules.xml
+
+         To customize some build steps for your project:
+         - copy the content of the main node <project> from android_rules.xml
+         - paste it in this build.xml below the <setup /> task.
+         - disable the import by changing the setup task below to <setup import="false" />
+
+         This will ensure that the properties are setup correctly but that your customized
+         build steps are used.
+    -->
+    <setup />
+
+    <target name="check-proguard">
+        <available file="tools/proguard.jar" property="have.proguard"/>
+    </target>
+
+    <target name="proguard" depends="check-proguard">
+	    <fail unless="have.proguard">Please download ProGuard from http://sourceforge.net/projects/proguard/files/ and place the JAR into the tools/ directory!</fail>
+    </target>
+
+    <target name="proguard.execute" depends="compile" if="have.proguard">
+        <taskdef resource="proguard/ant/task.properties"
+                classpath="tools/proguard.jar" />
+        <proguard>
+	    -injars ${out-classes}:libs
+            -outjars ${out-folder}/classes.min.jar
+            -libraryjars ${android-jar}
+            -dontskipnonpubliclibraryclasses
+            -dontobfuscate
+	    -dontoptimize
+            -printusage ${out-folder}/proguard.usage
+
+	    -dontwarn org.jivesoftware.**
+            -keep public class * extends android.app.Activity
+            -keep public class * extends android.app.Service
+            -keep public class * extends android.content.ContentProvider
+	    -keepclassmembers enum * {
+		public static **[] values();
+		public static ** valueOf(java.lang.String);
+	    }
+
+        </proguard>
+    </target>
+
+    <!-- Convert this project's .class files into .dex files. -->
+    <target name="dex.proguard" depends="proguard.execute" if="have.proguard">
+        <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
+        <apply executable="${dx}" failonerror="true" parallel="true">
+            <arg value="--dex" />
+            <arg value="--output=${intermediate-dex-location}" />
+            <fileset dir="${out-folder}" includes="*.min.jar" />
+            <!--fileset dir="${external-libs-folder}" includes="*.jar"/-->
+        </apply>
+    </target>
+
+    <!-- Convert this project's .class files into .dex files. -->
+    <target name="dex.vanilla" depends="compile" unless="have.proguard">
+        <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
+        <apply executable="${dx}" failonerror="true" parallel="true">
+            <arg value="--dex" />
+            <arg value="--output=${intermediate-dex-location}" />
+            <arg path="${out-classes-location}" />
+            <fileset dir="${external-libs-folder}" includes="*.jar"/>
+        </apply>
+    </target>
+
+    <target name="dex" depends="dex.vanilla, dex.proguard" />
+
+</project>
