@@ -265,6 +265,9 @@ public class XMPPService extends GenericService {
 					doConnect();
 				}
 			}, 5000);
+		} else {
+			// reconnecting attempts have been stopped
+			mConnectionDemanded.set(false);
 		}
 	}
 
