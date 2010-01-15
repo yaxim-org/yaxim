@@ -372,7 +372,7 @@ public class SmackableImp implements Smackable {
 
 	private String getJabberID(String from) {
 		String[] res = from.split("/");
-		return res[0];
+		return res[0].toLowerCase();
 	}
 
 	private void registerMessageHandler() {
