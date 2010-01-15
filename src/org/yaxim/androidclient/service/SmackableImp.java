@@ -393,6 +393,7 @@ public class SmackableImp implements Smackable {
 					String toJID = getJabberID(msg.getTo());
 
 					writeToDB(fromJID, toJID, chatMessage, false);
+					mServiceCallBack.newMessage(fromJID, chatMessage);
 
 				}
 			}
