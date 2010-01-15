@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.nullwire.trace.ExceptionHandler;
+
 public class GenericExpandableListActivity extends ExpandableListActivity {
 
 	private static final String TAG = "GenericService";
@@ -19,6 +21,7 @@ public class GenericExpandableListActivity extends ExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "called onCreate()");
+		ExceptionHandler.register(this, "http://duenndns.de/yaxim-crash/");
 	}
 
 	@Override
