@@ -40,8 +40,10 @@ public class XMPPService extends GenericService {
 	public IBinder onBind(Intent intent) {
 		super.onBind(intent);
 		String caller = intent.getDataString();
-		if ((caller != null) && caller.equals("chatwindow"))
+		if ((caller != null) && caller.equals("chatwindow")) {
+			resetNotificationCounter();
 			return mServiceChatConnection;
+		}
 
 		return mService2RosterConnection;
 	}
