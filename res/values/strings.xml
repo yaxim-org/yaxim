@@ -155,6 +155,7 @@
 	<string name="chat_InputFieldHint">Input text here</string>
 	<string name="chat_titlePrefix">Chat with: </string>
 	<string name="chat_sendButtonTitle">Send</string>
+	<string name="chat_from_me">Me:</string>
 	<string name="dialog_connect_title">Connecting ...</string>
 	<string name="dialog_connect_message">Please be patient ...</string>
 	<string name="toast_connectfail_message">Connecting Failed!</string>

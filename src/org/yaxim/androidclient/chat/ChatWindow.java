@@ -230,9 +230,13 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		void populateFrom(String date, boolean from_me, String from, String message) {
 			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
-			if (!from_me) {
+			if (from_me) {
+				getDateView().setTextColor(0xff8888ff);
+				getFromView().setText(getString(R.string.chat_from_me));
+				getFromView().setTextColor(0xff8888ff);
+			} else {
 				getDateView().setTextColor(0xffff8888);
-				getFromView().setText(from);
+				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
 			}
 			getMessageView().setText(message);
