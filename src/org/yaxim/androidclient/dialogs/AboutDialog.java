@@ -3,6 +3,9 @@ package org.yaxim.androidclient.dialogs;
 import org.yaxim.androidclient.XMPPRosterServiceAdapter;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,9 +17,19 @@ import org.yaxim.androidclient.R;
 public class AboutDialog extends GenericDialog implements OnClickListener,
 		TextWatcher {
 
+	String versionTitle;
+
 	public AboutDialog(Context mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
 		super(mainWindow, serviceAdapter);
+
+		versionTitle  = mainWindow.getText(R.string.AboutDialog_title).toString();
+		try {
+			PackageManager pm = mainWindow.getPackageManager();
+			PackageInfo pi = pm.getPackageInfo(mainWindow.getPackageName(), 0);
+			versionTitle += " v" + pi.versionName;
+		} catch (NameNotFoundException e) {
+		}
 	}
 
 
@@ -24,8 +37,8 @@ public class AboutDialog extends GenericDialog implements OnClickListener,
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.aboutdialog);
-		
-		setTitle(R.string.AboutDialog_title);
+
+		setTitle(versionTitle);
 		Button okButton = (Button) findViewById(R.id.AboutDialog_OkButton);
 		okButton.setOnClickListener(this);
 	}
