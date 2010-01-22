@@ -40,7 +40,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private static final int NOTIFY_ID = 0;
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.Constants._ID, ChatProvider.Constants.DATE,
-			ChatProvider.Constants.FROM_JID, ChatProvider.Constants.TO_JID,
+			ChatProvider.Constants.FROM_ME, ChatProvider.Constants.JID,
 			ChatProvider.Constants.MESSAGE };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
@@ -70,8 +70,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void setChatWindowAdapter() {
-		String selection = Constants.FROM_JID + "='" + mWithJabberID + "' OR "
-				+ Constants.TO_JID + "='" + mWithJabberID + "'";
+		String selection = Constants.JID + "='" + mWithJabberID + "'";
 		Cursor cursor = managedQuery(ChatProvider.CONTENT_URI, PROJECTION_FROM,
 				selection, null, null);
 		ListAdapter adapter = new ChatWindowAdapter(cursor, PROJECTION_FROM,
@@ -191,8 +190,10 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.Constants.MESSAGE));
-			String from = cursor.getString(cursor
-					.getColumnIndex(ChatProvider.Constants.FROM_JID));
+			int from_me = cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.Constants.FROM_ME));
+			String jid = cursor.getString(cursor
+					.getColumnIndex(ChatProvider.Constants.JID));
 
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
@@ -203,7 +204,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			wrapper.populateFrom(date, from, message);
+			wrapper.populateFrom(date, from_me != 0, jid, message);
 
 			return row;
 		}
@@ -226,9 +227,14 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			this.mRowView = row;
 		}
 
-		void populateFrom(String date, String from, String message) {
+		void populateFrom(String date, boolean from_me, String from, String message) {
+			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
-			getFromView().setText(from);
+			if (!from_me) {
+				getDateView().setTextColor(0xffff8888);
+				getFromView().setText(from);
+				getFromView().setTextColor(0xffff8888);
+			}
 			getMessageView().setText(message);
 		}
 

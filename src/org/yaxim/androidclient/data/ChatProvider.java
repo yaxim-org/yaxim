@@ -190,7 +190,7 @@ public class ChatProvider extends ContentProvider {
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 2;
+		private static final int DATABASE_VERSION = 3;
 
 		public DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -204,8 +204,8 @@ public class ChatProvider extends ContentProvider {
 
 			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + Constants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + Constants.DATE
-					+ " INTEGER," + Constants.FROM_JID + " TEXT,"
-					+ Constants.TO_JID + " TEXT," + Constants.MESSAGE
+					+ " INTEGER," + Constants.FROM_ME + " INTEGER,"
+					+ Constants.JID + " TEXT," + Constants.MESSAGE
 					+ " TEXT," + Constants.HAS_BEEN_READ + " BOOLEAN);");
 		}
 
@@ -228,16 +228,16 @@ public class ChatProvider extends ContentProvider {
 				+ " ASC";
 
 		public static final String DATE = "date";
-		public static final String FROM_JID = "fromJID";
-		public static final String TO_JID = "toJID";
+		public static final String FROM_ME = "from_me";
+		public static final String JID = "jid";
 		public static final String MESSAGE = "message";
 		public static final String HAS_BEEN_READ = "read";
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
 			tmpList.add(DATE);
-			tmpList.add(FROM_JID);
-			tmpList.add(TO_JID);
+			tmpList.add(FROM_ME);
+			tmpList.add(JID);
 			tmpList.add(MESSAGE);
 			return tmpList;
 		}
