@@ -226,16 +226,20 @@ public class XMPPService extends GenericService {
 
 		mConnectingThread = new Thread() {
 
+			public void postFail() {
+				mMainHandler.post(new Runnable() {
+					public void run() {
+						connectionFailed();
+					}
+				});
+			}
+
 			public void run() {
 				try {
-					if (mSmackable.doConnect()) {
-						connectionEstablished();
-						mReconnectCount = 0;
-						mIsConnected.set(true);
-					} else
-						connectionFailed();
+					if (!mSmackable.doConnect())
+						postFail();
 				} catch (YaximXMPPException e) {
-					connectionFailed();
+					postFail();
 					Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
 				}
 				mConnectingThread = null;
@@ -284,12 +288,12 @@ public class XMPPService extends GenericService {
 	}
 
 	public void doDisconnect() {
+		mConnectionDemanded.set(false);
 		mIsConnected.set(false); /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
 		mSmackable = null;
-		mConnectionDemanded.set(false);
 		setForeground(false);
 	}
 
@@ -312,6 +316,12 @@ public class XMPPService extends GenericService {
 			}
 
 			public void rosterChanged() {
+				// when connected, we get a rosterChanged CB too
+				if (mConnectionDemanded.get() && !mIsConnected.get()) {
+					connectionEstablished();
+					mReconnectCount = 0;
+					mIsConnected.set(true);
+				} else
 				if (!mSmackable.isAuthenticated()) {
 					if (mIsConnected.get()) {
 						/* XXX: hack - it seems we need to reset the connection */
