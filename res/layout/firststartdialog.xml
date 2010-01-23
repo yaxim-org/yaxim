@@ -93,10 +93,10 @@
 			
 		<Button
 				android:id="@+id/StartupDialog_OkButton"
-				android:layout_width="120sp"
+				android:layout_width="140sp"
 				android:layout_height="wrap_content"
 				android:text="@string/Global_OK"
-				android:clickable="false"
+				android:enabled="false"
 		/>
 
 	</LinearLayout>
