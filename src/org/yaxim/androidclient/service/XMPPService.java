@@ -23,9 +23,7 @@ public class XMPPService extends GenericService {
 
 	protected static final String TAG = "XMPPService";
 
-	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false);
 	private AtomicBoolean mIsConnected = new AtomicBoolean(false);
-	private int mReconnectCount;
 	private Thread mConnectingThread;
 
 	private Smackable mSmackable;
@@ -62,8 +60,6 @@ public class XMPPService extends GenericService {
 
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
-
-		mConnectionDemanded.set(mConfig.autoConnect);
 
 		if (mConfig.autoConnect) {
 			/*
@@ -134,8 +130,6 @@ public class XMPPService extends GenericService {
 			public int getConnectionState() throws RemoteException {
 				if (mSmackable != null && mSmackable.isAuthenticated())
 					return ConnectionState.AUTHENTICATED;
-				else if (mConnectionDemanded.get())
-					return ConnectionState.CONNECTING;
 				else
 					return ConnectionState.OFFLINE;
 			}
@@ -221,27 +215,18 @@ public class XMPPService extends GenericService {
 	}
 
 	private void doConnect() {
-		mConnectionDemanded.set(true);
-
-		if (mConnectingThread != null)
+		if (mConnectingThread != null) {
 			return;
+		}
 
 		mConnectingThread = new Thread() {
-
-			public void postFail() {
-				mMainHandler.post(new Runnable() {
-					public void run() {
-						connectionFailed();
-					}
-				});
-			}
 
 			public void run() {
 				try {
 					if (!mSmackable.doConnect())
-						postFail();
+						postConnectionFailed();
 				} catch (YaximXMPPException e) {
-					postFail();
+					postConnectionFailed();
 					Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
 				}
 				mConnectingThread = null;
@@ -249,32 +234,26 @@ public class XMPPService extends GenericService {
 		};
 		mConnectingThread.start();
 	}
+	
+	public void postConnectionFailed() {
+		mMainHandler.post(new Runnable() {
+			public void run() {
+				connectionFailed();
+			}
+		});
+	}	
 
 	private void connectionFailed() {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
-				mRosterCallbacks.getBroadcastItem(i).connectionFailed(
-						mConfig.autoReconnect && mReconnectCount <= 5);
+				mRosterCallbacks.getBroadcastItem(i).connectionFailed();
 			} catch (RemoteException e) {
 				Log.e(TAG, "caught RemoteException: " + e.getMessage());
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
 		mIsConnected.set(false);
-		if (mConfig.autoReconnect && mReconnectCount <= 5) {
-			mReconnectCount++;
-			Log.i(TAG, "connectionFailed(" + mReconnectCount + "/5): "
-					+ "attempting reconnect in 5s...");
-			mMainHandler.postDelayed(new Runnable() {
-				public void run() {
-					doConnect();
-				}
-			}, 5000);
-		} else {
-			// reconnecting attempts have been stopped
-			mConnectionDemanded.set(false);
-		}
 	}
 
 	private void connectionEstablished() {
@@ -290,7 +269,6 @@ public class XMPPService extends GenericService {
 	}
 
 	public void doDisconnect() {
-		mConnectionDemanded.set(false);
 		mIsConnected.set(false); /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
@@ -314,17 +292,15 @@ public class XMPPService extends GenericService {
 				if (!mIsBoundTo.contains(from)) {
 					Log.i(TAG, "notification: " + from);
 					notifyClient(from, message);
-				} 
+				}
 			}
 
 			public void rosterChanged() {
 				// when connected, we get a rosterChanged CB too
-				if (mConnectionDemanded.get() && !mIsConnected.get()) {
+				if (!mIsConnected.get()) {
 					connectionEstablished();
-					mReconnectCount = 0;
 					mIsConnected.set(true);
-				} else
-				if (!mSmackable.isAuthenticated()) {
+				} else if (!mSmackable.isAuthenticated()) {
 					if (mIsConnected.get()) {
 						/* XXX: hack - it seems we need to reset the connection */
 						mSmackable.unRegisterCallback();
@@ -333,7 +309,9 @@ public class XMPPService extends GenericService {
 					}
 					return;
 				}
+				
 				final int broadCastItems = mRosterCallbacks.beginBroadcast();
+				
 				for (int i = 0; i < broadCastItems; ++i) {
 					try {
 						mRosterCallbacks.getBroadcastItem(i).rosterChanged();
@@ -349,5 +327,5 @@ public class XMPPService extends GenericService {
 			}
 		});
 	}
-	
+
 }

@@ -60,11 +60,11 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private static final String TAG = "MainWindow";
 	private static final int DIALOG_CONNECTING = 1;
-	
+
 	private final List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
 	private final List<HashMap<String, String>> rosterGroupList = new ArrayList<HashMap<String, String>>();
 	private Handler mainHandler = new Handler();
-	
+
 	private Intent xmppServiceIntent;
 	private ServiceConnection xmppServiceConnection;
 	private XMPPRosterServiceAdapter serviceAdapter;
@@ -189,22 +189,22 @@ public class MainWindow extends GenericExpandableListActivity {
 			case R.id.roster_openchat:
 				startChatActivity(user);
 				return true;
-				
+
 			case R.id.roster_delete_contact:
 				RemoveRosterItemDialog deleteRosterItem = new RemoveRosterItemDialog(
 						this, serviceAdapter, user);
 				deleteRosterItem.show();
 				return true;
-				
+
 			case R.id.roster_rename_contact:
 				new RenameRosterItemDialog(this, serviceAdapter, user).show();
 				return true;
-				
+
 			case R.id.roster_editContactGroup:
 				new MoveRosterItemToGroupDialog(this, serviceAdapter, user)
 						.show();
 				return true;
-				
+
 			case R.id.roster_exit:
 				closeContextMenu();
 				return true;
@@ -338,7 +338,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		}
-		
+
 		return false;
 
 	}
@@ -473,7 +473,8 @@ public class MainWindow extends GenericExpandableListActivity {
 		for (RosterItem rosterEntryItem : rosterItems) {
 			HashMap<String, RosterItem> rosterEntry = new HashMap<String, RosterItem>();
 			rosterEntry.put(AdapterConstants.CONTACT_ID, rosterEntryItem);
-			if (showOffline || (rosterEntryItem.getStatusMode() != StatusMode.offline)) {
+			if (showOffline
+					|| (rosterEntryItem.getStatusMode() != StatusMode.offline)) {
 				rosterItemList.add(rosterEntry);
 			}
 		}
@@ -521,16 +522,14 @@ public class MainWindow extends GenericExpandableListActivity {
 				});
 			}
 
-			public void connectionFailed(final boolean willReconnect)
-					throws RemoteException {
+			public void connectionFailed() throws RemoteException {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
 						isConnected = false;
-						if (willReconnect)
-							showDialog(DIALOG_CONNECTING);
-						else if (progressDialog.isShowing())
+						if (progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
+						}
 					}
 				});
 			}

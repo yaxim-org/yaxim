@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -139,7 +138,7 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 		RosterGroup rosterGroup = getRosterGroup(groupName);
 		RosterEntry rosterEntry = mRoster.getEntry(userName);
-		// unSetRosterEntry(rosterEntry);
+
 		removeRosterEntryFromGroups(rosterEntry);
 
 		if (groupName.equals(AdapterConstants.EMPTY_GROUP))
@@ -398,6 +397,7 @@ public class SmackableImp implements Smackable {
 				}
 			}
 		};
+
 		mXMPPConnection.addPacketListener(myListener, filter);
 	}
 
