@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.WindowManager;
 
 public abstract class GenericDialog extends Dialog {
-
-	protected MainWindow mainWindow;
-	protected XMPPRosterServiceAdapter serviceAdapter;
+	
 	private static final String TAG = "GenericDialog";
+
+	protected final XMPPRosterServiceAdapter serviceAdapter;
+	protected MainWindow mainWindow;
 
 	public GenericDialog(Context context, XMPPRosterServiceAdapter serviceAdapter) {
 		super(context);

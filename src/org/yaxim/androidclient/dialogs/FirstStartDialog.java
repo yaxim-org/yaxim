@@ -19,14 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import org.yaxim.androidclient.R;
 
-public class FirstStartDialog extends GenericDialog implements
-		OnClickListener, TextWatcher {
+public class FirstStartDialog extends GenericDialog implements OnClickListener,
+		TextWatcher {
 
-	private Button cancelButton;
-	private Button okButton;
-	private EditText editJabberID;
-	private EditText editPassword;
-	private EditText editPort;
+	private Button mOkButton;
+	private EditText mEditJabberID;
+	private EditText mEditPassword;
+	private EditText mEditPort;
 
 	public FirstStartDialog(Context mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
@@ -38,53 +37,26 @@ public class FirstStartDialog extends GenericDialog implements
 		setContentView(R.layout.firststartdialog);
 		setTitle(R.string.StartupDialog_Title);
 
-		setEditPort();
-		setEditPassword();
+		setCancelable(false);
 		setEditJabberID();
-		setOkButton();
-		setCancelButton();
 	}
 
 	private void setEditJabberID() {
-		editJabberID = (EditText) findViewById(R.id.StartupDialog_JID_EditTextField);
-		editJabberID.addTextChangedListener(this);
-	}
-
-	private void setEditPort() {
-		editPort = (EditText) findViewById(R.id.StartupDialog_PORT_EditTextField);
-	}
-
-	private void setEditPassword() {
-		editPassword = (EditText) findViewById(R.id.StartupDialog_PASSWD_EditTextField);
-	}
-
-	private void setOkButton() {
-		okButton = (Button) findViewById(R.id.StartupDialog_OkButton);
-	}
-
-	private void setCancelButton() {
-		cancelButton = (Button) findViewById(R.id.StartupDialog_CancelButton);
-		cancelButton.setOnClickListener(this);
+		mOkButton = (Button) findViewById(R.id.StartupDialog_OkButton);
+		mEditJabberID = (EditText) findViewById(R.id.StartupDialog_JID_EditTextField);
+		mEditPassword = (EditText) findViewById(R.id.StartupDialog_PASSWD_EditTextField);
+		mEditPort = (EditText) findViewById(R.id.StartupDialog_PORT_EditTextField);
+		mEditJabberID.addTextChangedListener(this);
 	}
 
 	public void onClick(View view) {
-
-		switch (view.getId()) {
-
-		case R.id.StartupDialog_CancelButton:
-			cancel();
-			break;
-
-		case R.id.StartupDialog_OkButton:
-			verifyAndSavePreferences();
-			break;
-		}
+		verifyAndSavePreferences();
 	}
 
 	private void verifyAndSavePreferences() {
-		String password = editPassword.getText().toString();
-		String jabberID = editJabberID.getText().toString();
-		String port = editPort.getText().toString();
+		String password = mEditPassword.getText().toString();
+		String jabberID = mEditJabberID.getText().toString();
+		String port = mEditPort.getText().toString();
 
 		if (port == null) {
 			savePreferences(jabberID, password);
@@ -99,12 +71,12 @@ public class FirstStartDialog extends GenericDialog implements
 	public void afterTextChanged(Editable s) {
 		try {
 			XMPPHelper.verifyJabberID(s);
-			okButton.setClickable(true);
-			okButton.setOnClickListener(this);
-			editJabberID.setTextColor(Color.DKGRAY);
+			mOkButton.setEnabled(true);
+			mOkButton.setOnClickListener(this);
+			mEditJabberID.setTextColor(Color.DKGRAY);
 		} catch (YaximXMPPAdressMalformedException e) {
-			okButton.setClickable(false);
-			editJabberID.setTextColor(Color.RED);
+			mOkButton.setEnabled(false);
+			mEditJabberID.setTextColor(Color.RED);
 		}
 	}
 

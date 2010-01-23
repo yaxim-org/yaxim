@@ -90,19 +90,13 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal">
+			
 		<Button
 				android:id="@+id/StartupDialog_OkButton"
 				android:layout_width="120sp"
 				android:layout_height="wrap_content"
 				android:text="@string/Global_OK"
 				android:clickable="false"
-		/>
-
-		<Button
-				android:id="@+id/StartupDialog_CancelButton"
-				android:layout_width="120sp"
-				android:layout_height="wrap_content"
-				android:text="@string/Global_Cancel"
 		/>
 
 	</LinearLayout>
