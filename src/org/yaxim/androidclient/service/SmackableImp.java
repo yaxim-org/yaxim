@@ -67,8 +67,8 @@ public class SmackableImp implements Smackable {
 			tryToConnect();
 
 			if (isAuthenticated()) {
-				registerMessageHandler();
-				registerRosterHandler();
+				registerMessageListener();
+				registerRosterListener();
 				Presence presence = new Presence(Presence.Type.available);
 				presence.setPriority(mConfig.priority);
 				mXMPPConnection.sendPacket(presence);
@@ -191,7 +191,9 @@ public class SmackableImp implements Smackable {
 		try {
 			RosterEntry rosterEntry = mRoster.getEntry(user);
 			// unSetRosterEntry(rosterEntry);
-			mRoster.removeEntry(rosterEntry);
+			if (rosterEntry != null) {
+				mRoster.removeEntry(rosterEntry);
+			}
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getMessage());
 		}
@@ -331,7 +333,7 @@ public class SmackableImp implements Smackable {
 		this.mServiceCallBack = null;
 	}
 
-	private void registerRosterHandler() {
+	private void registerRosterListener() {
 		mRoster = mXMPPConnection.getRoster();
 
 		mRoster.addRosterListener(new RosterListener() {
@@ -375,10 +377,10 @@ public class SmackableImp implements Smackable {
 		return res[0].toLowerCase();
 	}
 
-	private void registerMessageHandler() {
+	private void registerMessageListener() {
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
 
-		PacketListener myListener = new PacketListener() {
+		PacketListener listener = new PacketListener() {
 
 			public void processPacket(Packet packet) {
 				if (packet instanceof Message) {
@@ -394,11 +396,11 @@ public class SmackableImp implements Smackable {
 
 					writeToDB(false, fromJID, chatMessage, false);
 					mServiceCallBack.newMessage(fromJID, chatMessage);
-
 				}
 			}
 		};
-		mXMPPConnection.addPacketListener(myListener, filter);
+
+		mXMPPConnection.addPacketListener(listener, filter);
 	}
 
 	private void writeToDB(boolean from_me, String JID, String message,
