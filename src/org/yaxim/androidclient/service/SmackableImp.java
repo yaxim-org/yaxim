@@ -116,6 +116,12 @@ public class SmackableImp implements Smackable {
 		tryToMoveRosterEntryToGroup(user, group);
 	}
 
+	public void requestAuthorizationForRosterItem(String user) {
+		Presence response = new Presence(Presence.Type.subscribe);
+		response.setTo(user);
+		mXMPPConnection.sendPacket(response);
+	}
+
 	private void tryToConnect() throws YaximXMPPException {
 		try {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
@@ -440,4 +446,5 @@ public class SmackableImp implements Smackable {
 		}
 		return StatusMode.offline;
 	}
+
 }
