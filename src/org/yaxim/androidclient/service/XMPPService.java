@@ -45,10 +45,19 @@ public class XMPPService extends GenericService {
 
 		return mService2RosterConnection;
 	}
+	
+	@Override
+	public void onRebind(Intent intent) {
+		super.onRebind(intent);
+		String caller = intent.getDataString();
+		if ((caller != null) && caller.equals("chatwindow")) {
+			resetNotificationCounter();
+		}
+	}
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-		return super.onUnbind(intent);
+		return true;
 	}
 
 	@Override
