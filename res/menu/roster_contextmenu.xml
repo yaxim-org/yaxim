@@ -2,36 +2,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<group android:enabled="true" android:visible="true"
-		android:orderInCategory="2" android:id="@+id/roster_groups_group">
+		android:orderInCategory="2" android:id="@+id/roster_contextmenu_group_menu">
 
-		<item android:id="@+id/roster_rename_group" android:visible="true"
+		<item android:id="@+id/roster_contextmenu_group_rename" android:visible="true"
 			android:enabled="true" android:orderInCategory="7"
-			android:title="@string/MenuContext_renameGroup">
+			android:title="@string/roster_contextmenu_group_rename">
 		</item>
 
 	</group>
 
 	<group android:enabled="true" android:visible="true"
-		android:id="@+id/roster_contacts_group" android:orderInCategory="1">
+		android:id="@+id/roster_contextmenu_contact_menu" android:orderInCategory="1">
 
-		<item android:id="@+id/roster_openchat" android:visible="true"
+		<item android:id="@+id/roster_contextmenu_contact_open_chat" android:visible="true"
 			android:enabled="true" android:orderInCategory="1"
-			android:title="@string/MenuContext_openChat">
+			android:title="@string/roster_contextmenu_contact_open_chat">
 		</item>
 
 		<item android:visible="true" android:enabled="true"
-			android:orderInCategory="2" android:id="@+id/roster_delete_contact"
-			android:title="@string/MenuContext_deleteContact">
+			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delete"
+			android:title="@string/roster_contextmenu_contact_delete">
 		</item>
 
-		<item android:id="@+id/roster_rename_contact" android:visible="true"
+		<item android:id="@+id/roster_contextmenu_contact_rename" android:visible="true"
 			android:enabled="true" android:orderInCategory="3"
-			android:title="@string/MenuContext_rename">
+			android:title="@string/roster_contextmenu_contact_rename">
+		</item>
+
+		<item android:id="@+id/roster_contextmenu_contact_request_auth" android:visible="true"
+			android:enabled="true" android:orderInCategory="4"
+			android:title="@string/roster_contextmenu_contact_request_auth">
 		</item>
 
 		<item android:visible="true" android:enabled="true"
-			android:orderInCategory="4" android:id="@+id/roster_editContactGroup"
-			android:title="@string/MenuContext_changeContactGroup">
+			android:orderInCategory="5" android:id="@+id/roster_contextmenu_contact_change_group"
+			android:title="@string/roster_contextmenu_contact_change_group">
 		</item>
 
 	</group>

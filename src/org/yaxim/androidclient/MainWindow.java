@@ -147,19 +147,23 @@ public class MainWindow extends GenericExpandableListActivity {
 		String groupName = rosterGroupList.get(groupPosition).get(
 				AdapterConstants.GROUP_NAME[0]);
 
+		String menuTitle = getString(R.string.roster_contextmenu_title);
+
 		if (isChild) {
-			menu.setGroupVisible(R.id.roster_contacts_group, true);
-			menu.setGroupVisible(R.id.roster_groups_group, false);
-			menu.setHeaderTitle(R.string.MenuContext_ContactHeaderTitle);
+			menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, true);
+			menu.setGroupVisible(R.id.roster_contextmenu_group_menu, false);
+			menu.setHeaderTitle(menuTitle + "");
 		} else {
 			if (groupName.equals(AdapterConstants.EMPTY_GROUP)) {
-				menu.setGroupVisible(R.id.roster_contacts_group, false);
-				menu.setGroupVisible(R.id.roster_groups_group, false);
-				menu.setHeaderTitle(R.string.MenuContext_HeaderTitleDisabled);
+				menu.setGroupVisible(R.id.roster_contextmenu_contact_menu,
+						false);
+				menu.setGroupVisible(R.id.roster_contextmenu_group_menu, false);
+				menu.setHeaderTitle(menuTitle + groupName);
 			} else {
-				menu.setGroupVisible(R.id.roster_contacts_group, false);
-				menu.setGroupVisible(R.id.roster_groups_group, true);
-				menu.setHeaderTitle(R.string.MenuContext_GroupsHeaderTitle);
+				menu.setGroupVisible(R.id.roster_contextmenu_contact_menu,
+						false);
+				menu.setGroupVisible(R.id.roster_contextmenu_group_menu, true);
+				menu.setHeaderTitle(menuTitle + groupName);
 			}
 		}
 	}
@@ -186,21 +190,23 @@ public class MainWindow extends GenericExpandableListActivity {
 			int itemID = item.getItemId();
 
 			switch (itemID) {
-			case R.id.roster_openchat:
+			case R.id.roster_contextmenu_contact_open_chat:
 				startChatActivity(user);
 				return true;
 
-			case R.id.roster_delete_contact:
-				RemoveRosterItemDialog deleteRosterItem = new RemoveRosterItemDialog(
-						this, serviceAdapter, user);
-				deleteRosterItem.show();
+			case R.id.roster_contextmenu_contact_delete:
+				new RemoveRosterItemDialog(this, serviceAdapter, user).show();
 				return true;
 
-			case R.id.roster_rename_contact:
+			case R.id.roster_contextmenu_contact_rename:
 				new RenameRosterItemDialog(this, serviceAdapter, user).show();
 				return true;
 
-			case R.id.roster_editContactGroup:
+			case R.id.roster_contextmenu_contact_request_auth:
+				// TODO: implement auth request
+				return true;
+
+			case R.id.roster_contextmenu_contact_change_group:
 				new MoveRosterItemToGroupDialog(this, serviceAdapter, user)
 						.show();
 				return true;
@@ -216,7 +222,7 @@ public class MainWindow extends GenericExpandableListActivity {
 					AdapterConstants.GROUP_NAME[0]);
 
 			switch (itemID) {
-			case R.id.roster_rename_group:
+			case R.id.roster_contextmenu_group_rename:
 				new RenameRosterGroupDialog(this, serviceAdapter, seletedGroup)
 						.show();
 				return true;

@@ -2,6 +2,7 @@
 <resources>
 	<string name="app_name">Yaxim</string>
 	<string name="chat_name">Yaxim-Chat</string>
+	
 	<!-- Global Strings -->
 	<string name="Global_Cancel">Cancel</string>
 	<string name="Global_OK">OK</string>
@@ -10,6 +11,7 @@
 	<string name="Global_Me">Me</string>
 	<string name="Global_Error">Error: </string>
 	<string name="Global_JID_hint">foo@jabber.bar.com</string>
+	
 	<!--	FirstStartUpDialog-->
 	<string name="StartupDialog_Title">Start Yaxim:</string>
 	<string name="StartupDialog_Summary">This is the initial dialog of Yaxim. Please set
@@ -19,8 +21,7 @@
 	<string name="StartupDialog_Username_title">Enter your username:</string>
 	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_port_title">Port:</string>
-	<!-- Mainprefs 	-->
-	<!-- Mainpref real strings 	-->
+	
 	<!-- Notification Settings 	-->
 	<string name="preftitle_notify">Notification Preferences</string>
 	<string name="led_title">Notify via LED</string>
@@ -31,6 +32,7 @@
 	<string name="vibr_summOff">Vibration notification are off</string>
 	<string name="ringtone_title">Ringtone preferences</string>
 	<string name="ringtone_summ">Edit ringtone settings</string>
+	
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Bootoptions</string>
 	<string name="boot_title">"Load Yaxim at bootup</string>
@@ -44,7 +46,7 @@
 	<string name="showOffline_summ_on">Showing offline contacts</string>
 	<string name="showOffline_summ_off">Hiding offline contacts</string>
 	<string name="showOffline_title">Show offline contacts</string>
-	
+
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Appearance</string>
 	<string name="FontChat_title">Chat font size</string>
@@ -66,7 +68,7 @@
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About Yaxim</string>
-	
+
 	<!-- AddFriend -->
 	<string name="addFriend_inputPreset">e.g.: foo@jabber.bar.com</string>
 	<string name="addFriend_Title">Please enter Jabber ID</string>
@@ -82,19 +84,17 @@
 	<string name="addFriendAlert_Message">Could not validate ID</string>
 	<string name="addFriendAlert_Retry">Retry</string>
 	<string name="addFriendAlert_Cancel">Cancel</string>
-	<!-- MainPreferences -->
-	<!-- CONTEXTMENU -->
-	<string name="MenuContext_deleteContact">Delete Contact</string>
-	<string name="MenuContext_openChat">Open chat</string>
-	<string name="MenuContext_rename">Rename</string>
-	<string name="MenuContext_renameGroup">Rename group</string>
-	<string name="MenuContext_editGroup">Edit Group</string>
-	<string name="MenuContext_newGroup">New Group</string>
-	<string name="MenuContext_Contactinfo">Contact info</string>
-	<string name="MenuContext_changeContactGroup">Change Group</string>
-	<string name="MenuContext_GroupsHeaderTitle">Group options</string>
-	<string name="MenuContext_ContactHeaderTitle">Contact options</string>
-	<string name="MenuContext_HeaderTitleDisabled">No options available</string>
+	
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Options: </string>
+	<string name="roster_contextmenu_title_no_options">No options</string>
+	<string name="roster_contextmenu_group_rename">Rename group</string>
+	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
+	<string name="roster_contextmenu_contact_rename">Rename</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_change_group">Change Group</string>
+	
 	<!-- Accountprefs -->
 	<string name="account_settings_defaultsum">Please enter a valid JabberId</string>
 	<string name="account_settings_defaultsum_prefix">Please enter a valid JabberId</string>
@@ -111,6 +111,7 @@
 	<string name="account_jabberPW_title">Enter Password</string>
 	<string name="account_jabberPW_sum">Enter Password</string>
 	<string name="account_jabberPW_dialog_title">Enter Password</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Modify resource</string>
 	<string name="account_resource_summ">Yaxim</string>
@@ -170,38 +171,73 @@
 	<string name="AboutDialog_title">ABOUT YAXIM</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
 	<string name="AboutDialog_DevelopersText">
-		Acknowledged Developers:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n
-		Join us, ask for more fancy features or send us some free \"Club Mate\"
-		at http://yaxim.org or on #yaxim on freenode IRC.
+		Acknowledged Developers:\n * Georg Lukas\n * Sven
+		Pfleiderer\n * Christian Polzer\n\n
+		Join us, ask for more fancy
+		features or send us some free \"Club Mate\"
+		at http://yaxim.org or on
+		#yaxim on freenode IRC.
     </string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU General Public License version 2
+		This program is free software; you can redistribute
+		it and/or
+		modify it under the terms of the GNU General Public License
+		version 2
 		as published by the Free Software Foundation.
-		Link: http://www.gnu.org/licenses/gpl-2.0.html\n
-\n
-		Parts of this software are provided under the MIT License:\n
-\n
-		Copyright (c) 2009 Mads Kristiansen, Nullwire ApS\n
-\n
-		Permission is hereby granted, free of charge, to any person obtaining a copy
-		of this software and associated documentation files (the "Software"), to deal
-		in the Software without restriction, including without limitation the rights
-		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-		copies of the Software, and to permit persons to whom the Software is
-		furnished to do so, subject to the following conditions:
-\n
-		The above copyright notice and this permission notice shall be included in all
-		copies or substantial portions of the Software.
-\n
-		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		Link:
+		http://www.gnu.org/licenses/gpl-2.0.html\n
+		\n
+		Parts of this software are
+		provided under the MIT License:\n
+		\n
+		Copyright (c) 2009 Mads
+		Kristiansen, Nullwire ApS\n
+		\n
+		Permission is hereby granted, free of
+		charge, to any person obtaining
+		a copy
+		of this software and associated
+		documentation files (the
+		"Software"), to deal
+		in the Software without
+		restriction, including
+		without limitation the rights
+		to use, copy,
+		modify, merge, publish,
+		distribute, sublicense, and/or sell
+		copies of
+		the Software, and to
+		permit persons to whom the Software is
+		furnished to
+		do so, subject to
+		the following conditions:
+		\n
+		The above copyright notice
+		and this permission notice shall be
+		included in all
+		copies or
+		substantial portions of the Software.
+		\n
+		THE SOFTWARE IS PROVIDED "AS
+		IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT
+		LIMITED TO THE WARRANTIES OF
+		MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR
+		PURPOSE AND NONINFRINGEMENT.
+		IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY
+		CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN
+		AN ACTION OF CONTRACT,
+		TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN
+		CONNECTION WITH THE
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
     </string>
-    <string name="AboutDialog_greetings">The Yaxim Team - 22.01.2010</string>
+	<string name="AboutDialog_greetings">The Yaxim Team - 22.01.2010</string>
 </resources>
