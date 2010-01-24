@@ -39,26 +39,32 @@ public class XMPPService extends GenericService {
 	@Override
 	public IBinder onBind(Intent intent) {
 		super.onBind(intent);
-		String caller = intent.getDataString();
-		if ((caller != null) && caller.equals("chatwindow")) {
+		String chatPartner = intent.getDataString();
+		if ((chatPartner != null)) {
 			resetNotificationCounter();
+			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
 		}
 
 		return mService2RosterConnection;
 	}
-	
+
 	@Override
 	public void onRebind(Intent intent) {
 		super.onRebind(intent);
-		String caller = intent.getDataString();
-		if ((caller != null) && caller.equals("chatwindow")) {
+		String chatPartner = intent.getDataString();
+		if ((chatPartner != null)) {
+			mIsBoundTo.add(chatPartner);
 			resetNotificationCounter();
 		}
 	}
 
 	@Override
 	public boolean onUnbind(Intent intent) {
+		String chatPartner = intent.getDataString();
+		if ((chatPartner != null)) {
+			mIsBoundTo.remove(chatPartner);
+		}
 		return true;
 	}
 

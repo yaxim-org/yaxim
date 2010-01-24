@@ -60,11 +60,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 		setContentView(R.layout.mainchat);
 		registerForContextMenu(getListView());
+		setContactFromUri();
 		registerXMPPService();
 		setNotificationManager();
 		setUserInput();
 		setSendButton();
-		setContactFromUri();
 		setTitle(getText(R.string.chat_titlePrefix) + " " + mWithJabberID);
 		setChatWindowAdapter();
 	}
@@ -97,7 +97,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private void registerXMPPService() {
 		Log.i(TAG, "called startXMPPService()");
 		mServiceIntent = new Intent(this, XMPPService.class);
-		Uri chatURI = Uri.parse("chatwindow");
+		Uri chatURI = Uri.parse(mWithJabberID);
 		mServiceIntent.setData(chatURI);
 		mServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
 
