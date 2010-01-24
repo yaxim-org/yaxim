@@ -147,4 +147,14 @@ public class XMPPRosterServiceAdapter {
 		return getConnectionState() == ConnectionState.AUTHENTICATED;
 	}
 
+	public void requestAuthorizationForRosterItem(String user) {
+		try {
+			xmppServiceStub.requestAuthorizationForRosterItem(user);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

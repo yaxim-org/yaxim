@@ -203,7 +203,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_request_auth:
-				// TODO: implement auth request
+				serviceAdapter.requestAuthorizationForRosterItem(user);
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:
