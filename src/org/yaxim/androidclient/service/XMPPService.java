@@ -228,25 +228,38 @@ public class XMPPService extends GenericService {
 
 			public void run() {
 				try {
-					if (!mSmackable.doConnect())
+					if (!mSmackable.doConnect()) {
 						postConnectionFailed();
+					} else {
+						postConnectionEstablished();
+					}
 				} catch (YaximXMPPException e) {
 					postConnectionFailed();
 					Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
+				} finally {
+					mConnectingThread = null;
 				}
-				mConnectingThread = null;
 			}
+
 		};
 		mConnectingThread.start();
 	}
-	
+
 	public void postConnectionFailed() {
 		mMainHandler.post(new Runnable() {
 			public void run() {
 				connectionFailed();
 			}
 		});
-	}	
+	}
+
+	public void postConnectionEstablished() {
+		mMainHandler.post(new Runnable() {
+			public void run() {
+				connectionEstablished();
+			}
+		});
+	}
 
 	private void connectionFailed() {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
@@ -271,6 +284,7 @@ public class XMPPService extends GenericService {
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
+		mIsConnected.set(true);
 	}
 
 	public void doDisconnect() {
@@ -301,30 +315,21 @@ public class XMPPService extends GenericService {
 			}
 
 			public void rosterChanged() {
-				// when connected, we get a rosterChanged CB too
-				if (!mIsConnected.get()) {
-					connectionEstablished();
-					mIsConnected.set(true);
-				} else if (!mSmackable.isAuthenticated()) {
-					if (mIsConnected.get()) {
-						/* XXX: hack - it seems we need to reset the connection */
-						mSmackable.unRegisterCallback();
-						registerAdapterCallback();
-						connectionFailed();
+				if (mIsConnected.get()) {
+					final int broadCastItems = mRosterCallbacks
+							.beginBroadcast();
+
+					for (int i = 0; i < broadCastItems; ++i) {
+						try {
+							mRosterCallbacks.getBroadcastItem(i)
+									.rosterChanged();
+						} catch (RemoteException e) {
+							Log.e(TAG, "caught RemoteException: "
+									+ e.getMessage());
+						}
 					}
-					return;
+					mRosterCallbacks.finishBroadcast();
 				}
-				
-				final int broadCastItems = mRosterCallbacks.beginBroadcast();
-				
-				for (int i = 0; i < broadCastItems; ++i) {
-					try {
-						mRosterCallbacks.getBroadcastItem(i).rosterChanged();
-					} catch (RemoteException e) {
-						Log.e(TAG, "caught RemoteException: " + e.getMessage());
-					}
-				}
-				mRosterCallbacks.finishBroadcast();
 			}
 
 			public boolean isBoundTo(String jabberID) {
