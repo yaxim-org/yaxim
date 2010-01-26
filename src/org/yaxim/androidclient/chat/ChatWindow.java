@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -245,6 +247,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		private TextView mDateView = null;
 		private TextView mFromView = null;
 		private TextView mMessageView = null;
+		private ImageView mChatIconView = null;
 
 		private final View mRowView;
 
@@ -257,10 +260,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			if (from_me) {
+				getChatIconView().setImageDrawable(getResources().getDrawable(R.drawable.icon));
 				getDateView().setTextColor(0xff8888ff);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(0xff8888ff);
 			} else {
+				getChatIconView().setImageDrawable(getResources().getDrawable(R.drawable.gnuicon));
 				getDateView().setTextColor(0xffff8888);
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
@@ -277,7 +282,14 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			}
 			getMessageView().setText(message);
 		}
-
+        
+		ImageView getChatIconView(){
+			if (mChatIconView == null){
+				mChatIconView = (ImageView) mRowView.findViewById(R.id.chaticon);
+			}
+			return mChatIconView;
+		}
+		
 		TextView getDateView() {
 			if (mDateView == null) {
 				mDateView = (TextView) mRowView.findViewById(R.id.chat_date);
