@@ -169,6 +169,9 @@ public class ChatProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 		switch (match) {
+		case MESSAGES:
+			count = db.update(TABLE_NAME, values, where, null);
+			break;
 		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
 			rowId = Long.parseLong(segment);
