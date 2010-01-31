@@ -425,7 +425,7 @@ public class SmackableImp implements Smackable {
 		values.put(Constants.FROM_ME, from_me);
 		values.put(Constants.JID, JID);
 		values.put(Constants.MESSAGE, message);
-		values.put(Constants.HAS_BEEN_READ, false);
+		values.put(Constants.HAS_BEEN_READ, read);
 		values.put(Constants.DATE, System.currentTimeMillis());
 
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
