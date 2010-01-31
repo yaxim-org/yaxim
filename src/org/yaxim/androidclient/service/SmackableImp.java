@@ -35,7 +35,10 @@ import org.yaxim.androidclient.util.StatusMode;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 
+import android.util.Log;
+
 public class SmackableImp implements Smackable {
+	final static private String TAG = "SmackableImp";
 
 	final static private int PACKET_TIMEOUT = 12000;
 	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min
@@ -83,6 +86,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void removeRosterItem(String user) throws YaximXMPPException {
+		Log.d(TAG, "removeRosterItem(" + user + ")");
 		tryToRemoveRosterEntry(user);
 		mServiceCallBack.rosterChanged();
 	}
@@ -333,6 +337,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void unRegisterCallback() {
+		Log.d(TAG, "unRegisterCallback()");
 		mXMPPConnection.disconnect();
 		mRosterItemsByGroup.clear();
 		this.mServiceCallBack = null;
@@ -344,6 +349,7 @@ public class SmackableImp implements Smackable {
 		mRoster.addRosterListener(new RosterListener() {
 
 			public void entriesAdded(Collection<String> entries) {
+				Log.d(TAG, "entriesAdded(" + entries + ")");
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					setRosterEntry(rosterEntry);
@@ -352,6 +358,7 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void entriesDeleted(Collection<String> entries) {
+				Log.d(TAG, "entriesDeleted(" + entries + ")");
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					unSetRosterEntry(rosterEntry);
@@ -360,6 +367,7 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void entriesUpdated(Collection<String> entries) {
+				Log.d(TAG, "entriesUpdated(" + entries + ")");
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					unSetRosterEntry(rosterEntry);
@@ -369,6 +377,7 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void presenceChanged(Presence presence) {
+				Log.d(TAG, "presenceChanged(" + presence.getFrom() + ")");
 				String jabberID = getJabberID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				setRosterEntry(rosterEntry);

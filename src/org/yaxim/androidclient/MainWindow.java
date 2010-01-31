@@ -49,15 +49,6 @@ import org.yaxim.androidclient.service.IXMPPRosterService;
 
 public class MainWindow extends GenericExpandableListActivity {
 
-	private static final int MENU_CONNECT = Menu.FIRST + 1;
-	private static final int MENU_ADD_FRIEND = Menu.FIRST + 2;
-	private static final int MENU_SHOW_HIDE = Menu.FIRST + 3;
-	private static final int MENU_STATUS = Menu.FIRST + 4;
-	private static final int MENU_EXIT = Menu.FIRST + 5;
-	private static final int MENU_SETTINGS = Menu.FIRST + 6;
-	private static final int MENU_ACC_SET = Menu.FIRST + 7;
-	private static final int MENU_ABOUT = Menu.FIRST + 8;
-
 	private static final String TAG = "MainWindow";
 	private static final int DIALOG_CONNECTING = 1;
 
@@ -250,38 +241,30 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		populateMainMenu(menu);
-		return super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.roster_options, menu);
+		return true;
+	}
+
+	void setMenuItem(Menu menu, int itemId, int iconId, CharSequence title) {
+		MenuItem item = menu.findItem(itemId);
+		item.setIcon(iconId);
+		item.setTitle(title);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		setMenuItem(menu, R.id.menu_connect,
+				getConnectDisconnectIcon(),
+				getConnectDisconnectText());
+		setMenuItem(menu, R.id.menu_show_hide,
+				getShowHideMenuIcon(),
+				getShowHideMenuText());
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return applyMainMenuChoice(item);
-	}
-
-	private void populateMainMenu(Menu menu) {
-		menu.add(Menu.NONE, MENU_CONNECT, Menu.NONE,
-				(getConnectDisconnectText())).setIcon(
-				getConnectDisconnectIcon());
-		menu.add(Menu.NONE, MENU_ADD_FRIEND, Menu.NONE,
-				(getString(R.string.Menu_addFriend))).setIcon(
-				android.R.drawable.ic_menu_add);
-		menu.add(Menu.NONE, MENU_SHOW_HIDE, Menu.NONE, getShowHideMenuText())
-				.setIcon(getShowHideMenuIcon());
-		menu.add(Menu.NONE, MENU_STATUS, Menu.NONE,
-				(getString(R.string.Menu_Status))).setIcon(
-				android.R.drawable.ic_menu_myplaces);
-		menu.add(Menu.NONE, MENU_EXIT, Menu.NONE,
-				(getString(R.string.Global_Exit))).setIcon(
-				android.R.drawable.ic_menu_close_clear_cancel);
-		menu.add(Menu.NONE, MENU_SETTINGS, Menu.NONE,
-				(getString(R.string.Menu_Settings))).setIcon(
-				android.R.drawable.ic_menu_preferences);
-		menu.add(Menu.NONE, MENU_ACC_SET, Menu.NONE,
-				(getString(R.string.Menu_AccSettings))).setIcon(
-				android.R.drawable.ic_menu_manage);
-		menu.add(Menu.NONE, MENU_ABOUT, Menu.NONE,
-				(getString(R.string.Menu_about))).setIcon(R.drawable.about);
 	}
 
 	private int getShowHideMenuIcon() {
@@ -299,11 +282,11 @@ public class MainWindow extends GenericExpandableListActivity {
 		int itemID = item.getItemId();
 
 		switch (itemID) {
-		case MENU_CONNECT:
+		case R.id.menu_connect:
 			toggleConnection(item);
 			return true;
 
-		case MENU_ADD_FRIEND:
+		case R.id.menu_add_friend:
 			if (serviceAdapter.isAuthenticated()) {
 				new AddRosterItemDialog(this, serviceAdapter).show();
 			} else {
@@ -311,14 +294,12 @@ public class MainWindow extends GenericExpandableListActivity {
 			}
 			return true;
 
-		case MENU_SHOW_HIDE:
+		case R.id.menu_show_hide:
 			showOffline = !showOffline;
 			updateRoster();
-			item.setIcon(getShowHideMenuIcon());
-			item.setTitle(getShowHideMenuText());
 			return true;
 
-		case MENU_STATUS:
+		case R.id.menu_status:
 			if (serviceAdapter.isAuthenticated()) {
 				new ChangeStatusDialog(this, serviceAdapter).show();
 			} else {
@@ -326,20 +307,20 @@ public class MainWindow extends GenericExpandableListActivity {
 			}
 			return true;
 
-		case MENU_EXIT:
+		case R.id.menu_exit:
 			stopService(xmppServiceIntent);
 			finish();
 			return true;
 
-		case MENU_SETTINGS:
+		case R.id.menu_settings:
 			startActivity(new Intent(this, MainPrefs.class));
 			return true;
 
-		case MENU_ACC_SET:
+		case R.id.menu_acc_set:
 			startActivity(new Intent(this, AccountPrefs.class));
 			return true;
 
-		case MENU_ABOUT:
+		case R.id.menu_about:
 			new AboutDialog(this, serviceAdapter).show();
 			return true;
 
@@ -383,8 +364,6 @@ public class MainWindow extends GenericExpandableListActivity {
 			isConnected = true;
 		}
 
-		item.setIcon(getConnectDisconnectIcon());
-		item.setTitle(getConnectDisconnectText());
 	}
 
 	private int getConnectDisconnectIcon() {
