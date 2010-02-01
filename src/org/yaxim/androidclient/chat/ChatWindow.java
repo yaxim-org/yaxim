@@ -41,7 +41,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.Constants._ID, ChatProvider.Constants.DATE,
 			ChatProvider.Constants.FROM_ME, ChatProvider.Constants.JID,
-			ChatProvider.Constants.MESSAGE };
+			ChatProvider.Constants.MESSAGE, ChatProvider.Constants.HAS_BEEN_READ };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
@@ -194,6 +194,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 					.getColumnIndex(ChatProvider.Constants.FROM_ME));
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.Constants.JID));
+			int has_been_read = cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.Constants.HAS_BEEN_READ));
 
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
@@ -204,7 +206,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			wrapper.populateFrom(date, from_me != 0, jid, message);
+			wrapper.populateFrom(date, from_me != 0, jid, message, has_been_read != 0);
 
 			return row;
 		}
@@ -227,7 +229,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			this.mRowView = row;
 		}
 
-		void populateFrom(String date, boolean from_me, String from, String message) {
+		void populateFrom(String date, boolean from_me, String from, String message,
+				boolean has_been_read) {
 			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			if (from_me) {
@@ -238,6 +241,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				getDateView().setTextColor(0xffff8888);
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
+			}
+			if (has_been_read) {
+				mRowView.setBackgroundColor(0xff000000);
+			} else {
+				mRowView.setBackgroundColor(0xff404040);
 			}
 			getMessageView().setText(message);
 		}
