@@ -12,12 +12,14 @@ import org.yaxim.androidclient.service.XMPPService;
 import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -46,6 +48,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
 
+	private Handler mHandler = null;
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
@@ -59,6 +62,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.mainchat);
+
+		mHandler = new Handler();
 		registerForContextMenu(getListView());
 		setContactFromUri();
 		registerXMPPService();
@@ -170,6 +175,19 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		mServiceAdapter.sendMessage(mWithJabberID, message);
 	}
 
+	private void markAsRead(int id) {
+		final String selection = Constants.JID + "='" + mWithJabberID + "' AND " +
+				Constants.FROM_ME + " = 0 AND " + Constants._ID + " = " + id;
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+				ContentValues values = new ContentValues();
+				values.put(Constants.HAS_BEEN_READ, true);
+				getContentResolver().update(ChatProvider.CONTENT_URI,
+					values, selection, null);
+			}
+		}, 2000);
+	}
+
 	class ChatWindowAdapter extends SimpleCursorAdapter {
 
 		ChatWindowAdapter(Cursor cursor, String[] from, int[] to) {
@@ -187,6 +205,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			long dateMilliseconds = cursor.getLong(cursor
 					.getColumnIndex(ChatProvider.Constants.DATE));
 
+			int _id = cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.Constants._ID));
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.Constants.MESSAGE));
@@ -207,6 +227,9 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			}
 
 			wrapper.populateFrom(date, from_me != 0, jid, message, has_been_read != 0);
+
+			if (has_been_read == 0)
+				markAsRead(_id);
 
 			return row;
 		}
