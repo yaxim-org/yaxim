@@ -26,6 +26,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean isLEDNotify;
 	public boolean isVibraNotify;
 
+	public boolean smackdebug;
+
 	private final SharedPreferences prefs;
 
 	public YaximConfiguration(SharedPreferences _prefs) {
@@ -79,6 +81,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				false);
 		this.autoReconnect = prefs.getBoolean(
 				PreferenceConstants.AUTO_RECONNECT, false);
+
+		this.smackdebug = prefs.getBoolean(PreferenceConstants.SMACKDEBUG, false);
 
 		jabberID = prefs.getString(PreferenceConstants.JID, "");
 
