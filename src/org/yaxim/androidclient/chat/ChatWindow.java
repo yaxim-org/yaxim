@@ -16,6 +16,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -176,16 +178,13 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void markAsRead(int id) {
-		final String selection = Constants.JID + "='" + mWithJabberID + "' AND " +
-				Constants.FROM_ME + " = 0 AND " + Constants._ID + " = " + id;
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				ContentValues values = new ContentValues();
-				values.put(Constants.HAS_BEEN_READ, true);
-				getContentResolver().update(ChatProvider.CONTENT_URI,
-					values, selection, null);
-			}
-		}, 2000);
+		final String selection = Constants.JID + "='" + mWithJabberID + "'"
+		       + " AND " + Constants.FROM_ME + " = 0";
+		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
+			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
+		ContentValues values = new ContentValues();
+		values.put(Constants.HAS_BEEN_READ, true);
+		getContentResolver().update(rowuri, values, selection, null);
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -226,10 +225,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			wrapper.populateFrom(date, from_me != 0, jid, message, has_been_read != 0);
-
-			if (has_been_read == 0)
+			if (has_been_read == 0) {
 				markAsRead(_id);
+			}
+
+			wrapper.populateFrom(date, from_me != 0, jid, message, has_been_read != 0);
 
 			return row;
 		}
@@ -265,10 +265,15 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
 			}
-			if (has_been_read) {
-				mRowView.setBackgroundColor(0xff000000);
-			} else {
-				mRowView.setBackgroundColor(0xff404040);
+			if (!has_been_read) {
+				ColorDrawable layers[] = new ColorDrawable[2];
+				layers[0] = new ColorDrawable(0xff404040);
+				layers[1] = new ColorDrawable(0x00000000);
+				TransitionDrawable backgroundColorAnimation = new
+					TransitionDrawable(layers);
+				mRowView.setBackgroundDrawable(backgroundColorAnimation);
+				backgroundColorAnimation.setCrossFadeEnabled(true);
+				backgroundColorAnimation.startTransition(2000);
 			}
 			getMessageView().setText(message);
 		}
