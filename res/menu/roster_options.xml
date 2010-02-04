@@ -1,26 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menu_connect"
-		android:title="@string/Menu_connect"
+	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
 		android:icon="@drawable/yaxim_menu_connect" />
-	<item android:id="@+id/menu_add_friend"
-		android:title="@string/Menu_addFriend"
+
+	<item android:id="@+id/menu_add_friend" android:title="@string/Menu_addFriend"
 		android:icon="@android:drawable/ic_menu_add" />
-	<item android:id="@+id/menu_show_hide"
-		android:title="@string/Menu_HideOff"
+
+	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
 		android:icon="@android:drawable/ic_menu_delete" />
-	<item android:id="@+id/menu_status"
-		android:title="@string/Menu_Status"
+
+	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
 		android:icon="@android:drawable/ic_menu_myplaces" />
-	<item android:id="@+id/menu_exit"
-		android:title="@string/Global_Exit"
+
+	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
 		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
-	<item android:id="@+id/menu_settings"
-		android:title="@string/Menu_Settings"
+
+	<item android:id="@+id/menu_settings" android:title="@string/Menu_Settings"
 		android:icon="@android:drawable/ic_menu_preferences" />
-	<item android:id="@+id/menu_acc_set"
-		android:title="@string/Menu_AccSettings"
+
+	<item android:id="@+id/menu_acc_set" android:title="@string/Menu_AccSettings"
 		android:icon="@android:drawable/ic_menu_manage" />
-	<item android:id="@+id/menu_about"
-		android:title="@string/Menu_about"
+
+	<item android:id="@+id/menu_about" android:title="@string/Menu_about"
 		android:icon="@drawable/about" />
 </menu>
