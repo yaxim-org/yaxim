@@ -24,6 +24,8 @@ public class XMPPService extends GenericService {
 	protected static final String TAG = "XMPPService";
 
 	private AtomicBoolean mIsConnected = new AtomicBoolean(false);
+	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false);
+
 	private Thread mConnectingThread;
 
 	private Smackable mSmackable;
@@ -75,6 +77,8 @@ public class XMPPService extends GenericService {
 
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
+
+		mConnectionDemanded.set(mConfig.autoConnect);
 
 		if (mConfig.autoConnect) {
 			/*
@@ -143,10 +147,13 @@ public class XMPPService extends GenericService {
 			}
 
 			public int getConnectionState() throws RemoteException {
-				if (mSmackable != null && mSmackable.isAuthenticated())
+				if (mSmackable != null && mSmackable.isAuthenticated()) {
 					return ConnectionState.AUTHENTICATED;
-				else
+				} else if (mConnectionDemanded.get()) {
+					return ConnectionState.CONNECTING;
+				} else {
 					return ConnectionState.OFFLINE;
+				}
 			}
 
 			public void setStatus(String status, String statusMsg)
@@ -235,6 +242,8 @@ public class XMPPService extends GenericService {
 	}
 
 	private void doConnect() {
+		mConnectionDemanded.set(true);
+
 		if (mConnectingThread != null) {
 			return;
 		}
@@ -308,6 +317,7 @@ public class XMPPService extends GenericService {
 		}
 		mRosterCallbacks.finishBroadcast();
 		mIsConnected.set(true);
+		mConnectionDemanded.set(false);
 	}
 
 	private void rosterChanged() {
@@ -326,6 +336,7 @@ public class XMPPService extends GenericService {
 	}
 
 	public void doDisconnect() {
+		mConnectionDemanded.set(false);
 		mIsConnected.set(false); /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();

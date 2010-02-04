@@ -401,10 +401,11 @@ public class MainWindow extends GenericExpandableListActivity {
 				setIsConnected();
 				Log.i(TAG, "getConnectionState(): "
 						+ serviceAdapter.getConnectionState());
-				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING)
+				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING) {
 					showDialog(DIALOG_CONNECTING);
-				else if (progressDialog != null && progressDialog.isShowing())
+				} else if (progressDialog != null && progressDialog.isShowing()) {
 					dismissDialog(DIALOG_CONNECTING);
+				}
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
