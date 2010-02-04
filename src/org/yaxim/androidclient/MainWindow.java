@@ -499,7 +499,8 @@ public class MainWindow extends GenericExpandableListActivity {
 					public void run() {
 						createRosterIfConnected();
 						isConnected = true;
-						if (progressDialog.isShowing())
+						if (progressDialog != null
+								&& progressDialog.isShowing())
 							dismissDialog(DIALOG_CONNECTING);
 					}
 				});
