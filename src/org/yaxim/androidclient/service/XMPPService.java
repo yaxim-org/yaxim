@@ -260,7 +260,7 @@ public class XMPPService extends GenericService {
 		mConnectingThread.start();
 	}
 
-	public void postConnectionFailed() {
+	private void postConnectionFailed() {
 		mMainHandler.post(new Runnable() {
 			public void run() {
 				connectionFailed();
@@ -268,10 +268,18 @@ public class XMPPService extends GenericService {
 		});
 	}
 
-	public void postConnectionEstablished() {
+	private void postConnectionEstablished() {
 		mMainHandler.post(new Runnable() {
 			public void run() {
 				connectionEstablished();
+			}
+		});
+	}
+
+	private void postRosterChanged() {
+		mMainHandler.post(new Runnable() {
+			public void run() {
+				rosterChanged();
 			}
 		});
 	}
@@ -300,6 +308,21 @@ public class XMPPService extends GenericService {
 		}
 		mRosterCallbacks.finishBroadcast();
 		mIsConnected.set(true);
+	}
+
+	private void rosterChanged() {
+		if (mIsConnected.get()) {
+			final int broadCastItems = mRosterCallbacks.beginBroadcast();
+
+			for (int i = 0; i < broadCastItems; ++i) {
+				try {
+					mRosterCallbacks.getBroadcastItem(i).rosterChanged();
+				} catch (RemoteException e) {
+					Log.e(TAG, "caught RemoteException: " + e.getMessage());
+				}
+			}
+			mRosterCallbacks.finishBroadcast();
+		}
 	}
 
 	public void doDisconnect() {
@@ -331,21 +354,7 @@ public class XMPPService extends GenericService {
 			}
 
 			public void rosterChanged() {
-				if (mIsConnected.get()) {
-					final int broadCastItems = mRosterCallbacks
-							.beginBroadcast();
-
-					for (int i = 0; i < broadCastItems; ++i) {
-						try {
-							mRosterCallbacks.getBroadcastItem(i)
-									.rosterChanged();
-						} catch (RemoteException e) {
-							Log.e(TAG, "caught RemoteException: "
-									+ e.getMessage());
-						}
-					}
-					mRosterCallbacks.finishBroadcast();
-				}
+				postRosterChanged();
 			}
 
 			public boolean isBoundTo(String jabberID) {
