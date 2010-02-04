@@ -500,8 +500,9 @@ public class MainWindow extends GenericExpandableListActivity {
 						createRosterIfConnected();
 						isConnected = true;
 						if (progressDialog != null
-								&& progressDialog.isShowing())
+								&& progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
+						}
 					}
 				});
 			}
