@@ -2,7 +2,7 @@
 <resources>
 	<string name="app_name">Yaxim</string>
 	<string name="chat_name">Yaxim-Chat</string>
-	
+
 	<!-- Global Strings -->
 	<string name="Global_Cancel">Cancel</string>
 	<string name="Global_OK">OK</string>
@@ -11,7 +11,7 @@
 	<string name="Global_Me">Me</string>
 	<string name="Global_Error">Error: </string>
 	<string name="Global_JID_hint">foo@jabber.bar.com</string>
-	
+
 	<!--	FirstStartUpDialog-->
 	<string name="StartupDialog_Title">Start Yaxim:</string>
 	<string name="StartupDialog_Summary">This is the initial dialog of Yaxim. Please set
@@ -21,7 +21,7 @@
 	<string name="StartupDialog_Username_title">Enter your username:</string>
 	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_port_title">Port:</string>
-	
+
 	<!-- Notification Settings 	-->
 	<string name="preftitle_notify">Notification Preferences</string>
 	<string name="led_title">Notify via LED</string>
@@ -32,7 +32,7 @@
 	<string name="vibr_summOff">Vibration notification are off</string>
 	<string name="ringtone_title">Ringtone preferences</string>
 	<string name="ringtone_summ">Edit ringtone settings</string>
-	
+
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Bootoptions</string>
 	<string name="boot_title">"Load Yaxim at bootup</string>
@@ -46,6 +46,11 @@
 	<string name="showOffline_summ_on">Showing offline contacts</string>
 	<string name="showOffline_summ_off">Hiding offline contacts</string>
 	<string name="showOffline_title">Show offline contacts</string>
+
+	<string name="preftitle_debug">Debugging</string>
+	<string name="smackdebug_summ_on">Packet and debug output enabled via logcat</string>
+	<string name="smackdebug_summ_off">Debug via logcat disabled</string>
+	<string name="smackdebug_title">SMACK debugging</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Appearance</string>
@@ -84,7 +89,7 @@
 	<string name="addFriendAlert_Message">Could not validate ID</string>
 	<string name="addFriendAlert_Retry">Retry</string>
 	<string name="addFriendAlert_Cancel">Cancel</string>
-	
+
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Options: </string>
 	<string name="roster_contextmenu_title_no_options">No options</string>
@@ -94,7 +99,7 @@
 	<string name="roster_contextmenu_contact_rename">Rename</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change Group</string>
-	
+
 	<!-- Accountprefs -->
 	<string name="account_settings_defaultsum">Please enter a valid JabberId</string>
 	<string name="account_settings_defaultsum_prefix">Please enter a valid JabberId</string>
@@ -111,7 +116,7 @@
 	<string name="account_jabberPW_title">Enter Password</string>
 	<string name="account_jabberPW_sum">Enter Password</string>
 	<string name="account_jabberPW_dialog_title">Enter Password</string>
-	
+
 	<!-- accountprefs -->
 	<string name="account_resource_title">Modify resource</string>
 	<string name="account_resource_summ">Yaxim</string>

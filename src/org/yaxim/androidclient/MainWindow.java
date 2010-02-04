@@ -253,11 +253,9 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		setMenuItem(menu, R.id.menu_connect,
-				getConnectDisconnectIcon(),
+		setMenuItem(menu, R.id.menu_connect, getConnectDisconnectIcon(),
 				getConnectDisconnectText());
-		setMenuItem(menu, R.id.menu_show_hide,
-				getShowHideMenuIcon(),
+		setMenuItem(menu, R.id.menu_show_hide, getShowHideMenuIcon(),
 				getShowHideMenuText());
 		return true;
 	}
@@ -501,7 +499,8 @@ public class MainWindow extends GenericExpandableListActivity {
 					public void run() {
 						createRosterIfConnected();
 						isConnected = true;
-						if (progressDialog.isShowing())
+						if (progressDialog != null
+								&& progressDialog.isShowing())
 							dismissDialog(DIALOG_CONNECTING);
 					}
 				});
@@ -512,7 +511,8 @@ public class MainWindow extends GenericExpandableListActivity {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
 						isConnected = false;
-						if (progressDialog.isShowing()) {
+						if (progressDialog != null
+								&& progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
 						}
 					}
