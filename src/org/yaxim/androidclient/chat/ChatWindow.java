@@ -12,12 +12,16 @@ import org.yaxim.androidclient.service.XMPPService;
 import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,11 +45,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.Constants._ID, ChatProvider.Constants.DATE,
 			ChatProvider.Constants.FROM_ME, ChatProvider.Constants.JID,
-			ChatProvider.Constants.MESSAGE };
+			ChatProvider.Constants.MESSAGE, ChatProvider.Constants.HAS_BEEN_READ };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
 
+	private Handler mHandler = null;
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
@@ -59,6 +64,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.mainchat);
+
+		mHandler = new Handler();
 		registerForContextMenu(getListView());
 		setContactFromUri();
 		registerXMPPService();
@@ -170,6 +177,16 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		mServiceAdapter.sendMessage(mWithJabberID, message);
 	}
 
+	private void markAsRead(int id) {
+		final String selection = Constants.JID + "='" + mWithJabberID + "'"
+		       + " AND " + Constants.FROM_ME + " = 0";
+		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
+			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
+		ContentValues values = new ContentValues();
+		values.put(Constants.HAS_BEEN_READ, true);
+		getContentResolver().update(rowuri, values, selection, null);
+	}
+
 	class ChatWindowAdapter extends SimpleCursorAdapter {
 
 		ChatWindowAdapter(Cursor cursor, String[] from, int[] to) {
@@ -187,6 +204,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			long dateMilliseconds = cursor.getLong(cursor
 					.getColumnIndex(ChatProvider.Constants.DATE));
 
+			int _id = cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.Constants._ID));
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.Constants.MESSAGE));
@@ -194,6 +213,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 					.getColumnIndex(ChatProvider.Constants.FROM_ME));
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.Constants.JID));
+			int has_been_read = cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.Constants.HAS_BEEN_READ));
 
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
@@ -204,7 +225,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			wrapper.populateFrom(date, from_me != 0, jid, message);
+			if (has_been_read == 0) {
+				markAsRead(_id);
+			}
+
+			wrapper.populateFrom(date, from_me != 0, jid, message, has_been_read != 0);
 
 			return row;
 		}
@@ -227,7 +252,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			this.mRowView = row;
 		}
 
-		void populateFrom(String date, boolean from_me, String from, String message) {
+		void populateFrom(String date, boolean from_me, String from, String message,
+				boolean has_been_read) {
 			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			if (from_me) {
@@ -239,9 +265,20 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
 			}
+			if (!has_been_read) {
+				ColorDrawable layers[] = new ColorDrawable[2];
+				layers[0] = new ColorDrawable(0xff404040);
+				layers[1] = new ColorDrawable(0x00000000);
+				TransitionDrawable backgroundColorAnimation = new
+					TransitionDrawable(layers);
+				mRowView.setBackgroundDrawable(backgroundColorAnimation);
+				backgroundColorAnimation.setCrossFadeEnabled(true);
+				backgroundColorAnimation.startTransition(2000);
+			}
 			getMessageView().setText(message);
 		}
-
+        
+		
 		TextView getDateView() {
 			if (mDateView == null) {
 				mDateView = (TextView) mRowView.findViewById(R.id.chat_date);
