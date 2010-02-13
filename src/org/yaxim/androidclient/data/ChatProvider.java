@@ -151,8 +151,7 @@ public class ChatProvider extends ContentProvider {
 				null, null, orderBy);
 
 		if (ret == null) {
-			if (LogConstants.LOG_INFO)
-				Log.i(TAG, "ChatProvider.query: failed");
+			infoLog("ChatProvider.query: failed");
 		} else {
 			ret.setNotificationUri(getContext().getContentResolver(), url);
 		}
@@ -181,13 +180,17 @@ public class ChatProvider extends ContentProvider {
 			throw new UnsupportedOperationException("Cannot update URL: " + url);
 		}
 
-		if (LogConstants.LOG_INFO) {
-			Log.i(TAG, "*** notifyChange() rowId: " + rowId + " url " + url);
-		}
+		infoLog("*** notifyChange() rowId: " + rowId + " url " + url);
 
 		getContext().getContentResolver().notifyChange(url, null);
 		return count;
 
+	}
+
+	private static void infoLog(String data) {
+		if (LogConstants.LOG_INFO) {
+			Log.i(TAG, "ChatProvider.query: failed");
+		}
 	}
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -201,15 +204,15 @@ public class ChatProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			if (LogConstants.LOG_INFO) {
-				Log.i(TAG, "creating new chat table");
+			if (LogConstants.LOG_DEBUG) {
+				infoLog("creating new chat table");
 			}
 
 			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + Constants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + Constants.DATE
 					+ " INTEGER," + Constants.FROM_ME + " INTEGER,"
-					+ Constants.JID + " TEXT," + Constants.MESSAGE
-					+ " TEXT," + Constants.HAS_BEEN_READ + " BOOLEAN);");
+					+ Constants.JID + " TEXT," + Constants.MESSAGE + " TEXT,"
+					+ Constants.HAS_BEEN_READ + " BOOLEAN);");
 		}
 
 		@Override
@@ -233,8 +236,7 @@ public class ChatProvider extends ContentProvider {
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.chat";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.chat";
-		public static final String DEFAULT_SORT_ORDER = Constants.DATE
-				+ " ASC";
+		public static final String DEFAULT_SORT_ORDER = Constants.DATE + " ASC";
 
 		public static final String DATE = "date";
 		public static final String FROM_ME = "from_me";

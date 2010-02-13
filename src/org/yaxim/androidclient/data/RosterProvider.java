@@ -156,9 +156,7 @@ public class RosterProvider extends ContentProvider {
 				null, null, orderBy);
 
 		if (ret == null) {
-			if (LogConstants.LOG_INFO) {
-				Log.i(TAG, "ChatProvider.query: failed");
-			}
+			infoLog("ChatProvider.query: failed");
 		} else {
 			ret.setNotificationUri(getContext().getContentResolver(), url);
 		}
@@ -187,13 +185,17 @@ public class RosterProvider extends ContentProvider {
 			throw new UnsupportedOperationException("Cannot update URL: " + url);
 		}
 
-		if (LogConstants.LOG_INFO) {
-			Log.i(TAG, "*** notifyChange() rowId: " + rowId + " url " + url);
-		}
+		infoLog("*** notifyChange() rowId: " + rowId + " url " + url);
 
 		getContext().getContentResolver().notifyChange(url, null);
 		return count;
 
+	}
+
+	private static void infoLog(String data) {
+		if (LogConstants.LOG_INFO) {
+			Log.i(TAG, "ChatProvider.query: failed");
+		}
 	}
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -207,9 +209,7 @@ public class RosterProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			if (LogConstants.LOG_INFO) {
-				Log.i(TAG, "creating new chat table");
-			}
+			infoLog("creating new chat table");
 
 			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + Constants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + Constants.JID
@@ -222,9 +222,6 @@ public class RosterProvider extends ContentProvider {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			switch (oldVersion) {
-			case 3:
-				db.execSQL("UPDATE " + TABLE_NAME + " SET READ=1");
-				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 				onCreate(db);
