@@ -30,6 +30,7 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.Constants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
+import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.content.ContentResolver;
@@ -86,7 +87,8 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void removeRosterItem(String user) throws YaximXMPPException {
-		Log.d(TAG, "removeRosterItem(" + user + ")");
+		debugLog("removeRosterItem(" + user + ")");
+		
 		tryToRemoveRosterEntry(user);
 		mServiceCallBack.rosterChanged();
 	}
@@ -337,7 +339,8 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void unRegisterCallback() {
-		Log.d(TAG, "unRegisterCallback()");
+		debugLog("unRegisterCallback()");
+
 		mXMPPConnection.disconnect();
 		mRosterItemsByGroup.clear();
 		this.mServiceCallBack = null;
@@ -349,7 +352,8 @@ public class SmackableImp implements Smackable {
 		mRoster.addRosterListener(new RosterListener() {
 
 			public void entriesAdded(Collection<String> entries) {
-				Log.d(TAG, "entriesAdded(" + entries + ")");
+				debugLog("entriesAdded(" + entries + ")");
+
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					setRosterEntry(rosterEntry);
@@ -358,7 +362,8 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void entriesDeleted(Collection<String> entries) {
-				Log.d(TAG, "entriesDeleted(" + entries + ")");
+				debugLog("entriesDeleted(" + entries + ")");
+
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					unSetRosterEntry(rosterEntry);
@@ -367,7 +372,8 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void entriesUpdated(Collection<String> entries) {
-				Log.d(TAG, "entriesUpdated(" + entries + ")");
+				debugLog("entriesUpdated(" + entries + ")");
+
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					unSetRosterEntry(rosterEntry);
@@ -377,7 +383,8 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void presenceChanged(Presence presence) {
-				Log.d(TAG, "presenceChanged(" + presence.getFrom() + ")");
+				debugLog("presenceChanged(" + presence.getFrom() + ")");
+
 				String jabberID = getJabberID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				setRosterEntry(rosterEntry);
@@ -455,4 +462,9 @@ public class SmackableImp implements Smackable {
 		return StatusMode.offline;
 	}
 
+	private void debugLog(String data) {
+		if (LogConstants.LOG_DEBUG) {
+			Log.d(TAG, data);
+		}
+	}
 }
