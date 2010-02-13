@@ -443,19 +443,19 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addRosterEntryToDB(RosterEntry entry) {
-
+		// TODO implement ...
 	}
 
 	private void deleteRosterEntryFromDB(RosterEntry rosterEntry) {
-
+		// TODO implement ...
 	}
 
 	private void updateRosterEntryInDB(RosterEntry rosterEntry) {
-
+		// TODO implement ...
 	}
-	
+
 	private void updateOrInsertRosterEntryToDB(RosterEntry rosterEntry) {
-		
+		// TODO implement ...
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {
