@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.ChatProvider;
-import org.yaxim.androidclient.data.ChatProvider.Constants;
+import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 
@@ -43,9 +43,9 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private static final String TAG = "ChatWindow";
 	private static final int NOTIFY_ID = 0;
 	private static final String[] PROJECTION_FROM = new String[] {
-			ChatProvider.Constants._ID, ChatProvider.Constants.DATE,
-			ChatProvider.Constants.FROM_ME, ChatProvider.Constants.JID,
-			ChatProvider.Constants.MESSAGE, ChatProvider.Constants.HAS_BEEN_READ };
+			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
+			ChatProvider.ChatConstants.FROM_ME, ChatProvider.ChatConstants.JID,
+			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.HAS_BEEN_READ };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
@@ -77,7 +77,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void setChatWindowAdapter() {
-		String selection = Constants.JID + "='" + mWithJabberID + "'";
+		String selection = ChatConstants.JID + "='" + mWithJabberID + "'";
 		Cursor cursor = managedQuery(ChatProvider.CONTENT_URI, PROJECTION_FROM,
 				selection, null, null);
 		ListAdapter adapter = new ChatWindowAdapter(cursor, PROJECTION_FROM,
@@ -178,12 +178,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void markAsRead(int id) {
-		final String selection = Constants.JID + "='" + mWithJabberID + "'"
-		       + " AND " + Constants.FROM_ME + " = 0";
+		final String selection = ChatConstants.JID + "='" + mWithJabberID + "'"
+		       + " AND " + ChatConstants.FROM_ME + " = 0";
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
 		ContentValues values = new ContentValues();
-		values.put(Constants.HAS_BEEN_READ, true);
+		values.put(ChatConstants.HAS_BEEN_READ, true);
 		getContentResolver().update(rowuri, values, selection, null);
 	}
 
@@ -202,19 +202,19 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			cursor.moveToPosition(position);
 
 			long dateMilliseconds = cursor.getLong(cursor
-					.getColumnIndex(ChatProvider.Constants.DATE));
+					.getColumnIndex(ChatProvider.ChatConstants.DATE));
 
 			int _id = cursor.getInt(cursor
-					.getColumnIndex(ChatProvider.Constants._ID));
+					.getColumnIndex(ChatProvider.ChatConstants._ID));
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
-					.getColumnIndex(ChatProvider.Constants.MESSAGE));
+					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
 			int from_me = cursor.getInt(cursor
-					.getColumnIndex(ChatProvider.Constants.FROM_ME));
+					.getColumnIndex(ChatProvider.ChatConstants.FROM_ME));
 			String jid = cursor.getString(cursor
-					.getColumnIndex(ChatProvider.Constants.JID));
+					.getColumnIndex(ChatProvider.ChatConstants.JID));
 			int has_been_read = cursor.getInt(cursor
-					.getColumnIndex(ChatProvider.Constants.HAS_BEEN_READ));
+					.getColumnIndex(ChatProvider.ChatConstants.HAS_BEEN_READ));
 
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();

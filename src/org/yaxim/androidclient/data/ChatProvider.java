@@ -77,9 +77,9 @@ public class ChatProvider extends ContentProvider {
 		int match = URI_MATCHER.match(url);
 		switch (match) {
 		case MESSAGES:
-			return Constants.CONTENT_TYPE;
+			return ChatConstants.CONTENT_TYPE;
 		case MESSAGE_ID:
-			return Constants.CONTENT_ITEM_TYPE;
+			return ChatConstants.CONTENT_ITEM_TYPE;
 		default:
 			throw new IllegalArgumentException("Unknown URL");
 		}
@@ -94,7 +94,7 @@ public class ChatProvider extends ContentProvider {
 		ContentValues values = (initialValues != null) ? new ContentValues(
 				initialValues) : new ContentValues();
 
-		for (String colName : Constants.getRequiredColumns()) {
+		for (String colName : ChatConstants.getRequiredColumns()) {
 			if (values.containsKey(colName) == false) {
 				throw new IllegalArgumentException("Missing column: " + colName);
 			}
@@ -102,7 +102,7 @@ public class ChatProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-		long rowId = db.insert(TABLE_NAME, Constants.DATE, values);
+		long rowId = db.insert(TABLE_NAME, ChatConstants.DATE, values);
 
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
@@ -141,7 +141,7 @@ public class ChatProvider extends ContentProvider {
 
 		String orderBy;
 		if (TextUtils.isEmpty(sortOrder)) {
-			orderBy = Constants.DEFAULT_SORT_ORDER;
+			orderBy = ChatConstants.DEFAULT_SORT_ORDER;
 		} else {
 			orderBy = sortOrder;
 		}
@@ -208,11 +208,11 @@ public class ChatProvider extends ContentProvider {
 				infoLog("creating new chat table");
 			}
 
-			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + Constants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + Constants.DATE
-					+ " INTEGER," + Constants.FROM_ME + " INTEGER,"
-					+ Constants.JID + " TEXT," + Constants.MESSAGE + " TEXT,"
-					+ Constants.HAS_BEEN_READ + " BOOLEAN);");
+			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + ChatConstants._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + ChatConstants.DATE
+					+ " INTEGER," + ChatConstants.FROM_ME + " INTEGER,"
+					+ ChatConstants.JID + " TEXT," + ChatConstants.MESSAGE + " TEXT,"
+					+ ChatConstants.HAS_BEEN_READ + " BOOLEAN);");
 		}
 
 		@Override
@@ -229,14 +229,14 @@ public class ChatProvider extends ContentProvider {
 
 	}
 
-	public static final class Constants implements BaseColumns {
+	public static final class ChatConstants implements BaseColumns {
 
-		private Constants() {
+		private ChatConstants() {
 		}
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.chat";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.chat";
-		public static final String DEFAULT_SORT_ORDER = Constants.DATE + " ASC";
+		public static final String DEFAULT_SORT_ORDER = ChatConstants.DATE + " ASC";
 
 		public static final String DATE = "date";
 		public static final String FROM_ME = "from_me";

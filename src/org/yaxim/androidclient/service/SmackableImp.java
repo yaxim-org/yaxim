@@ -27,7 +27,8 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.data.YaximConfiguration;
-import org.yaxim.androidclient.data.ChatProvider.Constants;
+import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.LogConstants;
@@ -88,7 +89,7 @@ public class SmackableImp implements Smackable {
 
 	public void removeRosterItem(String user) throws YaximXMPPException {
 		debugLog("removeRosterItem(" + user + ")");
-		
+
 		tryToRemoveRosterEntry(user);
 		mServiceCallBack.rosterChanged();
 	}
@@ -357,6 +358,7 @@ public class SmackableImp implements Smackable {
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					setRosterEntry(rosterEntry);
+					addRosterEntryToDB(rosterEntry);
 				}
 				mServiceCallBack.rosterChanged();
 			}
@@ -367,6 +369,7 @@ public class SmackableImp implements Smackable {
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					unSetRosterEntry(rosterEntry);
+					deleteRosterEntryFromDB(rosterEntry);
 				}
 				mServiceCallBack.rosterChanged();
 			}
@@ -378,6 +381,7 @@ public class SmackableImp implements Smackable {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					unSetRosterEntry(rosterEntry);
 					setRosterEntry(rosterEntry);
+					updateRosterEntryInDB(rosterEntry);
 				}
 				mServiceCallBack.rosterChanged();
 			}
@@ -389,6 +393,7 @@ public class SmackableImp implements Smackable {
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				setRosterEntry(rosterEntry);
 				mServiceCallBack.rosterChanged();
+				updateOrInsertRosterEntryToDB(rosterEntry);
 			}
 		});
 	}
@@ -424,17 +429,33 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(listener, filter);
 	}
 
-	private void writeChatMessageToDB(boolean from_me, String JID, String message,
-			boolean read) {
+	private void writeChatMessageToDB(boolean from_me, String JID,
+			String message, boolean read) {
 		ContentValues values = new ContentValues();
 
-		values.put(Constants.FROM_ME, from_me);
-		values.put(Constants.JID, JID);
-		values.put(Constants.MESSAGE, message);
-		values.put(Constants.HAS_BEEN_READ, read);
-		values.put(Constants.DATE, System.currentTimeMillis());
+		values.put(ChatConstants.FROM_ME, from_me);
+		values.put(ChatConstants.JID, JID);
+		values.put(ChatConstants.MESSAGE, message);
+		values.put(ChatConstants.HAS_BEEN_READ, read);
+		values.put(ChatConstants.DATE, System.currentTimeMillis());
 
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
+	}
+
+	private void addRosterEntryToDB(RosterEntry entry) {
+
+	}
+
+	private void deleteRosterEntryFromDB(RosterEntry rosterEntry) {
+
+	}
+
+	private void updateRosterEntryInDB(RosterEntry rosterEntry) {
+
+	}
+	
+	private void updateOrInsertRosterEntryToDB(RosterEntry rosterEntry) {
+		
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {

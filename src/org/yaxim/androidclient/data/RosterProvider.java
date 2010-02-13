@@ -79,9 +79,9 @@ public class RosterProvider extends ContentProvider {
 		int match = URI_MATCHER.match(url);
 		switch (match) {
 		case CONTACTS:
-			return Constants.CONTENT_TYPE;
+			return RosterConstants.CONTENT_TYPE;
 		case CONTACT_ID:
-			return Constants.CONTENT_ITEM_TYPE;
+			return RosterConstants.CONTENT_ITEM_TYPE;
 		default:
 			throw new IllegalArgumentException("Unknown URL");
 		}
@@ -96,7 +96,7 @@ public class RosterProvider extends ContentProvider {
 		ContentValues values = (initialValues != null) ? new ContentValues(
 				initialValues) : new ContentValues();
 
-		for (String colName : Constants.getRequiredColumns()) {
+		for (String colName : RosterConstants.getRequiredColumns()) {
 			if (values.containsKey(colName) == false) {
 				throw new IllegalArgumentException("Missing column: " + colName);
 			}
@@ -104,7 +104,7 @@ public class RosterProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-		long rowId = db.insert(TABLE_NAME, Constants.JID, values);
+		long rowId = db.insert(TABLE_NAME, RosterConstants.JID, values);
 
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
@@ -146,7 +146,7 @@ public class RosterProvider extends ContentProvider {
 
 		String orderBy;
 		if (TextUtils.isEmpty(sortOrder)) {
-			orderBy = Constants.DEFAULT_SORT_ORDER;
+			orderBy = RosterConstants.DEFAULT_SORT_ORDER;
 		} else {
 			orderBy = sortOrder;
 		}
@@ -211,11 +211,11 @@ public class RosterProvider extends ContentProvider {
 		public void onCreate(SQLiteDatabase db) {
 			infoLog("creating new chat table");
 
-			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + Constants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + Constants.JID
-					+ " TEXT," + Constants.ALIAS + " TEXT,"
-					+ Constants.STATUS_MODE + " INTEGER,"
-					+ Constants.STATUS_MESSAGE + " TEXT," + Constants.GROUP
+			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + RosterConstants._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + RosterConstants.JID
+					+ " TEXT," + RosterConstants.ALIAS + " TEXT,"
+					+ RosterConstants.STATUS_MODE + " INTEGER,"
+					+ RosterConstants.STATUS_MESSAGE + " TEXT," + RosterConstants.GROUP
 					+ " TEXT);");
 		}
 
@@ -229,14 +229,14 @@ public class RosterProvider extends ContentProvider {
 		}
 	}
 
-	public static final class Constants implements BaseColumns {
+	public static final class RosterConstants implements BaseColumns {
 
-		private Constants() {
+		private RosterConstants() {
 		}
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.roster";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.roster";
-		public static final String DEFAULT_SORT_ORDER = Constants.STATUS_MODE
+		public static final String DEFAULT_SORT_ORDER = RosterConstants.STATUS_MODE
 				+ " ASC";
 
 		public static final String JID = "jid";
