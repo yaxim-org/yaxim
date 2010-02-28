@@ -28,7 +28,6 @@ import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
-import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.LogConstants;
@@ -136,7 +135,9 @@ public class SmackableImp implements Smackable {
 			mXMPPConnection.login(mConfig.userName, mConfig.password,
 					mConfig.ressource);
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getMessage());
+			throw new YaximXMPPException(e.getLocalizedMessage());
+		} catch (IllegalStateException e) {
+			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
 	}
 
@@ -160,7 +161,7 @@ public class SmackableImp implements Smackable {
 			try {
 				rosterGroup.addEntry(rosterEntry);
 			} catch (XMPPException e) {
-				throw new YaximXMPPException(e.getMessage());
+				throw new YaximXMPPException(e.getLocalizedMessage());
 			}
 		}
 	}
@@ -194,7 +195,7 @@ public class SmackableImp implements Smackable {
 				mRosterItemsByGroup.remove(group.getName());
 			}
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getMessage());
+			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
 	}
 
@@ -207,7 +208,7 @@ public class SmackableImp implements Smackable {
 				mRoster.removeEntry(rosterEntry);
 			}
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getMessage());
+			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
 	}
 
@@ -217,7 +218,7 @@ public class SmackableImp implements Smackable {
 		try {
 			mRoster.createEntry(user, alias, new String[] { group });
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getMessage());
+			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
 	}
 
