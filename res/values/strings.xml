@@ -66,7 +66,7 @@
 	<string name="Menu_addFriend">Add friend</string>
 	<string name="Menu_ShowOff">Show offline</string>
 	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit Accounts</string>
+	<string name="Menu_AccSettings">Edit Account</string>
 	<string name="Menu_Settings">Settings</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_Connect">Connect</string>
