@@ -537,6 +537,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			progressDialog.setIcon(android.R.drawable.ic_dialog_info);
 			progressDialog.setTitle(R.string.dialog_connect_title);
 			progressDialog.setMessage(getText(R.string.dialog_connect_message));
+			progressDialog.setCancelable(false);
 			return progressDialog;
 		default:
 			return super.onCreateDialog(id);
