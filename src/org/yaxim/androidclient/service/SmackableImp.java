@@ -26,16 +26,20 @@ import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.util.StringUtils;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
+import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.util.StatusModeInt;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 
+import android.net.Uri;
 import android.util.Log;
 
 public class SmackableImp implements Smackable {
@@ -203,7 +207,7 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 		try {
 			RosterEntry rosterEntry = mRoster.getEntry(user);
-			// unSetRosterEntry(rosterEntry);
+
 			if (rosterEntry != null) {
 				mRoster.removeEntry(rosterEntry);
 			}
@@ -324,7 +328,7 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		if (isAuthenticated()) {
 			mXMPPConnection.sendPacket(newMessage);
-			writeChatMessageToDB(true, toJID, message, true);
+			addChatMessageToDB(true, toJID, message, true);
 		}
 	}
 
@@ -345,8 +349,15 @@ public class SmackableImp implements Smackable {
 
 		mXMPPConnection.disconnect();
 		mRosterItemsByGroup.clear();
+		setStatusOffline();
 		this.mServiceCallBack = null;
 	}
+	
+	private void setStatusOffline() {
+		ContentValues values = new ContentValues();
+		values.put(RosterConstants.STATUS_MODE, StatusModeInt.MODE_OFFLINE);
+		mContentResolver.update(RosterProvider.CONTENT_URI, values, null, null);
+	};
 
 	private void registerRosterListener() {
 		mRoster = mXMPPConnection.getRoster();
@@ -421,7 +432,7 @@ public class SmackableImp implements Smackable {
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
 
-					writeChatMessageToDB(false, fromJID, chatMessage, false);
+					addChatMessageToDB(false, fromJID, chatMessage, false);
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
 			}
@@ -430,7 +441,7 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(listener, filter);
 	}
 
-	private void writeChatMessageToDB(boolean from_me, String JID,
+	private void addChatMessageToDB(boolean from_me, String JID,
 			String message, boolean read) {
 		ContentValues values = new ContentValues();
 
@@ -443,20 +454,47 @@ public class SmackableImp implements Smackable {
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 	}
 
-	private void addRosterEntryToDB(RosterEntry entry) {
-		// TODO implement ...
+	private void addRosterEntryToDB(final RosterEntry entry) {
+		final ContentValues values = getContentValuesForRosterEntry(entry);
+
+		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
+		debugLog("addRosterEntryToDB: Inserted " + uri);
 	}
 
-	private void deleteRosterEntryFromDB(RosterEntry rosterEntry) {
-		// TODO implement ...
+	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
+		final ContentValues values = new ContentValues();
+
+		values.put(RosterConstants.JID, entry.getUser());
+		values.put(RosterConstants.ALIAS, getName(entry));
+
+		Presence presence = mRoster.getPresence(entry.getUser());
+		values.put(RosterConstants.STATUS_MODE, getStatusInt(presence));
+		values.put(RosterConstants.STATUS_MESSAGE, presence.getStatus());
+		values.put(RosterConstants.GROUP, getGroup(entry.getGroups()));
+
+		return values;
 	}
 
-	private void updateRosterEntryInDB(RosterEntry rosterEntry) {
-		// TODO implement ...
+	private void deleteRosterEntryFromDB(final RosterEntry entry) {
+		int count = mContentResolver.delete(RosterProvider.CONTENT_URI,
+				RosterConstants.JID + " = ?", new String[] { entry.getUser() });
+		debugLog("deleteRosterEntryFromDB: Deleted " + count + " entries");
 	}
 
-	private void updateOrInsertRosterEntryToDB(RosterEntry rosterEntry) {
-		// TODO implement ...
+	private void updateRosterEntryInDB(final RosterEntry entry) {
+		final ContentValues values = getContentValuesForRosterEntry(entry);
+
+		mContentResolver.update(RosterProvider.CONTENT_URI, values,
+				RosterConstants.JID + " = ?", new String[] { entry.getUser() });
+	}
+
+	private void updateOrInsertRosterEntryToDB(final RosterEntry entry) {
+		try {
+			deleteRosterEntryFromDB(entry);
+			addRosterEntryToDB(entry);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {
@@ -482,6 +520,26 @@ public class SmackableImp implements Smackable {
 			return StatusMode.available;
 		}
 		return StatusMode.offline;
+	}
+
+	private int getStatusInt(final Presence presence) {
+		if (presence.getType() == Presence.Type.available) {
+			final Mode mode = presence.getMode();
+			if (mode != null) {
+				switch (mode) {
+				case chat:
+					return StatusModeInt.MODE_CHAT;
+				case away:
+					return StatusModeInt.MODE_AWAY;
+				case xa:
+					return StatusModeInt.MODE_XA;
+				case dnd:
+					return StatusModeInt.MODE_DND;
+				}
+			}
+			return StatusModeInt.MODE_AVAILABLE;
+		}
+		return StatusModeInt.MODE_OFFLINE;
 	}
 
 	private void debugLog(String data) {
