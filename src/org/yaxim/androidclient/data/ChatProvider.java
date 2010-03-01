@@ -115,7 +115,7 @@ public class ChatProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		mOpenHelper = new DatabaseHelper(getContext());
+		mOpenHelper = new ChatDatabaseHelper(getContext());
 		return true;
 	}
 
@@ -193,12 +193,12 @@ public class ChatProvider extends ContentProvider {
 		}
 	}
 
-	private static class DatabaseHelper extends SQLiteOpenHelper {
+	private static class ChatDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
 		private static final int DATABASE_VERSION = 4;
 
-		public DatabaseHelper(Context context) {
+		public ChatDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
@@ -209,9 +209,10 @@ public class ChatProvider extends ContentProvider {
 			}
 
 			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + ChatConstants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + ChatConstants.DATE
-					+ " INTEGER," + ChatConstants.FROM_ME + " INTEGER,"
-					+ ChatConstants.JID + " TEXT," + ChatConstants.MESSAGE + " TEXT,"
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ ChatConstants.DATE + " INTEGER," + ChatConstants.FROM_ME
+					+ " INTEGER," + ChatConstants.JID + " TEXT,"
+					+ ChatConstants.MESSAGE + " TEXT,"
 					+ ChatConstants.HAS_BEEN_READ + " BOOLEAN);");
 		}
 
@@ -236,7 +237,8 @@ public class ChatProvider extends ContentProvider {
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.chat";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.chat";
-		public static final String DEFAULT_SORT_ORDER = ChatConstants.DATE + " ASC";
+		public static final String DEFAULT_SORT_ORDER = ChatConstants.DATE
+				+ " ASC";
 
 		public static final String DATE = "date";
 		public static final String FROM_ME = "from_me";

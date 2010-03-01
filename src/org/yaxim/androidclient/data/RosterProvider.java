@@ -117,7 +117,7 @@ public class RosterProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		mOpenHelper = new DatabaseHelper(getContext());
+		mOpenHelper = new RosterDatabaseHelper(getContext());
 		return true;
 	}
 
@@ -156,7 +156,7 @@ public class RosterProvider extends ContentProvider {
 				null, null, orderBy);
 
 		if (ret == null) {
-			infoLog("ChatProvider.query: failed");
+			infoLog("RosterProvider.query: failed");
 		} else {
 			ret.setNotificationUri(getContext().getContentResolver(), url);
 		}
@@ -174,12 +174,12 @@ public class RosterProvider extends ContentProvider {
 
 		switch (match) {
 		case CONTACTS:
-			count = db.update(TABLE_NAME, values, where, null);
+			count = db.update(TABLE_NAME, values, where, whereArgs);
 			break;
 		case CONTACT_ID:
 			String segment = url.getPathSegments().get(1);
 			rowId = Long.parseLong(segment);
-			count = db.update(TABLE_NAME, values, "_id=" + rowId, null);
+			count = db.update(TABLE_NAME, values, "_id=" + rowId, whereArgs);
 			break;
 		default:
 			throw new UnsupportedOperationException("Cannot update URL: " + url);
@@ -194,29 +194,30 @@ public class RosterProvider extends ContentProvider {
 
 	private static void infoLog(String data) {
 		if (LogConstants.LOG_INFO) {
-			Log.i(TAG, "ChatProvider.query: failed");
+			Log.i(TAG, "RosterProvider.query: failed");
 		}
 	}
 
-	private static class DatabaseHelper extends SQLiteOpenHelper {
+	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 4;
+		private static final int DATABASE_VERSION = 1;
 
-		public DatabaseHelper(Context context) {
+		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			infoLog("creating new chat table");
+			infoLog("creating new roster table");
 
-			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + RosterConstants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT," + RosterConstants.JID
-					+ " TEXT," + RosterConstants.ALIAS + " TEXT,"
-					+ RosterConstants.STATUS_MODE + " INTEGER,"
-					+ RosterConstants.STATUS_MESSAGE + " TEXT," + RosterConstants.GROUP
-					+ " TEXT);");
+			db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
+					+ RosterConstants._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ RosterConstants.JID + " TEXT, " + RosterConstants.ALIAS
+					+ " TEXT, " + RosterConstants.STATUS_MODE + " INTEGER, "
+					+ RosterConstants.STATUS_MESSAGE + " TEXT, "
+					+ RosterConstants.GROUP + " TEXT);");
 		}
 
 		@Override
@@ -243,7 +244,7 @@ public class RosterProvider extends ContentProvider {
 		public static final String ALIAS = "alias";
 		public static final String STATUS_MODE = "status_mode";
 		public static final String STATUS_MESSAGE = "status_message";
-		public static final String GROUP = "group";
+		public static final String GROUP = "roster_group";
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
