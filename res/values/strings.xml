@@ -52,9 +52,9 @@
 	<string name="smackdebug_summ_off">Debug via logcat disabled</string>
 	<string name="smackdebug_title">SMACK debugging</string>
 
-	<string name="reportcrash_title">Send anonymous crash reports</string>
-	<string name="reportcrash_summ_on">Crash reports enabled</string>
-	<string name="reportcrash_summ_off">Crash reports disabled</string>
+	<string name="reportcrash_title">Send crash reports</string>
+	<string name="reportcrash_summ_on">Anonymous crash reports enabled</string>
+	<string name="reportcrash_summ_off">Anonymous crash reports disabled</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Appearance</string>
