@@ -1,7 +1,10 @@
 package org.yaxim.androidclient;
 
+import org.yaxim.androidclient.data.YaximConfiguration;
+
 import android.app.ExpandableListActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,6 +13,8 @@ import com.nullwire.trace.ExceptionHandler;
 public class GenericExpandableListActivity extends ExpandableListActivity {
 
 	private static final String TAG = "GenericService";
+
+	protected YaximConfiguration mConfig;
 
 	@Override
 	protected void onPause() {
@@ -21,7 +26,9 @@ public class GenericExpandableListActivity extends ExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "called onCreate()");
-		ExceptionHandler.register(this, "http://duenndns.de/yaxim-crash/");
+		mConfig = new YaximConfiguration(PreferenceManager
+				.getDefaultSharedPreferences(this));
+		registerCrashReporter();
 	}
 
 	@Override
@@ -39,5 +46,11 @@ public class GenericExpandableListActivity extends ExpandableListActivity {
 	protected void showToastNotification(int message) {
 		Toast tmptoast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
 		tmptoast.show();
+	}
+
+	private void registerCrashReporter() {
+		if (mConfig.reportCrash) {
+			ExceptionHandler.register(this, "http://duenndns.de/yaxim-crash/");
+		}
 	}
 }

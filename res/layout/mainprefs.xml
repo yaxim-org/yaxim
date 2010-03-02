@@ -62,6 +62,15 @@
 			android:summaryOn="@string/smackdebug_summ_on"
 			android:summaryOff="@string/smackdebug_summ_off"
 			android:defaultValue="false"
+		/>
+		
+		<CheckBoxPreference
+			android:id="@+id/reportcrash"
+			android:key="reportcrash"
+			android:title="@string/reportcrash_title"
+			android:summaryOn="@string/reportcrash_summ_on"
+			android:summaryOff="@string/reportcrash_summ_off"
+			android:defaultValue="false"
 		/>	
 	</PreferenceCategory>
 	<!--<PreferenceCategory android:title="@string/preftitle_app">

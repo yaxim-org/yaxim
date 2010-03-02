@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
@@ -28,7 +29,7 @@ public abstract class GenericService extends Service {
 	private Vibrator vibrator;
 	private Intent notificationIntent;
 	private int notificationCounter = 0;
-	
+
 	protected YaximConfiguration mConfig;
 
 	@Override
@@ -53,6 +54,8 @@ public abstract class GenericService extends Service {
 	public void onCreate() {
 		Log.i(TAG, "called onCreate()");
 		super.onCreate();
+		mConfig = new YaximConfiguration(PreferenceManager
+				.getDefaultSharedPreferences(this));
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		addNotificationMGR();
 	}

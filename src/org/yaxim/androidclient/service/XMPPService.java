@@ -75,9 +75,6 @@ public class XMPPService extends GenericService {
 		createServiceRosterStub();
 		createServiceChatStub();
 
-		mConfig = new YaximConfiguration(PreferenceManager
-				.getDefaultSharedPreferences(this));
-
 		mConnectionDemanded.set(mConfig.autoConnect);
 
 		if (mConfig.autoConnect) {

@@ -19,6 +19,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean bootstart;
 	public boolean autoConnect;
 	public boolean autoReconnect;
+	public boolean reportCrash;
 	public String userName;
 	public String server;
 	public String jabberID;
@@ -83,6 +84,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				PreferenceConstants.AUTO_RECONNECT, false);
 
 		this.smackdebug = prefs.getBoolean(PreferenceConstants.SMACKDEBUG, false);
+		this.reportCrash = prefs.getBoolean(PreferenceConstants.REPORT_CRASH, false);
 
 		jabberID = prefs.getString(PreferenceConstants.JID, "");
 
