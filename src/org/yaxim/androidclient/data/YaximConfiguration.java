@@ -38,7 +38,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	}
 
 	@Override
-	public void finalize() {
+	protected void finalize() {
 		prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
