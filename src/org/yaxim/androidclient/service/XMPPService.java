@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.data.RosterItem;
-import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
+import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.content.Intent;
@@ -16,12 +16,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class XMPPService extends GenericService {
-
-	protected static final String TAG = "XMPPService";
 
 	private AtomicBoolean mIsConnected = new AtomicBoolean(false);
 	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false);
@@ -168,8 +165,7 @@ public class XMPPService extends GenericService {
 					mSmackable.addRosterItem(user, alias, group);
 				} catch (YaximXMPPException e) {
 					shortToastNotify(e.getMessage());
-					Log.e(TAG, "exception in addRosterItem(): "
-							+ e.getMessage());
+					logError("exception in addRosterItem(): " + e.getMessage());
 				}
 			}
 
@@ -182,7 +178,7 @@ public class XMPPService extends GenericService {
 					mSmackable.removeRosterItem(user);
 				} catch (YaximXMPPException e) {
 					shortToastNotify(e.getMessage());
-					Log.e(TAG, "exception in removeRosterItem(): "
+					logError("exception in removeRosterItem(): "
 							+ e.getMessage());
 				}
 			}
@@ -193,7 +189,7 @@ public class XMPPService extends GenericService {
 					mSmackable.moveRosterItemToGroup(user, group);
 				} catch (YaximXMPPException e) {
 					shortToastNotify(e.getMessage());
-					Log.e(TAG, "exception in moveRosterItemToGroup(): "
+					logError("exception in moveRosterItemToGroup(): "
 							+ e.getMessage());
 				}
 			}
@@ -204,7 +200,7 @@ public class XMPPService extends GenericService {
 					mSmackable.renameRosterItem(user, newName);
 				} catch (YaximXMPPException e) {
 					shortToastNotify(e.getMessage());
-					Log.e(TAG, "exception in renameRosterItem(): "
+					logError("exception in renameRosterItem(): "
 							+ e.getMessage());
 				}
 			}
@@ -256,7 +252,7 @@ public class XMPPService extends GenericService {
 					}
 				} catch (YaximXMPPException e) {
 					postConnectionFailed();
-					Log.e(TAG, "YaximXMPPException in doConnect(): " + e);
+					logError("YaximXMPPException in doConnect(): " + e);
 				} finally {
 					mConnectingThread = null;
 				}
@@ -296,7 +292,7 @@ public class XMPPService extends GenericService {
 			try {
 				mRosterCallbacks.getBroadcastItem(i).connectionFailed();
 			} catch (RemoteException e) {
-				Log.e(TAG, "caught RemoteException: " + e.getMessage());
+				logError("caught RemoteException: " + e.getMessage());
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
@@ -309,7 +305,7 @@ public class XMPPService extends GenericService {
 			try {
 				mRosterCallbacks.getBroadcastItem(i).connectionSuccessful();
 			} catch (RemoteException e) {
-				Log.e(TAG, "caught RemoteException: " + e.getMessage());
+				logError("caught RemoteException: " + e.getMessage());
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
@@ -325,7 +321,7 @@ public class XMPPService extends GenericService {
 				try {
 					mRosterCallbacks.getBroadcastItem(i).rosterChanged();
 				} catch (RemoteException e) {
-					Log.e(TAG, "caught RemoteException: " + e.getMessage());
+					logError("caught RemoteException: " + e.getMessage());
 				}
 			}
 			mRosterCallbacks.finishBroadcast();
@@ -356,7 +352,7 @@ public class XMPPService extends GenericService {
 
 			public void newMessage(String from, String message) {
 				if (!mIsBoundTo.contains(from)) {
-					Log.i(TAG, "notification: " + from);
+					logInfo("notification: " + from);
 					notifyClient(from, message);
 				}
 			}

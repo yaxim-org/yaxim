@@ -2,6 +2,7 @@ package org.yaxim.androidclient.service;
 
 import org.yaxim.androidclient.chat.ChatWindow;
 import org.yaxim.androidclient.data.YaximConfiguration;
+import org.yaxim.androidclient.util.LogConstants;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -20,7 +21,7 @@ import org.yaxim.androidclient.R;
 
 public abstract class GenericService extends Service {
 
-	private static final String TAG = "XMPPService";
+	private static final String TAG = "Service";
 	private static final String APP_NAME = "Yaxim";
 	private static final int NOTIFY_ID = 0;
 
@@ -118,6 +119,18 @@ public abstract class GenericService extends Service {
 
 	public void resetNotificationCounter() {
 		notificationCounter = 0;
+	}
+	
+	protected void logError(String data) {
+		if (LogConstants.LOG_ERROR) {
+			Log.e(TAG, data);
+		}
+	}
+	
+	protected void logInfo(String data) {
+		if (LogConstants.LOG_ERROR) {
+			Log.e(TAG, data);
+		}
 	}
 
 }
