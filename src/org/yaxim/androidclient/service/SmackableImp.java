@@ -346,13 +346,14 @@ public class SmackableImp implements Smackable {
 
 	public void unRegisterCallback() {
 		debugLog("unRegisterCallback()");
-
-		mXMPPConnection.disconnect();
+		if (mXMPPConnection.isConnected()) {
+			mXMPPConnection.disconnect();
+		}
 		mRosterItemsByGroup.clear();
 		setStatusOffline();
 		this.mServiceCallBack = null;
 	}
-	
+
 	private void setStatusOffline() {
 		ContentValues values = new ContentValues();
 		values.put(RosterConstants.STATUS_MODE, StatusModeInt.MODE_OFFLINE);
