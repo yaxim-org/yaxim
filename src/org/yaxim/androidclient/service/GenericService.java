@@ -25,11 +25,11 @@ public abstract class GenericService extends Service {
 	private static final String APP_NAME = "Yaxim";
 	private static final int NOTIFY_ID = 0;
 
-	private NotificationManager notificationMGR;
-	private Notification notification;
-	private Vibrator vibrator;
-	private Intent notificationIntent;
-	private int notificationCounter = 0;
+	private NotificationManager mNotificationMGR;
+	private Notification mNotification;
+	private Vibrator mVibrator;
+	private Intent mNotificationIntent;
+	private int mNotificationCounter = 0;
 
 	protected YaximConfiguration mConfig;
 
@@ -57,7 +57,7 @@ public abstract class GenericService extends Service {
 		super.onCreate();
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
-		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		addNotificationMGR();
 	}
 
@@ -74,41 +74,47 @@ public abstract class GenericService extends Service {
 	}
 
 	private void addNotificationMGR() {
-		notificationMGR = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		notificationIntent = new Intent(this, ChatWindow.class);
+		mNotificationMGR = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
 	protected void notifyClient(String from, String message) {
-		notificationCounter++;
+		setNotification(from, message);
+		setLEDNotifivation();
+		mNotificationMGR.notify(NOTIFY_ID, mNotification);
+		
+		vibraNotififaction();
+	}
+	
+	private void setNotification(String from, String message) {
+		mNotificationCounter++;
 		String title = "Message from " + from;
-		notification = new Notification(R.drawable.icon, APP_NAME + ": "
+		mNotification = new Notification(R.drawable.icon, APP_NAME + ": "
 				+ title, System.currentTimeMillis());
 		Uri userNameUri = Uri.parse(from);
-		notificationIntent.setData(userNameUri);
+		mNotificationIntent.setData(userNameUri);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				notificationIntent, 0);
+				mNotificationIntent, 0);
 
-		notification.setLatestEventInfo(this, title, message, pendingIntent);
-		notification.number = notificationCounter;
-		notification.flags = Notification.FLAG_AUTO_CANCEL
+		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
+		mNotification.number = mNotificationCounter;
+		mNotification.flags = Notification.FLAG_AUTO_CANCEL
 				| Notification.FLAG_ONLY_ALERT_ONCE;
+	}
 
-		vibraNotififaction();
-
+	private void setLEDNotifivation() {
 		if (mConfig.isLEDNotify) {
-			notification.flags |= Notification.DEFAULT_LIGHTS;
-			notification.ledARGB = Color.MAGENTA;
-			notification.ledOnMS = 300;
-			notification.ledOffMS = 1000;
-			notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+			mNotification.flags |= Notification.DEFAULT_LIGHTS;
+			mNotification.ledARGB = Color.MAGENTA;
+			mNotification.ledOnMS = 300;
+			mNotification.ledOffMS = 1000;
+			mNotification.flags |= Notification.FLAG_SHOW_LIGHTS;
 		}
-
-		notificationMGR.notify(NOTIFY_ID, notification);
 	}
 
 	private void vibraNotififaction() {
 		if (mConfig.isVibraNotify) {
-			vibrator.vibrate(500);
+			mVibrator.vibrate(400);
 		}
 	}
 
@@ -118,15 +124,15 @@ public abstract class GenericService extends Service {
 	}
 
 	public void resetNotificationCounter() {
-		notificationCounter = 0;
+		mNotificationCounter = 0;
 	}
-	
+
 	protected void logError(String data) {
 		if (LogConstants.LOG_ERROR) {
 			Log.e(TAG, data);
 		}
 	}
-	
+
 	protected void logInfo(String data) {
 		if (LogConstants.LOG_ERROR) {
 			Log.e(TAG, data);
