@@ -7,7 +7,7 @@
 		android:layout_width="wrap_content" android:layout_height="fill_parent"
 		android:layout_alignParentTop="true" android:layout_alignParentBottom="true"
 		android:layout_marginRight="4sp" android:longClickable="false"
-		android:paddingLeft="20sp" />
+		android:paddingLeft="40sp" />
 		
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="vertical"
@@ -16,12 +16,11 @@
 		<TextView android:id="@+id/roster_screenname"
 			android:paddingLeft="10sp" android:longClickable="false"
 			android:textSize="25sp" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:textColor="#FD9B00"/>
+			android:layout_height="wrap_content" />
 
 		<TextView android:id="@+id/roster_statusmsg"
 			android:textStyle="italic" android:paddingLeft="10sp"
 			android:textSize="16sp" android:layout_width="fill_parent"
-			android:textColor="#FD9B00"
 			android:layout_height="wrap_content" android:singleLine="true"
 			android:ellipsize="end" />
 

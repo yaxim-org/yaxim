@@ -109,20 +109,20 @@ public class ExpandableRosterAdapter extends SimpleExpandableListAdapter {
 
 		switch (presenceMode) {
 		case chat:
-			return R.drawable.chat;
+			return android.R.drawable.presence_online;
 		case available:
-			return R.drawable.available;
+			return android.R.drawable.presence_online;
 		case away:
-			return R.drawable.away;
+			return android.R.drawable.presence_away;
 		case dnd:
-			return R.drawable.donotdisturb;
+			return android.R.drawable.presence_busy;
 		case xa:
-			return R.drawable.xa;
+			return android.R.drawable.presence_invisible;
 		case offline:
-			return R.drawable.offline;
+			return android.R.drawable.presence_offline;
 		}
 
-		return R.drawable.offline;
+		return android.R.drawable.presence_offline;
 	}
 
 }
