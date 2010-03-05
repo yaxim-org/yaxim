@@ -14,13 +14,13 @@
 
 			<TextView android:id="@+id/chat_date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="0"
-				android:textSize="14sp" android:textStyle="bold" android:textColor="#FD9B00"
+				android:textSize="14sp"  android:paddingRight="3dp" android:textColor="#FD9B00"
 				android:ellipsize="end" />
 
 			<TextView android:id="@+id/chat_from" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="0"
 			    android:singleLine="true"
-				android:textSize="14sp" android:textStyle="italic" android:textColor="#FD9B00"
+				android:textSize="14sp"  android:textColor="#FD9B00"
 				android:ellipsize="end" android:text="@string/chat_from_me" />
 
 		</LinearLayout>

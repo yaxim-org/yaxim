@@ -16,11 +16,12 @@
 		<TextView android:id="@+id/roster_screenname"
 			android:paddingLeft="10sp" android:longClickable="false"
 			android:textSize="25sp" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
+			android:layout_height="wrap_content" android:textColor="#FD9B00"/>
 
 		<TextView android:id="@+id/roster_statusmsg"
 			android:textStyle="italic" android:paddingLeft="10sp"
 			android:textSize="16sp" android:layout_width="fill_parent"
+			android:textColor="#FD9B00"
 			android:layout_height="wrap_content" android:singleLine="true"
 			android:ellipsize="end" />
 
