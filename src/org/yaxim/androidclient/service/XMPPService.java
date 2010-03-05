@@ -8,7 +8,6 @@ import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
-import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.util.Log;
 
 public class XMPPService extends GenericService {
 
@@ -297,6 +295,7 @@ public class XMPPService extends GenericService {
 		}
 		mRosterCallbacks.finishBroadcast();
 		mIsConnected.set(false);
+		mConnectionDemanded.set(false);
 	}
 
 	private void connectionEstablished() {
