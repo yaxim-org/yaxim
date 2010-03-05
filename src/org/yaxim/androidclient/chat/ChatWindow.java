@@ -8,6 +8,7 @@ import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.Constants;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.PreferenceConstants;
 
 import android.app.ListActivity;
 import android.app.NotificationManager;
@@ -15,6 +16,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -22,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -257,13 +260,13 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			if (from_me) {
-				getDateView().setTextColor(0xff8888ff);
-				getFromView().setText(getString(R.string.chat_from_me));
-				getFromView().setTextColor(0xff8888ff);
+				//getDateView().setTextColor(0xff8888ff);
+				getFromView().setText(getCurrentJID());
+				//getFromView().setTextColor(0xff8888ff);
 			} else {
-				getDateView().setTextColor(0xffff8888);
+				//getDateView().setTextColor(0xffff8888);
 				getFromView().setText(from + ":");
-				getFromView().setTextColor(0xffff8888);
+				//getFromView().setTextColor(0xffff8888);
 			}
 			if (!has_been_read) {
 				ColorDrawable layers[] = new ColorDrawable[2];
@@ -278,6 +281,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			getMessageView().setText(message);
 		}
         
+		String getCurrentJID(){
+			SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			String currentJID = sharedPreference.getString( PreferenceConstants.JID, getString(R.string.chat_from_me));
+			return currentJID;
+		}
 		
 		TextView getDateView() {
 			if (mDateView == null) {

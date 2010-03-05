@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="horizontal" android:padding="4px" >
+	android:orientation="horizontal" android:padding="3dp">
     
 	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="vertical">
+		android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/chatrow_background">
 
 		<LinearLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="horizontal">
+			android:layout_height="wrap_content" android:orientation="horizontal" 
+			android:paddingLeft="6dp"
+			android:paddingTop="2dp"
+			android:paddingRight="6dp">
 
 			<TextView android:id="@+id/chat_date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="0"
-				android:textSize="14sp" android:textStyle="bold" android:textColor="#88f"
-				android:ellipsize="end" android:padding="4px" />
+				android:textSize="14sp" android:textStyle="bold" android:textColor="#FD9B00"
+				android:ellipsize="end" />
 
 			<TextView android:id="@+id/chat_from" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="0"
 			    android:singleLine="true"
-				android:textSize="14sp" android:textStyle="italic" android:textColor="#88f"
+				android:textSize="14sp" android:textStyle="italic" android:textColor="#FD9B00"
 				android:ellipsize="end" android:text="@string/chat_from_me" />
 
 		</LinearLayout>
 
-		<TextView android:id="@+id/chat_message"
+		<TextView android:id="@+id/chat_message" android:paddingLeft="6dp"
+			android:paddingRight="6dp" android:paddingBottom="4dp"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:textColor="#FD9B00"
 			android:textSize="20sp" android:layout_weight="1" android:gravity="center_vertical"
 			android:autoLink="all"/>
 
