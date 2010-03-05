@@ -81,6 +81,7 @@ public class ExpandableRosterAdapter extends SimpleExpandableListAdapter {
 				.findViewById(R.id.roster_icon);
 		statusIcon.setImageResource(getIconForPresenceMode(presenceMode));
 	}
+	
 	private void setStatusMessage(View currentRow, String statusMessage) {
 		TextView status = (TextView) currentRow
 				.findViewById(R.id.roster_statusmsg);
@@ -109,17 +110,17 @@ public class ExpandableRosterAdapter extends SimpleExpandableListAdapter {
 
 		switch (presenceMode) {
 		case chat:
-			return android.R.drawable.presence_online;
+			return R.drawable.chat;
 		case available:
-			return android.R.drawable.presence_online;
+			return R.drawable.available;
 		case away:
-			return android.R.drawable.presence_away;
+			return R.drawable.away;
 		case dnd:
-			return android.R.drawable.presence_busy;
+			return R.drawable.donotdisturb;
 		case xa:
-			return android.R.drawable.presence_invisible;
+			return R.drawable.xa;
 		case offline:
-			return android.R.drawable.presence_offline;
+			return R.drawable.offline;
 		}
 
 		return android.R.drawable.presence_offline;
