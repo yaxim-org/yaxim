@@ -189,6 +189,8 @@
     </string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_LicenceText">
+	    Icons are taken from http://www.axialis.com/free/icons for now. (Although not our logo and the related variations.)\n
+	    \n
 		This program is free software; you can redistribute
 		it and/or
 		modify it under the terms of the GNU General Public License
