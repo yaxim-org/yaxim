@@ -222,6 +222,7 @@ public class RosterProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			infoLog("onUpgrade: from " + oldVersion + " to " + newVersion);
 			switch (oldVersion) {
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
