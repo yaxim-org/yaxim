@@ -218,6 +218,7 @@ public class ChatProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			infoLog("onUpgrade: from " + oldVersion + " to " + newVersion);
 			switch (oldVersion) {
 			case 3:
 				db.execSQL("UPDATE " + TABLE_NAME + " SET READ=1");
