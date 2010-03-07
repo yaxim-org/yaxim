@@ -336,6 +336,15 @@ public class MainWindow extends GenericExpandableListActivity {
 		return true;
 	}
 
+	private void setConnectingStatus(boolean isConnecting) {
+		if (isConnecting) {
+			showDialog(DIALOG_CONNECTING);
+		} else
+		if (progressDialog != null && progressDialog.isShowing()) {
+			dismissDialog(DIALOG_CONNECTING);
+		}
+	}
+
 	private void toggleConnection(MenuItem item) {
 		if (serviceAdapter.isAuthenticated()) {
 			(new Thread() {
@@ -348,7 +357,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			clearRoster();
 
 		} else {
-			showDialog(DIALOG_CONNECTING);
+			setConnectingStatus(true);
 			(new Thread() {
 				public void run() {
 					startService(xmppServiceIntent);
@@ -395,11 +404,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				createRosterIfConnected();
 				Log.i(TAG, "getConnectionState(): "
 						+ serviceAdapter.getConnectionState());
-				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING) {
-					showDialog(DIALOG_CONNECTING);
-				} else if (progressDialog != null && progressDialog.isShowing()) {
-					dismissDialog(DIALOG_CONNECTING);
-				}
+				setConnectingStatus(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -493,9 +498,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 					public void run() {
 						createRosterIfConnected();
-						if (progressDialog.isShowing()) {
-							dismissDialog(DIALOG_CONNECTING);
-						}
+						setConnectingStatus(false);
 					}
 				});
 			}
@@ -505,12 +508,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
-						if (willReconnect) {
-							showDialog(DIALOG_CONNECTING);
-						} else
-						if (progressDialog.isShowing()) {
-							dismissDialog(DIALOG_CONNECTING);
-						}
+						setConnectingStatus(willReconnect);
 					}
 				});
 			}
