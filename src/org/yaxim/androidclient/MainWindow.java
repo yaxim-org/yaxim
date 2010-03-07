@@ -63,7 +63,6 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ExpandableRosterAdapter rosterListAdapter;
 	private ProgressDialog progressDialog;
 	private boolean showOffline;
-	private boolean isConnected;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,11 +96,8 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 	}
 
-	private void setIsConnected() {
-		if (serviceAdapter != null)
-			isConnected = serviceAdapter.isAuthenticated();
-		else
-			isConnected = false;
+	private boolean isConnected() {
+		return serviceAdapter != null && serviceAdapter.isAuthenticated();
 	}
 
 	public void updateRoster() {
@@ -350,7 +346,6 @@ public class MainWindow extends GenericExpandableListActivity {
 			}).start();
 
 			clearRoster();
-			isConnected = false;
 
 		} else {
 			showDialog(DIALOG_CONNECTING);
@@ -359,20 +354,19 @@ public class MainWindow extends GenericExpandableListActivity {
 					startService(xmppServiceIntent);
 				}
 			}).start();
-			isConnected = true;
 		}
 
 	}
 
 	private int getConnectDisconnectIcon() {
-		if (isConnected) {
+		if (isConnected()) {
 			return R.drawable.yaxim_menu_disconnect;
 		}
 		return R.drawable.yaxim_menu_connect;
 	}
 
 	private String getConnectDisconnectText() {
-		if (isConnected) {
+		if (isConnected()) {
 			return getString(R.string.Menu_disconnect);
 		}
 		return getString(R.string.Menu_connect);
@@ -399,7 +393,6 @@ public class MainWindow extends GenericExpandableListActivity {
 						IXMPPRosterService.Stub.asInterface(service));
 				serviceAdapter.registerUICallback(rosterCallback);
 				createRosterIfConnected();
-				setIsConnected();
 				Log.i(TAG, "getConnectionState(): "
 						+ serviceAdapter.getConnectionState());
 				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING) {
@@ -500,7 +493,6 @@ public class MainWindow extends GenericExpandableListActivity {
 
 					public void run() {
 						createRosterIfConnected();
-						isConnected = true;
 						if (progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
 						}
@@ -513,7 +505,6 @@ public class MainWindow extends GenericExpandableListActivity {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
-						isConnected = false;
 						if (willReconnect) {
 							showDialog(DIALOG_CONNECTING);
 						} else
