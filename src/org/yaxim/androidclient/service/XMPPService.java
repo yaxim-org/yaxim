@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
+import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -24,6 +25,7 @@ public class XMPPService extends GenericService {
 	private static final int RECONNECT_MAXIMUM = 10*60;
 	private int mReconnectTimeout = RECONNECT_AFTER;
 	private String mLastConnectionError = null;
+	private String mReconnectInfo = "";
 
 	private Thread mConnectingThread;
 
@@ -145,7 +147,10 @@ public class XMPPService extends GenericService {
 			}
 
 			public String getConnectionStateString() throws RemoteException {
-				return mLastConnectionError;
+				if (mLastConnectionError != null)
+					return mLastConnectionError + mReconnectInfo;
+				else
+					return null;
 			}
 
 
@@ -303,6 +308,7 @@ public class XMPPService extends GenericService {
 		mRosterCallbacks.finishBroadcast();
 		// post reconnection
 		if (mConnectionDemanded.get()) {
+			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
 			mMainHandler.postDelayed(new Runnable() {
 				public void run() {
@@ -316,7 +322,8 @@ public class XMPPService extends GenericService {
 			mReconnectTimeout = mReconnectTimeout * 2;
 			if (mReconnectTimeout > RECONNECT_MAXIMUM)
 				mReconnectTimeout = RECONNECT_MAXIMUM;
-		}
+		} else
+			mReconnectInfo = "";
 
 	}
 

@@ -24,6 +24,7 @@ public class AutoStarter extends BroadcastReceiver {
 			Log.d(TAG, "start service");
 			Intent xmppServiceIntent = new Intent(context, XMPPService.class);
 			xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
+			xmppServiceIntent.putExtra("autostart", true);
 			context.startService(xmppServiceIntent);
 		}
 	}
