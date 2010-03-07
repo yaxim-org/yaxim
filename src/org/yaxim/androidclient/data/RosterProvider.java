@@ -200,7 +200,7 @@ public class RosterProvider extends ContentProvider {
 
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
-		private static final String DATABASE_NAME = "yaxim.db";
+		private static final String DATABASE_NAME = "roster.db";
 		private static final int DATABASE_VERSION = 1;
 
 		public RosterDatabaseHelper(Context context) {
