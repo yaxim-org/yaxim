@@ -381,8 +381,9 @@ public class MainWindow extends GenericExpandableListActivity {
 	private void clearRoster() {
 		rosterEntryList.clear();
 		rosterGroupList.clear();
-		if (rosterListAdapter != null)
+		if (rosterListAdapter != null) {
 			rosterListAdapter.notifyDataSetChanged();
+		}
 	}
 
 	private void registerXMPPService() {
@@ -403,7 +404,7 @@ public class MainWindow extends GenericExpandableListActivity {
 						+ serviceAdapter.getConnectionState());
 				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING) {
 					showDialog(DIALOG_CONNECTING);
-				} else if (progressDialog != null && progressDialog.isShowing()) {
+				} else if (progressDialog.isShowing()) {
 					dismissDialog(DIALOG_CONNECTING);
 				}
 			}
@@ -500,8 +501,7 @@ public class MainWindow extends GenericExpandableListActivity {
 					public void run() {
 						createRosterIfConnected();
 						isConnected = true;
-						if (progressDialog != null
-								&& progressDialog.isShowing()) {
+						if (progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
 						}
 					}
@@ -513,8 +513,7 @@ public class MainWindow extends GenericExpandableListActivity {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
 						isConnected = false;
-						if (progressDialog != null
-								&& progressDialog.isShowing()) {
+						if (progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
 						}
 					}
