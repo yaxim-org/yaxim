@@ -140,8 +140,6 @@ public class SmackableImp implements Smackable {
 					mConfig.ressource);
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage());
-		} catch (IllegalStateException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
 	}
 
