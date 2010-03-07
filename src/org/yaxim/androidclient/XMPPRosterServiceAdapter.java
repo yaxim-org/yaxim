@@ -143,6 +143,15 @@ public class XMPPRosterServiceAdapter {
 		return ConnectionState.OFFLINE;
 	}
 
+	public String getConnectionStateString() {
+		try {
+			return xmppServiceStub.getConnectionStateString();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public boolean isAuthenticated() {
 		return getConnectionState() == ConnectionState.AUTHENTICATED;
 	}

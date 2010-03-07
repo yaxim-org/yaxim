@@ -340,9 +340,17 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void setConnectingStatus(boolean isConnecting) {
 		setProgressBarIndeterminateVisibility(isConnecting);
+		String conn, lastStatus;
 		if (isConnecting) {
-			mConnectingText.setText(R.string.conn_connecting);
+			conn = getString(R.string.conn_connecting);
+		} else {
+			conn = getString(R.string.conn_offline);
 		}
+		if (serviceAdapter != null && (lastStatus =
+					serviceAdapter.getConnectionStateString()) != null) {
+			conn = getString(R.string.conn_laststatus, conn, lastStatus);
+		}
+		mConnectingText.setText(conn);
 	}
 
 	private void toggleConnection(MenuItem item) {
@@ -509,6 +517,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
+						clearRoster();
 						setConnectingStatus(willReconnect);
 					}
 				});

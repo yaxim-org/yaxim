@@ -23,6 +23,7 @@ public class XMPPService extends GenericService {
 	private static final int RECONNECT_AFTER = 5;
 	private static final int RECONNECT_MAXIMUM = 10*60;
 	private int mReconnectTimeout = RECONNECT_AFTER;
+	private String mLastConnectionError = null;
 
 	private Thread mConnectingThread;
 
@@ -143,6 +144,11 @@ public class XMPPService extends GenericService {
 				}
 			}
 
+			public String getConnectionStateString() throws RemoteException {
+				return mLastConnectionError;
+			}
+
+
 			public void setStatus(String status, String statusMsg)
 					throws RemoteException {
 				if (status.equals("offline")) {
@@ -244,10 +250,10 @@ public class XMPPService extends GenericService {
 			public void run() {
 				try {
 					if (!mSmackable.doConnect()) {
-						postConnectionFailed();
+						postConnectionFailed("Inconsistency in Smackable.doConnect()");
 					}
 				} catch (YaximXMPPException e) {
-					postConnectionFailed();
+					postConnectionFailed(e.getLocalizedMessage());
 					logError("YaximXMPPException in doConnect(): " + e);
 				} finally {
 					mConnectingThread = null;
@@ -258,10 +264,10 @@ public class XMPPService extends GenericService {
 		mConnectingThread.start();
 	}
 
-	private void postConnectionFailed() {
+	private void postConnectionFailed(final String reason) {
 		mMainHandler.post(new Runnable() {
 			public void run() {
-				connectionFailed();
+				connectionFailed(reason);
 			}
 		});
 	}
@@ -282,7 +288,9 @@ public class XMPPService extends GenericService {
 		});
 	}
 
-	private void connectionFailed() {
+	private void connectionFailed(String reason) {
+		logInfo("connectionFailed: " + reason);
+		mLastConnectionError = reason;
 		mIsConnected.set(false);
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
@@ -315,6 +323,7 @@ public class XMPPService extends GenericService {
 	private void connectionEstablished() {
 		// once we are connected, use autoReconnect to determine reconnections
 		mConnectionDemanded.set(mConfig.autoReconnect);
+		mLastConnectionError = null;
 		mIsConnected.set(true);
 		mReconnectTimeout = RECONNECT_AFTER;
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
@@ -349,7 +358,7 @@ public class XMPPService extends GenericService {
 		}
 		if (mIsConnected.get() && mSmackable != null && !mSmackable.isAuthenticated()) {
 			logInfo("rosterChanged(): disconnected without warning");
-			connectionFailed();
+			connectionFailed("Connection closed");
 		}
 	}
 

@@ -10,6 +10,7 @@ import org.yaxim.androidclient.data.RosterItem;
 interface IXMPPRosterService {
 	/* hack: use int because enums are not trivially parcellable */
 	int getConnectionState();
+	String getConnectionStateString();
 	
 	/* xmpp methods */
 	
