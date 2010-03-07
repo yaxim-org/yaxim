@@ -312,6 +312,9 @@ public class XMPPService extends GenericService {
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
 			mMainHandler.postDelayed(new Runnable() {
 				public void run() {
+					if (!mConnectionDemanded.get()) {
+						return;
+					}
 					if (mIsConnected.get()) {
 						logError("Reconnect attempt aborted: we are connected again!");
 						return;

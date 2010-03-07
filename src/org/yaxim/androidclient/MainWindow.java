@@ -101,6 +101,9 @@ public class MainWindow extends GenericExpandableListActivity {
 	private boolean isConnected() {
 		return serviceAdapter != null && serviceAdapter.isAuthenticated();
 	}
+	private boolean isConnecting() {
+		return serviceAdapter != null && serviceAdapter.getConnectionState() == ConnectionState.CONNECTING;
+	}
 
 	public void updateRoster() {
 		if (serviceAdapter.isAuthenticated()
@@ -354,7 +357,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void toggleConnection(MenuItem item) {
-		if (serviceAdapter.isAuthenticated()) {
+		if (isConnected() || isConnecting()) {
 			(new Thread() {
 				public void run() {
 					serviceAdapter.disconnect();
@@ -376,14 +379,14 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private int getConnectDisconnectIcon() {
-		if (isConnected()) {
+		if (isConnected() || isConnecting()) {
 			return R.drawable.yaxim_menu_disconnect;
 		}
 		return R.drawable.yaxim_menu_connect;
 	}
 
 	private String getConnectDisconnectText() {
-		if (isConnected()) {
+		if (isConnected() || isConnecting()) {
 			return getString(R.string.Menu_disconnect);
 		}
 		return getString(R.string.Menu_connect);
