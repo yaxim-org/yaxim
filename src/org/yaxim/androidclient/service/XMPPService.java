@@ -245,8 +245,6 @@ public class XMPPService extends GenericService {
 				try {
 					if (!mSmackable.doConnect()) {
 						postConnectionFailed();
-					} else {
-						postConnectionEstablished();
 					}
 				} catch (YaximXMPPException e) {
 					postConnectionFailed();
@@ -313,6 +311,12 @@ public class XMPPService extends GenericService {
 	}
 
 	private void rosterChanged() {
+		if (!mIsConnected.get() && mSmackable.isAuthenticated()) {
+			// We get a roster changed update, but we are not connected,
+			// that means we just got connected and need to notify the Activity.
+			logInfo("rosterChanged(): we just got connected");
+			connectionEstablished();
+		}
 		if (mIsConnected.get()) {
 			final int broadCastItems = mRosterCallbacks.beginBroadcast();
 
