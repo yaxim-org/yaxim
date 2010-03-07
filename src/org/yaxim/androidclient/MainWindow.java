@@ -404,7 +404,7 @@ public class MainWindow extends GenericExpandableListActivity {
 						+ serviceAdapter.getConnectionState());
 				if (serviceAdapter.getConnectionState() == ConnectionState.CONNECTING) {
 					showDialog(DIALOG_CONNECTING);
-				} else if (progressDialog.isShowing()) {
+				} else if (progressDialog != null && progressDialog.isShowing()) {
 					dismissDialog(DIALOG_CONNECTING);
 				}
 			}
@@ -508,11 +508,15 @@ public class MainWindow extends GenericExpandableListActivity {
 				});
 			}
 
-			public void connectionFailed() throws RemoteException {
+			public void connectionFailed(final boolean willReconnect)
+						throws RemoteException {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
 						isConnected = false;
+						if (willReconnect) {
+							showDialog(DIALOG_CONNECTING);
+						} else
 						if (progressDialog.isShowing()) {
 							dismissDialog(DIALOG_CONNECTING);
 						}

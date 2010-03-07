@@ -6,6 +6,6 @@ package org.yaxim.androidclient;
 
 interface IXMPPRosterCallback {
 	void connectionSuccessful();
-	void connectionFailed();
+	void connectionFailed(boolean willReconnect);
 	void rosterChanged();
 }

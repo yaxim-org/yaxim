@@ -19,7 +19,10 @@ import android.os.RemoteException;
 public class XMPPService extends GenericService {
 
 	private AtomicBoolean mIsConnected = new AtomicBoolean(false);
-	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false);
+	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false); // should we try to reconnect?
+	private static final int RECONNECT_AFTER = 5;
+	private static final int RECONNECT_MAXIMUM = 10*60;
+	private int mReconnectTimeout = RECONNECT_AFTER;
 
 	private Thread mConnectingThread;
 
@@ -70,6 +73,7 @@ public class XMPPService extends GenericService {
 		createServiceRosterStub();
 		createServiceChatStub();
 
+		// for the initial connection, check if autoConnect is set
 		mConnectionDemanded.set(mConfig.autoConnect);
 
 		if (mConfig.autoConnect) {
@@ -233,7 +237,8 @@ public class XMPPService extends GenericService {
 	}
 
 	private void doConnect() {
-		mConnectionDemanded.set(true);
+		// once we are connected, use autoReconnect to determine reconnections
+		mConnectionDemanded.set(mConfig.autoReconnect);
 
 		if (mConnectingThread != null) {
 			return;
@@ -283,20 +288,38 @@ public class XMPPService extends GenericService {
 	}
 
 	private void connectionFailed() {
+		mIsConnected.set(false);
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
-				mRosterCallbacks.getBroadcastItem(i).connectionFailed();
+				mRosterCallbacks.getBroadcastItem(i).connectionFailed(mConnectionDemanded.get());
 			} catch (RemoteException e) {
 				logError("caught RemoteException: " + e.getMessage());
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
-		mIsConnected.set(false);
-		mConnectionDemanded.set(false);
+		// post reconnection
+		if (mConnectionDemanded.get()) {
+			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
+			mMainHandler.postDelayed(new Runnable() {
+				public void run() {
+					if (mIsConnected.get()) {
+						logError("Reconnect attempt aborted: we are connected again!");
+						return;
+					}
+					doConnect();
+				}
+			}, mReconnectTimeout * 1000);
+			mReconnectTimeout = mReconnectTimeout * 2;
+			if (mReconnectTimeout > RECONNECT_MAXIMUM)
+				mReconnectTimeout = RECONNECT_MAXIMUM;
+		}
+
 	}
 
 	private void connectionEstablished() {
+		mIsConnected.set(true);
+		mReconnectTimeout = RECONNECT_AFTER;
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
@@ -306,8 +329,6 @@ public class XMPPService extends GenericService {
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
-		mIsConnected.set(true);
-		mConnectionDemanded.set(false);
 	}
 
 	private void rosterChanged() {
@@ -333,7 +354,6 @@ public class XMPPService extends GenericService {
 
 	public void doDisconnect() {
 		mConnectionDemanded.set(false);
-		mIsConnected.set(false); /* hack to prevent recursion in rosterChanged() */
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
