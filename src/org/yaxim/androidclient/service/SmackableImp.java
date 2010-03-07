@@ -136,8 +136,11 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
 			mXMPPConnection.connect();
-			mXMPPConnection.login(mConfig.userName, mConfig.password,
-					mConfig.ressource);
+			// SMACK auto-logins if we were authenticated before
+			if (!mXMPPConnection.isAuthenticated()) {
+				mXMPPConnection.login(mConfig.userName, mConfig.password,
+						mConfig.ressource);
+			}
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
