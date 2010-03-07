@@ -23,7 +23,6 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -40,8 +39,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.TextView;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
@@ -50,7 +51,6 @@ import org.yaxim.androidclient.service.IXMPPRosterService;
 public class MainWindow extends GenericExpandableListActivity {
 
 	private static final String TAG = "MainWindow";
-	private static final int DIALOG_CONNECTING = 1;
 
 	private final List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
 	private final List<HashMap<String, String>> rosterGroupList = new ArrayList<HashMap<String, String>>();
@@ -61,7 +61,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	private XMPPRosterServiceAdapter serviceAdapter;
 	private Stub rosterCallback;
 	private ExpandableRosterAdapter rosterListAdapter;
-	private ProgressDialog progressDialog;
+	private TextView mConnectingText;
 	private boolean showOffline;
 
 	@Override
@@ -72,7 +72,9 @@ public class MainWindow extends GenericExpandableListActivity {
 		showFirstStartUpDialogIfPrefsEmpty();
 		registerXMPPService();
 		createUICallback();
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
+		mConnectingText = (TextView)findViewById(android.R.id.empty);
 		registerForContextMenu(getExpandableListView());
 	}
 
@@ -337,11 +339,9 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void setConnectingStatus(boolean isConnecting) {
+		setProgressBarIndeterminateVisibility(isConnecting);
 		if (isConnecting) {
-			showDialog(DIALOG_CONNECTING);
-		} else
-		if (progressDialog != null && progressDialog.isShowing()) {
-			dismissDialog(DIALOG_CONNECTING);
+			mConnectingText.setText(R.string.conn_connecting);
 		}
 	}
 
@@ -387,6 +387,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		if (rosterListAdapter != null) {
 			rosterListAdapter.notifyDataSetChanged();
 		}
+		mConnectingText.setText(R.string.conn_offline);
 	}
 
 	private void registerXMPPService() {
@@ -518,21 +519,6 @@ public class MainWindow extends GenericExpandableListActivity {
 	public void expandGroups() {
 		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
 			getExpandableListView().expandGroup(count);
-		}
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DIALOG_CONNECTING:
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setIcon(android.R.drawable.ic_dialog_info);
-			progressDialog.setTitle(R.string.dialog_connect_title);
-			progressDialog.setMessage(getText(R.string.dialog_connect_message));
-			progressDialog.setCancelable(false);
-			return progressDialog;
-		default:
-			return super.onCreateDialog(id);
 		}
 	}
 

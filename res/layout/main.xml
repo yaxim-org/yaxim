@@ -13,5 +13,5 @@
      <TextView android:id="@+id/android:empty"
                android:layout_width="fill_parent" 
                android:layout_height="fill_parent"
-               android:text="Yaxim is offline. No Contacts to show!"/>
+	       android:text="@string/conn_offline"/>
 </LinearLayout>

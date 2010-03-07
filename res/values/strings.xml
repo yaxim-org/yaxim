@@ -3,6 +3,10 @@
 	<string name="app_name">Yaxim</string>
 	<string name="chat_name">Yaxim-Chat</string>
 
+	<!-- Connection state -->
+	<string name="conn_connecting">Connecting to server...</string>
+	<string name="conn_offline">Yaxim is offline. No contacts to show!</string>
+
 	<!-- Global Strings -->
 	<string name="Global_Cancel">Cancel</string>
 	<string name="Global_OK">OK</string>
@@ -166,8 +170,6 @@
 	<string name="chat_titlePrefix">Chat with: </string>
 	<string name="chat_sendButtonTitle">Send</string>
 	<string name="chat_from_me">Me:</string>
-	<string name="dialog_connect_title">Connecting ...</string>
-	<string name="dialog_connect_message">Please be patient ...</string>
 	<string name="toast_connectfail_message">Connecting Failed!</string>
 	<string name="toast_connect_before_send">Please connect before sending a message!</string>
 
