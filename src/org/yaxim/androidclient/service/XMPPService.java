@@ -350,6 +350,10 @@ public class XMPPService extends GenericService {
 			}
 			mRosterCallbacks.finishBroadcast();
 		}
+		if (mIsConnected.get() && mSmackable != null && !mSmackable.isAuthenticated()) {
+			logInfo("rosterChanged(): disconnected without warning");
+			connectionFailed();
+		}
 	}
 
 	public void doDisconnect() {
