@@ -97,15 +97,6 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		initiateConnection();
-	}
-
-	public void initiateConnection() {
-		setForeground(true);
-		if (mSmackable == null) {
-			createAdapter();
-			registerAdapterCallback();
-		}
 		doConnect();
 	}
 
@@ -237,11 +228,15 @@ public class XMPPService extends GenericService {
 	}
 
 	private void doConnect() {
-		// once we are connected, use autoReconnect to determine reconnections
-		mConnectionDemanded.set(mConfig.autoReconnect);
-
 		if (mConnectingThread != null) {
+			// a connection is still goign on!
 			return;
+		}
+
+		setForeground(true);
+		if (mSmackable == null) {
+			createAdapter();
+			registerAdapterCallback();
 		}
 
 		mConnectingThread = new Thread() {
@@ -318,6 +313,8 @@ public class XMPPService extends GenericService {
 	}
 
 	private void connectionEstablished() {
+		// once we are connected, use autoReconnect to determine reconnections
+		mConnectionDemanded.set(mConfig.autoReconnect);
 		mIsConnected.set(true);
 		mReconnectTimeout = RECONNECT_AFTER;
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
