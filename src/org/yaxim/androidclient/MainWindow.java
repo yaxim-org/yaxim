@@ -343,6 +343,9 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void setConnectingStatus(boolean isConnecting) {
 		setProgressBarIndeterminateVisibility(isConnecting);
+		if (!isConnected()) {
+			clearRoster();
+		}
 		String conn, lastStatus;
 		if (isConnecting) {
 			conn = getString(R.string.conn_connecting);
@@ -520,7 +523,6 @@ public class MainWindow extends GenericExpandableListActivity {
 				mainHandler.post(new Runnable() {
 					public void run() {
 						showToastNotification(R.string.toast_connectfail_message);
-						clearRoster();
 						setConnectingStatus(willReconnect);
 					}
 				});
