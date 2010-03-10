@@ -5,6 +5,18 @@
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
 
+	<TextView android:id="@+id/error_view"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textSize="18sp"
+		android:padding="5sp"
+		android:textColor="#000"
+		android:background="#b44"
+		android:visibility="gone"
+		android:shadowColor="#44000000"
+		android:shadowRadius="3.0"
+		android:text=""/>
+
 	<ExpandableListView android:id="@android:id/list"
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
@@ -14,5 +26,5 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
 		android:textSize="18sp"
-		android:text="@string/conn_offline"/>
+		android:text="@string/conn_empty_roster"/>
 </LinearLayout>

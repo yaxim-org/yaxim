@@ -69,18 +69,16 @@ public class SmackableImp implements Smackable {
 	}
 
 	public boolean doConnect() throws YaximXMPPException {
-		if (!mXMPPConnection.isConnected()) {
-
-			tryToConnect();
-
-			if (isAuthenticated()) {
-				registerMessageListener();
-				registerRosterListener();
-				Presence presence = new Presence(Presence.Type.available);
-				presence.setPriority(mConfig.priority);
-				mXMPPConnection.sendPacket(presence);
-				setRosterEntries();
-			}
+		tryToConnect();
+		// actually, authenticated must be true now, or an exception must have
+		// been thrown.
+		if (isAuthenticated()) {
+			registerMessageListener();
+			registerRosterListener();
+			Presence presence = new Presence(Presence.Type.available);
+			presence.setPriority(mConfig.priority);
+			mXMPPConnection.sendPacket(presence);
+			setRosterEntries();
 		}
 		return isAuthenticated();
 	}
@@ -133,9 +131,11 @@ public class SmackableImp implements Smackable {
 
 	private void tryToConnect() throws YaximXMPPException {
 		try {
-			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
-			SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
-			mXMPPConnection.connect();
+			if (!mXMPPConnection.isConnected()) {
+				SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
+				SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
+				mXMPPConnection.connect();
+			}
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,

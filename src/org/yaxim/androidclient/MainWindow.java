@@ -72,7 +72,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
-		mConnectingText = (TextView)findViewById(android.R.id.empty);
+		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
 	}
 
@@ -341,32 +341,33 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void setConnectingStatus(boolean isConnecting) {
 		setProgressBarIndeterminateVisibility(isConnecting);
-		if (!isConnected()) {
-			clearRoster();
-		}
 		String conn, lastStatus;
 		if (isConnecting) {
 			conn = getString(R.string.conn_connecting);
+		} else if (isConnected()) {
+			conn = getString(R.string.conn_online);
 		} else {
 			conn = getString(R.string.conn_offline);
 		}
+		setTitle(getString(R.string.conn_title, conn));
+
 		if (serviceAdapter != null && (lastStatus =
 					serviceAdapter.getConnectionStateString()) != null) {
-			conn = getString(R.string.conn_laststatus, conn, lastStatus);
-		}
-		mConnectingText.setText(conn);
+			mConnectingText.setVisibility(View.VISIBLE);
+			mConnectingText.setText(lastStatus);
+		} else
+			mConnectingText.setVisibility(View.GONE);
 	}
 
 	private void toggleConnection(MenuItem item) {
 		if (isConnected() || isConnecting()) {
+			setConnectingStatus(false);
 			(new Thread() {
 				public void run() {
 					serviceAdapter.disconnect();
 					stopService(xmppServiceIntent);
 				}
 			}).start();
-
-			clearRoster();
 
 		} else {
 			setConnectingStatus(true);
@@ -399,7 +400,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		if (rosterListAdapter != null) {
 			rosterListAdapter.notifyDataSetChanged();
 		}
-		mConnectingText.setText(R.string.conn_offline);
 	}
 
 	private void registerXMPPService() {
