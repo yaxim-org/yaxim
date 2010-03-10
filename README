@@ -1,4 +1,7 @@
-Yaxim is an Open-Source Jabber client for the Android platform distributed under the GPLv2. It is not yet finished, but we are working on it!
+yaxim
+=====
+
+yaxim is an Open-Source Jabber client for the Android platform distributed under the GPLv2. It is not yet finished, but we are working on it!
 
 Features
 
@@ -12,9 +15,9 @@ The following is already supported:
 
 LICENSE
 
- * Yaxim is licensed under GNU GPLv2 (see LICENSE.txt)
+ * yaxim is licensed under GNU GPLv2 (see LICENSE.txt)
 
- * The android-remote-stacktrace component in Yaxim is provided under the MIT License:
+ * The android-remote-stacktrace component in yaxim is provided under the MIT License:
 
 Copyright (c) 2009 Mads Kristiansen, Nullwire ApS
 

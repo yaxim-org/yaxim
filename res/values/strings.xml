@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Yaxim</string>
-	<string name="chat_name">Yaxim-Chat</string>
+	<string name="app_name">yaxim</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">Yaxim: %s</string>
+	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Connecting to server...</string>
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
@@ -42,9 +41,9 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Bootoptions</string>
-	<string name="boot_title">"Load Yaxim at bootup</string>
-	<string name="boot_summOn">Yaxim is set to load at bootup</string>
-	<string name="boot_summOff">Yaxim is not set to load at bootup</string>
+	<string name="boot_title">"Load yaxim at bootup</string>
+	<string name="boot_summOn">yaxim is set to load at bootup</string>
+	<string name="boot_summOff">yaxim is set to not load at bootup</string>
 	<string name="statuspopup_name">Set your status</string>
 	<string name="status_title">Online status after startup</string>
 	<string name="status_summ">Select at which status you want to start jabbering
@@ -83,7 +82,7 @@
 	<string name="Menu_Connect">Connect</string>
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
-	<string name="Menu_about">About Yaxim</string>
+	<string name="Menu_about">About yaxim</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_inputPreset">e.g.: foo@jabber.bar.com</string>
@@ -130,7 +129,7 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">Modify resource</string>
-	<string name="account_resource_summ">Yaxim</string>
+	<string name="account_resource_summ">yaxim</string>
 	<string name="account_resource_dialog_title">Modify resource</string>
 	<string name="account_prio_title">Priority</string>
 	<string name="account_prio_summ">From 0 to 127</string>
@@ -189,7 +188,7 @@
 		Pfleiderer\n * Christian Polzer\n\n
 		Join us, ask for more fancy
 		features or send us some free \"Club Mate\"
-		at http://yaxim.org or on
+		at http://yaxim.org/ or on
 		#yaxim on freenode IRC.
     </string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
@@ -253,5 +252,5 @@
 		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
     </string>
-	<string name="AboutDialog_greetings">The Yaxim Team - 22.01.2010</string>
+	<string name="AboutDialog_greetings">The yaxim Team - 22.01.2010</string>
 </resources>
