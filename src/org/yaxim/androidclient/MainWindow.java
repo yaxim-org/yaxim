@@ -22,7 +22,6 @@ import org.yaxim.androidclient.util.ExpandableRosterAdapter;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -42,7 +41,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import android.widget.TextView;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
