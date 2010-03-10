@@ -21,12 +21,11 @@
 	<string name="Global_JID_hint">foo@jabber.bar.com</string>
 
 	<!--	FirstStartUpDialog-->
-	<string name="StartupDialog_Title">Start Yaxim:</string>
-	<string name="StartupDialog_Summary">This is the initial dialog of Yaxim. Please set
-		Your Username, Password and Port.</string>
-	<string name="StartupDialog_pwHint">Enter Password</string>
+	<string name="StartupDialog_Title">Welcome to yaxim!</string>
+	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
+	<string name="StartupDialog_pwHint">Enter password</string>
 	<string name="StartupDialog_portHint">5222</string>
-	<string name="StartupDialog_Username_title">Enter your username:</string>
+	<string name="StartupDialog_Username_title">Enter your Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_port_title">Port:</string>
 
