@@ -4,10 +4,12 @@
 	<string name="chat_name">Yaxim-Chat</string>
 
 	<!-- Connection state -->
+	<string name="conn_title">Yaxim: %s</string>
 	<string name="conn_connecting">Connecting to server...</string>
-	<string name="conn_offline">Yaxim is offline. No contacts to show!</string>
-	<string name="conn_laststatus">%s\n\nLast connection status:\n%s</string>
-	<string name="conn_reconnect">\n\nReconnect in %d seconds.</string>
+	<string name="conn_online">Online</string>
+	<string name="conn_offline">Offline</string>
+	<string name="conn_empty_roster">No contacts to show!</string>
+	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Cancel">Cancel</string>
