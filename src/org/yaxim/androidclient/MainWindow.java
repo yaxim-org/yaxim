@@ -40,6 +40,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.R;
