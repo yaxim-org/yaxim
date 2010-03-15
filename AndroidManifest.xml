@@ -43,8 +43,6 @@
 
 		<provider android:name=".data.ChatProvider"
 			android:authorities="org.yaxim.androidclient.provider.Chats" />
-		<provider android:name=".data.RosterProvider"
-			android:authorities="org.yaxim.androidclient.provider.Roster" />
 
 	</application>
 </manifest>
