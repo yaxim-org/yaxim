@@ -395,6 +395,14 @@ public class SmackableImp implements Smackable {
 		setStatusOffline();
 		this.mServiceCallBack = null;
 	}
+	
+	public String getNameForJID(String jid) {
+		if (null != this.mRoster.getEntry(jid) && null != this.mRoster.getEntry(jid).getName() && this.mRoster.getEntry(jid).getName().length() > 0) {
+			return this.mRoster.getEntry(jid).getName();
+		} else {
+			return jid;
+		}			
+	}
 
 	private void setStatusOffline() {
 		ContentValues values = new ContentValues();

@@ -42,7 +42,7 @@ public class XMPPService extends GenericService {
 		super.onBind(intent);
 		String chatPartner = intent.getDataString();
 		if ((chatPartner != null)) {
-			resetNotificationCounter();
+			resetNotificationCounter(chatPartner);
 			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
 		}
@@ -56,7 +56,7 @@ public class XMPPService extends GenericService {
 		String chatPartner = intent.getDataString();
 		if ((chatPartner != null)) {
 			mIsBoundTo.add(chatPartner);
-			resetNotificationCounter();
+			resetNotificationCounter(chatPartner);
 		}
 	}
 
@@ -396,7 +396,7 @@ public class XMPPService extends GenericService {
 			public void newMessage(String from, String message) {
 				if (!mIsBoundTo.contains(from)) {
 					logInfo("notification: " + from);
-					notifyClient(from, message);
+					notifyClient(from, mSmackable.getNameForJID(from), message);
 				}
 			}
 
@@ -409,5 +409,4 @@ public class XMPPService extends GenericService {
 			}
 		});
 	}
-
 }

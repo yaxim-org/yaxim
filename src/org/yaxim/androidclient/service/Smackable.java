@@ -28,4 +28,6 @@ public interface Smackable {
 	
 	ArrayList<RosterItem> getRosterEntriesByGroup(String group);
 	ArrayList<String> getRosterGroups();
+	
+	String getNameForJID(String jid);
 }

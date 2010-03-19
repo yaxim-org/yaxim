@@ -175,30 +175,32 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		if (isChild(contextMenuInfo.packedPosition)) {
 
-			String user = rosterEntryList.get(groupPosition).get(childPosition)
+			String userJid = rosterEntryList.get(groupPosition).get(childPosition)
 					.get(AdapterConstants.CONTACT_ID).jabberID;
+			String userName = rosterEntryList.get(groupPosition).get(childPosition)
+				.get(AdapterConstants.CONTACT_ID).screenName;
 
 			int itemID = item.getItemId();
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_contact_open_chat:
-				startChatActivity(user);
+				startChatActivity(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
-				new RemoveRosterItemDialog(this, serviceAdapter, user).show();
+				new RemoveRosterItemDialog(this, serviceAdapter, userJid).show();
 				return true;
 
 			case R.id.roster_contextmenu_contact_rename:
-				new RenameRosterItemDialog(this, serviceAdapter, user).show();
+				new RenameRosterItemDialog(this, serviceAdapter, userJid).show();
 				return true;
 
 			case R.id.roster_contextmenu_contact_request_auth:
-				serviceAdapter.requestAuthorizationForRosterItem(user);
+				serviceAdapter.requestAuthorizationForRosterItem(userJid);
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:
-				new MoveRosterItemToGroupDialog(this, serviceAdapter, user)
+				new MoveRosterItemToGroupDialog(this, serviceAdapter, userJid)
 						.show();
 				return true;
 
@@ -231,11 +233,12 @@ public class MainWindow extends GenericExpandableListActivity {
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
 	}
 
-	private void startChatActivity(String user) {
+	private void startChatActivity(String user, String userName) {
 		Intent chatIntent = new Intent(this,
 				org.yaxim.androidclient.chat.ChatWindow.class);
 		Uri userNameUri = Uri.parse(user);
 		chatIntent.setData(userNameUri);
+		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);
 		startActivity(chatIntent);
 	}
 
@@ -335,9 +338,11 @@ public class MainWindow extends GenericExpandableListActivity {
 			int groupPosition, int childPosition, long id) {
 
 		Log.i(TAG, "Called onChildClick()");
-		String user = rosterEntryList.get(groupPosition).get(childPosition)
+		String userJid = rosterEntryList.get(groupPosition).get(childPosition)
 				.get(AdapterConstants.CONTACT_ID).jabberID;
-		startChatActivity(user);
+		String userName = rosterEntryList.get(groupPosition).get(childPosition)
+			.get(AdapterConstants.CONTACT_ID).screenName;
+		startChatActivity(userJid, userName);
 
 		return true;
 	}

@@ -40,6 +40,8 @@ import android.widget.Toast;
 public class ChatWindow extends ListActivity implements OnKeyListener,
 		TextWatcher {
 
+	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
+	
 	private static final String TAG = "ChatWindow";
 	private static final int NOTIFY_ID = 0;
 	private static final String[] PROJECTION_FROM = new String[] {
@@ -54,6 +56,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
+	private String mUserScreenName = null;
 	private Intent mServiceIntent;
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
@@ -72,7 +75,15 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		setNotificationManager();
 		setUserInput();
 		setSendButton();
-		setTitle(getText(R.string.chat_titlePrefix) + " " + mWithJabberID);
+		
+		String titleUserid;
+		if (mUserScreenName != null && !mUserScreenName.equals(mWithJabberID)) {
+			titleUserid = mUserScreenName + " (" + mWithJabberID + ")";
+		} else {
+			titleUserid = mWithJabberID;
+		}
+		
+		setTitle(getText(R.string.chat_titlePrefix) + " " + titleUserid);
 		setChatWindowAdapter();
 	}
 
@@ -151,6 +162,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private void setContactFromUri() {
 		Intent i = getIntent();
 		mWithJabberID = i.getDataString().toLowerCase();
+		if (i.hasExtra(INTENT_EXTRA_USERNAME)) {
+			mUserScreenName = i.getExtras().getString(INTENT_EXTRA_USERNAME);
+		} else {
+			mUserScreenName = mWithJabberID;
+		}
 	}
 
 	private View.OnClickListener getOnSetListener() {

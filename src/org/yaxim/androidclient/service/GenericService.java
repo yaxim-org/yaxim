@@ -1,5 +1,8 @@
 package org.yaxim.androidclient.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.yaxim.androidclient.chat.ChatWindow;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.util.LogConstants;
@@ -23,13 +26,16 @@ public abstract class GenericService extends Service {
 
 	private static final String TAG = "Service";
 	private static final String APP_NAME = "yaxim";
-	private static final int NOTIFY_ID = 0;
 
 	private NotificationManager mNotificationMGR;
 	private Notification mNotification;
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
-	private int mNotificationCounter = 0;
+	//private int mNotificationCounter = 0;
+	
+	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
+	private Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
+	private int lastNotificationId = 0;
 
 	protected YaximConfiguration mConfig;
 
@@ -78,23 +84,47 @@ public abstract class GenericService extends Service {
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
-	protected void notifyClient(String from, String message) {
-		setNotification(from, message);
+	protected void notifyClient(String fromJid, String fromUserName, String message) {
+		setNotification(fromJid, fromUserName, message);
 		setLEDNotifivation();
-		mNotificationMGR.notify(NOTIFY_ID, mNotification);
+		
+		int notifyId = 0;
+		if (notificationId.containsKey(fromJid)) {
+			notifyId = notificationId.get(fromJid);
+		} else {
+			lastNotificationId++;
+			notifyId = lastNotificationId;
+			notificationId.put(fromJid, Integer.valueOf(notifyId));
+		}
+		mNotificationMGR.notify(notifyId, mNotification);
 		
 		vibraNotififaction();
 	}
 	
-	private void setNotification(String from, String message) {
+	private void setNotification(String fromJid, String fromUserId, String message) {
+		
+		int mNotificationCounter = 0;
+		if (notificationCount.containsKey(fromJid)) {
+			mNotificationCounter = notificationCount.get(fromJid);
+		} else {
+			notificationCount.put(fromJid, Integer.valueOf(1));
+		}
 		mNotificationCounter++;
-		String title = "Message from " + from;
+		String title = "Message from ";
+		if (null == fromUserId || fromUserId.length() == 0 || fromJid.equals(fromUserId)) {
+			title = title + fromJid;
+		} else {
+			title = title + fromUserId + " (" + fromJid + ")";
+		}
 		mNotification = new Notification(R.drawable.icon, APP_NAME + ": "
 				+ title, System.currentTimeMillis());
-		Uri userNameUri = Uri.parse(from);
+		Uri userNameUri = Uri.parse(fromJid);
 		mNotificationIntent.setData(userNameUri);
+		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
+		
+		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				mNotificationIntent, 0);
+				mNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
 		mNotification.number = mNotificationCounter;
@@ -123,8 +153,8 @@ public abstract class GenericService extends Service {
 		toast.show();
 	}
 
-	public void resetNotificationCounter() {
-		mNotificationCounter = 0;
+	public void resetNotificationCounter(String userJid) {
+		notificationCount.remove(userJid);
 	}
 
 	protected void logError(String data) {
