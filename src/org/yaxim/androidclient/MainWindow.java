@@ -67,7 +67,6 @@ public class MainWindow extends GenericExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		showFirstStartUpDialogIfPrefsEmpty();
 		registerXMPPService();
 		createUICallback();
@@ -88,6 +87,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		bindXMPPService();
 	}
 
@@ -294,6 +294,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		case R.id.menu_show_hide:
 			showOffline = !showOffline;
+			PreferenceManager.getDefaultSharedPreferences(this).edit().
+				putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
 			updateRoster();
 			return true;
 
