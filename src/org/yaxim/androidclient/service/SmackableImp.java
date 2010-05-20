@@ -295,6 +295,8 @@ public class SmackableImp implements Smackable {
 		String userStatusMessage = userPresence.getStatus();
 		String userGroups = getGroup(entry.getGroups());
 
+
+		debugLog("getRosterItemForRosterEntry(): " + jabberID + " -> " + userName);
 		return new RosterItem(jabberID, userName, userStatus,
 				userStatusMessage, userGroups);
 	}
@@ -508,10 +510,14 @@ public class SmackableImp implements Smackable {
 
 	private String getName(RosterEntry rosterEntry) {
 		String name = rosterEntry.getName();
-		if (name != null) {
+		if (name != null && name != "") {
 			return name;
 		}
-		return StringUtils.parseName(rosterEntry.getUser());
+		name = StringUtils.parseName(rosterEntry.getUser());
+		if (name != "") {
+			return name;
+		}
+		return rosterEntry.getUser();
 	}
 
 	private StatusMode getStatus(Presence presence) {
