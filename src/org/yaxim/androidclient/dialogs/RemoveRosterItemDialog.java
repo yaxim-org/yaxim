@@ -35,7 +35,7 @@ public class RemoveRosterItemDialog extends GenericDialog implements OnClickList
 	
 	private void setTextField() {
 		deleteRosterItemTextView =(TextView) findViewById(R.id.DeleteRosterItem_summary);
-		deleteRosterItemTextView.setText(mainWindow.getText(R.string.deleteRosterItem_text) + user + " ?");
+		deleteRosterItemTextView.setText(mainWindow.getString(R.string.deleteRosterItem_text, user));
 		deleteRosterItemTextView.setBackgroundColor(android.R.color.background_light);
 	}
 
