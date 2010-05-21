@@ -253,4 +253,14 @@
 		SOFTWARE.
     </string>
 	<string name="AboutDialog_greetings">The yaxim Team - 22.01.2010</string>
+
+	<!-- list of Status codes to display -->
+	<string-array name="statuslist">
+		<item>Online</item>
+		<item>Away</item>
+		<item>Chat</item>
+		<item>Do not disturb</item>
+		<item>Not available</item>
+		<item>Offline</item>
+	</string-array>
 </resources>
