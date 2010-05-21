@@ -232,6 +232,7 @@ public class SmackableImp implements Smackable {
 		Collection<RosterEntry> rosterEntries = mRoster.getEntries();
 		for (RosterEntry rosterEntry : rosterEntries) {
 			setRosterEntry(rosterEntry);
+			addRosterEntryToDB(rosterEntry);
 		}
 		mServiceCallBack.rosterChanged();
 	}
@@ -365,6 +366,8 @@ public class SmackableImp implements Smackable {
 	};
 
 	private void registerRosterListener() {
+		// flush roster on connecting.
+		mContentResolver.delete(RosterProvider.CONTENT_URI, "", null);
 		mRoster = mXMPPConnection.getRoster();
 
 		mRoster.addRosterListener(new RosterListener() {
