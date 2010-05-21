@@ -233,6 +233,7 @@ public class SmackableImp implements Smackable {
 		for (RosterEntry rosterEntry : rosterEntries) {
 			setRosterEntry(rosterEntry);
 		}
+		mServiceCallBack.rosterChanged();
 	}
 
 	private void setRosterEntry(RosterEntry rosterEntry) {
