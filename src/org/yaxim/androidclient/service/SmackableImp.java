@@ -333,7 +333,7 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		if (isAuthenticated()) {
 			mXMPPConnection.sendPacket(newMessage);
-			addChatMessageToDB(true, toJID, message, true);
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED);
 		}
 	}
 
@@ -440,7 +440,7 @@ public class SmackableImp implements Smackable {
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
 
-					addChatMessageToDB(false, fromJID, chatMessage, false);
+					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD);
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
 			}
