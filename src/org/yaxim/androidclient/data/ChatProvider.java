@@ -189,7 +189,7 @@ public class ChatProvider extends ContentProvider {
 
 	private static void infoLog(String data) {
 		if (LogConstants.LOG_INFO) {
-			Log.i(TAG, "ChatProvider.query: failed");
+			Log.i(TAG, data);
 		}
 	}
 
