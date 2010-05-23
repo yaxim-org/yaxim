@@ -178,13 +178,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void markAsRead(int id) {
-		final String selection = ChatConstants.JID + "='" + mWithJabberID + "'"
-		       + " AND " + ChatConstants.FROM_ME + " = 0";
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
+		Log.d(TAG, "markAsRead: " + rowuri);
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.HAS_BEEN_READ, true);
-		getContentResolver().update(rowuri, values, selection, null);
+		getContentResolver().update(rowuri, values, null, null);
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -225,7 +224,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			if (has_been_read == 0) {
+			if (from_me == 0 && has_been_read == 0) {
 				markAsRead(_id);
 			}
 
