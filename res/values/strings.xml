@@ -28,6 +28,9 @@
 	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_port_title">Port:</string>
 
+	<!-- Notifications -->
+	<string name="notification_message">Message from %s:</string>
+
 	<!-- Notification Settings 	-->
 	<string name="preftitle_notify">Notification Preferences</string>
 	<string name="led_title">Notify via LED</string>

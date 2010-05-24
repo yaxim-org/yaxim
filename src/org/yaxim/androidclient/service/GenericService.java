@@ -110,14 +110,15 @@ public abstract class GenericService extends Service {
 			notificationCount.put(fromJid, Integer.valueOf(1));
 		}
 		mNotificationCounter++;
-		String title = "Message from ";
+		String author;
 		if (null == fromUserId || fromUserId.length() == 0 || fromJid.equals(fromUserId)) {
-			title = title + fromJid;
+			author = fromJid;
 		} else {
-			title = title + fromUserId + " (" + fromJid + ")";
+			author = fromUserId + " (" + fromJid + ")";
 		}
-		mNotification = new Notification(R.drawable.icon, APP_NAME + ": "
-				+ title, System.currentTimeMillis());
+		String title = getString(R.string.notification_message, author);
+		mNotification = new Notification(R.drawable.icon, title,
+				System.currentTimeMillis());
 		Uri userNameUri = Uri.parse(fromJid);
 		mNotificationIntent.setData(userNameUri);
 		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
