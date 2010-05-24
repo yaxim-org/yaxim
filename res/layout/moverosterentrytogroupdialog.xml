@@ -40,14 +40,14 @@
 						android:layout_height="wrap_content"
 						android:layout_width="110sp"
 						android:padding="5sp"
-						android:text="@string/Global_OK"/>
+						android:text="@android:string/ok"/>
 			<Button
 				android:id="@+id/moveRosterEntryToGroupDialog_CancelButton"
 				android:layout_width="110sp"
 				android:gravity="center"
 				android:layout_height="wrap_content"
 				android:paddingBottom="10sp"
-				android:text="@string/Global_Cancel"
+				android:text="@android:string/cancel"
 			/>
 		</LinearLayout>
 </LinearLayout>

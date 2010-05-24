@@ -25,7 +25,7 @@
 				android:id="@+id/DeleteRosterItem_OkButton"
 				android:layout_width="120sp"
 				android:layout_height="wrap_content"
-				android:text="@string/Global_OK"
+				android:text="@android:string/ok"
 				android:clickable="true"
 		/>
 
@@ -33,7 +33,7 @@
 				android:id="@+id/DeleteRosterItem_CancelButton"
 				android:layout_width="120sp"
 				android:layout_height="wrap_content"
-				android:text="@string/Global_Cancel"
+				android:text="@android:string/cancel"
 		/>
 
 	</LinearLayout>

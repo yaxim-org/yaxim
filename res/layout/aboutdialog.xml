@@ -73,7 +73,7 @@
 			android:id="@+id/AboutDialog_OkButton"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/Global_OK"
+			android:text="@android:string/ok"
 			android:clickable="true"
 		/>
 	</LinearLayout>

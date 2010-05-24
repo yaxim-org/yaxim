@@ -11,8 +11,6 @@
 	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Cancel">Cancel</string>
-	<string name="Global_OK">OK</string>
 	<string name="Global_Exit">Exit</string>
 	<string name="Global_authenticate_first">Please connect first</string>
 	<string name="Global_Me">Me</string>

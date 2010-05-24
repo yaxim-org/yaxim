@@ -40,7 +40,7 @@
 <!--			android:key="statuslist"-->
 <!--			android:title="@string/status_title"-->
 <!--			android:summary="@string/status_summ"-->
-<!--			android:negativeButtonText="@string/Global_Cancel"-->
+<!--			android:negativeButtonText="@android:string/cancel"-->
 <!--			android:entries="@array/statuslist"-->
 <!--			android:entryValues="@array/statusCodes"-->
 <!--			android:dialogTitle="@string/status_dialog"-->

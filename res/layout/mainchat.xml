@@ -22,7 +22,7 @@
 			android:layout_marginLeft="-60sp"
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@id/Chat_UserInput"
-			android:text="@string/Global_OK" 
+			android:text="@android:string/ok"
 			android:layout_alignParentRight="true"/>
 		
 	</LinearLayout>

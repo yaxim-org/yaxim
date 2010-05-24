@@ -73,12 +73,12 @@
 						android:layout_height="wrap_content"
 						android:layout_width="140sp"
 						android:padding="5dip"
-						android:text="@string/Global_OK"/>
+						android:text="@android:string/ok"/>
 				<Button android:id="@+id/StatusDialogCancelButton"
 						android:layout_height="wrap_content"
 						android:layout_width="140sp"
 						android:padding="5dip"
-						android:text="@string/Global_Cancel"/>
+						android:text="@android:string/cancel"/>
 	</LinearLayout>
 </LinearLayout>
 

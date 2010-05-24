@@ -33,13 +33,13 @@
 				android:id="@+id/RenameGroup_OkButton"
 				android:layout_width="120sp"
 				android:layout_height="wrap_content"
-				android:text="@string/Global_OK"
+				android:text="@android:string/ok"
 		/>
 		<Button
 				android:id="@+id/RenameGroup_CancelButton"
 				android:layout_width="120sp"
 				android:layout_height="wrap_content"
-				android:text="@string/Global_Cancel"
+				android:text="@android:string/cancel"
 		/>
 	</LinearLayout>
 </LinearLayout>
