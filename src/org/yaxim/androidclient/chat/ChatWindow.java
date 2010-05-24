@@ -92,7 +92,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		Cursor cursor = managedQuery(ChatProvider.CONTENT_URI, PROJECTION_FROM,
 				selection, null, null);
 		ListAdapter adapter = new ChatWindowAdapter(cursor, PROJECTION_FROM,
-				PROJECTION_TO);
+				PROJECTION_TO, mWithJabberID, mUserScreenName);
 
 		setListAdapter(adapter);
 	}
@@ -202,10 +202,14 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
+		String mScreenName, mJID;
 
-		ChatWindowAdapter(Cursor cursor, String[] from, int[] to) {
+		ChatWindowAdapter(Cursor cursor, String[] from, int[] to,
+				String JID, String screenName) {
 			super(ChatWindow.this, android.R.layout.simple_list_item_1, cursor,
 					from, to);
+			mScreenName = screenName;
+			mJID = JID;
 		}
 
 		@Override
@@ -243,7 +247,10 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				markAsRead(_id);
 			}
 
-			wrapper.populateFrom(date, from_me != 0, jid, message, has_been_read != 0);
+			String from = jid;
+			if (jid.equals(mJID))
+				from = mScreenName;
+			wrapper.populateFrom(date, from_me != 0, from, message, has_been_read != 0);
 
 			return row;
 		}
