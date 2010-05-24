@@ -154,7 +154,7 @@
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>
 	<string name="addFriend_aliasHint">Enter desired alias</string>
 	<string name="setStatusmsgHint">Enter your statusmessage here</string>
-	<string name="setStatusmsgDefault">This is Yaxims default statusmessage!</string>
+	<string name="setStatusmsgDefault"></string>
 	<string name="setStatusTitle">Set your status</string>
 	<string name="newGroup_summ">Enter the desired name for your new Group</string>
 	<string name="newGroup_title">Add New Group</string>
