@@ -38,6 +38,7 @@ import org.yaxim.androidclient.util.StatusModeInt;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import android.net.Uri;
 import android.util.Log;
@@ -47,6 +48,11 @@ public class SmackableImp implements Smackable {
 
 	final static private int PACKET_TIMEOUT = 12000;
 	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min
+
+	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
+			ChatConstants._ID, ChatConstants.JID, ChatConstants.MESSAGE };
+	final static private String SEND_OFFLINE_SELECTION = "from_me = 1 AND read = 0";
+
 
 	private final YaximConfiguration mConfig;
 	private final ConnectionConfiguration mXMPPConfig;
@@ -141,6 +147,7 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
+			sendOfflineMessages();
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
@@ -328,12 +335,42 @@ public class SmackableImp implements Smackable {
 		return Mode.valueOf(modeStr);
 	}
 
+	public void sendOfflineMessages() {
+		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI,
+				SEND_OFFLINE_PROJECTION, SEND_OFFLINE_SELECTION,
+				null, null);
+		final int _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
+		final int JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
+		final int MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
+		ContentValues mark_delivered = new ContentValues();
+		mark_delivered.put(ChatConstants.HAS_BEEN_READ, ChatConstants.DELIVERED);
+		while (cursor.moveToNext()) {
+			int _id = cursor.getInt(_ID_COL);
+			String toJID = cursor.getString(JID_COL);
+			String message = cursor.getString(MSG_COL);
+			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
+			final Message newMessage = new Message(toJID, Message.Type.chat);
+			newMessage.setBody(message);
+			mXMPPConnection.sendPacket(newMessage);
+
+			Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
+				+ "/" + ChatProvider.TABLE_NAME + "/" + _id);
+				mContentResolver.update(rowuri, mark_delivered,
+						null, null);
+			mContentResolver.update(ChatProvider.CONTENT_URI, mark_delivered,
+					SEND_OFFLINE_SELECTION, null);
+		}
+	}
+
 	public void sendMessage(String toJID, String message) {
 		final Message newMessage = new Message(toJID, Message.Type.chat);
 		newMessage.setBody(message);
 		if (isAuthenticated()) {
 			mXMPPConnection.sendPacket(newMessage);
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED);
+		} else {
+			// send offline -> store to DB
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.UNREAD);
 		}
 	}
 

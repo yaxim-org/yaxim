@@ -164,10 +164,9 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	private void sendMessageIfNotNull() {
 		if (mChatInput.getText().length() >= 1) {
-			if (mServiceAdapter.isServiceAuthenticated())
-				sendMessage(mChatInput.getText().toString());
-			else
-				showToastNotification(R.string.toast_connect_before_send);
+			sendMessage(mChatInput.getText().toString());
+			if (!mServiceAdapter.isServiceAuthenticated())
+				showToastNotification(R.string.toast_stored_offline);
 		}
 	}
 
@@ -267,7 +266,11 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			if (!has_been_read) {
 				ColorDrawable layers[] = new ColorDrawable[2];
 				layers[0] = new ColorDrawable(0xff404040);
-				layers[1] = new ColorDrawable(0x00000000);
+				if (from_me) {
+					layers[1] = new ColorDrawable(0x60404040);
+				} else {
+					layers[1] = new ColorDrawable(0x00000000);
+				}
 				TransitionDrawable backgroundColorAnimation = new
 					TransitionDrawable(layers);
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
