@@ -129,8 +129,7 @@ public abstract class GenericService extends Service {
 
 		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
 		mNotification.number = mNotificationCounter;
-		mNotification.flags = Notification.FLAG_AUTO_CANCEL
-				| Notification.FLAG_ONLY_ALERT_ONCE;
+		mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 	}
 
 	private void setLEDNotifivation() {
