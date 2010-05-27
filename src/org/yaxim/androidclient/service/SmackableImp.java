@@ -151,7 +151,8 @@ public class SmackableImp implements Smackable {
 						mConfig.ressource);
 			}
 			sendOfflineMessages();
-		} catch (XMPPException e) {
+		} catch (Exception e) {
+			// actually we just care for IllegalState, NullPointer or XMPPEx.
 			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
 	}
