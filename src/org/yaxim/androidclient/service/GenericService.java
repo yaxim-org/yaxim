@@ -106,10 +106,9 @@ public abstract class GenericService extends Service {
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
 			mNotificationCounter = notificationCount.get(fromJid);
-		} else {
-			notificationCount.put(fromJid, Integer.valueOf(1));
 		}
 		mNotificationCounter++;
+		notificationCount.put(fromJid, mNotificationCounter);
 		String author;
 		if (null == fromUserId || fromUserId.length() == 0 || fromJid.equals(fromUserId)) {
 			author = fromJid;
