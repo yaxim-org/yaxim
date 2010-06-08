@@ -137,11 +137,16 @@ public class SmackableImp implements Smackable {
 
 	private void tryToConnect() throws YaximXMPPException {
 		try {
-			if (!mXMPPConnection.isConnected()) {
-				SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
-				SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
-				mXMPPConnection.connect();
+			if (mXMPPConnection.isConnected()) {
+				try {
+					mXMPPConnection.disconnect();
+				} catch (Exception e) {
+					debugLog("conn.disconnect() failed: " + e);
+				}
 			}
+			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
+			SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
+			mXMPPConnection.connect();
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
