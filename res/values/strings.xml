@@ -128,17 +128,18 @@
 	<string name="account_jabberPW_sum">Enter Password</string>
 	<string name="account_jabberPW_dialog_title">Enter Password</string>
 
-	<!-- accountprefs -->
 	<string name="account_resource_title">Modify resource</string>
 	<string name="account_resource_summ">yaxim</string>
 	<string name="account_resource_dialog_title">Modify resource</string>
 	<string name="account_prio_title">Priority</string>
 	<string name="account_prio_summ">From 0 to 127</string>
 	<string name="account_prio_dialog_title">Priority</string>
-	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!
-	</string>
+	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!</string>
 	<string name="account_port_title">Change Port</string>
 	<string name="account_port_summ">Default Port: 5222</string>
+	
+	<string name="account_customserver_title">Custom Server</string>
+	<string name="account_customserver_summ">Hostname of your custom XMPP Server</string>
 
 	<!--StatusPopUp-->
 	<string name="RB_title">Statussettings</string>

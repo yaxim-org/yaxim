@@ -1,5 +1,8 @@
 package org.yaxim.androidclient.data;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -12,6 +15,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "YaximConfiguration";
 
+	private final Pattern domainPattern = Pattern
+			.compile("[a-z0-9\\-_]++(\\.[a-z0-9\\-_]++)++");
+
 	public String password;
 	public String ressource;
 	public int port;
@@ -22,6 +28,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean reportCrash;
 	public String userName;
 	public String server;
+	public String customServer;
 	public String jabberID;
 
 	public boolean isLEDNotify;
@@ -50,7 +57,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void splitAndSetJabberID(String jid) {
 		String[] res = jid.split("@");
 		this.userName = res[0];
-		this.server = res[1];
+		Matcher m = domainPattern.matcher(customServer);
+		this.server = (m.matches()) ? customServer : res[1];
+		Log.d("Prefs", server);
 	}
 
 	private int validatePriority(int jabPriority) {
@@ -83,10 +92,13 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.autoReconnect = prefs.getBoolean(
 				PreferenceConstants.AUTO_RECONNECT, false);
 
-		this.smackdebug = prefs.getBoolean(PreferenceConstants.SMACKDEBUG, false);
-		this.reportCrash = prefs.getBoolean(PreferenceConstants.REPORT_CRASH, false);
-
-		jabberID = prefs.getString(PreferenceConstants.JID, "");
+		this.smackdebug = prefs.getBoolean(PreferenceConstants.SMACKDEBUG,
+				false);
+		this.reportCrash = prefs.getBoolean(PreferenceConstants.REPORT_CRASH,
+				false);
+		this.jabberID = prefs.getString(PreferenceConstants.JID, "");
+		this.customServer = prefs.getString(PreferenceConstants.CUSTOM_SERVER,
+				"");
 
 		try {
 			XMPPHelper.verifyJabberID(jabberID);
