@@ -1,1 +1,8 @@
-/build.properties
+.classpath
+.project
+.settings
+bin/
+gen/
+*.class
+local.properties
+build.properties
