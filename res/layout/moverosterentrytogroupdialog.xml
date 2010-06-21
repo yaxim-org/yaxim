@@ -13,6 +13,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/MoveRosterEntryToGroupDialog_summ"
 			android:padding="10sp"
+			android:focusable="true"
 		/>
 		<Spinner  	android:id="@+id/MoveRosterEntryToGroupDialog_GroupSpinner" 
 					android:layout_width="fill_parent"

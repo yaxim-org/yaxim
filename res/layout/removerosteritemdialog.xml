@@ -13,6 +13,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/deleteRosterItem_text"
 			android:padding="10px"
+			android:focusable="true"
 	/>
 	<LinearLayout
 			android:id="@+id/DeleteRosterItem_ButtonLayout"
