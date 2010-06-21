@@ -519,6 +519,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 					public void run() {
 						createRosterIfConnected();
+						getExpandableListView().requestFocus();
 						setConnectingStatus(false);
 					}
 				});
