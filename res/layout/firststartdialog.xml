@@ -14,6 +14,7 @@
 			android:drawableLeft="@drawable/icon"
 			android:text="@string/StartupDialog_Summary"
 			android:padding="10sp"
+			android:focusable="true"
 		/>
 	<ScrollView android:layout_marginBottom="50dip" 
      				android:id="@+id/StartupDialog_ScrollView" 
@@ -42,7 +43,8 @@
 			android:textSize="18sp"
 			android:maxWidth="200sp"
 			android:inputType="textEmailAddress"
-			android:hint="@string/Global_JID_hint"/>
+			android:hint="@string/Global_JID_hint"
+			android:contentDescription="@string/StartupDialog_Username_title"/>
 	<TextView
 			android:id="@+id/StartupDialog_passwd_title"
 			android:layout_width="fill_parent"
@@ -61,6 +63,7 @@
 			android:textSize="18sp"
 			android:maxWidth="200sp"
 			android:hint="@string/StartupDialog_pwHint"
+			android:contentDescription="@string/StartupDialog_passwd_title"
 			/>
 	<TextView
 			android:id="@+id/StartupDialog_port_title"
@@ -80,6 +83,7 @@
 			android:textSize="18sp"
 			android:maxWidth="200sp"
 			android:text="@string/StartupDialog_portHint"
+			android:contentDescription="@string/StartupDialog_port_title"
 			/>
 	</LinearLayout>
 	</ScrollView>	

@@ -12,6 +12,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/RenameEntry_summ"
 			android:padding="10px"
+			android:focusable="true"
 	/>
 	<EditText
 			android:id="@+id/RenameEntry_EditTextField"

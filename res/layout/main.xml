@@ -15,12 +15,14 @@
 		android:visibility="gone"
 		android:shadowColor="#44000000"
 		android:shadowRadius="3.0"
-		android:text=""/>
+		android:text=""
+		android:focusable="true"/>
 
 	<ExpandableListView android:id="@android:id/list"
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
-		android:scrollingCache="true"/>
+		android:scrollingCache="true"
+		android:focusable="true"/>
 
 	<TextView android:id="@+id/android:empty"
 		android:layout_width="fill_parent" 
