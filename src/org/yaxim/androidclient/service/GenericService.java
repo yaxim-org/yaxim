@@ -86,7 +86,7 @@ public abstract class GenericService extends Service {
 
 	protected void notifyClient(String fromJid, String fromUserName, String message) {
 		setNotification(fromJid, fromUserName, message);
-		setLEDNotifivation();
+		setLEDNotification();
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
@@ -98,7 +98,7 @@ public abstract class GenericService extends Service {
 		}
 		mNotificationMGR.notify(notifyId, mNotification);
 		
-		vibraNotififaction();
+		vibraNotification();
 	}
 	
 	private void setNotification(String fromJid, String fromUserId, String message) {
@@ -131,7 +131,7 @@ public abstract class GenericService extends Service {
 		mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 	}
 
-	private void setLEDNotifivation() {
+	private void setLEDNotification() {
 		if (mConfig.isLEDNotify) {
 			mNotification.flags |= Notification.DEFAULT_LIGHTS;
 			mNotification.ledARGB = Color.MAGENTA;
@@ -141,7 +141,7 @@ public abstract class GenericService extends Service {
 		}
 	}
 
-	private void vibraNotififaction() {
+	private void vibraNotification() {
 		if (mConfig.isVibraNotify) {
 			mVibrator.vibrate(400);
 		}
