@@ -74,6 +74,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		setContentView(R.layout.main);
 		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
+		getExpandableListView().requestFocus();
 	}
 
 	@Override
