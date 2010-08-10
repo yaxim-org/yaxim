@@ -39,6 +39,7 @@ import org.yaxim.androidclient.util.StatusModeInt;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.PowerManager;
 
 import android.net.Uri;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class SmackableImp implements Smackable {
 	private final YaximConfiguration mConfig;
 	private final ConnectionConfiguration mXMPPConfig;
 	private final XMPPConnection mXMPPConnection;
+	private PowerManager.WakeLock mWakeLock;
 
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
@@ -65,13 +67,15 @@ public class SmackableImp implements Smackable {
 	private final ContentResolver mContentResolver;
 
 	public SmackableImp(YaximConfiguration config,
-			ContentResolver contentResolver) {
+			ContentResolver contentResolver,
+			PowerManager.WakeLock wakelock) {
 		this.mConfig = config;
 		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
 				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
+		mWakeLock = wakelock;
 	}
 
 	public boolean doConnect() throws YaximXMPPException {
@@ -483,6 +487,8 @@ public class SmackableImp implements Smackable {
 		PacketListener listener = new PacketListener() {
 
 			public void processPacket(Packet packet) {
+				mWakeLock.acquire();
+				debugLog("processPacket: " + packet);
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
@@ -497,6 +503,7 @@ public class SmackableImp implements Smackable {
 					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD);
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
+				mWakeLock.release();
 			}
 		};
 
