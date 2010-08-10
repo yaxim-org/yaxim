@@ -481,9 +481,14 @@ public class SmackableImp implements Smackable {
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
 
 		PacketListener listener = new PacketListener() {
+			Packet lastPacket = null;
 
 			public void processPacket(Packet packet) {
-				debugLog("processPacket: " + packet);
+				// do equality check against looping bug in smack
+				if (lastPacket == packet) {
+					debugLog("processPacket: duplicate " + packet);
+					return;
+				} else lastPacket = packet;
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
