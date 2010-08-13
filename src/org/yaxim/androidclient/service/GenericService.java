@@ -93,6 +93,7 @@ public abstract class GenericService extends Service {
 		mWakeLock.acquire();
 		setNotification(fromJid, fromUserName, message);
 		setLEDNotification();
+		mNotification.sound = mConfig.notifySound;
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
@@ -140,7 +141,6 @@ public abstract class GenericService extends Service {
 
 	private void setLEDNotification() {
 		if (mConfig.isLEDNotify) {
-			mNotification.flags |= Notification.DEFAULT_LIGHTS;
 			mNotification.ledARGB = Color.MAGENTA;
 			mNotification.ledOnMS = 300;
 			mNotification.ledOffMS = 1000;
