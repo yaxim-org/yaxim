@@ -258,7 +258,10 @@ public class XMPPService extends GenericService {
 						postConnectionFailed("Inconsistency in Smackable.doConnect()");
 					}
 				} catch (YaximXMPPException e) {
-					postConnectionFailed(e.getLocalizedMessage());
+					String message = e.getLocalizedMessage();
+					if (e.getCause() != null)
+						message += "\n" + e.getCause().getLocalizedMessage();
+					postConnectionFailed(message);
 					logError("YaximXMPPException in doConnect(): " + e);
 				} finally {
 					mConnectingThread = null;

@@ -156,9 +156,12 @@ public class SmackableImp implements Smackable {
 						mConfig.ressource);
 			}
 			sendOfflineMessages();
+		} catch (XMPPException e) {
+			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
 		} catch (Exception e) {
-			// actually we just care for IllegalState, NullPointer or XMPPEx.
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			// actually we just care for IllegalState or NullPointer or XMPPEx.
+			Log.e(TAG, "tryToConnect(): " + Log.getStackTraceString(e));
+			throw new YaximXMPPException(e.getLocalizedMessage(), e.getCause());
 		}
 	}
 
