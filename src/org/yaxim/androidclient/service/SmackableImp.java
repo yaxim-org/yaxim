@@ -8,6 +8,9 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import javax.net.ssl.SSLContext;
+
+import de.duenndns.ssl.MemorizingTrustManager;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketListener;
@@ -36,6 +39,7 @@ import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.StatusModeInt;
 
+import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -65,11 +69,22 @@ public class SmackableImp implements Smackable {
 	private final ContentResolver mContentResolver;
 
 	public SmackableImp(YaximConfiguration config,
-			ContentResolver contentResolver) {
+			ContentResolver contentResolver,
+			Service service) {
 		this.mConfig = config;
 		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
 				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
+		// register MemorizingTrustManager for HTTPS
+		try {
+			SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, MemorizingTrustManager.getInstanceList(service),
+					new java.security.SecureRandom());
+			this.mXMPPConfig.setCustomSSLContext(sc);
+		} catch (java.security.GeneralSecurityException e) {
+			debugLog("initialize MemorizingTrustManager: " + e);
+		}
+
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
 	}

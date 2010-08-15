@@ -387,7 +387,7 @@ public class XMPPService extends GenericService {
 	private void createAdapter() {
 		System.setProperty("smack.debugEnabled", "" + mConfig.smackdebug);
 		try {
-			mSmackable = new SmackableImp(mConfig, getContentResolver());
+			mSmackable = new SmackableImp(mConfig, getContentResolver(), this);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}

@@ -49,5 +49,6 @@
 		<provider android:name=".data.RosterProvider"
 			android:authorities="org.yaxim.androidclient.provider.Roster" />
 
+		<activity android:name="de.duenndns.ssl.MemorizingActivity" />
 	</application>
 </manifest>
