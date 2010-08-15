@@ -2,7 +2,7 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="@string/account_settings_title">
-		<EditTextPreference 
+		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_jabberID"
 			android:key="account_jabberID"
 			android:title="@string/account_jabberID_title"
@@ -23,7 +23,7 @@
 		 />
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_settings_title">
-		<EditTextPreference 
+		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_port"
 			android:key="account_port"
 			android:title="@string/account_port_title"
@@ -33,7 +33,7 @@
 			android:singleLine="true"
 			android:numeric="integer"
 		/>	
-		<EditTextPreference 
+		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_resource"
 			android:key="account_resource"
 			android:title="@string/account_resource_title"
@@ -43,7 +43,7 @@
 			android:singleLine="true"
 			android:hint="@string/account_resource_summ"
 		 />
-		<EditTextPreference 
+		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_prio"
 			android:key="account_prio"
 			android:title="@string/account_prio_title"
