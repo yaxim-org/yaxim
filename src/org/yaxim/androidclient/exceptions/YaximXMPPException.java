@@ -8,4 +8,7 @@ public class YaximXMPPException extends Exception {
 		super(message);
 	}
 
+	public YaximXMPPException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

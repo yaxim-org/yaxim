@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -31,6 +33,7 @@ public abstract class GenericService extends Service {
 	private Notification mNotification;
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
+	protected WakeLock mWakeLock;
 	//private int mNotificationCounter = 0;
 	
 	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
@@ -64,6 +67,8 @@ public abstract class GenericService extends Service {
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		mWakeLock = ((PowerManager)getSystemService(Context.POWER_SERVICE))
+				.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, APP_NAME);
 		addNotificationMGR();
 	}
 
@@ -85,8 +90,10 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String fromJid, String fromUserName, String message) {
+		mWakeLock.acquire();
 		setNotification(fromJid, fromUserName, message);
 		setLEDNotification();
+		mNotification.sound = mConfig.notifySound;
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
@@ -99,6 +106,7 @@ public abstract class GenericService extends Service {
 		mNotificationMGR.notify(notifyId, mNotification);
 		
 		vibraNotification();
+		mWakeLock.release();
 	}
 	
 	private void setNotification(String fromJid, String fromUserId, String message) {
@@ -133,7 +141,6 @@ public abstract class GenericService extends Service {
 
 	private void setLEDNotification() {
 		if (mConfig.isLEDNotify) {
-			mNotification.flags |= Notification.DEFAULT_LIGHTS;
 			mNotification.ledARGB = Color.MAGENTA;
 			mNotification.ledOnMS = 300;
 			mNotification.ledOffMS = 1000;
