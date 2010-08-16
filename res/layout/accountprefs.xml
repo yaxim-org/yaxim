@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="@string/account_settings_title">
+	<PreferenceCategory android:title="@string/account_settings_login">
 		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_jabberID"
 			android:key="account_jabberID"
 			android:title="@string/account_jabberID_title"
 			android:summary="@string/account_jabberID_sum"
-			android:dialogTitle="@string/account_jabberID_sum"
+			android:dialogTitle="@string/account_jabberID_dialog_title"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:inputType="textEmailAddress"
@@ -17,7 +17,7 @@
 			android:key="account_jabberPW"
 			android:title="@string/account_jabberPW_title"
 			android:summary="@string/account_jabberPW_sum" 
-			android:dialogTitle="@string/account_jabberPW_sum"
+			android:dialogTitle="@string/account_jabberPW_dialog_title"
 			android:singleLine="true"
 			android:password="true"
 		 />
@@ -27,8 +27,9 @@
 			android:id="@+id/account_port"
 			android:key="account_port"
 			android:title="@string/account_port_title"
-		  	android:summary="@string/account_port_summ"
-			android:dialogTitle="@string/account_port_title"
+			android:summary="@string/account_port_sum"
+			android:dialogTitle="@string/account_port_dialog_title"
+			android:hint="@string/account_port_hint"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:numeric="integer"
@@ -41,14 +42,14 @@
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:dialogTitle="@string/account_resource_dialog_title"
 			android:singleLine="true"
-			android:hint="@string/account_resource_summ"
+			android:hint="@string/account_resource_hint"
 		 />
 		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_prio"
 			android:key="account_prio"
 			android:title="@string/account_prio_title"
 			android:summary="@string/account_prio_summ"
-			android:dialogTitle="@string/account_prio_title"
+			android:dialogTitle="@string/account_prio_dialog_title"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:numeric="integer"
@@ -59,13 +60,15 @@
 			android:id="@+id/connstartup"
 			android:key="connstartup"
 			android:title="@string/connstartup_title"
-			android:summary="@string/connstartup_summary"
+			android:summaryOn="@string/connstartup_summOn"
+			android:summaryOff="@string/connstartup_summOff"
 		/>
 		<CheckBoxPreference
 			android:id="@+id/reconnect"
 			android:key="reconnect"
 			android:title="@string/reconnect_title"
-			android:summary="@string/reconnect_summary"
+			android:summaryOn="@string/reconnect_summOn"
+			android:summaryOff="@string/reconnect_summOff"
 		/>
 	</PreferenceCategory>
 </PreferenceScreen>

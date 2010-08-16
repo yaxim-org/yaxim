@@ -114,31 +114,37 @@
 	<!-- Accountprefs -->
 	<string name="account_settings_defaultsum">Please enter a valid JabberId</string>
 	<string name="account_settings_defaultsum_prefix">Please enter a valid JabberId</string>
-	<string name="account_settings_title">Account settings</string>
-	<string name="account_options_title">Account options</string>
+	<string name="account_settings_login">Login Information</string>
+	<string name="account_settings_title">Account Settings</string>
+	<string name="account_options_title">Connecting Options</string>
 	<string name="account_summary_prefix">Value entered: </string>
-	<string name="connstartup_title">Connect at startup</string>
-	<string name="connstartup_summary">Startup options</string>
-	<string name="reconnect_title">Auto-reconnect</string>
-	<string name="reconnect_summary">Reconnect if disconnected</string>
-	<string name="account_jabberID_title">Enter jabberID</string>
-	<string name="account_jabberID_sum">eg.: foo@jabber.bar.com</string>
-	<string name="account_jabberID_dialog_title">Enter jabberID</string>
-	<string name="account_jabberPW_title">Enter Password</string>
-	<string name="account_jabberPW_sum">Enter Password</string>
-	<string name="account_jabberPW_dialog_title">Enter Password</string>
+	<string name="connstartup_title">Connect at Startup</string>
+	<string name="connstartup_summOn">Go online when yaxim is opened</string>
+	<string name="connstartup_summOff">Do not automatically connect</string>
+	<string name="reconnect_title">Auto Reconnect</string>
+	<string name="reconnect_summOn">Reconnect when connection drops</string>
+	<string name="reconnect_summOff">Stay offline when connection drops</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Enter your Jabber ID:</string>
+	<string name="account_jabberPW_title">Account Password</string>
+	<string name="account_jabberPW_sum">Your Jabber account password</string>
+	<string name="account_jabberPW_dialog_title">Enter password:</string>
 
 	<!-- accountprefs -->
-	<string name="account_resource_title">Modify resource</string>
-	<string name="account_resource_summ">yaxim</string>
-	<string name="account_resource_dialog_title">Modify resource</string>
-	<string name="account_prio_title">Priority</string>
-	<string name="account_prio_summ">From 0 to 127</string>
-	<string name="account_prio_dialog_title">Priority</string>
+	<string name="account_resource_title">Client Resource</string>
+	<string name="account_resource_summ">Default: yaxim</string>
+	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Client Priority</string>
+	<string name="account_prio_summ">Default: 0 (allowed: 0 .. 127)</string>
+	<string name="account_prio_dialog_title">Enter your priority:</string>
 	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!
 	</string>
-	<string name="account_port_title">Change Port</string>
-	<string name="account_port_summ">Default Port: 5222</string>
+	<string name="account_port_title">Server Port</string>
+	<string name="account_port_sum">Default: 5222</string>
+	<string name="account_port_dialog_title">Enter the server port:</string>
+	<string name="account_port_hint">5222</string>
 
 	<!--StatusPopUp-->
 	<string name="RB_title">Statussettings</string>

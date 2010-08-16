@@ -17,6 +17,8 @@ public class EditTextPreferenceWithValue extends EditTextPreference {
 	}
 
 	private void setSummaryToText(String text) {
+		if (mSummary == null)
+			mSummary = getSummary();
 		if (text == null || text.length() == 0)
 			setSummary(mSummary);
 		else
@@ -25,7 +27,6 @@ public class EditTextPreferenceWithValue extends EditTextPreference {
 	@Override
 	protected void onBindView(View view) {
 		super.onBindView(view);
-		mSummary = getSummary();
 		setSummaryToText(getText());
 	}
 
