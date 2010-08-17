@@ -117,6 +117,7 @@
 	<string name="account_settings_login">Login Information</string>
 	<string name="account_settings_title">Account Settings</string>
 	<string name="account_options_title">Connecting Options</string>
+	<string name="account_options_advanced">Advanced Options</string>
 	<string name="account_summary_prefix">Value entered: </string>
 	<string name="connstartup_title">Connect at Startup</string>
 	<string name="connstartup_summOn">Go online when yaxim is opened</string>
