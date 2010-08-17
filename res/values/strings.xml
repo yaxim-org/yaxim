@@ -139,12 +139,15 @@
 	<string name="account_prio_title">Client Priority</string>
 	<string name="account_prio_summ">Default: 0 (allowed: 0 .. 127)</string>
 	<string name="account_prio_dialog_title">Enter your priority:</string>
-	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!
-	</string>
+	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!</string>
 	<string name="account_port_title">Server Port</string>
 	<string name="account_port_sum">Default: 5222</string>
 	<string name="account_port_dialog_title">Enter the server port:</string>
 	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Custom Server</string>
+	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
+	<string name="account_customserver_dialog_title">Enter server hostname:</string>
+	<string name="account_customserver_hint">host.example.com</string>
 
 	<!--StatusPopUp-->
 	<string name="RB_title">Statussettings</string>

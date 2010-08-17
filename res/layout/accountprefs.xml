@@ -24,6 +24,17 @@
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_settings_title">
 		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
+			android:id="@+id/account_customserver"
+			android:key="account_customserver"
+			android:title="@string/account_customserver_title"
+			android:summary="@string/account_customserver_summ"
+			android:dialogTitle="@string/account_customserver_dialog_title"
+			android:hint="@string/account_customserver_hint"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:singleLine="true"
+			android:inputType="textUri"
+		/>	
+		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_port"
 			android:key="account_port"
 			android:title="@string/account_port_title"

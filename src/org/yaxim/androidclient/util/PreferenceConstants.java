@@ -3,6 +3,7 @@ package org.yaxim.androidclient.util;
 public class PreferenceConstants {
 	public final static String JID = "account_jabberID";
 	public final static String PASSWORD = "account_jabberPW";
+	public final static String CUSTOM_SERVER = "account_customserver";
 	public final static String PORT = "account_port";
 	public final static String RESSOURCE = "account_resource";
 	public final static String DEFAULT_PORT = "5222";
