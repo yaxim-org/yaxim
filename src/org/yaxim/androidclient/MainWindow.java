@@ -131,33 +131,25 @@ public class MainWindow extends GenericExpandableListActivity {
 		long packedPosition = info.packedPosition;
 		boolean isChild = isChild(packedPosition);
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.roster_contextmenu, menu);
+		getMenuInflater().inflate(R.menu.roster_contextmenu, menu);
 
 		int groupPosition = ExpandableListView
 				.getPackedPositionGroup(info.packedPosition);
-		String groupName = rosterGroupList.get(groupPosition).get(
+		String menuName = rosterGroupList.get(groupPosition).get(
 				AdapterConstants.GROUP_NAME[0]);
 
-		String menuTitle = getString(R.string.roster_contextmenu_title);
-
+		// display contact menu for contacts
+		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild);
+		// display group menu for non-standard group
+		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
+				!menuName.equals(AdapterConstants.EMPTY_GROUP));
 		if (isChild) {
-			menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, true);
-			menu.setGroupVisible(R.id.roster_contextmenu_group_menu, false);
-			menu.setHeaderTitle(menuTitle + "");
-		} else {
-			if (groupName.equals(AdapterConstants.EMPTY_GROUP)) {
-				menu.setGroupVisible(R.id.roster_contextmenu_contact_menu,
-						false);
-				menu.setGroupVisible(R.id.roster_contextmenu_group_menu, false);
-				menu.setHeaderTitle(menuTitle + groupName);
-			} else {
-				menu.setGroupVisible(R.id.roster_contextmenu_contact_menu,
-						false);
-				menu.setGroupVisible(R.id.roster_contextmenu_group_menu, true);
-				menu.setHeaderTitle(menuTitle + groupName);
-			}
+			int childPosition = ExpandableListView
+					.getPackedPositionChild(packedPosition);
+			menuName = rosterEntryList.get(groupPosition).get(childPosition)
+				.get(AdapterConstants.CONTACT_ID).screenName;
 		}
+		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
 
 	@Override
