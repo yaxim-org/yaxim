@@ -83,7 +83,7 @@
 				android:layout_width="120sp"
 				android:layout_height="wrap_content"
 				android:text="@android:string/ok"
-				android:clickable="false"
+				android:enabled="false"
 		/>
 
 		<Button
