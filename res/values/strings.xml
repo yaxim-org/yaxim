@@ -13,11 +13,9 @@
 	<!-- Global Strings -->
 	<string name="Global_Exit">Exit</string>
 	<string name="Global_authenticate_first">Please connect first</string>
-	<string name="Global_Me">Me</string>
-	<string name="Global_Error">Error: </string>
-	<string name="Global_JID_hint">foo@jabber.bar.com</string>
+	<string name="Global_JID_hint">user@jabber.example.com</string>
 
-	<!--	FirstStartUpDialog-->
+	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
 	<string name="StartupDialog_pwHint">Enter password</string>
@@ -29,19 +27,19 @@
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s:</string>
 
-	<!-- Notification Settings 	-->
-	<string name="preftitle_notify">Notification Preferences</string>
-	<string name="led_title">Notify via LED</string>
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Message Notification</string>
+	<string name="led_title">Blinking LED</string>
 	<string name="led_summOn">LED notification is on</string>
 	<string name="led_summOff">LED notification is off</string>
-	<string name="vibr_title">Notify via vibration</string>
+	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summOn">Vibration notifications are on</string>
 	<string name="vibr_summOff">Vibration notification are off</string>
-	<string name="ringtone_title">Ringtone preferences</string>
-	<string name="ringtone_summ">Edit ringtone settings</string>
+	<string name="ringtone_title">Ringtone</string>
+	<string name="ringtone_summ">Tone for incoming messages</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Bootoptions</string>
+	<string name="preftitle_boot">Startup Options</string>
 	<string name="boot_title">"Load yaxim at bootup</string>
 	<string name="boot_summOn">yaxim is set to load at bootup</string>
 	<string name="boot_summOff">yaxim is set to not load at bootup</string>
@@ -64,6 +62,7 @@
 	<string name="reportcrash_summ_off">Anonymous crash reports disabled</string>
 
 	<!-- Appearence Strings -->
+	<!--
 	<string name="preftitle_app">Appearance</string>
 	<string name="FontChat_title">Chat font size</string>
 	<string name="FontChat_summ">Set chat font size</string>
@@ -72,53 +71,41 @@
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
+	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add friend</string>
-	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_addFriend">Add Contact</string>
+	<string name="Menu_ShowOff">Show Offline</string>
+	<string name="Menu_HideOff">Hide Offline</string>
 	<string name="Menu_AccSettings">Edit Account</string>
 	<string name="Menu_Settings">Settings</string>
 	<string name="Menu_Status">Status</string>
-	<string name="Menu_Connect">Connect</string>
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
 
 	<!-- AddFriend -->
-	<string name="addFriend_inputPreset">e.g.: foo@jabber.bar.com</string>
-	<string name="addFriend_Title">Please enter Jabber ID</string>
-	<string name="addFriend_Summ">Jabber ID will be something like e.g.:
-		foo@jabber.bar.com. As soon as a valid Id is entered the Ok button
-		will become clickable!</string>
-	<string name="addFriend_posBtn">Add</string>
+	<string name="addFriend_Title">Add a Contact</string>
+	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
+		desired screen name and choose their contact group!</string>
+	<string name="addFriend_aliasHint">Screen name</string>
 	<string name="addrosteritemaddgroupchoice">Add to a new group</string>
-	<string name="NewGroup_EditTextField_Hint">Enter a name for the new group</string>
-
-	<!-- AddFriendAlert -->
-	<string name="addFriendAlert_Title">No valid ID entered!</string>
-	<string name="addFriendAlert_Message">Could not validate ID</string>
-	<string name="addFriendAlert_Retry">Retry</string>
-	<string name="addFriendAlert_Cancel">Cancel</string>
+	<string name="NewGroup_EditTextField_Hint">Name for the new group</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Options: </string>
-	<string name="roster_contextmenu_title_no_options">No options</string>
+	<string name="roster_contextmenu_title">Options for %s</string>
 	<string name="roster_contextmenu_group_rename">Rename group</string>
 	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
-	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
+	<string name="roster_contextmenu_contact_open_chat">Open Chat</string>
 	<string name="roster_contextmenu_contact_rename">Rename</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change Group</string>
 
 	<!-- Accountprefs -->
-	<string name="account_settings_defaultsum">Please enter a valid JabberId</string>
-	<string name="account_settings_defaultsum_prefix">Please enter a valid JabberId</string>
 	<string name="account_settings_login">Login Information</string>
 	<string name="account_settings_title">Account Settings</string>
 	<string name="account_options_title">Connecting Options</string>
 	<string name="account_options_advanced">Advanced Options</string>
-	<string name="account_summary_prefix">Value entered: </string>
 	<string name="connstartup_title">Connect at Startup</string>
 	<string name="connstartup_summOn">Go online when yaxim is opened</string>
 	<string name="connstartup_summOff">Do not automatically connect</string>
@@ -140,7 +127,6 @@
 	<string name="account_prio_title">Client Priority</string>
 	<string name="account_prio_summ">Default: 0 (allowed: 0 .. 127)</string>
 	<string name="account_prio_dialog_title">Enter your priority:</string>
-	<string name="account_prio_dialog_errorMessage">Error! Please enter a value between 0 and 127!</string>
 	<string name="account_port_title">Server Port</string>
 	<string name="account_port_sum">Default: 5222</string>
 	<string name="account_port_dialog_title">Enter the server port:</string>
@@ -162,7 +148,6 @@
 
 	<string name="AddContact_NOT_VALID">Not Valid</string>
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>
-	<string name="addFriend_aliasHint">Enter desired alias</string>
 	<string name="setStatusmsgHint">Enter your statusmessage here</string>
 	<string name="setStatusmsgDefault"></string>
 	<string name="setStatusTitle">Set your status</string>
@@ -263,7 +248,7 @@
 		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
     </string>
-	<string name="AboutDialog_greetings">The yaxim Team - 24.05.2010</string>
+	<string name="AboutDialog_greetings">The yaxim Team - 2010-08-18</string>
 
 	<!-- list of Status codes to display -->
 	<string-array name="statuslist">
