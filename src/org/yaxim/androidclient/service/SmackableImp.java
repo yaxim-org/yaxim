@@ -70,6 +70,7 @@ public class SmackableImp implements Smackable {
 		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
 				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
+		this.mXMPPConfig.setSendPresence(false);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
 	}
@@ -155,7 +156,9 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
+			setStatus(StatusMode.valueOf(mConfig.statusMode), mConfig.statusMessage);
 			sendOfflineMessages();
+
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
 		} catch (Exception e) {

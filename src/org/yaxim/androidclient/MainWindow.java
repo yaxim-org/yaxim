@@ -64,6 +64,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ExpandableRosterAdapter rosterListAdapter;
 	private TextView mConnectingText;
 	private boolean showOffline;
+	private String mStatusMessage;
+	private String mStatusMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -307,6 +309,16 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
+	private void setStatus(String statusmode, String message) {
+		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		mStatusMode = statusmode;
+		mStatusMessage = message;
+		prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
+		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
+		prefedit.commit();
+		serviceAdapter.setStatus(StatusMode.valueOf(statusmode), message);
+	}
+
 	private void changeStatusDialog() {
 		LayoutInflater inflater = (LayoutInflater)getSystemService(
 			      LAYOUT_INFLATER_SERVICE);
@@ -314,6 +326,11 @@ public class MainWindow extends GenericExpandableListActivity {
 		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
 		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
 		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
+		message.setText(mStatusMessage);
+		for (int i = 0; i < statusCodes.length; i++) {
+			if (statusCodes[i].equals(mStatusMode))
+				status.setSelection(i);
+		}
 		new AlertDialog.Builder(this)
 			.setTitle(R.string.statuspopup_name)
 			.setView(group)
@@ -321,9 +338,9 @@ public class MainWindow extends GenericExpandableListActivity {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						String statusStr = statusCodes[status.getSelectedItemPosition()];
-						Log.d(TAG, "changeStatusDialog: status=" + StatusMode.valueOf(statusStr));
+						Log.d(TAG, "changeStatusDialog: status=" + statusStr);
 						Log.d(TAG, "changeStatusDialog: message=" + message.getText().toString());
-						serviceAdapter.setStatus(StatusMode.valueOf(statusStr), message.getText().toString());
+						setStatus(statusStr, message.getText().toString());
 					}
 				})
 			.setNegativeButton(android.R.string.cancel, null)
@@ -615,5 +632,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void getPreferences(SharedPreferences prefs) {
 		showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, true);
+		mStatusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
+		mStatusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 	}
 }
