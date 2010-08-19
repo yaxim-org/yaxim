@@ -11,7 +11,6 @@ import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
 import org.yaxim.androidclient.dialogs.RenameRosterGroupDialog;
-import org.yaxim.androidclient.dialogs.RenameRosterItemDialog;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
@@ -40,6 +39,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
@@ -167,6 +167,26 @@ public class MainWindow extends GenericExpandableListActivity {
 			.create().show();
 	}
 
+	void renameRosterItemDialog(final String JID, final String userName) {
+		final EditText input = new EditText(this);
+		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
+		input.setText(userName);
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.RenameEntry_title)
+			.setMessage(getString(R.string.RenameEntry_summ, userName, JID))
+			.setView(input)
+			.setPositiveButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							String newName = input.getText().toString();
+							if (newName.length() != 0)
+								serviceAdapter.renameRosterItem(JID, newName);
+						}
+					})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		return applyMenuContextChoice(item);
@@ -200,7 +220,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_rename:
-				new RenameRosterItemDialog(this, serviceAdapter, userJid).show();
+				renameRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_request_auth:
