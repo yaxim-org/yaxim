@@ -10,7 +10,6 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
-import org.yaxim.androidclient.dialogs.RemoveRosterItemDialog;
 import org.yaxim.androidclient.dialogs.RenameRosterGroupDialog;
 import org.yaxim.androidclient.dialogs.RenameRosterItemDialog;
 import org.yaxim.androidclient.preferences.AccountPrefs;
@@ -22,10 +21,12 @@ import org.yaxim.androidclient.util.ExpandableRosterAdapter;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -152,6 +153,20 @@ public class MainWindow extends GenericExpandableListActivity {
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
 
+	void removeRosterItemDialog(final String JID, final String userName) {
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.deleteRosterItem_title)
+			.setMessage(getString(R.string.deleteRosterItem_text, userName, JID))
+			.setPositiveButton(android.R.string.yes,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							serviceAdapter.removeRosterItem(JID);
+						}
+					})
+			.setNegativeButton(android.R.string.no, null)
+			.create().show();
+	}
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		return applyMenuContextChoice(item);
@@ -181,7 +196,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
-				new RemoveRosterItemDialog(this, serviceAdapter, userJid).show();
+				removeRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_rename:

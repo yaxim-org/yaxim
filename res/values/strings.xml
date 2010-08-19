@@ -160,8 +160,8 @@
 	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
 	<string name="ConnectProgressMessage">Please wait while connecting to server ...</string>
-	<string name="deleteRosterItem_text">Really remove %s?</string>
-	<string name="deleteRosterItem_title">Remove contact</string>
+	<string name="deleteRosterItem_text">Really remove %s (%s)?</string>
+	<string name="deleteRosterItem_title">Delete Contact</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_InputFieldHint">Input text here</string>
