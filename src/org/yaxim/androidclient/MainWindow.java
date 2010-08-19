@@ -9,7 +9,6 @@ import org.yaxim.androidclient.dialogs.AboutDialog;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
-import org.yaxim.androidclient.dialogs.RenameRosterGroupDialog;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
@@ -170,24 +169,47 @@ public class MainWindow extends GenericExpandableListActivity {
 			.create().show();
 	}
 
-	void renameRosterItemDialog(final String JID, final String userName) {
+	abstract class EditOk {
+		abstract public void ok(String result);
+	}
+
+	void editTextDialog(int titleId, CharSequence message, String text,
+			final EditOk ok) {
 		final EditText input = new EditText(this);
 		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
-		input.setText(userName);
+		input.setText(text);
 		new AlertDialog.Builder(this)
-			.setTitle(R.string.RenameEntry_title)
-			.setMessage(getString(R.string.RenameEntry_summ, userName, JID))
+			.setTitle(titleId)
+			.setMessage(message)
 			.setView(input)
-			.setPositiveButton(android.R.string.ok,
-					new DialogInterface.OnClickListener() {
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							String newName = input.getText().toString();
 							if (newName.length() != 0)
-								serviceAdapter.renameRosterItem(JID, newName);
-						}
-					})
+								ok.ok(newName);
+						}})
 			.setNegativeButton(android.R.string.cancel, null)
 			.create().show();
+	}
+
+	void renameRosterItemDialog(final String JID, final String userName) {
+		editTextDialog(R.string.RenameEntry_title,
+				getString(R.string.RenameEntry_summ, userName, JID),
+				userName, new EditOk() {
+					public void ok(String result) {
+						serviceAdapter.renameRosterItem(JID, result);
+					}
+				});
+	}
+
+	void renameRosterGroupDialog(final String groupName) {
+		editTextDialog(R.string.RenameGroup_title,
+				getString(R.string.RenameGroup_summ, groupName),
+				groupName, new EditOk() {
+					public void ok(String result) {
+						serviceAdapter.renameRosterGroup(groupName, result);
+					}
+				});
 	}
 
 	@Override
@@ -247,8 +269,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_group_rename:
-				new RenameRosterGroupDialog(this, serviceAdapter, seletedGroup)
-						.show();
+				renameRosterGroupDialog(seletedGroup);
 				return true;
 
 			case R.id.roster_exit:

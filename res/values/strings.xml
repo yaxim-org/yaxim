@@ -143,7 +143,7 @@
 	<string name="setStatusTitle">Set your status</string>
 	<string name="newGroup_summ">Enter the desired name for your new Group</string>
 	<string name="newGroup_title">Add New Group</string>
-	<string name="RenameGroup_summ">Change the name for this group</string>
+	<string name="RenameGroup_summ">Rename group %s to:</string>
 	<string name="RenameGroup_title">Rename group</string>
 	<string name="RenameEntry_summ">Rename %s (%s) to: </string>
 	<string name="RenameEntry_title">Rename contact</string>
