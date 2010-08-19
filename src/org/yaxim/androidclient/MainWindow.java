@@ -7,12 +7,9 @@ import java.util.List;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AboutDialog;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
-import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
-import org.yaxim.androidclient.dialogs.RemoveRosterItemDialog;
 import org.yaxim.androidclient.dialogs.RenameRosterGroupDialog;
-import org.yaxim.androidclient.dialogs.RenameRosterItemDialog;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
@@ -22,10 +19,12 @@ import org.yaxim.androidclient.util.ExpandableRosterAdapter;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,12 +33,15 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import org.yaxim.androidclient.IXMPPRosterCallback;
@@ -131,33 +133,59 @@ public class MainWindow extends GenericExpandableListActivity {
 		long packedPosition = info.packedPosition;
 		boolean isChild = isChild(packedPosition);
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.roster_contextmenu, menu);
+		getMenuInflater().inflate(R.menu.roster_contextmenu, menu);
 
 		int groupPosition = ExpandableListView
 				.getPackedPositionGroup(info.packedPosition);
-		String groupName = rosterGroupList.get(groupPosition).get(
+		String menuName = rosterGroupList.get(groupPosition).get(
 				AdapterConstants.GROUP_NAME[0]);
 
-		String menuTitle = getString(R.string.roster_contextmenu_title);
-
+		// display contact menu for contacts
+		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild);
+		// display group menu for non-standard group
+		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
+				!menuName.equals(AdapterConstants.EMPTY_GROUP));
 		if (isChild) {
-			menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, true);
-			menu.setGroupVisible(R.id.roster_contextmenu_group_menu, false);
-			menu.setHeaderTitle(menuTitle + "");
-		} else {
-			if (groupName.equals(AdapterConstants.EMPTY_GROUP)) {
-				menu.setGroupVisible(R.id.roster_contextmenu_contact_menu,
-						false);
-				menu.setGroupVisible(R.id.roster_contextmenu_group_menu, false);
-				menu.setHeaderTitle(menuTitle + groupName);
-			} else {
-				menu.setGroupVisible(R.id.roster_contextmenu_contact_menu,
-						false);
-				menu.setGroupVisible(R.id.roster_contextmenu_group_menu, true);
-				menu.setHeaderTitle(menuTitle + groupName);
-			}
+			int childPosition = ExpandableListView
+					.getPackedPositionChild(packedPosition);
+			menuName = rosterEntryList.get(groupPosition).get(childPosition)
+				.get(AdapterConstants.CONTACT_ID).screenName;
 		}
+		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
+	}
+
+	void removeRosterItemDialog(final String JID, final String userName) {
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.deleteRosterItem_title)
+			.setMessage(getString(R.string.deleteRosterItem_text, userName, JID))
+			.setPositiveButton(android.R.string.yes,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							serviceAdapter.removeRosterItem(JID);
+						}
+					})
+			.setNegativeButton(android.R.string.no, null)
+			.create().show();
+	}
+
+	void renameRosterItemDialog(final String JID, final String userName) {
+		final EditText input = new EditText(this);
+		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
+		input.setText(userName);
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.RenameEntry_title)
+			.setMessage(getString(R.string.RenameEntry_summ, userName, JID))
+			.setView(input)
+			.setPositiveButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							String newName = input.getText().toString();
+							if (newName.length() != 0)
+								serviceAdapter.renameRosterItem(JID, newName);
+						}
+					})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
 	}
 
 	@Override
@@ -189,11 +217,11 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
-				new RemoveRosterItemDialog(this, serviceAdapter, userJid).show();
+				removeRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_rename:
-				new RenameRosterItemDialog(this, serviceAdapter, userJid).show();
+				renameRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_request_auth:
@@ -279,6 +307,29 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
+	private void changeStatusDialog() {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.statusview, null, false);
+		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
+		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
+		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.statuspopup_name)
+			.setView(group)
+			.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						String statusStr = statusCodes[status.getSelectedItemPosition()];
+						Log.d(TAG, "changeStatusDialog: status=" + StatusMode.valueOf(statusStr));
+						Log.d(TAG, "changeStatusDialog: message=" + message.getText().toString());
+						serviceAdapter.setStatus(StatusMode.valueOf(statusStr), message.getText().toString());
+					}
+				})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
 	private boolean applyMainMenuChoice(MenuItem item) {
 
 		int itemID = item.getItemId();
@@ -305,7 +356,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		case R.id.menu_status:
 			if (serviceAdapter.isAuthenticated()) {
-				new ChangeStatusDialog(this, serviceAdapter).show();
+				changeStatusDialog();
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}

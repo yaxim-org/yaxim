@@ -125,11 +125,11 @@ public class AddRosterItemDialog extends GenericDialog implements
 	public void afterTextChanged(Editable s) {
 		try {
 			XMPPHelper.verifyJabberID(s);
-			okButton.setClickable(true);
+			okButton.setEnabled(true);
 			okButton.setOnClickListener(this);
 			userInputField.setTextColor(Color.DKGRAY);
 		} catch (YaximXMPPAdressMalformedException e) {
-			okButton.setClickable(false);
+			okButton.setEnabled(false);
 			userInputField.setTextColor(Color.RED);
 		}
 	}

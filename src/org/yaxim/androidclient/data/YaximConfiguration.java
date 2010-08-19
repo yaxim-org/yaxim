@@ -1,8 +1,5 @@
 package org.yaxim.androidclient.data;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -15,9 +12,6 @@ import android.util.Log;
 public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "YaximConfiguration";
-
-	private final Pattern domainPattern = Pattern
-			.compile("[a-z0-9\\-_]++(\\.[a-z0-9\\-_]++)++");
 
 	public String password;
 	public String ressource;
@@ -59,9 +53,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void splitAndSetJabberID(String jid) {
 		String[] res = jid.split("@");
 		this.userName = res[0];
-		Matcher m = domainPattern.matcher(customServer);
-		this.server = (m.matches()) ? customServer : res[1];
-		Log.d("Prefs", server);
+		this.server = (customServer.length() > 0) ? customServer : res[1];
 	}
 
 	private int validatePriority(int jabPriority) {

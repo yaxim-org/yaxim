@@ -34,7 +34,7 @@ public class AccountPrefs extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.accountprefs);
 
-		setPrefPRIOSubtitle(ACCOUNT_PRIO);
+		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
 
 		this.prefAccountID = (EditTextPreference) findPreference(ACCOUNT_JABBERID);
 		this.prefAccountID.getEditText().addTextChangedListener(
@@ -74,12 +74,12 @@ public class AccountPrefs extends PreferenceActivity {
 								sharedPreference.edit().putInt(ACCOUNT_PRIO,
 										prioIntValue);
 							} else {
-								sharedPreference.edit().putString(ACCOUNT_PRIO, "0");
+								sharedPreference.edit().putInt(ACCOUNT_PRIO, 0);
 							}
 							return true;
 
 						} catch (NumberFormatException ex) {
-							sharedPreference.edit().putString(ACCOUNT_PRIO, "0");
+							sharedPreference.edit().putInt(ACCOUNT_PRIO, 0);
 							return true;
 						}
 
@@ -114,24 +114,6 @@ public class AccountPrefs extends PreferenceActivity {
 			}
 
 		});
-
-	}
-
-	private void setPrefPRIOSubtitle(String key) {
-
-		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
-
-		Preference preference = findPreference(key);
-		int prioroty = XMPPHelper.tryToParseInt(sharedPreference.getString(key, "0"), 0);
-
-		if ((prioroty <= 127) && (prioroty >= 0)) {
-			preference.setSummary(getString(R.string.account_summary_prefix)
-					+ sharedPreference.getString(key,
-							getString(R.string.account_prio_summ)));
-		} else {
-			preference.setSummary(getString(R.string.account_prio_summ));
-			sharedPreference.edit().putInt(key, 0);
-		}
 
 	}
 
