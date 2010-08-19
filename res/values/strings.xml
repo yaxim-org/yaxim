@@ -137,34 +137,30 @@
 	<string name="account_customserver_hint">host.example.com</string>
 
 	<!--StatusPopUp-->
-	<string name="AddContact_NOT_VALID">Not Valid</string>
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>
 	<string name="setStatusmsgHint">Your status message</string>
 	<string name="setStatusTitle">Set your status</string>
-	<string name="newGroup_summ">Enter the desired name for your new Group</string>
-	<string name="newGroup_title">Add New Group</string>
 	<string name="RenameGroup_summ">Rename group %s to:</string>
 	<string name="RenameGroup_title">Rename group</string>
 	<string name="RenameEntry_summ">Rename %s (%s) to: </string>
 	<string name="RenameEntry_title">Rename contact</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
-	<string name="ConnectProgressMessage">Please wait while connecting to server ...</string>
 	<string name="deleteRosterItem_text">Really remove %s (%s)?</string>
 	<string name="deleteRosterItem_title">Delete Contact</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_InputFieldHint">Input text here</string>
-	<string name="chat_titlePrefix">Chat with: </string>
-	<string name="chat_sendButtonTitle">Send</string>
+	<string name="chat_titlePrefix">Chat with: %s</string>
 	<string name="chat_from_me">Me:</string>
 	<string name="toast_connectfail_message">Connecting Failed!</string>
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 
 	<!-- GPS settings -->
+	<!--
 	<string name="showGPS_title">GPS to status</string>
 	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
 	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
 
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">ABOUT YAXIM</string>

@@ -83,7 +83,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			titleUserid = mWithJabberID;
 		}
 		
-		setTitle(getText(R.string.chat_titlePrefix) + " " + titleUserid);
+		setTitle(getString(R.string.chat_titlePrefix, titleUserid));
 		setChatWindowAdapter();
 	}
 

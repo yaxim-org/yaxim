@@ -13,7 +13,7 @@
 		<CheckBoxPreference
 			android:id="@+id/vibration"
 			android:key="vibration"
-			android:title="Notify via vibration"
+			android:title="@string/vibr_title"
 			android:summaryOff="@string/vibr_summOff"
 			android:summaryOn="@string/vibr_summOn"
 		/>
