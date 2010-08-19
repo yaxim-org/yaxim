@@ -554,7 +554,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		for (String rosterGroup : rosterGroups) {
 			ArrayList<HashMap<String, RosterItem>> rosterGroupItems = getRosterGroupItems(rosterGroup);
-			rosterEntryList.add(rosterGroupItems);
+			if (rosterGroupItems.size() > 0)
+				rosterEntryList.add(rosterGroupItems);
 		}
 	}
 
@@ -577,9 +578,11 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void createRosterGroupList() {
 		for (String rosterGroupName : serviceAdapter.getRosterGroups()) {
-			HashMap<String, String> tmpGroupMap = new HashMap<String, String>();
-			tmpGroupMap.put(AdapterConstants.GROUP_NAME[0], rosterGroupName);
-			rosterGroupList.add(tmpGroupMap);
+			if (getRosterGroupItems(rosterGroupName).size() > 0) {
+				HashMap<String, String> tmpGroupMap = new HashMap<String, String>();
+				tmpGroupMap.put(AdapterConstants.GROUP_NAME[0], rosterGroupName);
+				rosterGroupList.add(tmpGroupMap);
+			}
 		}
 	}
 
