@@ -137,19 +137,9 @@
 	<string name="account_customserver_hint">host.example.com</string>
 
 	<!--StatusPopUp-->
-	<string name="RB_title">Statussettings</string>
-	<string name="RB_infotext">Choose your onlinestatus!</string>
-	<string name="RB_online">Online</string>
-	<string name="RB_away">Away</string>
-	<string name="RB_chat">Chat</string>
-	<string name="RB_donotdisturb">Do not disturb</string>
-	<string name="RB_notavailable">Not available</string>
-	<string name="RB_offline">Offline</string>
-
 	<string name="AddContact_NOT_VALID">Not Valid</string>
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>
-	<string name="setStatusmsgHint">Enter your statusmessage here</string>
-	<string name="setStatusmsgDefault"></string>
+	<string name="setStatusmsgHint">Your status message</string>
 	<string name="setStatusTitle">Set your status</string>
 	<string name="newGroup_summ">Enter the desired name for your new Group</string>
 	<string name="newGroup_title">Add New Group</string>
@@ -250,7 +240,7 @@
     </string>
 	<string name="AboutDialog_greetings">The yaxim Team - 2010-08-18</string>
 
-	<!-- list of Status codes to display -->
+	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
 	<string-array name="statuslist">
 		<item>Online</item>
 		<item>Away</item>

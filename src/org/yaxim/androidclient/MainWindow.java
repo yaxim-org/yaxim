@@ -7,7 +7,6 @@ import java.util.List;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AboutDialog;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
-import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
 import org.yaxim.androidclient.dialogs.RenameRosterGroupDialog;
@@ -34,6 +33,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import org.yaxim.androidclient.IXMPPRosterCallback;
@@ -306,6 +307,29 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
+	private void changeStatusDialog() {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.statusview, null, false);
+		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
+		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
+		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.statuspopup_name)
+			.setView(group)
+			.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						String statusStr = statusCodes[status.getSelectedItemPosition()];
+						Log.d(TAG, "changeStatusDialog: status=" + StatusMode.valueOf(statusStr));
+						Log.d(TAG, "changeStatusDialog: message=" + message.getText().toString());
+						serviceAdapter.setStatus(StatusMode.valueOf(statusStr), message.getText().toString());
+					}
+				})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
 	private boolean applyMainMenuChoice(MenuItem item) {
 
 		int itemID = item.getItemId();
@@ -332,7 +356,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		case R.id.menu_status:
 			if (serviceAdapter.isAuthenticated()) {
-				new ChangeStatusDialog(this, serviceAdapter).show();
+				changeStatusDialog();
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}
