@@ -240,7 +240,7 @@
 	<string-array name="statuslist">
 		<item>Online</item>
 		<item>Away</item>
-		<item>Chat</item>
+		<item>Free for chat</item>
 		<item>Do not disturb</item>
 		<item>Not available</item>
 		<item>Offline</item>

@@ -330,6 +330,20 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
+	private void setStatusTitle() {
+		String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
+		String[] statusNames = getResources().getStringArray(R.array.statuslist);
+		String status = mStatusMode;
+		// look up the UI string for the status mode
+		for (int i = 0; i < statusCodes.length; i++) {
+			if (statusCodes[i].equals(mStatusMode))
+				status = statusNames[i];
+		}
+		if (mStatusMessage.length() > 0)
+			status = status + " (" + mStatusMessage + ")";
+		setTitle(getString(R.string.conn_title, status));
+	}
+
 	private void setStatus(String statusmode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		mStatusMode = statusmode;
@@ -340,6 +354,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
 		serviceAdapter.setStatus(StatusMode.valueOf(statusmode), message);
+		setStatusTitle();
 	}
 
 	private void changeStatusDialog() {
@@ -441,15 +456,16 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void setConnectingStatus(boolean isConnecting) {
 		setProgressBarIndeterminateVisibility(isConnecting);
-		String conn, lastStatus;
+		String lastStatus;
 		if (isConnecting) {
-			conn = getString(R.string.conn_connecting);
+			setTitle(getString(R.string.conn_title,
+						getString(R.string.conn_connecting)));
 		} else if (isConnected()) {
-			conn = getString(R.string.conn_online);
+			setStatusTitle();
 		} else {
-			conn = getString(R.string.conn_offline);
+			setTitle(getString(R.string.conn_title,
+						getString(R.string.conn_offline)));
 		}
-		setTitle(getString(R.string.conn_title, conn));
 
 		if (serviceAdapter != null && (lastStatus =
 					serviceAdapter.getConnectionStateString()) != null) {
