@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.yaxim.androidclient.data.RosterItem;
-import org.yaxim.androidclient.dialogs.AboutDialog;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
@@ -24,6 +23,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -385,6 +386,25 @@ public class MainWindow extends GenericExpandableListActivity {
 			.create().show();
 	}
 
+	private void aboutDialog() {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View about = inflater.inflate(R.layout.aboutview, null, false);
+		String versionTitle = getString(R.string.AboutDialog_title);
+		try {
+			PackageInfo pi = getPackageManager()
+						.getPackageInfo(getPackageName(), 0);
+			versionTitle += " v" + pi.versionName;
+		} catch (NameNotFoundException e) {
+		}
+		new AlertDialog.Builder(this)
+			.setTitle(versionTitle)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setView(about)
+			.setPositiveButton(android.R.string.ok, null)
+			.create().show();
+	}
+
 	private boolean applyMainMenuChoice(MenuItem item) {
 
 		int itemID = item.getItemId();
@@ -431,7 +451,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case R.id.menu_about:
-			new AboutDialog(this, serviceAdapter).show();
+			aboutDialog();
 			return true;
 
 		}
