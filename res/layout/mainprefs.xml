@@ -35,16 +35,6 @@
 			android:summaryOff="@string/boot_summOff"
 			android:summaryOn="@string/boot_summOn"
 		/>
-<!--		<ListPreference-->
-<!--			android:id="@+id/statuslist"-->
-<!--			android:key="statuslist"-->
-<!--			android:title="@string/status_title"-->
-<!--			android:summary="@string/status_summ"-->
-<!--			android:negativeButtonText="@android:string/cancel"-->
-<!--			android:entries="@array/statuslist"-->
-<!--			android:entryValues="@array/statusCodes"-->
-<!--			android:dialogTitle="@string/status_dialog"-->
-<!--		/>-->
 		<CheckBoxPreference
 			android:id="@+id/showOffline"
 			android:key="showOffline"
