@@ -375,6 +375,7 @@ public class SmackableImp implements Smackable {
 			mContentResolver.update(ChatProvider.CONTENT_URI, mark_delivered,
 					SEND_OFFLINE_SELECTION, null);
 		}
+		cursor.close();
 	}
 
 	public void sendMessage(String toJID, String message) {
