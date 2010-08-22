@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Connexion au serveur…</string>
+	<string name="conn_online">En ligne</string>
+	<string name="conn_offline">Hors ligne</string>
+	<string name="conn_empty_roster">No contacts to show!</string>
+	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Quitter</string>
+	<string name="Global_authenticate_first">Please connect first</string>
+	<string name="Global_JID_hint">user@jabber.example.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Welcome to yaxim!</string>
+	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
+	<string name="StartupDialog_pwHint">Enter password</string>
+	<string name="StartupDialog_portHint">5222</string>
+	<string name="StartupDialog_Username_title">Enter your Jabber ID:</string>
+	<string name="StartupDialog_passwd_title">Password:</string>
+	<string name="StartupDialog_port_title">Port:</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Message from %s:</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Message Notification</string>
+	<string name="led_title">Blinking LED</string>
+	<string name="led_summOn">LED notification is on</string>
+	<string name="led_summOff">LED notification is off</string>
+	<string name="vibr_title">Vibration</string>
+	<string name="vibr_summOn">Vibration notifications are on</string>
+	<string name="vibr_summOff">Vibration notification are off</string>
+	<string name="ringtone_title">Ringtone</string>
+	<string name="ringtone_summ">Tone for incoming messages</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Startup Options</string>
+	<string name="boot_title">Load yaxim at bootup</string>
+	<string name="boot_summOn">yaxim is set to load at bootup</string>
+	<string name="boot_summOff">yaxim is set to not load at bootup</string>
+	<string name="statuspopup_name">Set your status</string>
+	<string name="showOffline_summ_on">Showing offline contacts</string>
+	<string name="showOffline_summ_off">Hiding offline contacts</string>
+	<string name="showOffline_title">Show offline contacts</string>
+
+	<string name="preftitle_debug">Debugging</string>
+	<string name="smackdebug_summ_on">Packet and debug output enabled via logcat</string>
+	<string name="smackdebug_summ_off">Debug via logcat disabled</string>
+	<string name="smackdebug_title">SMACK debugging</string>
+
+	<string name="reportcrash_title">Send crash reports</string>
+	<string name="reportcrash_summ_on">Anonymous crash reports enabled</string>
+	<string name="reportcrash_summ_off">Anonymous crash reports disabled</string>
+
+	<!-- Appearence Strings -->
+	<!--
+	<string name="preftitle_app">Appearance</string>
+	<string name="FontChat_title">Chat font size</string>
+	<string name="FontChat_summ">Set chat font size</string>
+	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Add Contact</string>
+	<string name="Menu_ShowOff">Show Offline</string>
+	<string name="Menu_HideOff">Hide Offline</string>
+	<string name="Menu_AccSettings">Edit Account</string>
+	<string name="Menu_Settings">Settings</string>
+	<string name="Menu_Status">Status</string>
+	<string name="Menu_connect">Connecter</string>
+	<string name="Menu_disconnect">Disconnect</string>
+	<string name="Menu_about">About yaxim</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Add a Contact</string>
+	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
+		desired screen name and choose their contact group!</string>
+	<string name="addFriend_aliasHint">Screen name</string>
+	<string name="addrosteritemaddgroupchoice">Add to a new group</string>
+	<string name="NewGroup_EditTextField_Hint">Name for the new group</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Options for %s</string>
+	<string name="roster_contextmenu_group_rename">Rename group</string>
+	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
+	<string name="roster_contextmenu_contact_open_chat">Open Chat</string>
+	<string name="roster_contextmenu_contact_rename">Renommer</string>
+	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
+	<string name="roster_contextmenu_contact_change_group">Change Group</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Login Information</string>
+	<string name="account_settings_title">Account Settings</string>
+	<string name="account_options_title">Connecting Options</string>
+	<string name="account_options_advanced">Advanced Options</string>
+	<string name="connstartup_title">Connect at Startup</string>
+	<string name="connstartup_summOn">Go online when yaxim is opened</string>
+	<string name="connstartup_summOff">Do not automatically connect</string>
+	<string name="reconnect_title">Auto Reconnect</string>
+	<string name="reconnect_summOn">Reconnect when connection drops</string>
+	<string name="reconnect_summOff">Stay offline when connection drops</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Enter your Jabber ID:</string>
+	<string name="account_jabberPW_title">Account Password</string>
+	<string name="account_jabberPW_sum">Your Jabber account password</string>
+	<string name="account_jabberPW_dialog_title">Enter password:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Client Resource</string>
+	<string name="account_resource_summ">Default: yaxim</string>
+	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Client Priority</string>
+	<string name="account_prio_summ">Default: 0 (allowed: 0 .. 127)</string>
+	<string name="account_prio_dialog_title">Enter your priority:</string>
+	<string name="account_port_title">Server Port</string>
+	<string name="account_port_sum">Default: 5222</string>
+	<string name="account_port_dialog_title">Enter the server port:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Custom Server</string>
+	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
+	<string name="account_customserver_dialog_title">Enter server hostname:</string>
+	<string name="account_customserver_hint">host.example.com</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Choose Group</string>
+	<string name="setStatusmsgHint">Your status message</string>
+	<string name="setStatusTitle">Set your status</string>
+	<string name="RenameGroup_summ">Rename group %s to:</string>
+	<string name="RenameGroup_title">Rename group</string>
+	<string name="RenameEntry_summ">Rename %s (%s) to: </string>
+	<string name="RenameEntry_title">Rename contact</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
+	<string name="deleteRosterItem_text">Really remove %s (%s)?</string>
+	<string name="deleteRosterItem_title">Delete Contact</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_titlePrefix">Chat with: %s</string>
+	<string name="chat_from_me">Me:</string>
+	<string name="toast_connectfail_message">Connecting Failed!</string>
+	<string name="toast_stored_offline">The message has been stored for transmission.</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">ABOUT YAXIM</string>
+	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
+	<string name="AboutDialog_DevelopersText">
+		Acknowledged Developers:\n * Georg Lukas\n * Sven
+		Pfleiderer\n * Christian Polzer\n\n
+		Join us, ask for more fancy
+		features or send us some free \"Club Mate\"
+		at http://yaxim.org/ or on
+		#yaxim on freenode IRC.
+    </string>
+	<string name="AboutDialog_LicenceTitle">License</string>
+	<string name="AboutDialog_LicenceText">
+		This program is free software; you can redistribute
+		it and/or
+		modify it under the terms of the GNU General Public License
+		version 2
+		as published by the Free Software Foundation.
+		Link:
+		http://www.gnu.org/licenses/gpl-2.0.html\n
+		\n
+		Parts of this software are
+		provided under the MIT License:\n
+		\n
+		Copyright (c) 2009 Mads
+		Kristiansen, Nullwire ApS\n
+		\n
+		Permission is hereby granted, free of
+		charge, to any person obtaining
+		a copy
+		of this software and associated
+		documentation files (the
+		"Software"), to deal
+		in the Software without
+		restriction, including
+		without limitation the rights
+		to use, copy,
+		modify, merge, publish,
+		distribute, sublicense, and/or sell
+		copies of
+		the Software, and to
+		permit persons to whom the Software is
+		furnished to
+		do so, subject to
+		the following conditions:
+		\n
+		The above copyright notice
+		and this permission notice shall be
+		included in all
+		copies or
+		substantial portions of the Software.
+		\n
+		THE SOFTWARE IS PROVIDED "AS
+		IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT
+		LIMITED TO THE WARRANTIES OF
+		MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR
+		PURPOSE AND NONINFRINGEMENT.
+		IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY
+		CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN
+		AN ACTION OF CONTRACT,
+		TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN
+		CONNECTION WITH THE
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+    </string>
+	<string name="AboutDialog_greetings">The yaxim Team - 2010-08-18</string>
+
+	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
+	<string-array name="statuslist">
+		<item>En ligne</item>
+		<item>Inactif</item>
+		<item>Free for chat</item>
+		<item>Do not disturb</item>
+		<item>Indisponible</item>
+		<item>Hors ligne</item>
+	</string-array>
+</resources>
