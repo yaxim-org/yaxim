@@ -669,7 +669,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	public void expandGroups() {
-		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
+		Log.d(TAG, "expandGroups(): " + rosterGroupList.size() + " vs " + getExpandableListAdapter().getGroupCount());
+		for (int count = 0; count < rosterGroupList.size(); count++) {
 			getExpandableListView().expandGroup(count);
 		}
 	}
