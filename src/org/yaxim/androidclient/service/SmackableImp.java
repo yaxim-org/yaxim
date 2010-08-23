@@ -489,13 +489,16 @@ public class SmackableImp implements Smackable {
 
 		PacketListener listener = new PacketListener() {
 			Packet lastPacket = null;
+			long lastTime = 0;
 
 			public void processPacket(Packet packet) {
 				// do equality check against looping bug in smack
-				if (lastPacket == packet) {
+				long time = System.currentTimeMillis();
+				if (packet.equals(lastPacket) && time < lastTime + 100) {
 					debugLog("processPacket: duplicate " + packet);
 					return;
 				} else lastPacket = packet;
+				lastTime = time;
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
