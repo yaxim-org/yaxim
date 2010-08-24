@@ -70,6 +70,7 @@ public class SmackableImp implements Smackable {
 		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
 				mConfig.port);
 		this.mXMPPConfig.setReconnectionAllowed(true);
+		this.mXMPPConfig.setSendPresence(false);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
 	}
@@ -155,7 +156,9 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
+			setStatus(StatusMode.valueOf(mConfig.statusMode), mConfig.statusMessage);
 			sendOfflineMessages();
+
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
 		} catch (Exception e) {
@@ -372,6 +375,7 @@ public class SmackableImp implements Smackable {
 			mContentResolver.update(ChatProvider.CONTENT_URI, mark_delivered,
 					SEND_OFFLINE_SELECTION, null);
 		}
+		cursor.close();
 	}
 
 	public void sendMessage(String toJID, String message) {
@@ -485,13 +489,16 @@ public class SmackableImp implements Smackable {
 
 		PacketListener listener = new PacketListener() {
 			Packet lastPacket = null;
+			long lastTime = 0;
 
 			public void processPacket(Packet packet) {
 				// do equality check against looping bug in smack
-				if (lastPacket == packet) {
+				long time = System.currentTimeMillis();
+				if (packet.equals(lastPacket) && time < lastTime + 100) {
 					debugLog("processPacket: duplicate " + packet);
 					return;
 				} else lastPacket = packet;
+				lastTime = time;
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
