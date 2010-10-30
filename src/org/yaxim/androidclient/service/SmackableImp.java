@@ -60,6 +60,7 @@ public class SmackableImp implements Smackable {
 
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
+	private PacketListener mPacketListener;
 
 	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> mRosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
 	private final ContentResolver mContentResolver;
@@ -485,20 +486,14 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void registerMessageListener() {
+		// do not register multiple packet listeners
+		if (mPacketListener != null)
+			return;
+
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
 
-		PacketListener listener = new PacketListener() {
-			Packet lastPacket = null;
-			long lastTime = 0;
-
+		mPacketListener = new PacketListener() {
 			public void processPacket(Packet packet) {
-				// do equality check against looping bug in smack
-				long time = System.currentTimeMillis();
-				if (packet.equals(lastPacket) && time < lastTime + 100) {
-					debugLog("processPacket: duplicate " + packet);
-					return;
-				} else lastPacket = packet;
-				lastTime = time;
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
@@ -516,7 +511,7 @@ public class SmackableImp implements Smackable {
 			}
 		};
 
-		mXMPPConnection.addPacketListener(listener, filter);
+		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 
 	private void addChatMessageToDB(boolean from_me, String JID,
