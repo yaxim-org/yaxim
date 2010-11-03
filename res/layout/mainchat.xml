@@ -32,6 +32,6 @@
 			android:layout_height="fill_parent"
 			android:stackFromBottom="true"
 			android:layout_above="@id/details" 
-			android:transcriptMode="alwaysScroll" android:choiceMode="singleChoice">
+			android:transcriptMode="alwaysScroll">
 		</ListView>
 </RelativeLayout>
