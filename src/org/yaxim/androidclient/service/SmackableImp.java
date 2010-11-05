@@ -267,9 +267,7 @@ public class SmackableImp implements Smackable {
 		entryMap.put(rosterItem.jabberID, rosterItem);
 	}
 
-	private void unSetRosterEntry(RosterEntry rosterEntry) {
-		String jabberID = rosterEntry.getUser();
-
+	private void unSetRosterEntry(String jabberID) {
 		Set<Entry<String, ConcurrentHashMap<String, RosterItem>>> groupMaps = mRosterItemsByGroup
 				.entrySet();
 
@@ -450,8 +448,8 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					unSetRosterEntry(rosterEntry);
-					deleteRosterEntryFromDB(rosterEntry);
+					unSetRosterEntry(entry);
+					deleteRosterEntryFromDB(entry);
 				}
 				mServiceCallBack.rosterChanged();
 			}
@@ -461,7 +459,7 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					unSetRosterEntry(rosterEntry);
+					unSetRosterEntry(rosterEntry.getUser());
 					setRosterEntry(rosterEntry);
 					updateRosterEntryInDB(rosterEntry);
 				}
@@ -548,9 +546,9 @@ public class SmackableImp implements Smackable {
 		return values;
 	}
 
-	private void deleteRosterEntryFromDB(final RosterEntry entry) {
+	private void deleteRosterEntryFromDB(final String jabberID) {
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI,
-				RosterConstants.JID + " = ?", new String[] { entry.getUser() });
+				RosterConstants.JID + " = ?", new String[] { jabberID });
 		debugLog("deleteRosterEntryFromDB: Deleted " + count + " entries");
 	}
 
@@ -563,7 +561,7 @@ public class SmackableImp implements Smackable {
 
 	private void updateOrInsertRosterEntryToDB(final RosterEntry entry) {
 		try {
-			deleteRosterEntryFromDB(entry);
+			deleteRosterEntryFromDB(entry.getUser());
 			addRosterEntryToDB(entry);
 		} catch (Exception e) {
 			e.printStackTrace();
