@@ -15,22 +15,11 @@
 			android:padding="10sp"
 			android:focusable="true"
 		/>
-		<Spinner  	android:id="@+id/MoveRosterEntryToGroupDialog_GroupSpinner" 
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content">                                           
-		</Spinner>
-		<EditText
-			android:id="@+id/moveRosterItemToGroup_NewGroup_EditTextField"
+		<org.yaxim.androidclient.dialogs.GroupNameView
+			android:id="@+id/AddRosterItem_GroupName"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:visible="false"
-			android:enabled="false"
-			android:padding="10sp"
-			android:gravity="left"
-			android:singleLine="true"
-			android:textSize="18sp"
-			android:maxWidth="200sp"
-			android:hint="@string/NewGroup_EditTextField_Hint"
+			android:orientation="vertical"
 			/>
 		<LinearLayout 	
 					android:gravity="center_horizontal"
