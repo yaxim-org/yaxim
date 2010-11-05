@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -75,6 +76,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		registerXMPPService();
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setupContenView();
+	}
+
+	void setupContenView() {
 		setContentView(R.layout.main);
 		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
@@ -94,6 +99,14 @@ public class MainWindow extends GenericExpandableListActivity {
 		super.onResume();
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		bindXMPPService();
+	}
+
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "onConfigurationChanged");
+		setupContenView();
 	}
 
 	private void createRosterIfConnected() {
