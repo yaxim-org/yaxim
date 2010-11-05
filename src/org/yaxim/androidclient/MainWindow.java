@@ -7,7 +7,7 @@ import java.util.List;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
-import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
+import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
@@ -213,6 +213,27 @@ public class MainWindow extends GenericExpandableListActivity {
 				});
 	}
 
+	void moveRosterItemToGroupDialog(final String jabberID) {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.moverosterentrytogroupview, null, false);
+		final GroupNameView gv = (GroupNameView)group.findViewById(R.id.moverosterentrytogroupview_gv);
+		gv.setGroupList(serviceAdapter.getRosterGroups());
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.MoveRosterEntryToGroupDialog_title)
+			.setView(group)
+			.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						Log.d(TAG, "new group: " + gv.getGroupName());
+						serviceAdapter.moveRosterItemToGroup(jabberID,
+								gv.getGroupName());
+					}
+				})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		return applyMenuContextChoice(item);
@@ -254,8 +275,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:
-				new MoveRosterItemToGroupDialog(this, serviceAdapter, userJid)
-						.show();
+				moveRosterItemToGroupDialog(userJid);
 				return true;
 
 			case R.id.roster_exit:
