@@ -336,6 +336,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	void setMenuItem(Menu menu, int itemId, int iconId, CharSequence title) {
 		MenuItem item = menu.findItem(itemId);
+		if (item == null)
+			return;
 		item.setIcon(iconId);
 		item.setTitle(title);
 	}
