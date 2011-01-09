@@ -4,14 +4,14 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Connecting to server...</string>
-	<string name="conn_online">Online</string>
-	<string name="conn_offline">Offline</string>
+	<string name="conn_connecting">Connexion au serveur…</string>
+	<string name="conn_online">En ligne</string>
+	<string name="conn_offline">Hors ligne</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Exit">Exit</string>
+	<string name="Global_Exit">Quitter</string>
 	<string name="Global_authenticate_first">Please connect first</string>
 	<string name="Global_JID_hint">user@jabber.example.com</string>
 
@@ -76,7 +76,7 @@
 	<string name="Menu_AccSettings">Edit Account</string>
 	<string name="Menu_Settings">Settings</string>
 	<string name="Menu_Status">Status</string>
-	<string name="Menu_connect">Connect</string>
+	<string name="Menu_connect">Connecter</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
 
@@ -93,7 +93,7 @@
 	<string name="roster_contextmenu_group_rename">Rename group</string>
 	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
 	<string name="roster_contextmenu_contact_open_chat">Open Chat</string>
-	<string name="roster_contextmenu_contact_rename">Rename</string>
+	<string name="roster_contextmenu_contact_rename">Renommer</string>
 	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change Group</string>
 
@@ -160,7 +160,7 @@
 
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">ABOUT YAXIM</string>
-	<string name="AboutDialog_DevelopersTitle">Developers</string>
+	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
 	<string name="AboutDialog_DevelopersText">
 		Acknowledged Developers:\n * Georg Lukas\n * Sven
 		Pfleiderer\n * Christian Polzer\n\n
@@ -169,7 +169,7 @@
 		at http://yaxim.org/ or on
 		#yaxim on freenode IRC.
     </string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
+	<string name="AboutDialog_LicenceTitle">License</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or
@@ -234,11 +234,11 @@
 
 	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
 	<string-array name="statuslist">
-		<item>Online</item>
-		<item>Away</item>
+		<item>En ligne</item>
+		<item>Inactif</item>
 		<item>Free for chat</item>
 		<item>Do not disturb</item>
-		<item>Not available</item>
-		<item>Offline</item>
+		<item>Indisponible</item>
+		<item>Hors ligne</item>
 	</string-array>
 </resources>

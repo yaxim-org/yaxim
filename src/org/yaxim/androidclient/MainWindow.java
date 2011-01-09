@@ -5,14 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.yaxim.androidclient.data.RosterItem;
-import org.yaxim.androidclient.dialogs.AboutDialog;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
-import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
-import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
-import org.yaxim.androidclient.dialogs.RemoveRosterItemDialog;
-import org.yaxim.androidclient.dialogs.RenameRosterGroupDialog;
-import org.yaxim.androidclient.dialogs.RenameRosterItemDialog;
+import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
@@ -22,10 +17,15 @@ import org.yaxim.androidclient.util.ExpandableRosterAdapter;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,12 +34,15 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import org.yaxim.androidclient.IXMPPRosterCallback;
@@ -62,6 +65,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ExpandableRosterAdapter rosterListAdapter;
 	private TextView mConnectingText;
 	private boolean showOffline;
+	private String mStatusMessage;
+	private String mStatusMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		registerXMPPService();
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setupContenView();
+	}
+
+	void setupContenView() {
 		setContentView(R.layout.main);
 		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
@@ -90,6 +99,14 @@ public class MainWindow extends GenericExpandableListActivity {
 		super.onResume();
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		bindXMPPService();
+	}
+
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "onConfigurationChanged");
+		setupContenView();
 	}
 
 	private void createRosterIfConnected() {
@@ -152,6 +169,84 @@ public class MainWindow extends GenericExpandableListActivity {
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
 
+	void removeRosterItemDialog(final String JID, final String userName) {
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.deleteRosterItem_title)
+			.setMessage(getString(R.string.deleteRosterItem_text, userName, JID))
+			.setPositiveButton(android.R.string.yes,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							serviceAdapter.removeRosterItem(JID);
+						}
+					})
+			.setNegativeButton(android.R.string.no, null)
+			.create().show();
+	}
+
+	abstract class EditOk {
+		abstract public void ok(String result);
+	}
+
+	void editTextDialog(int titleId, CharSequence message, String text,
+			final EditOk ok) {
+		final EditText input = new EditText(this);
+		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
+		input.setText(text);
+		new AlertDialog.Builder(this)
+			.setTitle(titleId)
+			.setMessage(message)
+			.setView(input)
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							String newName = input.getText().toString();
+							if (newName.length() != 0)
+								ok.ok(newName);
+						}})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
+	void renameRosterItemDialog(final String JID, final String userName) {
+		editTextDialog(R.string.RenameEntry_title,
+				getString(R.string.RenameEntry_summ, userName, JID),
+				userName, new EditOk() {
+					public void ok(String result) {
+						serviceAdapter.renameRosterItem(JID, result);
+					}
+				});
+	}
+
+	void renameRosterGroupDialog(final String groupName) {
+		editTextDialog(R.string.RenameGroup_title,
+				getString(R.string.RenameGroup_summ, groupName),
+				groupName, new EditOk() {
+					public void ok(String result) {
+						serviceAdapter.renameRosterGroup(groupName, result);
+					}
+				});
+	}
+
+	void moveRosterItemToGroupDialog(final String jabberID) {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.moverosterentrytogroupview, null, false);
+		final GroupNameView gv = (GroupNameView)group.findViewById(R.id.moverosterentrytogroupview_gv);
+		gv.setGroupList(serviceAdapter.getRosterGroups());
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.MoveRosterEntryToGroupDialog_title)
+			.setView(group)
+			.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						Log.d(TAG, "new group: " + gv.getGroupName());
+						serviceAdapter.moveRosterItemToGroup(jabberID,
+								gv.getGroupName());
+					}
+				})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		return applyMenuContextChoice(item);
@@ -181,11 +276,11 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
-				new RemoveRosterItemDialog(this, serviceAdapter, userJid).show();
+				removeRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_rename:
-				new RenameRosterItemDialog(this, serviceAdapter, userJid).show();
+				renameRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_request_auth:
@@ -193,8 +288,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:
-				new MoveRosterItemToGroupDialog(this, serviceAdapter, userJid)
-						.show();
+				moveRosterItemToGroupDialog(userJid);
 				return true;
 
 			case R.id.roster_exit:
@@ -209,8 +303,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_group_rename:
-				new RenameRosterGroupDialog(this, serviceAdapter, seletedGroup)
-						.show();
+				renameRosterGroupDialog(seletedGroup);
 				return true;
 
 			case R.id.roster_exit:
@@ -243,6 +336,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	void setMenuItem(Menu menu, int itemId, int iconId, CharSequence title) {
 		MenuItem item = menu.findItem(itemId);
+		if (item == null)
+			return;
 		item.setIcon(iconId);
 		item.setTitle(title);
 	}
@@ -271,6 +366,80 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
+	private void setStatusTitle() {
+		String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
+		String[] statusNames = getResources().getStringArray(R.array.statuslist);
+		String status = mStatusMode;
+		// look up the UI string for the status mode
+		for (int i = 0; i < statusCodes.length; i++) {
+			if (statusCodes[i].equals(mStatusMode))
+				status = statusNames[i];
+		}
+		if (mStatusMessage.length() > 0)
+			status = status + " (" + mStatusMessage + ")";
+		setTitle(getString(R.string.conn_title, status));
+	}
+
+	private void setStatus(String statusmode, String message) {
+		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		mStatusMode = statusmode;
+		mStatusMessage = message;
+		// do not save "offline" to prefs, or else!
+		if (!statusmode.equals("offline"))
+			prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
+		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
+		prefedit.commit();
+		serviceAdapter.setStatus(StatusMode.valueOf(statusmode), message);
+		setStatusTitle();
+	}
+
+	private void changeStatusDialog() {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.statusview, null, false);
+		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
+		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
+		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
+		message.setText(mStatusMessage);
+		for (int i = 0; i < statusCodes.length; i++) {
+			if (statusCodes[i].equals(mStatusMode))
+				status.setSelection(i);
+		}
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.statuspopup_name)
+			.setView(group)
+			.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						String statusStr = statusCodes[status.getSelectedItemPosition()];
+						Log.d(TAG, "changeStatusDialog: status=" + statusStr);
+						Log.d(TAG, "changeStatusDialog: message=" + message.getText().toString());
+						setStatus(statusStr, message.getText().toString());
+					}
+				})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
+	private void aboutDialog() {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View about = inflater.inflate(R.layout.aboutview, null, false);
+		String versionTitle = getString(R.string.AboutDialog_title);
+		try {
+			PackageInfo pi = getPackageManager()
+						.getPackageInfo(getPackageName(), 0);
+			versionTitle += " v" + pi.versionName;
+		} catch (NameNotFoundException e) {
+		}
+		new AlertDialog.Builder(this)
+			.setTitle(versionTitle)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setView(about)
+			.setPositiveButton(android.R.string.ok, null)
+			.create().show();
+	}
+
 	private boolean applyMainMenuChoice(MenuItem item) {
 
 		int itemID = item.getItemId();
@@ -297,7 +466,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		case R.id.menu_status:
 			if (serviceAdapter.isAuthenticated()) {
-				new ChangeStatusDialog(this, serviceAdapter).show();
+				changeStatusDialog();
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}
@@ -317,7 +486,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case R.id.menu_about:
-			new AboutDialog(this, serviceAdapter).show();
+			aboutDialog();
 			return true;
 
 		}
@@ -342,15 +511,16 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void setConnectingStatus(boolean isConnecting) {
 		setProgressBarIndeterminateVisibility(isConnecting);
-		String conn, lastStatus;
+		String lastStatus;
 		if (isConnecting) {
-			conn = getString(R.string.conn_connecting);
+			setTitle(getString(R.string.conn_title,
+						getString(R.string.conn_connecting)));
 		} else if (isConnected()) {
-			conn = getString(R.string.conn_online);
+			setStatusTitle();
 		} else {
-			conn = getString(R.string.conn_offline);
+			setTitle(getString(R.string.conn_title,
+						getString(R.string.conn_offline)));
 		}
-		setTitle(getString(R.string.conn_title, conn));
 
 		if (serviceAdapter != null && (lastStatus =
 					serviceAdapter.getConnectionStateString()) != null) {
@@ -457,7 +627,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		for (String rosterGroup : rosterGroups) {
 			ArrayList<HashMap<String, RosterItem>> rosterGroupItems = getRosterGroupItems(rosterGroup);
-			rosterEntryList.add(rosterGroupItems);
+			if (rosterGroupItems.size() > 0)
+				rosterEntryList.add(rosterGroupItems);
 		}
 	}
 
@@ -480,9 +651,11 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void createRosterGroupList() {
 		for (String rosterGroupName : serviceAdapter.getRosterGroups()) {
-			HashMap<String, String> tmpGroupMap = new HashMap<String, String>();
-			tmpGroupMap.put(AdapterConstants.GROUP_NAME[0], rosterGroupName);
-			rosterGroupList.add(tmpGroupMap);
+			if (getRosterGroupItems(rosterGroupName).size() > 0) {
+				HashMap<String, String> tmpGroupMap = new HashMap<String, String>();
+				tmpGroupMap.put(AdapterConstants.GROUP_NAME[0], rosterGroupName);
+				rosterGroupList.add(tmpGroupMap);
+			}
 		}
 	}
 
@@ -531,7 +704,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	public void expandGroups() {
-		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
+		Log.d(TAG, "expandGroups(): " + rosterGroupList.size() + " vs " + getExpandableListAdapter().getGroupCount());
+		for (int count = 0; count < rosterGroupList.size(); count++) {
 			getExpandableListView().expandGroup(count);
 		}
 	}
@@ -556,5 +730,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void getPreferences(SharedPreferences prefs) {
 		showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, true);
+		mStatusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
+		mStatusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 	}
 }

@@ -26,6 +26,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String customServer;
 	public String jabberID;
 
+	public String statusMode;
+	public String statusMessage;
+
 	public boolean isLEDNotify;
 	public boolean isVibraNotify;
 	public Uri notifySound;
@@ -95,6 +98,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.jabberID = prefs.getString(PreferenceConstants.JID, "");
 		this.customServer = prefs.getString(PreferenceConstants.CUSTOM_SERVER,
 				"");
+		this.statusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
+		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 
 		try {
 			XMPPHelper.verifyJabberID(jabberID);

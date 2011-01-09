@@ -13,6 +13,7 @@ import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
@@ -22,14 +23,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
+import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -83,7 +88,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			titleUserid = mWithJabberID;
 		}
 		
-		setTitle(getText(R.string.chat_titlePrefix) + " " + titleUserid);
+		setTitle(getString(R.string.chat_titlePrefix, titleUserid));
 		setChatWindowAdapter();
 	}
 
@@ -168,6 +173,28 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			mUserScreenName = mWithJabberID;
 		}
 	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		getMenuInflater().inflate(R.menu.chat_contextmenu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
+		switch (item.getItemId()) {
+		case R.id.chat_contextmenu_copy_text:
+			TextView message = (TextView)target.findViewById(R.id.chat_message);
+			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+			cm.setText(message.getText());
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+	
 
 	private View.OnClickListener getOnSetListener() {
 		return new View.OnClickListener() {

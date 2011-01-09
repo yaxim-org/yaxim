@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+		android:id="@+id/statusLayout" 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:minWidth="240sp" 
+		android:layout_height="fill_parent">
+
+	<Spinner android:id="@+id/statusview_spinner"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:entries="@array/statuslist"
+		android:prompt="@string/setStatusTitle"
+	/>
+	<EditText android:id="@+id/statusview_message"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:hint="@string/setStatusmsgHint"
+		android:singleLine="true"
+	/>
+</LinearLayout>
+
