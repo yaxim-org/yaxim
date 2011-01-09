@@ -486,7 +486,7 @@ public class SmackableImp implements Smackable {
 	private void registerMessageListener() {
 		// do not register multiple packet listeners
 		if (mPacketListener != null)
-			return;
+			mXMPPConnection.removePacketListener(mPacketListener);
 
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
 
