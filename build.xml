@@ -75,7 +75,7 @@
     <target name="proguard.execute" depends="compile" if="have.proguard">
         <taskdef resource="proguard/ant/task.properties"
                 classpath="tools/proguard.jar" />
-        <proguard>
+        <proguard configuration="proguard.cfg">
 	    -injars ${out.classes.dir}:libs
 	    -outjars ${out.absolute.dir}/classes.min.jar
 	    -libraryjars ${android.jar}
@@ -83,19 +83,6 @@
 	    -dontobfuscate
 	    -dontoptimize
 	    -printusage ${out.absolute.dir}/proguard.usage
-
-	    -dontwarn org.jivesoftware.**
-            -keep class de.measite.smack.**
-            -keep public class * extends android.app.Activity
-            -keep public class * extends android.app.Service
-            -keep public class * extends android.content.BroadcastReceiver
-            -keep public class * extends android.content.ContentProvider
-            -keep public class * extends android.preference.Preference
-	    -keepclassmembers enum * {
-		public static **[] values();
-		public static ** valueOf(java.lang.String);
-	    }
-
         </proguard>
     </target>
 
@@ -117,7 +104,7 @@
             <arg value="--dex" />
             <arg value="--output=${intermediate.dex.file}" />
             <arg path="${out.classes.dir}" />
-            <fileset dir="${external.libs.absolute.dir}" includes="*.jar"/>
+            <fileset dir="libs" includes="*.jar"/>
         </apply>
     </target>
 

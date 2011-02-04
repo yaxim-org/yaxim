@@ -99,9 +99,6 @@ public class SmackableImp implements Smackable {
 		if (isAuthenticated()) {
 			registerMessageListener();
 			registerRosterListener();
-			Presence presence = new Presence(Presence.Type.available);
-			presence.setPriority(mConfig.priority);
-			mXMPPConnection.sendPacket(presence);
 			setRosterEntries();
 		}
 		return isAuthenticated();
