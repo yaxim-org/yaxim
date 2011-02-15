@@ -154,7 +154,7 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
-			setStatus(StatusMode.valueOf(mConfig.statusMode), mConfig.statusMessage);
+			setStatusFromConfig();
 			sendOfflineMessages();
 
 		} catch (XMPPException e) {
@@ -334,16 +334,13 @@ public class SmackableImp implements Smackable {
 		return rosterGroups;
 	}
 
-	public void setStatus(StatusMode status, String statusMsg) {
+	public void setStatusFromConfig() {
 		Presence presence = new Presence(Presence.Type.available);
-		Mode mode = stringToMode(status.name());
+		Mode mode = Mode.valueOf(mConfig.statusMode);
 		presence.setMode(mode);
-		presence.setStatus(statusMsg);
+		presence.setStatus(mConfig.statusMessage);
+		presence.setPriority(mConfig.priority);
 		mXMPPConnection.sendPacket(presence);
-	}
-
-	private Mode stringToMode(String modeStr) {
-		return Mode.valueOf(modeStr);
 	}
 
 	public void sendOfflineMessages() {

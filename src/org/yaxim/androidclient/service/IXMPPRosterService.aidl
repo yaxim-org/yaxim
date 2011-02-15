@@ -14,7 +14,7 @@ interface IXMPPRosterService {
 	
 	/* xmpp methods */
 	
-	void setStatus(String status, String statusMsg);
+	void setStatusFromConfig();
 	void disconnect();
 	void connect();
 	void addRosterItem(String user, String alias, String group);
