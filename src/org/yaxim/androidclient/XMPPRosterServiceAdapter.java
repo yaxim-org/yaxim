@@ -21,9 +21,9 @@ public class XMPPRosterServiceAdapter {
 		this.xmppServiceStub = xmppServiceStub;
 	}
 	
-	public void setStatus(StatusMode status, String statusMsg) {
+	public void setStatusFromConfig() {
 		try {
-			xmppServiceStub.setStatus(status.name(), statusMsg);
+			xmppServiceStub.setStatusFromConfig();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

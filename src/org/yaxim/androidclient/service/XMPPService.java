@@ -154,13 +154,9 @@ public class XMPPService extends GenericService {
 			}
 
 
-			public void setStatus(String status, String statusMsg)
+			public void setStatusFromConfig()
 					throws RemoteException {
-				if (status.equals("offline")) {
-					doDisconnect();
-					return;
-				}
-				mSmackable.setStatus(StatusMode.valueOf(status), statusMsg);
+				mSmackable.setStatusFromConfig();
 			}
 
 			public void addRosterItem(String user, String alias, String group)

@@ -20,7 +20,7 @@ public interface Smackable {
 	void requestAuthorizationForRosterItem(String user);
 	void addRosterGroup(String group);
 	
-	void setStatus(StatusMode status, String statusMsg);
+	void setStatusFromConfig();
 	void sendMessage(String user, String message);
 	
 	void registerCallback(XMPPServiceCallback callBack);
