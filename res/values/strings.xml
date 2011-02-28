@@ -148,7 +148,7 @@
 	<!-- CHATWINDOW -->
 	<string name="chat_titlePrefix">Chat with: %s</string>
 	<string name="chat_from_me">Me:</string>
-	<string name="toast_connectfail_message">Connecting Failed!</string>
+	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 
 	<!-- GPS settings -->
