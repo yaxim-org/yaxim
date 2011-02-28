@@ -68,8 +68,8 @@ public class SmackableImp implements Smackable {
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver) {
 		this.mConfig = config;
-		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
-				mConfig.port);
+		this.mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
+				mConfig.port, mConfig.server);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConfig.setSendPresence(false);
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);

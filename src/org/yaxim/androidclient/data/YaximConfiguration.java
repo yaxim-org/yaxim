@@ -56,7 +56,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void splitAndSetJabberID(String jid) {
 		String[] res = jid.split("@");
 		this.userName = res[0];
-		this.server = (customServer.length() > 0) ? customServer : res[1];
+		this.server = res[1];
+		if (this.customServer.length() == 0)
+			this.customServer = this.server;
 	}
 
 	private int validatePriority(int jabPriority) {
