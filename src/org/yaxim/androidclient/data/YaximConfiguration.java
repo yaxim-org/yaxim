@@ -25,6 +25,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String server;
 	public String customServer;
 	public String jabberID;
+	public boolean require_ssl;
 
 	public String statusMode;
 	public String statusMessage;
@@ -98,6 +99,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.jabberID = prefs.getString(PreferenceConstants.JID, "");
 		this.customServer = prefs.getString(PreferenceConstants.CUSTOM_SERVER,
 				"");
+		this.require_ssl = prefs.getBoolean(PreferenceConstants.REQUIRE_SSL,
+				false);
 		this.statusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 

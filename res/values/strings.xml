@@ -131,6 +131,9 @@
 	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
 	<string name="account_customserver_dialog_title">Enter server hostname:</string>
 	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">Require SSL/TLS</string>
+	<string name="require_ssl_summOn">Always encrypt server connection</string>
+	<string name="require_ssl_summOff">Allow unencrypted server connection</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>

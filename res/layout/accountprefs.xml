@@ -84,5 +84,12 @@
 			android:singleLine="true"
 			android:numeric="integer"
 		/>	
+		<CheckBoxPreference
+			android:id="@+id/require_ssl"
+			android:key="require_ssl"
+			android:title="@string/require_ssl_title"
+			android:summaryOn="@string/require_ssl_summOn"
+			android:summaryOff="@string/require_ssl_summOff"
+		/>
 	</PreferenceCategory>
 </PreferenceScreen>
