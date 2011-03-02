@@ -13,6 +13,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "YaximConfiguration";
 
+	private static final String GMAIL_SERVER = "talk.google.com";
+
 	public String password;
 	public String ressource;
 	public int port;
@@ -57,6 +59,15 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		String[] res = jid.split("@");
 		this.userName = res[0];
 		this.server = res[1];
+		// check for gmail.com and other google hosted jabber accounts
+		if ("gmail.com".equals(res[1]) || "googlemail.com".equals(res[1])
+				|| GMAIL_SERVER.equals(this.customServer)) {
+			// work around for gmail's incompatible jabber implementation:
+			// send the whole JID as the login, connect to talk.google.com
+			this.userName = jid;
+			if (this.customServer.length() == 0)
+				this.customServer = GMAIL_SERVER;
+		}
 		if (this.customServer.length() == 0)
 			this.customServer = this.server;
 	}
