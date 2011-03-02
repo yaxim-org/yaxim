@@ -12,7 +12,7 @@
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Beenden</string>
-	<string name="Global_authenticate_first">Bitte erst verbinden!</string>
+	<string name="Global_authenticate_first">Bitte zuerst verbinden!</string>
 	<string name="Global_JID_hint">user@jabber.example.com</string>
 
 	<!-- FirstStartUpDialog -->
@@ -130,6 +130,9 @@
 	<string name="account_customserver_summ">(Optional) Server-Hostname zum verbinden</string>
 	<string name="account_customserver_dialog_title">Server-Hostnamen eingeben:</string>
 	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">SSL/TLS erfordern</string>
+	<string name="require_ssl_summOn">Serverkommunikation immer verschlüsseln</string>
+	<string name="require_ssl_summOff">Unverschlüsselte Serverkommunikation erlauben</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Gruppe auswählen</string>

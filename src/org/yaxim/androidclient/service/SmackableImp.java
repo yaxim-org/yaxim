@@ -73,8 +73,8 @@ public class SmackableImp implements Smackable {
 			ContentResolver contentResolver,
 			Service service) {
 		this.mConfig = config;
-		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
-				mConfig.port);
+		this.mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
+				mConfig.port, mConfig.server);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConfig.setSendPresence(false);
 		if (config.require_ssl)

@@ -241,10 +241,11 @@ public class XMPPService extends GenericService {
 		}
 
 		setForeground(true);
-		if (mSmackable == null) {
-			createAdapter();
-			registerAdapterCallback();
+		if (mSmackable != null) {
+			mSmackable.unRegisterCallback();
 		}
+		createAdapter();
+		registerAdapterCallback();
 
 		mConnectingThread = new Thread() {
 
@@ -258,7 +259,8 @@ public class XMPPService extends GenericService {
 					if (e.getCause() != null)
 						message += "\n" + e.getCause().getLocalizedMessage();
 					postConnectionFailed(message);
-					logError("YaximXMPPException in doConnect(): " + e);
+					logError("YaximXMPPException in doConnect():");
+					e.printStackTrace();
 				} finally {
 					mConnectingThread = null;
 				}
