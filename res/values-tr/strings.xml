@@ -4,38 +4,38 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Connexion au serveur…</string>
-	<string name="conn_online">En ligne</string>
-	<string name="conn_offline">Hors ligne</string>
-	<string name="conn_empty_roster">Aucun contact à afficher!</string>
+	<string name="conn_connecting">Sunucuya bağlanılıyor...</string>
+	<string name="conn_online">Çevirimiçi</string>
+	<string name="conn_offline">Çevrimdışı</string>
+	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Exit">Quitter</string>
+	<string name="Global_Exit">Çıkış</string>
 	<string name="Global_authenticate_first">Please connect first</string>
-	<string name="Global_JID_hint">utilisateur@jabber.exemple.com</string>
+	<string name="Global_JID_hint">user@jabber.example.com</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
-	<string name="StartupDialog_pwHint">Enter password</string>
+	<string name="StartupDialog_pwHint">Parola girin</string>
 	<string name="StartupDialog_portHint">5222</string>
 	<string name="StartupDialog_Username_title">Enter your Jabber ID:</string>
-	<string name="StartupDialog_passwd_title">Password:</string>
+	<string name="StartupDialog_passwd_title">Parola:</string>
 	<string name="StartupDialog_port_title">Port:</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s:</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Message Notification</string>
+	<string name="preftitle_notify">Mesaj Uyarısı</string>
 	<string name="led_title">Blinking LED</string>
 	<string name="led_summOn">LED notification is on</string>
 	<string name="led_summOff">LED notification is off</string>
-	<string name="vibr_title">Vibration</string>
+	<string name="vibr_title">Titreşim</string>
 	<string name="vibr_summOn">Vibration notifications are on</string>
 	<string name="vibr_summOff">Vibration notification are off</string>
-	<string name="ringtone_title">Ringtone</string>
+	<string name="ringtone_title">Melodi</string>
 	<string name="ringtone_summ">Tone for incoming messages</string>
 
 	<!-- Startup Setting Strings -->
@@ -76,7 +76,7 @@
 	<string name="Menu_AccSettings">Edit Account</string>
 	<string name="Menu_Settings">Settings</string>
 	<string name="Menu_Status">Status</string>
-	<string name="Menu_connect">Connecter</string>
+	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
 
@@ -93,7 +93,7 @@
 	<string name="roster_contextmenu_group_rename">Rename group</string>
 	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
 	<string name="roster_contextmenu_contact_open_chat">Open Chat</string>
-	<string name="roster_contextmenu_contact_rename">Renommer</string>
+	<string name="roster_contextmenu_contact_rename">Rename</string>
 	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change Group</string>
 
@@ -163,7 +163,7 @@
 
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">ABOUT YAXIM</string>
-	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
+	<string name="AboutDialog_DevelopersTitle">Developers</string>
 	<string name="AboutDialog_DevelopersText">
 		Acknowledged Developers:\n * Georg Lukas\n * Sven
 		Pfleiderer\n * Christian Polzer\n\n
@@ -172,7 +172,7 @@
 		at http://yaxim.org/ or on
 		#yaxim on freenode IRC.
     </string>
-	<string name="AboutDialog_LicenceTitle">License</string>
+	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or
@@ -237,11 +237,11 @@
 
 	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
 	<string-array name="statuslist">
-		<item>En ligne</item>
-		<item>Inactif</item>
+		<item>Çevirimiçi</item>
+		<item>Away</item>
 		<item>Free for chat</item>
 		<item>Do not disturb</item>
-		<item>Indisponible</item>
-		<item>Hors ligne</item>
+		<item>Not available</item>
+		<item>Çevrimdışı</item>
 	</string-array>
 </resources>
