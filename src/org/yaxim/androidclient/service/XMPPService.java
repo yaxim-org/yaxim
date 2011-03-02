@@ -241,10 +241,11 @@ public class XMPPService extends GenericService {
 		}
 
 		setForeground(true);
-		if (mSmackable == null) {
-			createAdapter();
-			registerAdapterCallback();
+		if (mSmackable != null) {
+			mSmackable.unRegisterCallback();
 		}
+		createAdapter();
+		registerAdapterCallback();
 
 		mConnectingThread = new Thread() {
 
