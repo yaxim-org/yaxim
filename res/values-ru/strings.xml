@@ -130,9 +130,9 @@
 	<string name="account_customserver_summ">(Необязательное) альтернативное имя сервера</string>
 	<string name="account_customserver_dialog_title">Введите имя сервера:</string>
 	<string name="account_customserver_hint">host.example.com</string>
-	<string name="require_ssl_title">Require SSL/TLS</string>
-	<string name="require_ssl_summOn">Always encrypt server connection</string>
-	<string name="require_ssl_summOff">Allow unencrypted server connection</string>
+	<string name="require_ssl_title">Требовать SSL/TLS</string>
+	<string name="require_ssl_summOn">Всегда шифровать соединение с сервером</string>
+	<string name="require_ssl_summOff">Разрешить незашифрованные соединения</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Выберите группу</string>
@@ -150,7 +150,7 @@
 	<!-- CHATWINDOW -->
 	<string name="chat_titlePrefix">Чат с: %s</string>
 	<string name="chat_from_me">Я:</string>
-	<string name="toast_connectfail_message">Connection closed!</string>
+	<string name="toast_connectfail_message">Соединение закрыто!</string>
 	<string name="toast_stored_offline">Сообщение было сохранено для отправки.</string>
 
 	<!-- GPS settings -->
@@ -163,14 +163,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">О YAXIM</string>
 	<string name="AboutDialog_DevelopersTitle">Разработчики</string>
-	<string name="AboutDialog_DevelopersText">
-		Acknowledged Developers:\n * Georg Lukas\n * Sven
-		Pfleiderer\n * Christian Polzer\n\n
-		Join us, ask for more fancy
-		features or send us some free \"Club Mate\"
-		at http://yaxim.org/ or on
-		#yaxim on freenode IRC.
-    </string>
+	<string name="AboutDialog_DevelopersText">Разработчики:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Присоединяйтесь к нам, спрашивайте о тех или иных улучшениях или пришлите нам \"Club Mate\" на http://yaxim.org либо на канал #yaxim IRC сети freenode.</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
@@ -232,7 +225,7 @@
 		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
     </string>
-	<string name="AboutDialog_greetings">The yaxim Team - 2010-08-18</string>
+	<string name="AboutDialog_greetings">Команда yaxim - 2010-08-18</string>
 
 	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
 	<string-array name="statuslist">
