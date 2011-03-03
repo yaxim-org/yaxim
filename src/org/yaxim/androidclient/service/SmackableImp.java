@@ -77,6 +77,7 @@ public class SmackableImp implements Smackable {
 				mConfig.port, mConfig.server);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConfig.setSendPresence(false);
+		this.mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
 		if (config.require_ssl)
 			this.mXMPPConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
 
