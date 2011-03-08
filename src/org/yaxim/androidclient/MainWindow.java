@@ -543,8 +543,11 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void toggleConnection(MenuItem item) {
-		if (isConnected() || isConnecting()) {
-			setConnectingStatus(false);
+		boolean oldState = isConnected() || isConnecting();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().
+			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
+		setConnectingStatus(!oldState);
+		if (oldState) {
 			(new Thread() {
 				public void run() {
 					serviceAdapter.disconnect();
@@ -553,7 +556,6 @@ public class MainWindow extends GenericExpandableListActivity {
 			}).start();
 
 		} else {
-			setConnectingStatus(true);
 			(new Thread() {
 				public void run() {
 					startService(xmppServiceIntent);
