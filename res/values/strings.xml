@@ -47,6 +47,9 @@
 	<string name="showOffline_summ_on">Showing offline contacts</string>
 	<string name="showOffline_summ_off">Hiding offline contacts</string>
 	<string name="showOffline_title">Show offline contacts</string>
+	<string name="foregroundService_summ_on">Keep yaxim in memory</string>
+	<string name="foregroundService_summ_off">Allow the system to restart yaxim</string>
+	<string name="foregroundService_title">Service notification</string>
 
 	<string name="preftitle_debug">Debugging</string>
 	<string name="smackdebug_summ_on">Packet and debug output enabled via logcat</string>

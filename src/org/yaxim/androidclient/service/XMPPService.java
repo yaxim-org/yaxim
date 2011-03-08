@@ -242,6 +242,8 @@ public class XMPPService extends GenericService {
 	}
 
 	private void updateServiceNotification() {
+		if (!mConfig.foregroundService)
+			return;
 		String title = getString(R.string.conn_title, mConfig.jabberID);
 		Notification n = new Notification(R.drawable.yaxim_menu_disconnect, title,
 				System.currentTimeMillis());

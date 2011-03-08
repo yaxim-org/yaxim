@@ -43,6 +43,14 @@
 			android:summaryOff="@string/showOffline_summ_off"
 			android:defaultValue="true"
 		/>	
+		<CheckBoxPreference
+			android:id="@+id/foregroundService"
+			android:key="foregroundService"
+			android:title="@string/foregroundService_title"
+			android:summaryOn="@string/foregroundService_summ_on"
+			android:summaryOff="@string/foregroundService_summ_off"
+			android:defaultValue="true"
+		/>	
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_debug">
 		<CheckBoxPreference

@@ -15,6 +15,7 @@ public class PreferenceConstants {
 	public final static String VIBRATIONNOTIFY = "vibration";
 	public final static String RINGTONENOTIFY= "ringtone";
 	public final static String BOOTSTART = "bootstart";
+	public final static String FOREGROUND = "foregroundService";
 	public final static String SMACKDEBUG = "smackdebug";
 	public final static String REPORT_CRASH = "reportcrash";
 	public final static String REQUIRE_SSL = "require_ssl";

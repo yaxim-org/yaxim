@@ -20,6 +20,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public int port;
 	public int priority;
 	public boolean bootstart;
+	public boolean foregroundService;
 	public boolean autoConnect;
 	public boolean autoReconnect;
 	public boolean reportCrash;
@@ -99,6 +100,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				.getString("account_prio", "0"), 0));
 
 		this.bootstart = prefs.getBoolean(PreferenceConstants.BOOTSTART, false);
+
+		this.foregroundService = prefs.getBoolean(PreferenceConstants.FOREGROUND, true);
 
 		this.autoConnect = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
