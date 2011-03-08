@@ -18,6 +18,7 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -366,19 +367,25 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
-	private void setStatusTitle() {
-		String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
-		String[] statusNames = getResources().getStringArray(R.array.statuslist);
-		String status = mStatusMode;
+	public static String getStatusTitle(Context context, String status, String statusMessage) {
+		String[] statusCodes = context.getResources().getStringArray(R.array.statusCodes);
+		String[] statusNames = context.getResources().getStringArray(R.array.statuslist);
 		// look up the UI string for the status mode
 		for (int i = 0; i < statusCodes.length; i++) {
-			if (statusCodes[i].equals(mStatusMode))
+			if (statusCodes[i].equals(status)) {
 				status = statusNames[i];
+				break;
+			}
 		}
-		if (mStatusMessage.length() > 0)
-			status = status + " (" + mStatusMessage + ")";
-		setTitle(getString(R.string.conn_title, status));
+		if (statusMessage.length() > 0)
+			status = status + " (" + statusMessage + ")";
+		return status;
 	}
+
+	private void setStatusTitle() {
+		setTitle(getString(R.string.conn_title, getStatusTitle(this, mStatusMode, mStatusMessage)));
+	}
+
 
 	private void setStatus(String statusmode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();

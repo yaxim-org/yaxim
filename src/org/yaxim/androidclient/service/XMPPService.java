@@ -163,6 +163,7 @@ public class XMPPService extends GenericService {
 			public void setStatusFromConfig()
 					throws RemoteException {
 				mSmackable.setStatusFromConfig();
+				updateServiceNotification();
 			}
 
 			public void addRosterItem(String user, String alias, String group)
@@ -252,8 +253,10 @@ public class XMPPService extends GenericService {
 		String message = mLastConnectionError;
 		if (message != null)
 			message += mReconnectInfo;
-		if (mIsConnected.get())
-			message = getString(R.string.conn_online);
+		if (mIsConnected.get()) {
+			message = MainWindow.getStatusTitle(this, mConfig.statusMode, mConfig.statusMessage);
+			n.icon = R.drawable.ic_status;
+		}
 		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
 		mServiceNotification.showNotification(this, SERVICE_NOTIFICATION,
