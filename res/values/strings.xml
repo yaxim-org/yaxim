@@ -30,8 +30,8 @@
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Message Notification</string>
 	<string name="led_title">Blinking LED</string>
-	<string name="led_summOn">LED notification is on</string>
-	<string name="led_summOff">LED notification is off</string>
+	<string name="led_summOn">LED notifications are on</string>
+	<string name="led_summOff">LED notifications are off</string>
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summOn">Vibration notifications are on</string>
 	<string name="vibr_summOff">Vibration notification are off</string>
