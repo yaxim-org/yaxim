@@ -1,0 +1,16 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+	<Spinner android:id="@+id/groupspinner" 
+		android:prompt="@string/AddContact_SpinnerPrompt" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">                                           
+	</Spinner>
+	<EditText
+		android:id="@+id/newgroupinput"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:visible="false"
+		android:enabled="false"
+		android:singleLine="true"
+		android:hint="@string/NewGroup_EditTextField_Hint"
+		/>
+</merge>

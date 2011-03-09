@@ -7,13 +7,13 @@
 	<string name="conn_connecting">Connexion au serveur…</string>
 	<string name="conn_online">En ligne</string>
 	<string name="conn_offline">Hors ligne</string>
-	<string name="conn_empty_roster">No contacts to show!</string>
+	<string name="conn_empty_roster">Aucun contact à afficher!</string>
 	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Quitter</string>
 	<string name="Global_authenticate_first">Please connect first</string>
-	<string name="Global_JID_hint">user@jabber.example.com</string>
+	<string name="Global_JID_hint">utilisateur@jabber.exemple.com</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
@@ -131,6 +131,9 @@
 	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
 	<string name="account_customserver_dialog_title">Enter server hostname:</string>
 	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">Require SSL/TLS</string>
+	<string name="require_ssl_summOn">Always encrypt server connection</string>
+	<string name="require_ssl_summOff">Allow unencrypted server connection</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>
@@ -148,7 +151,7 @@
 	<!-- CHATWINDOW -->
 	<string name="chat_titlePrefix">Chat with: %s</string>
 	<string name="chat_from_me">Me:</string>
-	<string name="toast_connectfail_message">Connecting Failed!</string>
+	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 
 	<!-- GPS settings -->

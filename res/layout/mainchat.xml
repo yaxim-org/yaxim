@@ -16,6 +16,7 @@
 			android:layout_toLeftOf="@id/Chat_UserInput"
 			android:layout_height="wrap_content"
 			android:singleLine="true"
+			android:inputType="textShortMessage"
 		/>
 		<Button android:id="@+id/Chat_SendButton"
 			android:layout_width="60sp"
@@ -32,6 +33,6 @@
 			android:layout_height="fill_parent"
 			android:stackFromBottom="true"
 			android:layout_above="@id/details" 
-			android:transcriptMode="alwaysScroll" android:choiceMode="singleChoice">
+			android:transcriptMode="alwaysScroll">
 		</ListView>
 </RelativeLayout>

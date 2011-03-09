@@ -8,6 +8,9 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import javax.net.ssl.SSLContext;
+
+import de.duenndns.ssl.MemorizingTrustManager;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketListener;
@@ -36,6 +39,7 @@ import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.StatusModeInt;
 
+import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -66,12 +70,27 @@ public class SmackableImp implements Smackable {
 	private final ContentResolver mContentResolver;
 
 	public SmackableImp(YaximConfiguration config,
-			ContentResolver contentResolver) {
+			ContentResolver contentResolver,
+			Service service) {
 		this.mConfig = config;
-		this.mXMPPConfig = new ConnectionConfiguration(mConfig.server,
-				mConfig.port);
+		this.mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
+				mConfig.port, mConfig.server);
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConfig.setSendPresence(false);
+		this.mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
+		if (config.require_ssl)
+			this.mXMPPConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+
+		// register MemorizingTrustManager for HTTPS
+		try {
+			SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, MemorizingTrustManager.getInstanceList(service),
+					new java.security.SecureRandom());
+			this.mXMPPConfig.setCustomSSLContext(sc);
+		} catch (java.security.GeneralSecurityException e) {
+			debugLog("initialize MemorizingTrustManager: " + e);
+		}
+
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
 	}
@@ -83,9 +102,6 @@ public class SmackableImp implements Smackable {
 		if (isAuthenticated()) {
 			registerMessageListener();
 			registerRosterListener();
-			Presence presence = new Presence(Presence.Type.available);
-			presence.setPriority(mConfig.priority);
-			mXMPPConnection.sendPacket(presence);
 			setRosterEntries();
 		}
 		return isAuthenticated();
@@ -157,7 +173,7 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
-			setStatus(StatusMode.valueOf(mConfig.statusMode), mConfig.statusMessage);
+			setStatusFromConfig();
 			sendOfflineMessages();
 
 		} catch (XMPPException e) {
@@ -267,9 +283,7 @@ public class SmackableImp implements Smackable {
 		entryMap.put(rosterItem.jabberID, rosterItem);
 	}
 
-	private void unSetRosterEntry(RosterEntry rosterEntry) {
-		String jabberID = rosterEntry.getUser();
-
+	private void unSetRosterEntry(String jabberID) {
 		Set<Entry<String, ConcurrentHashMap<String, RosterItem>>> groupMaps = mRosterItemsByGroup
 				.entrySet();
 
@@ -339,16 +353,13 @@ public class SmackableImp implements Smackable {
 		return rosterGroups;
 	}
 
-	public void setStatus(StatusMode status, String statusMsg) {
+	public void setStatusFromConfig() {
 		Presence presence = new Presence(Presence.Type.available);
-		Mode mode = stringToMode(status.name());
+		Mode mode = Mode.valueOf(mConfig.statusMode);
 		presence.setMode(mode);
-		presence.setStatus(statusMsg);
+		presence.setStatus(mConfig.statusMessage);
+		presence.setPriority(mConfig.priority);
 		mXMPPConnection.sendPacket(presence);
-	}
-
-	private Mode stringToMode(String modeStr) {
-		return Mode.valueOf(modeStr);
 	}
 
 	public void sendOfflineMessages() {
@@ -450,8 +461,8 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					unSetRosterEntry(rosterEntry);
-					deleteRosterEntryFromDB(rosterEntry);
+					unSetRosterEntry(entry);
+					deleteRosterEntryFromDB(entry);
 				}
 				mServiceCallBack.rosterChanged();
 			}
@@ -461,7 +472,7 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					unSetRosterEntry(rosterEntry);
+					unSetRosterEntry(rosterEntry.getUser());
 					setRosterEntry(rosterEntry);
 					updateRosterEntryInDB(rosterEntry);
 				}
@@ -488,7 +499,7 @@ public class SmackableImp implements Smackable {
 	private void registerMessageListener() {
 		// do not register multiple packet listeners
 		if (mPacketListener != null)
-			return;
+			mXMPPConnection.removePacketListener(mPacketListener);
 
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
 
@@ -548,9 +559,9 @@ public class SmackableImp implements Smackable {
 		return values;
 	}
 
-	private void deleteRosterEntryFromDB(final RosterEntry entry) {
+	private void deleteRosterEntryFromDB(final String jabberID) {
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI,
-				RosterConstants.JID + " = ?", new String[] { entry.getUser() });
+				RosterConstants.JID + " = ?", new String[] { jabberID });
 		debugLog("deleteRosterEntryFromDB: Deleted " + count + " entries");
 	}
 
@@ -563,7 +574,7 @@ public class SmackableImp implements Smackable {
 
 	private void updateOrInsertRosterEntryToDB(final RosterEntry entry) {
 		try {
-			deleteRosterEntryFromDB(entry);
+			deleteRosterEntryFromDB(entry.getUser());
 			addRosterEntryToDB(entry);
 		} catch (Exception e) {
 			e.printStackTrace();

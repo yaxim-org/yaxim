@@ -47,13 +47,6 @@
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_options_title">
 		<CheckBoxPreference
-			android:id="@+id/connstartup"
-			android:key="connstartup"
-			android:title="@string/connstartup_title"
-			android:summaryOn="@string/connstartup_summOn"
-			android:summaryOff="@string/connstartup_summOff"
-		/>
-		<CheckBoxPreference
 			android:id="@+id/reconnect"
 			android:key="reconnect"
 			android:title="@string/reconnect_title"
@@ -84,5 +77,12 @@
 			android:singleLine="true"
 			android:numeric="integer"
 		/>	
+		<CheckBoxPreference
+			android:id="@+id/require_ssl"
+			android:key="require_ssl"
+			android:title="@string/require_ssl_title"
+			android:summaryOn="@string/require_ssl_summOn"
+			android:summaryOff="@string/require_ssl_summOff"
+		/>
 	</PreferenceCategory>
 </PreferenceScreen>

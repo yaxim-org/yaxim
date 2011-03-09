@@ -15,25 +15,18 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 import org.yaxim.androidclient.R;
 
 public class AddRosterItemDialog extends GenericDialog implements
-		OnClickListener, TextWatcher, OnItemSelectedListener {
+		OnClickListener, TextWatcher {
 
 	private Button cancelButton;
 	private Button okButton;
 	private EditText userInputField;
 	private EditText aliasInputField;
-	private EditText newGroupInputField;
-	private Spinner groupSpinner;
-	private List<String> groupList;
-	private String selectedGroup;
+	private GroupNameView mGroupNameView;
 
 	public AddRosterItemDialog(Context mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
@@ -47,38 +40,15 @@ public class AddRosterItemDialog extends GenericDialog implements
 
 		setUserInputField();
 		setAliasInputField();
-		setGroupSpinner();
-		setNewGroupInputField();
 		createAndSetGroupSpinnerAdapter();
 		setOkButton();
 		setCancelButton();
-	}
 
-	private void setNewGroupInputField() {
-		newGroupInputField = (EditText) findViewById(R.id.AddRosterItem_NewGroup_EditTextField);
-	}
-
-	private void setGroupSpinner() {
-		groupSpinner = (Spinner) findViewById(R.id.AddContact_GroupSpinner);
 	}
 
 	private void createAndSetGroupSpinnerAdapter() {
-		groupList = serviceAdapter.getRosterGroups();
-		
-		if (!groupList.contains(AdapterConstants.EMPTY_GROUP)) {
-			groupList = new ArrayList<String>();
-			groupList.add(AdapterConstants.EMPTY_GROUP);
-			groupList.addAll(serviceAdapter.getRosterGroups());
-		}
-		
-		groupList.add(mainWindow
-				.getString(R.string.addrosteritemaddgroupchoice));
-		ArrayAdapter<String> groupSpinnerAdapter = new ArrayAdapter<String>(
-				mainWindow, android.R.layout.simple_spinner_item, groupList);
-		groupSpinnerAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		groupSpinner.setAdapter(groupSpinnerAdapter);
-		groupSpinner.setOnItemSelectedListener(this);
+		mGroupNameView = (GroupNameView)findViewById(R.id.AddRosterItem_GroupName);
+		mGroupNameView.setGroupList(serviceAdapter.getRosterGroups());
 	}
 
 	private void setOkButton() {
@@ -108,15 +78,9 @@ public class AddRosterItemDialog extends GenericDialog implements
 			break;
 
 		case R.id.AddContact_OkButton:
-			if (newGroupInputField.getVisibility() == View.VISIBLE) {
-				serviceAdapter.addRosterItem(userInputField.getText()
-						.toString(), aliasInputField.getText().toString(),
-						newGroupInputField.getText().toString());
-			} else {
-				serviceAdapter.addRosterItem(userInputField.getText()
-						.toString(), aliasInputField.getText().toString(),
-						selectedGroup);
-			}
+			serviceAdapter.addRosterItem(userInputField.getText()
+					.toString(), aliasInputField.getText().toString(),
+					mGroupNameView.getGroupName());
 			cancel();
 			break;
 		}
@@ -143,21 +107,4 @@ public class AddRosterItemDialog extends GenericDialog implements
 
 	}
 
-	public void onItemSelected(AdapterView<?> view, View arg1, int arg2,
-			long arg3) {
-
-		if (view.getSelectedItem().toString().equals(
-				mainWindow.getString(R.string.addrosteritemaddgroupchoice))) {
-			newGroupInputField.setVisibility(View.VISIBLE);
-			newGroupInputField.setEnabled(true);
-		} else {
-			newGroupInputField.setVisibility(View.INVISIBLE);
-			newGroupInputField.setEnabled(false);
-			selectedGroup = view.getSelectedItem().toString();
-		}
-	}
-
-	public void onNothingSelected(AdapterView<?> arg0) {
-
-	}
 }

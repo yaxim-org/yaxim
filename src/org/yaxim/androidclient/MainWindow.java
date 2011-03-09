@@ -7,7 +7,7 @@ import java.util.List;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
-import org.yaxim.androidclient.dialogs.MoveRosterItemToGroupDialog;
+import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
@@ -18,6 +18,7 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -25,6 +26,7 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -75,6 +77,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		registerXMPPService();
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setupContenView();
+	}
+
+	void setupContenView() {
 		setContentView(R.layout.main);
 		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
@@ -94,6 +100,14 @@ public class MainWindow extends GenericExpandableListActivity {
 		super.onResume();
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		bindXMPPService();
+	}
+
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "onConfigurationChanged");
+		setupContenView();
 	}
 
 	private void createRosterIfConnected() {
@@ -213,6 +227,27 @@ public class MainWindow extends GenericExpandableListActivity {
 				});
 	}
 
+	void moveRosterItemToGroupDialog(final String jabberID) {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(
+			      LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.moverosterentrytogroupview, null, false);
+		final GroupNameView gv = (GroupNameView)group.findViewById(R.id.moverosterentrytogroupview_gv);
+		gv.setGroupList(serviceAdapter.getRosterGroups());
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.MoveRosterEntryToGroupDialog_title)
+			.setView(group)
+			.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						Log.d(TAG, "new group: " + gv.getGroupName());
+						serviceAdapter.moveRosterItemToGroup(jabberID,
+								gv.getGroupName());
+					}
+				})
+			.setNegativeButton(android.R.string.cancel, null)
+			.create().show();
+	}
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		return applyMenuContextChoice(item);
@@ -254,8 +289,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:
-				new MoveRosterItemToGroupDialog(this, serviceAdapter, userJid)
-						.show();
+				moveRosterItemToGroupDialog(userJid);
 				return true;
 
 			case R.id.roster_exit:
@@ -303,6 +337,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	void setMenuItem(Menu menu, int itemId, int iconId, CharSequence title) {
 		MenuItem item = menu.findItem(itemId);
+		if (item == null)
+			return;
 		item.setIcon(iconId);
 		item.setTitle(title);
 	}
@@ -331,30 +367,41 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
-	private void setStatusTitle() {
-		String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
-		String[] statusNames = getResources().getStringArray(R.array.statuslist);
-		String status = mStatusMode;
+	public static String getStatusTitle(Context context, String status, String statusMessage) {
+		String[] statusCodes = context.getResources().getStringArray(R.array.statusCodes);
+		String[] statusNames = context.getResources().getStringArray(R.array.statuslist);
 		// look up the UI string for the status mode
 		for (int i = 0; i < statusCodes.length; i++) {
-			if (statusCodes[i].equals(mStatusMode))
+			if (statusCodes[i].equals(status)) {
 				status = statusNames[i];
+				break;
+			}
 		}
-		if (mStatusMessage.length() > 0)
-			status = status + " (" + mStatusMessage + ")";
-		setTitle(getString(R.string.conn_title, status));
+		if (statusMessage.length() > 0)
+			status = status + " (" + statusMessage + ")";
+		return status;
 	}
+
+	private void setStatusTitle() {
+		setTitle(getString(R.string.conn_title, getStatusTitle(this, mStatusMode, mStatusMessage)));
+	}
+
 
 	private void setStatus(String statusmode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		mStatusMode = statusmode;
 		mStatusMessage = message;
 		// do not save "offline" to prefs, or else!
-		if (!statusmode.equals("offline"))
-			prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
+		if (statusmode.equals("offline")) {
+			serviceAdapter.disconnect();
+			setConnectingStatus(false);
+			stopService(xmppServiceIntent);
+			return;
+		}
+		prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
-		serviceAdapter.setStatus(StatusMode.valueOf(statusmode), message);
+		serviceAdapter.setStatusFromConfig();
 		setStatusTitle();
 	}
 
@@ -496,8 +543,11 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void toggleConnection(MenuItem item) {
-		if (isConnected() || isConnecting()) {
-			setConnectingStatus(false);
+		boolean oldState = isConnected() || isConnecting();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().
+			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
+		setConnectingStatus(!oldState);
+		if (oldState) {
 			(new Thread() {
 				public void run() {
 					serviceAdapter.disconnect();
@@ -506,7 +556,6 @@ public class MainWindow extends GenericExpandableListActivity {
 			}).start();
 
 		} else {
-			setConnectingStatus(true);
 			(new Thread() {
 				public void run() {
 					startService(xmppServiceIntent);

@@ -13,11 +13,14 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "YaximConfiguration";
 
+	private static final String GMAIL_SERVER = "talk.google.com";
+
 	public String password;
 	public String ressource;
 	public int port;
 	public int priority;
 	public boolean bootstart;
+	public boolean foregroundService;
 	public boolean autoConnect;
 	public boolean autoReconnect;
 	public boolean reportCrash;
@@ -25,6 +28,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String server;
 	public String customServer;
 	public String jabberID;
+	public boolean require_ssl;
 
 	public String statusMode;
 	public String statusMessage;
@@ -56,7 +60,18 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void splitAndSetJabberID(String jid) {
 		String[] res = jid.split("@");
 		this.userName = res[0];
-		this.server = (customServer.length() > 0) ? customServer : res[1];
+		this.server = res[1];
+		// check for gmail.com and other google hosted jabber accounts
+		if ("gmail.com".equals(res[1]) || "googlemail.com".equals(res[1])
+				|| GMAIL_SERVER.equals(this.customServer)) {
+			// work around for gmail's incompatible jabber implementation:
+			// send the whole JID as the login, connect to talk.google.com
+			this.userName = jid;
+			if (this.customServer.length() == 0)
+				this.customServer = GMAIL_SERVER;
+		}
+		if (this.customServer.length() == 0)
+			this.customServer = this.server;
 	}
 
 	private int validatePriority(int jabPriority) {
@@ -86,6 +101,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 		this.bootstart = prefs.getBoolean(PreferenceConstants.BOOTSTART, false);
 
+		this.foregroundService = prefs.getBoolean(PreferenceConstants.FOREGROUND, true);
+
 		this.autoConnect = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
 		this.autoReconnect = prefs.getBoolean(
@@ -98,6 +115,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.jabberID = prefs.getString(PreferenceConstants.JID, "");
 		this.customServer = prefs.getString(PreferenceConstants.CUSTOM_SERVER,
 				"");
+		this.require_ssl = prefs.getBoolean(PreferenceConstants.REQUIRE_SSL,
+				false);
 		this.statusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">Yaxim: %s</string>
+	<string name="conn_connecting">Jungiamasi prie serverio...</string>
+	<string name="conn_online">Prisijungęs (-usi)</string>
+	<string name="conn_offline">Neprisijungęs (-usi)</string>
+	<string name="conn_empty_roster">Nėra rodytinų kontaktų!</string>
+	<string name="conn_reconnect">Kitas prisijungimas po %d sekundžių</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Išeiti</string>
+	<string name="Global_authenticate_first">Pirma prisijunkite</string>
+	<string name="Global_JID_hint">vartotojas@jabber.example.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Sveiki atvykę į yaxim!</string>
+	<string name="StartupDialog_Summary">Prieš naudojantis Jums reikia sukonfigūruoti yaxim. Įveskite savo Jabber ID ir slaptažodį.</string>
+	<string name="StartupDialog_pwHint">Įveskite slaptažodį</string>
+	<string name="StartupDialog_portHint">5222</string>
+	<string name="StartupDialog_Username_title">Įveskite savo Jabber ID:</string>
+	<string name="StartupDialog_passwd_title">Slaptažodis:</string>
+	<string name="StartupDialog_port_title">Jungtis:</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Žinutė nuo %s:</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Pranešimas apie žinutes</string>
+	<string name="led_title">Mirgsintis LED indikatorius</string>
+	<string name="led_summOn">LED indikatorius įjungtas</string>
+	<string name="led_summOff">LED indikatorius išjungtas</string>
+	<string name="vibr_title">Vibracija</string>
+	<string name="vibr_summOn">Vibracinis signalas įjungtas</string>
+	<string name="vibr_summOff">Vibracinis signalas išjungtas</string>
+	<string name="ringtone_title">Skambėjimo melodija</string>
+	<string name="ringtone_summ">Gautų žinučių signalas</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Startavimo parinktys</string>
+	<string name="boot_title">Paleisti yaxim užsikrovimo metu</string>
+	<string name="boot_summOn">yaxim nustatytas pasileisti užsikrovimo metu</string>
+	<string name="boot_summOff">yaxim nėra nustatytas pasileisti krovimosi metu</string>
+	<string name="statuspopup_name">Nustatykite savo būseną</string>
+	<string name="showOffline_summ_on">Rodomi atsijungę kontaktai</string>
+	<string name="showOffline_summ_off">Slepiami atsijungę kontaktai</string>
+	<string name="showOffline_title">Rodyti atsijungusius adresatus</string>
+
+	<string name="preftitle_debug">Programų derinimas</string>
+	<string name="smackdebug_summ_on">Pakuoti ir derinti išvestį per logcat</string>
+	<string name="smackdebug_summ_off">Derinimas per logcat išjungtas</string>
+	<string name="smackdebug_title">SMACK derinimas</string>
+
+	<string name="reportcrash_title">Siųsti programos sutrikimų ataskaitas</string>
+	<string name="reportcrash_summ_on">Anoniminės nesklandaus veikimo ataskaitos įjungtos</string>
+	<string name="reportcrash_summ_off">Anoniminės nesklandaus veikimo ataskaitos išjungtos</string>
+
+	<!-- Appearence Strings -->
+	<!--
+	<string name="preftitle_app">Appearance</string>
+	<string name="FontChat_title">Chat font size</string>
+	<string name="FontChat_summ">Set chat font size</string>
+	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Pridėti kontaktą</string>
+	<string name="Menu_ShowOff">Rodyti neprisijungusius</string>
+	<string name="Menu_HideOff">Slėpti neprisijungusius</string>
+	<string name="Menu_AccSettings">Taisyti paskyrą</string>
+	<string name="Menu_Settings">Nustatymai</string>
+	<string name="Menu_Status">Būsena</string>
+	<string name="Menu_connect">Prisijungti</string>
+	<string name="Menu_disconnect">Atsijungti</string>
+	<string name="Menu_about">Apie yaxim</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Pridėti kontaktą</string>
+	<string name="addFriend_Summ">Įveskite Jūsų draugo Jabber ID, rodomą vardą ir pasirinkite kontaktų grupę!</string>
+	<string name="addFriend_aliasHint">Rodomas vardas</string>
+	<string name="addrosteritemaddgroupchoice">Priskirti naujai grupei</string>
+	<string name="NewGroup_EditTextField_Hint">Naujos grupės pavadinimas</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">%s parametrai</string>
+	<string name="roster_contextmenu_group_rename">Pervadinti grupę</string>
+	<string name="roster_contextmenu_contact_delete">Pašalinti kontaktą</string>
+	<string name="roster_contextmenu_contact_open_chat">Atidaryti pokalbį</string>
+	<string name="roster_contextmenu_contact_rename">Pervardinti</string>
+	<string name="roster_contextmenu_contact_request_auth">Prašyti įgaliojimų</string>
+	<string name="roster_contextmenu_contact_change_group">Keisti grupę</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Prisijungimo informacija</string>
+	<string name="account_settings_title">Paskyros parametrai</string>
+	<string name="account_options_title">Prisijungimo parinktys</string>
+	<string name="account_options_advanced">Išplėstinės parinktys</string>
+	<string name="connstartup_title">Prisijungti paleidus programą</string>
+	<string name="connstartup_summOn">Tapti prisijungusiu kai yaxim atidarytas</string>
+	<string name="connstartup_summOff">Neprisijungti automatiškai</string>
+	<string name="reconnect_title">Automatinis prisijungimas iš naujo</string>
+	<string name="reconnect_summOn">Prisijungti iš naujo kai prarandamas ryšys</string>
+	<string name="reconnect_summOff">Pasilikti neprisijungus kai prarandamas ryšys</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">pvz: as@jabber.pavyzdys.com</string>
+	<string name="account_jabberID_dialog_title">Įveskite savo Jabber ID:</string>
+	<string name="account_jabberPW_title">Paskyros slaptažodis</string>
+	<string name="account_jabberPW_sum">Jūsų Jabber paskyros slaptažodis</string>
+	<string name="account_jabberPW_dialog_title">Įveskite slaptažodį:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Kliento resursas</string>
+	<string name="account_resource_summ">Pagal nutylėjimą: yaxim</string>
+	<string name="account_resource_dialog_title">Įveskite resursą:</string>
+	<string name="account_resource_hint">Yaxim</string>
+	<string name="account_prio_title">Prioritetas</string>
+	<string name="account_prio_summ">Pagal nutylėjimą: 0 (leidžiama: 0...127)</string>
+	<string name="account_prio_dialog_title">Įveskite prioritetą:</string>
+	<string name="account_port_title">Serverio portas</string>
+	<string name="account_port_sum">Pagal nutylėjimą: 5222</string>
+	<string name="account_port_dialog_title">Įveskite serverio portą:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Pasirenkamas serveris</string>
+	<string name="account_customserver_summ">Alternatyvus serverio vardas</string>
+	<string name="account_customserver_dialog_title">Įveskite serverio vardą:</string>
+	<string name="account_customserver_hint">serveris.pavyzdys.com</string>
+	<string name="require_ssl_title">Require SSL/TLS</string>
+	<string name="require_ssl_summOn">Always encrypt server connection</string>
+	<string name="require_ssl_summOff">Allow unencrypted server connection</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Pasirinkite grupę</string>
+	<string name="setStatusmsgHint">Jūsų vieša žinutė</string>
+	<string name="setStatusTitle">Nustatykite savo būseną</string>
+	<string name="RenameGroup_summ">Pervardinti grupę %s į:</string>
+	<string name="RenameGroup_title">Pervadinti grupę</string>
+	<string name="RenameEntry_summ">Pervardinti %s (%s) į:</string>
+	<string name="RenameEntry_title">Pervardinti kontaktą</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Pasirinkite grupę iš suktuko,esančio žemiau</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Keisti grupę</string>
+	<string name="deleteRosterItem_text">Ar tikrai pašalinti %s (%s)?</string>
+	<string name="deleteRosterItem_title">Pašalinti kontaktą</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_titlePrefix">Pokalbis su: %s</string>
+	<string name="chat_from_me">Aš:</string>
+	<string name="toast_connectfail_message">Connection closed!</string>
+	<string name="toast_stored_offline">Žinutė išsaugota perdavimui.</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">APIE YAXIM</string>
+	<string name="AboutDialog_DevelopersTitle">Plėtotojai</string>
+	<string name="AboutDialog_DevelopersText">Pripažinti plėtotojai:\n *Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Prisijunk prie mūsų, prašyk įdomių galimybių arba atsiųsk nemokamos \"Club Mate\" svetainėje http://yaxim.org/ arba #yaxim IRC kanale, Freenode serveryje.</string>
+	<string name="AboutDialog_LicenceTitle">Licencija</string>
+	<string name="AboutDialog_LicenceText">
+		This program is free software; you can redistribute
+		it and/or
+		modify it under the terms of the GNU General Public License
+		version 2
+		as published by the Free Software Foundation.
+		Link:
+		http://www.gnu.org/licenses/gpl-2.0.html\n
+		\n
+		Parts of this software are
+		provided under the MIT License:\n
+		\n
+		Copyright (c) 2009 Mads
+		Kristiansen, Nullwire ApS\n
+		\n
+		Permission is hereby granted, free of
+		charge, to any person obtaining
+		a copy
+		of this software and associated
+		documentation files (the
+		"Software"), to deal
+		in the Software without
+		restriction, including
+		without limitation the rights
+		to use, copy,
+		modify, merge, publish,
+		distribute, sublicense, and/or sell
+		copies of
+		the Software, and to
+		permit persons to whom the Software is
+		furnished to
+		do so, subject to
+		the following conditions:
+		\n
+		The above copyright notice
+		and this permission notice shall be
+		included in all
+		copies or
+		substantial portions of the Software.
+		\n
+		THE SOFTWARE IS PROVIDED "AS
+		IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT
+		LIMITED TO THE WARRANTIES OF
+		MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR
+		PURPOSE AND NONINFRINGEMENT.
+		IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY
+		CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN
+		AN ACTION OF CONTRACT,
+		TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN
+		CONNECTION WITH THE
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+    </string>
+	<string name="AboutDialog_greetings">Yaxim komanda - 2010-08-18</string>
+
+	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
+	<string-array name="statuslist">
+		<item>Prisijungęs (-usi)</item>
+		<item>Pasitraukęs (-usi)</item>
+		<item>Laisvas pašnekesiams</item>
+		<item>Netrukdyti</item>
+		<item>Nepasiekiamas</item>
+		<item>Neprisijungęs (-usi)</item>
+	</string-array>
+</resources>

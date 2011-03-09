@@ -38,7 +38,8 @@ public abstract class GenericService extends Service {
 	
 	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
 	private Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
-	private int lastNotificationId = 0;
+	protected static int SERVICE_NOTIFICATION = 1;
+	private int lastNotificationId = 2;
 
 	protected YaximConfiguration mConfig;
 
