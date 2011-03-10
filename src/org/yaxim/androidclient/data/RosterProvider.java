@@ -22,19 +22,25 @@ import android.util.Log;
 public class RosterProvider extends ContentProvider {
 
 	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Roster";
-	public static final String TABLE_NAME = "roster";
+	public static final String TABLE_ROSTER = "roster";
+	public static final String TABLE_GROUPS = "groups";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-			+ "/" + TABLE_NAME);
+			+ "/" + TABLE_ROSTER);
+	public static final Uri GROUPS_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + TABLE_GROUPS);
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
-
 	private static final int CONTACTS = 1;
 	private static final int CONTACT_ID = 2;
+	private static final int GROUPS = 3;
+	private static final int GROUP_MEMBERS = 4;
 
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "roster", CONTACTS);
 		URI_MATCHER.addURI(AUTHORITY, "roster/#", CONTACT_ID);
+		URI_MATCHER.addURI(AUTHORITY, "groups", GROUPS);
+		URI_MATCHER.addURI(AUTHORITY, "groups/*", GROUP_MEMBERS);
 	}
 
 	private static final String TAG = "RosterProvider";
@@ -51,7 +57,7 @@ public class RosterProvider extends ContentProvider {
 		switch (URI_MATCHER.match(url)) {
 
 		case CONTACTS:
-			count = db.delete(TABLE_NAME, where, whereArgs);
+			count = db.delete(TABLE_ROSTER, where, whereArgs);
 			break;
 
 		case CONTACT_ID:
@@ -63,7 +69,7 @@ public class RosterProvider extends ContentProvider {
 				where = "_id=" + segment + " AND (" + where + ")";
 			}
 
-			count = db.delete(TABLE_NAME, where, whereArgs);
+			count = db.delete(TABLE_ROSTER, where, whereArgs);
 			break;
 
 		default:
@@ -87,8 +93,24 @@ public class RosterProvider extends ContentProvider {
 		}
 	}
 
+	public Uri insertGroup(Uri url, ContentValues initialValues) {
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		long rowId = db.insert(TABLE_GROUPS, RosterConstants.GROUP, initialValues);
+
+		if (rowId < 0) {
+			throw new SQLException("Failed to insert row into " + url);
+		}
+
+		Uri noteUri = ContentUris.withAppendedId(GROUPS_URI, rowId);
+		getContext().getContentResolver().notifyChange(noteUri, null);
+		return noteUri;
+	}
+
 	@Override
 	public Uri insert(Uri url, ContentValues initialValues) {
+		if (URI_MATCHER.match(url) == GROUPS)
+			return insertGroup(url, initialValues);
+
 		if (URI_MATCHER.match(url) != CONTACTS) {
 			throw new IllegalArgumentException("Cannot insert into URL: " + url);
 		}
@@ -104,7 +126,7 @@ public class RosterProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-		long rowId = db.insert(TABLE_NAME, RosterConstants.JID, values);
+		long rowId = db.insert(TABLE_ROSTER, RosterConstants.JID, values);
 
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
@@ -130,12 +152,22 @@ public class RosterProvider extends ContentProvider {
 
 		switch (match) {
 
+		case GROUPS:
+			qBuilder.setTables(TABLE_GROUPS);
+			break;
+
+		case GROUP_MEMBERS:
+			qBuilder.setTables(TABLE_GROUPS);
+			qBuilder.appendWhere("roster_group=");
+			qBuilder.appendWhere(url.getPathSegments().get(1));
+			break;
+
 		case CONTACTS:
-			qBuilder.setTables(TABLE_NAME);
+			qBuilder.setTables(TABLE_ROSTER);
 			break;
 
 		case CONTACT_ID:
-			qBuilder.setTables(TABLE_NAME);
+			qBuilder.setTables(TABLE_ROSTER);
 			qBuilder.appendWhere("_id=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
 			break;
@@ -145,7 +177,7 @@ public class RosterProvider extends ContentProvider {
 		}
 
 		String orderBy;
-		if (TextUtils.isEmpty(sortOrder)) {
+		if (TextUtils.isEmpty(sortOrder) && match == CONTACTS) {
 			orderBy = RosterConstants.DEFAULT_SORT_ORDER;
 		} else {
 			orderBy = sortOrder;
@@ -174,12 +206,12 @@ public class RosterProvider extends ContentProvider {
 
 		switch (match) {
 		case CONTACTS:
-			count = db.update(TABLE_NAME, values, where, whereArgs);
+			count = db.update(TABLE_ROSTER, values, where, whereArgs);
 			break;
 		case CONTACT_ID:
 			String segment = url.getPathSegments().get(1);
 			rowId = Long.parseLong(segment);
-			count = db.update(TABLE_NAME, values, "_id=" + rowId, whereArgs);
+			count = db.update(TABLE_ROSTER, values, "_id=" + rowId, whereArgs);
 			break;
 		default:
 			throw new UnsupportedOperationException("Cannot update URL: " + url);
@@ -201,7 +233,7 @@ public class RosterProvider extends ContentProvider {
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "roster.db";
-		private static final int DATABASE_VERSION = 1;
+		private static final int DATABASE_VERSION = 2;
 
 		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -211,10 +243,16 @@ public class RosterProvider extends ContentProvider {
 		public void onCreate(SQLiteDatabase db) {
 			infoLog("creating new roster table");
 
-			db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
+			db.execSQL("CREATE TABLE " + TABLE_GROUPS + " ("
+					+ GroupsConstants._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ GroupsConstants.GROUP + " TEXT UNIQUE ON CONFLICT REPLACE, "
+					+ GroupsConstants.COLLAPSED + " INTEGER);");
+			db.execSQL("CREATE TABLE " + TABLE_ROSTER + " ("
 					+ RosterConstants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ RosterConstants.JID + " TEXT, " + RosterConstants.ALIAS
+					+ RosterConstants.JID + " TEXT UNIQUE ON CONFLICT REPLACE, "
+					+ RosterConstants.ALIAS
 					+ " TEXT, " + RosterConstants.STATUS_MODE + " INTEGER, "
 					+ RosterConstants.STATUS_MESSAGE + " TEXT, "
 					+ RosterConstants.GROUP + " TEXT);");
@@ -225,7 +263,8 @@ public class RosterProvider extends ContentProvider {
 			infoLog("onUpgrade: from " + oldVersion + " to " + newVersion);
 			switch (oldVersion) {
 			default:
-				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+				db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUPS);
+				db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROSTER);
 				onCreate(db);
 			}
 		}
@@ -253,6 +292,27 @@ public class RosterProvider extends ContentProvider {
 			tmpList.add(ALIAS);
 			tmpList.add(STATUS_MODE);
 			tmpList.add(STATUS_MESSAGE);
+			tmpList.add(GROUP);
+			return tmpList;
+		}
+
+	}
+
+	public static final class GroupsConstants implements BaseColumns {
+
+		private GroupsConstants() {
+		}
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.groups";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.groups";
+		public static final String DEFAULT_SORT_ORDER = GroupsConstants.GROUP
+				+ " ASC";
+
+		public static final String GROUP = "roster_group";
+		public static final String COLLAPSED = "collapsed";
+
+		public static ArrayList<String> getRequiredColumns() {
+			ArrayList<String> tmpList = new ArrayList<String>();
 			tmpList.add(GROUP);
 			return tmpList;
 		}
