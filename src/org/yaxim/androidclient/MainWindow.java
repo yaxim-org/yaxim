@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
+import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
@@ -30,7 +31,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +49,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
@@ -73,7 +76,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ServiceConnection xmppServiceConnection;
 	private XMPPRosterServiceAdapter serviceAdapter;
 	private Stub rosterCallback;
-	private ExpandableRosterAdapter rosterListAdapter;
+	private RosterExpListAdapter rosterListAdapter;
 	private TextView mConnectingText;
 	private boolean showOffline;
 
@@ -738,15 +741,47 @@ public class MainWindow extends GenericExpandableListActivity {
 		bindService(xmppServiceIntent, xmppServiceConnection, BIND_AUTO_CREATE);
 	}
 
+	private static final String[] GROUPS_QUERY = new String[] {
+		RosterProvider.GroupsConstants._ID,
+		RosterProvider.GroupsConstants.GROUP,
+		RosterProvider.GroupsConstants.COLLAPSED
+	};
+	private static final String[] GROUPS_FROM = new String[] {
+		RosterProvider.GroupsConstants.GROUP
+	};
+	private static final int[] GROUPS_TO = new int[] {
+		R.id.groupname
+	};
+	private static final String[] ROSTER_QUERY = new String[] {
+		RosterProvider.RosterConstants._ID,
+		RosterProvider.RosterConstants.JID,
+		RosterProvider.RosterConstants.ALIAS,
+		RosterProvider.RosterConstants.STATUS_MODE,
+		RosterProvider.RosterConstants.STATUS_MESSAGE,
+	};
+
 	private void registerListAdapter() {
 		createRosterEntryList();
 		createRosterGroupList();
 
+		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+				null, null, "roster_group");
+		rosterListAdapter = new RosterExpListAdapter(this, cursor,
+				R.layout.maingroup_row, GROUPS_FROM, GROUPS_TO,
+				R.layout.mainchild_row,
+				new String[] { RosterProvider.RosterConstants.ALIAS,
+					RosterProvider.RosterConstants.STATUS_MESSAGE,
+			       		RosterProvider.RosterConstants.STATUS_MODE },
+				new int[] { R.id.roster_screenname, R.id.roster_statusmsg,
+			       		R.id.roster_icon });
+
+		/*
 		rosterListAdapter = new ExpandableRosterAdapter(this, rosterGroupList,
 				R.layout.maingroup_row, AdapterConstants.GROUP_NAME,
 				new int[] { R.id.groupname }, rosterEntryList,
 				R.layout.mainchild_row, AdapterConstants.CHILD_DATA_KEYS,
 				new int[] { R.id.roster_screenname, R.id.roster_statusmsg });
+				*/
 
 		setListAdapter(rosterListAdapter);
 	}
@@ -874,5 +909,34 @@ public class MainWindow extends GenericExpandableListActivity {
 		Intent i = new Intent(context, MainWindow.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		return i;
+	}
+
+	public class RosterExpListAdapter extends SimpleCursorTreeAdapter {
+
+		public RosterExpListAdapter(Context context, Cursor cursor, int groupLayout,
+				String[] groupFrom, int[] groupTo,
+				int childLayout, String[] childrenFrom,
+				int[] childrenTo) {
+			super(context, cursor, groupLayout, groupFrom, groupTo, childLayout, childrenFrom,
+					childrenTo);
+		}
+
+		@Override
+		protected Cursor getChildrenCursor(Cursor groupCursor) {
+			// Given the group, we return a cursor for all the children within that group 
+			String groupname = groupCursor.getString(1);
+
+			return managedQuery(RosterProvider.CONTENT_URI, ROSTER_QUERY,
+				"roster_group = ?", new String[] { groupname }, null);
+		}
+
+		 protected void setViewImage(ImageView v, String value) {
+			int presenceMode = Integer.parseInt(value);
+			v.setImageResource(getIconForPresenceMode(presenceMode));
+		 }
+
+		private int getIconForPresenceMode(int presenceMode) {
+			return StatusMode.values()[presenceMode].getDrawableId();
+		}
 	}
 }

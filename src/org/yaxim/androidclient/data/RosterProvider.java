@@ -278,7 +278,7 @@ public class RosterProvider extends ContentProvider {
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.roster";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.roster";
 		public static final String DEFAULT_SORT_ORDER = RosterConstants.STATUS_MODE
-				+ " ASC";
+				+ " DESC";
 
 		public static final String JID = "jid";
 		public static final String ALIAS = "alias";
