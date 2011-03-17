@@ -106,6 +106,7 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
+		mConnectionDemanded.set(mConfig.autoConnect);
 		doConnect();
 	}
 
@@ -231,6 +232,7 @@ public class XMPPService extends GenericService {
 			}
 
 			public void connect() throws RemoteException {
+				mConnectionDemanded.set(true);
 				doConnect();
 			}
 
@@ -408,6 +410,16 @@ public class XMPPService extends GenericService {
 
 	public void doDisconnect() {
 		mConnectionDemanded.set(false);
+		if (mConnectingThread != null) {
+			try {
+				mConnectingThread.interrupt();
+				mConnectingThread.join();
+			} catch (InterruptedException e) {
+				logError("doDisconnect: failed catching connecting thread");
+			} finally {
+				mConnectingThread = null;
+			}
+		}
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
