@@ -360,8 +360,10 @@ public class XMPPService extends GenericService {
 			mReconnectTimeout = mReconnectTimeout * 2;
 			if (mReconnectTimeout > RECONNECT_MAXIMUM)
 				mReconnectTimeout = RECONNECT_MAXIMUM;
-		} else
+		} else {
 			mReconnectInfo = "";
+			mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
+		}
 
 	}
 
