@@ -19,11 +19,6 @@
 			android:title="@string/roster_contextmenu_contact_open_chat">
 		</item>
 
-		<item android:visible="true" android:enabled="true"
-			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delete"
-			android:title="@string/roster_contextmenu_contact_delete">
-		</item>
-
 		<item android:id="@+id/roster_contextmenu_contact_rename" android:visible="true"
 			android:enabled="true" android:orderInCategory="3"
 			android:title="@string/roster_contextmenu_contact_rename">
@@ -37,6 +32,16 @@
 		<item android:visible="true" android:enabled="true"
 			android:orderInCategory="5" android:id="@+id/roster_contextmenu_contact_change_group"
 			android:title="@string/roster_contextmenu_contact_change_group">
+		</item>
+
+		<item android:visible="true" android:enabled="true"
+			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delmsg"
+			android:title="@string/roster_contextmenu_contact_delmsg">
+		</item>
+
+		<item android:visible="true" android:enabled="true"
+			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delete"
+			android:title="@string/roster_contextmenu_contact_delete">
 		</item>
 
 	</group>
