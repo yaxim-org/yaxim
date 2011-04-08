@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	android:versionCode="7" android:versionName="0.7.6" package="org.yaxim.androidclient">
 
-	<uses-sdk android:minSdkVersion="3"
-		android:targetSdkVersion="8" />
+	<uses-sdk android:targetSdkVersion="8" android:minSdkVersion="3"/>
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
@@ -52,5 +51,10 @@
 			android:authorities="org.yaxim.androidclient.provider.Roster" />
 
 		<activity android:name="de.duenndns.ssl.MemorizingActivity" />
+		<receiver android:name=".service.DyingGasp">
+			<intent-filter>
+				<action android:name="android.intent.action.ACTION_SHUTDOWN"></action>
+			</intent-filter>
+		</receiver>
 	</application>
 </manifest>
