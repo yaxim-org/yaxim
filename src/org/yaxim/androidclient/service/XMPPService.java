@@ -82,6 +82,7 @@ public class XMPPService extends GenericService {
 
 		// for the initial connection, check if autoConnect is set
 		mConnectionDemanded.set(mConfig.autoConnect);
+		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 
 		if (mConfig.autoConnect) {
 			/*
@@ -106,6 +107,20 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
+		boolean disconnect = intent.getBooleanExtra("disconnect", false);
+		boolean reconnect = intent.getBooleanExtra("reconnect", false);
+		
+		logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
+		
+		if (disconnect) {
+			doDisconnect();
+			return;
+		}
+		
+		if (reconnect) {
+			doConnect();
+		}
+		
 		mConnectionDemanded.set(mConfig.autoConnect);
 		doConnect();
 	}
