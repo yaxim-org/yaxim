@@ -386,6 +386,9 @@ public class XMPPService extends GenericService {
 	}
 
 	private void rosterChanged() {
+		// gracefully handle^W ignore events after a disconnect
+		if (mSmackable == null)
+			return;
 		if (!mIsConnected.get() && mSmackable.isAuthenticated()) {
 			// We get a roster changed update, but we are not connected,
 			// that means we just got connected and need to notify the Activity.
