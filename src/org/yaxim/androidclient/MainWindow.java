@@ -107,7 +107,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		Log.d(TAG, "onConfigurationChanged");
-		setupContenView();
+		getExpandableListView().requestFocus();
 	}
 
 	private void createRosterIfConnected() {
