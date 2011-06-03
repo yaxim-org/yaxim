@@ -15,7 +15,6 @@
 			android:text="@string/AboutDialog_DevelopersTitle"
 			android:textSize="20sp"
 			android:padding="10sp"
-			android:focusable="true"
 			/>
 		<TextView
 			android:layout_width="fill_parent"
@@ -23,7 +22,6 @@
 			android:autoLink="web"
 			android:text="@string/AboutDialog_DevelopersText"
 			android:padding="2sp"
-			android:focusable="true"
 			/>
 		<TextView
 			android:layout_width="fill_parent"
@@ -33,7 +31,6 @@
 			android:text="@string/AboutDialog_LicenceTitle"
 			android:textSize="20sp"
 			android:padding="10sp"
-			android:focusable="true"
 			/>
 		<TextView
 			android:layout_width="fill_parent"
@@ -41,14 +38,13 @@
 			android:autoLink="web"
 			android:text="@string/AboutDialog_LicenceText"
 			android:padding="2sp"
-			android:focusable="true"
 			/>
 		<TextView
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/AboutDialog_greetings"
+			android:text="@string/translator_credits"
+			android:autoLink="web"
 			android:padding="2sp"
-			android:focusable="true"
 			/>
 	</LinearLayout>
 

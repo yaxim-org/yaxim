@@ -64,6 +64,7 @@ public class SmackableImp implements Smackable {
 
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
+	private RosterListener mRosterListener;
 	private PacketListener mPacketListener;
 
 	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> mRosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
@@ -443,7 +444,7 @@ public class SmackableImp implements Smackable {
 		mContentResolver.delete(RosterProvider.CONTENT_URI, "", null);
 		mRoster = mXMPPConnection.getRoster();
 
-		mRoster.addRosterListener(new RosterListener() {
+		mRosterListener = new RosterListener() {
 
 			public void entriesAdded(Collection<String> entries) {
 				debugLog("entriesAdded(" + entries + ")");
@@ -488,7 +489,8 @@ public class SmackableImp implements Smackable {
 				mServiceCallBack.rosterChanged();
 				updateOrInsertRosterEntryToDB(rosterEntry);
 			}
-		});
+		};
+		mRoster.addRosterListener(mRosterListener);
 	}
 
 	private String getJabberID(String from) {

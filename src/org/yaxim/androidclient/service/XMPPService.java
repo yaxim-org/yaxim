@@ -106,6 +106,7 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
+		mConnectionDemanded.set(mConfig.autoConnect);
 		doConnect();
 	}
 
@@ -231,6 +232,7 @@ public class XMPPService extends GenericService {
 			}
 
 			public void connect() throws RemoteException {
+				mConnectionDemanded.set(true);
 				doConnect();
 			}
 
@@ -245,7 +247,7 @@ public class XMPPService extends GenericService {
 		if (!mConfig.foregroundService)
 			return;
 		String title = getString(R.string.conn_title, mConfig.jabberID);
-		Notification n = new Notification(R.drawable.yaxim_menu_disconnect, title,
+		Notification n = new Notification(R.drawable.ic_offline, title,
 				System.currentTimeMillis());
 		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 
@@ -257,7 +259,7 @@ public class XMPPService extends GenericService {
 			message += mReconnectInfo;
 		if (mIsConnected.get()) {
 			message = MainWindow.getStatusTitle(this, mConfig.statusMode, mConfig.statusMessage);
-			n.icon = R.drawable.ic_status;
+			n.icon = R.drawable.ic_online;
 		}
 		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
@@ -358,8 +360,10 @@ public class XMPPService extends GenericService {
 			mReconnectTimeout = mReconnectTimeout * 2;
 			if (mReconnectTimeout > RECONNECT_MAXIMUM)
 				mReconnectTimeout = RECONNECT_MAXIMUM;
-		} else
+		} else {
 			mReconnectInfo = "";
+			mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
+		}
 
 	}
 
@@ -382,6 +386,9 @@ public class XMPPService extends GenericService {
 	}
 
 	private void rosterChanged() {
+		// gracefully handle^W ignore events after a disconnect
+		if (mSmackable == null)
+			return;
 		if (!mIsConnected.get() && mSmackable.isAuthenticated()) {
 			// We get a roster changed update, but we are not connected,
 			// that means we just got connected and need to notify the Activity.
@@ -408,6 +415,16 @@ public class XMPPService extends GenericService {
 
 	public void doDisconnect() {
 		mConnectionDemanded.set(false);
+		if (mConnectingThread != null) {
+			try {
+				mConnectingThread.interrupt();
+				mConnectingThread.join();
+			} catch (InterruptedException e) {
+				logError("doDisconnect: failed catching connecting thread");
+			} finally {
+				mConnectingThread = null;
+			}
+		}
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}

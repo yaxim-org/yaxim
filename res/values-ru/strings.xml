@@ -30,8 +30,8 @@
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Уведомление о сообщении</string>
 	<string name="led_title">Мигающий светодиод</string>
-	<string name="led_summOn">Уведомление с помощью светодиода включено</string>
-	<string name="led_summOff">Уведомление с помощью светодиода отключено</string>
+	<string name="led_summOn">Уведомления с помощью СИД включены</string>
+	<string name="led_summOff">Уведомления с помощью СИД отключены</string>
 	<string name="vibr_title">Вибрация</string>
 	<string name="vibr_summOn">Уведомления при помощи вибрации включены</string>
 	<string name="vibr_summOff">Уведомления при помощи вибрации отключены</string>
@@ -41,12 +41,15 @@
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Настройки запуска</string>
 	<string name="boot_title">Запускать yaxim при включении устройтва</string>
-	<string name="boot_summOn">yaxim настроен на запуск при загрузке</string>
+	<string name="boot_summOn">Yaxim запускается при загрузке системы</string>
 	<string name="boot_summOff">yaxim не будет запущен при загрузке</string>
 	<string name="statuspopup_name">Установить ваш статус</string>
 	<string name="showOffline_summ_on">Отключённые контакты отображаются</string>
 	<string name="showOffline_summ_off">Отключённые контакты скрыты</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>
+	<string name="foregroundService_summ_on">Удерживать yaxim в памяти</string>
+	<string name="foregroundService_summ_off">Разрешать системе перезапускать yaxim</string>
+	<string name="foregroundService_title">Постоянное соединение</string>
 
 	<string name="preftitle_debug">Отладка</string>
 	<string name="smackdebug_summ_on">Пакетный и отладочный выводы разрешены через logcat</string>
@@ -225,7 +228,6 @@
 		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
     </string>
-	<string name="AboutDialog_greetings">Команда yaxim - 2010-08-18</string>
 
 	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
 	<string-array name="statuslist">
@@ -236,4 +238,8 @@
 		<item>Недоступен</item>
 		<item>Отключён</item>
 	</string-array>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Georg Lukas https://launchpad.net/~ge0rg
+  Ilya https://launchpad.net/~me-detected</string>
 </resources>

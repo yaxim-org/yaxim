@@ -30,8 +30,8 @@
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Mesaj Uyarısı</string>
 	<string name="led_title">Blinking LED</string>
-	<string name="led_summOn">LED notification is on</string>
-	<string name="led_summOff">LED notification is off</string>
+	<string name="led_summOn">LED notifications are on</string>
+	<string name="led_summOff">LED notifications are off</string>
 	<string name="vibr_title">Titreşim</string>
 	<string name="vibr_summOn">Vibration notifications are on</string>
 	<string name="vibr_summOff">Vibration notification are off</string>
@@ -47,6 +47,9 @@
 	<string name="showOffline_summ_on">Showing offline contacts</string>
 	<string name="showOffline_summ_off">Hiding offline contacts</string>
 	<string name="showOffline_title">Show offline contacts</string>
+	<string name="foregroundService_summ_on">Keep yaxim in memory</string>
+	<string name="foregroundService_summ_off">Allow the system to restart yaxim</string>
+	<string name="foregroundService_title">Persistent connection</string>
 
 	<string name="preftitle_debug">Debugging</string>
 	<string name="smackdebug_summ_on">Packet and debug output enabled via logcat</string>
@@ -233,7 +236,6 @@
 		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
     </string>
-	<string name="AboutDialog_greetings">The yaxim Team - 2010-08-18</string>
 
 	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
 	<string-array name="statuslist">
@@ -244,4 +246,7 @@
 		<item>Not available</item>
 		<item>Çevrimdışı</item>
 	</string-array>
+
+	<string name="translator_credits">Launchpad Contributions:
+  zeugma https://launchpad.net/~sunder67</string>
 </resources>
