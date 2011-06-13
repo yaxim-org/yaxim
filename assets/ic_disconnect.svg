@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="480px"
+   height="480px"
+   viewBox="0 0 480 480"
+   xml:space="preserve"
+   id="svg2"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="battery_charging.svg"><metadata
+   id="metadata11"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs9" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1280"
+   inkscape:window-height="750"
+   id="namedview7"
+   showgrid="false"
+   showguides="true"
+   inkscape:guide-bbox="true"
+   inkscape:zoom="0.61041667"
+   inkscape:cx="23.956834"
+   inkscape:cy="402.74312"
+   inkscape:window-x="0"
+   inkscape:window-y="24"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g3114" />
+  <g
+   id="battery_charging">
+  	
+  <g
+   id="g3068"
+   transform="translate(-14.081708,14.282758)"><path
+     d="M 171.6875 112.6875 C 125.6035 112.6875 76.84375 154.28039 76.84375 205.25 L 76.84375 216.84375 L 101.625 216.84375 C 101.625 185.02975 127.67199 159 159.5 159 L 212.3125 159 C 212.3125 159 212.66896 321.15272 212.3125 321 L 159.5 321 C 127.672 321 101.625 294.98425 101.625 263.15625 L 76.84375 263.15625 L 76.84375 274.78125 C 76.84375 325.75086 125.6035 367.3125 171.6875 367.3125 L 310.5625 367.3125 C 361.4965 367.3125 403.15625 325.63875 403.15625 274.71875 L 403.15625 263.15625 L 378.375 263.15625 C 378.375 294.97025 352.328 321 320.5 321 L 267.6875 321 L 267.6875 297.84375 L 227.84375 297.84375 L 227.84375 263.15625 L 267.6875 263.15625 L 267.6875 217.21875 L 227.84375 217.21875 L 227.84375 182.5 L 267.6875 182.5 L 267.6875 159 L 320.5 159 C 352.328 159 378.375 185.01575 378.375 216.84375 L 403.15625 216.84375 L 403.15625 205.28125 C 403.15625 154.35625 361.4965 112.6875 310.5625 112.6875 L 171.6875 112.6875 z "
+     transform="translate(14.081708,-14.282758)"
+     id="path3046" /></g><g
+   transform="translate(-484.25236,-147.90154)"
+   id="g3114"><path
+     d="M -298.46875 -49.46875 C -344.55275 -49.46875 -393.3125 -7.90711 -393.3125 43.0625 L -393.3125 54.65625 L -348.53125 54.65625 C -348.53125 22.84225 -322.48426 -3.1875 -290.65625 -3.1875 L -237.875 -3.1875 C -237.875 -3.1875 -237.85547 14.486173 -237.84375 20.3125 L -224.46875 20.3125 L -224.46875 -3.1875 L -171.65625 -3.1875 C -139.82825 -3.1875 -113.8125 22.82825 -113.8125 54.65625 L -67.03125 54.65625 L -67.03125 43.09375 C -67.03125 -7.83125 -108.691 -49.46875 -159.625 -49.46875 L -298.46875 -49.46875 z M -237.78125 55.03125 C -237.75236 73.283198 -237.75995 82.003348 -237.75 100.96875 L -224.46875 100.96875 L -224.46875 55.03125 L -237.78125 55.03125 z M -393.3125 100.96875 L -393.3125 112.59375 C -393.3125 163.56336 -344.55275 205.125 -298.46875 205.125 L -159.625 205.125 C -108.691 205.125 -67.03125 163.45125 -67.03125 112.53125 L -67.03125 100.96875 L -113.8125 100.96875 C -113.8125 132.78275 -139.82825 158.8125 -171.65625 158.8125 L -224.46875 158.8125 L -224.46875 135.6875 L -237.71875 135.6875 C -237.73758 149.4203 -237.79105 158.84847 -237.875 158.8125 L -290.65625 158.8125 C -322.48425 158.8125 -348.53125 132.79675 -348.53125 100.96875 L -393.3125 100.96875 z "
+     transform="translate(484.25236,147.90154)"
+     id="path3116" /></g></g>
+</svg>
