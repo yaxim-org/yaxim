@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Aggiungi contatto</string>
 	<string name="Menu_ShowOff">Mostra contatti offline</string>
 	<string name="Menu_HideOff">Nascondi contatti offline</string>
 	<string name="Menu_AccSettings">Modifica account</string>
 	<string name="Menu_Settings">Impostazioni</string>
-	<string name="Menu_Status">Stato</string>
 	<string name="Menu_connect">Connetti</string>
 	<string name="Menu_disconnect">Disconnetti</string>
 	<string name="Menu_about">Informazioni su yaxim</string>

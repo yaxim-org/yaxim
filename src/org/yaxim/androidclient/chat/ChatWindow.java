@@ -3,11 +3,15 @@ package org.yaxim.androidclient.chat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
+
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.IntentAction;
 
 import android.app.ListActivity;
 import android.app.NotificationManager;
@@ -87,8 +91,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		} else {
 			titleUserid = mWithJabberID;
 		}
-		
-		setTitle(getString(R.string.chat_titlePrefix, titleUserid));
+
+		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setTitle(getString(R.string.chat_titlePrefix, titleUserid));
+		actionBar.setHomeAction(new IntentAction(this, MainWindow
+				.createIntent(this), R.drawable.ic_action_buddies));
+
 		setChatWindowAdapter();
 	}
 

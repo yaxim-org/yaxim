@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Pridėti kontaktą</string>
 	<string name="Menu_ShowOff">Rodyti neprisijungusius</string>
 	<string name="Menu_HideOff">Slėpti neprisijungusius</string>
 	<string name="Menu_AccSettings">Taisyti paskyrą</string>
 	<string name="Menu_Settings">Nustatymai</string>
-	<string name="Menu_Status">Būsena</string>
 	<string name="Menu_connect">Prisijungti</string>
 	<string name="Menu_disconnect">Atsijungti</string>
 	<string name="Menu_about">Apie yaxim</string>

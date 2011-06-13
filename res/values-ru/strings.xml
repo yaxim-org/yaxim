@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Добавить контакт</string>
 	<string name="Menu_ShowOff">Показывать отключённых</string>
 	<string name="Menu_HideOff">Скрывать отключённых</string>
 	<string name="Menu_AccSettings">Изменить учётную запись</string>
 	<string name="Menu_Settings">Настройки</string>
-	<string name="Menu_Status">Статус</string>
 	<string name="Menu_connect">Соединиться</string>
 	<string name="Menu_disconnect">Отключиться</string>
 	<string name="Menu_about">О yaxim</string>

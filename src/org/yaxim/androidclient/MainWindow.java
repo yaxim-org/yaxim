@@ -51,6 +51,9 @@ import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.service.IXMPPRosterService;
 
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
+
 public class MainWindow extends GenericExpandableListActivity {
 
 	private static final String TAG = "MainWindow";
@@ -78,6 +81,39 @@ public class MainWindow extends GenericExpandableListActivity {
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setupContenView();
+
+		final ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setHomeLogo(R.drawable.ic_title_yaxim_logo);
+		actionBar.addAction(new AddBuddyAction());
+		actionBar.addAction(new ChangeStatusAction());
+	}
+	
+	private class AddBuddyAction implements Action {
+		public void performAction(View view) {
+			if (serviceAdapter.isAuthenticated()) {
+				new AddRosterItemDialog(MainWindow.this, serviceAdapter).show();
+			} else {
+				showToastNotification(R.string.Global_authenticate_first);
+			}
+		}
+		
+		public int getDrawable() {
+			return R.drawable.ic_action_add;
+		}
+	}
+
+	private class ChangeStatusAction implements Action {
+		public void performAction(View view) {
+			if (serviceAdapter.isAuthenticated()) {
+				changeStatusDialog();
+			} else {
+				showToastNotification(R.string.Global_authenticate_first);
+			}
+		}
+		
+		public int getDrawable() {
+			return R.drawable.ic_action_status;
+		}
 	}
 
 	void setupContenView() {
@@ -461,27 +497,11 @@ public class MainWindow extends GenericExpandableListActivity {
 			toggleConnection(item);
 			return true;
 
-		case R.id.menu_add_friend:
-			if (serviceAdapter.isAuthenticated()) {
-				new AddRosterItemDialog(this, serviceAdapter).show();
-			} else {
-				showToastNotification(R.string.Global_authenticate_first);
-			}
-			return true;
-
 		case R.id.menu_show_hide:
 			showOffline = !showOffline;
 			PreferenceManager.getDefaultSharedPreferences(this).edit().
 				putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
 			updateRoster();
-			return true;
-
-		case R.id.menu_status:
-			if (serviceAdapter.isAuthenticated()) {
-				changeStatusDialog();
-			} else {
-				showToastNotification(R.string.Global_authenticate_first);
-			}
 			return true;
 
 		case R.id.menu_exit:
@@ -747,4 +767,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		mStatusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
 		mStatusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 	}
+
+    public static Intent createIntent(Context context) {
+        Intent i = new Intent(context, MainWindow.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return i;
+    }
 }

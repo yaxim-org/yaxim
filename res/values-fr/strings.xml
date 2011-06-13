@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add Contact</string>
 	<string name="Menu_ShowOff">Show Offline</string>
 	<string name="Menu_HideOff">Hide Offline</string>
 	<string name="Menu_AccSettings">Edit Account</string>
 	<string name="Menu_Settings">Settings</string>
-	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Connecter</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>

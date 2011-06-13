@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Añadir Contacto</string>
 	<string name="Menu_ShowOff">Ver desconectados</string>
 	<string name="Menu_HideOff">No ver desconectados</string>
 	<string name="Menu_AccSettings">Editar cuenta</string>
 	<string name="Menu_Settings">Opciones</string>
-	<string name="Menu_Status">Estado</string>
 	<string name="Menu_connect">Conectarse</string>
 	<string name="Menu_disconnect">Desconectarse</string>
 	<string name="Menu_about">Acerca de yaxim</string>
