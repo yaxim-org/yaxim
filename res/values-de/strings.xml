@@ -143,11 +143,11 @@
 	<string name="setStatusTitle">Status setzen</string>
 	<string name="RenameGroup_summ">Gruppe %s umbenennen in:</string>
 	<string name="RenameGroup_title">Gruppe umbenennen</string>
-	<string name="RenameEntry_summ">%s (%s) umbenennen in:</string>
+	<string name="RenameEntry_summ">%1$s (%2$s) umbenennen in:</string>
 	<string name="RenameEntry_title">Kontakt umbenennen</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Gruppe aus der Liste auswählen</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Gruppe ändern</string>
-	<string name="deleteRosterItem_text">%s (%s) wirklich löschen?</string>
+	<string name="deleteRosterItem_text">%1$s (%2$s) wirklich löschen?</string>
 	<string name="deleteRosterItem_title">Kontakt löschen</string>
 
 	<!-- CHATWINDOW -->

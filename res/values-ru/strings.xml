@@ -143,11 +143,11 @@
 	<string name="setStatusTitle">Установить ваш статус</string>
 	<string name="RenameGroup_summ">Переименовать группу %s в:</string>
 	<string name="RenameGroup_title">Переименовать группу</string>
-	<string name="RenameEntry_summ">Переименовать %s (%s) в:</string>
+	<string name="RenameEntry_summ">Переименовать %1$s (%2$s) в:</string>
 	<string name="RenameEntry_title">Переименовать контакт</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Выберите группу из списка ниже</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Изменить группу</string>
-	<string name="deleteRosterItem_text">Действительно удалить %s (%s)?</string>
+	<string name="deleteRosterItem_text">Действительно удалить %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Удалить контакт</string>
 
 	<!-- CHATWINDOW -->
