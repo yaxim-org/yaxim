@@ -567,9 +567,9 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private int getConnectDisconnectIcon() {
 		if (isConnected() || isConnecting()) {
-			return R.drawable.yaxim_menu_disconnect;
+			return R.drawable.ic_menu_disconnect;
 		}
-		return R.drawable.yaxim_menu_connect;
+		return R.drawable.ic_menu_connect;
 	}
 
 	private String getConnectDisconnectText() {

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
 		android:alphabeticShortcut="c"
-		android:icon="@drawable/yaxim_menu_connect" />
+		android:icon="@drawable/ic_menu_connect" />
 
 	<item android:id="@+id/menu_add_friend" android:title="@string/Menu_addFriend"
 		android:alphabeticShortcut="a"
