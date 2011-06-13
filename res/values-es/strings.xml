@@ -143,11 +143,11 @@
 	<string name="setStatusTitle">Configure su estado</string>
 	<string name="RenameGroup_summ">Renombrar el grupo %s a:</string>
 	<string name="RenameGroup_title">Renombrar grupo</string>
-	<string name="RenameEntry_summ">Renombrar %s (%s) a:</string>
+	<string name="RenameEntry_summ">Renombrar %1$s (%2$s) a:</string>
 	<string name="RenameEntry_title">Renombrar contacto</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Seleccione un grupo entre los que figuran debajo</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Cambiar grupo</string>
-	<string name="deleteRosterItem_text">¿Realmente desea eliminar %s (%s)?</string>
+	<string name="deleteRosterItem_text">¿Realmente desea eliminar %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Borrar contacto</string>
 
 	<!-- CHATWINDOW -->

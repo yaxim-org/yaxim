@@ -143,11 +143,11 @@
 	<string name="setStatusTitle">Nustatykite savo būseną</string>
 	<string name="RenameGroup_summ">Pervardinti grupę %s į:</string>
 	<string name="RenameGroup_title">Pervadinti grupę</string>
-	<string name="RenameEntry_summ">Pervardinti %s (%s) į:</string>
+	<string name="RenameEntry_summ">Pervardinti %1$s (%2$s) į:</string>
 	<string name="RenameEntry_title">Pervardinti kontaktą</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Pasirinkite grupę iš suktuko,esančio žemiau</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Keisti grupę</string>
-	<string name="deleteRosterItem_text">Ar tikrai pašalinti %s (%s)?</string>
+	<string name="deleteRosterItem_text">Ar tikrai pašalinti %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Pašalinti kontaktą</string>
 
 	<!-- CHATWINDOW -->
