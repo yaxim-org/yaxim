@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="libs/smack.jar"/>
 	<classpathentry kind="lib" path="libs/trace.jar"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" path="MemorizingTrustManager_src"/>
+	<classpathentry kind="src" path="com_markupartist_android_widget_actionbar_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

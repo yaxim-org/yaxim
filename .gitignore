@@ -6,3 +6,5 @@ gen/
 *.class
 local.properties
 build.properties
+/actionbar_src
+/MemorizingTrustManager_src
