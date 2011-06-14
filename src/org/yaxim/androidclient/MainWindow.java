@@ -83,9 +83,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		setupContenView();
 
 		final ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setHomeLogo(R.drawable.ic_title_yaxim_logo);
+		actionBar.setTitle(R.string.app_name);
+		actionBar.setHomeAction(new ChangeStatusAction());
 		actionBar.addAction(new AddBuddyAction());
-		actionBar.addAction(new ChangeStatusAction());
+		actionBar.addAction(new ToggleOfflineContactsAction());
 	}
 	
 	private class AddBuddyAction implements Action {
@@ -112,7 +113,25 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 		
 		public int getDrawable() {
+			// TODO Show the chosen status
+			return R.drawable.available;
+		}
+	}
+
+	private class ToggleOfflineContactsAction implements Action {
+
+		public int getDrawable() {
+			// TODO Design a set of icons representing the state
 			return R.drawable.ic_action_status;
+		}
+
+		public void performAction(View view) {
+			showOffline = !showOffline;
+			PreferenceManager.getDefaultSharedPreferences(MainWindow.this)
+					.edit()
+					.putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline)
+					.commit();
+			updateRoster();
 		}
 	}
 
@@ -383,24 +402,12 @@ public class MainWindow extends GenericExpandableListActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		setMenuItem(menu, R.id.menu_connect, getConnectDisconnectIcon(),
 				getConnectDisconnectText());
-		setMenuItem(menu, R.id.menu_show_hide, getShowHideMenuIcon(),
-				getShowHideMenuText());
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return applyMainMenuChoice(item);
-	}
-
-	private int getShowHideMenuIcon() {
-		return showOffline ? R.drawable.ic_menu_block
-				: android.R.drawable.ic_menu_view;
-	}
-
-	private String getShowHideMenuText() {
-		return showOffline ? getString(R.string.Menu_HideOff)
-				: getString(R.string.Menu_ShowOff);
 	}
 
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
@@ -495,13 +502,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		switch (itemID) {
 		case R.id.menu_connect:
 			toggleConnection(item);
-			return true;
-
-		case R.id.menu_show_hide:
-			showOffline = !showOffline;
-			PreferenceManager.getDefaultSharedPreferences(this).edit().
-				putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
-			updateRoster();
 			return true;
 
 		case R.id.menu_exit:

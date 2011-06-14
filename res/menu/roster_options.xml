@@ -3,10 +3,6 @@
 		android:alphabeticShortcut="c"
 		android:icon="@drawable/ic_menu_connect" />
 
-	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
-		android:alphabeticShortcut="o"
-		android:icon="@android:drawable/ic_menu_delete" />
-
 	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
 		android:alphabeticShortcut="x"
 		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
