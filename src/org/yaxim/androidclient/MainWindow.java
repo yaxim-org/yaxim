@@ -7,6 +7,7 @@ import java.util.List;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
+import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
@@ -461,7 +462,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 
-	/* package */void setStatus(String statusmode, String message) {
+	/* package */public void setStatus(String statusmode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		mStatusMode = statusmode;
 		mStatusMessage = message;

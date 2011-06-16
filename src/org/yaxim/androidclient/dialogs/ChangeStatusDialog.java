@@ -1,4 +1,11 @@
-package org.yaxim.androidclient;
+package org.yaxim.androidclient.dialogs;
+
+import org.yaxim.androidclient.MainWindow;
+import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.R.array;
+import org.yaxim.androidclient.R.id;
+import org.yaxim.androidclient.R.layout;
+import org.yaxim.androidclient.R.string;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -21,7 +28,7 @@ public class ChangeStatusDialog extends AlertDialog {
 
 	private final MainWindow context;
 
-	protected ChangeStatusDialog(final MainWindow context) {
+	public ChangeStatusDialog(final MainWindow context) {
 		super(context);
 
 		this.context = context;
