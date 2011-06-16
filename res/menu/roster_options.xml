@@ -3,10 +3,6 @@
 		android:alphabeticShortcut="c"
 		android:icon="@drawable/ic_menu_connect" />
 
-	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
-		android:alphabeticShortcut="x"
-		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
-
 	<item android:id="@+id/menu_settings" android:title="@string/Menu_Settings"
 		android:alphabeticShortcut="p"
 		android:icon="@android:drawable/ic_menu_preferences" />
@@ -18,4 +14,8 @@
 	<item android:id="@+id/menu_about" android:title="@string/Menu_about"
 		android:alphabeticShortcut="y"
 		android:icon="@drawable/about" />
+
+	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
+		android:alphabeticShortcut="x"
+		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
 </menu>
