@@ -175,7 +175,6 @@
 		<item>Libero</item>
 		<item>Non disturbare</item>
 		<item>Non disponibile</item>
-		<item>Non connesso</item>
 	</string-array>
 
 	<string name="translator_credits">Launchpad Contributions:

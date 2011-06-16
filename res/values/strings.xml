@@ -242,7 +242,6 @@
 		<item>Free for chat</item>
 		<item>Do not disturb</item>
 		<item>Not available</item>
-		<item>Offline</item>
 	</string-array>
 
 	<string name="translator_credits">translator-credits</string>

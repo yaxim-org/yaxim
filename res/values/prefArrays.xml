@@ -7,7 +7,6 @@
 		<item>chat</item>
 		<item>dnd</item>
 		<item>xa</item>
-		<item>offline</item>
 	</string-array>
 	<string-array name="fontSizesChat">
 		<item>6px</item>

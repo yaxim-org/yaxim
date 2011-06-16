@@ -465,13 +465,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		mStatusMode = statusmode;
 		mStatusMessage = message;
-		// do not save "offline" to prefs, or else!
-		if (statusmode.equals("offline")) {
-			serviceAdapter.disconnect();
-			setConnectingStatus(false);
-			stopService(xmppServiceIntent);
-			return;
-		}
+
 		prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
