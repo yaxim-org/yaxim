@@ -242,7 +242,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DIALOG_CHANGE_STATUS_ID:
-			return changeStatusDialog();
+			return new ChangeStatusDialog(this);
 		}
 
 		return null;
@@ -461,7 +461,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 
-	private void setStatus(String statusmode, String message) {
+	/* package */void setStatus(String statusmode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		mStatusMode = statusmode;
 		mStatusMessage = message;
@@ -477,38 +477,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		prefedit.commit();
 		serviceAdapter.setStatusFromConfig();
 		setStatusTitle();
-	}
-
-	private Dialog changeStatusDialog() {
-		
-		LayoutInflater inflater = (LayoutInflater)getSystemService(
-			      LAYOUT_INFLATER_SERVICE);
-		
-		View group = inflater.inflate(R.layout.statusview, null, false);
-		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
-		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
-		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
-		message.setText(mStatusMessage);
-		
-		for (int i = 0; i < statusCodes.length; i++) {
-			if (statusCodes[i].equals(mStatusMode))
-				status.setSelection(i);
-		}
-		
-		return new AlertDialog.Builder(this)
-			.setTitle(R.string.statuspopup_name)
-			.setView(group)
-			.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						String statusStr = statusCodes[status.getSelectedItemPosition()];
-						Log.d(TAG, "changeStatusDialog: status=" + statusStr);
-						Log.d(TAG, "changeStatusDialog: message=" + message.getText().toString());
-						setStatus(statusStr, message.getText().toString());
-					}
-				})
-			.setNegativeButton(android.R.string.cancel, null)
-				.create();
 	}
 
 	private void aboutDialog() {
