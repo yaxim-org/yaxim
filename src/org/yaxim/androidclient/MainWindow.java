@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
+import org.yaxim.androidclient.service.IXMPPRosterService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -18,15 +20,16 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,19 +40,15 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import org.yaxim.androidclient.IXMPPRosterCallback;
-import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
-import org.yaxim.androidclient.service.IXMPPRosterService;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
@@ -114,15 +113,18 @@ public class MainWindow extends GenericExpandableListActivity {
 		
 		public int getDrawable() {
 			// TODO Show the chosen status
-			return R.drawable.available;
+			return R.drawable.ic_status_available;
 		}
 	}
 
 	private class ToggleOfflineContactsAction implements Action {
 
 		public int getDrawable() {
-			// TODO Design a set of icons representing the state
-			return R.drawable.ic_action_status;
+			if (showOffline) {
+				return R.drawable.ic_action_online_friends;
+			}
+
+			return R.drawable.ic_action_all_friends;
 		}
 
 		public void performAction(View view) {
@@ -132,6 +134,14 @@ public class MainWindow extends GenericExpandableListActivity {
 					.putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline)
 					.commit();
 			updateRoster();
+			invalidate(view);
+			showToastNotification(getShowHideText());
+		}
+
+		/** Causes the view to reload the {@link Drawable}. */
+		private void invalidate(View view) {
+			ImageButton imageButton = (ImageButton) view;
+			imageButton.setImageResource(getDrawable());
 		}
 	}
 
@@ -408,6 +418,14 @@ public class MainWindow extends GenericExpandableListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return applyMainMenuChoice(item);
+	}
+
+	private int getShowHideText() {
+		if (showOffline) {
+			return R.string.Menu_ShowOff;
+		}
+
+		return R.string.Menu_HideOff;
 	}
 
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
