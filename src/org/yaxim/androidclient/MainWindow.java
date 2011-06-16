@@ -20,6 +20,7 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,6 +57,8 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class MainWindow extends GenericExpandableListActivity {
 
 	private static final String TAG = "MainWindow";
+	
+	private static final int DIALOG_CHANGE_STATUS_ID = 0;
 
 	private final List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
 	private final List<HashMap<String, String>> rosterGroupList = new ArrayList<HashMap<String, String>>();
@@ -105,7 +108,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	private class ChangeStatusAction implements Action {
 		public void performAction(View view) {
 			if (serviceAdapter.isAuthenticated()) {
-				changeStatusDialog();
+				showDialog(DIALOG_CHANGE_STATUS_ID);
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}
@@ -233,6 +236,16 @@ public class MainWindow extends GenericExpandableListActivity {
 				.get(AdapterConstants.CONTACT_ID).screenName;
 		}
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_CHANGE_STATUS_ID:
+			return changeStatusDialog();
+		}
+
+		return null;
 	}
 
 	void removeRosterItemDialog(final String JID, final String userName) {
@@ -466,19 +479,23 @@ public class MainWindow extends GenericExpandableListActivity {
 		setStatusTitle();
 	}
 
-	private void changeStatusDialog() {
+	private Dialog changeStatusDialog() {
+		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(
 			      LAYOUT_INFLATER_SERVICE);
+		
 		View group = inflater.inflate(R.layout.statusview, null, false);
 		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
 		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
 		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
 		message.setText(mStatusMessage);
+		
 		for (int i = 0; i < statusCodes.length; i++) {
 			if (statusCodes[i].equals(mStatusMode))
 				status.setSelection(i);
 		}
-		new AlertDialog.Builder(this)
+		
+		return new AlertDialog.Builder(this)
 			.setTitle(R.string.statuspopup_name)
 			.setView(group)
 			.setPositiveButton(android.R.string.ok,
@@ -491,7 +508,7 @@ public class MainWindow extends GenericExpandableListActivity {
 					}
 				})
 			.setNegativeButton(android.R.string.cancel, null)
-			.create().show();
+				.create();
 	}
 
 	private void aboutDialog() {
