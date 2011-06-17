@@ -457,9 +457,8 @@ public class MainWindow extends GenericExpandableListActivity {
 		return status;
 	}
 
-	public void setStatus(String statusmode, String message) {
-		mStatusMode = statusmode;
-		mStatusMessage = message;
+	public void setAndSaveStatus(String statusmode, String message) {
+		setStatus(statusmode, message);
 
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
@@ -468,6 +467,11 @@ public class MainWindow extends GenericExpandableListActivity {
 		prefedit.commit();
 
 		serviceAdapter.setStatusFromConfig();
+	}
+
+	private void setStatus(String statusmode, String message) {
+		mStatusMode = statusmode;
+		mStatusMessage = message;
 	}
 
 	private void aboutDialog() {
