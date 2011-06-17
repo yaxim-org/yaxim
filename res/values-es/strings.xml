@@ -168,14 +168,12 @@
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
 	<string name="AboutDialog_LicenceText">Este programa es software libre: usted puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU versión 2 publicada por la Fundación para el Software Libre. Enlace: http://www.gnu.org/licenses/gpl-2.0.html\n \n Partes de este software son ofrecidas bajo la licencia MIT: \n \n Copyright (c) 2009 Mads Kristiansen, Nullwire ApS\n \n Se autoriza, de forma gratuita, a cualquier persona que ha obtenido una copia de este software y archivos de documentación asociados (el "Software"), para tratar en el Software sin restricción, incluyendo sin ninguna limitación en lo que concierne a los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias de este Software, y para permitir a las personas que usan el Software a hacerlo, con sujeción a las siguientes condiciones: \n El aviso de copyright anterior y este aviso de permiso se incluirá en todas las copias o partes sustanciales de este Software. \n EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUIDAS PERO NO LIMITADAS A LAS GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y DE NO INFRACCIÓN. EN NINGÚN  CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE ALGÚN RECLAMO, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU UTILIZACIÓN U OTRAS OPERACIONES EN EL SOFTWARE.</string>
 
-	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
-	<string-array name="statuslist">
-		<item>Disponible</item>
-		<item>Ausente</item>
-		<item>Libre para hablar</item>
-		<item>No molestar</item>
-		<item>No disponible</item>
-	</string-array>
+	<string name="status_available">Disponible</string>
+	<string name="status_away">Ausente</string>
+	<string name="status_chat">Libre para hablar</string>
+	<string name="status_dnd">No molestar</string>
+	<string name="status_xa">No disponible</string>
+	<string name="status_offline">Desconectado</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Leonardo Gastón De Luca https://launchpad.net/~leorockway</string>
