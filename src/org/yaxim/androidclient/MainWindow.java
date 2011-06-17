@@ -72,8 +72,9 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ExpandableRosterAdapter rosterListAdapter;
 	private TextView mConnectingText;
 	private boolean showOffline;
+
 	private String mStatusMessage;
-	private String mStatusMode;
+	private StatusMode mStatusMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -442,35 +443,29 @@ public class MainWindow extends GenericExpandableListActivity {
 		return R.string.Menu_HideOff;
 	}
 
-	public static String getStatusTitle(Context context, String status, String statusMessage) {
-		String[] statusCodes = context.getResources().getStringArray(R.array.statusCodes);
-		String[] statusNames = context.getResources().getStringArray(R.array.statuslist);
-		// look up the UI string for the status mode
-		for (int i = 0; i < statusCodes.length; i++) {
-			if (statusCodes[i].equals(status)) {
-				status = statusNames[i];
-				break;
-			}
-		}
-		if (statusMessage.length() > 0)
-			status = status + " (" + statusMessage + ")";
-		return status;
+	public StatusMode getStatusMode() {
+		return mStatusMode;
 	}
 
-	public void setAndSaveStatus(String statusmode, String message) {
-		setStatus(statusmode, message);
+	public static String getStatusTitle(Context context, String status, String statusMessage) {
+		status = context.getString(StatusMode.fromString(status).getTextId());
+		return status + " (" + statusMessage + ")";
+	}
+
+	public void setAndSaveStatus(StatusMode statusMode, String message) {
+		setStatus(statusMode, message);
 
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
-		prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
+		prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
 
 		serviceAdapter.setStatusFromConfig();
 	}
 
-	private void setStatus(String statusmode, String message) {
-		mStatusMode = statusmode;
+	private void setStatus(StatusMode statusMode, String message) {
+		mStatusMode = statusMode;
 		mStatusMessage = message;
 	}
 
@@ -761,8 +756,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	private void getPreferences(SharedPreferences prefs) {
 		showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, true);
 
-		setStatus(
-				prefs.getString(PreferenceConstants.STATUS_MODE, "available"),
+		setStatus(StatusMode.fromString(prefs.getString(
+				PreferenceConstants.STATUS_MODE, "available")),
 				prefs.getString(PreferenceConstants.STATUS_MESSAGE, ""));
 	}
 

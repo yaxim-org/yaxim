@@ -1,11 +1,14 @@
 package org.yaxim.androidclient.dialogs;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.R.array;
-import org.yaxim.androidclient.R.id;
-import org.yaxim.androidclient.R.layout;
-import org.yaxim.androidclient.R.string;
+import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,34 +16,52 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class ChangeStatusDialog extends AlertDialog {
 
 	private static final String TAG = "ChangeStatusDialog";
 
-	private final Spinner status;
+	private final Spinner mStatus;
 
-	private final EditText message;
+	private final EditText mMessage;
 
-	private final String[] statusCodes;
-
-	private final MainWindow context;
+	private final MainWindow mContext;
 
 	public ChangeStatusDialog(final MainWindow context) {
 		super(context);
 
-		this.context = context;
+		mContext = context;
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View group = inflater.inflate(R.layout.statusview, null, false);
-		status = (Spinner) group.findViewById(R.id.statusview_spinner);
-		statusCodes = context.getResources()
-				.getStringArray(R.array.statusCodes);
-		message = (EditText) group.findViewById(R.id.statusview_message);
+
+		List<StatusMode> modes = new ArrayList<StatusMode>(
+				Arrays.asList(StatusMode.values()));
+		modes.remove(StatusMode.offline);
+		Collections.sort(modes, new Comparator<StatusMode>() {
+			public int compare(StatusMode object1, StatusMode object2) {
+				return object2.compareTo(object1);
+			}
+		});
+
+		mStatus = (Spinner) group.findViewById(R.id.statusview_spinner);
+		mStatus.setAdapter(new StatusModeAdapter(context,
+				R.layout.status_spinner_item, modes));
+
+		for (int i = 0; i < modes.size(); i++) {
+			if (modes.get(i).equals(context.getStatusMode())) {
+				mStatus.setSelection(i);
+			}
+		}
+
+		mMessage = (EditText) group.findViewById(R.id.statusview_message);
 
 		setTitle(R.string.statuspopup_name);
 		setView(group);
@@ -55,12 +76,43 @@ public class ChangeStatusDialog extends AlertDialog {
 	private class OkListener implements OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			String statusStr = statusCodes[status.getSelectedItemPosition()];
-			Log.d(TAG, "changeStatusDialog: status=" + statusStr);
-			Log.d(TAG, "changeStatusDialog: message="
-					+ message.getText().toString());
-			context.setStatus(statusStr, message.getText().toString());
+			StatusMode status = (StatusMode) mStatus.getSelectedItem();
+			String message = mMessage.getText().toString();
+
+			Log.d(TAG, "changeStatusDialog: status=" + status);
+			Log.d(TAG, "changeStatusDialog: message=" + message);
+
+			mContext.setAndSaveStatus(status, message);
 		}
+	}
+
+	private class StatusModeAdapter extends ArrayAdapter<StatusMode> {
+
+		public StatusModeAdapter(Context context, int textViewResourceId,
+				List<StatusMode> modes) {
+
+			super(context, textViewResourceId, modes);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+
+			TextView textView = (TextView) super.getDropDownView(position,
+					convertView, parent);
+			textView.setText(getItem(position).getTextId());
+			return textView;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			TextView textView = (TextView) super.getView(position, convertView,
+					parent);
+			textView.setText(getItem(position).getTextId());
+			return textView;
+		}
+
 	}
 
 }

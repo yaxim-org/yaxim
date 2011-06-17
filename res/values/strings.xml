@@ -244,5 +244,12 @@
 		<item>Not available</item>
 	</string-array>
 
+	<string name="status_available">Online</string>
+	<string name="status_away">Away</string>
+	<string name="status_chat">Free for chat</string>
+	<string name="status_dnd">Do not disturb</string>
+	<string name="status_xa">Not available</string>
+	<string name="status_offline">Offline</string>
+
 	<string name="translator_credits">translator-credits</string>
 </resources>
