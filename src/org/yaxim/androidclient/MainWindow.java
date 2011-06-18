@@ -796,9 +796,9 @@ public class MainWindow extends GenericExpandableListActivity {
 				prefs.getString(PreferenceConstants.STATUS_MESSAGE, ""));
 	}
 
-    public static Intent createIntent(Context context) {
-        Intent i = new Intent(context, MainWindow.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return i;
-    }
+	public static Intent createIntent(Context context) {
+		Intent i = new Intent(context, MainWindow.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		return i;
+	}
 }
