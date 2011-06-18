@@ -67,20 +67,10 @@ public class RosterItem implements Parcelable, Comparable<RosterItem> {
 	public int compareTo(RosterItem that) {
 		if (this.getStatusMode() == that.getStatusMode()) {
 			return this.screenName.compareTo(that.screenName);
-		} else {
-			return compareStatusModes(that.getStatusMode());
 		}
+
+		// Reversed ordinality order → Free for chat first, offline last
+		return that.getStatusMode().compareTo(getStatusMode());
 	}
 
-	private int compareStatusModes(StatusMode otherMode) {
-		int compVal = (otherMode.getPriority() - this.getStatusMode()
-				.getPriority());
-		if (compVal < 0) {
-			return -1;
-		}
-		if (compVal > 0) {
-			return 1;
-		}
-		return 0;
-	}
 }

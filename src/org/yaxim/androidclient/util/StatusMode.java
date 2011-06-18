@@ -30,10 +30,6 @@ public enum StatusMode {
 		return name();
 	}
 
-	public int getPriority() {
-		return ordinal();
-	}
-
 	public static StatusMode fromString(String status) {
 		return StatusMode.valueOf(status);
 	}
