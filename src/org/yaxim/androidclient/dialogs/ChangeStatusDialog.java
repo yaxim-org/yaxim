@@ -110,6 +110,7 @@ public class ChangeStatusDialog extends AlertDialog {
 			TextView textView = (TextView) super.getView(position, convertView,
 					parent);
 			textView.setText(getItem(position).getTextId());
+			textView.setPadding(0, 0, 0, 0);
 			return textView;
 		}
 
