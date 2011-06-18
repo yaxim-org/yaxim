@@ -95,7 +95,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(getString(R.string.chat_titlePrefix, titleUserid));
 		actionBar.setHomeAction(new IntentAction(this, MainWindow
-				.createIntent(this), R.drawable.ic_title_appicon));
+				.createIntent(this), R.drawable.ic_action_appicon));
 
 		setChatWindowAdapter();
 	}
