@@ -76,6 +76,9 @@ public class MainWindow extends GenericExpandableListActivity {
 	private String mStatusMessage;
 	private StatusMode mStatusMode;
 
+	private ActionBar actionBar;
+	private ChangeStatusAction changeStatusAction;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,11 +89,13 @@ public class MainWindow extends GenericExpandableListActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setupContenView();
 
-		final ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(R.string.app_name);
-		actionBar.setHomeAction(new ChangeStatusAction());
 		actionBar.addAction(new AddBuddyAction());
 		actionBar.addAction(new ToggleOfflineContactsAction());
+
+		changeStatusAction = new ChangeStatusAction();
+		actionBar.setHomeAction(changeStatusAction);
 	}
 	
 	private class AddBuddyAction implements Action {
@@ -117,8 +122,18 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 		
 		public int getDrawable() {
-			// TODO Show the chosen status
-			return R.drawable.ic_status_available;
+			if (getStatusMode() != null) {
+				return getStatusMode().getDrawableId();
+			}
+
+			return StatusMode.offline.getDrawableId();
+		}
+
+		/** Causes the view to reload the {@link Drawable}. */
+		void invalidate() {
+			ImageButton imageButton = (ImageButton) actionBar
+					.findViewById(R.id.actionbar_home_btn);
+			imageButton.setImageResource(getDrawable());
 		}
 	}
 
@@ -467,6 +482,10 @@ public class MainWindow extends GenericExpandableListActivity {
 	private void setStatus(StatusMode statusMode, String message) {
 		mStatusMode = statusMode;
 		mStatusMessage = message;
+
+		// This and many other things like it should really be done with an
+		// observer
+		changeStatusAction.invalidate();
 	}
 
 	private void aboutDialog() {
