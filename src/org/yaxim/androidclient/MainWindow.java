@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
@@ -12,7 +11,6 @@ import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
-import org.yaxim.androidclient.service.IXMPPRosterService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -22,16 +20,15 @@ import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,10 +44,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import org.yaxim.androidclient.IXMPPRosterCallback;
+import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
+import org.yaxim.androidclient.service.IXMPPRosterService;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
@@ -122,11 +122,15 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 		
 		public int getDrawable() {
-			if (getStatusMode() != null) {
-				return getStatusMode().getDrawableId();
+
+			boolean showOffline = !isConnected() || isConnecting()
+					|| getStatusMode() == null;
+
+			if (showOffline) {
+				return StatusMode.offline.getDrawableId();
 			}
 
-			return StatusMode.offline.getDrawableId();
+			return getStatusMode().getDrawableId();
 		}
 
 		/** Causes the view to reload the {@link Drawable}. */
@@ -464,7 +468,12 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
 		status = context.getString(StatusMode.fromString(status).getTextId());
-		return status + " (" + statusMessage + ")";
+
+		if (statusMessage.length() > 0) {
+			status = status + " (" + statusMessage + ")";
+		}
+
+		return status;
 	}
 
 	public void setAndSaveStatus(StatusMode statusMode, String message) {
@@ -483,8 +492,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		mStatusMode = statusMode;
 		mStatusMessage = message;
 
-		// This and many other things like it should really be done with an
-		// observer
+		// This and similar functions should really be done with observer
 		changeStatusAction.invalidate();
 	}
 
@@ -513,7 +521,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		switch (itemID) {
 		case R.id.menu_connect:
-			toggleConnection(item);
+			toggleConnection();
 			return true;
 
 		case R.id.menu_exit:
@@ -554,15 +562,10 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void setConnectingStatus(boolean isConnecting) {
-		setProgressBarIndeterminateVisibility(isConnecting);
+		_setProgressBarIndeterminateVisibility(isConnecting);
+		changeStatusAction.invalidate();
+
 		String lastStatus;
-		if (isConnecting) {
-			setTitle(getString(R.string.conn_title,
-						getString(R.string.conn_connecting)));
-		} else {
-			setTitle(getString(R.string.conn_title,
-						getString(R.string.conn_offline)));
-		}
 
 		if (serviceAdapter != null && (lastStatus =
 					serviceAdapter.getConnectionStateString()) != null) {
@@ -571,8 +574,21 @@ public class MainWindow extends GenericExpandableListActivity {
 		} else
 			mConnectingText.setVisibility(View.GONE);
 	}
+	
+	/**
+	 * Sets the visibility of the indeterminate progress bar in the action bar.
+	 * Name starts with an underscore, becuase super
+	 * {@link #setProgressBarIndeterminateVisibility(boolean)} is final.
+	 */
+	private void _setProgressBarIndeterminateVisibility(boolean visibility) {
+		if (visibility) {
+			actionBar.setProgressBarVisibility(View.VISIBLE);
+		} else {
+			actionBar.setProgressBarVisibility(View.GONE);
+		}
+	}
 
-	private void toggleConnection(MenuItem item) {
+	private void toggleConnection() {
 		boolean oldState = isConnected() || isConnecting();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
