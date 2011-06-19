@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="480px"
+   height="480px"
+   viewBox="0 0 480 480"
+   xml:space="preserve"
+   id="svg2"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="ic_connect.svg"><metadata
+   id="metadata11"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+   id="defs9" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1280"
+   inkscape:window-height="750"
+   id="namedview7"
+   showgrid="false"
+   showguides="true"
+   inkscape:guide-bbox="true"
+   inkscape:zoom="0.61041667"
+   inkscape:cx="23.956834"
+   inkscape:cy="402.74312"
+   inkscape:window-x="0"
+   inkscape:window-y="24"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="battery_charging" />
+  <g
+   id="battery_charging">
+  	
+  <g
+   transform="translate(-14.080485,14.270335)"
+   id="g3114"><path
+     d="m -298.46875,-49.46875 c -46.084,0 -94.84375,41.56164 -94.84375,92.53125 l 0,11.59375 44.78125,0 c 0,-31.814 26.04699,-57.84375 57.875,-57.84375 l 52.78125,0 c 0,0 0.0195,17.673673 0.0312,23.5 l 13.375,0 0,-23.5 52.8125,0 c 31.828,0 57.84375,26.01575 57.84375,57.84375 l 46.78125,0 0,-11.5625 c 0,-50.925 -41.65975,-92.5625 -92.59375,-92.5625 l -138.84375,0 z m 60.6875,104.5 c 0.0289,18.251948 0.0213,26.972098 0.0312,45.9375 l 13.28125,0 0,-45.9375 -13.3125,0 z m -155.53125,45.9375 0,11.625 c 0,50.96961 48.75975,92.53125 94.84375,92.53125 l 138.84375,0 c 50.934,0 92.59375,-41.67375 92.59375,-92.59375 l 0,-11.5625 -46.78125,0 c 0,31.814 -26.01575,57.84375 -57.84375,57.84375 l -52.8125,0 0,-23.125 -13.25,0 c -0.0188,13.7328 -0.0723,23.16097 -0.15625,23.125 l -52.78125,0 c -31.828,0 -57.875,-26.01575 -57.875,-57.84375 l -44.78125,0 z"
+     transform="translate(484.25236,147.90154)"
+     id="path3116"
+     inkscape:connector-curvature="0" /></g></g>
+</svg>

@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add Contact</string>
 	<string name="Menu_ShowOff">Show Offline</string>
 	<string name="Menu_HideOff">Hide Offline</string>
 	<string name="Menu_AccSettings">Edit Account</string>
 	<string name="Menu_Settings">Settings</string>
-	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Connecter</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
@@ -144,11 +142,11 @@
 	<string name="setStatusTitle">Set your status</string>
 	<string name="RenameGroup_summ">Rename group %s to:</string>
 	<string name="RenameGroup_title">Rename group</string>
-	<string name="RenameEntry_summ">Rename %s (%s) to: </string>
+	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
 	<string name="RenameEntry_title">Rename contact</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
-	<string name="deleteRosterItem_text">Really remove %s (%s)?</string>
+	<string name="deleteRosterItem_text">Really remove %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Delete Contact</string>
 
 	<!-- CHATWINDOW -->
@@ -237,15 +235,12 @@
 		SOFTWARE.
     </string>
 
-	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
-	<string-array name="statuslist">
-		<item>En ligne</item>
-		<item>Inactif</item>
-		<item>Free for chat</item>
-		<item>Do not disturb</item>
-		<item>Indisponible</item>
-		<item>Hors ligne</item>
-	</string-array>
+	<string name="status_available">En ligne</string>
+	<string name="status_away">Inactif</string>
+	<string name="status_chat">Free for chat</string>
+	<string name="status_dnd">Do not disturb</string>
+	<string name="status_xa">Indisponible</string>
+	<string name="status_offline">Hors ligne</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Gabriel U. https://launchpad.net/~gabriel-ull

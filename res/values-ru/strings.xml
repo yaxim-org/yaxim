@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Добавить контакт</string>
 	<string name="Menu_ShowOff">Показывать отключённых</string>
 	<string name="Menu_HideOff">Скрывать отключённых</string>
 	<string name="Menu_AccSettings">Изменить учётную запись</string>
 	<string name="Menu_Settings">Настройки</string>
-	<string name="Menu_Status">Статус</string>
 	<string name="Menu_connect">Соединиться</string>
 	<string name="Menu_disconnect">Отключиться</string>
 	<string name="Menu_about">О yaxim</string>
@@ -143,11 +141,11 @@
 	<string name="setStatusTitle">Установить ваш статус</string>
 	<string name="RenameGroup_summ">Переименовать группу %s в:</string>
 	<string name="RenameGroup_title">Переименовать группу</string>
-	<string name="RenameEntry_summ">Переименовать %s (%s) в:</string>
+	<string name="RenameEntry_summ">Переименовать %1$s (%2$s) в:</string>
 	<string name="RenameEntry_title">Переименовать контакт</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Выберите группу из списка ниже</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Изменить группу</string>
-	<string name="deleteRosterItem_text">Действительно удалить %s (%s)?</string>
+	<string name="deleteRosterItem_text">Действительно удалить %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Удалить контакт</string>
 
 	<!-- CHATWINDOW -->
@@ -229,15 +227,12 @@
 		SOFTWARE.
     </string>
 
-	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
-	<string-array name="statuslist">
-		<item>В сети</item>
-		<item>Отсутствую</item>
-		<item>Желаю поболтать</item>
-		<item>Не беспокоить</item>
-		<item>Недоступен</item>
-		<item>Отключён</item>
-	</string-array>
+	<string name="status_available">В сети</string>
+	<string name="status_away">Отсутствую</string>
+	<string name="status_chat">Желаю поболтать</string>
+	<string name="status_dnd">Не беспокоить</string>
+	<string name="status_xa">Недоступен</string>
+	<string name="status_offline">Отключён</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg

@@ -73,12 +73,10 @@
 	-->
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Kontakt hinzufügen</string>
 	<string name="Menu_ShowOff">Abgemeldete anzeigen</string>
 	<string name="Menu_HideOff">Abgemeldete verstecken</string>
 	<string name="Menu_AccSettings">Konto bearbeiten</string>
 	<string name="Menu_Settings">Einstellungen</string>
-	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Verbinden</string>
 	<string name="Menu_disconnect">Trennen</string>
 	<string name="Menu_about">Über yaxim</string>
@@ -143,11 +141,11 @@
 	<string name="setStatusTitle">Status setzen</string>
 	<string name="RenameGroup_summ">Gruppe %s umbenennen in:</string>
 	<string name="RenameGroup_title">Gruppe umbenennen</string>
-	<string name="RenameEntry_summ">%s (%s) umbenennen in:</string>
+	<string name="RenameEntry_summ">%1$s (%2$s) umbenennen in:</string>
 	<string name="RenameEntry_title">Kontakt umbenennen</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Gruppe aus der Liste auswählen</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Gruppe ändern</string>
-	<string name="deleteRosterItem_text">%s (%s) wirklich löschen?</string>
+	<string name="deleteRosterItem_text">%1$s (%2$s) wirklich löschen?</string>
 	<string name="deleteRosterItem_title">Kontakt löschen</string>
 
 	<!-- CHATWINDOW -->
@@ -229,15 +227,12 @@
 		SOFTWARE.
     </string>
 
-	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
-	<string-array name="statuslist">
-		<item>Online</item>
-		<item>Abwesend</item>
-		<item>Frei zum Chatten</item>
-		<item>Bitte nicht stören</item>
-		<item>Nicht verfügbar</item>
-		<item>Offline</item>
-	</string-array>
+	<string name="status_available">Online</string>
+	<string name="status_away">Abwesend</string>
+	<string name="status_chat">Frei zum Chatten</string>
+	<string name="status_dnd">Bitte nicht stören</string>
+	<string name="status_xa">Nicht verfügbar</string>
+	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
