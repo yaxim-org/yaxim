@@ -27,6 +27,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +44,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
@@ -50,6 +52,9 @@ import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.service.IXMPPRosterService;
+
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
 
 public class MainWindow extends GenericExpandableListActivity {
 
@@ -78,6 +83,53 @@ public class MainWindow extends GenericExpandableListActivity {
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setupContenView();
+
+		final ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setTitle(R.string.app_name);
+		actionBar.setHomeAction(new ChangeStatusAction());
+		actionBar.addAction(new ToggleOfflineContactsAction());
+	}
+	
+	private class ChangeStatusAction implements Action {
+		public void performAction(View view) {
+			if (serviceAdapter.isAuthenticated()) {
+				changeStatusDialog();
+			} else {
+				showToastNotification(R.string.Global_authenticate_first);
+			}
+		}
+		
+		public int getDrawable() {
+			// TODO Show the chosen status
+			return R.drawable.ic_status_available;
+		}
+	}
+
+	private class ToggleOfflineContactsAction implements Action {
+
+		public int getDrawable() {
+			if (showOffline) {
+				return R.drawable.ic_action_online_friends;
+			}
+
+			return R.drawable.ic_action_all_friends;
+		}
+
+		public void performAction(View view) {
+			showOffline = !showOffline;
+			PreferenceManager.getDefaultSharedPreferences(MainWindow.this)
+					.edit()
+					.putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline)
+					.commit();
+			updateRoster();
+			invalidate(view);
+		}
+
+		/** Causes the view to reload the {@link Drawable}. */
+		private void invalidate(View view) {
+			ImageButton imageButton = (ImageButton) view;
+			imageButton.setImageResource(getDrawable());
+		}
 	}
 
 	void setupContenView() {
@@ -747,4 +799,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		mStatusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
 		mStatusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 	}
+
+    public static Intent createIntent(Context context) {
+        Intent i = new Intent(context, MainWindow.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return i;
+    }
 }

@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="libs/trace.jar"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="MemorizingActivity_src"/>
+	<classpathentry kind="src" path="actionbar_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
