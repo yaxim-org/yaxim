@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
+import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
@@ -18,6 +19,7 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -59,6 +61,8 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class MainWindow extends GenericExpandableListActivity {
 
 	private static final String TAG = "MainWindow";
+	
+	private static final int DIALOG_CHANGE_STATUS_ID = 0;
 
 	private final List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
 	private final List<HashMap<String, String>> rosterGroupList = new ArrayList<HashMap<String, String>>();
@@ -93,7 +97,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	private class ChangeStatusAction implements Action {
 		public void performAction(View view) {
 			if (serviceAdapter.isAuthenticated()) {
-				changeStatusDialog();
+				showDialog(DIALOG_CHANGE_STATUS_ID);
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}
@@ -220,6 +224,16 @@ public class MainWindow extends GenericExpandableListActivity {
 				.get(AdapterConstants.CONTACT_ID).screenName;
 		}
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_CHANGE_STATUS_ID:
+			return new ChangeStatusDialog(this);
+		}
+
+		return null;
 	}
 
 	void removeRosterItemDialog(final String JID, final String userName) {
@@ -439,7 +453,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 
-	private void setStatus(String statusmode, String message) {
+	/* package */public void setStatus(String statusmode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		mStatusMode = statusmode;
 		mStatusMessage = message;
@@ -455,34 +469,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		prefedit.commit();
 		serviceAdapter.setStatusFromConfig();
 		setStatusTitle();
-	}
-
-	private void changeStatusDialog() {
-		LayoutInflater inflater = (LayoutInflater)getSystemService(
-			      LAYOUT_INFLATER_SERVICE);
-		View group = inflater.inflate(R.layout.statusview, null, false);
-		final Spinner status = (Spinner)group.findViewById(R.id.statusview_spinner);
-		final EditText message = (EditText)group.findViewById(R.id.statusview_message);
-		final String[] statusCodes = getResources().getStringArray(R.array.statusCodes);
-		message.setText(mStatusMessage);
-		for (int i = 0; i < statusCodes.length; i++) {
-			if (statusCodes[i].equals(mStatusMode))
-				status.setSelection(i);
-		}
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.statuspopup_name)
-			.setView(group)
-			.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						String statusStr = statusCodes[status.getSelectedItemPosition()];
-						Log.d(TAG, "changeStatusDialog: status=" + statusStr);
-						Log.d(TAG, "changeStatusDialog: message=" + message.getText().toString());
-						setStatus(statusStr, message.getText().toString());
-					}
-				})
-			.setNegativeButton(android.R.string.cancel, null)
-			.create().show();
 	}
 
 	private void aboutDialog() {
@@ -530,7 +516,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		case R.id.menu_status:
 			if (serviceAdapter.isAuthenticated()) {
-				changeStatusDialog();
+				new ChangeStatusDialog(this);
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}
