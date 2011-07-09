@@ -111,11 +111,15 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 		
 		public int getDrawable() {
-			if (getStatusMode() != null) {
-				return getStatusMode().getDrawableId();
+
+			boolean showOffline = !isConnected() || isConnecting()
+					|| getStatusMode() == null;
+
+			if (showOffline) {
+				return StatusMode.offline.getDrawableId();
 			}
 
-			return StatusMode.offline.getDrawableId();
+			return getStatusMode().getDrawableId();
 		}
 
 		/** Causes the view to reload the {@link Drawable}. */
@@ -456,7 +460,12 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
 		status = context.getString(StatusMode.fromString(status).getTextId());
-		return status + " (" + statusMessage + ")";
+
+		if (statusMessage.length() > 0) {
+			status = status + " (" + statusMessage + ")";
+		}
+
+		return status;
 	}
 
 	public void setAndSaveStatus(StatusMode statusMode, String message) {
@@ -512,7 +521,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		switch (itemID) {
 		case R.id.menu_connect:
-			toggleConnection(item);
+			toggleConnection();
 			return true;
 
 		case R.id.menu_add_friend:
@@ -576,15 +585,10 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private void setConnectingStatus(boolean isConnecting) {
-		setProgressBarIndeterminateVisibility(isConnecting);
+		_setProgressBarIndeterminateVisibility(isConnecting);
+		changeStatusAction.invalidate();
+
 		String lastStatus;
-		if (isConnecting) {
-			setTitle(getString(R.string.conn_title,
-						getString(R.string.conn_connecting)));
-		} else {
-			setTitle(getString(R.string.conn_title,
-						getString(R.string.conn_offline)));
-		}
 
 		if (serviceAdapter != null && (lastStatus =
 					serviceAdapter.getConnectionStateString()) != null) {
@@ -593,8 +597,21 @@ public class MainWindow extends GenericExpandableListActivity {
 		} else
 			mConnectingText.setVisibility(View.GONE);
 	}
+	
+	/**
+	 * Sets the visibility of the indeterminate progress bar in the action bar.
+	 * Name starts with an underscore, becuase super
+	 * {@link #setProgressBarIndeterminateVisibility(boolean)} is final.
+	 */
+	private void _setProgressBarIndeterminateVisibility(boolean visibility) {
+		if (visibility) {
+			actionBar.setProgressBarVisibility(View.VISIBLE);
+		} else {
+			actionBar.setProgressBarVisibility(View.GONE);
+		}
+	}
 
-	private void toggleConnection(MenuItem item) {
+	private void toggleConnection() {
 		boolean oldState = isConnected() || isConnecting();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
