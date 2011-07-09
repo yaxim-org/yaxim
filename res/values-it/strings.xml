@@ -170,15 +170,12 @@
 	<string name="AboutDialog_LicenceTitle">Licenza</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright (c) 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTW</string>
 
-	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
-	<string-array name="statuslist">
-		<item>Connesso</item>
-		<item>Assente</item>
-		<item>Libero</item>
-		<item>Non disturbare</item>
-		<item>Non disponibile</item>
-		<item>Non connesso</item>
-	</string-array>
+	<string name="status_available">Connesso</string>
+	<string name="status_away">Assente</string>
+	<string name="status_chat">Libero</string>
+	<string name="status_dnd">Non disturbare</string>
+	<string name="status_xa">Non disponibile</string>
+	<string name="status_offline">Non connesso</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Lorenzo J. Lucchini https://launchpad.net/~ljl</string>

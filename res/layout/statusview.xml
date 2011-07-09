@@ -9,7 +9,6 @@
 	<Spinner android:id="@+id/statusview_spinner"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
-		android:entries="@array/statuslist"
 		android:prompt="@string/setStatusTitle"
 	/>
 	<EditText android:id="@+id/statusview_message"

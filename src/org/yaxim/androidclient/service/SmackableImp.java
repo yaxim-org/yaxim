@@ -37,7 +37,6 @@ import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
-import org.yaxim.androidclient.util.StatusModeInt;
 
 import android.app.Service;
 import android.content.ContentResolver;
@@ -435,9 +434,9 @@ public class SmackableImp implements Smackable {
 
 	private void setStatusOffline() {
 		ContentValues values = new ContentValues();
-		values.put(RosterConstants.STATUS_MODE, StatusModeInt.MODE_OFFLINE);
+		values.put(RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 		mContentResolver.update(RosterProvider.CONTENT_URI, values, null, null);
-	};
+	}
 
 	private void registerRosterListener() {
 		// flush roster on connecting.
@@ -613,23 +612,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private int getStatusInt(final Presence presence) {
-		if (presence.getType() == Presence.Type.available) {
-			final Mode mode = presence.getMode();
-			if (mode != null) {
-				switch (mode) {
-				case chat:
-					return StatusModeInt.MODE_CHAT;
-				case away:
-					return StatusModeInt.MODE_AWAY;
-				case xa:
-					return StatusModeInt.MODE_XA;
-				case dnd:
-					return StatusModeInt.MODE_DND;
-				}
-			}
-			return StatusModeInt.MODE_AVAILABLE;
-		}
-		return StatusModeInt.MODE_OFFLINE;
+		return getStatus(presence).ordinal();
 	}
 
 	private void debugLog(String data) {

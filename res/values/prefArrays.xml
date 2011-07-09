@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- ATTENTION: statusCodes need to match strings.xml:statuslist and enum StatusMode -->
-	<string-array name="statusCodes">
-		<item>available</item>
-		<item>away</item>
-		<item>chat</item>
-		<item>dnd</item>
-		<item>xa</item>
-		<item>offline</item>
-	</string-array>
 	<string-array name="fontSizesChat">
 		<item>6px</item>
 		<item>8px</item>

@@ -75,8 +75,9 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ExpandableRosterAdapter rosterListAdapter;
 	private TextView mConnectingText;
 	private boolean showOffline;
+
 	private String mStatusMessage;
-	private String mStatusMode;
+	private StatusMode mStatusMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -433,42 +434,38 @@ public class MainWindow extends GenericExpandableListActivity {
 				: getString(R.string.Menu_ShowOff);
 	}
 
+	public StatusMode getStatusMode() {
+		return mStatusMode;
+	}
+
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
-		String[] statusCodes = context.getResources().getStringArray(R.array.statusCodes);
-		String[] statusNames = context.getResources().getStringArray(R.array.statuslist);
-		// look up the UI string for the status mode
-		for (int i = 0; i < statusCodes.length; i++) {
-			if (statusCodes[i].equals(status)) {
-				status = statusNames[i];
-				break;
-			}
-		}
-		if (statusMessage.length() > 0)
-			status = status + " (" + statusMessage + ")";
-		return status;
+		status = context.getString(StatusMode.fromString(status).getTextId());
+		return status + " (" + statusMessage + ")";
 	}
 
-	private void setStatusTitle() {
-		setTitle(getString(R.string.conn_title, getStatusTitle(this, mStatusMode, mStatusMessage)));
-	}
+	public void setAndSaveStatus(StatusMode statusMode, String message) {
+		setStatus(statusMode, message);
 
-
-	/* package */public void setStatus(String statusmode, String message) {
-		SharedPreferences.Editor prefedit = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		mStatusMode = statusmode;
-		mStatusMessage = message;
 		// do not save "offline" to prefs, or else!
-		if (statusmode.equals("offline")) {
+		if (statusMode == StatusMode.offline) {
 			serviceAdapter.disconnect();
 			setConnectingStatus(false);
 			stopService(xmppServiceIntent);
 			return;
 		}
-		prefedit.putString(PreferenceConstants.STATUS_MODE, statusmode);
+
+		SharedPreferences.Editor prefedit = PreferenceManager
+				.getDefaultSharedPreferences(this).edit();
+		prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
+
 		serviceAdapter.setStatusFromConfig();
-		setStatusTitle();
+	}
+
+	private void setStatus(StatusMode statusMode, String message) {
+		mStatusMode = statusMode;
+		mStatusMessage = message;
 	}
 
 	private void aboutDialog() {
@@ -565,8 +562,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		if (isConnecting) {
 			setTitle(getString(R.string.conn_title,
 						getString(R.string.conn_connecting)));
-		} else if (isConnected()) {
-			setStatusTitle();
 		} else {
 			setTitle(getString(R.string.conn_title,
 						getString(R.string.conn_offline)));
@@ -782,13 +777,15 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void getPreferences(SharedPreferences prefs) {
 		showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, true);
-		mStatusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
-		mStatusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
+
+		setStatus(StatusMode.fromString(prefs.getString(
+				PreferenceConstants.STATUS_MODE, "available")),
+				prefs.getString(PreferenceConstants.STATUS_MESSAGE, ""));
 	}
 
-    public static Intent createIntent(Context context) {
-        Intent i = new Intent(context, MainWindow.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return i;
-    }
+	public static Intent createIntent(Context context) {
+		Intent i = new Intent(context, MainWindow.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		return i;
+	}
 }

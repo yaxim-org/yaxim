@@ -229,15 +229,12 @@
 		SOFTWARE.
     </string>
 
-	<!-- ATTENTION: statuslist needs to match prefArrays.xml:statusCodes -->
-	<string-array name="statuslist">
-		<item>Online</item>
-		<item>Abwesend</item>
-		<item>Frei zum Chatten</item>
-		<item>Bitte nicht stören</item>
-		<item>Nicht verfügbar</item>
-		<item>Offline</item>
-	</string-array>
+	<string name="status_available">Online</string>
+	<string name="status_away">Abwesend</string>
+	<string name="status_chat">Frei zum Chatten</string>
+	<string name="status_dnd">Bitte nicht stören</string>
+	<string name="status_xa">Nicht verfügbar</string>
+	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
