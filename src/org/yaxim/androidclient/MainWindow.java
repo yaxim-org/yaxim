@@ -803,7 +803,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	public void expandGroups() {
 		Log.d(TAG, "expandGroups(): " + rosterGroupList.size() + " vs " + getExpandableListAdapter().getGroupCount());
-		for (int count = 0; count < rosterGroupList.size(); count++) {
+		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
 			getExpandableListView().expandGroup(count);
 		}
 	}
