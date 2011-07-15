@@ -81,6 +81,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private ActionBar actionBar;
 	private ChangeStatusAction changeStatusAction;
+	private ToggleOfflineContactsAction toggleOfflineContactsAction;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,14 +96,25 @@ public class MainWindow extends GenericExpandableListActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(R.string.app_name);
 		actionBar.setSubTitle(mStatusMessage);
-		actionBar.setHomeAction(new ChangeStatusAction());
-		actionBar.addAction(new ToggleOfflineContactsAction());
+
+		toggleOfflineContactsAction = new ToggleOfflineContactsAction();
+		actionBar.addAction(toggleOfflineContactsAction);
 
 		changeStatusAction = new ChangeStatusAction();
 		actionBar.setHomeAction(changeStatusAction);
 	}
 	
-	private class ChangeStatusAction implements Action {
+	private abstract class AbstractAction implements Action {
+
+		/** Causes the view to reload the {@link Drawable}. */
+		void invalidate() {
+			ImageButton imageButton = (ImageButton) actionBar
+					.findViewWithTag(this);
+			imageButton.setImageResource(getDrawable());
+		}
+	}
+
+	private class ChangeStatusAction extends AbstractAction {
 		public void performAction(View view) {
 			if (serviceAdapter.isAuthenticated()) {
 				showDialog(DIALOG_CHANGE_STATUS_ID);
@@ -122,16 +134,9 @@ public class MainWindow extends GenericExpandableListActivity {
 
 			return getStatusMode().getDrawableId();
 		}
-
-		/** Causes the view to reload the {@link Drawable}. */
-		void invalidate() {
-			ImageButton imageButton = (ImageButton) actionBar
-					.findViewById(R.id.actionbar_home_btn);
-			imageButton.setImageResource(getDrawable());
-		}
 	}
 
-	private class ToggleOfflineContactsAction implements Action {
+	private class ToggleOfflineContactsAction extends AbstractAction {
 
 		public int getDrawable() {
 			if (showOffline) {
@@ -142,19 +147,9 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 
 		public void performAction(View view) {
-			showOffline = !showOffline;
-			PreferenceManager.getDefaultSharedPreferences(MainWindow.this)
-					.edit()
-					.putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline)
-					.commit();
+			setOfflinceContactsVisibility(!showOffline);
 			updateRoster();
-			invalidate(view);
-		}
-
-		/** Causes the view to reload the {@link Drawable}. */
-		private void invalidate(View view) {
-			ImageButton imageButton = (ImageButton) view;
-			imageButton.setImageResource(getDrawable());
+			invalidate();
 		}
 	}
 
@@ -178,6 +173,9 @@ public class MainWindow extends GenericExpandableListActivity {
 		super.onResume();
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 		bindXMPPService();
+
+		// Causes the toggle button to show correct state on application start
+		toggleOfflineContactsAction.invalidate();
 	}
 
 
@@ -535,9 +533,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case R.id.menu_show_hide:
-			showOffline = !showOffline;
-			PreferenceManager.getDefaultSharedPreferences(this).edit().
-				putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
+			setOfflinceContactsVisibility(!showOffline);
 			updateRoster();
 			return true;
 
@@ -570,6 +566,13 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		return false;
 
+	}
+
+	/** Sets if all contacts are shown in the roster or online contacts only. */
+	private void setOfflinceContactsVisibility(boolean showOffline) {
+		this.showOffline = showOffline;
+		PreferenceManager.getDefaultSharedPreferences(this).edit().
+			putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
 	}
 
 	@Override
