@@ -829,7 +829,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, true);
 
 		setStatus(StatusMode.fromString(prefs.getString(
-				PreferenceConstants.STATUS_MODE, "available")),
+				PreferenceConstants.STATUS_MODE, StatusMode.available.name())),
 				prefs.getString(PreferenceConstants.STATUS_MESSAGE, ""));
 	}
 
