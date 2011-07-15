@@ -149,7 +149,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		public void performAction(View view) {
 			setOfflinceContactsVisibility(!showOffline);
 			updateRoster();
-			invalidate();
 		}
 	}
 
@@ -444,8 +443,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	private int getShowHideMenuIcon() {
-		return showOffline ? R.drawable.ic_menu_block
-				: android.R.drawable.ic_menu_view;
+		return showOffline ? R.drawable.ic_menu_online_friends
+				: R.drawable.ic_menu_all_friends;
 	}
 
 	private String getShowHideMenuText() {
@@ -548,7 +547,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		case R.id.menu_status:
 			if (serviceAdapter.isAuthenticated()) {
-				new ChangeStatusDialog(this);
+				showDialog(DIALOG_CHANGE_STATUS_ID);
 			} else {
 				showToastNotification(R.string.Global_authenticate_first);
 			}
@@ -580,6 +579,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	/** Sets if all contacts are shown in the roster or online contacts only. */
 	private void setOfflinceContactsVisibility(boolean showOffline) {
 		this.showOffline = showOffline;
+		toggleOfflineContactsAction.invalidate();
+
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
 	}
