@@ -94,6 +94,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(R.string.app_name);
+		actionBar.setSubTitle(mStatusMessage);
 		actionBar.setHomeAction(new ChangeStatusAction());
 		actionBar.addAction(new ToggleOfflineContactsAction());
 
@@ -494,6 +495,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		// This and many other things like it should be done with observer
 		changeStatusAction.invalidate();
+		actionBar.setSubTitle(mStatusMessage);
 	}
 
 	private void aboutDialog() {
