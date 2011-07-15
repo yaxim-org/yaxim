@@ -62,6 +62,7 @@ public class ChangeStatusDialog extends AlertDialog {
 		}
 
 		mMessage = (EditText) group.findViewById(R.id.statusview_message);
+		mMessage.setText(context.getStatusMessage());
 
 		setTitle(R.string.statuspopup_name);
 		setView(group);
@@ -78,9 +79,6 @@ public class ChangeStatusDialog extends AlertDialog {
 		public void onClick(DialogInterface dialog, int which) {
 			StatusMode status = (StatusMode) mStatus.getSelectedItem();
 			String message = mMessage.getText().toString();
-
-			Log.d(TAG, "changeStatusDialog: status=" + status);
-			Log.d(TAG, "changeStatusDialog: message=" + message);
 
 			mContext.setAndSaveStatus(status, message);
 		}

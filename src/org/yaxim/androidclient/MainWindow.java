@@ -457,6 +457,10 @@ public class MainWindow extends GenericExpandableListActivity {
 		return mStatusMode;
 	}
 
+	public String getStatusMessage() {
+		return mStatusMessage;
+	}
+
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
 		status = context.getString(StatusMode.fromString(status).getTextId());
 
