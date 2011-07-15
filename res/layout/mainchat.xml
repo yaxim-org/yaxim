@@ -6,8 +6,6 @@
 	android:layout_height="fill_parent">
 
 	<com.markupartist.android.widget.ActionBar
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
 		android:id="@+id/actionbar"
 		style="@style/ActionBar" />
 
