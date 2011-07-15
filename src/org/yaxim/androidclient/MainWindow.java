@@ -493,7 +493,12 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		// This and many other things like it should be done with observer
 		changeStatusAction.invalidate();
-		actionBar.setSubTitle(mStatusMessage);
+
+		if (mStatusMessage.equals("")) {
+			actionBar.setSubTitle(null);
+		} else {
+			actionBar.setSubTitle(mStatusMessage);
+		}
 	}
 
 	private void aboutDialog() {
