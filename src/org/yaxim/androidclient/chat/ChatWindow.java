@@ -86,14 +86,14 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		setSendButton();
 		
 		String titleUserid;
-		if (mUserScreenName != null && !mUserScreenName.equals(mWithJabberID)) {
-			titleUserid = mUserScreenName + " (" + mWithJabberID + ")";
+		if (mUserScreenName != null) {
+			titleUserid = mUserScreenName;
 		} else {
 			titleUserid = mWithJabberID;
 		}
 
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle(getString(R.string.chat_titlePrefix, titleUserid));
+		actionBar.setTitle(titleUserid);
 		actionBar.setHomeAction(new IntentAction(this, MainWindow
 				.createIntent(this), R.drawable.ic_action_appicon));
 
