@@ -7,7 +7,7 @@
 	<string name="conn_connecting">Verbinde mit Server...</string>
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
-	<string name="conn_empty_roster">Keine Kontakte verfügbar!</string>
+	<string name="conn_empty_roster">Keine Kontakte zum Anzeigen!</string>
 	<string name="conn_reconnect">\nNeue Verbindung in %d Sekunden.</string>
 
 	<!-- Global Strings -->
@@ -42,7 +42,7 @@
 	<string name="preftitle_boot">Programmstart-Einstellungen</string>
 	<string name="boot_title">Bei Systemstart laden</string>
 	<string name="boot_summOn">yaxim wird beim Systemstart geladen</string>
-	<string name="boot_summOff">yaxim wird nicht automatisch geladen</string>
+	<string name="boot_summOff">yaxim wird nicht automatisch gestartet</string>
 	<string name="statuspopup_name">Status setzen</string>
 	<string name="showOffline_summ_on">Offline-Kontakte werden angezeigt</string>
 	<string name="showOffline_summ_off">Offline-Kontakte werden versteckt</string>
@@ -85,7 +85,7 @@
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Kontakt hinzufügen</string>
-	<string name="addFriend_Summ">Bitte geben Sie die Jabber-ID und den Anzeigenamen für Ihren Kontakt ein und ordnen diesen in eine Kontakgruppe!</string>
+	<string name="addFriend_Summ">Bitte geben Sie die Jabber-ID und den Anzeigenamen für Ihren Kontakt ein und ordnen Sie diesen in eine Kontakgruppe!</string>
 	<string name="addFriend_aliasHint">Anzeigename</string>
 	<string name="addrosteritemaddgroupchoice">Zu neuer Gruppe hinzufügen</string>
 	<string name="NewGroup_EditTextField_Hint">Name der neuen Gruppe</string>
@@ -147,11 +147,10 @@
 	<string name="RenameEntry_title">Kontakt umbenennen</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Gruppe aus der Liste auswählen</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Gruppe ändern</string>
-	<string name="deleteRosterItem_text">%1$s (%2$s) wirklich löschen?</string>
+	<string name="deleteRosterItem_text">%1$s (%2$s) wirklich entfernen?</string>
 	<string name="deleteRosterItem_title">Kontakt löschen</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_titlePrefix">Chat mit: %s</string>
 	<string name="chat_from_me">Ich:</string>
 	<string name="toast_connectfail_message">Verbindung getrennt!</string>
 	<string name="toast_stored_offline">Nachricht zum Versand gespeichert.</string>
@@ -168,66 +167,7 @@
 	<string name="AboutDialog_DevelopersTitle">Entwickler</string>
 	<string name="AboutDialog_DevelopersText">Eingetragene Entwickler:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Macht mit, wünscht euch neue Funktionen oder sendet uns \"Club-Mate\" unter http://yaxim.org/ oder in #yaxim im freenode-IRC-Netzwerk.</string>
 	<string name="AboutDialog_LicenceTitle">Lizenzierung</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright (c) 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright (c) 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Online</string>
 	<string name="status_away">Abwesend</string>
@@ -238,5 +178,8 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
+  Johannes Boost https://launchpad.net/~jjjb
+  Markus Unterwaditzer https://launchpad.net/~untitaker
+  Michael Kanis https://launchpad.net/~mkanis
   René Moser https://launchpad.net/~resmo</string>
 </resources>

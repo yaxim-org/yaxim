@@ -143,15 +143,14 @@
 	<string name="setStatusTitle">Imposta il tuo stato</string>
 	<string name="RenameGroup_summ">Rinomina gruppo %s:</string>
 	<string name="RenameGroup_title">Rinomina gruppo</string>
-	<string name="RenameEntry_summ">Rinomina %1$s (%2$s):</string>
+	<string name="RenameEntry_summ">Rinomina %1$s (%2$s) in:</string>
 	<string name="RenameEntry_title">Rinomina contatto</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Scegli un gruppo dalla casella sotto</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Cambia gruppo</string>
-	<string name="deleteRosterItem_text">Rimuovere davvero %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_text">Vuoi veramente eliminare %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Elimina contatto</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_titlePrefix">Chat con: %s</string>
 	<string name="chat_from_me">Io:</string>
 	<string name="toast_connectfail_message">Connessione chiusa!</string>
 	<string name="toast_stored_offline">Il messaggio sarà trasmesso più tardi</string>
@@ -178,5 +177,6 @@
 	<string name="status_offline">Non connesso</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Lorenzo J. Lucchini https://launchpad.net/~ljl</string>
+  Lorenzo J. Lucchini https://launchpad.net/~ljl
+  Pietro Pecchi https://launchpad.net/~pietro-pecchi</string>
 </resources>

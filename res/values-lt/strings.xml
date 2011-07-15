@@ -151,7 +151,6 @@
 	<string name="deleteRosterItem_title">Pašalinti kontaktą</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_titlePrefix">Pokalbis su: %s</string>
 	<string name="chat_from_me">Aš:</string>
 	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">Žinutė išsaugota perdavimui.</string>
