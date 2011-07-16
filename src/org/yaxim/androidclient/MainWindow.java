@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.yaxim.androidclient.data.ChatProvider;
-import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
@@ -16,7 +15,6 @@ import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.ConnectionState;
-import org.yaxim.androidclient.util.ExpandableRosterAdapter;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 

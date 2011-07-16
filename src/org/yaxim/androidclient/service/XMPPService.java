@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
@@ -259,15 +258,6 @@ public class XMPPService extends GenericService {
 				}
 			}
 
-			public List<String> getRosterGroups() throws RemoteException {
-				return mSmackable.getRosterGroups();
-			}
-
-			public List<RosterItem> getRosterEntriesByGroup(String group)
-					throws RemoteException {
-				return mSmackable.getRosterEntriesByGroup(group);
-			}
-
 			public void renameRosterGroup(String group, String newGroup)
 					throws RemoteException {
 				mSmackable.renameRosterGroup(group, newGroup);
@@ -434,18 +424,6 @@ public class XMPPService extends GenericService {
 			// that means we just got connected and need to notify the Activity.
 			logInfo("rosterChanged(): we just got connected");
 			connectionEstablished();
-		}
-		if (mIsConnected.get()) {
-			final int broadCastItems = mRosterCallbacks.beginBroadcast();
-
-			for (int i = 0; i < broadCastItems; ++i) {
-				try {
-					mRosterCallbacks.getBroadcastItem(i).rosterChanged();
-				} catch (RemoteException e) {
-					logError("caught RemoteException: " + e.getMessage());
-				}
-			}
-			mRosterCallbacks.finishBroadcast();
 		}
 		if (mIsConnected.get() && mSmackable != null && !mSmackable.isAuthenticated()) {
 			logInfo("rosterChanged(): disconnected without warning");
