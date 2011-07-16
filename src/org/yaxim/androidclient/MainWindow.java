@@ -31,6 +31,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,11 +88,15 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ChangeStatusAction changeStatusAction;
 	private ToggleOfflineContactsAction toggleOfflineContactsAction;
 
+	private ContentObserver mRosterObserver = new RosterObserver();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		showFirstStartUpDialogIfPrefsEmpty();
+		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
+				true, mRosterObserver);
 		registerXMPPService();
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -107,7 +112,11 @@ public class MainWindow extends GenericExpandableListActivity {
 		changeStatusAction = new ChangeStatusAction();
 		actionBar.setHomeAction(changeStatusAction);
 	}
-	
+	@Override
+	public void onDestroy() {
+		getContentResolver().unregisterContentObserver(mRosterObserver);
+	}
+
 	private abstract class AbstractAction implements Action {
 
 		/** Causes the view to reload the {@link Drawable}. */
@@ -868,7 +877,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	public void expandGroups() {
-		Log.d(TAG, "expandGroups(): " + rosterGroupList.size() + " vs " + getExpandableListAdapter().getGroupCount());
+		Log.d(TAG, "expandGroups(): " + getExpandableListAdapter().getGroupCount());
 		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
 			try {
 				getExpandableListView().expandGroup(count);
@@ -937,6 +946,17 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		private int getIconForPresenceMode(int presenceMode) {
 			return StatusMode.values()[presenceMode].getDrawableId();
+		}
+	}
+
+	private class RosterObserver extends ContentObserver {
+		public RosterObserver() {
+			super(mainHandler);
+		}
+		public void onChange(boolean selfChange) {
+			Log.d(TAG, "RosterObserver.onChange: " + selfChange);
+			if (getExpandableListAdapter() != null)
+				expandGroups();
 		}
 	}
 }
