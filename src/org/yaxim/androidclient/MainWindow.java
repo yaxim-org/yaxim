@@ -199,12 +199,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		getExpandableListView().requestFocus();
 	}
 
-	private void createRosterIfConnected() {
-		if ((serviceAdapter != null) && (serviceAdapter.isAuthenticated())) {
-			createRoster();
-		}
-	}
-
 	private boolean isConnected() {
 		return serviceAdapter != null && serviceAdapter.isAuthenticated();
 	}
@@ -718,7 +712,6 @@ public class MainWindow extends GenericExpandableListActivity {
 				serviceAdapter = new XMPPRosterServiceAdapter(
 						IXMPPRosterService.Stub.asInterface(service));
 				serviceAdapter.registerUICallback(rosterCallback);
-				createRosterIfConnected();
 				Log.i(TAG, "getConnectionState(): "
 						+ serviceAdapter.getConnectionState());
 				setConnectingStatus(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
@@ -771,32 +764,6 @@ public class MainWindow extends GenericExpandableListActivity {
 				new int[] { R.id.roster_screenname, R.id.roster_statusmsg,
 			       		R.id.roster_icon });
 		setListAdapter(rosterListAdapter);
-		updateRoster();
-	}
-
-	private ArrayList<HashMap<String, RosterItem>> getRosterGroupItems(
-			String group) {
-		ArrayList<HashMap<String, RosterItem>> rosterItemList = new ArrayList<HashMap<String, RosterItem>>();
-
-		List<RosterItem> rosterItems = serviceAdapter.getGroupItems(group);
-
-		for (RosterItem rosterEntryItem : rosterItems) {
-			HashMap<String, RosterItem> rosterEntry = new HashMap<String, RosterItem>();
-			rosterEntry.put(AdapterConstants.CONTACT_ID, rosterEntryItem);
-			if (showOffline
-					|| (rosterEntryItem.getStatusMode() != StatusMode.offline)) {
-				rosterItemList.add(rosterEntry);
-			}
-		}
-		return rosterItemList;
-	}
-
-	public void createRoster() {
-		Log.i(TAG, "called createRoster()");
-		if (serviceAdapter.isAuthenticated()) {
-			registerListAdapter();
-			expandGroups();
-		}
 	}
 
 	private void createUICallback() {
@@ -804,18 +771,12 @@ public class MainWindow extends GenericExpandableListActivity {
 
 			public void rosterChanged() throws RemoteException {
 				Log.i(TAG, "called rosterChanged()");
-				mainHandler.post(new Runnable() {
-					public void run() {
-						updateRoster();
-					}
-				});
 			}
 
 			public void connectionSuccessful() throws RemoteException {
 				mainHandler.post(new Runnable() {
 
 					public void run() {
-						createRosterIfConnected();
 						getExpandableListView().requestFocus();
 						setConnectingStatus(false);
 					}
