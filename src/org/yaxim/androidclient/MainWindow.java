@@ -99,6 +99,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		createUICallback();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setupContenView();
+		registerListAdapter();
 
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(R.string.app_name);
@@ -183,6 +184,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	protected void onResume() {
 		super.onResume();
 		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
+		updateRoster();
 		bindXMPPService();
 
 		// Causes the toggle button to show correct state on application start
@@ -217,6 +219,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
 				selectWhere, null, "roster_group");
 		rosterListAdapter.changeCursor(cursor);
+		expandGroups();
 	}
 
 	private String getPackedItemRow(long packedPosition, String rowName) {
