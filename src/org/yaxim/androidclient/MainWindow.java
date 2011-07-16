@@ -899,8 +899,11 @@ public class MainWindow extends GenericExpandableListActivity {
 			// Given the group, we return a cursor for all the children within that group 
 			String groupname = groupCursor.getString(1);
 
+			String selectWhere = "roster_group = ?";
+			if (!showOffline)
+				selectWhere += "AND status_mode > 0";
 			return managedQuery(RosterProvider.CONTENT_URI, ROSTER_QUERY,
-				"roster_group = ?", new String[] { groupname }, null);
+				selectWhere, new String[] { groupname }, null);
 		}
 
 		 protected void setViewImage(ImageView v, String value) {
