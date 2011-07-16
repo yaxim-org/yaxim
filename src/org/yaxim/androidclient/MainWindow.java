@@ -609,6 +609,10 @@ public class MainWindow extends GenericExpandableListActivity {
 			mConnectingText.setVisibility(View.VISIBLE);
 			mConnectingText.setText(lastStatus);
 		} else
+		if (serviceAdapter == null || serviceAdapter.isAuthenticated() == false) {
+			mConnectingText.setVisibility(View.VISIBLE);
+			mConnectingText.setText(R.string.conn_offline);
+		} else
 			mConnectingText.setVisibility(View.GONE);
 	}
 	
