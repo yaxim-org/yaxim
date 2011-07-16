@@ -68,8 +68,6 @@ public class MainWindow extends GenericExpandableListActivity {
 	
 	private static final int DIALOG_CHANGE_STATUS_ID = 0;
 
-	private final List<ArrayList<HashMap<String, RosterItem>>> rosterEntryList = new ArrayList<ArrayList<HashMap<String, RosterItem>>>();
-	private final List<HashMap<String, String>> rosterGroupList = new ArrayList<HashMap<String, String>>();
 	private Handler mainHandler = new Handler();
 
 	private Intent xmppServiceIntent;
@@ -212,14 +210,15 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	public void updateRoster() {
-		if (serviceAdapter.isAuthenticated()
-				&& getExpandableListAdapter() != null) {
-			rosterEntryList.clear();
-			createRosterEntryList();
-			rosterGroupList.clear();
-			createRosterGroupList();
-			rosterListAdapter.notifyDataSetChanged();
-		}
+		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+				null, null, "roster_group");
+		rosterListAdapter.changeCursor(cursor);
+	}
+
+	private String getPackedItemRow(long packedPosition, String rowName) {
+		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
+		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
+		return c.getString(c.getColumnIndex(rowName));
 	}
 
 	@Override
@@ -239,22 +238,17 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		getMenuInflater().inflate(R.menu.roster_contextmenu, menu);
 
-		int groupPosition = ExpandableListView
-				.getPackedPositionGroup(info.packedPosition);
-		String menuName = rosterGroupList.get(groupPosition).get(
-				AdapterConstants.GROUP_NAME[0]);
+		// get the entry name for the item
+		String menuName = getPackedItemRow(packedPosition,
+				isChild ? RosterProvider.RosterConstants.ALIAS
+					: RosterProvider.RosterConstants.GROUP);
 
 		// display contact menu for contacts
 		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild);
 		// display group menu for non-standard group
 		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
 				!menuName.equals(AdapterConstants.EMPTY_GROUP));
-		if (isChild) {
-			int childPosition = ExpandableListView
-					.getPackedPositionChild(packedPosition);
-			menuName = rosterEntryList.get(groupPosition).get(childPosition)
-				.get(AdapterConstants.CONTACT_ID).screenName;
-		}
+
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
 
@@ -355,17 +349,15 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		ExpandableListContextMenuInfo contextMenuInfo = (ExpandableListContextMenuInfo) item
 				.getMenuInfo();
-		int groupPosition = ExpandableListView
-				.getPackedPositionGroup(contextMenuInfo.packedPosition);
-		int childPosition = ExpandableListView
-				.getPackedPositionChild(contextMenuInfo.packedPosition);
+		long packedPosition = contextMenuInfo.packedPosition;
 
-		if (isChild(contextMenuInfo.packedPosition)) {
+		if (isChild(packedPosition)) {
 
-			String userJid = rosterEntryList.get(groupPosition).get(childPosition)
-					.get(AdapterConstants.CONTACT_ID).jabberID;
-			String userName = rosterEntryList.get(groupPosition).get(childPosition)
-				.get(AdapterConstants.CONTACT_ID).screenName;
+			String userJid = getPackedItemRow(packedPosition,
+					RosterProvider.RosterConstants.JID);
+			String userName = getPackedItemRow(packedPosition,
+					RosterProvider.RosterConstants.ALIAS);
+			Log.d(TAG, "action for contact " + userName + "/" + userJid);
 
 			int itemID = item.getItemId();
 
@@ -397,8 +389,9 @@ public class MainWindow extends GenericExpandableListActivity {
 		} else {
 
 			int itemID = item.getItemId();
-			String seletedGroup = rosterGroupList.get(groupPosition).get(
-					AdapterConstants.GROUP_NAME[0]);
+			String seletedGroup = getPackedItemRow(packedPosition,
+					RosterProvider.RosterConstants.GROUP);
+			Log.d(TAG, "action for group " + seletedGroup);
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_group_rename:
@@ -602,11 +595,11 @@ public class MainWindow extends GenericExpandableListActivity {
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
 
-		Log.i(TAG, "Called onChildClick()");
-		String userJid = rosterEntryList.get(groupPosition).get(childPosition)
-				.get(AdapterConstants.CONTACT_ID).jabberID;
-		String userName = rosterEntryList.get(groupPosition).get(childPosition)
-			.get(AdapterConstants.CONTACT_ID).screenName;
+		long packedPosition = getExpandableListView().getPackedPositionForChild(groupPosition, childPosition);
+		String userJid = getPackedItemRow(packedPosition,
+				RosterProvider.RosterConstants.JID);
+		String userName = getPackedItemRow(packedPosition,
+				RosterProvider.RosterConstants.ALIAS);
 		startChatActivity(userJid, userName);
 
 		return true;
@@ -676,14 +669,6 @@ public class MainWindow extends GenericExpandableListActivity {
 		return getString(R.string.Menu_connect);
 	}
 
-	private void clearRoster() {
-		rosterEntryList.clear();
-		rosterGroupList.clear();
-		if (rosterListAdapter != null) {
-			rosterListAdapter.notifyDataSetChanged();
-		}
-	}
-
 	private void registerXMPPService() {
 		Log.i(TAG, "called startXMPPService()");
 		xmppServiceIntent = new Intent(this, XMPPService.class);
@@ -740,12 +725,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	};
 
 	private void registerListAdapter() {
-		createRosterEntryList();
-		createRosterGroupList();
 
-		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
-				null, null, "roster_group");
-		rosterListAdapter = new RosterExpListAdapter(this, cursor,
+		rosterListAdapter = new RosterExpListAdapter(this, null,
 				R.layout.maingroup_row, GROUPS_FROM, GROUPS_TO,
 				R.layout.mainchild_row,
 				new String[] { RosterProvider.RosterConstants.ALIAS,
@@ -753,26 +734,8 @@ public class MainWindow extends GenericExpandableListActivity {
 			       		RosterProvider.RosterConstants.STATUS_MODE },
 				new int[] { R.id.roster_screenname, R.id.roster_statusmsg,
 			       		R.id.roster_icon });
-
-		/*
-		rosterListAdapter = new ExpandableRosterAdapter(this, rosterGroupList,
-				R.layout.maingroup_row, AdapterConstants.GROUP_NAME,
-				new int[] { R.id.groupname }, rosterEntryList,
-				R.layout.mainchild_row, AdapterConstants.CHILD_DATA_KEYS,
-				new int[] { R.id.roster_screenname, R.id.roster_statusmsg });
-				*/
-
 		setListAdapter(rosterListAdapter);
-	}
-
-	private void createRosterEntryList() {
-		List<String> rosterGroups = serviceAdapter.getRosterGroups();
-
-		for (String rosterGroup : rosterGroups) {
-			ArrayList<HashMap<String, RosterItem>> rosterGroupItems = getRosterGroupItems(rosterGroup);
-			if (rosterGroupItems.size() > 0)
-				rosterEntryList.add(rosterGroupItems);
-		}
+		updateRoster();
 	}
 
 	private ArrayList<HashMap<String, RosterItem>> getRosterGroupItems(
@@ -792,20 +755,9 @@ public class MainWindow extends GenericExpandableListActivity {
 		return rosterItemList;
 	}
 
-	private void createRosterGroupList() {
-		for (String rosterGroupName : serviceAdapter.getRosterGroups()) {
-			if (getRosterGroupItems(rosterGroupName).size() > 0) {
-				HashMap<String, String> tmpGroupMap = new HashMap<String, String>();
-				tmpGroupMap.put(AdapterConstants.GROUP_NAME[0], rosterGroupName);
-				rosterGroupList.add(tmpGroupMap);
-			}
-		}
-	}
-
 	public void createRoster() {
 		Log.i(TAG, "called createRoster()");
 		if (serviceAdapter.isAuthenticated()) {
-			clearRoster();
 			registerListAdapter();
 			expandGroups();
 		}
