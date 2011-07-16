@@ -149,15 +149,17 @@ public class RosterProvider extends ContentProvider {
 
 		SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 		int match = URI_MATCHER.match(url);
+		String groupBy = null;
 
 		switch (match) {
 
 		case GROUPS:
-			qBuilder.setTables(TABLE_GROUPS);
+			qBuilder.setTables(TABLE_ROSTER);
+			groupBy = "roster_group";
 			break;
 
 		case GROUP_MEMBERS:
-			qBuilder.setTables(TABLE_GROUPS);
+			qBuilder.setTables(TABLE_ROSTER);
 			qBuilder.appendWhere("roster_group=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
 			break;
@@ -185,7 +187,7 @@ public class RosterProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 		Cursor ret = qBuilder.query(db, projectionIn, selection, selectionArgs,
-				null, null, orderBy);
+				groupBy, null, orderBy);
 
 		if (ret == null) {
 			infoLog("RosterProvider.query: failed");

@@ -211,8 +211,11 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	public void updateRoster() {
+		String selectWhere = null;
+		if (!showOffline)
+			selectWhere = "status_mode > 0";
 		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
-				null, null, "roster_group");
+				selectWhere, null, "roster_group");
 		rosterListAdapter.changeCursor(cursor);
 	}
 
@@ -739,7 +742,6 @@ public class MainWindow extends GenericExpandableListActivity {
 	private static final String[] GROUPS_QUERY = new String[] {
 		RosterProvider.GroupsConstants._ID,
 		RosterProvider.GroupsConstants.GROUP,
-		RosterProvider.GroupsConstants.COLLAPSED
 	};
 	private static final String[] GROUPS_FROM = new String[] {
 		RosterProvider.GroupsConstants.GROUP
