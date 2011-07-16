@@ -7,6 +7,7 @@ import org.yaxim.androidclient.XMPPRosterServiceAdapter;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
+import org.yaxim.androidclient.MainWindow;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -22,6 +23,8 @@ import org.yaxim.androidclient.R;
 public class AddRosterItemDialog extends GenericDialog implements
 		OnClickListener, TextWatcher {
 
+	private MainWindow mMainWindow;
+
 	private Button cancelButton;
 	private Button okButton;
 	private EditText userInputField;
@@ -31,6 +34,7 @@ public class AddRosterItemDialog extends GenericDialog implements
 	public AddRosterItemDialog(Context mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
 		super(mainWindow, serviceAdapter);
+		mMainWindow = (MainWindow)mainWindow;
 	}
 
 	public void onCreate(Bundle icicle) {
@@ -48,7 +52,7 @@ public class AddRosterItemDialog extends GenericDialog implements
 
 	private void createAndSetGroupSpinnerAdapter() {
 		mGroupNameView = (GroupNameView)findViewById(R.id.AddRosterItem_GroupName);
-		mGroupNameView.setGroupList(serviceAdapter.getRosterGroups());
+		mGroupNameView.setGroupList(mMainWindow.getRosterGroups());
 	}
 
 	private void setOkButton() {

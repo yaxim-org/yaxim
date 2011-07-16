@@ -319,7 +319,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			      LAYOUT_INFLATER_SERVICE);
 		View group = inflater.inflate(R.layout.moverosterentrytogroupview, null, false);
 		final GroupNameView gv = (GroupNameView)group.findViewById(R.id.moverosterentrytogroupview_gv);
-		gv.setGroupList(serviceAdapter.getRosterGroups());
+		gv.setGroupList(getRosterGroups());
 		new AlertDialog.Builder(this)
 			.setTitle(R.string.MoveRosterEntryToGroupDialog_title)
 			.setView(group)
@@ -790,6 +790,21 @@ public class MainWindow extends GenericExpandableListActivity {
 		RosterProvider.RosterConstants.STATUS_MODE,
 		RosterProvider.RosterConstants.STATUS_MESSAGE,
 	};
+
+	public List<String> getRosterGroups() {
+		// we want all, online and offline
+		List<String> list = new ArrayList<String>();
+		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+					null, null, "roster_group");
+		int idx = cursor.getColumnIndex(RosterProvider.GroupsConstants.GROUP);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			list.add(cursor.getString(idx));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return list;
+	}
 
 	public class RosterExpListAdapter extends SimpleCursorTreeAdapter {
 
