@@ -28,7 +28,6 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.util.StringUtils;
 import org.yaxim.androidclient.data.ChatProvider;
-import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -66,7 +65,6 @@ public class SmackableImp implements Smackable {
 	private RosterListener mRosterListener;
 	private PacketListener mPacketListener;
 
-	private final ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>> mRosterItemsByGroup = new ConcurrentHashMap<String, ConcurrentHashMap<String, RosterItem>>();
 	private final ContentResolver mContentResolver;
 
 	public SmackableImp(YaximConfiguration config,
@@ -138,7 +136,6 @@ public class SmackableImp implements Smackable {
 	public void renameRosterGroup(String group, String newGroup) {
 		mRoster = mXMPPConnection.getRoster();
 		RosterGroup groupToRename = mRoster.getGroup(group);
-		mRosterItemsByGroup.remove(group);
 		groupToRename.setName(newGroup);
 	}
 
@@ -235,9 +232,6 @@ public class SmackableImp implements Smackable {
 			RosterEntry rosterEntry) throws YaximXMPPException {
 		try {
 			group.removeEntry(rosterEntry);
-			if (group.getEntries().size() < 1) {
-				mRosterItemsByGroup.remove(group.getName());
-			}
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage());
 		}
@@ -270,88 +264,10 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 		Collection<RosterEntry> rosterEntries = mRoster.getEntries();
 		for (RosterEntry rosterEntry : rosterEntries) {
-			setRosterEntry(rosterEntry);
 			addRosterEntryToDB(rosterEntry);
 		}
-		mServiceCallBack.rosterChanged();
 	}
 
-	private void setRosterEntry(RosterEntry rosterEntry) {
-		String groupName = getGroup(rosterEntry.getGroups());
-		ConcurrentMap<String, RosterItem> entryMap = getEntryMapForGroup(groupName);
-		RosterItem rosterItem = getRosterItemForRosterEntry(rosterEntry);
-		entryMap.put(rosterItem.jabberID, rosterItem);
-	}
-
-	private void unSetRosterEntry(String jabberID) {
-		Set<Entry<String, ConcurrentHashMap<String, RosterItem>>> groupMaps = mRosterItemsByGroup
-				.entrySet();
-
-		for (Entry<String, ConcurrentHashMap<String, RosterItem>> entry : groupMaps) {
-			ConcurrentHashMap<String, RosterItem> entryMap = entry.getValue();
-			String groupName = entry.getKey();
-
-			if (entryMap.containsKey(jabberID)) {
-				entryMap.remove(jabberID);
-			}
-			if (entryMap.size() < 1) {
-				mRosterItemsByGroup.remove(groupName);
-			}
-		}
-	}
-
-	private ConcurrentMap<String, RosterItem> getEntryMapForGroup(
-			String groupName) {
-		ConcurrentHashMap<String, RosterItem> tmpItemList;
-		if (mRosterItemsByGroup.containsKey(groupName))
-			return mRosterItemsByGroup.get(groupName);
-		else {
-			tmpItemList = new ConcurrentHashMap<String, RosterItem>();
-			mRosterItemsByGroup.put(groupName, tmpItemList);
-		}
-		return tmpItemList;
-	}
-
-	public ArrayList<RosterItem> getRosterEntriesByGroup(String group) {
-		ArrayList<RosterItem> groupItems = new ArrayList<RosterItem>();
-
-		ConcurrentHashMap<String, RosterItem> rosterItemMap = mRosterItemsByGroup
-				.get(group);
-
-		if (rosterItemMap != null) {
-			groupItems.addAll(rosterItemMap.values());
-			Collections.sort(groupItems);
-		}
-
-		return groupItems;
-	}
-
-	private RosterItem getRosterItemForRosterEntry(RosterEntry entry) {
-		String jabberID = entry.getUser();
-		String userName = getName(entry);
-		Presence userPresence = mRoster.getPresence(entry.getUser());
-		StatusMode userStatus = getStatus(userPresence);
-		String userStatusMessage = userPresence.getStatus();
-		String userGroups = getGroup(entry.getGroups());
-
-
-		debugLog("getRosterItemForRosterEntry(): " + jabberID + " -> " + userName);
-		return new RosterItem(jabberID, userName, userStatus,
-				userStatusMessage, userGroups);
-	}
-
-	public ArrayList<String> getRosterGroups() {
-		ArrayList<String> rosterGroups = new ArrayList<String>(
-				mRosterItemsByGroup.keySet());
-		Collections.sort(rosterGroups, new Comparator<String>() {
-			public int compare(String group1, String group2) {
-				if (group1.equals(AdapterConstants.EMPTY_GROUP))
-					return -1;
-				return group1.toLowerCase().compareTo(group2.toLowerCase());
-			}
-		});
-		return rosterGroups;
-	}
 
 	public void setStatusFromConfig() {
 		Presence presence = new Presence(Presence.Type.available);
@@ -419,7 +335,6 @@ public class SmackableImp implements Smackable {
 		if (mXMPPConnection.isConnected()) {
 			mXMPPConnection.disconnect();
 		}
-		mRosterItemsByGroup.clear();
 		setStatusOffline();
 		this.mServiceCallBack = null;
 	}
@@ -450,7 +365,6 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					setRosterEntry(rosterEntry);
 					addRosterEntryToDB(rosterEntry);
 				}
 				mServiceCallBack.rosterChanged();
@@ -461,7 +375,6 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					unSetRosterEntry(entry);
 					deleteRosterEntryFromDB(entry);
 				}
 				mServiceCallBack.rosterChanged();
@@ -472,8 +385,6 @@ public class SmackableImp implements Smackable {
 
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					unSetRosterEntry(rosterEntry.getUser());
-					setRosterEntry(rosterEntry);
 					updateRosterEntryInDB(rosterEntry);
 				}
 				mServiceCallBack.rosterChanged();
@@ -484,8 +395,6 @@ public class SmackableImp implements Smackable {
 
 				String jabberID = getJabberID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
-				setRosterEntry(rosterEntry);
-				mServiceCallBack.rosterChanged();
 				updateOrInsertRosterEntryToDB(rosterEntry);
 			}
 		};

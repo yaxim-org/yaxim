@@ -5,7 +5,6 @@ package org.yaxim.androidclient.service;
 */
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
-import org.yaxim.androidclient.data.RosterItem;
 
 interface IXMPPRosterService {
 	/* hack: use int because enums are not trivially parcellable */
@@ -24,9 +23,6 @@ interface IXMPPRosterService {
 	void requestAuthorizationForRosterItem(String user);
 	void renameRosterItem(String user, String newName);
 	void moveRosterItemToGroup(String user, String group);
-	
-	List<RosterItem> getRosterEntriesByGroup(String group);
-	List<String> getRosterGroups();
 	
 	/* callback methods */
 	

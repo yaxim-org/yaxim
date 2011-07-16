@@ -2,7 +2,6 @@ package org.yaxim.androidclient.service;
 
 import java.util.ArrayList;
 
-import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.StatusMode;
 
@@ -25,9 +24,6 @@ public interface Smackable {
 	
 	void registerCallback(XMPPServiceCallback callBack);
 	void unRegisterCallback();
-	
-	ArrayList<RosterItem> getRosterEntriesByGroup(String group);
-	ArrayList<String> getRosterGroups();
 	
 	String getNameForJID(String jid);
 }

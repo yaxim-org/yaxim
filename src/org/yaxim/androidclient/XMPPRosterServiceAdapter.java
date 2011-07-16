@@ -2,7 +2,6 @@ package org.yaxim.androidclient;
 
 import java.util.List;
 
-import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
 
@@ -78,16 +77,6 @@ public class XMPPRosterServiceAdapter {
 		}
 	}
 	
-	public List<String> getRosterGroups() {
-		List<String> rosterGroups = null;
-		try {
-			rosterGroups = xmppServiceStub.getRosterGroups();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return rosterGroups;
-	}
-	
 	public void disconnect() {
 		try {
 			xmppServiceStub.disconnect();
@@ -104,16 +93,6 @@ public class XMPPRosterServiceAdapter {
 		}
 	}
 
-	public List<RosterItem> getGroupItems(String group) {
-		List<RosterItem> itemsInRosterGroup = null;
-		try {
-			itemsInRosterGroup = xmppServiceStub.getRosterEntriesByGroup(group);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return itemsInRosterGroup;
-	}
-	
 	public void registerUICallback(IXMPPRosterCallback uiCallback) {
 		try {
 			xmppServiceStub.registerRosterCallback(uiCallback);
