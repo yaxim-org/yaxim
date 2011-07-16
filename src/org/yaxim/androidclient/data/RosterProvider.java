@@ -277,14 +277,14 @@ public class RosterProvider extends ContentProvider {
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.roster";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.roster";
-		public static final String DEFAULT_SORT_ORDER = RosterConstants.STATUS_MODE
-				+ " DESC";
 
 		public static final String JID = "jid";
 		public static final String ALIAS = "alias";
 		public static final String STATUS_MODE = "status_mode";
 		public static final String STATUS_MESSAGE = "status_message";
 		public static final String GROUP = "roster_group";
+
+		public static final String DEFAULT_SORT_ORDER = STATUS_MODE + " DESC, " + ALIAS;
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
