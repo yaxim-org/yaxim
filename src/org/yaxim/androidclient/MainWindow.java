@@ -206,12 +206,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 
 	public void updateRoster() {
-		String selectWhere = null;
-		if (!showOffline)
-			selectWhere = "status_mode > 0";
-		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
-				selectWhere, null, "roster_group");
-		rosterListAdapter.changeCursor(cursor);
+		rosterListAdapter.requery();
 		expandGroups();
 	}
 
@@ -704,34 +699,9 @@ public class MainWindow extends GenericExpandableListActivity {
 		bindService(xmppServiceIntent, xmppServiceConnection, BIND_AUTO_CREATE);
 	}
 
-	private static final String[] GROUPS_QUERY = new String[] {
-		RosterProvider.GroupsConstants._ID,
-		RosterProvider.GroupsConstants.GROUP,
-	};
-	private static final String[] GROUPS_FROM = new String[] {
-		RosterProvider.GroupsConstants.GROUP
-	};
-	private static final int[] GROUPS_TO = new int[] {
-		R.id.groupname
-	};
-	private static final String[] ROSTER_QUERY = new String[] {
-		RosterProvider.RosterConstants._ID,
-		RosterProvider.RosterConstants.JID,
-		RosterProvider.RosterConstants.ALIAS,
-		RosterProvider.RosterConstants.STATUS_MODE,
-		RosterProvider.RosterConstants.STATUS_MESSAGE,
-	};
-
 	private void registerListAdapter() {
 
-		rosterListAdapter = new RosterExpListAdapter(this, null,
-				R.layout.maingroup_row, GROUPS_FROM, GROUPS_TO,
-				R.layout.mainchild_row,
-				new String[] { RosterProvider.RosterConstants.ALIAS,
-					RosterProvider.RosterConstants.STATUS_MESSAGE,
-			       		RosterProvider.RosterConstants.STATUS_MODE },
-				new int[] { R.id.roster_screenname, R.id.roster_statusmsg,
-			       		R.id.roster_icon });
+		rosterListAdapter = new RosterExpListAdapter(this);
 		setListAdapter(rosterListAdapter);
 	}
 
@@ -803,14 +773,44 @@ public class MainWindow extends GenericExpandableListActivity {
 		return i;
 	}
 
+	private static final String[] GROUPS_QUERY = new String[] {
+		RosterProvider.GroupsConstants._ID,
+		RosterProvider.GroupsConstants.GROUP,
+	};
+	private static final String[] GROUPS_FROM = new String[] {
+		RosterProvider.GroupsConstants.GROUP
+	};
+	private static final int[] GROUPS_TO = new int[] {
+		R.id.groupname
+	};
+	private static final String[] ROSTER_QUERY = new String[] {
+		RosterProvider.RosterConstants._ID,
+		RosterProvider.RosterConstants.JID,
+		RosterProvider.RosterConstants.ALIAS,
+		RosterProvider.RosterConstants.STATUS_MODE,
+		RosterProvider.RosterConstants.STATUS_MESSAGE,
+	};
+
 	public class RosterExpListAdapter extends SimpleCursorTreeAdapter {
 
-		public RosterExpListAdapter(Context context, Cursor cursor, int groupLayout,
-				String[] groupFrom, int[] groupTo,
-				int childLayout, String[] childrenFrom,
-				int[] childrenTo) {
-			super(context, cursor, groupLayout, groupFrom, groupTo, childLayout, childrenFrom,
-					childrenTo);
+		public RosterExpListAdapter(Context context) {
+			super(context, /* cursor = */ null, 
+					R.layout.maingroup_row, GROUPS_FROM, GROUPS_TO,
+					R.layout.mainchild_row,
+					new String[] { RosterProvider.RosterConstants.ALIAS,
+						RosterProvider.RosterConstants.STATUS_MESSAGE,
+						RosterProvider.RosterConstants.STATUS_MODE },
+					new int[] { R.id.roster_screenname, R.id.roster_statusmsg,
+						R.id.roster_icon });
+		}
+
+		public void requery() {
+			String selectWhere = null;
+			if (!showOffline)
+				selectWhere = "status_mode > 0";
+			Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+					selectWhere, null, "roster_group");
+			changeCursor(cursor);
 		}
 
 		@Override
