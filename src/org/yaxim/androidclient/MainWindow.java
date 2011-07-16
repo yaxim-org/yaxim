@@ -114,6 +114,7 @@ public class MainWindow extends GenericExpandableListActivity {
 	}
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		getContentResolver().unregisterContentObserver(mRosterObserver);
 	}
 
