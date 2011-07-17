@@ -373,7 +373,7 @@ public class XMPPService extends GenericService {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
-				mRosterCallbacks.getBroadcastItem(i).connectionFailed(mConnectionDemanded.get());
+				mRosterCallbacks.getBroadcastItem(i).connectionStatusChanged(false, mConnectionDemanded.get());
 			} catch (RemoteException e) {
 				logError("caught RemoteException: " + e.getMessage());
 			}
@@ -406,7 +406,7 @@ public class XMPPService extends GenericService {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
-				mRosterCallbacks.getBroadcastItem(i).connectionSuccessful();
+				mRosterCallbacks.getBroadcastItem(i).connectionStatusChanged(true, false);
 			} catch (RemoteException e) {
 				logError("caught RemoteException: " + e.getMessage());
 			}
