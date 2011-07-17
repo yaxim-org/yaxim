@@ -709,27 +709,14 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private void createUICallback() {
 		rosterCallback = new IXMPPRosterCallback.Stub() {
-
-			public void rosterChanged() throws RemoteException {
-				Log.i(TAG, "called rosterChanged()");
-			}
-
-			public void connectionSuccessful() throws RemoteException {
-				mainHandler.post(new Runnable() {
-
-					public void run() {
-						getExpandableListView().requestFocus();
-						setConnectingStatus(false);
-					}
-				});
-			}
-
-			public void connectionFailed(final boolean willReconnect)
+			@Override
+			public void connectionStatusChanged(final boolean isConnected,
+						final boolean willReconnect)
 						throws RemoteException {
 				mainHandler.post(new Runnable() {
 					public void run() {
-						showToastNotification(R.string.toast_connectfail_message);
-						setConnectingStatus(willReconnect);
+						Log.d(TAG, "connectionStatusChanged: " + isConnected + "/" + willReconnect);
+						setConnectingStatus(!isConnected && willReconnect);
 					}
 				});
 			}
