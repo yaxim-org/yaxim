@@ -316,7 +316,6 @@ public class XMPPService extends GenericService {
 			mSmackable.unRegisterCallback();
 		}
 		createAdapter();
-		registerAdapterCallback();
 
 		mConnectingThread = new Thread() {
 
@@ -459,9 +458,7 @@ public class XMPPService extends GenericService {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-	}
 
-	private void registerAdapterCallback() {
 		mSmackable.registerCallback(new XMPPServiceCallback() {
 
 			public void newMessage(String from, String message) {
