@@ -90,7 +90,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		super.onCreate(savedInstanceState);
 
 		showFirstStartUpDialogIfPrefsEmpty();
-		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
+		getContentResolver().registerContentObserver(RosterProvider.GROUPS_URI,
 				true, mRosterObserver);
 		registerXMPPService();
 		createUICallback();

@@ -76,7 +76,9 @@ public class RosterProvider extends ContentProvider {
 			throw new IllegalArgumentException("Cannot delete from URL: " + url);
 		}
 
-		getContext().getContentResolver().notifyChange(url, null);
+		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+		// we also need to notify groups change
+		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		return count;
 	}
 
@@ -102,7 +104,7 @@ public class RosterProvider extends ContentProvider {
 		}
 
 		Uri noteUri = ContentUris.withAppendedId(GROUPS_URI, rowId);
-		getContext().getContentResolver().notifyChange(noteUri, null);
+		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		return noteUri;
 	}
 
@@ -133,7 +135,10 @@ public class RosterProvider extends ContentProvider {
 		}
 
 		Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
-		getContext().getContentResolver().notifyChange(noteUri, null);
+		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+
+		// we also need to notify groups change
+		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		return noteUri;
 	}
 
@@ -221,7 +226,9 @@ public class RosterProvider extends ContentProvider {
 
 		infoLog("*** notifyChange() rowId: " + rowId + " url " + url);
 
-		getContext().getContentResolver().notifyChange(url, null);
+		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+		// we also need to notify groups change
+		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		return count;
 
 	}
