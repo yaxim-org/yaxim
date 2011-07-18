@@ -396,6 +396,7 @@ public class SmackableImp implements Smackable {
 				String jabberID = getJabberID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				updateOrInsertRosterEntryToDB(rosterEntry);
+				mServiceCallBack.rosterChanged();
 			}
 		};
 		mRoster.addRosterListener(mRosterListener);
