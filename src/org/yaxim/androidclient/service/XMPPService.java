@@ -263,6 +263,7 @@ public class XMPPService extends GenericService {
 			return;
 		}
 
+		mLastConnectionError = getString(R.string.conn_connecting);
 		updateServiceNotification();
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
