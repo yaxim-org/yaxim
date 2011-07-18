@@ -171,8 +171,8 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void logInfo(String data) {
-		if (LogConstants.LOG_ERROR) {
-			Log.e(TAG, data);
+		if (LogConstants.LOG_INFO) {
+			Log.i(TAG, data);
 		}
 	}
 

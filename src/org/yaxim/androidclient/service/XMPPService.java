@@ -366,20 +366,23 @@ public class XMPPService extends GenericService {
 		});
 	}
 
-	private void connectionFailed(String reason) {
-		logInfo("connectionFailed: " + reason);
-		mLastConnectionError = reason;
-		mIsConnected.set(false);
+	private void broadcastConnectionStatus(boolean isConnected, boolean willReconnect) {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 		for (int i = 0; i < broadCastItems; i++) {
 			try {
-				mRosterCallbacks.getBroadcastItem(i).connectionStatusChanged(false, mConnectionDemanded.get());
+				mRosterCallbacks.getBroadcastItem(i).connectionStatusChanged(isConnected, willReconnect);
 			} catch (RemoteException e) {
 				logError("caught RemoteException: " + e.getMessage());
 			}
 		}
 		mRosterCallbacks.finishBroadcast();
-		// post reconnection
+	}
+
+	private void connectionFailed(String reason) {
+		logInfo("connectionFailed: " + reason);
+		mLastConnectionError = reason;
+		mIsConnected.set(false);
+		broadcastConnectionStatus(false, mConnectionDemanded.get());
 		if (mConnectionDemanded.get()) {
 			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
 			updateServiceNotification();
@@ -403,15 +406,7 @@ public class XMPPService extends GenericService {
 		mIsConnected.set(true);
 		mReconnectTimeout = RECONNECT_AFTER;
 		updateServiceNotification();
-		final int broadCastItems = mRosterCallbacks.beginBroadcast();
-		for (int i = 0; i < broadCastItems; i++) {
-			try {
-				mRosterCallbacks.getBroadcastItem(i).connectionStatusChanged(true, false);
-			} catch (RemoteException e) {
-				logError("caught RemoteException: " + e.getMessage());
-			}
-		}
-		mRosterCallbacks.finishBroadcast();
+		broadcastConnectionStatus(true, false);
 	}
 
 	private void rosterChanged() {
@@ -448,6 +443,8 @@ public class XMPPService extends GenericService {
 			mSmackable.unRegisterCallback();
 			mSmackable = null;
 		}
+		mSmackable = null;
+		connectionFailed("Disconnected");
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 	}
 
