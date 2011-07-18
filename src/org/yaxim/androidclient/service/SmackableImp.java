@@ -99,6 +99,9 @@ public class SmackableImp implements Smackable {
 		// been thrown.
 		if (isAuthenticated()) {
 			registerMessageListener();
+			// we need to "ping" the service to let it know we are actually
+			// connected, even when no roster entries will come in
+			mServiceCallBack.rosterChanged();
 			registerRosterListener();
 			setRosterEntries();
 		}
