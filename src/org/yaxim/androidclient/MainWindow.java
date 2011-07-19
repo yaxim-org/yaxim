@@ -85,6 +85,8 @@ public class MainWindow extends GenericExpandableListActivity {
 	private ToggleOfflineContactsAction toggleOfflineContactsAction;
 
 	private ContentObserver mRosterObserver = new RosterObserver();
+	private HashMap<String, Boolean> mGroupsExpanded = new HashMap<String, Boolean>();
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -168,6 +170,21 @@ public class MainWindow extends GenericExpandableListActivity {
 		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
 		getExpandableListView().requestFocus();
+
+		getExpandableListView().setOnGroupCollapseListener(
+			new ExpandableListView.OnGroupCollapseListener() {
+				public void onGroupCollapse(int groupPosition) {
+					Log.d(TAG, "onGroupCollapse: " + groupPosition);
+					mGroupsExpanded.put(getGroupName(groupPosition), false);
+				}
+			});
+		getExpandableListView().setOnGroupExpandListener(
+			new ExpandableListView.OnGroupExpandListener() {
+				public void onGroupExpand(int groupPosition) {
+					Log.d(TAG, "onGroupExpand: " + groupPosition);
+					mGroupsExpanded.put(getGroupName(groupPosition), true);
+				}
+			});
 	}
 
 	@Override
@@ -176,6 +193,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		if (serviceAdapter != null)
 			serviceAdapter.unregisterUICallback(rosterCallback);
 		unbindXMPPService();
+		storeExpandedState();
 	}
 
 	@Override
@@ -206,7 +224,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	public void updateRoster() {
 		rosterListAdapter.requery();
-		expandGroups();
+		restoreGroupsExpanded();
 	}
 
 	private String getPackedItemRow(long packedPosition, String rowName) {
@@ -754,14 +772,36 @@ public class MainWindow extends GenericExpandableListActivity {
 		};
 	}
 
-	public void expandGroups() {
-		Log.d(TAG, "expandGroups(): " + getExpandableListAdapter().getGroupCount());
+	// store mGroupsExpanded into prefs (this is a hack, but SQLite /
+	// content providers suck wrt. virtual groups)
+	public void storeExpandedState() {
+		SharedPreferences.Editor prefedit = PreferenceManager
+				.getDefaultSharedPreferences(this).edit();
+		for (HashMap.Entry<String, Boolean> item : mGroupsExpanded.entrySet()) {
+			prefedit.putBoolean("expanded_" + item.getKey(), item.getValue());
+		}
+		prefedit.commit();
+	}
+
+	// get the name of a roster group from the cursor
+	public String getGroupName(int groupId) {
+		return getPackedItemRow(getExpandableListView().
+					getPackedPositionForGroup(groupId),
+				RosterProvider.RosterConstants.GROUP);
+	}
+
+	public void restoreGroupsExpanded() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
-			try {
+			String name = getGroupName(count);
+			if (!mGroupsExpanded.containsKey(name))
+				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
+			Log.d(TAG, "restoreGroupsExpanded: " + name + ": " + mGroupsExpanded.get(name));
+			if (mGroupsExpanded.get(name))
 				getExpandableListView().expandGroup(count);
-			} catch (IndexOutOfBoundsException e) {
-				Log.d(TAG, "Oops, why did I try to expand an empty group?");
-			}
+			else
+				getExpandableListView().collapseGroup(count);
 		}
 	}
 
@@ -882,7 +922,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		public void onChange(boolean selfChange) {
 			Log.d(TAG, "RosterObserver.onChange: " + selfChange);
 			if (getExpandableListAdapter() != null)
-				expandGroups();
+				restoreGroupsExpanded();
 		}
 	}
 }
