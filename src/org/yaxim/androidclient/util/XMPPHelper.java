@@ -14,7 +14,7 @@ public class XMPPHelper {
 			throws YaximXMPPAdressMalformedException {
 		if (jid != null) {
 			Pattern p = Pattern
-					.compile("[a-z0-9\\-_\\.]++@[a-z0-9\\-_]++(\\.[a-z0-9\\-_]++)++");
+					.compile("(?i)[a-z0-9\\-_\\.]++@[a-z0-9\\-_]++(\\.[a-z0-9\\-_]++)++");
 			Matcher m = p.matcher(jid);
 
 			if (!m.matches()) {
