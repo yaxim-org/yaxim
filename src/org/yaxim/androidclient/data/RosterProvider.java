@@ -128,7 +128,8 @@ public class RosterProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-		long rowId = db.insert(TABLE_ROSTER, RosterConstants.JID, values);
+		long rowId = db.insertWithOnConflict(TABLE_ROSTER, RosterConstants.JID, values,
+				SQLiteDatabase.CONFLICT_REPLACE);
 
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
