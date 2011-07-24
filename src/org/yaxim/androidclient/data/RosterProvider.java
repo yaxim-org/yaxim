@@ -22,11 +22,12 @@ import android.util.Log;
 public class RosterProvider extends ContentProvider {
 
 	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Roster";
+	public static final String GAUTHORITY = "org.yaxim.androidclient.provider.Groups";
 	public static final String TABLE_ROSTER = "roster";
 	public static final String TABLE_GROUPS = "groups";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + TABLE_ROSTER);
-	public static final Uri GROUPS_URI = Uri.parse("content://" + AUTHORITY
+	public static final Uri GROUPS_URI = Uri.parse("content://" + GAUTHORITY
 			+ "/" + TABLE_GROUPS);
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
@@ -39,8 +40,8 @@ public class RosterProvider extends ContentProvider {
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "roster", CONTACTS);
 		URI_MATCHER.addURI(AUTHORITY, "roster/#", CONTACT_ID);
-		URI_MATCHER.addURI(AUTHORITY, "groups", GROUPS);
-		URI_MATCHER.addURI(AUTHORITY, "groups/*", GROUP_MEMBERS);
+		URI_MATCHER.addURI(GAUTHORITY, "groups", GROUPS);
+		URI_MATCHER.addURI(GAUTHORITY, "groups/*", GROUP_MEMBERS);
 	}
 
 	private static final String TAG = "yaxim.RosterProvider";

@@ -565,7 +565,7 @@ public class SmackableImp implements Smackable {
 
 	private void updateOrInsertRosterEntryToDB(final RosterEntry entry) {
 		try {
-			deleteRosterEntryFromDB(entry.getUser());
+			//deleteRosterEntryFromDB(entry.getUser());
 			addRosterEntryToDB(entry);
 		} catch (Exception e) {
 			e.printStackTrace();
