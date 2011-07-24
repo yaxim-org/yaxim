@@ -242,7 +242,7 @@ public class RosterProvider extends ContentProvider {
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "roster.db";
-		private static final int DATABASE_VERSION = 2;
+		private static final int DATABASE_VERSION = 3;
 
 		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -255,7 +255,7 @@ public class RosterProvider extends ContentProvider {
 			db.execSQL("CREATE TABLE " + TABLE_GROUPS + " ("
 					+ GroupsConstants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ GroupsConstants.GROUP + " TEXT UNIQUE ON CONFLICT REPLACE, "
+					+ GroupsConstants.GROUP + " TEXT UNIQUE ON CONFLICT IGNORE, "
 					+ GroupsConstants.COLLAPSED + " INTEGER);");
 			db.execSQL("CREATE TABLE " + TABLE_ROSTER + " ("
 					+ RosterConstants._ID
@@ -265,6 +265,12 @@ public class RosterProvider extends ContentProvider {
 					+ " TEXT, " + RosterConstants.STATUS_MODE + " INTEGER, "
 					+ RosterConstants.STATUS_MESSAGE + " TEXT, "
 					+ RosterConstants.GROUP + " TEXT);");
+			db.execSQL("CREATE INDEX idx_roster_group ON " + TABLE_ROSTER
+				        + " (" + RosterConstants.GROUP + ")");
+			db.execSQL("CREATE INDEX idx_roster_alias ON " + TABLE_ROSTER
+				        + " (" + RosterConstants.ALIAS + ")");
+			db.execSQL("CREATE INDEX idx_roster_status ON " + TABLE_ROSTER
+				        + " (" + RosterConstants.STATUS_MODE + ")");
 		}
 
 		@Override
