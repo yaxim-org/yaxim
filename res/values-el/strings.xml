@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Σύνδεση στο server...</string>
+	<string name="conn_online">Συνδεδεμένος</string>
+	<string name="conn_offline">Εκτός Σύνδεσης</string>
+	<string name="conn_empty_roster">Δεν υπάρχουν επαφές για εμφάνιση</string>
+	<string name="conn_reconnect">Επανασύνδεση σε %d δευτερόλεπτα</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Έξοδος</string>
+	<string name="Global_authenticate_first">παρακαλώ συνδεθείτε πρώτα</string>
+	<string name="Global_JID_hint">user@jabber.example.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Καλωσορίσατε στο yaxim!</string>
+	<string name="StartupDialog_Summary">Πρέπει να ρυθμίσετε πρώτα το yaxim για να μπορέσετε να το χρησιμοποιήσετε. Παρακαλώ το εισάγετε το Jabber ID και τον κωδικό σας.</string>
+	<string name="StartupDialog_pwHint">Εισάγετε κωδικό</string>
+	<string name="StartupDialog_portHint">5222</string>
+	<string name="StartupDialog_Username_title">Εισαγάγετε το Jabber ID σας:</string>
+	<string name="StartupDialog_passwd_title">Κωδικός Πρόσβασης:</string>
+	<string name="StartupDialog_port_title">Port:</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Έχετε μήνυμα απο %s:</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Ειδοποίηση μηνύματος</string>
+	<string name="led_title">Ειδοποίηση μέσου LED</string>
+	<string name="led_summOn">Ενεργοποιημένο</string>
+	<string name="led_summOff">Απενεργοποιημένο</string>
+	<string name="vibr_title">Δόνηση</string>
+	<string name="vibr_summOn">Ενεργοποιημένο</string>
+	<string name="vibr_summOff">Απενεργοποιημένο</string>
+	<string name="ringtone_title">Ήχος ειδοποιήσεων</string>
+	<string name="ringtone_summ">Ήχος για εισερχόμενα μηνύματα</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Επιλογές εκκίνησης</string>
+	<string name="boot_title">Φόρτωση κατα την εκκίνηση του κινητού</string>
+	<string name="boot_summOn">yaxim φορτώνει αυτόματα</string>
+	<string name="boot_summOff">yaxim δεν φορτώνει αυτόματα</string>
+	<string name="statuspopup_name">Καθορισμός της κατάστασή σας</string>
+	<string name="showOffline_summ_on">Επαφές εκτός σύνδεσης θα εμφανίζονται</string>
+	<string name="showOffline_summ_off">Επαφές εκτός σύνδεσης δεν θα εμφανίζονται</string>
+	<string name="showOffline_title">Εμφάνιση επαφών εκτός σύνδεσης</string>
+	<string name="foregroundService_summ_on">Το yaxim να κρατιέται στην μνήμη</string>
+	<string name="foregroundService_summ_off">Επιτρέπεται η επανεκκινηση του yaxim απο το σύστημα</string>
+	<string name="foregroundService_title">Μόνιμη σύνδεση</string>
+
+	<string name="preftitle_debug">Debugging</string>
+	<string name="smackdebug_summ_on">Αποστολή πληροφορίων πακεταρισμα και αποσφαλμάτωση στο logcat</string>
+	<string name="smackdebug_summ_off">Debug μεσου logcat απενεργοποιημένο</string>
+	<string name="smackdebug_title">SMACK debugging</string>
+
+	<string name="reportcrash_title">Αναφορά Προβλημάτων</string>
+	<string name="reportcrash_summ_on">Ανώνυμη αναφορά ενεργή</string>
+	<string name="reportcrash_summ_off">Ανώνυμη αναφορά μη ενεργή</string>
+
+	<!-- Appearence Strings -->
+	<!--
+	<string name="preftitle_app">Appearance</string>
+	<string name="FontChat_title">Chat font size</string>
+	<string name="FontChat_summ">Set chat font size</string>
+	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Προσθήκη επαφής</string>
+	<string name="Menu_ShowOff">Εμφάνιση αποσυνδεδεμένων</string>
+	<string name="Menu_HideOff">Απόκρυψη αποσυνδεδεμένων</string>
+	<string name="Menu_AccSettings">Επεξεργασία λογαριασμού</string>
+	<string name="Menu_Settings">Ρυθμίσεις</string>
+	<string name="Menu_Status">Κατάσταση</string>
+	<string name="Menu_connect">Σύνδεση</string>
+	<string name="Menu_disconnect">Αποσύνδεση</string>
+	<string name="Menu_about">περί yaxim</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Προσθήκη μιας Επαφής</string>
+	<string name="addFriend_Summ">Παρακαλώ εισάγετε το Jabber ID και το εμφανιζόμενο όνομα της επικοινωνία σας και αντιστοιχίσετε την σε μια ομάδα!</string>
+	<string name="addFriend_aliasHint">Όνομα</string>
+	<string name="addrosteritemaddgroupchoice">Προσθέστε σε μια νέα ομάδαη</string>
+	<string name="NewGroup_EditTextField_Hint">Όνομα της νέας ομάδας</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Επιλογές για %s</string>
+	<string name="roster_contextmenu_group_rename">Μετονομασία ομάδας</string>
+	<string name="roster_contextmenu_contact_delete">Διαγραφή επαφής</string>
+	<string name="roster_contextmenu_contact_open_chat">Άνοιγμα συζήτησης</string>
+	<string name="roster_contextmenu_contact_rename">Μετονομασία</string>
+	<string name="roster_contextmenu_contact_request_auth">Αίτηση έγκρισης</string>
+	<string name="roster_contextmenu_contact_change_group">Αλλαγή Ομάδας</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Πληροφορίες Σύνδεσης</string>
+	<string name="account_settings_title">Ρυθμίσεις λογαριασμού</string>
+	<string name="account_options_title">Επιλογές σύνδεσης</string>
+	<string name="account_options_advanced">Προχωρημένες Επιλογές</string>
+	<string name="connstartup_title">Αυτόματη σύνδεση</string>
+	<string name="connstartup_summOn">Κατά την έναρξη του yaxim να γίνετε σύνδεση</string>
+	<string name="connstartup_summOff">Όχι αυτόματη σύνδεση</string>
+	<string name="reconnect_title">Αυτόματη επανασύνδεση</string>
+	<string name="reconnect_summOn">Επανασύνδεση σε περίπτωση που κοπεί η σύνδεση</string>
+	<string name="reconnect_summOff">Όταν η σύνδεση κοπεί να μείνει αποσυνδεμένο.</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">παράδειγμα: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Εισαγάγετε το Jabber ID σας:</string>
+	<string name="account_jabberPW_title">Κωδικός λογαριασμού</string>
+	<string name="account_jabberPW_sum">Ο κωδικός λογαριασμού του Jabber</string>
+	<string name="account_jabberPW_dialog_title">Εισάγετε τον κωδικό:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Client Resource</string>
+	<string name="account_resource_summ">Default: yaxim</string>
+	<string name="account_resource_dialog_title">Εισάγετε το resource:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Προτεραιότητά του Client</string>
+	<string name="account_prio_summ">Προεπιλογή: 0 (επιτρέπονται: 0 .. 127)</string>
+	<string name="account_prio_dialog_title">Εισάγετε την προτεραιότητά σας:</string>
+	<string name="account_port_title">Server Port</string>
+	<string name="account_port_sum">Default: 5222</string>
+	<string name="account_port_dialog_title">Εισάγετε τη θύρα του server:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Προσαρμοσμένος Server</string>
+	<string name="account_customserver_summ">(Προαιρετικό) εναλλακτικό server hostname</string>
+	<string name="account_customserver_dialog_title">Πληκτρολογήστε το server hostname:</string>
+	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">Απαιτείται SSL/TLS</string>
+	<string name="require_ssl_summOn">Πάντα κρυπτογράφημένη σύνδεση</string>
+	<string name="require_ssl_summOff">Επιτρέπεται μη κρυπτογράφημένη σύνδεση</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Επιλογή ομάδας</string>
+	<string name="setStatusmsgHint">Η κατάσταση σας</string>
+	<string name="setStatusTitle">Καθορισμός της κατάστασή σας</string>
+	<string name="RenameGroup_summ">Mετονομασία ομάδας %s σε:</string>
+	<string name="RenameGroup_title">Μετονομασία ομάδας</string>
+	<string name="RenameEntry_summ">Μετονομασία %1$s (%2$s) σε:</string>
+	<string name="RenameEntry_title">Μετονομασία επαφής</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Διαλέξτε μια ομάδα απο την λίστα</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Αλλαγή της ομάδας</string>
+	<string name="deleteRosterItem_text">Σίγουρα να διαγραφεί η/ο %1$s (%2$s);</string>
+	<string name="deleteRosterItem_title">Διαγραφή επαφής</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Εγώ:</string>
+	<string name="toast_connectfail_message">Η σύνδεση έκλεισε!</string>
+	<string name="toast_stored_offline">Το μήνυμα έχει αποθηκευτεί για την μετάδοση.</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">ΠΕΡΙ YAXIM</string>
+	<string name="AboutDialog_DevelopersTitle">Προγραμματιστές</string>
+	<string name="AboutDialog_DevelopersText">Acknowledged Developers:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Join us, ask for more fancy features or send us some free \"Club Mate\" at http://yaxim.org/ or on #yaxim on freenode IRC.</string>
+	<string name="AboutDialog_LicenceTitle">Αδειοδότηση</string>
+	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright (c) 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+
+	<string name="status_available">Συνδεδεμένος</string>
+	<string name="status_away">Απουσιάζω</string>
+	<string name="status_chat">Ελεύθερος για κουβέντα</string>
+	<string name="status_dnd">Μην ενοχλείτε</string>
+	<string name="status_xa">Μη διαθέσιμος/η</string>
+	<string name="status_offline">Εκτός Σύνδεσης</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Theo Ioannidis https://launchpad.net/~xaroulhs1983</string>
+</resources>

@@ -177,5 +177,6 @@
 	<string name="status_offline">Desconectado</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Georg Lukas https://launchpad.net/~ge0rg
   Leonardo Gastón De Luca https://launchpad.net/~leorockway</string>
 </resources>

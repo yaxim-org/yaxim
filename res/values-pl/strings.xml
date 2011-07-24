@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Łączenie z serwerem...</string>
+	<string name="conn_online">Połączony</string>
+	<string name="conn_offline">Rozłączony</string>
+	<string name="conn_empty_roster">Brak kontaktów</string>
+	<string name="conn_reconnect">\nPonowne połączenie w ciągu %d sekund.</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Wyjdź</string>
+	<string name="Global_authenticate_first">Najpier nawiąż połączenie</string>
+	<string name="Global_JID_hint">uzytkownik@jabber.serwer.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Witaj w yaxim!</string>
+	<string name="StartupDialog_Summary">Używanie yaxima wymaga konfiguracji. Podaj swój Jabber ID i hasło.</string>
+	<string name="StartupDialog_pwHint">Hasło</string>
+	<string name="StartupDialog_portHint">5222</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_passwd_title">Hasło:</string>
+	<string name="StartupDialog_port_title">Port:</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Wiadomość od %s:</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Powiadamianie o wiadomościach</string>
+	<string name="led_title">Powiadomienie diodą LED</string>
+	<string name="led_summOn">Powiadomienia LED są włączone</string>
+	<string name="led_summOff">Powiadomienia LED są wyłączone</string>
+	<string name="vibr_title">Wibracja</string>
+	<string name="vibr_summOn">Powiadomienia za pomocą wibracji są włączone</string>
+	<string name="vibr_summOff">Powiadomienia za pomocą wibracji są wyłączone</string>
+	<string name="ringtone_title">Dzwonek</string>
+	<string name="ringtone_summ">Dzwonek dla przychodzących wiadomości</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Opcje uruchamiania</string>
+	<string name="boot_title">Uruchom yaxim przy starcie systemu</string>
+	<string name="boot_summOn">yaxim będzie uruchamiany przy starcie systemu</string>
+	<string name="boot_summOff">yaxim nie będzie uruchamiany przy starcie systemu</string>
+	<string name="statuspopup_name">Ustaw swój status</string>
+	<string name="showOffline_summ_on">Rozłączone kontakty widoczne</string>
+	<string name="showOffline_summ_off">Rozłączone kontakty ukryte</string>
+	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>
+	<string name="foregroundService_summ_on">Utrzymuj yaxima w pamięci operacyjnej</string>
+	<string name="foregroundService_summ_off">Pozwól systemowi restartować aplikację</string>
+	<string name="foregroundService_title">Utrzymuj połączenie</string>
+
+	<string name="preftitle_debug">Debugowanie</string>
+	<string name="smackdebug_summ_on">Debugowanie za pomocą logcata włączone</string>
+	<string name="smackdebug_summ_off">Debugowanie za pomocą logcata wyłączone</string>
+	<string name="smackdebug_title">Debugowanie SMACK</string>
+
+	<string name="reportcrash_title">Wysyłaj raporty o błędach</string>
+	<string name="reportcrash_summ_on">Anonimowe wysyłanie raportów włączone</string>
+	<string name="reportcrash_summ_off">Anonimowe wysyłanie raportów wyłączone</string>
+
+	<!-- Appearence Strings -->
+	<!--
+	<string name="preftitle_app">Appearance</string>
+	<string name="FontChat_title">Chat font size</string>
+	<string name="FontChat_summ">Set chat font size</string>
+	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Dodaj kontakt</string>
+	<string name="Menu_ShowOff">Pokaż rozłączonych</string>
+	<string name="Menu_HideOff">Ukryj rozłączonych</string>
+	<string name="Menu_AccSettings">Edytuj konto</string>
+	<string name="Menu_Settings">Ustawienia</string>
+	<string name="Menu_Status">Status</string>
+	<string name="Menu_connect">Połącz</string>
+	<string name="Menu_disconnect">Rozłącz</string>
+	<string name="Menu_about">O programie</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Dodaj kontakt</string>
+	<string name="addFriend_Summ">Podaj Jabber ID, nazwę kontaktu i wybierz grupę.</string>
+	<string name="addFriend_aliasHint">Wyświetlana nazwa</string>
+	<string name="addrosteritemaddgroupchoice">Dodaj do nowej grupy</string>
+	<string name="NewGroup_EditTextField_Hint">Nazwa nowej grupy</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Ustawienia %s</string>
+	<string name="roster_contextmenu_group_rename">Zmień nazwę grupy</string>
+	<string name="roster_contextmenu_contact_delete">Usuń kontakt</string>
+	<string name="roster_contextmenu_contact_open_chat">Otwórz chat</string>
+	<string name="roster_contextmenu_contact_rename">Zmień nazwę</string>
+	<string name="roster_contextmenu_contact_request_auth">Poproś o autoryzację</string>
+	<string name="roster_contextmenu_contact_change_group">Zmień grupę</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Informacje o logowaniu</string>
+	<string name="account_settings_title">Ustawienia konta</string>
+	<string name="account_options_title">Ustawienia połączenia</string>
+	<string name="account_options_advanced">Zaawansowane ustawienia</string>
+	<string name="connstartup_title">Połącz przy starcie</string>
+	<string name="connstartup_summOn">Połącz automatycznie po uruchomieniu programu</string>
+	<string name="connstartup_summOff">Nie łącz automatycznie po uruchomieniu programu</string>
+	<string name="reconnect_title">Połącz ponownie</string>
+	<string name="reconnect_summOn">Połącz ponownie po utracie połączenia</string>
+	<string name="reconnect_summOff">Nie łącz ponownie po utracie połączenia</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">przykład: ja@jabber.serwer.com</string>
+	<string name="account_jabberID_dialog_title">Jabber ID:</string>
+	<string name="account_jabberPW_title">Hasło</string>
+	<string name="account_jabberPW_sum">Hasło twojego konta jabber</string>
+	<string name="account_jabberPW_dialog_title">Podaj hasło:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Zasób</string>
+	<string name="account_resource_summ">Domyślnie: yaxim</string>
+	<string name="account_resource_dialog_title">Podaj zasób:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Priorytet klienta</string>
+	<string name="account_prio_summ">Domyślnie: 0 (dozwolone: 0 - 127)</string>
+	<string name="account_prio_dialog_title">Podaj priorytet klienta:</string>
+	<string name="account_port_title">Port serwera</string>
+	<string name="account_port_sum">Domyślnie: 5222</string>
+	<string name="account_port_dialog_title">Podaj port serwera:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Własny serwer</string>
+	<string name="account_customserver_summ">(Opcjonalnie) alternatywny adres serwera</string>
+	<string name="account_customserver_dialog_title">Podaj adres serwera:</string>
+	<string name="account_customserver_hint">host.serwer.com</string>
+	<string name="require_ssl_title">Wymagaj SSL/TLS</string>
+	<string name="require_ssl_summOn">Zawsze szyfruj połączenie</string>
+	<string name="require_ssl_summOff">Pozwalaj na nieszyfrowane połączenia</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Wybierz grupę</string>
+	<string name="setStatusmsgHint">Opis</string>
+	<string name="setStatusTitle">Ustaw swój status</string>
+	<string name="RenameGroup_summ">Zmień nazwę grupy %s:</string>
+	<string name="RenameGroup_title">Zmień nazwę grupy</string>
+	<string name="RenameEntry_summ">Zmień nazwę %1$s (%2$s):</string>
+	<string name="RenameEntry_title">Zmień nazwę kontaktu</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Wybierz grupę z poniższej listy</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Zmień grupę</string>
+	<string name="deleteRosterItem_text">Usunąć %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">Usuń kontakt</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Ja:</string>
+	<string name="toast_connectfail_message">Połączenie zakończone</string>
+	<string name="toast_stored_offline">Wiadomość została zapisana do wysłania.</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">O programie</string>
+	<string name="AboutDialog_DevelopersTitle">Autorzy</string>
+	<string name="AboutDialog_DevelopersText">Developerzy:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Dołącz do nas, poproś o nowe funkcje albo dotrzymaj nam towarzystwa na http://yaxim.org/ lub w pokoju #yaxim w sieci IRC freenode.</string>
+	<string name="AboutDialog_LicenceTitle">Licencja</string>
+	<string name="AboutDialog_LicenceText">Ten program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej i/lub modyfikować na warunkach GNU General Public License wersja 2 opublikowanej przez Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html \n \n Części tego oprogramowania są dostarczane w ramach licencji MIT: \n \n Copyright (c) 2009 Mads Kristiansen, Nullwire ApS \n \n niniejszym udziela się bezpłatnie, każdej osobie uzyskanie kopii tego oprogramowania oraz powiązane pliki dokumentacji ("Oprogramowanie"), do czynienia w Oprogramowanie bez ograniczeń, w tym między innymi prawa do używania, kopiowania, modyfikowania , łączenia, publikowania, rozprowadzania, udzielania sublicencji, i/lub sprzedaży kopii Oprogramowania, oraz w celu umożliwienia osobom, do których jest dostarczane oprogramowanie, aby to zrobić, z zastrzeżeniem następujących warunków: \n powyższe informacje o prawach autorskich i niniejsze pozwolenie należy umieszczone we wszystkich egzemplarzach lub istotnych fragmentach oprogramowania. \n OPROGRAMOWANIE JEST DOSTARCZANE "TAK JAK JEST", BEZ JAKICHKOLWIEK GWARANCJI, WYRAŹNE LUB MIĘDZY INNYMI, LECZ NIE GWARANCJI PRZYDATNOŚCI HANDLOWEJ, PRZYDATNOŚCI DO OKREŚLONEGO CELU I NIENARUSZALNOŚCI. W ŻADNYM PRZYPADKU AUTORZY LUB WŁAŚCICIELE PRAW AUTORSKICH NIE BĘDĄ ODPOWIEDZIALNI ZA JAKIEKOLWIEK ROSZCZENIA, SZKODY LUB INNEJ ODPOWIEDZIALNOŚCI, CZY TO W RAMACH UMOWY, LUB INNYCH, WYNIKAJĄCE Z, LUB W ZWIĄZKU Z OPROGRAMOWANIEM LUB UŻYCIA LUB INNYCH ZWIĄZANYMI OPROGRAMOWANIA.</string>
+
+	<string name="status_available">Połączony</string>
+	<string name="status_away">Zajęty</string>
+	<string name="status_chat">Chętny do rozmowy</string>
+	<string name="status_dnd">Nie przeszkadzać</string>
+	<string name="status_xa">Niedostępny</string>
+	<string name="status_offline">Rozłączony</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Adam Maćkowiak https://launchpad.net/~admc</string>
+</resources>

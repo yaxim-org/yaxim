@@ -133,7 +133,7 @@
 	<string name="account_customserver_summ">Alternatyvus serverio vardas</string>
 	<string name="account_customserver_dialog_title">Įveskite serverio vardą:</string>
 	<string name="account_customserver_hint">serveris.pavyzdys.com</string>
-	<string name="require_ssl_title">Require SSL/TLS</string>
+	<string name="require_ssl_title">Reikalauti SSL/TLS</string>
 	<string name="require_ssl_summOn">Always encrypt server connection</string>
 	<string name="require_ssl_summOff">Allow unencrypted server connection</string>
 
@@ -236,5 +236,6 @@
 	<string name="status_offline">Neprisijungęs (-usi)</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Antanas https://launchpad.net/~antanas</string>
+  Antanas https://launchpad.net/~antanas
+  Georg Lukas https://launchpad.net/~ge0rg</string>
 </resources>
