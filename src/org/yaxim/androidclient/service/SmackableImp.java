@@ -411,6 +411,7 @@ public class SmackableImp implements Smackable {
 
 	private void registerRosterListener() {
 		// flush roster on connecting.
+		mContentResolver.delete(RosterProvider.GROUPS_URI, "", null);
 		mContentResolver.delete(RosterProvider.CONTENT_URI, "", null);
 		mRoster = mXMPPConnection.getRoster();
 

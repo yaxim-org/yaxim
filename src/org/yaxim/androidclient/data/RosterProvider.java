@@ -56,6 +56,10 @@ public class RosterProvider extends ContentProvider {
 		int count;
 		switch (URI_MATCHER.match(url)) {
 
+		case GROUPS:
+			count = db.delete(TABLE_GROUPS, where, whereArgs);
+			break;
+
 		case CONTACTS:
 			count = db.delete(TABLE_ROSTER, where, whereArgs);
 			break;
@@ -95,23 +99,33 @@ public class RosterProvider extends ContentProvider {
 		}
 	}
 
-	public Uri insertGroup(Uri url, ContentValues initialValues) {
+	public Uri insertGroup(ContentValues initialValues) {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		long rowId = db.insert(TABLE_GROUPS, RosterConstants.GROUP, initialValues);
 
 		if (rowId < 0) {
-			throw new SQLException("Failed to insert row into " + url);
+			throw new SQLException("Failed to insert row into " + GROUPS_URI);
 		}
 
 		Uri noteUri = ContentUris.withAppendedId(GROUPS_URI, rowId);
-		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
+		// only notify if the group was actually added
+		if (rowId > 0) {
+			Log.d(TAG, "notifying group change for " + initialValues.getAsString(RosterConstants.GROUP));
+			getContext().getContentResolver().notifyChange(GROUPS_URI, null);
+		}
 		return noteUri;
+	}
+	public Uri insertGroupForContact(ContentValues contact) {
+		ContentValues cv = new ContentValues();
+		String groupName = contact.getAsString(RosterConstants.GROUP);
+		cv.put(GroupsConstants.GROUP, groupName);
+		return insertGroup(cv);
 	}
 
 	@Override
 	public Uri insert(Uri url, ContentValues initialValues) {
 		if (URI_MATCHER.match(url) == GROUPS)
-			return insertGroup(url, initialValues);
+			return insertGroup(initialValues);
 
 		if (URI_MATCHER.match(url) != CONTACTS) {
 			throw new IllegalArgumentException("Cannot insert into URL: " + url);
@@ -138,7 +152,7 @@ public class RosterProvider extends ContentProvider {
 		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
 
 		// we also need to notify groups change
-		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
+		insertGroupForContact(values);
 		return noteUri;
 	}
 
@@ -228,7 +242,7 @@ public class RosterProvider extends ContentProvider {
 
 		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
 		// we also need to notify groups change
-		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
+		insertGroupForContact(values);
 		return count;
 
 	}
