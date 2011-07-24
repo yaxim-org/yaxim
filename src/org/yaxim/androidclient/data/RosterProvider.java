@@ -43,7 +43,7 @@ public class RosterProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, "groups/*", GROUP_MEMBERS);
 	}
 
-	private static final String TAG = "RosterProvider";
+	private static final String TAG = "yaxim.RosterProvider";
 
 	private SQLiteOpenHelper mOpenHelper;
 

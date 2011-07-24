@@ -37,7 +37,7 @@ public class ChatProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
 	}
 
-	private static final String TAG = "ChatProvider";
+	private static final String TAG = "yaxim.ChatProvider";
 
 	private SQLiteOpenHelper mOpenHelper;
 

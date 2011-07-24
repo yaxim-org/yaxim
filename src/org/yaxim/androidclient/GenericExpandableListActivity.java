@@ -12,7 +12,7 @@ import com.nullwire.trace.ExceptionHandler;
 
 public class GenericExpandableListActivity extends ExpandableListActivity {
 
-	private static final String TAG = "GenericService";
+	private static final String TAG = "yaxim.GELAct";
 
 	protected YaximConfiguration mConfig;
 

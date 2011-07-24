@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 public abstract class GenericDialog extends Dialog {
 	
-	private static final String TAG = "GenericDialog";
+	private static final String TAG = "yaxim.GenericDialog";
 
 	protected final XMPPRosterServiceAdapter serviceAdapter;
 	protected MainWindow mainWindow;

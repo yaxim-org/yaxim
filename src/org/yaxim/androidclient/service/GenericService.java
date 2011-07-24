@@ -26,7 +26,7 @@ import org.yaxim.androidclient.R;
 
 public abstract class GenericService extends Service {
 
-	private static final String TAG = "Service";
+	private static final String TAG = "yaxim.Service";
 	private static final String APP_NAME = "yaxim";
 
 	private NotificationManager mNotificationMGR;

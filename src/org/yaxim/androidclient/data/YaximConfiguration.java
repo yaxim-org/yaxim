@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
-	private static final String TAG = "YaximConfiguration";
+	private static final String TAG = "yaxim.Configuration";
 
 	private static final String GMAIL_SERVER = "talk.google.com";
 

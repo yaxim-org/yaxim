@@ -52,7 +52,7 @@ import android.net.Uri;
 import android.util.Log;
 
 public class SmackableImp implements Smackable {
-	final static private String TAG = "SmackableImp";
+	final static private String TAG = "yaxim.SmackableImp";
 
 	final static private int PACKET_TIMEOUT = 12000;
 	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min

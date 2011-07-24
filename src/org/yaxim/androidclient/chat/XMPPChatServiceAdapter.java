@@ -6,7 +6,7 @@ import org.yaxim.androidclient.service.IXMPPChatService;
 
 public class XMPPChatServiceAdapter {
 
-	private static final String TAG = "XMPPChatServiceAdapter";
+	private static final String TAG = "yaxim.XMPPCSAdapter";
 	private IXMPPChatService xmppServiceStub;
 	private String jabberID;
 

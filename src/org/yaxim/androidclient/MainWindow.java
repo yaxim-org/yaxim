@@ -63,7 +63,7 @@ import com.markupartist.android.widget.ActionBar.Action;
 
 public class MainWindow extends GenericExpandableListActivity {
 
-	private static final String TAG = "MainWindow";
+	private static final String TAG = "yaxim.MainWindow";
 	
 	private static final int DIALOG_CHANGE_STATUS_ID = 0;
 

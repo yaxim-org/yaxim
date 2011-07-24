@@ -12,7 +12,7 @@ import org.yaxim.androidclient.service.IXMPPRosterService;
 
 public class XMPPRosterServiceAdapter {
 	
-	private static final String TAG = "XMPPRosterServiceAdapter";
+	private static final String TAG = "yaxim.XMPPRSAdapter";
 	private IXMPPRosterService xmppServiceStub;
 	
 	public XMPPRosterServiceAdapter(IXMPPRosterService xmppServiceStub) {
