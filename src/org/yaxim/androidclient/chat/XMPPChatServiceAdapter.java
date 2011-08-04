@@ -35,4 +35,11 @@ public class XMPPChatServiceAdapter {
 		return false;
 	}
 
+	public void clearNotifications(String Jid) {
+		try {
+			xmppServiceStub.clearNotifications(Jid);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
 }

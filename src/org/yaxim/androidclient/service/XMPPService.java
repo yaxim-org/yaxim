@@ -140,6 +140,10 @@ public class XMPPService extends GenericService {
 
 				return false;
 			}
+			
+			public void clearNotifications(String Jid) throws RemoteException {
+				clearNotification(Jid);
+			}
 		};
 	}
 
