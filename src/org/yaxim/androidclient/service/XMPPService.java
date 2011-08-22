@@ -295,7 +295,7 @@ public class XMPPService extends GenericService {
 					logError("YaximXMPPException in doConnect():");
 					e.printStackTrace();
 				} finally {
-					synchronized(mConnectingThread) {
+					if (mConnectingThread != null) synchronized(mConnectingThread) {
 						mConnectingThread = null;
 					}
 				}
