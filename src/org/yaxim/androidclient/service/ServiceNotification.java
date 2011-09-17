@@ -32,11 +32,11 @@ abstract class ServiceNotification {
 			return (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		}
 		public void showNotification(Service context, int id, Notification n) {
-			context.setForeground(true);
+			context.startForeground(id, n);
 			getNotificationManager(context).notify(id, n);
 		}
 		public void hideNotification(Service context, int id) {
-			context.setForeground(false);
+			context.stopForeground(false);
 			getNotificationManager(context).cancel(id);
 		}
 	}
