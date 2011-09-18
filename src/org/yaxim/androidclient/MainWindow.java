@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
@@ -255,14 +256,19 @@ public class MainWindow extends GenericExpandableListActivity {
 		return null;
 	}
 
+	void removeChatHistory(final String JID) {
+		getContentResolver().delete(ChatProvider.CONTENT_URI,
+				ChatProvider.ChatConstants.JID + " = ?", new String[] { JID });
+	}
+
 	void removeChatHistoryDialog(final String JID, final String userName) {
 		new AlertDialog.Builder(this)
-			.setTitle(R.string.deleteRosterItem_title)
-			.setMessage(getString(R.string.deleteRosterItem_text, userName, JID))
+			.setTitle(R.string.deleteChatHistory_title)
+			.setMessage(getString(R.string.deleteChatHistory_text, userName, JID))
 			.setPositiveButton(android.R.string.yes,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							// TODO
+							removeChatHistory(JID);
 						}
 					})
 			.setNegativeButton(android.R.string.no, null)
