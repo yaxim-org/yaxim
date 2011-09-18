@@ -24,8 +24,7 @@
 				android:layout_marginRight="60sp"
 				android:layout_toLeftOf="@id/Chat_UserInput"
 				android:layout_height="wrap_content"
-				android:singleLine="true"
-				android:inputType="textShortMessage" />
+				android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine" />
 
 			<Button android:id="@+id/Chat_SendButton"
 				android:layout_width="60sp"
