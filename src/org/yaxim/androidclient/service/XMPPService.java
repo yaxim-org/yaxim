@@ -445,7 +445,15 @@ public class XMPPService extends GenericService {
 			}
 		}
 		if (mSmackable != null) {
-			mSmackable.unRegisterCallback();
+			// work around SMACK's #%&%# blocking disconnect()
+			final Smackable cadaver = mSmackable;
+			new Thread() {
+				public void run() {
+					logInfo("shutDown thread started");
+					cadaver.unRegisterCallback();
+					logInfo("shutDown thread finished");
+				}
+			}.start();
 		}
 		mSmackable = null;
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
