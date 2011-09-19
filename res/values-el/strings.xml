@@ -94,6 +94,7 @@
 	<string name="roster_contextmenu_title">Επιλογές για %s</string>
 	<string name="roster_contextmenu_group_rename">Μετονομασία ομάδας</string>
 	<string name="roster_contextmenu_contact_delete">Διαγραφή επαφής</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
 	<string name="roster_contextmenu_contact_open_chat">Άνοιγμα συζήτησης</string>
 	<string name="roster_contextmenu_contact_rename">Μετονομασία</string>
 	<string name="roster_contextmenu_contact_request_auth">Αίτηση έγκρισης</string>
@@ -149,6 +150,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Αλλαγή της ομάδας</string>
 	<string name="deleteRosterItem_text">Σίγουρα να διαγραφεί η/ο %1$s (%2$s);</string>
 	<string name="deleteRosterItem_title">Διαγραφή επαφής</string>
+	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Delete Chat History</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Εγώ:</string>

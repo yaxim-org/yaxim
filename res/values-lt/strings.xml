@@ -94,6 +94,7 @@
 	<string name="roster_contextmenu_title">%s parametrai</string>
 	<string name="roster_contextmenu_group_rename">Pervadinti grupę</string>
 	<string name="roster_contextmenu_contact_delete">Pašalinti kontaktą</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
 	<string name="roster_contextmenu_contact_open_chat">Atidaryti pokalbį</string>
 	<string name="roster_contextmenu_contact_rename">Pervardinti</string>
 	<string name="roster_contextmenu_contact_request_auth">Prašyti įgaliojimų</string>
@@ -149,6 +150,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Keisti grupę</string>
 	<string name="deleteRosterItem_text">Ar tikrai pašalinti %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Pašalinti kontaktą</string>
+	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Delete Chat History</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Aš:</string>

@@ -94,6 +94,7 @@
 	<string name="roster_contextmenu_title">Optionen für %s</string>
 	<string name="roster_contextmenu_group_rename">Gruppe umbenennen</string>
 	<string name="roster_contextmenu_contact_delete">Kontakt löschen</string>
+	<string name="roster_contextmenu_contact_delmsg">Chat-Verlauf löschen</string>
 	<string name="roster_contextmenu_contact_open_chat">Chat öffnen</string>
 	<string name="roster_contextmenu_contact_rename">Umbenennen</string>
 	<string name="roster_contextmenu_contact_request_auth">Autorisierung anfordern</string>
@@ -149,6 +150,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Gruppe ändern</string>
 	<string name="deleteRosterItem_text">%1$s (%2$s) wirklich entfernen?</string>
 	<string name="deleteRosterItem_title">Kontakt löschen</string>
+	<string name="deleteChatHistory_text">Wirklich alle Nachrichten mit %1$s (%2$s) löschen?</string>
+	<string name="deleteChatHistory_title">Chat-Verlauf löschen</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ich:</string>

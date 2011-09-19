@@ -94,6 +94,7 @@
 	<string name="roster_contextmenu_title">Opciones para %s</string>
 	<string name="roster_contextmenu_group_rename">Renombrar grupo</string>
 	<string name="roster_contextmenu_contact_delete">Borrar contacto</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
 	<string name="roster_contextmenu_contact_open_chat">Abrir conversación</string>
 	<string name="roster_contextmenu_contact_rename">Renombrar</string>
 	<string name="roster_contextmenu_contact_request_auth">Solicitar autorización</string>
@@ -149,6 +150,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Cambiar grupo</string>
 	<string name="deleteRosterItem_text">¿Realmente desea eliminar %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Borrar contacto</string>
+	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Delete Chat History</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Yo:</string>

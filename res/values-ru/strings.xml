@@ -94,6 +94,7 @@
 	<string name="roster_contextmenu_title">Настройки для %s</string>
 	<string name="roster_contextmenu_group_rename">Переименовать группу</string>
 	<string name="roster_contextmenu_contact_delete">Удалить контакт</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
 	<string name="roster_contextmenu_contact_open_chat">Открыть чат</string>
 	<string name="roster_contextmenu_contact_rename">Переименовать</string>
 	<string name="roster_contextmenu_contact_request_auth">Запросить авторизацию</string>
@@ -149,6 +150,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Изменить группу</string>
 	<string name="deleteRosterItem_text">Действительно удалить %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Удалить контакт</string>
+	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Delete Chat History</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Я:</string>
