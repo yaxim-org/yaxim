@@ -578,6 +578,8 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case R.id.menu_exit:
+			PreferenceManager.getDefaultSharedPreferences(this).edit().
+				putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
 			stopService(xmppServiceIntent);
 			finish();
 			return true;
