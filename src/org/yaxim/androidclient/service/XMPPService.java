@@ -107,18 +107,22 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		boolean disconnect = intent.getBooleanExtra("disconnect", false);
-		boolean reconnect = intent.getBooleanExtra("reconnect", false);
-		
-		logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
-		
-		if (disconnect) {
-			doDisconnect();
-			return;
-		}
-		
-		if (reconnect) {
-			doConnect();
+		if (intent != null) {
+			boolean disconnect = intent.getBooleanExtra("disconnect", false);
+			boolean reconnect = intent.getBooleanExtra("reconnect", false);
+			
+			logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
+			if (disconnect) {
+				connectionFailed("Network changed.");
+				return;
+			}
+			if (reconnect) {
+				if (mConnectionDemanded.get())
+					doConnect();
+				else
+					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
+				return;
+			}
 		}
 		
 		mConnectionDemanded.set(mConfig.autoConnect);

@@ -30,11 +30,10 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		//Log.d(TAG, "onReceive "+intent.getAction());
 
+		YaximConfiguration config = new YaximConfiguration(PreferenceManager
+				.getDefaultSharedPreferences(context));
 		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 			// Received intent only when the system boot is completed
-			YaximConfiguration config = new YaximConfiguration(PreferenceManager
-					.getDefaultSharedPreferences(context));
-	
 			if (config.bootstart) {
 				Log.d(TAG, "start service");
 				Intent xmppServiceIntent = new Intent(context, XMPPService.class);
