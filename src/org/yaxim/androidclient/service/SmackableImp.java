@@ -416,6 +416,8 @@ public class SmackableImp implements Smackable {
 
 	public void unRegisterCallback() {
 		debugLog("unRegisterCallback()");
+		mXMPPConnection.getRoster().removeRosterListener(mRosterListener);
+		mXMPPConnection.removePacketListener(mPacketListener);
 		if (mXMPPConnection.isConnected()) {
 			// work around SMACK's #%&%# blocking disconnect()
 			new Thread() {
