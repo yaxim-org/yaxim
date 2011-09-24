@@ -277,7 +277,9 @@ public class XMPPService extends GenericService {
 				System.currentTimeMillis());
 		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 
-		n.contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainWindow.class),
+		Intent notificationIntent = new Intent(this, MainWindow.class);
+		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		n.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		String message = mLastConnectionError;
