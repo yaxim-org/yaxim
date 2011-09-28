@@ -454,8 +454,10 @@ public class XMPPService extends GenericService {
 				}
 			}
 		}
-		mSmackable.unRegisterCallback();
-		mSmackable = null;
+		if (mSmackable != null) {
+			mSmackable.unRegisterCallback();
+			mSmackable = null;
+		}
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 	}
 
