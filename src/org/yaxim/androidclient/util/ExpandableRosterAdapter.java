@@ -85,7 +85,7 @@ public class ExpandableRosterAdapter extends SimpleExpandableListAdapter {
 	private void setStatusMessage(View currentRow, String statusMessage) {
 		TextView status = (TextView) currentRow
 				.findViewById(R.id.roster_statusmsg);
-		if (statusMessage == null) {
+		if ((statusMessage == null) || (statusMessage.length() == 0)) {
 			status.setVisibility(View.GONE);
 		} else {
 			status.setVisibility(View.VISIBLE);
