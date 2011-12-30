@@ -2,37 +2,48 @@
 <project name="yaxim" default="help">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
-         It contain the path to the SDK. It should *NOT* be checked in in Version
-         Control Systems. -->
-    <property file="local.properties"/>
+         It contains the path to the SDK. It should *NOT* be checked into
+         Version Control Systems. -->
+    <loadproperties srcFile="local.properties" />
 
-    <!-- The build.properties file can be created by you and is never touched
-         by the 'android' tool. This is the place to change some of the default property values
-         used by the Ant rules.
+    <!-- The ant.properties file can be created by you. It is only edited by the
+         'android' tool to add properties to it.
+         This is the place to change some Ant specific build properties.
          Here are some properties you may want to change/update:
 
-         application-package
-             the name of your application package as defined in the manifest. Used by the
-             'uninstall' rule.
-         source-folder
-             the name of the source folder. Default is 'src'.
-         out-folder
-             the name of the output folder. Default is 'bin'.
+         source.dir
+             The name of the source directory. Default is 'src'.
+         out.dir
+             The name of the output directory. Default is 'bin'.
 
-         Properties related to the SDK location or the project target should be updated
-          using the 'android' tool with the 'update' action.
+         For other overridable properties, look at the beginning of the rules
+         files in the SDK, at tools/ant/build.xml
 
-         This file is an integral part of the build system for your application and
-         should be checked in in Version Control Systems.
+         Properties related to the SDK location or the project target should
+         be updated using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems.
 
          -->
-    <property file="build.properties"/>
+    <property file="ant.properties" />
 
-    <!-- The default.properties file is created and updated by the 'android' tool, as well
-         as ADT. 
-         This file is an integral part of the build system for your application and
-         should be checked in in Version Control Systems. -->
-    <property file="default.properties"/>
+    <!-- The project.properties file is created and updated by the 'android'
+         tool, as well as ADT.
+
+         This contains project specific properties such as project target, and library
+         dependencies. Lower level build properties are stored in ant.properties
+         (or in .classpath for Eclipse projects).
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems. -->
+    <loadproperties srcFile="project.properties" />
+
+    <!-- quick check on sdk.dir -->
+    <fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
+            unless="sdk.dir"
+    />
 
     <!-- Custom Android task to deal with the project target, and import the proper rules.
          This requires ant 1.6.0 or above. -->
@@ -43,10 +54,6 @@
         <pathelement path="${sdk.dir}/tools/lib/apkbuilder.jar" />
         <pathelement path="${sdk.dir}/tools/lib/jarutils.jar" />
     </path>
-
-    <taskdef name="setup"
-        classname="com.android.ant.SetupTask"
-        classpathref="android.antlibs"/>
 
     <!-- Execute the Android Setup task that will setup some properties specific to the target,
          and import the build rules files.
@@ -62,7 +69,6 @@
          This will ensure that the properties are setup correctly but that your customized
          build steps are used.
     -->
-    <setup />
 
     <target name="check-proguard">
         <available file="tools/proguard.jar" property="have.proguard"/>
@@ -72,11 +78,23 @@
 	    <fail unless="have.proguard">Please download ProGuard from http://sourceforge.net/projects/proguard/files/ and place the JAR into the tools/ directory!</fail>
     </target>
 
-    <target name="proguard.execute" depends="compile" if="have.proguard">
+    <target name="proguard.execute" depends="-compile, -post-compile" if="have.proguard">
         <taskdef resource="proguard/ant/task.properties"
                 classpath="tools/proguard.jar" />
+	<!-- following lines copied from android-sdk build.xml -->
+	<path id="project.jars.ref">
+		<pathelement location="${out.classes.absolute.dir}" />
+		<path refid="jar.libs.ref" />
+	</path>
+	<pathconvert property="project.jars" refid="project.jars.ref">
+		<firstmatchmapper>
+			<regexpmapper from='^([^ ]*)( .*)$$' to='"\1\2"'/>
+			<identitymapper/>
+		</firstmatchmapper>
+	</pathconvert>
+
         <proguard configuration="proguard.cfg">
-	    -injars ${out.classes.dir}:libs
+	    -injars ${project.jars}
 	    -outjars ${out.absolute.dir}/classes.min.jar
 	    -libraryjars ${android.jar}
 	    -dontskipnonpubliclibraryclasses
@@ -88,26 +106,41 @@
 
     <!-- Convert this project's .class files into .dex files. -->
     <target name="dex.proguard" depends="proguard.execute" if="have.proguard">
-        <echo>Converting compiled files and external libraries into ${intermediate.dex.file}</echo>
-        <apply executable="${dx}" failonerror="true" parallel="true">
-            <arg value="--dex" />
-            <arg value="--output=${intermediate.dex.file}" />
-            <fileset dir="${out.absolute.dir}" includes="*.min.jar" />
-            <!--fileset dir="${external-libs-folder}" includes="*.jar"/-->
-        </apply>
+	<dex executable="${dx}" output="${intermediate.dex.file}"
+                    nolocals="@{nolocals}"
+                    verbose="${verbose}"
+                    previousBuildType="${build.last.target}"
+                    buildType="${build.target}">
+		    <path path="${out.absolute.dir}/classes.min.jar" />
+	</dex>
     </target>
 
     <!-- Convert this project's .class files into .dex files. -->
-    <target name="dex.vanilla" depends="compile" unless="have.proguard">
-	<echo>Converting compiled files and external libraries into ${intermediate.dex.file}</echo>
-        <apply executable="${dx}" failonerror="true" parallel="true">
-            <arg value="--dex" />
-            <arg value="--output=${intermediate.dex.file}" />
-            <arg path="${out.classes.dir}" />
-            <fileset dir="libs" includes="*.jar"/>
-        </apply>
+    <target name="dex.vanilla" depends="-compile, -post-compile" unless="have.proguard">
+	<dex-helper />
     </target>
 
     <target name="-dex" depends="dex.vanilla, dex.proguard" />
+
+    <!-- Import the actual build file.
+
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <import> task.
+             - customize it to your needs.
+         - Customize the whole content of build.xml
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, replacing the <import> task.
+             - customize to your needs.
+
+         ***********************
+         ****** IMPORTANT ******
+         ***********************
+         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         in order to avoid having your file be overridden by tools such as "android update project"
+    -->
+    <!-- version-tag: 1 -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
 
 </project>
