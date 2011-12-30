@@ -830,7 +830,11 @@ public class MainWindow extends GenericExpandableListActivity {
 	public void expandGroups() {
 		Log.d(TAG, "expandGroups(): " + rosterGroupList.size() + " vs " + getExpandableListAdapter().getGroupCount());
 		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
-			getExpandableListView().expandGroup(count);
+			try {
+				getExpandableListView().expandGroup(count);
+			} catch (IndexOutOfBoundsException e) {
+				Log.d(TAG, "Oops, why did I try to expand an empty group?");
+			}
 		}
 	}
 
