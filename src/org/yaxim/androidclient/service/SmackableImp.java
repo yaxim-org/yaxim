@@ -273,7 +273,9 @@ public class SmackableImp implements Smackable {
 			setRosterEntry(rosterEntry);
 			addRosterEntryToDB(rosterEntry);
 		}
-		mServiceCallBack.rosterChanged();
+		// catch yet another race when disconnecting
+		if (mServiceCallBack != null)
+			mServiceCallBack.rosterChanged();
 	}
 
 	private void setRosterEntry(RosterEntry rosterEntry) {
