@@ -150,7 +150,7 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Changer de groupe</string>
 	<string name="deleteRosterItem_text">Vraiment retirer %1$s (%2$s) ?</string>
 	<string name="deleteRosterItem_title">Effacer le contact</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_text">Voulez-vous vraiment effacer tous les messages avec %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Effacer l\'histoire du chat</string>
 
 	<!-- CHATWINDOW -->
@@ -183,7 +183,7 @@
   Gabriel U. https://launchpad.net/~gabriel-ull
   Mathias Hablützel https://launchpad.net/~mathias-habluetzel
   Michael Scherer https://launchpad.net/~misc-zarb
-  ProgVal https://launchpad.net/~progval
-  Valérian Saliou https://launchpad.net/~vanaryon
+  Valentin Lorentz https://launchpad.net/~progval
+  Vanaryon https://launchpad.net/~vanaryon
   sebseb01 https://launchpad.net/~sebseb01</string>
 </resources>

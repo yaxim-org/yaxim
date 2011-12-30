@@ -94,7 +94,7 @@
 	<string name="roster_contextmenu_title">%s - alternativ</string>
 	<string name="roster_contextmenu_group_rename">Ändra namn på grupp</string>
 	<string name="roster_contextmenu_contact_delete">Ta bort kontakt</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
+	<string name="roster_contextmenu_contact_delmsg">Ta bort chatthistorik</string>
 	<string name="roster_contextmenu_contact_open_chat">Öppna chatt</string>
 	<string name="roster_contextmenu_contact_rename">Ändra namn</string>
 	<string name="roster_contextmenu_contact_request_auth">Begär godkännande</string>
@@ -150,8 +150,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Byt grupp</string>
 	<string name="deleteRosterItem_text">Ta bort %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Ta bort kontakt</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Delete Chat History</string>
+	<string name="deleteChatHistory_text">Ta bort alla meddelanden för %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Ta bort chatthistorik</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Jag:</string>
