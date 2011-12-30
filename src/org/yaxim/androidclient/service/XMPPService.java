@@ -112,8 +112,9 @@ public class XMPPService extends GenericService {
 			boolean reconnect = intent.getBooleanExtra("reconnect", false);
 			
 			logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
-			if (disconnect && (mConnectingThread != null || mIsConnected.get())) {
-				connectionFailed("Network changed.");
+			if (disconnect) {
+				if (mConnectingThread != null || mIsConnected.get())
+					connectionFailed("Network changed.");
 				return;
 			}
 			if (reconnect) {
