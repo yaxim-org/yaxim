@@ -42,7 +42,7 @@
 			android:dialogTitle="@string/account_prio_dialog_title"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
-			android:numeric="integer"
+			android:numeric="integer|signed"
 		/>	
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_options_title">

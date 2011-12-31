@@ -70,7 +70,7 @@ public class AccountPrefs extends PreferenceActivity {
 							int prioIntValue = Integer.parseInt(newValue
 									.toString());
 							newPrioValue = (CharSequence) newValue;
-							if (prioIntValue <= 127 && prioIntValue >= 0) {
+							if (prioIntValue <= 127 && prioIntValue >= -128) {
 								sharedPreference.edit().putInt(ACCOUNT_PRIO,
 										prioIntValue);
 							} else {
@@ -90,7 +90,7 @@ public class AccountPrefs extends PreferenceActivity {
 			public void afterTextChanged(Editable s) {
 				try {
 					prioIntValue = Integer.parseInt(s.toString());
-					if (prioIntValue <= 127 && prioIntValue >= 0) {
+					if (prioIntValue <= 127 && prioIntValue >= -128) {
 						prefPrio.getEditText().setTextColor(Color.DKGRAY);
 						prefPrio.setPositiveButtonText(android.R.string.ok);
 					} else {
