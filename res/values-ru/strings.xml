@@ -124,7 +124,7 @@
 	<string name="account_resource_dialog_title">Введите ресурс:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Приоритет клиента</string>
-	<string name="account_prio_summ">По умолчанию: 0 (разрешенные: 0 .. 127)</string>
+	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Введите приоритет:</string>
 	<string name="account_port_title">Порт сервера</string>
 	<string name="account_port_sum">По умолчанию: 5222</string>

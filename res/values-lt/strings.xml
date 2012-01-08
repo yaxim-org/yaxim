@@ -124,7 +124,7 @@
 	<string name="account_resource_dialog_title">Įveskite resursą:</string>
 	<string name="account_resource_hint">Yaxim</string>
 	<string name="account_prio_title">Prioritetas</string>
-	<string name="account_prio_summ">Pagal nutylėjimą: 0 (leidžiama: 0...127)</string>
+	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Įveskite prioritetą:</string>
 	<string name="account_port_title">Serverio portas</string>
 	<string name="account_port_sum">Pagal nutylėjimą: 5222</string>

@@ -124,7 +124,7 @@
 	<string name="account_resource_dialog_title">Ingrese el recurso:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Prioridad del cliente:</string>
-	<string name="account_prio_summ">Por omisión: 0 (permitido: 0 .. 127)</string>
+	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Ingrese su prioridad:</string>
 	<string name="account_port_title">Puerto del servidor</string>
 	<string name="account_port_sum">Por omisión: 5222</string>

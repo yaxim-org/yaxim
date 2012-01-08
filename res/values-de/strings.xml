@@ -124,7 +124,7 @@
 	<string name="account_resource_dialog_title">Ressource eingeben:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Client-Priorität</string>
-	<string name="account_prio_summ">Standard: 0 (erlaubt: 0 .. 127)</string>
+	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Priorität eingeben:</string>
 	<string name="account_port_title">Server-Port</string>
 	<string name="account_port_sum">Standard: 5222</string>

@@ -124,7 +124,7 @@
 	<string name="account_resource_dialog_title">Εισάγετε το resource:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Προτεραιότητά του Client</string>
-	<string name="account_prio_summ">Προεπιλογή: 0 (επιτρέπονται: 0 .. 127)</string>
+	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Εισάγετε την προτεραιότητά σας:</string>
 	<string name="account_port_title">Server Port</string>
 	<string name="account_port_sum">Default: 5222</string>

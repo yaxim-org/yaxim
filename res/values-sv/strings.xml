@@ -124,7 +124,7 @@
 	<string name="account_resource_dialog_title">Ange instans:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Prioritet</string>
-	<string name="account_prio_summ">Förvalt: 0 (tillåtet: 0-127)</string>
+	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Ange prioritet:</string>
 	<string name="account_port_title">Serverport</string>
 	<string name="account_port_sum">Förvalt: 5222</string>
