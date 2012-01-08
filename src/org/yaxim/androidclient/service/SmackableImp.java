@@ -529,6 +529,9 @@ public class SmackableImp implements Smackable {
 					if (chatMessage == null) {
 						return;
 					}
+					if (msg.getType() == Message.Type.error) {
+						chatMessage = "<Error> " + chatMessage;
+					}
 
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
