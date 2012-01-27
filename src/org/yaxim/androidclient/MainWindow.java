@@ -165,24 +165,45 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 	}
 
+	// need this to workaround unwanted OnGroupCollapse/Expand events
+	boolean groupClicked = false;
+	void handleGroupChange(int groupPosition, boolean isExpanded) {
+		String groupName = getGroupName(groupPosition);
+		if (groupClicked) {
+			Log.d(TAG, "group status change: " + groupName + " -> " + isExpanded);
+			mGroupsExpanded.put(groupName, isExpanded);
+			groupClicked = false;
+		//} else {
+		//	if (!mGroupsExpanded.containsKey(name))
+		//		restoreGroupsExpanded();
+		}
+	}
+
+
 	void setupContenView() {
 		setContentView(R.layout.main);
 		mConnectingText = (TextView)findViewById(R.id.error_view);
 		registerForContextMenu(getExpandableListView());
 		getExpandableListView().requestFocus();
 
+		getExpandableListView().setOnGroupClickListener(
+			new ExpandableListView.OnGroupClickListener() {
+				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
+						long id) {
+					groupClicked = true;
+					return false;
+				}
+			});
 		getExpandableListView().setOnGroupCollapseListener(
 			new ExpandableListView.OnGroupCollapseListener() {
 				public void onGroupCollapse(int groupPosition) {
-					Log.d(TAG, "onGroupCollapse: " + groupPosition);
-					mGroupsExpanded.put(getGroupName(groupPosition), false);
+					handleGroupChange(groupPosition, false);
 				}
 			});
 		getExpandableListView().setOnGroupExpandListener(
 			new ExpandableListView.OnGroupExpandListener() {
 				public void onGroupExpand(int groupPosition) {
-					Log.d(TAG, "onGroupExpand: " + groupPosition);
-					mGroupsExpanded.put(getGroupName(groupPosition), true);
+					handleGroupChange(groupPosition, true);
 				}
 			});
 	}
