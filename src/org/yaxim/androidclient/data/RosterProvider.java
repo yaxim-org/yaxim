@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+import android.os.Handler;
 import android.util.Log;
 
 public class RosterProvider extends ContentProvider {
@@ -46,7 +47,17 @@ public class RosterProvider extends ContentProvider {
 
 	private static final String TAG = "yaxim.RosterProvider";
 
+	private Runnable mNotifyChange = new Runnable() {
+		public void run() {
+			Log.d(TAG, "notifying change");
+			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+		}
+	};
+	private Handler mNotifyHandler = new Handler();
+
 	private SQLiteOpenHelper mOpenHelper;
+	private java.util.Set<String> mGroups = new java.util.HashSet<String>();
+
 
 	public RosterProvider() {
 	}
@@ -59,6 +70,7 @@ public class RosterProvider extends ContentProvider {
 
 		case GROUPS:
 			count = db.delete(TABLE_GROUPS, where, whereArgs);
+			mGroups = new java.util.HashSet<String>();
 			break;
 
 		case CONTACTS:
@@ -81,9 +93,9 @@ public class RosterProvider extends ContentProvider {
 			throw new IllegalArgumentException("Cannot delete from URL: " + url);
 		}
 
-		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
-		// we also need to notify groups change
 		getContext().getContentResolver().notifyChange(GROUPS_URI, null);
+		notifyChange();
+
 		return count;
 	}
 
@@ -101,9 +113,14 @@ public class RosterProvider extends ContentProvider {
 	}
 
 	public Uri insertGroup(ContentValues initialValues) {
+		String groupName = initialValues.getAsString(RosterConstants.GROUP);
+		if (mGroups.contains(groupName))
+			return null;
+		mGroups.add(groupName);
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		long rowId = db.insert(TABLE_GROUPS, RosterConstants.GROUP, initialValues);
 
+		Log.d(TAG, "insert group " + groupName + " = " + rowId);
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + GROUPS_URI);
 		}
@@ -111,7 +128,7 @@ public class RosterProvider extends ContentProvider {
 		Uri noteUri = ContentUris.withAppendedId(GROUPS_URI, rowId);
 		// only notify if the group was actually added
 		if (rowId > 0) {
-			Log.d(TAG, "notifying group change for " + initialValues.getAsString(RosterConstants.GROUP));
+			Log.d(TAG, "notifying group change for " + groupName);
 			getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		}
 		return noteUri;
@@ -150,7 +167,8 @@ public class RosterProvider extends ContentProvider {
 		}
 
 		Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
-		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+
+		notifyChange();
 
 		// we also need to notify groups change
 		insertGroupForContact(values);
@@ -239,13 +257,25 @@ public class RosterProvider extends ContentProvider {
 			throw new UnsupportedOperationException("Cannot update URL: " + url);
 		}
 
-		infoLog("*** notifyChange() rowId: " + rowId + " url " + url);
-
-		getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+		notifyChange();
 		// we also need to notify groups change
 		insertGroupForContact(values);
 		return count;
 
+	}
+
+	/* delay change notification, cancel previous attempts.
+	 * this implements rate throttling on fast update sequences
+	 */
+	long last_notify = 0;
+	private void notifyChange() {
+		mNotifyHandler.removeCallbacks(mNotifyChange);
+		long ts = System.currentTimeMillis();
+		if (ts > last_notify + 1000)
+			mNotifyChange.run();
+		else
+			mNotifyHandler.postDelayed(mNotifyChange, 200);
+		last_notify = ts;
 	}
 
 	private static void infoLog(String data) {
