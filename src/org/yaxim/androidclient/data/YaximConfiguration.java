@@ -70,8 +70,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 			if (this.customServer.length() == 0)
 				this.customServer = GMAIL_SERVER;
 		}
-		if (this.customServer.length() == 0)
-			this.customServer = this.server;
 	}
 
 	private int validatePriority(int jabPriority) {

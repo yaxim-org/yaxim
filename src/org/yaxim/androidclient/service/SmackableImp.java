@@ -36,6 +36,7 @@ import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.LogConstants;
+import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.Service;
@@ -73,8 +74,12 @@ public class SmackableImp implements Smackable {
 			ContentResolver contentResolver,
 			Service service) {
 		this.mConfig = config;
-		this.mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
-				mConfig.port, mConfig.server);
+		// allow custom server / custom port to override SRV record
+		if (mConfig.customServer.length() > 0 || mConfig.port != PreferenceConstants.DEFAULT_PORT_INT)
+			this.mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
+					mConfig.port, mConfig.server);
+		else
+			this.mXMPPConfig = new ConnectionConfiguration(mConfig.server); // use SRV
 		this.mXMPPConfig.setReconnectionAllowed(true);
 		this.mXMPPConfig.setSendPresence(false);
 		this.mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
