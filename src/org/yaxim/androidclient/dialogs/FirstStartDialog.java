@@ -5,7 +5,9 @@ import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -13,43 +15,51 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 
-public class FirstStartDialog extends GenericDialog implements OnClickListener,
+public class FirstStartDialog extends AlertDialog implements DialogInterface.OnClickListener,
 		TextWatcher {
 
+	private MainWindow mainWindow;
 	private Button mOkButton;
 	private EditText mEditJabberID;
 	private EditText mEditPassword;
 	private EditText mEditPort;
 
-	public FirstStartDialog(Context mainWindow,
+	public FirstStartDialog(MainWindow mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
-		super(mainWindow, serviceAdapter);
-	}
+		super(mainWindow);
+		this.mainWindow = mainWindow;
 
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
-		setContentView(R.layout.firststartdialog);
 		setTitle(R.string.StartupDialog_Title);
 
-		setCancelable(false);
-		setEditJabberID();
-	}
+		LayoutInflater inflater = (LayoutInflater) mainWindow
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.firststartdialog, null, false);
+		setView(group);
 
-	private void setEditJabberID() {
-		mOkButton = (Button) findViewById(R.id.StartupDialog_OkButton);
-		mEditJabberID = (EditText) findViewById(R.id.StartupDialog_JID_EditTextField);
-		mEditPassword = (EditText) findViewById(R.id.StartupDialog_PASSWD_EditTextField);
-		mEditPort = (EditText) findViewById(R.id.StartupDialog_PORT_EditTextField);
+		setButton(BUTTON_POSITIVE, mainWindow.getString(android.R.string.ok), this);
+
+		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
+		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
+		mEditPort = (EditText) group.findViewById(R.id.StartupDialog_PORT_EditTextField);
 		mEditJabberID.addTextChangedListener(this);
 	}
 
-	public void onClick(View view) {
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mOkButton = getButton(BUTTON_POSITIVE);
+		mOkButton.setEnabled(false);
+	}
+
+
+	public void onClick(DialogInterface dialog, int which) {
 		verifyAndSavePreferences();
 	}
 
@@ -72,7 +82,7 @@ public class FirstStartDialog extends GenericDialog implements OnClickListener,
 		try {
 			XMPPHelper.verifyJabberID(s);
 			mOkButton.setEnabled(true);
-			mOkButton.setOnClickListener(this);
+			//mOkButton.setOnClickListener(this);
 			mEditJabberID.setTextColor(Color.DKGRAY);
 		} catch (YaximXMPPAdressMalformedException e) {
 			mOkButton.setEnabled(false);

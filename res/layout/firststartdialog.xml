@@ -4,7 +4,7 @@
 		android:id="@+id/statusLayout" 
 		android:orientation="vertical"
 		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent">
+		android:layout_height="wrap_content">
 	
 	
 	<TextView
@@ -13,11 +13,11 @@
 			android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/icon"
 			android:text="@string/StartupDialog_Summary"
+			android:drawablePadding="10sp"
 			android:padding="10sp"
 			android:focusable="true"
 		/>
-	<ScrollView android:layout_marginBottom="50dip" 
-     				android:id="@+id/StartupDialog_ScrollView" 
+	<ScrollView android:id="@+id/StartupDialog_ScrollView" 
      				android:layout_height="wrap_content" 
      				android:layout_width="fill_parent" >
     <LinearLayout
@@ -86,22 +86,5 @@
 			android:contentDescription="@string/StartupDialog_port_title"
 			/>
 	</LinearLayout>
-	</ScrollView>	
-	
-	<LinearLayout
-			android:layout_marginTop="-50dip"
-			android:id="@+id/StartupDialog_ButtonLayout"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal">
-			
-		<Button
-				android:id="@+id/StartupDialog_OkButton"
-				android:layout_width="140sp"
-				android:layout_height="wrap_content"
-				android:text="@android:string/ok"
-				android:enabled="false"
-		/>
-
-	</LinearLayout>
+	</ScrollView>
 </LinearLayout>
