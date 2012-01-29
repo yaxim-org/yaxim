@@ -2,12 +2,14 @@ package org.yaxim.androidclient.dialogs;
 
 import org.yaxim.androidclient.XMPPRosterServiceAdapter;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
+import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -43,6 +45,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		setView(group);
 
 		setButton(BUTTON_POSITIVE, mainWindow.getString(android.R.string.ok), this);
+		setButton(BUTTON_NEUTRAL, mainWindow.getString(R.string.StartupDialog_advanced), this);
 
 		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
@@ -58,8 +61,15 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 
 	public void onClick(DialogInterface dialog, int which) {
-		verifyAndSavePreferences();
-		mainWindow.startConnection();
+		switch (which) {
+		case BUTTON_POSITIVE:
+			verifyAndSavePreferences();
+			mainWindow.startConnection();
+			break;
+		case BUTTON_NEUTRAL:
+			mainWindow.startActivity(new Intent(mainWindow, AccountPrefs.class));
+			break;
+		}
 	}
 
 	private void verifyAndSavePreferences() {
