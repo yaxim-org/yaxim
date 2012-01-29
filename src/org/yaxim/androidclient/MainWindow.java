@@ -848,12 +848,13 @@ public class MainWindow extends GenericExpandableListActivity {
 				"called showFirstStartUpDialogIfPrefsEmpty, string from pref was:"
 						+ configuredJabberID);
 		if (configuredJabberID.length() < 3) {
-			showFirstStartUpDialog();
-		}
-	}
+			// load preference defaults
+			PreferenceManager.setDefaultValues(this, R.layout.mainprefs, false);
+			PreferenceManager.setDefaultValues(this, R.layout.accountprefs, false);
 
-	private void showFirstStartUpDialog() {
-		new FirstStartDialog(this, serviceAdapter).show();
+			// show welcome dialog
+			new FirstStartDialog(this, serviceAdapter).show();
+		}
 	}
 
 	private void getPreferences(SharedPreferences prefs) {

@@ -49,6 +49,7 @@
 		<CheckBoxPreference
 			android:id="@+id/reconnect"
 			android:key="reconnect"
+			android:defaultValue="true"
 			android:title="@string/reconnect_title"
 			android:summaryOn="@string/reconnect_summOn"
 			android:summaryOff="@string/reconnect_summOff"
@@ -80,6 +81,7 @@
 		<CheckBoxPreference
 			android:id="@+id/require_ssl"
 			android:key="require_ssl"
+			android:defaultValue="true"
 			android:title="@string/require_ssl_title"
 			android:summaryOn="@string/require_ssl_summOn"
 			android:summaryOff="@string/require_ssl_summOff"
