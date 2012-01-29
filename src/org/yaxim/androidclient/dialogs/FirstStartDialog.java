@@ -29,7 +29,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private Button mOkButton;
 	private EditText mEditJabberID;
 	private EditText mEditPassword;
-	private EditText mEditPort;
 
 	public FirstStartDialog(MainWindow mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
@@ -47,7 +46,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
-		mEditPort = (EditText) group.findViewById(R.id.StartupDialog_PORT_EditTextField);
 		mEditJabberID.addTextChangedListener(this);
 	}
 
@@ -67,16 +65,9 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private void verifyAndSavePreferences() {
 		String password = mEditPassword.getText().toString();
 		String jabberID = mEditJabberID.getText().toString();
-		String port = mEditPort.getText().toString();
 
-		if (port == null) {
-			savePreferences(jabberID, password);
-			cancel();
-
-		} else {
-			savePreferences(jabberID, password, port);
-			cancel();
-		}
+		savePreferences(jabberID, password);
+		cancel();
 	}
 
 	public void afterTextChanged(Editable s) {
@@ -98,19 +89,15 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 
-	private void savePreferences(String jabberID, String password, String port) {
+	private void savePreferences(String jabberID, String password) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(mainWindow);
 		Editor editor = sharedPreferences.edit();
 
 		editor.putString(PreferenceConstants.JID, jabberID);
 		editor.putString(PreferenceConstants.PASSWORD, password);
-		editor.putString(PreferenceConstants.PORT, port);
+		editor.putString(PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT);
 		editor.commit();
-	}
-
-	private void savePreferences(String jabberID, String password) {
-		savePreferences(jabberID, password, PreferenceConstants.DEFAULT_PORT);
 	}
 
 }
