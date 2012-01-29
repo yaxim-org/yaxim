@@ -652,12 +652,23 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 	}
 
-	public void toggleConnection() {
+	public void startConnection() {
+		setConnectingStatus(true);
+		(new Thread() {
+			public void run() {
+				startService(xmppServiceIntent);
+			}
+		}).start();
+	}
+
+	// this function changes the prefs to keep the connection
+	// according to the requested state
+	private void toggleConnection() {
 		boolean oldState = isConnected() || isConnecting();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
-		setConnectingStatus(!oldState);
 		if (oldState) {
+			setConnectingStatus(false);
 			(new Thread() {
 				public void run() {
 					serviceAdapter.disconnect();
@@ -665,14 +676,8 @@ public class MainWindow extends GenericExpandableListActivity {
 				}
 			}).start();
 
-		} else {
-			(new Thread() {
-				public void run() {
-					startService(xmppServiceIntent);
-				}
-			}).start();
-		}
-
+		} else
+			startConnection();
 	}
 
 	private int getConnectDisconnectIcon() {
