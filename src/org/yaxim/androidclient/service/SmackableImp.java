@@ -26,7 +26,10 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
+import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smackx.provider.DelayInfoProvider;
+import org.jivesoftware.smackx.packet.DelayInfo;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -57,6 +60,16 @@ public class SmackableImp implements Smackable {
 			ChatConstants._ID, ChatConstants.JID, ChatConstants.MESSAGE };
 	final static private String SEND_OFFLINE_SELECTION = "from_me = 1 AND read = 0";
 
+	static {
+		registerSmackProviders();
+	}
+
+	static void registerSmackProviders() {
+		ProviderManager pm = ProviderManager.getInstance();
+		// add delayed delivery notifications
+		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
+		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
+	}
 
 	private final YaximConfiguration mConfig;
 	private final ConnectionConfiguration mXMPPConfig;
@@ -402,10 +415,12 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		if (isAuthenticated()) {
 			mXMPPConnection.sendPacket(newMessage);
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED);
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED,
+					System.currentTimeMillis());
 		} else {
 			// send offline -> store to DB
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.UNREAD);
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.UNREAD,
+					System.currentTimeMillis());
 		}
 	}
 
@@ -539,10 +554,19 @@ public class SmackableImp implements Smackable {
 						chatMessage = "<Error> " + chatMessage;
 					}
 
+					long ts;
+					DelayInfo timestamp = (DelayInfo)msg.getExtension("delay", "urn:xmpp:delay");
+					if (timestamp == null)
+						timestamp = (DelayInfo)msg.getExtension("x", "jabber:x:delay");
+					if (timestamp != null)
+						ts = timestamp.getStamp().getTime();
+					else
+						ts = System.currentTimeMillis();
+
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
 
-					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD);
+					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD, ts);
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
 				} catch (Exception e) {
@@ -557,14 +581,14 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addChatMessageToDB(boolean from_me, String JID,
-			String message, boolean read) {
+			String message, boolean read, long ts) {
 		ContentValues values = new ContentValues();
 
 		values.put(ChatConstants.FROM_ME, from_me);
 		values.put(ChatConstants.JID, JID);
 		values.put(ChatConstants.MESSAGE, message);
 		values.put(ChatConstants.HAS_BEEN_READ, read);
-		values.put(ChatConstants.DATE, System.currentTimeMillis());
+		values.put(ChatConstants.DATE, ts);
 
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 	}
