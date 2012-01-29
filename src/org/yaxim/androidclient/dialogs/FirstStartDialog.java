@@ -61,6 +61,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 	public void onClick(DialogInterface dialog, int which) {
 		verifyAndSavePreferences();
+		mainWindow.toggleConnection();
 	}
 
 	private void verifyAndSavePreferences() {

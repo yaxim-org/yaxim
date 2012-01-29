@@ -652,7 +652,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		}
 	}
 
-	private void toggleConnection() {
+	public void toggleConnection() {
 		boolean oldState = isConnected() || isConnecting();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
