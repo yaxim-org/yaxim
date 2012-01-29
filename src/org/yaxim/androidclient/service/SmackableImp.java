@@ -527,6 +527,7 @@ public class SmackableImp implements Smackable {
 
 		mPacketListener = new PacketListener() {
 			public void processPacket(Packet packet) {
+				try {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
@@ -543,6 +544,11 @@ public class SmackableImp implements Smackable {
 
 					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD);
 					mServiceCallBack.newMessage(fromJID, chatMessage);
+				}
+				} catch (Exception e) {
+					// SMACK silently discards exceptions dropped from processPacket :(
+					Log.e(TAG, "failed to process packet:");
+					e.printStackTrace();
 				}
 			}
 		};
