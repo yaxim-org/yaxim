@@ -12,9 +12,13 @@ import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
@@ -26,9 +30,14 @@ public class XMPPService extends GenericService {
 	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false); // should we try to reconnect?
 	private static final int RECONNECT_AFTER = 5;
 	private static final int RECONNECT_MAXIMUM = 10*60;
+	private static final String RECONNECT_ALARM = "org.yaxim.androidclient.RECONNECT_ALARM";
 	private int mReconnectTimeout = RECONNECT_AFTER;
 	private String mLastConnectionError = null;
 	private String mReconnectInfo = "";
+	private Intent mAlarmIntent = new Intent(RECONNECT_ALARM);
+	private PendingIntent mPAlarmIntent;
+	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
+
 	private ServiceNotification mServiceNotification = null;
 
 	private Thread mConnectingThread;
@@ -80,6 +89,10 @@ public class XMPPService extends GenericService {
 		createServiceRosterStub();
 		createServiceChatStub();
 
+		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM));
+
 		// for the initial connection, check if autoConnect is set
 		mConnectionDemanded.set(mConfig.autoConnect);
 		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
@@ -100,8 +113,11 @@ public class XMPPService extends GenericService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+
+		((AlarmManager)getSystemService(Context.ALARM_SERVICE)).cancel(mPAlarmIntent);
 		mRosterCallbacks.kill();
 		doDisconnect();
+		unregisterReceiver(mAlarmReceiver);
 	}
 
 	@Override
@@ -375,18 +391,8 @@ public class XMPPService extends GenericService {
 			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
 			updateServiceNotification();
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
-			mMainHandler.postDelayed(new Runnable() {
-				public void run() {
-					if (!mConnectionDemanded.get()) {
-						return;
-					}
-					if (mIsConnected.get()) {
-						logError("Reconnect attempt aborted: we are connected again!");
-						return;
-					}
-					doConnect();
-				}
-			}, mReconnectTimeout * 1000);
+			((AlarmManager)getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
+					System.currentTimeMillis() + mReconnectTimeout * 1000, mPAlarmIntent);
 			mReconnectTimeout = mReconnectTimeout * 2;
 			if (mReconnectTimeout > RECONNECT_MAXIMUM)
 				mReconnectTimeout = RECONNECT_MAXIMUM;
@@ -491,5 +497,19 @@ public class XMPPService extends GenericService {
 				return mIsBoundTo.contains(jabberID);
 			}
 		});
+	}
+
+	private class ReconnectAlarmReceiver extends BroadcastReceiver {
+		public void onReceive(Context ctx, Intent i) {
+			logInfo("Alarm received.");
+			if (!mConnectionDemanded.get()) {
+				return;
+			}
+			if (mIsConnected.get()) {
+				logError("Reconnect attempt aborted: we are connected again!");
+				return;
+			}
+			doConnect();
+		}
 	}
 }
