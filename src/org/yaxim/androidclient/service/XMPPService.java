@@ -153,7 +153,11 @@ public class XMPPService extends GenericService {
 
 			public void sendMessage(String user, String message)
 					throws RemoteException {
-				mSmackable.sendMessage(user, message);
+				if (mSmackable != null)
+					mSmackable.sendMessage(user, message);
+				else
+					SmackableImp.sendOfflineMessage(getContentResolver(),
+							user, message);
 			}
 
 			public boolean isAuthenticated() throws RemoteException {

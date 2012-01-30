@@ -410,6 +410,17 @@ public class SmackableImp implements Smackable {
 		cursor.close();
 	}
 
+	public static void sendOfflineMessage(ContentResolver cr, String toJID, String message) {
+		ContentValues values = new ContentValues();
+		values.put(ChatConstants.FROM_ME, true);
+		values.put(ChatConstants.JID, toJID);
+		values.put(ChatConstants.MESSAGE, message);
+		values.put(ChatConstants.HAS_BEEN_READ, false);
+		values.put(ChatConstants.DATE, System.currentTimeMillis());
+
+		cr.insert(ChatProvider.CONTENT_URI, values);
+	}
+
 	public void sendMessage(String toJID, String message) {
 		final Message newMessage = new Message(toJID, Message.Type.chat);
 		newMessage.setBody(message);
