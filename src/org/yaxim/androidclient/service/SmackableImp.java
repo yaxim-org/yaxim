@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +30,7 @@ import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
+import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterItem;
@@ -57,7 +59,8 @@ public class SmackableImp implements Smackable {
 	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
-			ChatConstants._ID, ChatConstants.JID, ChatConstants.MESSAGE };
+			ChatConstants._ID, ChatConstants.JID,
+			ChatConstants.MESSAGE, ChatConstants.DATE };
 	final static private String SEND_OFFLINE_SELECTION = "from_me = 1 AND read = 0";
 
 	static {
@@ -389,15 +392,20 @@ public class SmackableImp implements Smackable {
 		final int _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
 		final int JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
 		final int MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
+		final int  TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
 		ContentValues mark_delivered = new ContentValues();
 		mark_delivered.put(ChatConstants.HAS_BEEN_READ, ChatConstants.DELIVERED);
 		while (cursor.moveToNext()) {
 			int _id = cursor.getInt(_ID_COL);
 			String toJID = cursor.getString(JID_COL);
 			String message = cursor.getString(MSG_COL);
+			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
 			final Message newMessage = new Message(toJID, Message.Type.chat);
 			newMessage.setBody(message);
+			DelayInformation delay = new DelayInformation(new Date(ts));
+			newMessage.addExtension(delay);
+			newMessage.addExtension(new DelayInfo(delay));
 			mXMPPConnection.sendPacket(newMessage);
 
 			Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
