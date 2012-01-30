@@ -525,13 +525,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addRosterEntryToDB(final RosterEntry entry) {
-		// add group
-		ContentValues values = new ContentValues();
-		values.put(RosterConstants.GROUP, getGroup(entry.getGroups()));
-		mContentResolver.insert(RosterProvider.GROUPS_URI, values);
-
-		values = getContentValuesForRosterEntry(entry);
-
+		ContentValues values = getContentValuesForRosterEntry(entry);
 		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
 		debugLog("addRosterEntryToDB: Inserted " + uri);
 	}
