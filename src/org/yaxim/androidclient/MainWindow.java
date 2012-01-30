@@ -669,8 +669,8 @@ public class MainWindow extends GenericExpandableListActivity {
 
 		String lastStatus;
 
-		if (serviceAdapter != null && (lastStatus =
-					serviceAdapter.getConnectionStateString()) != null) {
+		if (serviceAdapter != null && !serviceAdapter.isAuthenticated() &&
+				(lastStatus = serviceAdapter.getConnectionStateString()) != null) {
 			mConnectingText.setVisibility(View.VISIBLE);
 			mConnectingText.setText(lastStatus);
 		} else
