@@ -926,6 +926,14 @@ public class MainWindow extends GenericExpandableListActivity {
 				selectWhere, new String[] { groupname }, null);
 		}
 
+		@Override
+		protected void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
+			super.bindChildView(view, context, cursor, isLastChild);
+			TextView statusmsg = (TextView)view.findViewById(R.id.roster_statusmsg);
+			boolean hasStatus = statusmsg.getText() != null && statusmsg.getText().length() > 0;
+			statusmsg.setVisibility(hasStatus ? View.VISIBLE : View.GONE);
+		}
+
 		 protected void setViewImage(ImageView v, String value) {
 			int presenceMode = Integer.parseInt(value);
 			v.setImageResource(getIconForPresenceMode(presenceMode));
