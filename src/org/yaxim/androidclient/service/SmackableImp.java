@@ -30,6 +30,7 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
@@ -73,6 +74,9 @@ public class SmackableImp implements Smackable {
 		// add delayed delivery notifications
 		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
+
+		ServiceDiscoveryManager.setIdentityName(YaximApplication.XMPP_IDENTITY_NAME);
+		ServiceDiscoveryManager.setIdentityType(YaximApplication.XMPP_IDENTITY_TYPE);
 	}
 
 	private final YaximConfiguration mConfig;
@@ -96,7 +100,7 @@ public class SmackableImp implements Smackable {
 					mConfig.port, mConfig.server);
 		else
 			this.mXMPPConfig = new ConnectionConfiguration(mConfig.server); // use SRV
-		this.mXMPPConfig.setReconnectionAllowed(true);
+		this.mXMPPConfig.setReconnectionAllowed(false);
 		this.mXMPPConfig.setSendPresence(false);
 		this.mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
 		if (config.require_ssl)
