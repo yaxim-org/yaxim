@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -32,6 +33,7 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
@@ -103,7 +105,7 @@ public class SmackableImp implements Smackable {
 		// register MemorizingTrustManager for HTTPS
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, MemorizingTrustManager.getInstanceList(service),
+			sc.init(null, new X509TrustManager[] { YaximApplication.getApp(service).mMTM },
 					new java.security.SecureRandom());
 			this.mXMPPConfig.setCustomSSLContext(sc);
 		} catch (java.security.GeneralSecurityException e) {

@@ -213,6 +213,8 @@ public class MainWindow extends GenericExpandableListActivity {
 		super.onPause();
 		if (serviceAdapter != null)
 			serviceAdapter.unregisterUICallback(rosterCallback);
+
+		YaximApplication.getApp(this).mMTM.unbindDisplayActivity(this);
 		unbindXMPPService();
 		storeExpandedState();
 	}
@@ -224,6 +226,7 @@ public class MainWindow extends GenericExpandableListActivity {
 		updateRoster();
 		bindXMPPService();
 
+		YaximApplication.getApp(this).mMTM.bindDisplayActivity(this);
 		// Causes the toggle button to show correct state on application start
 		toggleOfflineContactsAction.invalidate();
 	}
