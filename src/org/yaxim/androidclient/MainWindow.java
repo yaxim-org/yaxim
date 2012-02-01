@@ -64,8 +64,6 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class MainWindow extends GenericExpandableListActivity {
 
 	private static final String TAG = "yaxim.MainWindow";
-	
-	private static final int DIALOG_CHANGE_STATUS_ID = 0;
 
 	private Handler mainHandler = new Handler();
 
@@ -129,11 +127,7 @@ public class MainWindow extends GenericExpandableListActivity {
 
 	private class ChangeStatusAction extends AbstractAction {
 		public void performAction(View view) {
-			if (serviceAdapter.isAuthenticated()) {
-				showDialog(DIALOG_CHANGE_STATUS_ID);
-			} else {
-				showToastNotification(R.string.Global_authenticate_first);
-			}
+			new ChangeStatusDialog(MainWindow.this).show();
 		}
 		
 		public int getDrawable() {
@@ -286,16 +280,6 @@ public class MainWindow extends GenericExpandableListActivity {
 				!menuName.equals(AdapterConstants.EMPTY_GROUP));
 
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DIALOG_CHANGE_STATUS_ID:
-			return new ChangeStatusDialog(this);
-		}
-
-		return null;
 	}
 
 	void removeChatHistory(final String JID) {
@@ -538,21 +522,25 @@ public class MainWindow extends GenericExpandableListActivity {
 	public void setAndSaveStatus(StatusMode statusMode, String message) {
 		setStatus(statusMode, message);
 
-		// do not save "offline" to prefs, or else!
-		if (statusMode == StatusMode.offline) {
-			serviceAdapter.disconnect();
-			setConnectingStatus(false);
-			stopService(xmppServiceIntent);
-			return;
-		}
 
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
-		prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
+		// do not save "offline" to prefs, or else!
+		if (statusMode != StatusMode.offline)
+			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
 
-		serviceAdapter.setStatusFromConfig();
+		// check if we are connected and want to go offline
+		boolean needToDisconnect = (statusMode == StatusMode.offline) && isConnected();
+		// check if we want to reconnect
+		boolean needToConnect = (statusMode != StatusMode.offline) &&
+				serviceAdapter.getConnectionState() == ConnectionState.OFFLINE;
+
+		if (needToConnect || needToDisconnect)
+			toggleConnection();
+		else if (isConnected())
+			serviceAdapter.setStatusFromConfig();
 	}
 
 	private void setStatus(StatusMode statusMode, String message) {
@@ -611,11 +599,7 @@ public class MainWindow extends GenericExpandableListActivity {
 			return true;
 
 		case R.id.menu_status:
-			if (serviceAdapter.isAuthenticated()) {
-				showDialog(DIALOG_CHANGE_STATUS_ID);
-			} else {
-				showToastNotification(R.string.Global_authenticate_first);
-			}
+			new ChangeStatusDialog(this).show();
 			return true;
 
 		case R.id.menu_exit:
