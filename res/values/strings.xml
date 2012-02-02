@@ -9,6 +9,8 @@
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
+	<string name="conn_disconnected">Connection closed</string>
+	<string name="conn_networkchg">Network changed</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Exit</string>

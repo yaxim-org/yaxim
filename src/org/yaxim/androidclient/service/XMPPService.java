@@ -129,7 +129,7 @@ public class XMPPService extends GenericService {
 			logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
 			if (disconnect) {
 				if (mConnectingThread != null || mIsConnected.get())
-					connectionFailed("Network changed.");
+					connectionFailed(getString(R.string.conn_networkchg));
 				return;
 			}
 			if (reconnect) {
@@ -422,7 +422,7 @@ public class XMPPService extends GenericService {
 		}
 		if (mIsConnected.get() && mSmackable != null && !mSmackable.isAuthenticated()) {
 			logInfo("rosterChanged(): disconnected without warning");
-			connectionFailed("Connection closed");
+			connectionFailed(getString(R.string.conn_disconnected));
 		}
 	}
 
@@ -445,7 +445,7 @@ public class XMPPService extends GenericService {
 			mSmackable = null;
 		}
 		mSmackable = null;
-		connectionFailed("Disconnected");
+		connectionFailed(getString(R.string.conn_offline));
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 	}
 
