@@ -5,7 +5,6 @@
 
 	<ImageView android:id="@+id/roster_icon"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentTop="true" android:layout_alignParentBottom="true"
 		android:layout_marginRight="4dp" android:longClickable="false"
 		android:paddingLeft="15sp" />
 

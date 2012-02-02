@@ -22,7 +22,6 @@
 			<EditText android:id="@+id/Chat_UserInput"
 				android:layout_width="fill_parent"
 				android:layout_marginRight="60sp"
-				android:layout_toLeftOf="@id/Chat_UserInput"
 				android:layout_height="wrap_content"
 				android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine" />
 
@@ -30,9 +29,8 @@
 				android:layout_width="60sp"
 				android:layout_marginLeft="-60sp"
 				android:layout_height="wrap_content"
-				android:layout_toRightOf="@id/Chat_UserInput"
 				android:text="@android:string/ok"
-				android:layout_alignParentRight="true" />
+				/>
 
 		</LinearLayout>
 

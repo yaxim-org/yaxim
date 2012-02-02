@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="horizontal" android:padding="4dp" >
-    
-	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:padding="4dp" 
+		android:layout_height="wrap_content" android:orientation="vertical"
+		>
 
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:orientation="horizontal">
 
-			<TextView android:id="@+id/chat_date" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:layout_weight="0"
+			<TextView android:id="@+id/chat_date" android:layout_width="0dp"
+				android:layout_height="wrap_content" android:layout_weight="1"
 				android:textSize="14sp" android:textStyle="bold" android:textColor="#88f"
 				android:ellipsize="end" android:paddingRight="6dp"/>
 
-			<TextView android:id="@+id/chat_from" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:layout_weight="0"
+			<TextView android:id="@+id/chat_from" android:layout_width="0dp"
+				android:layout_height="wrap_content" android:layout_weight="1"
 			    android:singleLine="true"
 				android:textSize="14sp" android:textColor="#88f"
 				android:ellipsize="end" android:text="@string/chat_from_me" />
@@ -24,10 +22,7 @@
 
 		<TextView android:id="@+id/chat_message"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:textSize="18sp" android:layout_weight="1" android:gravity="center_vertical"
+			android:textSize="18sp" android:gravity="center_vertical"
 			android:autoLink="all"/>
 
-	</LinearLayout>
-
-</RelativeLayout> 
-
+</LinearLayout>
