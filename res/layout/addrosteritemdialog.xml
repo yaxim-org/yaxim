@@ -4,26 +4,14 @@
 		android:id="@+id/statusLayout" 
 		android:orientation="vertical"
 		android:layout_width="fill_parent" 
-		android:minWidth="200px" 
-		android:layout_height="fill_parent">
+		android:layout_height="wrap_content">
 
-	<ScrollView android:layout_marginBottom="50dip" 
-     				android:id="@+id/StatusDialog_ScrollView" 
-     				android:layout_height="wrap_content" 
-     				android:layout_width="fill_parent" >
-     	<LinearLayout
-		android:id="@+id/AddContact_ScrollLayout"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		>
 	<TextView
 			android:id="@+id/Addcontact_Title"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/addFriend_Summ"
 			android:padding="10sp"
-			android:focusable="true"
 		/>
 	<EditText
 			android:id="@+id/AddContact_EditTextField"
@@ -54,28 +42,4 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			/>
-	</LinearLayout>
-	</ScrollView>	
-	<LinearLayout
-			android:layout_marginTop="-50dip"
-			android:id="@+id/AddContact_ButtonLayout"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal">
-		<Button
-				android:id="@+id/AddContact_OkButton"
-				android:layout_width="120sp"
-				android:layout_height="wrap_content"
-				android:text="@android:string/ok"
-				android:enabled="false"
-		/>
-
-		<Button
-				android:id="@+id/AddContact_CancelButton"
-				android:layout_width="120sp"
-				android:layout_height="wrap_content"
-				android:text="@android:string/cancel"
-		/>
-
-	</LinearLayout>
 </LinearLayout>
