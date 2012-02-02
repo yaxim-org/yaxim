@@ -51,8 +51,7 @@
 			android:key="reconnect"
 			android:defaultValue="true"
 			android:title="@string/reconnect_title"
-			android:summaryOn="@string/reconnect_summOn"
-			android:summaryOff="@string/reconnect_summOff"
+			android:summary="@string/reconnect_summ"
 		/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_options_advanced">
@@ -83,8 +82,7 @@
 			android:key="require_ssl"
 			android:defaultValue="true"
 			android:title="@string/require_ssl_title"
-			android:summaryOn="@string/require_ssl_summOn"
-			android:summaryOff="@string/require_ssl_summOff"
+			android:summary="@string/require_ssl_summ"
 		/>
 	</PreferenceCategory>
 </PreferenceScreen>
