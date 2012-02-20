@@ -898,6 +898,7 @@ public class MainWindow extends GenericExpandableListActivity {
 				selectWhere = "status_mode > 0";
 			Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
 					selectWhere, null, "roster_group");
+			stopManagingCursor(getCursor());
 			changeCursor(cursor);
 		}
 
