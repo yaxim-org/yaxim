@@ -9,6 +9,8 @@
 	<string name="conn_offline">Desconectado</string>
 	<string name="conn_empty_roster">No hay contactos para mostrar</string>
 	<string name="conn_reconnect">\nReconectar en %d segundos.</string>
+	<string name="conn_disconnected">Connection closed</string>
+	<string name="conn_networkchg">Network changed</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Salir</string>
@@ -19,46 +21,38 @@
 	<string name="StartupDialog_Title">¡Bienvenido/a a yaxim!</string>
 	<string name="StartupDialog_Summary">Necesita configurar yaxim antes de usarlo. Por favor, ingrese su ID de Jabber y su contaseña.</string>
 	<string name="StartupDialog_pwHint">Ingrese contraseña</string>
-	<string name="StartupDialog_portHint">5222</string>
-	<string name="StartupDialog_Username_title">Ingrese su ID de Jabber:</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Contraseña:</string>
-	<string name="StartupDialog_port_title">Puerto:</string>
+	<string name="StartupDialog_advanced">Advanced...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Mensaje de %s:</string>
+	<string name="notification_message">Mensaje de %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notificación de mensajes</string>
 	<string name="led_title">LED parpadeante</string>
-	<string name="led_summOn">Las notificaciones por LED están encendidas</string>
-	<string name="led_summOff">Las notificaciones por LED están apagadas</string>
+	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Vibración</string>
-	<string name="vibr_summOn">Las notificaciones por vibración están encendidas</string>
-	<string name="vibr_summOff">Las notificaciones por vibración están apagadas</string>
+	<string name="vibr_summ">Vibrate on incoming messages</string>
 	<string name="ringtone_title">Tono</string>
 	<string name="ringtone_summ">Tono para mensajes entrantes</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opciones de inicio</string>
 	<string name="boot_title">Cargar yaxim al iniciar el dispositivo</string>
-	<string name="boot_summOn">yaxim está configurado para cargarse al iniciar el dispositivo</string>
-	<string name="boot_summOff">yaxim está configurado para no cargarse al iniciar el dispositivo</string>
+	<string name="boot_summ">Launch app when phone is turned on</string>
 	<string name="statuspopup_name">Configure su estado</string>
-	<string name="showOffline_summ_on">Mostrar contactos desconectados</string>
-	<string name="showOffline_summ_off">Ocultar contactos desconectados</string>
+	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Mostrar contactos desconectados</string>
-	<string name="foregroundService_summ_on">Mantener a yaxim en memoria</string>
-	<string name="foregroundService_summ_off">Permitir al sistema reiniciar yaxim</string>
-	<string name="foregroundService_title">Conexión persistente</string>
+	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Depuración</string>
-	<string name="smackdebug_summ_on">Depuración de salida y paquetes activada a través de logcat</string>
-	<string name="smackdebug_summ_off">La depuración por logcat está desactivada</string>
+	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
 	<string name="smackdebug_title">Depuración SMACK</string>
 
 	<string name="reportcrash_title">Enviar reportes de error</string>
-	<string name="reportcrash_summ_on">Reportes de error anónimos activados</string>
-	<string name="reportcrash_summ_off">Reportes de error anónimos desactivados</string>
+	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -94,7 +88,7 @@
 	<string name="roster_contextmenu_title">Opciones para %s</string>
 	<string name="roster_contextmenu_group_rename">Renombrar grupo</string>
 	<string name="roster_contextmenu_contact_delete">Borrar contacto</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
+	<string name="roster_contextmenu_contact_delmsg">Eliminar historial de charla</string>
 	<string name="roster_contextmenu_contact_open_chat">Abrir conversación</string>
 	<string name="roster_contextmenu_contact_rename">Renombrar</string>
 	<string name="roster_contextmenu_contact_request_auth">Solicitar autorización</string>
@@ -109,8 +103,7 @@
 	<string name="connstartup_summOn">Iniciar sesión cuando se abre yaxim</string>
 	<string name="connstartup_summOff">No conectar automáticamente</string>
 	<string name="reconnect_title">Reconectar automáticamente</string>
-	<string name="reconnect_summOn">Reconectar cuando se pierde la conexión</string>
-	<string name="reconnect_summOff">Permanecer desconectado cuando se pierde la conexión</string>
+	<string name="reconnect_summ">Reconectar cuando se pierde la conexión</string>
 	<string name="account_jabberID_title">ID de Jabber:</string>
 	<string name="account_jabberID_sum">ejemplo: yo@jabber.ejemplo.com</string>
 	<string name="account_jabberID_dialog_title">Ingrese su ID de Jabber:</string>
@@ -135,8 +128,7 @@
 	<string name="account_customserver_dialog_title">Ingrese el hostname del servidor:</string>
 	<string name="account_customserver_hint">host.ejemplo.com</string>
 	<string name="require_ssl_title">Requerir cifrado SSL/TLS</string>
-	<string name="require_ssl_summOn">Siempre cifrar la conexión con el servidor</string>
-	<string name="require_ssl_summOff">Permitir conexión no cifrada con el servidor</string>
+	<string name="require_ssl_summ">Siempre cifrar la conexión con el servidor</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Elegir grupo</string>
@@ -151,7 +143,7 @@
 	<string name="deleteRosterItem_text">¿Realmente desea eliminar %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Borrar contacto</string>
 	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Delete Chat History</string>
+	<string name="deleteChatHistory_title">Eliminar historial de charla</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Yo:</string>
@@ -180,6 +172,7 @@
 	<string name="status_offline">Desconectado</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Georg Lukas https://launchpad.net/~ge0rg
-  Leonardo Gastón De Luca https://launchpad.net/~leorockway</string>
+  Argafål https://launchpad.net/~78luphr0rnk2nuqimstywepozxn9kl19tqh0tx66b5dki1xxsh5mkz9gl21a5rlwfnr8jn6ln0m3j-8hcf0rcot-a811i2i3ytqlsztthjth0svbccw8inm65tmkqp9sarr553jq53in4xm1m8wn3o4rlwaer06ogwvqw
+  Fitoschido https://launchpad.net/~fitoschido
+  Georg Lukas https://launchpad.net/~ge0rg</string>
 </resources>

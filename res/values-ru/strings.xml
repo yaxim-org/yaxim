@@ -9,6 +9,8 @@
 	<string name="conn_offline">Отключён</string>
 	<string name="conn_empty_roster">Нет контактов для отображения!</string>
 	<string name="conn_reconnect">\nПереподключение через %d секунд.</string>
+	<string name="conn_disconnected">Соединение закрыто</string>
+	<string name="conn_networkchg">Сеть изменилась</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Выйти</string>
@@ -19,46 +21,38 @@
 	<string name="StartupDialog_Title">Добро пожаловать в yaxim!</string>
 	<string name="StartupDialog_Summary">Перед использованием следует сначала настроить yaxim. Пожалуйста введите Jabber ID и пароль.</string>
 	<string name="StartupDialog_pwHint">Введите пароль</string>
-	<string name="StartupDialog_portHint">5222</string>
-	<string name="StartupDialog_Username_title">Ведите свой Jabber ID:</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
-	<string name="StartupDialog_port_title">Порт:</string>
+	<string name="StartupDialog_advanced">Дополнительно ...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Сообщение от %s:</string>
+	<string name="notification_message">Сообщение от %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Уведомление о сообщении</string>
 	<string name="led_title">Мигающий светодиод</string>
-	<string name="led_summOn">Уведомления с помощью СИД включены</string>
-	<string name="led_summOff">Уведомления с помощью СИД отключены</string>
+	<string name="led_summ">СИД сигнализирует о входящих сообщениях</string>
 	<string name="vibr_title">Вибрация</string>
-	<string name="vibr_summOn">Уведомления при помощи вибрации включены</string>
-	<string name="vibr_summOff">Уведомления при помощи вибрации отключены</string>
+	<string name="vibr_summ">Вибрировать при входящих сообщениях</string>
 	<string name="ringtone_title">Мелодия вызова</string>
 	<string name="ringtone_summ">Мелодия для входящих сообщений</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Настройки запуска</string>
 	<string name="boot_title">Запускать yaxim при включении устройтва</string>
-	<string name="boot_summOn">Yaxim запускается при загрузке системы</string>
-	<string name="boot_summOff">yaxim не будет запущен при загрузке</string>
+	<string name="boot_summ">Запускать приложение при включении телефона</string>
 	<string name="statuspopup_name">Установить ваш статус</string>
-	<string name="showOffline_summ_on">Отключённые контакты отображаются</string>
-	<string name="showOffline_summ_off">Отключённые контакты скрыты</string>
+	<string name="showOffline_summ">Всегда показывать все контакты в списке собеседников</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>
-	<string name="foregroundService_summ_on">Удерживать yaxim в памяти</string>
-	<string name="foregroundService_summ_off">Разрешать системе перезапускать yaxim</string>
-	<string name="foregroundService_title">Постоянное соединение</string>
+	<string name="foregroundService_summ">Удерживать yaxim в памяти для обеспечения постоянного соединения(фоновый сервис)</string>
+	<string name="foregroundService_title">Значок в статусной строке</string>
 
 	<string name="preftitle_debug">Отладка</string>
-	<string name="smackdebug_summ_on">Пакетный и отладочный выводы разрешены через logcat</string>
-	<string name="smackdebug_summ_off">Отладка через logcat запрещена</string>
+	<string name="smackdebug_summ">Пакетная и отладочная информация через logcat(может содержать личную информацию)</string>
 	<string name="smackdebug_title">Отладка с помощью SMACK</string>
 
 	<string name="reportcrash_title">Отправлять отчёты об ошибках</string>
-	<string name="reportcrash_summ_on">Анонимные отчёты об ошибках разрешены</string>
-	<string name="reportcrash_summ_off">Анонимные отчёты об ошибках запрещены</string>
+	<string name="reportcrash_summ">Посылать анонимные отчёты о крахах разработчику</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -109,8 +103,7 @@
 	<string name="connstartup_summOn">Подключиться когда yaxim открыт</string>
 	<string name="connstartup_summOff">Не подключаться автоматически</string>
 	<string name="reconnect_title">Автоматически переподключаться</string>
-	<string name="reconnect_summOn">Переподключиться при разрыве соединения</string>
-	<string name="reconnect_summOff">Не переподключаться при разрыве соединения</string>
+	<string name="reconnect_summ">Переподключиться при разрыве соединения</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">пример: я@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Ведите свой Jabber ID:</string>
@@ -124,7 +117,7 @@
 	<string name="account_resource_dialog_title">Введите ресурс:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Приоритет клиента</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_summ">По умолчанию: 0(разрешено: -128 ..127)</string>
 	<string name="account_prio_dialog_title">Введите приоритет:</string>
 	<string name="account_port_title">Порт сервера</string>
 	<string name="account_port_sum">По умолчанию: 5222</string>
@@ -135,8 +128,7 @@
 	<string name="account_customserver_dialog_title">Введите имя сервера:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">Требовать SSL/TLS</string>
-	<string name="require_ssl_summOn">Всегда шифровать соединение с сервером</string>
-	<string name="require_ssl_summOff">Разрешить незашифрованные соединения</string>
+	<string name="require_ssl_summ">Всегда шифровать соединение с сервером</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Выберите группу</string>

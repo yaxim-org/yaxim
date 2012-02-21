@@ -9,6 +9,8 @@
 	<string name="conn_offline">Çevrimdışı</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_reconnect">\nReconnect in %d seconds.</string>
+	<string name="conn_disconnected">Connection closed</string>
+	<string name="conn_networkchg">Network changed</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Çıkış</string>
@@ -19,46 +21,38 @@
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
 	<string name="StartupDialog_pwHint">Parola girin</string>
-	<string name="StartupDialog_portHint">5222</string>
-	<string name="StartupDialog_Username_title">Enter your Jabber ID:</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Parola:</string>
-	<string name="StartupDialog_port_title">Port:</string>
+	<string name="StartupDialog_advanced">Advanced...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s:</string>
+	<string name="notification_message">Message from %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Mesaj Uyarısı</string>
 	<string name="led_title">Blinking LED</string>
-	<string name="led_summOn">LED notifications are on</string>
-	<string name="led_summOff">LED notifications are off</string>
+	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Titreşim</string>
-	<string name="vibr_summOn">Vibration notifications are on</string>
-	<string name="vibr_summOff">Vibration notification are off</string>
+	<string name="vibr_summ">Vibrate on incoming messages</string>
 	<string name="ringtone_title">Melodi</string>
 	<string name="ringtone_summ">Tone for incoming messages</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Startup Options</string>
 	<string name="boot_title">Load yaxim at bootup</string>
-	<string name="boot_summOn">yaxim is set to load at bootup</string>
-	<string name="boot_summOff">yaxim is set to not load at bootup</string>
+	<string name="boot_summ">Launch app when phone is turned on</string>
 	<string name="statuspopup_name">Set your status</string>
-	<string name="showOffline_summ_on">Showing offline contacts</string>
-	<string name="showOffline_summ_off">Hiding offline contacts</string>
+	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Show offline contacts</string>
-	<string name="foregroundService_summ_on">Keep yaxim in memory</string>
-	<string name="foregroundService_summ_off">Allow the system to restart yaxim</string>
-	<string name="foregroundService_title">Persistent connection</string>
+	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Debugging</string>
-	<string name="smackdebug_summ_on">Packet and debug output enabled via logcat</string>
-	<string name="smackdebug_summ_off">Debug via logcat disabled</string>
+	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
 	<string name="smackdebug_title">SMACK debugging</string>
 
 	<string name="reportcrash_title">Send crash reports</string>
-	<string name="reportcrash_summ_on">Anonymous crash reports enabled</string>
-	<string name="reportcrash_summ_off">Anonymous crash reports disabled</string>
+	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -110,8 +104,7 @@
 	<string name="connstartup_summOn">Go online when yaxim is opened</string>
 	<string name="connstartup_summOff">Do not automatically connect</string>
 	<string name="reconnect_title">Auto Reconnect</string>
-	<string name="reconnect_summOn">Reconnect when connection drops</string>
-	<string name="reconnect_summOff">Stay offline when connection drops</string>
+	<string name="reconnect_summ">Reconnect when connection drops</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Enter your Jabber ID:</string>
@@ -136,8 +129,7 @@
 	<string name="account_customserver_dialog_title">Enter server hostname:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">Require SSL/TLS</string>
-	<string name="require_ssl_summOn">Always encrypt server connection</string>
-	<string name="require_ssl_summOff">Allow unencrypted server connection</string>
+	<string name="require_ssl_summ">Always encrypt server connection</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>

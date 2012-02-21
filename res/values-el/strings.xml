@@ -9,6 +9,8 @@
 	<string name="conn_offline">Εκτός Σύνδεσης</string>
 	<string name="conn_empty_roster">Δεν υπάρχουν επαφές για εμφάνιση</string>
 	<string name="conn_reconnect">Επανασύνδεση σε %d δευτερόλεπτα</string>
+	<string name="conn_disconnected">Connection closed</string>
+	<string name="conn_networkchg">Network changed</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Έξοδος</string>
@@ -19,46 +21,38 @@
 	<string name="StartupDialog_Title">Καλωσορίσατε στο yaxim!</string>
 	<string name="StartupDialog_Summary">Πρέπει να ρυθμίσετε πρώτα το yaxim για να μπορέσετε να το χρησιμοποιήσετε. Παρακαλώ το εισάγετε το Jabber ID και τον κωδικό σας.</string>
 	<string name="StartupDialog_pwHint">Εισάγετε κωδικό</string>
-	<string name="StartupDialog_portHint">5222</string>
-	<string name="StartupDialog_Username_title">Εισαγάγετε το Jabber ID σας:</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Κωδικός Πρόσβασης:</string>
-	<string name="StartupDialog_port_title">Port:</string>
+	<string name="StartupDialog_advanced">Advanced...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Έχετε μήνυμα απο %s:</string>
+	<string name="notification_message">Message from %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Ειδοποίηση μηνύματος</string>
 	<string name="led_title">Ειδοποίηση μέσου LED</string>
-	<string name="led_summOn">Ενεργοποιημένο</string>
-	<string name="led_summOff">Απενεργοποιημένο</string>
+	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Δόνηση</string>
-	<string name="vibr_summOn">Ενεργοποιημένο</string>
-	<string name="vibr_summOff">Απενεργοποιημένο</string>
+	<string name="vibr_summ">Vibrate on incoming messages</string>
 	<string name="ringtone_title">Ήχος ειδοποιήσεων</string>
 	<string name="ringtone_summ">Ήχος για εισερχόμενα μηνύματα</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Επιλογές εκκίνησης</string>
 	<string name="boot_title">Φόρτωση κατα την εκκίνηση του κινητού</string>
-	<string name="boot_summOn">yaxim φορτώνει αυτόματα</string>
-	<string name="boot_summOff">yaxim δεν φορτώνει αυτόματα</string>
+	<string name="boot_summ">Launch app when phone is turned on</string>
 	<string name="statuspopup_name">Καθορισμός της κατάστασή σας</string>
-	<string name="showOffline_summ_on">Επαφές εκτός σύνδεσης θα εμφανίζονται</string>
-	<string name="showOffline_summ_off">Επαφές εκτός σύνδεσης δεν θα εμφανίζονται</string>
+	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Εμφάνιση επαφών εκτός σύνδεσης</string>
-	<string name="foregroundService_summ_on">Το yaxim να κρατιέται στην μνήμη</string>
-	<string name="foregroundService_summ_off">Επιτρέπεται η επανεκκινηση του yaxim απο το σύστημα</string>
-	<string name="foregroundService_title">Μόνιμη σύνδεση</string>
+	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Debugging</string>
-	<string name="smackdebug_summ_on">Αποστολή πληροφορίων πακεταρισμα και αποσφαλμάτωση στο logcat</string>
-	<string name="smackdebug_summ_off">Debug μεσου logcat απενεργοποιημένο</string>
+	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
 	<string name="smackdebug_title">SMACK debugging</string>
 
 	<string name="reportcrash_title">Αναφορά Προβλημάτων</string>
-	<string name="reportcrash_summ_on">Ανώνυμη αναφορά ενεργή</string>
-	<string name="reportcrash_summ_off">Ανώνυμη αναφορά μη ενεργή</string>
+	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -109,8 +103,7 @@
 	<string name="connstartup_summOn">Κατά την έναρξη του yaxim να γίνετε σύνδεση</string>
 	<string name="connstartup_summOff">Όχι αυτόματη σύνδεση</string>
 	<string name="reconnect_title">Αυτόματη επανασύνδεση</string>
-	<string name="reconnect_summOn">Επανασύνδεση σε περίπτωση που κοπεί η σύνδεση</string>
-	<string name="reconnect_summOff">Όταν η σύνδεση κοπεί να μείνει αποσυνδεμένο.</string>
+	<string name="reconnect_summ">Επανασύνδεση σε περίπτωση που κοπεί η σύνδεση</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">παράδειγμα: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Εισαγάγετε το Jabber ID σας:</string>
@@ -135,8 +128,7 @@
 	<string name="account_customserver_dialog_title">Πληκτρολογήστε το server hostname:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">Απαιτείται SSL/TLS</string>
-	<string name="require_ssl_summOn">Πάντα κρυπτογράφημένη σύνδεση</string>
-	<string name="require_ssl_summOff">Επιτρέπεται μη κρυπτογράφημένη σύνδεση</string>
+	<string name="require_ssl_summ">Πάντα κρυπτογράφημένη σύνδεση</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Επιλογή ομάδας</string>

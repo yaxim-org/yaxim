@@ -9,6 +9,8 @@
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Keine Kontakte zum Anzeigen!</string>
 	<string name="conn_reconnect">\nNeue Verbindung in %d Sekunden.</string>
+	<string name="conn_disconnected">Verbindung getrennt</string>
+	<string name="conn_networkchg">Netzwerkwechsel</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Beenden</string>
@@ -19,46 +21,38 @@
 	<string name="StartupDialog_Title">Willkommen zu yaxim!</string>
 	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte geben Sie Ihre Jabber-ID und Ihr Passwort ein.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
-	<string name="StartupDialog_portHint">5222</string>
-	<string name="StartupDialog_Username_title">Jabber-ID eingeben:</string>
+	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passwort:</string>
-	<string name="StartupDialog_port_title">Port:</string>
+	<string name="StartupDialog_advanced">Erweitert...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Nachricht von %s:</string>
+	<string name="notification_message">Mitteilung von %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Benachrichtigung</string>
 	<string name="led_title">LED-Blinken</string>
-	<string name="led_summOn">LED-Benachrichtigungen sind an</string>
-	<string name="led_summOff">LED-Benachrichtigungen sind aus</string>
+	<string name="led_summ">Neue Nachrichten durch LED-Blinken anzeigen</string>
 	<string name="vibr_title">Vibration</string>
-	<string name="vibr_summOn">Vibrationsalarm ist an</string>
-	<string name="vibr_summOff">Vibrationsalarm ist aus</string>
+	<string name="vibr_summ">Bei neuen Nachrichten vibrieren</string>
 	<string name="ringtone_title">Klingelton</string>
 	<string name="ringtone_summ">Ton für neue Nachrichten</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Programmstart-Einstellungen</string>
 	<string name="boot_title">Bei Systemstart laden</string>
-	<string name="boot_summOn">yaxim wird beim Systemstart geladen</string>
-	<string name="boot_summOff">yaxim wird nicht automatisch gestartet</string>
+	<string name="boot_summ">Automatisch starten wenn das Telefon eingeschaltet wird</string>
 	<string name="statuspopup_name">Status setzen</string>
-	<string name="showOffline_summ_on">Offline-Kontakte werden angezeigt</string>
-	<string name="showOffline_summ_off">Offline-Kontakte werden versteckt</string>
+	<string name="showOffline_summ">Alle Kontakte immer in der Liste anzeigen</string>
 	<string name="showOffline_title">Offline-Kontakte anzeigen</string>
-	<string name="foregroundService_summ_on">yaxim im Speicher halten</string>
-	<string name="foregroundService_summ_off">yaxim-Neustart durch System zulassen</string>
-	<string name="foregroundService_title">Permanente Verbindung</string>
+	<string name="foregroundService_summ">Yaxim im Speicher halten um immer verbunden zu bleiben (Vordergrund-Dienst)</string>
+	<string name="foregroundService_title">Symbol in der Statusleiste</string>
 
 	<string name="preftitle_debug">Debugging</string>
-	<string name="smackdebug_summ_on">Paket- und Debugausgabe über Logcat</string>
-	<string name="smackdebug_summ_off">Keine Debugausgabe über Logcat</string>
+	<string name="smackdebug_summ">Paket- und Debuggingausgabe im Logcat (kann persönliche Informationen enthalten)</string>
 	<string name="smackdebug_title">SMACK-Debugging</string>
 
 	<string name="reportcrash_title">Fehlerberichte senden</string>
-	<string name="reportcrash_summ_on">Anonyme Absturzberichte sind aktiviert</string>
-	<string name="reportcrash_summ_off">Anonyme Absturzberichte sind aus</string>
+	<string name="reportcrash_summ">Anonymen Absturzbericht sn die Entwickler senden</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -109,8 +103,7 @@
 	<string name="connstartup_summOn">Beim Start von yaxim verbinden</string>
 	<string name="connstartup_summOff">Nicht automatisch verbinden</string>
 	<string name="reconnect_title">Verbindung wiederherstellen</string>
-	<string name="reconnect_summOn">Bei Verbindungsabbruch neu verbinden</string>
-	<string name="reconnect_summOff">Bei Verbindungsabbruch offline bleiben</string>
+	<string name="reconnect_summ">Bei Verbindungsabbruch neu verbinden</string>
 	<string name="account_jabberID_title">Jabber-ID</string>
 	<string name="account_jabberID_sum">Beispiel: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Jabber-ID eingeben:</string>
@@ -124,7 +117,7 @@
 	<string name="account_resource_dialog_title">Ressource eingeben:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Client-Priorität</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_summ">Standard: 0 (erlaubt: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Priorität eingeben:</string>
 	<string name="account_port_title">Server-Port</string>
 	<string name="account_port_sum">Standard: 5222</string>
@@ -135,8 +128,7 @@
 	<string name="account_customserver_dialog_title">Server-Hostnamen eingeben:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">SSL/TLS erfordern</string>
-	<string name="require_ssl_summOn">Serverkommunikation immer verschlüsseln</string>
-	<string name="require_ssl_summOff">Unverschlüsselte Serverkommunikation erlauben</string>
+	<string name="require_ssl_summ">Serverkommunikation immer verschlüsseln</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Gruppe auswählen</string>
@@ -180,8 +172,8 @@
 	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Daniel Winzen https://launchpad.net/~q-d
   Georg Lukas https://launchpad.net/~ge0rg
-  Johannes Boost https://launchpad.net/~jjjb
   Markus Unterwaditzer https://launchpad.net/~untitaker
   Michael Kanis https://launchpad.net/~mkanis
   René Moser https://launchpad.net/~resmo</string>

@@ -9,6 +9,8 @@
 	<string name="conn_offline">Rozłączony</string>
 	<string name="conn_empty_roster">Brak kontaktów</string>
 	<string name="conn_reconnect">\nPonowne połączenie w ciągu %d sekund.</string>
+	<string name="conn_disconnected">Connection closed</string>
+	<string name="conn_networkchg">Network changed</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Wyjdź</string>
@@ -19,46 +21,38 @@
 	<string name="StartupDialog_Title">Witaj w yaxim!</string>
 	<string name="StartupDialog_Summary">Używanie yaxima wymaga konfiguracji. Podaj swój Jabber ID i hasło.</string>
 	<string name="StartupDialog_pwHint">Hasło</string>
-	<string name="StartupDialog_portHint">5222</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Hasło:</string>
-	<string name="StartupDialog_port_title">Port:</string>
+	<string name="StartupDialog_advanced">Advanced...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Wiadomość od %s:</string>
+	<string name="notification_message">Message from %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Powiadamianie o wiadomościach</string>
 	<string name="led_title">Powiadomienie diodą LED</string>
-	<string name="led_summOn">Powiadomienia LED są włączone</string>
-	<string name="led_summOff">Powiadomienia LED są wyłączone</string>
+	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Wibracja</string>
-	<string name="vibr_summOn">Powiadomienia za pomocą wibracji są włączone</string>
-	<string name="vibr_summOff">Powiadomienia za pomocą wibracji są wyłączone</string>
+	<string name="vibr_summ">Vibrate on incoming messages</string>
 	<string name="ringtone_title">Dzwonek</string>
 	<string name="ringtone_summ">Dzwonek dla przychodzących wiadomości</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opcje uruchamiania</string>
 	<string name="boot_title">Uruchom yaxim przy starcie systemu</string>
-	<string name="boot_summOn">yaxim będzie uruchamiany przy starcie systemu</string>
-	<string name="boot_summOff">yaxim nie będzie uruchamiany przy starcie systemu</string>
+	<string name="boot_summ">Launch app when phone is turned on</string>
 	<string name="statuspopup_name">Ustaw swój status</string>
-	<string name="showOffline_summ_on">Rozłączone kontakty widoczne</string>
-	<string name="showOffline_summ_off">Rozłączone kontakty ukryte</string>
+	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>
-	<string name="foregroundService_summ_on">Utrzymuj yaxima w pamięci operacyjnej</string>
-	<string name="foregroundService_summ_off">Pozwól systemowi restartować aplikację</string>
-	<string name="foregroundService_title">Utrzymuj połączenie</string>
+	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Debugowanie</string>
-	<string name="smackdebug_summ_on">Debugowanie za pomocą logcata włączone</string>
-	<string name="smackdebug_summ_off">Debugowanie za pomocą logcata wyłączone</string>
+	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
 	<string name="smackdebug_title">Debugowanie SMACK</string>
 
 	<string name="reportcrash_title">Wysyłaj raporty o błędach</string>
-	<string name="reportcrash_summ_on">Anonimowe wysyłanie raportów włączone</string>
-	<string name="reportcrash_summ_off">Anonimowe wysyłanie raportów wyłączone</string>
+	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -94,7 +88,7 @@
 	<string name="roster_contextmenu_title">Ustawienia %s</string>
 	<string name="roster_contextmenu_group_rename">Zmień nazwę grupy</string>
 	<string name="roster_contextmenu_contact_delete">Usuń kontakt</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
+	<string name="roster_contextmenu_contact_delmsg">Usuń historię czatu</string>
 	<string name="roster_contextmenu_contact_open_chat">Otwórz chat</string>
 	<string name="roster_contextmenu_contact_rename">Zmień nazwę</string>
 	<string name="roster_contextmenu_contact_request_auth">Poproś o autoryzację</string>
@@ -109,8 +103,7 @@
 	<string name="connstartup_summOn">Połącz automatycznie po uruchomieniu programu</string>
 	<string name="connstartup_summOff">Nie łącz automatycznie po uruchomieniu programu</string>
 	<string name="reconnect_title">Połącz ponownie</string>
-	<string name="reconnect_summOn">Połącz ponownie po utracie połączenia</string>
-	<string name="reconnect_summOff">Nie łącz ponownie po utracie połączenia</string>
+	<string name="reconnect_summ">Połącz ponownie po utracie połączenia</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">przykład: ja@jabber.serwer.com</string>
 	<string name="account_jabberID_dialog_title">Jabber ID:</string>
@@ -124,7 +117,7 @@
 	<string name="account_resource_dialog_title">Podaj zasób:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorytet klienta</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_summ">Domyślnie: 0 (dozwolone wartości: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Podaj priorytet klienta:</string>
 	<string name="account_port_title">Port serwera</string>
 	<string name="account_port_sum">Domyślnie: 5222</string>
@@ -135,8 +128,7 @@
 	<string name="account_customserver_dialog_title">Podaj adres serwera:</string>
 	<string name="account_customserver_hint">host.serwer.com</string>
 	<string name="require_ssl_title">Wymagaj SSL/TLS</string>
-	<string name="require_ssl_summOn">Zawsze szyfruj połączenie</string>
-	<string name="require_ssl_summOff">Pozwalaj na nieszyfrowane połączenia</string>
+	<string name="require_ssl_summ">Zawsze szyfruj połączenie</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Wybierz grupę</string>
@@ -150,8 +142,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Zmień grupę</string>
 	<string name="deleteRosterItem_text">Usunąć %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Usuń kontakt</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Delete Chat History</string>
+	<string name="deleteChatHistory_text">Usunąć wszystkie wiadomości z %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Usuń historię czatu</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ja:</string>
