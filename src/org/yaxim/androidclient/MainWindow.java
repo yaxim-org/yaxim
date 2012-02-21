@@ -889,7 +889,7 @@ public class MainWindow extends ExpandableListActivity {
 	public List<String> getRosterGroups() {
 		// we want all, online and offline
 		List<String> list = new ArrayList<String>();
-		Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+		Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
 					null, null, "roster_group");
 		int idx = cursor.getColumnIndex(RosterProvider.GroupsConstants.GROUP);
 		cursor.moveToFirst();
@@ -918,10 +918,11 @@ public class MainWindow extends ExpandableListActivity {
 			String selectWhere = null;
 			if (!showOffline)
 				selectWhere = "status_mode > 0";
-			Cursor cursor = managedQuery(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
 					selectWhere, null, "roster_group");
-			stopManagingCursor(getCursor());
+			Cursor oldCursor = getCursor();
 			changeCursor(cursor);
+			stopManagingCursor(oldCursor);
 		}
 
 		@Override
@@ -932,7 +933,7 @@ public class MainWindow extends ExpandableListActivity {
 			String selectWhere = "roster_group = ?";
 			if (!showOffline)
 				selectWhere += "AND status_mode > 0";
-			return managedQuery(RosterProvider.CONTENT_URI, ROSTER_QUERY,
+			return getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
 				selectWhere, new String[] { groupname }, null);
 		}
 
