@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
@@ -20,6 +21,7 @@ import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -52,6 +54,7 @@ import android.widget.ImageView;
 import org.yaxim.androidclient.util.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.R;
@@ -61,9 +64,13 @@ import org.yaxim.androidclient.service.IXMPPRosterService;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
-public class MainWindow extends GenericExpandableListActivity {
+import com.nullwire.trace.ExceptionHandler;
+
+public class MainWindow extends ExpandableListActivity {
 
 	private static final String TAG = "yaxim.MainWindow";
+
+	private YaximConfiguration mConfig;
 
 	private Handler mainHandler = new Handler();
 
@@ -89,6 +96,10 @@ public class MainWindow extends GenericExpandableListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		mConfig = new YaximConfiguration(PreferenceManager
+				.getDefaultSharedPreferences(this));
+		registerCrashReporter();
 
 		showFirstStartUpDialogIfPrefsEmpty();
 		getContentResolver().registerContentObserver(RosterProvider.GROUPS_URI,
@@ -844,6 +855,17 @@ public class MainWindow extends GenericExpandableListActivity {
 		Intent i = new Intent(context, MainWindow.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		return i;
+	}
+
+	protected void showToastNotification(int message) {
+		Toast tmptoast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+		tmptoast.show();
+	}
+
+	private void registerCrashReporter() {
+		if (mConfig.reportCrash) {
+			ExceptionHandler.register(this, "http://duenndns.de/yaxim-crash/");
+		}
 	}
 
 	private static final String[] GROUPS_QUERY = new String[] {
