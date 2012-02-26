@@ -50,6 +50,7 @@ public class RosterProvider extends ContentProvider {
 		public void run() {
 			Log.d(TAG, "notifying change");
 			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+			getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		}
 	};
 	private Handler mNotifyHandler = new Handler();
@@ -270,7 +271,7 @@ public class RosterProvider extends ContentProvider {
 	private void notifyChange() {
 		mNotifyHandler.removeCallbacks(mNotifyChange);
 		long ts = System.currentTimeMillis();
-		if (ts > last_notify + 1000)
+		if (ts > last_notify + 500)
 			mNotifyChange.run();
 		else
 			mNotifyHandler.postDelayed(mNotifyChange, 200);
