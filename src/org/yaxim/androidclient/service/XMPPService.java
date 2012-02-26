@@ -325,6 +325,7 @@ public class XMPPService extends GenericService {
 					if (!mSmackable.doConnect()) {
 						postConnectionFailed("Inconsistency in Smackable.doConnect()");
 					}
+					postConnectionEstablished();
 				} catch (YaximXMPPException e) {
 					String message = e.getLocalizedMessage();
 					if (e.getCause() != null)
@@ -418,7 +419,7 @@ public class XMPPService extends GenericService {
 			// We get a roster changed update, but we are not connected,
 			// that means we just got connected and need to notify the Activity.
 			logInfo("rosterChanged(): we just got connected");
-			connectionEstablished();
+			//connectionEstablished();
 		}
 		if (mIsConnected.get() && mSmackable != null && !mSmackable.isAuthenticated()) {
 			logInfo("rosterChanged(): disconnected without warning");
