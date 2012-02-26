@@ -1,0 +1,22 @@
+0.8.4:
+ * New user-friendly first startup dialog
+ * Support Android 3.x and 4.x
+ * Remember which roster groups were collapsed (fixes #51)
+ * Support offline timestamps (sending and receiving)
+ * New roster implementation (using SQLite, fixes #5)
+ * Enforce SSL by default (fixes #65)
+ * Support negative priorities (fixes #61)
+ * Updated ASMACK from flow, fixed SMACK debugging
+ * Support jabber servers with SRV record (finally!)
+
+0.8.3:
+ * Fix another auto-reconnect iussue
+ * Support negative priority (fixes #61)
+ * Display 'Error' messages as such (fixes #44)
+ * Show MD5 checksum of SSL certificates (fixes #54)
+ * Improved UI
+
+0.8.2:
+ * Fix for annoying auto-reconnect bug! Sorry folks!
+ * New group separator image
+ * Auto-clear notification when opening chat window
