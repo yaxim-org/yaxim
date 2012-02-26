@@ -961,8 +961,13 @@ public class MainWindow extends ExpandableListActivity {
 		}
 		public void onChange(boolean selfChange) {
 			Log.d(TAG, "RosterObserver.onChange: " + selfChange);
+			// work around race condition in ExpandableListView, which collapses
+			// groups rand-f**king-omly
 			if (getExpandableListAdapter() != null)
-				restoreGroupsExpanded();
+				mainHandler.postDelayed(new Runnable() {
+					public void run() {
+						restoreGroupsExpanded();
+					}}, 100);
 		}
 	}
 }
