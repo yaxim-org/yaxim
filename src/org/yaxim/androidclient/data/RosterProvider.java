@@ -50,7 +50,6 @@ public class RosterProvider extends ContentProvider {
 		public void run() {
 			Log.d(TAG, "notifying change");
 			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
-			getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		}
 	};
 	private Handler mNotifyHandler = new Handler();
