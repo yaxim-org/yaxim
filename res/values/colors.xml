@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <color name="actionbar_separator">#7B6D70</color>
+    <color name="actionbar_background_start">#9C8A90</color>
+    <color name="actionbar_background_end">#7B6D70</color>
+
+    <color name="dark_pink">#330626</color>
+    <color name="bright_pink">#ca1f7b</color>
+</resources>

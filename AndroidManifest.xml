@@ -17,6 +17,7 @@
 
 		<activity android:name=".MainWindow" android:label="@string/app_name"
 			android:launchMode="singleTask"
+			android:theme="@style/PinkTheme"
 			android:configChanges="orientation|keyboardHidden">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -35,6 +36,7 @@
 		</activity>
 
 		<activity android:name=".chat.ChatWindow" android:label="@string/app_name"
+			android:theme="@style/PinkTheme"
 			android:alwaysRetainTaskState="true">
 		</activity>
 
