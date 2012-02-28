@@ -299,7 +299,7 @@ public class XMPPService extends GenericService {
 		if (!mConfig.foregroundService)
 			return;
 		String title = getString(R.string.conn_title, mConfig.jabberID);
-		Notification n = new Notification(R.drawable.ic_offline, title,
+		Notification n = new Notification(R.drawable.ic_status_offline, title,
 				System.currentTimeMillis());
 		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 
