@@ -34,7 +34,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String statusMessage;
 
 	public boolean isLEDNotify;
-	public boolean isVibraNotify;
+	public String vibraNotify;
 	public Uri notifySound;
 
 	public boolean smackdebug;
@@ -83,8 +83,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void loadPrefs(SharedPreferences prefs) {
 		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
 				false);
-		this.isVibraNotify = prefs.getBoolean(
-				PreferenceConstants.VIBRATIONNOTIFY, false);
+		this.vibraNotify = prefs.getString(
+				PreferenceConstants.VIBRATIONNOTIFY, "SYSTEM");
 		this.notifySound = Uri.parse(prefs.getString(
 				PreferenceConstants.RINGTONENOTIFY, ""));
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");

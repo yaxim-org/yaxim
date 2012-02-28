@@ -9,11 +9,14 @@
 			android:summary="@string/led_summ"
 			android:defaultValue="true"
 		/>
-		<CheckBoxPreference
+		<ListPreference
 			android:id="@+id/vibration"
-			android:key="vibration"
 			android:title="@string/vibr_title"
 			android:summary="@string/vibr_summ"
+			android:key="vibration_list"
+			android:defaultValue="SYSTEM"
+			android:entries="@array/vibr_values_displayed"
+			android:entryValues="@array/vibr_values"
 		/>
 		<RingtonePreference
 			android:id="@+id/ringtone"
