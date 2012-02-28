@@ -139,6 +139,7 @@ public abstract class GenericService extends Service {
 		Uri userNameUri = Uri.parse(fromJid);
 		mNotificationIntent.setData(userNameUri);
 		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
+		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		
 		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
