@@ -169,7 +169,7 @@ public class ChatProvider extends ContentProvider {
 
 		switch (match) {
 		case MESSAGES:
-			count = db.update(TABLE_NAME, values, where, null);
+			count = db.update(TABLE_NAME, values, where, whereArgs);
 			break;
 		case MESSAGE_ID:
 			String segment = url.getPathSegments().get(1);
