@@ -316,12 +316,12 @@ public class XMPPService extends GenericService {
 		if (mSmackable != null) {
 			mSmackable.unRegisterCallback();
 		}
-		createAdapter();
 
 		mConnectingThread = new Thread() {
 
 			public void run() {
 				try {
+					createAdapter();
 					if (!mSmackable.doConnect()) {
 						postConnectionFailed("Inconsistency in Smackable.doConnect()");
 					}
