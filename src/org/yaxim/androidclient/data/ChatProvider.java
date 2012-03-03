@@ -196,7 +196,7 @@ public class ChatProvider extends ContentProvider {
 	private static class ChatDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 4;
+		private static final int DATABASE_VERSION = 5;
 
 		public ChatDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -213,7 +213,8 @@ public class ChatProvider extends ContentProvider {
 					+ ChatConstants.DATE + " INTEGER," + ChatConstants.FROM_ME
 					+ " INTEGER," + ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
-					+ ChatConstants.HAS_BEEN_READ + " BOOLEAN);");
+					+ ChatConstants.HAS_BEEN_READ + " BOOLEAN,"
+					+ ChatConstants.PACKET_ID + " TEXT);");
 		}
 
 		@Override
@@ -222,6 +223,8 @@ public class ChatProvider extends ContentProvider {
 			switch (oldVersion) {
 			case 3:
 				db.execSQL("UPDATE " + TABLE_NAME + " SET READ=1");
+			case 4:
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.PACKET_ID + " TEXT");
 				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -246,6 +249,7 @@ public class ChatProvider extends ContentProvider {
 		public static final String JID = "jid";
 		public static final String MESSAGE = "message";
 		public static final String HAS_BEEN_READ = "read";
+		public static final String PACKET_ID = "pid";
 
 		// boolean mappings
 		public static final boolean INCOMING = false;

@@ -62,7 +62,7 @@ public class SmackableImp implements Smackable {
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
-			ChatConstants.MESSAGE, ChatConstants.DATE };
+			ChatConstants.MESSAGE, ChatConstants.DATE, ChatConstants.PACKET_ID };
 	final static private String SEND_OFFLINE_SELECTION = "from_me = 1 AND read = 0";
 
 	static {
@@ -89,6 +89,8 @@ public class SmackableImp implements Smackable {
 	private PacketListener mPacketListener;
 
 	private final ContentResolver mContentResolver;
+
+	private PacketListener mSendFailureListener;
 
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver,
@@ -126,6 +128,8 @@ public class SmackableImp implements Smackable {
 		// been thrown.
 		if (isAuthenticated()) {
 			registerMessageListener();
+			registerMessageSendFailureListener();
+			sendOfflineMessages();
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
 			mServiceCallBack.rosterChanged();
@@ -201,7 +205,6 @@ public class SmackableImp implements Smackable {
 						mConfig.ressource);
 			}
 			setStatusFromConfig();
-			sendOfflineMessages();
 
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
@@ -312,16 +315,18 @@ public class SmackableImp implements Smackable {
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI,
 				SEND_OFFLINE_PROJECTION, SEND_OFFLINE_SELECTION,
 				null, null);
-		final int _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
-		final int JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
-		final int MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
-		final int  TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
+		final int      _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
+		final int      JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
+		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
+		final int       TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
+		final int PACKETID_COL = cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID);
 		ContentValues mark_delivered = new ContentValues();
 		mark_delivered.put(ChatConstants.HAS_BEEN_READ, ChatConstants.DELIVERED);
 		while (cursor.moveToNext()) {
 			int _id = cursor.getInt(_ID_COL);
 			String toJID = cursor.getString(JID_COL);
 			String message = cursor.getString(MSG_COL);
+			String packetID = cursor.getString(PACKETID_COL);
 			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
 			final Message newMessage = new Message(toJID, Message.Type.chat);
@@ -329,14 +334,17 @@ public class SmackableImp implements Smackable {
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
-			mXMPPConnection.sendPacket(newMessage);
-
+			if ((packetID != null) && (packetID.length() > 0)) {
+				newMessage.setPacketID(packetID);
+			} else {
+				packetID = newMessage.getPacketID();
+				mark_delivered.put(ChatConstants.PACKET_ID, packetID);
+			}
 			Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 				+ "/" + ChatProvider.TABLE_NAME + "/" + _id);
 				mContentResolver.update(rowuri, mark_delivered,
 						null, null);
-			mContentResolver.update(ChatProvider.CONTENT_URI, mark_delivered,
-					SEND_OFFLINE_SELECTION, null);
+			mXMPPConnection.sendPacket(newMessage);		// must be after marking delivered, otherwise it may override the SendFailListener
 		}
 		cursor.close();
 	}
@@ -356,13 +364,13 @@ public class SmackableImp implements Smackable {
 		final Message newMessage = new Message(toJID, Message.Type.chat);
 		newMessage.setBody(message);
 		if (isAuthenticated()) {
-			mXMPPConnection.sendPacket(newMessage);
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED,
-					System.currentTimeMillis());
+					System.currentTimeMillis(), newMessage.getPacketID());
+			mXMPPConnection.sendPacket(newMessage);
 		} else {
 			// send offline -> store to DB
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.UNREAD,
-					System.currentTimeMillis());
+					System.currentTimeMillis(), newMessage.getPacketID());
 		}
 	}
 
@@ -384,6 +392,7 @@ public class SmackableImp implements Smackable {
 		try {
 			mXMPPConnection.getRoster().removeRosterListener(mRosterListener);
 			mXMPPConnection.removePacketListener(mPacketListener);
+			mXMPPConnection.removePacketSendFailureListener(mSendFailureListener);
 		} catch (Exception e) {
 			// ignore it!
 		}
@@ -470,6 +479,43 @@ public class SmackableImp implements Smackable {
 		return res[0].toLowerCase();
 	}
 
+	public void markMessageAsSendFailed(String packetID) {
+		ContentValues mark_undelivered = new ContentValues();
+		mark_undelivered.put(ChatConstants.HAS_BEEN_READ, ChatConstants.UNREAD);
+		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
+				+ ChatProvider.TABLE_NAME);
+		mContentResolver.update(rowuri, mark_undelivered,
+				ChatConstants.PACKET_ID + " = ? AND " + ChatConstants.FROM_ME + " = 1", new String[] { packetID });
+	}
+
+	private void registerMessageSendFailureListener() {
+		// do not register multiple packet listeners
+		if (mSendFailureListener != null)
+			mXMPPConnection.removePacketSendFailureListener(mSendFailureListener);
+
+		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
+
+		mSendFailureListener = new PacketListener() {
+			public void processPacket(Packet packet) {
+				try {
+				if (packet instanceof Message) {
+					Message msg = (Message) packet;
+					String chatMessage = msg.getBody();
+
+					Log.d("SmackableImp", "message " + chatMessage + " could not be sent (ID:" + (msg.getPacketID() == null ? "null" : msg.getPacketID()) + ")");
+					markMessageAsSendFailed(msg.getPacketID());
+				}
+				} catch (Exception e) {
+					// SMACK silently discards exceptions dropped from processPacket :(
+					Log.e(TAG, "failed to process packet:");
+					e.printStackTrace();
+				}
+			}
+		};
+
+		mXMPPConnection.addPacketSendFailureListener(mSendFailureListener, filter);
+	}
+
 	private void registerMessageListener() {
 		// do not register multiple packet listeners
 		if (mPacketListener != null)
@@ -503,7 +549,7 @@ public class SmackableImp implements Smackable {
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
 
-					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD, ts);
+					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD, ts, msg.getPacketID());
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
 				} catch (Exception e) {
@@ -518,7 +564,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addChatMessageToDB(boolean from_me, String JID,
-			String message, boolean read, long ts) {
+			String message, boolean read, long ts, String packetID) {
 		ContentValues values = new ContentValues();
 
 		values.put(ChatConstants.FROM_ME, from_me);
@@ -526,6 +572,7 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.MESSAGE, message);
 		values.put(ChatConstants.HAS_BEEN_READ, read);
 		values.put(ChatConstants.DATE, ts);
+		values.put(ChatConstants.PACKET_ID, packetID);
 
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 	}
