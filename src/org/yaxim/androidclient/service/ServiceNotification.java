@@ -3,27 +3,26 @@ package org.yaxim.androidclient.service;
 import android.util.Log;
 import android.app.Notification;
 import android.app.NotificationManager;
-//import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
-//import android.content.Intent;
-//import android.content.res.Resources;
-//import android.graphics.Color;
 import android.os.Build;
 
 // Code to make a Service stay in the foreground from
 // http://devtcg.blogspot.com/2009/12/gracefully-supporting-multiple-android.html
 abstract class ServiceNotification {
 	public static ServiceNotification getInstance() {
+		/*
 		if (Integer.parseInt(Build.VERSION.SDK) <= 4)
 			return PreEclair.Holder.sInstance;
 		else
+		*/
 			return EclairAndBeyond.Holder.sInstance;
 	}
 
 	public abstract void showNotification(Service context, int id, Notification notification);
 	public abstract void hideNotification(Service context, int id);
 
+	/*
 	private static class PreEclair extends ServiceNotification {
 		private static class Holder {
 			private static final PreEclair sInstance = new PreEclair();
@@ -40,6 +39,7 @@ abstract class ServiceNotification {
 			getNotificationManager(context).cancel(id);
 		}
 	}
+	*/
 
 	private static class EclairAndBeyond extends ServiceNotification {
 		private static class Holder {
