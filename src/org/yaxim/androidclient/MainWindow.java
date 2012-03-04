@@ -435,10 +435,6 @@ public class MainWindow extends ExpandableListActivity {
 			case R.id.roster_contextmenu_contact_change_group:
 				moveRosterItemToGroupDialog(userJid);
 				return true;
-
-			case R.id.roster_exit:
-				closeContextMenu();
-				return true;
 			}
 		} else {
 
@@ -452,9 +448,6 @@ public class MainWindow extends ExpandableListActivity {
 				renameRosterGroupDialog(seletedGroup);
 				return true;
 
-			case R.id.roster_exit:
-				closeContextMenu();
-				return true;
 			}
 		}
 		return false;

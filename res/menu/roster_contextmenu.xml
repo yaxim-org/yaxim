@@ -46,8 +46,4 @@
 
 	</group>
 
-	<item android:id="@+id/roster_exit" android:visible="true"
-		android:enabled="true" android:orderInCategory="8" android:title="@android:string/cancel">
-	</item>
-
 </menu>
