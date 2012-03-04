@@ -421,18 +421,22 @@ public class MainWindow extends ExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				removeRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_rename:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				renameRosterItemDialog(userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_request_auth:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				serviceAdapter.requestAuthorizationForRosterItem(userJid);
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
 			}
@@ -445,6 +449,7 @@ public class MainWindow extends ExpandableListActivity {
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_group_rename:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				renameRosterGroupDialog(seletedGroup);
 				return true;
 
