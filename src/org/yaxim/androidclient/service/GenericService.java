@@ -14,6 +14,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -90,7 +91,13 @@ public abstract class GenericService extends Service {
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
-	protected void notifyClient(String fromJid, String fromUserName, String message) {
+	protected void notifyClient(String fromJid, String fromUserName, String message,
+			boolean showNotification) {
+		if (!showNotification) {
+			// only play sound and return
+			RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
+			return;
+		}
 		mWakeLock.acquire();
 		setNotification(fromJid, fromUserName, message);
 		setLEDNotification();
