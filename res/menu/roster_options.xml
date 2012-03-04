@@ -1,19 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
+		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
+		android:showAsAction="never"/>
+
 	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
 		android:alphabeticShortcut="c"
-		android:icon="@drawable/yaxim_menu_connect" />
+		android:icon="@drawable/ic_action_plug" android:showAsAction="ifRoom"/>
+
+	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
+		android:alphabeticShortcut="o"
+		android:icon="@android:drawable/ic_menu_delete" android:showAsAction="ifRoom"/>
 
 	<item android:id="@+id/menu_add_friend" android:title="@string/Menu_addFriend"
 		android:alphabeticShortcut="a"
 		android:icon="@android:drawable/ic_menu_add" />
-
-	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
-		android:alphabeticShortcut="o"
-		android:icon="@android:drawable/ic_menu_delete" />
-
-	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
-		android:alphabeticShortcut="s"
-		android:icon="@android:drawable/ic_menu_myplaces" />
 
 	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
 		android:alphabeticShortcut="x"
