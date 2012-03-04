@@ -154,6 +154,7 @@
 	<string name="chat_from_me">Я:</string>
 	<string name="toast_connectfail_message">Соединение закрыто!</string>
 	<string name="toast_stored_offline">Сообщение было сохранено для отправки.</string>
+	<string name="chat_enterMsgHint">Enter message</string> 
 
 	<!-- GPS settings -->
 	<!--

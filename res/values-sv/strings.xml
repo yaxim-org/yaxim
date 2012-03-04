@@ -154,6 +154,7 @@
 	<string name="chat_from_me">Jag:</string>
 	<string name="toast_connectfail_message">Frånkopplad!</string>
 	<string name="toast_stored_offline">Meddelandet har lagrats för att kunna skickas senare.</string>
+	<string name="chat_enterMsgHint">Enter message</string> 
 
 	<!-- GPS settings -->
 	<!--

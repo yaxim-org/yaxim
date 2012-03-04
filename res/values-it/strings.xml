@@ -154,6 +154,7 @@
 	<string name="chat_from_me">Io:</string>
 	<string name="toast_connectfail_message">Connessione chiusa!</string>
 	<string name="toast_stored_offline">Il messaggio sarà trasmesso più tardi</string>
+	<string name="chat_enterMsgHint">Enter message</string> 
 
 	<!-- GPS settings -->
 	<!--

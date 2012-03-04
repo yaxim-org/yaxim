@@ -21,11 +21,13 @@
 			android:gravity="bottom"
 			android:stretchColumns="1">
 
-			<EditText android:id="@+id/Chat_UserInput"
-				android:layout_width="fill_parent"
-				android:layout_marginRight="60sp"
-				android:layout_height="wrap_content"
-				android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine" />
+			<EditText
+			    android:id="@+id/Chat_UserInput"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginRight="60sp"
+			    android:hint="@string/chat_enterMsgHint"
+			    android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine" />
 
 			<Button android:id="@+id/Chat_SendButton"
 				android:layout_width="60sp"
