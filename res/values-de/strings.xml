@@ -154,6 +154,7 @@
 	<string name="chat_from_me">Ich:</string>
 	<string name="toast_connectfail_message">Verbindung getrennt!</string>
 	<string name="toast_stored_offline">Nachricht zum Versand gespeichert.</string>
+	<string name="chat_enterMsgHint">Nachricht schreiben</string>
 
 	<!-- GPS settings -->
 	<!--

@@ -154,6 +154,7 @@
 	<string name="chat_from_me">Moi :</string>
 	<string name="toast_connectfail_message">Connexion fermée !</string>
 	<string name="toast_stored_offline">Le message a été sauvegardé pour transmission.</string>
+	<string name="chat_enterMsgHint">Enter message</string> 
 
 	<!-- GPS settings -->
 	<!--
