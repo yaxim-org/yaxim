@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="fontSizesChat">
+        <item>6px</item>
+        <item>8px</item>
+        <item>10px</item>
+        <item>12px</item>
+        <item>14px</item>
+    </string-array>
+    <string-array name="fontSizesChatCodes">
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+    </string-array>
+    <string-array name="fontSizesClist">
+        <item>6px</item>
+        <item>8px</item>
+        <item>10px</item>
+        <item>12px</item>
+        <item>14px</item>
+    </string-array>
+    <string-array name="fontSizesClistCodes">
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>dark</item>
+        <item>light</item>
+    </string-array>
+
+</resources>

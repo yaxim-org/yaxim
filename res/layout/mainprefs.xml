@@ -50,6 +50,14 @@
 			android:defaultValue="true"
 		/>	
 	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/preftitle_ui">
+		<ListPreference android:title="@string/pref_theme"
+		    android:entryValues="@array/pref_theme_values"
+		    android:entries="@array/pref_theme_entries"
+		    android:defaultValue="dark"
+		    android:key="theme">
+		</ListPreference>
+	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_debug">
 		<CheckBoxPreference
 			android:id="@+id/smackdebug"
