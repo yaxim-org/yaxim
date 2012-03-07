@@ -135,10 +135,10 @@ public abstract class GenericService extends Service {
 		mNotificationCounter++;
 		notificationCount.put(fromJid, mNotificationCounter);
 		String author;
-		if (null == fromUserId || fromUserId.length() == 0 || fromJid.equals(fromUserId)) {
+		if (null == fromUserId || fromUserId.length() == 0) {
 			author = fromJid;
 		} else {
-			author = fromUserId + " (" + fromJid + ")";
+			author = fromUserId;
 		}
 		String title = getString(R.string.notification_message, author);
 		mNotification = new Notification(R.drawable.icon, title,
