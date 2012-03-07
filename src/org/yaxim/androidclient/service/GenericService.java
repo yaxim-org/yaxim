@@ -29,6 +29,7 @@ public abstract class GenericService extends Service {
 
 	private static final String TAG = "yaxim.Service";
 	private static final String APP_NAME = "yaxim";
+	private static final int MAX_TICKER_MSG_LEN = 50;
 
 	private NotificationManager mNotificationMGR;
 	private Notification mNotification;
@@ -141,7 +142,21 @@ public abstract class GenericService extends Service {
 			author = fromUserId;
 		}
 		String title = getString(R.string.notification_message, author);
-		mNotification = new Notification(R.drawable.sb_message, title,
+		String ticker;
+		if (mConfig.ticker) {
+			int newline = message.indexOf('\n');
+			int limit = 0;
+			String messageSummary = message;
+			if (newline >= 0)
+				limit = newline;
+			if (limit > MAX_TICKER_MSG_LEN || message.length() > MAX_TICKER_MSG_LEN)
+				limit = MAX_TICKER_MSG_LEN;
+			if (limit > 0)
+				messageSummary = message.substring(0, limit) + " [...]";
+			ticker = title + ":\n" + messageSummary;
+		} else
+			ticker = getString(R.string.notification_anonymous_message, author);
+		mNotification = new Notification(R.drawable.sb_message, ticker,
 				System.currentTimeMillis());
 		Uri userNameUri = Uri.parse(fromJid);
 		mNotificationIntent.setData(userNameUri);

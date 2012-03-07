@@ -39,6 +39,13 @@
 			android:showSilent="true"
 			android:summary="@string/ringtone_summ"
 		/>
+		<CheckBoxPreference
+			android:id="@+id/ticker"
+			android:key="ticker"
+			android:title="@string/ticker_title"
+			android:summary="@string/ticker_summ"
+			android:defaultValue="true"
+		/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_boot">
 		<CheckBoxPreference
