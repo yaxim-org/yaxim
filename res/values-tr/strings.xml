@@ -60,11 +60,11 @@
 	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
-	<!--
 	<string name="preftitle_app">Appearance</string>
 	<string name="FontChat_title">Chat font size</string>
 	<string name="FontChat_summ">Set chat font size</string>
 	<string name="FontChat_dialog">Chat font fize</string>
+	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
@@ -75,7 +75,11 @@
 		<item>Dark</item>
 		<item>Light</item>
 	</string-array>
-	<string name="preftitle_ui">Anzeige</string>
+	<string-array name="fontSizesChat">
+		<item>small</item>
+		<item>normal</item>
+		<item>large</item>
+	</string-array>
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Add Contact</string>

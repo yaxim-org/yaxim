@@ -62,13 +62,23 @@
 			android:defaultValue="true"
 		/>	
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/preftitle_ui">
+	<PreferenceCategory android:title="@string/preftitle_app">
 		<ListPreference android:title="@string/pref_theme"
 		    android:entryValues="@array/pref_theme_values"
 		    android:entries="@array/pref_theme_entries"
 		    android:defaultValue="dark"
 		    android:key="theme">
 		</ListPreference>
+		<ListPreference
+			android:id="@+id/setSizeChat"
+			android:key="setSizeChat"
+			android:title="@string/FontChat_title"
+			android:summary="@string/FontChat_summ"
+			android:entries="@array/fontSizesChat"
+			android:entryValues="@array/fontSizesChatCodes"
+			android:dialogTitle="@string/FontChat_dialog"
+		    android:defaultValue="18"
+		/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_debug">
 		<CheckBoxPreference
@@ -88,15 +98,6 @@
 		/>	
 	</PreferenceCategory>
 	<!--<PreferenceCategory android:title="@string/preftitle_app">
-		<ListPreference
-			android:id="@+id/setSizeChat"
-			android:key="setSizeChat"
-			android:title="@string/FontChat_title"
-			android:summary="@string/FontChat_summ"
-			android:entries="@array/fontSizesChat"
-			android:entryValues="@array/fontSizesChatCodes"
-			android:dialogTitle="@string/FontChat_dialog"
-		/>
 		<ListPreference
 			android:id="@+id/setSizeClist"
 			android:key="setSizeClist"
