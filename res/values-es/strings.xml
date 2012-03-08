@@ -188,4 +188,7 @@
   Fitoschido https://launchpad.net/~fitoschido
   Georg Lukas https://launchpad.net/~ge0rg
   Matias Castillo Felmer https://launchpad.net/~slashytu</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

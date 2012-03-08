@@ -188,4 +188,7 @@
   Michael Scherer https://launchpad.net/~misc-zarb
   Vanaryon https://launchpad.net/~vanaryon
   sebseb01 https://launchpad.net/~sebseb01</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

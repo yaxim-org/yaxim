@@ -252,4 +252,7 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   zeugma https://launchpad.net/~sunder67</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

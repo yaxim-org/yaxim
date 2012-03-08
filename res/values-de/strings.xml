@@ -189,4 +189,7 @@
   Markus Unterwaditzer https://launchpad.net/~untitaker
   Michael Kanis https://launchpad.net/~mkanis
   René Moser https://launchpad.net/~resmo</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Kontakt wählen</string>
 </resources>

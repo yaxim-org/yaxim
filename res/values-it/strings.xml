@@ -185,4 +185,7 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Pietro Pecchi https://launchpad.net/~pietro-pecchi</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>
