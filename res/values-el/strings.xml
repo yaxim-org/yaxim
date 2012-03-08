@@ -179,4 +179,7 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Theo Ioannidis https://launchpad.net/~xaroulhs1983</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

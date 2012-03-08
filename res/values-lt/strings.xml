@@ -239,4 +239,7 @@
 	<string name="translator_credits">Launchpad Contributions:
   Antanas https://launchpad.net/~antanas
   Georg Lukas https://launchpad.net/~ge0rg</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

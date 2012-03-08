@@ -181,4 +181,7 @@
   Argafål https://launchpad.net/~78luphr0rnk2nuqimstywepozxn9kl19tqh0tx66b5dki1xxsh5mkz9gl21a5rlwfnr8jn6ln0m3j-8hcf0rcot-a811i2i3ytqlsztthjth0svbccw8inm65tmkqp9sarr553jq53in4xm1m8wn3o4rlwaer06ogwvqw
   Erik Lindström https://launchpad.net/~erikl
   Fredrik Wendt https://launchpad.net/~fredrik-wendt</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

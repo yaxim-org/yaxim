@@ -231,8 +231,49 @@ public class MainWindow extends ExpandableListActivity {
 		YaximApplication.getApp(this).mMTM.bindDisplayActivity(this);
 		// Causes the toggle button to show correct state on application start
 		toggleOfflineContactsAction.invalidate();
+
+		// handle SEND action
+		handleSendIntent();
 	}
 
+	public void handleSendIntent() {
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		if ((action != null) && (action.equals(Intent.ACTION_SEND))) {
+			final String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+			List<String[]> contacts = getRosterContacts();
+			int num_contacts = contacts.size();
+
+			if (num_contacts == 0) return;
+
+			final CharSequence[] screenNames = new CharSequence[num_contacts];
+			final CharSequence[] jids = new CharSequence[num_contacts];
+			int idx = 0;
+			for (String[] c : contacts) {
+				jids[idx] = c[0];
+				screenNames[idx] = c[1];
+				idx++;
+			}
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			builder.setTitle(getText(R.string.chooseContact))
+				.setCancelable(true)
+				.setItems(screenNames, new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int item) {
+						dialog.dismiss();
+						startChatActivity(jids[item].toString(), screenNames[item].toString(), message);
+						finish();
+					}
+				}).setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+					public void onCancel(DialogInterface dialog) {
+					  finish();
+					}
+				}).create().show();
+		} else return;
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -410,7 +451,7 @@ public class MainWindow extends ExpandableListActivity {
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_contact_open_chat:
-				startChatActivity(userJid, userName);
+				startChatActivity(userJid, userName, null);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delmsg:
@@ -460,12 +501,15 @@ public class MainWindow extends ExpandableListActivity {
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
 	}
 
-	private void startChatActivity(String user, String userName) {
+	private void startChatActivity(String user, String userName, String message) {
 		Intent chatIntent = new Intent(this,
 				org.yaxim.androidclient.chat.ChatWindow.class);
 		Uri userNameUri = Uri.parse(user);
 		chatIntent.setData(userNameUri);
 		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);
+		if (message != null) {
+			chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_MESSAGE, message);
+		}
 		startActivity(chatIntent);
 	}
 
@@ -651,7 +695,7 @@ public class MainWindow extends ExpandableListActivity {
 				RosterProvider.RosterConstants.JID);
 		String userName = getPackedItemRow(packedPosition,
 				RosterProvider.RosterConstants.ALIAS);
-		startChatActivity(userJid, userName);
+		startChatActivity(userJid, userName, null);
 
 		return true;
 	}
@@ -889,6 +933,25 @@ public class MainWindow extends ExpandableListActivity {
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			list.add(cursor.getString(idx));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return list;
+	}
+
+	public List<String[]> getRosterContacts() {
+		// we want all, online and offline
+		List<String[]> list = new ArrayList<String[]>();
+		Cursor cursor = getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
+					null, null, RosterProvider.RosterConstants.ALIAS);
+		int JIDIdx = cursor.getColumnIndex(RosterProvider.RosterConstants.JID);
+		int aliasIdx = cursor.getColumnIndex(RosterProvider.RosterConstants.ALIAS);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			String jid = cursor.getString(JIDIdx);
+			String alias = cursor.getString(aliasIdx);
+			if ((alias == null) || (alias.length() == 0)) alias = jid;
+			list.add(new String[] { jid, alias });
 			cursor.moveToNext();
 		}
 		cursor.close();

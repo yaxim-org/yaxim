@@ -179,4 +179,7 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Adam Maćkowiak https://launchpad.net/~admc</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>

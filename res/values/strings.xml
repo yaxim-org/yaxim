@@ -245,4 +245,7 @@
 	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">translator-credits</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Choose contact</string>
 </resources>
