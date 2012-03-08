@@ -153,7 +153,8 @@ public abstract class GenericService extends Service {
 				mNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
-		mNotification.number = mNotificationCounter;
+		if (mNotificationCounter > 1)
+			mNotification.number = mNotificationCounter;
 		mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 	}
 
