@@ -107,16 +107,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-		unbindXMPPService();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		bindXMPPService();
-		mChatInput.requestFocus();
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus)
+			bindXMPPService();
+		else
+			unbindXMPPService();
 	}
 
 	private void registerXMPPService() {
