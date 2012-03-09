@@ -11,6 +11,7 @@
 			android:layout_weight="1"
 			android:fastScrollEnabled="true"
 			android:stackFromBottom="true"
+			android:cacheColorHint="@android:color/transparent"
 			android:transcriptMode="normal" />
 
 		<LinearLayout android:id="@+id/details"
