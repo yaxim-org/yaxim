@@ -58,7 +58,7 @@
         <item name="dialogTextColor">@style/dialogBackground</item>
     </style>
 
-	<style name="PinkTheme" parent="android:Theme.NoTitleBar">
+	<style name="PinkTheme" parent="DarkTheme.NoTitle">
 		<item name="android:windowBackground">@color/dark_pink</item>
 	</style>
 </resources>
