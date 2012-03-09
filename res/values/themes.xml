@@ -61,4 +61,7 @@
 	<style name="PinkTheme" parent="DarkTheme.NoTitle">
 		<item name="android:windowBackground">@color/dark_pink</item>
 	</style>
+	<style name="GreenTheme" parent="DarkTheme.NoTitle">
+		<item name="android:windowBackground">@color/dark_green</item>
+	</style>
 </resources>
