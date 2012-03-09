@@ -41,6 +41,7 @@ import android.view.View.OnKeyListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -293,6 +294,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		private TextView mDateView = null;
 		private TextView mFromView = null;
 		private TextView mMessageView = null;
+		private ImageView mIconView = null;
 
 		private final View mRowView;
 
@@ -313,7 +315,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
 			}
-			if (delivery_status == 0) {
+			switch (delivery_status) {
+			case 0:
 				ColorDrawable layers[] = new ColorDrawable[2];
 				layers[0] = new ColorDrawable(0xff404040);
 				if (from_me) {
@@ -326,8 +329,17 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(2000);
-			} else
+				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
+				break;
+			case 1:
+				getIconView().setImageResource(R.drawable.ic_chat_msg_status_unread);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
+				break;
+			case 2:
+				getIconView().setImageResource(R.drawable.ic_chat_msg_status_ok);
+				mRowView.setBackgroundColor(0x00000000); // default is transparent
+				break;
+			}
 			getMessageView().setText(message);
 		}
         
@@ -352,6 +364,14 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 						.findViewById(R.id.chat_message);
 			}
 			return mMessageView;
+		}
+
+		ImageView getIconView() {
+			if (mIconView == null) {
+				mIconView = (ImageView) mRowView
+						.findViewById(R.id.iconView);
+			}
+			return mIconView;
 		}
 
 	}
