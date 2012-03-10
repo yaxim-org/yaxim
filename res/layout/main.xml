@@ -8,13 +8,8 @@
 	<TextView android:id="@+id/error_view"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textSize="18sp"
-		android:padding="5sp"
-		android:textColor="#000"
-		android:background="#b44"
+		style="?ErrorView"
 		android:visibility="gone"
-		android:shadowColor="#44000000"
-		android:shadowRadius="3.0"
 		android:text=""
 		android:focusable="true"/>
 

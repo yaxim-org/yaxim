@@ -18,6 +18,7 @@
         <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
         <item name="ChatMsgHeaderMeColor">#ff6d6dcc</item>
         <item name="ChatMsgHeaderYouColor">#ffcc5050</item>
+		<item name="ErrorView">@style/StyleErrorView.Light</item>
 		<item name="ChatNewMessageColor">#ffb0b0b0</item>
 		<item name="ChatStoredMessageColor">#60b0b0b0</item>
     </style>
@@ -52,6 +53,7 @@
         <item name="ChatMsgHeaderYouColor">#ffff8888</item>
 		<item name="ChatNewMessageColor">#ff404040</item>
 		<item name="ChatStoredMessageColor">#60404040</item>
+		<item name="ErrorView">@style/StyleErrorView</item>
     </style>
 
 </resources>

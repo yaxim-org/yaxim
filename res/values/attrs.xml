@@ -3,6 +3,7 @@
 	<!-- View styles -->
 	<attr name="MainGroup" format="reference" />
 	<attr name="MainChild" format="reference" />
+	<attr name="ErrorView" format="reference" />
 	
 	<!-- Attributes -->
 	<attr name="ChatMsgHeaderMeColor" format="reference|color" />
