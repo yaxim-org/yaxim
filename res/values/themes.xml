@@ -58,10 +58,15 @@
         <item name="dialogTextColor">@style/dialogBackground</item>
     </style>
 
-	<style name="PinkTheme" parent="DarkTheme.NoTitle">
+	<style name="LightPinkTheme" parent="YaximLightTheme">
+		<item name="android:windowBackground">@color/light_pink</item>
+		<item name="ErrorView">@style/StyleErrorView.LightPink</item>
+	</style>
+	<style name="PinkTheme" parent="YaximDarkTheme">
 		<item name="android:windowBackground">@color/dark_pink</item>
 	</style>
-	<style name="GreenTheme" parent="DarkTheme.NoTitle">
+	<style name="GreenTheme" parent="YaximDarkTheme">
 		<item name="android:windowBackground">@color/dark_green</item>
+		<item name="ErrorView">@style/StyleErrorView.Green</item>
 	</style>
 </resources>
