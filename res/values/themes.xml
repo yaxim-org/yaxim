@@ -18,6 +18,8 @@
         <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
         <item name="ChatMsgHeaderMeColor">#ff6d6dcc</item>
         <item name="ChatMsgHeaderYouColor">#ffcc5050</item>
+		<item name="ChatNewMessageColor">#ffb0b0b0</item>
+		<item name="ChatStoredMessageColor">#60b0b0b0</item>
     </style>
 
     <style name="IndeterminateProgress" parent="Widget.Sherlock.ProgressBar">
@@ -48,6 +50,8 @@
         <item name="AllFriends">@drawable/ic_action_all_friends_dark</item>
         <item name="ChatMsgHeaderMeColor">#ff8888ff</item>
         <item name="ChatMsgHeaderYouColor">#ffff8888</item>
+		<item name="ChatNewMessageColor">#ff404040</item>
+		<item name="ChatStoredMessageColor">#60404040</item>
     </style>
 
 </resources>
