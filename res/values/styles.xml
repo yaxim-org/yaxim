@@ -56,4 +56,12 @@
         <item name="android:text"></item>
     </style>
 
+	<style name="StyleErrorView.LightPink">
+		<item name="android:background">#f48</item>
+		<item name="android:textColor">#400</item>
+	</style>
+	<style name="StyleErrorView.Green">
+		<item name="android:background">@color/green_error</item>
+		<item name="android:textColor">#400</item>
+	</style>
 </resources>
