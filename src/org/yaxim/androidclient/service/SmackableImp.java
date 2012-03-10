@@ -32,8 +32,11 @@ import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
+import org.jivesoftware.smackx.provider.DeliveryReceiptProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
+import org.jivesoftware.smackx.packet.DeliveryReceipt;
+import org.jivesoftware.smackx.packet.DeliveryReceiptRequest;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -74,6 +77,8 @@ public class SmackableImp implements Smackable {
 		// add delayed delivery notifications
 		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
+		// add delivery receipts
+		pm.addExtensionProvider("received", DeliveryReceipt.NAMESPACE, new DeliveryReceiptProvider());
 
 		ServiceDiscoveryManager.setIdentityName(YaximApplication.XMPP_IDENTITY_NAME);
 		ServiceDiscoveryManager.setIdentityType(YaximApplication.XMPP_IDENTITY_TYPE);
@@ -139,6 +144,15 @@ public class SmackableImp implements Smackable {
 		return isAuthenticated();
 	}
 
+	private void initServiceDiscovery() {
+		// register connection features
+		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
+		if (sdm == null)
+			sdm = new ServiceDiscoveryManager(mXMPPConnection);
+
+		sdm.addFeature(DeliveryReceipt.NAMESPACE);
+	}
+
 	public void addRosterItem(String user, String alias, String group)
 			throws YaximXMPPException {
 		tryToAddRosterEntry(user, alias, group);
@@ -199,6 +213,7 @@ public class SmackableImp implements Smackable {
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
+			initServiceDiscovery();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
@@ -334,6 +349,7 @@ public class SmackableImp implements Smackable {
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
+			newMessage.addExtension(new DeliveryReceiptRequest());
 			if ((packetID != null) && (packetID.length() > 0)) {
 				newMessage.setPacketID(packetID);
 			} else {
@@ -360,9 +376,17 @@ public class SmackableImp implements Smackable {
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
+	public void sendReceipt(String toJID, String id) {
+		Log.d(TAG, "sending XEP-0184 ack to " + toJID + " id=" + id);
+		final Message ack = new Message(toJID, Message.Type.normal);
+		ack.addExtension(new DeliveryReceipt(id));
+		mXMPPConnection.sendPacket(ack);
+	}
+
 	public void sendMessage(String toJID, String message) {
 		final Message newMessage = new Message(toJID, Message.Type.chat);
 		newMessage.setBody(message);
+		newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED,
 					System.currentTimeMillis(), newMessage.getPacketID());
@@ -530,6 +554,11 @@ public class SmackableImp implements Smackable {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
 
+					DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension("received", DeliveryReceipt.NAMESPACE);
+					if (dr != null) {
+						Log.d(TAG, "got delivery receipt for " + dr.getId());
+					}
+
 					if (chatMessage == null) {
 						return;
 					}
@@ -549,6 +578,10 @@ public class SmackableImp implements Smackable {
 					String fromJID = getJabberID(msg.getFrom());
 					String toJID = getJabberID(msg.getTo());
 
+					if (msg.getExtension("request", DeliveryReceipt.NAMESPACE) != null) {
+						// got XEP-0184 request, send receipt
+						sendReceipt(fromJID, msg.getPacketID());
+					}
 					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD, ts, msg.getPacketID());
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
