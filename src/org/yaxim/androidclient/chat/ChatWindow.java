@@ -326,7 +326,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(2000);
-			}
+			} else
+				mRowView.setBackgroundColor(0x00000000); // default is transparent
 			getMessageView().setText(message);
 		}
         
