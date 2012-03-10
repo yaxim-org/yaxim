@@ -89,9 +89,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferenceConstants.THEME, "dark");
-		mTheme = theme;
-		if (theme.equals("light")) {
+		mConfig = YaximApplication.getConfig(this);
+		mTheme = mConfig.theme;
+		if (mConfig.theme.equals("light")) {
 			setTheme(R.style.YaximLightTheme);
 		} else {
 			setTheme(R.style.YaximDarkTheme);

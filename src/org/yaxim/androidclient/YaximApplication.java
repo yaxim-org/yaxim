@@ -1,7 +1,10 @@
 package org.yaxim.androidclient;
 
+import org.yaxim.androidclient.data.YaximConfiguration;
+
 import android.app.Application;
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -15,6 +18,8 @@ public class YaximApplication extends Application {
 	// and the frontend (display dialog)
 	public MemorizingTrustManager mMTM;
 
+	private YaximConfiguration mConfig;
+
 	public YaximApplication() {
 		super();
 	}
@@ -22,10 +27,16 @@ public class YaximApplication extends Application {
 	@Override
 	public void onCreate() {
 		mMTM = new MemorizingTrustManager(this);
+		mConfig = new YaximConfiguration(PreferenceManager
+				.getDefaultSharedPreferences(this));
 	}
 
 	public static YaximApplication getApp(Context ctx) {
 		return (YaximApplication)ctx.getApplicationContext();
+	}
+
+	public static YaximConfiguration getConfig(Context ctx) {
+		return getApp(ctx).mConfig;
 	}
 }
 
