@@ -26,7 +26,7 @@ public class AccountPrefs extends PreferenceActivity {
 	private EditTextPreference prefAccountID;
 
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(YaximApplication.getConfig(this).getPrefTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.accountprefs);
 
