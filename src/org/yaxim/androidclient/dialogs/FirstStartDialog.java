@@ -67,6 +67,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			mainWindow.startConnection();
 			break;
 		case BUTTON_NEUTRAL:
+			verifyAndSavePreferences();
 			mainWindow.startActivity(new Intent(mainWindow, AccountPrefs.class));
 			break;
 		}
