@@ -8,7 +8,7 @@ import org.yaxim.androidclient.YaximApplication;
 
 public class MainPrefs extends PreferenceActivity{
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(YaximApplication.getConfig(this).getPrefTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.mainprefs);
 	}
