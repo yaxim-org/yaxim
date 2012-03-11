@@ -646,7 +646,7 @@ public class MainWindow extends ExpandableListActivity {
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
 
-		long packedPosition = getExpandableListView().getPackedPositionForChild(groupPosition, childPosition);
+		long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
 		String userJid = getPackedItemRow(packedPosition,
 				RosterProvider.RosterConstants.JID);
 		String userName = getPackedItemRow(packedPosition,
@@ -799,8 +799,7 @@ public class MainWindow extends ExpandableListActivity {
 
 	// get the name of a roster group from the cursor
 	public String getGroupName(int groupId) {
-		return getPackedItemRow(getExpandableListView().
-					getPackedPositionForGroup(groupId),
+		return getPackedItemRow(ExpandableListView.getPackedPositionForGroup(groupId),
 				RosterProvider.RosterConstants.GROUP);
 	}
 
