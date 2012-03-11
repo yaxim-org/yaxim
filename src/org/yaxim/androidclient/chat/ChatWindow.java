@@ -14,7 +14,6 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 
 import android.app.ListActivity;
-import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,7 +25,6 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Handler;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;

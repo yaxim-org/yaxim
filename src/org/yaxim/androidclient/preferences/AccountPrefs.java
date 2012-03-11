@@ -12,7 +12,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import org.yaxim.androidclient.R;
 
 public class AccountPrefs extends PreferenceActivity {

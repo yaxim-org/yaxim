@@ -1,11 +1,7 @@
 package org.yaxim.androidclient.dialogs;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.yaxim.androidclient.XMPPRosterServiceAdapter;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
-import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.MainWindow;
 

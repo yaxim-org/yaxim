@@ -1,6 +1,5 @@
 package org.yaxim.androidclient.dialogs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;

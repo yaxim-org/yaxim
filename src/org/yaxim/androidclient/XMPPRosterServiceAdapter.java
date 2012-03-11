@@ -1,9 +1,6 @@
 package org.yaxim.androidclient;
 
-import java.util.List;
-
 import org.yaxim.androidclient.util.ConnectionState;
-import org.yaxim.androidclient.util.StatusMode;
 
 import android.os.RemoteException;
 import android.util.Log;

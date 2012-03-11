@@ -1,7 +1,6 @@
 package org.yaxim.androidclient.service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
@@ -9,7 +8,6 @@ import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
-import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlarmManager;
 import android.app.Notification;

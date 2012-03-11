@@ -1,10 +1,6 @@
 package org.yaxim.androidclient.service;
 
-import java.util.ArrayList;
-
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
-import org.yaxim.androidclient.util.StatusMode;
-
 
 
 public interface Smackable {
