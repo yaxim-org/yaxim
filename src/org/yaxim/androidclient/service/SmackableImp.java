@@ -574,7 +574,7 @@ public class SmackableImp implements Smackable {
 
 					if (msg.getExtension("request", DeliveryReceipt.NAMESPACE) != null) {
 						// got XEP-0184 request, send receipt
-						sendReceipt(fromJID, msg.getPacketID());
+						sendReceipt(msg.getFrom(), msg.getPacketID());
 					}
 					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
 					mServiceCallBack.newMessage(fromJID, chatMessage);
