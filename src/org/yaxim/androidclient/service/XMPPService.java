@@ -113,7 +113,7 @@ public class XMPPService extends GenericService {
 
 		((AlarmManager)getSystemService(Context.ALARM_SERVICE)).cancel(mPAlarmIntent);
 		mRosterCallbacks.kill();
-		doDisconnect();
+		performDisconnect();
 		unregisterReceiver(mAlarmReceiver);
 	}
 
@@ -262,7 +262,7 @@ public class XMPPService extends GenericService {
 			}
 
 			public void disconnect() throws RemoteException {
-				doDisconnect();
+				manualDisconnect();
 			}
 
 			public void connect() throws RemoteException {
@@ -425,8 +425,12 @@ public class XMPPService extends GenericService {
 		}
 	}
 
-	public void doDisconnect() {
+	public void manualDisconnect() {
 		mConnectionDemanded.set(false);
+		performDisconnect();
+	}
+
+	public void performDisconnect() {
 		if (mConnectingThread != null) {
 			synchronized(mConnectingThread) {
 				try {
