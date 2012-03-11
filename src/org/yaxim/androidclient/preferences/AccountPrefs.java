@@ -19,8 +19,6 @@ public class AccountPrefs extends PreferenceActivity {
 	private final static String ACCOUNT_JABBERID = "account_jabberID";
 	private final static String ACCOUNT_PRIO = "account_prio";
 
-	private CharSequence newPrioValue = null;
-
 	private SharedPreferences sharedPreference;
 
 	private static int prioIntValue = 0;
@@ -67,7 +65,6 @@ public class AccountPrefs extends PreferenceActivity {
 						try {
 							int prioIntValue = Integer.parseInt(newValue
 									.toString());
-							newPrioValue = (CharSequence) newValue;
 							if (prioIntValue <= 127 && prioIntValue >= -128) {
 								sharedPreference.edit().putInt(ACCOUNT_PRIO,
 										prioIntValue);
