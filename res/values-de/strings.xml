@@ -34,6 +34,11 @@
 	<string name="led_summ">Neue Nachrichten durch LED-Blinken anzeigen</string>
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Bei neuen Nachrichten vibrieren</string>
+	<string-array name="vibr_values_displayed">
+		<item>Niemals</item>
+		<item>Systemvorgabe</item>
+		<item>Immer</item>
+	</string-array>
 	<string name="ringtone_title">Klingelton</string>
 	<string name="ringtone_summ">Ton für neue Nachrichten</string>
 

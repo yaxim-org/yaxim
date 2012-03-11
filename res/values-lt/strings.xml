@@ -34,6 +34,11 @@
 	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Vibracija</string>
 	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string-array name="vibr_values_displayed">
+		<item>Never</item>
+		<item>System preference</item>
+		<item>Always</item>
+	</string-array>
 	<string name="ringtone_title">Skambėjimo melodija</string>
 	<string name="ringtone_summ">Gautų žinučių signalas</string>
 

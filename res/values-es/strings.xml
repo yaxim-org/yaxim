@@ -9,8 +9,8 @@
 	<string name="conn_offline">Desconectado</string>
 	<string name="conn_empty_roster">No hay contactos para mostrar</string>
 	<string name="conn_reconnect">\nReconectar en %d segundos.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_disconnected">Conexión cerrada</string>
+	<string name="conn_networkchg">La red ha cambiado</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Salir</string>
@@ -21,9 +21,9 @@
 	<string name="StartupDialog_Title">¡Bienvenido/a a yaxim!</string>
 	<string name="StartupDialog_Summary">Necesita configurar yaxim antes de usarlo. Por favor, ingrese su ID de Jabber y su contaseña.</string>
 	<string name="StartupDialog_pwHint">Ingrese contraseña</string>
-	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_Username_title">Identificador de jabber:</string>
 	<string name="StartupDialog_passwd_title">Contraseña:</string>
-	<string name="StartupDialog_advanced">Advanced...</string>
+	<string name="StartupDialog_advanced">Avanzado…</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mensaje de %s</string>
@@ -31,28 +31,33 @@
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notificación de mensajes</string>
 	<string name="led_title">LED parpadeante</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
+	<string name="led_summ">Parpadeo del LED con mensajes entrantes</string>
 	<string name="vibr_title">Vibración</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="vibr_summ">Vibra con mensajes entrantes</string>
+	<string-array name="vibr_values_displayed">
+		<item>Never</item>
+		<item>System preference</item>
+		<item>Always</item>
+	</string-array>
 	<string name="ringtone_title">Tono</string>
 	<string name="ringtone_summ">Tono para mensajes entrantes</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opciones de inicio</string>
 	<string name="boot_title">Cargar yaxim al iniciar el dispositivo</string>
-	<string name="boot_summ">Launch app when phone is turned on</string>
+	<string name="boot_summ">Iniciar aplicacion cuando el telefono se encienda</string>
 	<string name="statuspopup_name">Configure su estado</string>
-	<string name="showOffline_summ">Always show all contacts in the roster</string>
+	<string name="showOffline_summ">Siempre muestra todos los contactos en la lista</string>
 	<string name="showOffline_title">Mostrar contactos desconectados</string>
 	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="foregroundService_title">Icono de barra de estado</string>
 
 	<string name="preftitle_debug">Depuración</string>
 	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
 	<string name="smackdebug_title">Depuración SMACK</string>
 
 	<string name="reportcrash_title">Enviar reportes de error</string>
-	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
+	<string name="reportcrash_summ">Enviar reportes anónimos de errores críticos a los desarrolladores</string>
 
 	<!-- Appearence Strings -->
 	<!--
@@ -174,5 +179,6 @@
 	<string name="translator_credits">Launchpad Contributions:
   Argafål https://launchpad.net/~78luphr0rnk2nuqimstywepozxn9kl19tqh0tx66b5dki1xxsh5mkz9gl21a5rlwfnr8jn6ln0m3j-8hcf0rcot-a811i2i3ytqlsztthjth0svbccw8inm65tmkqp9sarr553jq53in4xm1m8wn3o4rlwaer06ogwvqw
   Fitoschido https://launchpad.net/~fitoschido
-  Georg Lukas https://launchpad.net/~ge0rg</string>
+  Georg Lukas https://launchpad.net/~ge0rg
+  Matias Castillo Felmer https://launchpad.net/~slashytu</string>
 </resources>

@@ -34,6 +34,11 @@
 	<string name="led_summ">Blinkning LED vid inkommande meddelande</string>
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Vibrera vid inkommande meddelande</string>
+	<string-array name="vibr_values_displayed">
+		<item>Never</item>
+		<item>System preference</item>
+		<item>Always</item>
+	</string-array>
 	<string name="ringtone_title">Ljudsignal</string>
 	<string name="ringtone_summ">Ljud vid inkommande meddelande</string>
 

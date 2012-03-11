@@ -9,8 +9,8 @@
 	<string name="conn_offline">Rozłączony</string>
 	<string name="conn_empty_roster">Brak kontaktów</string>
 	<string name="conn_reconnect">\nPonowne połączenie w ciągu %d sekund.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_disconnected">Połączenie zostało zakończone</string>
+	<string name="conn_networkchg">Sieć zmieniona</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Wyjdź</string>
@@ -23,36 +23,41 @@
 	<string name="StartupDialog_pwHint">Hasło</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Hasło:</string>
-	<string name="StartupDialog_advanced">Advanced...</string>
+	<string name="StartupDialog_advanced">Zaawansowane...</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s</string>
+	<string name="notification_message">Wiadomość od %s</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Powiadamianie o wiadomościach</string>
 	<string name="led_title">Powiadomienie diodą LED</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
+	<string name="led_summ">Migaj diodą LED przy nowej wiadomości</string>
 	<string name="vibr_title">Wibracja</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="vibr_summ">Wibruj przy nowej wiadomości</string>
+	<string-array name="vibr_values_displayed">
+		<item>Never</item>
+		<item>System preference</item>
+		<item>Always</item>
+	</string-array>
 	<string name="ringtone_title">Dzwonek</string>
 	<string name="ringtone_summ">Dzwonek dla przychodzących wiadomości</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opcje uruchamiania</string>
 	<string name="boot_title">Uruchom yaxim przy starcie systemu</string>
-	<string name="boot_summ">Launch app when phone is turned on</string>
+	<string name="boot_summ">Uruchom aplikację przy włączeniu telefon</string>
 	<string name="statuspopup_name">Ustaw swój status</string>
-	<string name="showOffline_summ">Always show all contacts in the roster</string>
+	<string name="showOffline_summ">Zawsze pokazuj wszystkie kontakty na liście</string>
 	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="foregroundService_summ">Utrzymuj yaxima w pamięci aby zapewnić stałe połączenie (usługa w tle)</string>
+	<string name="foregroundService_title">Ikona na pasku powiadomień</string>
 
 	<string name="preftitle_debug">Debugowanie</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
+	<string name="smackdebug_summ">Włącz wyjście debugowania przez logcat (może zawierać informacje osobiste)</string>
 	<string name="smackdebug_title">Debugowanie SMACK</string>
 
 	<string name="reportcrash_title">Wysyłaj raporty o błędach</string>
-	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
+	<string name="reportcrash_summ">Wysyłanie anonimowych zgłoszeń awarii do programisty</string>
 
 	<!-- Appearence Strings -->
 	<!--

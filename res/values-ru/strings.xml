@@ -34,6 +34,11 @@
 	<string name="led_summ">СИД сигнализирует о входящих сообщениях</string>
 	<string name="vibr_title">Вибрация</string>
 	<string name="vibr_summ">Вибрировать при входящих сообщениях</string>
+	<string-array name="vibr_values_displayed">
+		<item>Никогда</item>
+		<item>Системные настройки</item>
+		<item>Всегда</item>
+	</string-array>
 	<string name="ringtone_title">Мелодия вызова</string>
 	<string name="ringtone_summ">Мелодия для входящих сообщений</string>
 

@@ -34,6 +34,11 @@
 	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string-array name="vibr_values_displayed">
+		<item>Never</item>
+		<item>System preference</item>
+		<item>Always</item>
+	</string-array>
 	<string name="ringtone_title">Sonnerie</string>
 	<string name="ringtone_summ">Sonnerie pour les messages entrants</string>
 
