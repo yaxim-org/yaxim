@@ -7,14 +7,6 @@
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:orientation="horizontal">
 
-			<ImageView
-			    android:id="@+id/iconView"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_gravity="center_vertical"
-			    android:layout_marginRight="6dp"
-			    android:src="@drawable/ic_chat_msg_status_unread" />
-
 			<TextView android:id="@+id/chat_date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="14sp" android:textStyle="bold" android:textColor="#88f"
@@ -25,6 +17,14 @@
 				android:singleLine="true"
 				android:textSize="14sp" android:textColor="#88f"
 				android:ellipsize="end" android:text="@string/chat_from_me" />
+
+			<ImageView
+			    android:id="@+id/iconView"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_vertical"
+			    android:layout_marginLeft="6dp"
+			    android:src="@drawable/ic_chat_msg_status_unread" />
 
 		</LinearLayout>
 
