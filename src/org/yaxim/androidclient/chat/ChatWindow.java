@@ -326,7 +326,12 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				}
 				TransitionDrawable backgroundColorAnimation = new
 					TransitionDrawable(layers);
+				int l = mRowView.getPaddingLeft();
+				int t = mRowView.getPaddingTop();
+				int r = mRowView.getPaddingRight();
+				int b = mRowView.getPaddingBottom();
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
+				mRowView.setPadding(l, t, r, b);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(2000);
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
