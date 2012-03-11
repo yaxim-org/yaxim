@@ -24,6 +24,7 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DeliveryReceiptProvider;
+import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DeliveryReceipt;
@@ -65,6 +66,8 @@ public class SmackableImp implements Smackable {
 
 	static void registerSmackProviders() {
 		ProviderManager pm = ProviderManager.getInstance();
+		// add IQ handling
+		pm.addIQProvider("query","http://jabber.org/protocol/disco#info", new DiscoverInfoProvider());
 		// add delayed delivery notifications
 		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
@@ -141,6 +144,7 @@ public class SmackableImp implements Smackable {
 		if (sdm == null)
 			sdm = new ServiceDiscoveryManager(mXMPPConnection);
 
+		sdm.addFeature("http://jabber.org/protocol/disco#info");
 		sdm.addFeature(DeliveryReceipt.NAMESPACE);
 	}
 
