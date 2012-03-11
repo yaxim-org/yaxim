@@ -6,7 +6,7 @@ svg2png() {
 	width=$2
 	height=$3
 	dest=$4
-	inkscape --export-png=../res/$dest/$basename.png --export-width=$width --export-height=$height --export-background-opacity=0,0 -C -z $basename.svg
+	inkscape --export-png=res/$dest/$basename.png --export-width=$width --export-height=$height --export-background-opacity=0,0 -C -z $basename.svg
 }
 
 svg2icon() {
@@ -38,15 +38,15 @@ svg2sbar() {
 }
 
 # convert icon
-svg2icon icon
+svg2icon asset-graphics/icon
 
 # convert statusbar notification icon
-svg2sbar sb_message
+svg2sbar asset-graphics/sb_message
 
 # convert status
 # convert paw status
-for file in `ls ic_*.svg`
+for file in `ls asset-graphics/ic_*.svg`
 do
 	basename=`basename $file .svg`
-	svg2status $basename
+	svg2status asset-graphics/$basename
 done
