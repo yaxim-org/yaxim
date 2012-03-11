@@ -461,7 +461,6 @@ public class SmackableImp implements Smackable {
 				debugLog("entriesDeleted(" + entries + ")");
 
 				for (String entry : entries) {
-					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					deleteRosterEntryFromDB(entry);
 				}
 				mServiceCallBack.rosterChanged();
@@ -568,7 +567,6 @@ public class SmackableImp implements Smackable {
 						ts = System.currentTimeMillis();
 
 					String fromJID = getJabberID(msg.getFrom());
-					String toJID = getJabberID(msg.getTo());
 
 					if (msg.getExtension("request", DeliveryReceipt.NAMESPACE) != null) {
 						// got XEP-0184 request, send receipt
