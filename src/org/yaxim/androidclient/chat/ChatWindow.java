@@ -56,7 +56,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
 			ChatProvider.ChatConstants.FROM_ME, ChatProvider.ChatConstants.JID,
-			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.HAS_BEEN_READ };
+			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.DELIVERY_STATUS };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
@@ -224,7 +224,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
 		Log.d(TAG, "markAsRead: " + rowuri);
 		ContentValues values = new ContentValues();
-		values.put(ChatConstants.HAS_BEEN_READ, true);
+		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_DELIVERED);
 		getContentResolver().update(rowuri, values, null, null);
 	}
 
@@ -258,8 +258,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 					.getColumnIndex(ChatProvider.ChatConstants.FROM_ME));
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.JID));
-			int has_been_read = cursor.getInt(cursor
-					.getColumnIndex(ChatProvider.ChatConstants.HAS_BEEN_READ));
+			int delivery_status = cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.ChatConstants.DELIVERY_STATUS));
 
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
@@ -270,14 +270,14 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			if (from_me == 0 && has_been_read == 0) {
+			if (from_me == 0 && delivery_status == 0) {
 				markAsRead(_id);
 			}
 
 			String from = jid;
 			if (jid.equals(mJID))
 				from = mScreenName;
-			wrapper.populateFrom(date, from_me != 0, from, message, has_been_read != 0);
+			wrapper.populateFrom(date, from_me != 0, from, message, delivery_status);
 
 			return row;
 		}
@@ -301,7 +301,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		}
 
 		void populateFrom(String date, boolean from_me, String from, String message,
-				boolean has_been_read) {
+				int delivery_status) {
 //			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			if (from_me) {
@@ -313,7 +313,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(0xffff8888);
 			}
-			if (!has_been_read) {
+			if (delivery_status == 0) {
 				ColorDrawable layers[] = new ColorDrawable[2];
 				layers[0] = new ColorDrawable(0xff404040);
 				if (from_me) {

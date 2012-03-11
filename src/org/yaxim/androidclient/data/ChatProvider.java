@@ -213,7 +213,7 @@ public class ChatProvider extends ContentProvider {
 					+ ChatConstants.DATE + " INTEGER," + ChatConstants.FROM_ME
 					+ " INTEGER," + ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
-					+ ChatConstants.HAS_BEEN_READ + " BOOLEAN,"
+					+ ChatConstants.DELIVERY_STATUS + " INTEGER,"
 					+ ChatConstants.PACKET_ID + " TEXT);");
 		}
 
@@ -248,14 +248,15 @@ public class ChatProvider extends ContentProvider {
 		public static final String FROM_ME = "from_me";
 		public static final String JID = "jid";
 		public static final String MESSAGE = "message";
-		public static final String HAS_BEEN_READ = "read";
+		public static final String DELIVERY_STATUS = "read"; // SQLite can not rename columns, reuse old name
 		public static final String PACKET_ID = "pid";
 
 		// boolean mappings
 		public static final boolean INCOMING = false;
 		public static final boolean OUTGOING = true;
-		public static final boolean UNREAD = false;
-		public static final boolean DELIVERED = true;
+		public static final int DS_NEW = 0; //< this message has not been sent/displayed yet
+		public static final int DS_SENT = 1; //< this message was sent but not yet acked
+		public static final int DS_DELIVERED = 2; //< this message was XEP-0184 acknowledged
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();

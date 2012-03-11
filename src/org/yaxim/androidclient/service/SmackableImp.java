@@ -335,8 +335,8 @@ public class SmackableImp implements Smackable {
 		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
 		final int       TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
 		final int PACKETID_COL = cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID);
-		ContentValues mark_delivered = new ContentValues();
-		mark_delivered.put(ChatConstants.HAS_BEEN_READ, ChatConstants.DELIVERED);
+		ContentValues mark_sent = new ContentValues();
+		mark_sent.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT);
 		while (cursor.moveToNext()) {
 			int _id = cursor.getInt(_ID_COL);
 			String toJID = cursor.getString(JID_COL);
@@ -354,11 +354,11 @@ public class SmackableImp implements Smackable {
 				newMessage.setPacketID(packetID);
 			} else {
 				packetID = newMessage.getPacketID();
-				mark_delivered.put(ChatConstants.PACKET_ID, packetID);
+				mark_sent.put(ChatConstants.PACKET_ID, packetID);
 			}
 			Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 				+ "/" + ChatProvider.TABLE_NAME + "/" + _id);
-				mContentResolver.update(rowuri, mark_delivered,
+			mContentResolver.update(rowuri, mark_sent,
 						null, null);
 			mXMPPConnection.sendPacket(newMessage);		// must be after marking delivered, otherwise it may override the SendFailListener
 		}
@@ -370,7 +370,7 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.FROM_ME, true);
 		values.put(ChatConstants.JID, toJID);
 		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.HAS_BEEN_READ, false);
+		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_NEW);
 		values.put(ChatConstants.DATE, System.currentTimeMillis());
 
 		cr.insert(ChatProvider.CONTENT_URI, values);
@@ -388,12 +388,12 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DELIVERED,
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT,
 					System.currentTimeMillis(), newMessage.getPacketID());
 			mXMPPConnection.sendPacket(newMessage);
 		} else {
 			// send offline -> store to DB
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.UNREAD,
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_NEW,
 					System.currentTimeMillis(), newMessage.getPacketID());
 		}
 	}
@@ -503,12 +503,12 @@ public class SmackableImp implements Smackable {
 		return res[0].toLowerCase();
 	}
 
-	public void markMessageAsSendFailed(String packetID) {
-		ContentValues mark_undelivered = new ContentValues();
-		mark_undelivered.put(ChatConstants.HAS_BEEN_READ, ChatConstants.UNREAD);
+	public void changeMessageDeliveryStatus(String packetID, int new_status) {
+		ContentValues cv = new ContentValues();
+		cv.put(ChatConstants.DELIVERY_STATUS, new_status);
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
 				+ ChatProvider.TABLE_NAME);
-		mContentResolver.update(rowuri, mark_undelivered,
+		mContentResolver.update(rowuri, cv,
 				ChatConstants.PACKET_ID + " = ? AND " + ChatConstants.FROM_ME + " = 1", new String[] { packetID });
 	}
 
@@ -527,7 +527,7 @@ public class SmackableImp implements Smackable {
 					String chatMessage = msg.getBody();
 
 					Log.d("SmackableImp", "message " + chatMessage + " could not be sent (ID:" + (msg.getPacketID() == null ? "null" : msg.getPacketID()) + ")");
-					markMessageAsSendFailed(msg.getPacketID());
+					changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_NEW);
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
@@ -557,6 +557,7 @@ public class SmackableImp implements Smackable {
 					DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension("received", DeliveryReceipt.NAMESPACE);
 					if (dr != null) {
 						Log.d(TAG, "got delivery receipt for " + dr.getId());
+						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_DELIVERED);
 					}
 
 					if (chatMessage == null) {
@@ -582,7 +583,7 @@ public class SmackableImp implements Smackable {
 						// got XEP-0184 request, send receipt
 						sendReceipt(fromJID, msg.getPacketID());
 					}
-					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.UNREAD, ts, msg.getPacketID());
+					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
 				} catch (Exception e) {
@@ -597,13 +598,13 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addChatMessageToDB(boolean from_me, String JID,
-			String message, boolean read, long ts, String packetID) {
+			String message, int delivery_status, long ts, String packetID) {
 		ContentValues values = new ContentValues();
 
 		values.put(ChatConstants.FROM_ME, from_me);
 		values.put(ChatConstants.JID, JID);
 		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.HAS_BEEN_READ, read);
+		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
 		values.put(ChatConstants.DATE, ts);
 		values.put(ChatConstants.PACKET_ID, packetID);
 
