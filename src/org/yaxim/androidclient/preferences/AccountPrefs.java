@@ -17,7 +17,6 @@ import org.yaxim.androidclient.R;
 public class AccountPrefs extends PreferenceActivity {
 
 	private final static String ACCOUNT_JABBERID = "account_jabberID";
-	private final static String ACCOUNT_RESSOURCE = "account_resource";
 	private final static String ACCOUNT_PRIO = "account_prio";
 
 	private CharSequence newPrioValue = null;

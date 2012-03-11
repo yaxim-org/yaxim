@@ -23,8 +23,6 @@ import android.widget.TextView;
 
 public class ChangeStatusDialog extends AlertDialog {
 
-	private static final String TAG = "yaxim.ChangeStatusDialog";
-
 	private final Spinner mStatus;
 
 	private final EditText mMessage;
