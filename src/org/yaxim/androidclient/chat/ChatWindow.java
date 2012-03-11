@@ -224,7 +224,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
 		Log.d(TAG, "markAsRead: " + rowuri);
 		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_DELIVERED);
+		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT);
 		getContentResolver().update(rowuri, values, null, null);
 	}
 
