@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- for emulator include bg -->
+    <!-- <color name="holo_light_bg_color">#fff3f3f3</color> -->
+    
+<!--     the unprefixed ones (without android:) are for the Sherlock implementation -->
+
+    <style name="YaximLightTheme" parent="Theme.Sherlock.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarLight</item>
+        <item name="actionBarStyle">@style/MyActionBarLight</item>
+        
+        <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
+        <item name="MainGroup">@style/RosterGroupName.Light</item>
+        <item name="MainChild">@style/RosterGroupItem</item>
+        <item name="PlugIcon">@drawable/ic_action_plug_light</item>
+        <item name="UnplugIcon">@drawable/ic_action_unplug_light</item>
+        <item name="OnlineFriends">@drawable/ic_action_online_friends_light</item>
+        <item name="AllFriends">@drawable/ic_action_all_friends_light</item>
+        <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
+        <item name="ChatMsgHeaderMeColor">#ff6d6dcc</item>
+        <item name="ChatMsgHeaderYouColor">#ffcc5050</item>
+    </style>
+
+    <style name="MyActionBarLight" parent="Widget.Sherlock.Light.ActionBar">
+        <item name="android:background">#3000</item>
+        <item name="background">#3000</item>
+    </style>
+
+    <style name="YaximDarkTheme" parent="Theme.Sherlock">
+        <item name="MainGroup">@style/RosterGroupName.Dark</item>
+        <item name="MainChild">@style/RosterGroupItem</item>
+        <item name="PlugIcon">@drawable/ic_action_plug_dark</item>
+        <item name="UnplugIcon">@drawable/ic_action_unplug_dark</item>
+        <item name="OnlineFriends">@drawable/ic_action_online_friends_dark</item>
+        <item name="AllFriends">@drawable/ic_action_all_friends_dark</item>
+        <item name="ChatMsgHeaderMeColor">#ff8888ff</item>
+        <item name="ChatMsgHeaderYouColor">#ffff8888</item>
+    </style>
+
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- View styles -->
+	<attr name="MainGroup" format="reference" />
+	<attr name="MainChild" format="reference" />
+	
+	<!-- Attributes -->
+	<attr name="ChatMsgHeaderMeColor" format="reference|color" />
+	<attr name="ChatMsgHeaderYouColor" format="reference|color" />
+	<attr name="PlugIcon" format="reference" />
+	<attr name="UnplugIcon" format="reference" />
+	<attr name="OnlineFriends" format="reference" />
+	<attr name="AllFriends" format="reference" />
+</resources>
