@@ -70,6 +70,12 @@
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
+	<string name="pref_theme">Theme</string>
+	<string-array name="pref_theme_entries">
+		<item>Dark</item>
+		<item>Light</item>
+	</string-array>
+	<string name="preftitle_ui">Anzeige</string>
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Add Contact</string>
