@@ -4,5 +4,4 @@
 	android:textSize="22sp" android:textStyle="bold" android:paddingLeft="40dp"
 	android:paddingTop="2dp" android:paddingBottom="2dp"
 	android:layout_width="fill_parent" android:layout_height="wrap_content"
-	android:textColor="#fff"
 	android:background="@drawable/group_background" />
