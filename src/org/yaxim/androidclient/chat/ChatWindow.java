@@ -9,9 +9,12 @@ import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.PreferenceConstants;
 
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.IntentAction;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
 import android.app.ListActivity;
 import android.content.ComponentName;
@@ -25,14 +28,16 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
@@ -45,7 +50,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ChatWindow extends ListActivity implements OnKeyListener,
+public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		TextWatcher {
 
 	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
@@ -69,9 +74,20 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferenceConstants.THEME, "dark");
+		if (theme.equals("light")) {
+			setTheme(R.style.YaximLightTheme);
+		} else {
+			setTheme(R.style.YaximDarkTheme);
+		}
 		super.onCreate(savedInstanceState);
 
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.mainchat);
+		
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setIcon(R.drawable.ic_status_chat);
 
 		registerForContextMenu(getListView());
 		setContactFromUri();
@@ -86,10 +102,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			titleUserid = mWithJabberID;
 		}
 
-		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle(titleUserid);
-		actionBar.setHomeAction(new IntentAction(this, MainWindow
-				.createIntent(this), R.drawable.ic_action_appicon));
+		setTitle(titleUserid);
 
 		setChatWindowAdapter();
 	}
@@ -185,7 +198,6 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		getMenuInflater().inflate(R.menu.chat_contextmenu, menu);
 	}
 
-	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
 		switch (item.getItemId()) {
@@ -195,7 +207,7 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			cm.setText(message.getText());
 			return true;
 		default:
-			return super.onContextItemSelected(item);
+			return super.onContextItemSelected((android.view.MenuItem) item);
 		}
 	}
 	
@@ -309,19 +321,22 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				int delivery_status) {
 //			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
+			TypedValue tv = new TypedValue();
 			if (from_me) {
-				getDateView().setTextColor(0xff8888ff);
+				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
+				getDateView().setTextColor(tv.data);
 				getFromView().setText(getString(R.string.chat_from_me));
-				getFromView().setTextColor(0xff8888ff);
+				getFromView().setTextColor(tv.data);
 			} else {
-				getDateView().setTextColor(0xffff8888);
+				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
+				getDateView().setTextColor(tv.data);
 				getFromView().setText(from + ":");
-				getFromView().setTextColor(0xffff8888);
+				getFromView().setTextColor(tv.data);
 			}
 			switch (delivery_status) {
 			case 0:
 				ColorDrawable layers[] = new ColorDrawable[2];
-				layers[0] = new ColorDrawable(0xff404040);
+				layers[0] = new ColorDrawable(0xffc0c0c0);
 				if (from_me) {
 					layers[1] = new ColorDrawable(0x60404040);
 				} else {
@@ -417,4 +432,16 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 		toastNotification.show();
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, MainWindow.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }

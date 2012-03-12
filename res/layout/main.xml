@@ -24,6 +24,8 @@
 		android:scrollingCache="true"
 		android:focusable="true"
 		android:groupIndicator="@drawable/group_indicator"
+		android:fadingEdge="none"
+		android:cacheColorHint="#0000"
 		android:divider="#0000"/>
 
 	<TextView android:id="@+id/android:empty"
