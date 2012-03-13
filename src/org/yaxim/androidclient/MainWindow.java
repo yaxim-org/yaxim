@@ -43,6 +43,7 @@ import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -61,7 +62,6 @@ import org.yaxim.androidclient.service.IXMPPRosterService;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockExpandableListActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.nullwire.trace.ExceptionHandler;
 
@@ -499,7 +499,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	void setMenuItem(Menu menu, int itemId, int iconId, CharSequence title) {
-		MenuItem item = menu.findItem(itemId);
+		com.actionbarsherlock.view.MenuItem item = menu.findItem(itemId);
 		if (item == null)
 			return;
 		item.setIcon(iconId);
@@ -516,7 +516,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		return applyMainMenuChoice(item);
 	}
 
@@ -610,7 +610,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.create().show();
 	}
 
-	private boolean applyMainMenuChoice(MenuItem item) {
+	private boolean applyMainMenuChoice(com.actionbarsherlock.view.MenuItem item) {
 
 		int itemID = item.getItemId();
 
@@ -711,7 +711,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return;
 		}
 
-		final MenuItem connectItem = mOptionsMenu.findItem(R.id.menu_connect);
+		final com.actionbarsherlock.view.MenuItem connectItem = mOptionsMenu.findItem(R.id.menu_connect);
 		if (connectItem != null) {
 			if (visibility) {
 				if (mIndeterminateProgressView == null) {

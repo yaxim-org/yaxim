@@ -13,7 +13,6 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import android.app.ListActivity;
@@ -38,6 +37,7 @@ import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
@@ -438,7 +438,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MainWindow.class);
