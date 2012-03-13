@@ -1,6 +1,6 @@
 [submodule "MemorizingTrustManager"]
 	path = MemorizingTrustManager
 	url = git://github.com/ge0rg/MemorizingTrustManager.git
-[submodule "android-actionbar"]
-	path = android-actionbar
-	url = git://github.com/michaelkanis/android-actionbar.git
+[submodule "ActionBarSherlock"]
+	path = ActionBarSherlock
+	url = git://github.com/JakeWharton/ActionBarSherlock.git
