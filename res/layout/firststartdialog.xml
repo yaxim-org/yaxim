@@ -4,7 +4,11 @@
 		android:id="@+id/statusLayout" 
 		android:orientation="vertical"
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:paddingBottom="15dp"
+		android:paddingTop="10dp" >
 	
 	
 	<TextView

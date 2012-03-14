@@ -65,7 +65,7 @@ public class GroupNameView extends LinearLayout implements OnItemSelectedListene
 
 	void setInputVisibility(boolean vis) {
 		Log.d("GroupNameView", "setInputVisibility: " + vis);
-		mNewGroupInput.setVisibility(vis ? View.VISIBLE : View.INVISIBLE);
+		mNewGroupInput.setVisibility(vis ? View.VISIBLE : View.GONE);
 		mNewGroupInput.setEnabled(vis);
 	}
 

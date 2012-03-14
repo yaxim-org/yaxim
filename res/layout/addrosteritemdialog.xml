@@ -4,20 +4,24 @@
 		android:id="@+id/statusLayout" 
 		android:orientation="vertical"
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:paddingBottom="15dp"
+		android:paddingTop="10dp">
 
 	<TextView
 			android:id="@+id/Addcontact_Title"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/addFriend_Summ"
-			android:padding="10sp"
+			android:paddingBottom="20dp"
 		/>
 	<EditText
 			android:id="@+id/AddContact_EditTextField"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:padding="10sp"
+			android:layout_marginBottom="20dp"
 			android:gravity="left"
 			android:singleLine="true"
 			android:textSize="18sp"
@@ -29,8 +33,8 @@
 			android:id="@+id/AddContactAlias_EditTextField"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:padding="10sp"
 			android:gravity="left"
+			android:layout_marginBottom="20dp"
 			android:singleLine="true"
 			android:textSize="18sp"
 			android:maxWidth="200sp"

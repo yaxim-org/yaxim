@@ -2,7 +2,8 @@
 	<Spinner android:id="@+id/groupspinner" 
 		android:prompt="@string/AddContact_SpinnerPrompt" 
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">                                           
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="10dp">
 	</Spinner>
 	<EditText
 		android:id="@+id/newgroupinput"
