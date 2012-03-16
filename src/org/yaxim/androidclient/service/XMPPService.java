@@ -118,8 +118,8 @@ public class XMPPService extends GenericService {
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		logInfo("onStartCommand()");
 		if (intent != null) {
 			boolean disconnect = intent.getBooleanExtra("disconnect", false);
 			boolean reconnect = intent.getBooleanExtra("reconnect", false);
@@ -128,7 +128,7 @@ public class XMPPService extends GenericService {
 			if (disconnect) {
 				if (mConnectingThread != null || mIsConnected.get())
 					connectionFailed(getString(R.string.conn_networkchg));
-				return;
+				return START_STICKY;
 			}
 			if (reconnect) {
 				// reset reconnection timeout
@@ -137,12 +137,13 @@ public class XMPPService extends GenericService {
 					doConnect();
 				else
 					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
-				return;
+				return START_STICKY;
 			}
 		}
 		
 		mConnectionDemanded.set(mConfig.autoConnect);
 		doConnect();
+		return START_STICKY;
 	}
 
 	private void createServiceChatStub() {

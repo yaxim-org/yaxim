@@ -736,11 +736,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	public void startConnection() {
 		setConnectingStatus(true);
-		(new Thread() {
-			public void run() {
-				startService(xmppServiceIntent);
-			}
-		}).start();
+		startService(xmppServiceIntent);
 	}
 
 	// this function changes the prefs to keep the connection

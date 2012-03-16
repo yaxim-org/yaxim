@@ -81,9 +81,9 @@ public abstract class GenericService extends Service {
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		Log.i(TAG, "called onStart()");
-		super.onStart(intent, startId);
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.i(TAG, "called onStartCommand()");
+		return START_STICKY;
 	}
 
 	private void addNotificationMGR() {
