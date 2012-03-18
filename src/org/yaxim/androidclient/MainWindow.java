@@ -760,13 +760,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private int getConnectDisconnectIcon() {
-		TypedValue tv = new TypedValue();
 		if (isConnected() || isConnecting()) {
-			getTheme().resolveAttribute(R.attr.UnplugIcon, tv, true);
-			return tv.resourceId;
+			return R.drawable.ic_menu_unplug;
 		}
-		getTheme().resolveAttribute(R.attr.PlugIcon, tv, true);
-		return tv.resourceId;
+		return R.drawable.ic_menu_plug;
 	}
 
 	private String getConnectDisconnectText() {

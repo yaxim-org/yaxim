@@ -13,8 +13,6 @@
         <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
         <item name="MainGroup">@style/RosterGroupName.Light</item>
         <item name="MainChild">@style/RosterGroupItem</item>
-        <item name="PlugIcon">@drawable/ic_action_plug_light</item>
-        <item name="UnplugIcon">@drawable/ic_action_unplug_light</item>
         <item name="OnlineFriends">@drawable/ic_action_online_friends_light</item>
         <item name="AllFriends">@drawable/ic_action_all_friends_light</item>
         <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
@@ -30,8 +28,6 @@
     <style name="YaximDarkTheme" parent="Theme.Sherlock">
         <item name="MainGroup">@style/RosterGroupName.Dark</item>
         <item name="MainChild">@style/RosterGroupItem</item>
-        <item name="PlugIcon">@drawable/ic_action_plug_dark</item>
-        <item name="UnplugIcon">@drawable/ic_action_unplug_dark</item>
         <item name="OnlineFriends">@drawable/ic_action_online_friends_dark</item>
         <item name="AllFriends">@drawable/ic_action_all_friends_dark</item>
         <item name="ChatMsgHeaderMeColor">#ff8888ff</item>

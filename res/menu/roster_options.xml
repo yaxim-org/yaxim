@@ -3,13 +3,13 @@
 		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
 		android:showAsAction="never"/>
 
-	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
-		android:alphabeticShortcut="c"
-		android:icon="?attr/PlugIcon" android:showAsAction="ifRoom"/>
-
 	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
 		android:alphabeticShortcut="o"
 		android:icon="@android:drawable/ic_menu_delete" android:showAsAction="ifRoom"/>
+
+	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
+		android:alphabeticShortcut="c"
+		android:icon="@drawable/ic_menu_plug"/>
 
 	<item android:id="@+id/menu_add_friend" android:title="@string/Menu_addFriend"
 		android:alphabeticShortcut="a"
