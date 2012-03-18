@@ -9,12 +9,12 @@
     </style>
 
     <style name="RosterGroupName.Dark">
-        <item name="android:background">@drawable/group_background</item>
-        <item name="background">@drawable/group_background</item>
+        <item name="android:background">@drawable/group_background_9_dark</item>
+        <item name="background">@drawable/group_background_9_dark</item>
     </style>
 
     <style name="RosterGroupName.Light">
-        <item name="android:background">@drawable/group_background_light</item>
+        <item name="android:background">@drawable/group_background_9_light</item>
     </style>
 
     <style name="RosterGroupItem">
