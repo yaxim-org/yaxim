@@ -20,12 +20,28 @@
         <item name="ChatMsgHeaderYouColor">#ffcc5050</item>
     </style>
 
+    <style name="IndeterminateProgress" parent="Widget.Sherlock.ProgressBar">
+        <item name="android:minWidth">32dip</item>
+        <item name="android:maxWidth">32dip</item>
+        <item name="android:minHeight">32dip</item>
+        <item name="android:maxHeight">32dip</item>
+    </style>
+
     <style name="MyActionBarLight" parent="Widget.Sherlock.Light.ActionBar">
         <item name="android:background">#3000</item>
         <item name="background">#3000</item>
+        <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
+        <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
+    </style>
+
+    <style name="MyActionBarDark" parent="Widget.Sherlock.ActionBar">
+        <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
+        <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
     </style>
 
     <style name="YaximDarkTheme" parent="Theme.Sherlock">
+        <item name="android:actionBarStyle">@style/MyActionBarDark</item>
+        <item name="actionBarStyle">@style/MyActionBarDark</item>
         <item name="MainGroup">@style/RosterGroupName.Dark</item>
         <item name="MainChild">@style/RosterGroupItem</item>
         <item name="OnlineFriends">@drawable/ic_action_online_friends_dark</item>

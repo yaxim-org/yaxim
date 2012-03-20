@@ -104,6 +104,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
 		actionBar.setHomeButtonEnabled(true);
@@ -706,34 +707,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			mConnectingText.setVisibility(View.GONE);
 	}
 	
-	/**
-	 * Sets the visibility of the indeterminate progress bar in the action bar.
-	 * Name starts with an underscore, becuase super
-	 * {@link #setProgressBarIndeterminateVisibility(boolean)} is final.
-	 */
-	private void _setProgressBarIndeterminateVisibility(boolean visibility) {
-		if (mOptionsMenu == null) {
-			return;
-		}
-
-		final com.actionbarsherlock.view.MenuItem connectItem = mOptionsMenu.findItem(R.id.menu_connect);
-		if (connectItem != null) {
-			if (visibility) {
-				if (mIndeterminateProgressView == null) {
-					LayoutInflater inflater = (LayoutInflater)
-							getSystemService(
-									Context.LAYOUT_INFLATER_SERVICE);
-					mIndeterminateProgressView = inflater.inflate(
-							R.layout.actionbar_indeterminate_progress, null);
-				}
-
-				connectItem.setActionView(mIndeterminateProgressView);
-			} else {
-				connectItem.setActionView(null);
-			}
-		}
-	}
-
 	public void startConnection() {
 		setConnectingStatus(true);
 		startService(xmppServiceIntent);
@@ -745,7 +718,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		boolean oldState = isConnected() || isConnecting();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
-		_setProgressBarIndeterminateVisibility(true);
+		setSupportProgressBarIndeterminateVisibility(true);
 		if (oldState) {
 			setConnectingStatus(false);
 			(new Thread() {
@@ -790,7 +763,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				invalidateOptionsMenu();	// to load the action bar contents on time for access to icons/progressbar
 				actionBar.setIcon(getStatusActionIcon());	// refresh on orientation change
 				setConnectingStatus(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
-				_setProgressBarIndeterminateVisibility(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
+				setSupportProgressBarIndeterminateVisibility(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -827,7 +800,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 					public void run() {
 						Log.d(TAG, "connectionStatusChanged: " + isConnected + "/" + willReconnect);
 						setConnectingStatus(!isConnected && willReconnect);
-						_setProgressBarIndeterminateVisibility(false);
+						setSupportProgressBarIndeterminateVisibility(false);
 						invalidateOptionsMenu();
 					}
 				});
