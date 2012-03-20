@@ -53,8 +53,14 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
 		mEditJabberID.addTextChangedListener(this);
 		TypedValue tv = new TypedValue();
-		mainWindow.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
-		themedTextColor = mainWindow.getResources().getColor(tv.resourceId);
+		boolean found = mainWindow.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
+		if (found) {
+			// SDK 11+
+			themedTextColor = mainWindow.getResources().getColor(tv.resourceId);
+		} else {
+			// SDK < 11
+			themedTextColor = mainWindow.getResources().getColor(android.R.color.primary_text_light);
+		}
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
