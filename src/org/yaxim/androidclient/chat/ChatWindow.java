@@ -88,7 +88,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
-		actionBar.setIcon(R.drawable.ic_status_chat);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		registerForContextMenu(getListView());
 		setContactFromUri();
