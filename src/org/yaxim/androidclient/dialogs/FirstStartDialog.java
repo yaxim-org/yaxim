@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private Button mOkButton;
 	private EditText mEditJabberID;
 	private EditText mEditPassword;
+	private int themedTextColor;
 
 	public FirstStartDialog(MainWindow mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
@@ -50,6 +52,9 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
 		mEditJabberID.addTextChangedListener(this);
+		TypedValue tv = new TypedValue();
+		mainWindow.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
+		themedTextColor = mainWindow.getResources().getColor(tv.resourceId);
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			XMPPHelper.verifyJabberID(s);
 			mOkButton.setEnabled(true);
 			//mOkButton.setOnClickListener(this);
-			mEditJabberID.setTextColor(Color.DKGRAY);
+			mEditJabberID.setTextColor(themedTextColor);
 		} catch (YaximXMPPAdressMalformedException e) {
 			mOkButton.setEnabled(false);
 			mEditJabberID.setTextColor(Color.RED);

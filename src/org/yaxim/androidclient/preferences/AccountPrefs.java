@@ -13,6 +13,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
+
 import org.yaxim.androidclient.R;
 
 public class AccountPrefs extends PreferenceActivity {
@@ -26,6 +28,7 @@ public class AccountPrefs extends PreferenceActivity {
 
 	private EditTextPreference prefPrio;
 	private EditTextPreference prefAccountID;
+	private int themedTextColor;
 
 	public void onCreate(Bundle savedInstanceState) {
 		String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferenceConstants.THEME, "dark");
@@ -38,6 +41,9 @@ public class AccountPrefs extends PreferenceActivity {
 		addPreferencesFromResource(R.layout.accountprefs);
 
 		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
+		TypedValue tv = new TypedValue();
+		getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
+		themedTextColor = getResources().getColor(tv.resourceId);
 
 		this.prefAccountID = (EditTextPreference) findPreference(ACCOUNT_JABBERID);
 		this.prefAccountID.getEditText().addTextChangedListener(
@@ -56,8 +62,7 @@ public class AccountPrefs extends PreferenceActivity {
 
 						try {
 							XMPPHelper.verifyJabberID(s.toString());
-							prefAccountID.getEditText().setTextColor(
-									Color.DKGRAY);
+							prefAccountID.getEditText().setTextColor(themedTextColor);
 						} catch (YaximXMPPAdressMalformedException e) {
 							prefAccountID.getEditText().setTextColor(Color.RED);
 						}
