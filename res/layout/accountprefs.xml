@@ -9,7 +9,6 @@
 			android:summary="@string/account_jabberID_sum"
 			android:dialogTitle="@string/account_jabberID_dialog_title"
 			android:hint="@string/Global_JID_hint"
-			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:inputType="textEmailAddress"
 		 />
@@ -29,7 +28,6 @@
 			android:key="account_resource"
 			android:title="@string/account_resource_title"
 			android:summary="@string/account_resource_summ" 
-			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:dialogTitle="@string/account_resource_dialog_title"
 			android:singleLine="true"
 			android:hint="@string/account_resource_hint"
@@ -40,7 +38,6 @@
 			android:title="@string/account_prio_title"
 			android:summary="@string/account_prio_summ"
 			android:dialogTitle="@string/account_prio_dialog_title"
-			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:numeric="integer|signed"
 		/>	
@@ -62,7 +59,6 @@
 			android:summary="@string/account_customserver_summ"
 			android:dialogTitle="@string/account_customserver_dialog_title"
 			android:hint="@string/account_customserver_hint"
-			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:inputType="textUri"
 		/>	
@@ -73,7 +69,6 @@
 			android:summary="@string/account_port_sum"
 			android:dialogTitle="@string/account_port_dialog_title"
 			android:hint="@string/account_port_hint"
-			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:singleLine="true"
 			android:numeric="integer"
 		/>	

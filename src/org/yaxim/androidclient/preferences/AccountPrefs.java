@@ -104,7 +104,7 @@ public class AccountPrefs extends PreferenceActivity {
 				try {
 					prioIntValue = Integer.parseInt(s.toString());
 					if (prioIntValue <= 127 && prioIntValue >= -128) {
-						prefPrio.getEditText().setTextColor(Color.DKGRAY);
+						prefPrio.getEditText().setTextColor(themedTextColor);
 						prefPrio.setPositiveButtonText(android.R.string.ok);
 					} else {
 						prefPrio.getEditText().setTextColor(Color.RED);
