@@ -43,7 +43,6 @@ public class AddRosterItemDialog extends AlertDialog implements
 		setView(group);
 
 		userInputField = (EditText)group.findViewById(R.id.AddContact_EditTextField);
-		userInputField.addTextChangedListener(this);
 		aliasInputField = (EditText)group.findViewById(R.id.AddContactAlias_EditTextField);
 
 		mGroupNameView = (GroupNameView)group.findViewById(R.id.AddRosterItem_GroupName);
@@ -54,12 +53,19 @@ public class AddRosterItemDialog extends AlertDialog implements
 				(DialogInterface.OnClickListener)null);
 
 	}
+	public AddRosterItemDialog(MainWindow mainWindow,
+			XMPPRosterServiceAdapter serviceAdapter, String jid) {
+		this(mainWindow, serviceAdapter);
+		userInputField.setText(jid);
+	}
 
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
 		okButton = getButton(BUTTON_POSITIVE);
-		okButton.setEnabled(false);
+		afterTextChanged(userInputField.getText());
+
+		userInputField.addTextChangedListener(this);
 	}
 
 	public void onClick(DialogInterface dialog, int which) {
