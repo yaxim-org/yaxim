@@ -11,7 +11,6 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
-import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.AdapterConstants;
@@ -652,10 +651,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		case R.id.menu_settings:
 			startActivity(new Intent(this, MainPrefs.class));
-			return true;
-
-		case R.id.menu_acc_set:
-			startActivity(new Intent(this, AccountPrefs.class));
 			return true;
 
 		case R.id.menu_about:

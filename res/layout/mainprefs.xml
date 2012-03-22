@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="@string/account_settings_title">
+	<PreferenceScreen
+		android:title="@string/Menu_AccSettings"
+		android:summary="">
+
+		<intent android:action="android.intent.action.MAIN"
+			android:targetPackage="org.yaxim.androidclient"
+			android:targetClass="org.yaxim.androidclient.preferences.AccountPrefs" />
+	</PreferenceScreen>
+	</PreferenceCategory>
+
 	<PreferenceCategory android:title="@string/preftitle_notify">
 		<CheckBoxPreference
 			android:id="@+id/led"
