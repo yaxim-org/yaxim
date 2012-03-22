@@ -26,7 +26,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		//Log.d(TAG, "onReceive "+intent.getAction());
+		Log.d(TAG, "onReceive "+intent.getAction());
 
 		if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 			Log.d(TAG, "stop service");
@@ -36,7 +36,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 		} else if (intent.getAction().equals(android.net.ConnectivityManager.CONNECTIVITY_ACTION)) {
 			ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-			//Log.d(TAG, "ACTIVE NetworkInfo: "+(networkInfo != null ? networkInfo.toString() : "NONE"));
+			Log.d(TAG, "ACTIVE NetworkInfo: "+(networkInfo != null ? networkInfo.toString() : "NONE"));
 			if (((networkInfo == null) && (networkType != -1)) || ((networkInfo != null) && (networkInfo.isConnected() == false) && (networkInfo.getType() == networkType))) {
 				Log.d(TAG, "we got disconnected");
 				networkType = -1;
