@@ -233,6 +233,12 @@ public class MainWindow extends ExpandableListActivity {
 
 		// handle SEND action
 		handleSendIntent();
+
+		// handle imto:// intent after restoring service connection
+		mainHandler.post(new Runnable() {
+			public void run() {
+				handleJabberIntent();
+			}});
 	}
 
 	public void handleSendIntent() {
@@ -272,6 +278,34 @@ public class MainWindow extends ExpandableListActivity {
 					}
 				}).create().show();
 		} else return;
+	}
+
+	public void handleJabberIntent() {
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		Uri data = intent.getData();
+		if ((action != null) && (action.equals(Intent.ACTION_SENDTO))
+				&& data != null && data.getHost().equals("jabber")) {
+			String jid = data.getPathSegments().get(0);
+			Log.d(TAG, "handleJabberIntent: " + jid);
+
+			List<String[]> contacts = getRosterContacts();
+			for (String[] c : contacts) {
+				if (jid.equalsIgnoreCase(c[0])) {
+					// found it
+					startChatActivity(c[0], c[1], null);
+					finish();
+					return;
+				}
+			}
+			// did not find in roster, try to add
+			if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
+				new AddRosterItemDialog(this, serviceAdapter, jid).show();
+			} else {
+				showToastNotification(R.string.Global_authenticate_first);
+				finish();
+			}
+		}
 	}
 
 	@Override
