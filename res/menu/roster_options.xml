@@ -23,10 +23,6 @@
 		android:alphabeticShortcut="p"
 		android:icon="@android:drawable/ic_menu_preferences" />
 
-	<item android:id="@+id/menu_acc_set" android:title="@string/Menu_AccSettings"
-		android:alphabeticShortcut="e"
-		android:icon="@android:drawable/ic_menu_manage" />
-
 	<item android:id="@+id/menu_about" android:title="@string/Menu_about"
 		android:alphabeticShortcut="y"
 		android:icon="@drawable/about" />
