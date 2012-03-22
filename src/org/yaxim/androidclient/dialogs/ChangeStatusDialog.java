@@ -9,6 +9,7 @@ import java.util.List;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,6 +27,8 @@ public class ChangeStatusDialog extends AlertDialog {
 	private final Spinner mStatus;
 
 	private final EditText mMessage;
+
+	private final EditText mPriority;
 
 	private final MainWindow mContext;
 
@@ -61,6 +64,9 @@ public class ChangeStatusDialog extends AlertDialog {
 		mMessage = (EditText) group.findViewById(R.id.statusview_message);
 		mMessage.setText(context.getStatusMessage());
 
+		mPriority = (EditText) group.findViewById(R.id.statusview_prio);
+		mPriority.setText("" + context.getAccountPriority());
+
 		setTitle(R.string.statuspopup_name);
 		setView(group);
 
@@ -76,8 +82,9 @@ public class ChangeStatusDialog extends AlertDialog {
 		public void onClick(DialogInterface dialog, int which) {
 			StatusMode status = (StatusMode) mStatus.getSelectedItem();
 			String message = mMessage.getText().toString();
+			int priority = XMPPHelper.tryToParseInt(mPriority.getText().toString(), 0);
 
-			mContext.setAndSaveStatus(status, message);
+			mContext.setAndSaveStatus(status, message, priority);
 		}
 	}
 
