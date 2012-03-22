@@ -42,14 +42,7 @@ public class AccountPrefs extends PreferenceActivity {
 
 		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
 		TypedValue tv = new TypedValue();
-		boolean found = getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
-		if (found) {
-			// SDK 11+
-			themedTextColor = getResources().getColor(tv.resourceId);
-		} else {
-			// SDK < 11
-			themedTextColor = getResources().getColor(android.R.color.primary_text_light);
-		}
+		themedTextColor = XMPPHelper.getEditTextColor(this);
 
 		this.prefAccountID = (EditTextPreference) findPreference(ACCOUNT_JABBERID);
 		this.prefAccountID.getEditText().addTextChangedListener(

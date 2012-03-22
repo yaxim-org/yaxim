@@ -72,7 +72,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 		try {
 			XMPPHelper.verifyJabberID(s);
 			okButton.setEnabled(true);
-			userInputField.setTextColor(Color.DKGRAY);
+			userInputField.setTextColor(XMPPHelper.getEditTextColor(mMainWindow));
 		} catch (YaximXMPPAdressMalformedException e) {
 			okButton.setEnabled(false);
 			userInputField.setTextColor(Color.RED);

@@ -5,7 +5,9 @@ import java.util.regex.Pattern;
 
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
+import android.content.Context;
 import android.text.Editable;
+import android.util.TypedValue;
 
 
 public class XMPPHelper {
@@ -39,5 +41,17 @@ public class XMPPHelper {
 			ret = defVal;
 		}
 		return ret;
+	}
+
+	public static int getEditTextColor(Context ctx) {
+		TypedValue tv = new TypedValue();
+		boolean found = ctx.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
+		if (found) {
+			// SDK 11+
+			return ctx.getResources().getColor(tv.resourceId);
+		} else {
+			// SDK < 11
+			return ctx.getResources().getColor(android.R.color.primary_text_light);
+		}
 	}
 }
