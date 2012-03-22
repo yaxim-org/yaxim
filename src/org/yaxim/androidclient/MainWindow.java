@@ -548,6 +548,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return mStatusMessage;
 	}
 
+	public int getAccountPriority() {
+		return mConfig.priority;
+	}
+
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
 		status = context.getString(StatusMode.fromString(status).getTextId());
 
@@ -558,7 +562,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return status;
 	}
 
-	public void setAndSaveStatus(StatusMode statusMode, String message) {
+	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
 		setStatus(statusMode, message);
 
 
@@ -568,6 +572,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (statusMode != StatusMode.offline)
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
+		prefedit.putString("account_prio", "" + priority);
 		prefedit.commit();
 
 		// check if we are connected and want to go offline
