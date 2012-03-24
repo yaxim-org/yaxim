@@ -4,7 +4,7 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Conectándose al servidor...</string>
+	<string name="conn_connecting">Conectándose al servidor…</string>
 	<string name="conn_online">Disponible</string>
 	<string name="conn_offline">Desconectado</string>
 	<string name="conn_empty_roster">No hay contactos para mostrar</string>

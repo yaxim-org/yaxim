@@ -23,7 +23,7 @@
 	<string name="StartupDialog_pwHint">Saisir un mot de passe</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Mot de passe :</string>
-	<string name="StartupDialog_advanced">Advanced...</string>
+	<string name="StartupDialog_advanced">Advanced…</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>

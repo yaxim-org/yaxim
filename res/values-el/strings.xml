@@ -4,7 +4,7 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Σύνδεση στο server...</string>
+	<string name="conn_connecting">Σύνδεση στο server…</string>
 	<string name="conn_online">Συνδεδεμένος</string>
 	<string name="conn_offline">Εκτός Σύνδεσης</string>
 	<string name="conn_empty_roster">Δεν υπάρχουν επαφές για εμφάνιση</string>
@@ -23,7 +23,7 @@
 	<string name="StartupDialog_pwHint">Εισάγετε κωδικό</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Κωδικός Πρόσβασης:</string>
-	<string name="StartupDialog_advanced">Advanced...</string>
+	<string name="StartupDialog_advanced">Advanced…</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>

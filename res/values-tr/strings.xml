@@ -4,7 +4,7 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Sunucuya bağlanılıyor...</string>
+	<string name="conn_connecting">Sunucuya bağlanılıyor…</string>
 	<string name="conn_online">Çevirimiçi</string>
 	<string name="conn_offline">Çevrimdışı</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
@@ -23,7 +23,7 @@
 	<string name="StartupDialog_pwHint">Parola girin</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Parola:</string>
-	<string name="StartupDialog_advanced">Advanced...</string>
+	<string name="StartupDialog_advanced">Advanced…</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>

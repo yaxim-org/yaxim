@@ -4,7 +4,7 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Подключение к серверу...</string>
+	<string name="conn_connecting">Подключение к серверу…</string>
 	<string name="conn_online">В сети</string>
 	<string name="conn_offline">Отключён</string>
 	<string name="conn_empty_roster">Нет контактов для отображения!</string>
@@ -23,7 +23,7 @@
 	<string name="StartupDialog_pwHint">Введите пароль</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
-	<string name="StartupDialog_advanced">Дополнительно ...</string>
+	<string name="StartupDialog_advanced">Дополнительно …</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Сообщение от %s</string>
