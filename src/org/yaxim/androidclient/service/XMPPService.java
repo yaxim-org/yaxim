@@ -472,6 +472,11 @@ public class XMPPService extends GenericService {
 				postRosterChanged();
 			}
 
+			public void disconnectOnError() {
+				logInfo("Smackable disconnected on error");
+				postConnectionFailed(getString(R.string.conn_disconnected));
+			}
+
 			public boolean isBoundTo(String jabberID) {
 				return mIsBoundTo.contains(jabberID);
 			}
