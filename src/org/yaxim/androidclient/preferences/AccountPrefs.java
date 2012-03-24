@@ -13,7 +13,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 
 import org.yaxim.androidclient.R;
 
@@ -41,7 +40,6 @@ public class AccountPrefs extends PreferenceActivity {
 		addPreferencesFromResource(R.layout.accountprefs);
 
 		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		TypedValue tv = new TypedValue();
 		themedTextColor = XMPPHelper.getEditTextColor(this);
 
 		this.prefAccountID = (EditTextPreference) findPreference(ACCOUNT_JABBERID);

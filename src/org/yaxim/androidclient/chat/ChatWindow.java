@@ -17,7 +17,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Window;
 
-import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;

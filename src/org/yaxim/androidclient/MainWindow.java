@@ -19,7 +19,6 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
-import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -46,7 +45,6 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import org.yaxim.androidclient.util.SimpleCursorTreeAdapter;
 import android.widget.TextView;
@@ -87,8 +85,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private HashMap<String, Boolean> mGroupsExpanded = new HashMap<String, Boolean>();
 
 	private ActionBar actionBar;
-	private Menu mOptionsMenu = null; 
-	private View mIndeterminateProgressView;
 	private String mTheme;
 
 	@Override
@@ -533,7 +529,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.roster_options, menu);
 		actionBar.setIcon(getStatusActionIcon());
-		mOptionsMenu = menu;
 		return true;
 	}
 

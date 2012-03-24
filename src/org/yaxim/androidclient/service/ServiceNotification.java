@@ -2,10 +2,7 @@ package org.yaxim.androidclient.service;
 
 import android.util.Log;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
-import android.content.Context;
-import android.os.Build;
 
 // Code to make a Service stay in the foreground from
 // http://devtcg.blogspot.com/2009/12/gracefully-supporting-multiple-android.html
