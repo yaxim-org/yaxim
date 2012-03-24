@@ -6,6 +6,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
@@ -208,6 +209,15 @@ public class SmackableImp implements Smackable {
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
+			mXMPPConnection.addConnectionListener(new ConnectionListener() {
+				public void connectionClosedOnError(Exception e) {
+					mServiceCallBack.disconnectOnError();
+				}
+				public void connectionClosed() { }
+				public void reconnectingIn(int seconds) { }
+				public void reconnectionFailed(Exception e) { }
+				public void reconnectionSuccessful() { }
+			});
 			initServiceDiscovery();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
