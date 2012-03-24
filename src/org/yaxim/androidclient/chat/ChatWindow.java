@@ -70,6 +70,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			R.id.chat_from, R.id.chat_message };
 
 	private ContentObserver mContactObserver = new ContactObserver();
+	private ImageView mStatusMode;
+	private TextView mTitle;
+	private TextView mSubTitle;
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
@@ -116,9 +119,22 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			titleUserid = mWithJabberID;
 		}
 
-		setTitle(titleUserid);
+		setCustomTitle(titleUserid);
 
 		setChatWindowAdapter();
+	}
+
+	private void setCustomTitle(String title) {
+		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.chat_action_title, null);
+		mStatusMode = (ImageView)layout.findViewById(R.id.action_bar_status);
+		mTitle = (TextView)layout.findViewById(R.id.action_bar_title);
+		mSubTitle = (TextView)layout.findViewById(R.id.action_bar_subtitle);
+		mTitle.setText(title);
+
+		setTitle(null);
+		getSupportActionBar().setCustomView(layout);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
 	}
 
 	private void setChatWindowAdapter() {
@@ -488,6 +504,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			int status_mode = cursor.getInt(MODE_IDX);
 			String status_message = cursor.getString(MSG_IDX);
 			Log.d(TAG, "contact status changed: " + status_mode + " " + status_message);
+			mSubTitle.setVisibility((status_message != null && status_message.length() != 0)?
+					View.VISIBLE : View.GONE);
+			mSubTitle.setText(status_message);
+			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
 		cursor.close();
 	}
