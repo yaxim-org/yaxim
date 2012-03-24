@@ -7,9 +7,11 @@ import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.PreferenceConstants;
+import org.yaxim.androidclient.util.StatusMode;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
@@ -22,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -66,6 +69,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
 
+	private ContentObserver mContactObserver = new ContactObserver();
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
@@ -92,6 +96,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.mainchat);
 		
+		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
+				true, mContactObserver);
+
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -125,6 +132,12 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		updateContactStatus();
+	}
+
+	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		if (hasFocus)
@@ -137,6 +150,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	public void onDestroy() {
 		super.onDestroy();
 		if (hasWindowFocus()) unbindXMPPService();
+		getContentResolver().unregisterContentObserver(mContactObserver);
 	}
 
 	private void registerXMPPService() {
@@ -456,6 +470,36 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private static final String[] STATUS_QUERY = new String[] {
+		RosterProvider.RosterConstants.STATUS_MODE,
+		RosterProvider.RosterConstants.STATUS_MESSAGE,
+	};
+	private void updateContactStatus() {
+		Cursor cursor = getContentResolver().query(RosterProvider.CONTENT_URI, STATUS_QUERY,
+					RosterProvider.RosterConstants.JID + " = ?", new String[] { mWithJabberID }, null);
+		int MODE_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MODE);
+		int MSG_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MESSAGE);
+
+		if (cursor.getCount() == 1) {
+			cursor.moveToFirst();
+			int status_mode = cursor.getInt(MODE_IDX);
+			String status_message = cursor.getString(MSG_IDX);
+			Log.d(TAG, "contact status changed: " + status_mode + " " + status_message);
+		}
+		cursor.close();
+	}
+
+	private class ContactObserver extends ContentObserver {
+		public ContactObserver() {
+			super(new Handler());
+		}
+
+		public void onChange(boolean selfChange) {
+			Log.d(TAG, "ContactObserver.onChange: " + selfChange);
+			updateContactStatus();
 		}
 	}
 }
