@@ -120,6 +120,8 @@ public class SmackableImp implements Smackable {
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
 
 
+	private XMPPStreamHandler mStreamHandler;
+
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver,
 			Service service) {
@@ -149,6 +151,7 @@ public class SmackableImp implements Smackable {
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
 		this.mService = service;
+		XMPPStreamHandler.addExtensionProviders();
 	}
 
 	public boolean doConnect(boolean create_account) throws YaximXMPPException {
@@ -238,6 +241,7 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setKeepAliveInterval(-1);
 			mXMPPConnection.connect();
+			mStreamHandler = new XMPPStreamHandler(mXMPPConnection);
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
@@ -251,6 +255,7 @@ public class SmackableImp implements Smackable {
 				public void reconnectionSuccessful() { }
 			});
 			initServiceDiscovery();
+			mStreamHandler.notifyInitialLogin();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				if (create_account) {
