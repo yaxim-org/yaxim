@@ -84,7 +84,7 @@
 	<!-- following lines copied from android-sdk build.xml -->
 	<path id="project.jars.ref">
 		<pathelement location="${out.classes.absolute.dir}" />
-		<path refid="jar.libs.ref" />
+		<path refid="project.libraries.jars" />
 	</path>
 	<pathconvert property="project.jars" refid="project.jars.ref">
 		<firstmatchmapper>
