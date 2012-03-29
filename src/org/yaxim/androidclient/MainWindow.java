@@ -7,6 +7,7 @@ import java.util.List;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
+import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
@@ -82,6 +83,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private StatusMode mStatusMode;
 
 	private ContentObserver mRosterObserver = new RosterObserver();
+	private ContentObserver mChatObserver = new ChatObserver();
 	private HashMap<String, Boolean> mGroupsExpanded = new HashMap<String, Boolean>();
 
 	private ActionBar actionBar;
@@ -106,6 +108,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		showFirstStartUpDialogIfPrefsEmpty();
 		getContentResolver().registerContentObserver(RosterProvider.GROUPS_URI,
 				true, mRosterObserver);
+		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
+				true, mChatObserver);
 		registerXMPPService();
 		createUICallback();
 		setupContenView();
@@ -118,6 +122,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		getContentResolver().unregisterContentObserver(mRosterObserver);
+		getContentResolver().unregisterContentObserver(mChatObserver);
 	}
 
 	public int getStatusActionIcon() {
@@ -1005,6 +1010,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 			TextView statusmsg = (TextView)view.findViewById(R.id.roster_statusmsg);
 			boolean hasStatus = statusmsg.getText() != null && statusmsg.getText().length() > 0;
 			statusmsg.setVisibility(hasStatus ? View.VISIBLE : View.GONE);
+
+			int JIDIdx = cursor.getColumnIndex(RosterProvider.RosterConstants.JID);
+			String selection = ChatConstants.JID + " = '" + cursor.getString(JIDIdx) + "' AND " +
+					ChatConstants.FROM_ME + " = 0 AND " +
+					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
+			Cursor msgcursor = getContentResolver().query(ChatProvider.CONTENT_URI,
+					new String[] { ChatConstants.PACKET_ID }, selection, null, null);
+			TextView unreadmsg = (TextView)view.findViewById(R.id.roster_unreadmsg_cnt);
+			unreadmsg.setText(String.valueOf(msgcursor.getCount()));
+			unreadmsg.setVisibility(msgcursor.getCount() > 0 ? View.VISIBLE : View.GONE);
+			unreadmsg.bringToFront();
 		}
 
 		 protected void setViewImage(ImageView v, String value) {
@@ -1030,6 +1046,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 					public void run() {
 						restoreGroupsExpanded();
 					}}, 100);
+		}
+	}
+
+	private class ChatObserver extends ContentObserver {
+		public ChatObserver() {
+			super(mainHandler);
+		}
+		public void onChange(boolean selfChange) {
+			updateRoster();
 		}
 	}
 }
