@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.data;
 
+import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -38,6 +39,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public Uri notifySound;
 
 	public boolean smackdebug;
+    public String theme;
+    public String chatFontSize;
 
 	private final SharedPreferences prefs;
 
@@ -117,12 +120,23 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				false);
 		this.statusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
+        this.theme = prefs.getString(PreferenceConstants.THEME, "dark");
+        this.chatFontSize = prefs.getString("setSizeChat", "18");
 
 		try {
 			XMPPHelper.verifyJabberID(jabberID);
 			splitAndSetJabberID(jabberID);
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
+		}
+	}
+
+
+	public int getTheme() {
+		if (theme.equals("light")) {
+			return R.style.YaximLightTheme;
+		} else {
+			return R.style.YaximDarkTheme;
 		}
 	}
 }

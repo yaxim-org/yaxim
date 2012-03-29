@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.preferences;
 
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -30,12 +31,7 @@ public class AccountPrefs extends PreferenceActivity {
 	private int themedTextColor;
 
 	public void onCreate(Bundle savedInstanceState) {
-		String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferenceConstants.THEME, "dark");
-		if (theme.equals("light")) {
-			setTheme(R.style.YaximLightTheme);
-		} else {
-			setTheme(R.style.YaximDarkTheme);
-		}
+		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.accountprefs);
 

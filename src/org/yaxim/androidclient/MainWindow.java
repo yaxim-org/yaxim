@@ -91,11 +91,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		mConfig = YaximApplication.getConfig(this);
 		mTheme = mConfig.theme;
-		if (mConfig.theme.equals("light")) {
-			setTheme(R.style.YaximLightTheme);
-		} else {
-			setTheme(R.style.YaximDarkTheme);
-		}
+		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -80,20 +81,13 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
 	private int mChatFontSize;
-	private SharedPreferences prefs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		String theme = prefs.getString(PreferenceConstants.THEME, "dark");
-		if (theme.equals("light")) {
-			setTheme(R.style.YaximLightTheme);
-		} else {
-			setTheme(R.style.YaximDarkTheme);
-		}
+		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
 	
-		mChatFontSize = Integer.valueOf(prefs.getString("setSizeChat", "18"));
+		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.mainchat);
