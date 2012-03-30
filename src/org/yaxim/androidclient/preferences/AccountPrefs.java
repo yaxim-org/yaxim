@@ -2,7 +2,6 @@ package org.yaxim.androidclient.preferences;
 
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
-import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.content.SharedPreferences;
