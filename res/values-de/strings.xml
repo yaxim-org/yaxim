@@ -27,7 +27,8 @@
 
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
-
+	<string name="notification_anonymous_message">Mitteilung empfangen</string>
+	
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Benachrichtigung</string>
 	<string name="led_title">LED-Blinken</string>
@@ -41,6 +42,8 @@
 	</string-array>
 	<string name="ringtone_title">Klingelton</string>
 	<string name="ringtone_summ">Ton für neue Nachrichten</string>
+	<string name="ticker_title">Vorschau auf Nachricht</string>
+	<string name="ticker_summ">Zeige Absender und Nachricht in Statuszeile</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Programmstart-Einstellungen</string>

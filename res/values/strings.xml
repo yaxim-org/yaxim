@@ -27,6 +27,7 @@
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>
+	<string name="notification_anonymous_message">Message received</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Message Notification</string>
@@ -41,6 +42,8 @@
 	</string-array>
 	<string name="ringtone_title">Ringtone</string>
 	<string name="ringtone_summ">Tone for incoming messages</string>
+	<string name="ticker_title">Message preview</string>
+	<string name="ticker_summ">Show sender and message in status bar</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Startup Options</string>
