@@ -1021,6 +1021,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			unreadmsg.setText(String.valueOf(msgcursor.getCount()));
 			unreadmsg.setVisibility(msgcursor.getCount() > 0 ? View.VISIBLE : View.GONE);
 			unreadmsg.bringToFront();
+			msgcursor.close();
 		}
 
 		 protected void setViewImage(ImageView v, String value) {
