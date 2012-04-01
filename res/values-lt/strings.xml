@@ -255,6 +255,14 @@
 	<string name="status_xa">Nepasiekiamas</string>
 	<string name="status_offline">Neprisijungęs (-usi)</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Theme</string>
+	<string-array name="pref_theme_entries">
+		<item>Dark</item>
+		<item>Light</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Antanas https://launchpad.net/~antanas
   Georg Lukas https://launchpad.net/~ge0rg</string>

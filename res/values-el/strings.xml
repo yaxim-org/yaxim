@@ -196,6 +196,14 @@
 	<string name="status_xa">Μη διαθέσιμος/η</string>
 	<string name="status_offline">Εκτός Σύνδεσης</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Theme</string>
+	<string-array name="pref_theme_entries">
+		<item>Dark</item>
+		<item>Light</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
   Theo Ioannidis https://launchpad.net/~xaroulhs1983</string>
