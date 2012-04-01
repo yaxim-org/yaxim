@@ -28,7 +28,7 @@
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
 	<string name="notification_anonymous_message">Mitteilung empfangen</string>
-	
+
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Benachrichtigung</string>
 	<string name="led_title">LED-Blinken</string>
@@ -63,24 +63,25 @@
 	<string name="reportcrash_summ">Anonymen Absturzbericht sn die Entwickler senden</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Anzeige</string>
-	<string name="FontChat_title">Chat Schriftgröße</string>
+	<string name="preftitle_app">Darstellung</string>
+	<string name="FontChat_title">Chat-Schriftgröße</string>
 	<string name="FontChat_summ">Schriftgröße für Chat setzen</string>
-	<string name="FontChat_dialog">Chat Schriftgröße</string>
+	<string name="FontChat_dialog">Chat-Schriftgröße</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Erscheinungsbild</string>
 	<string-array name="pref_theme_entries">
 		<item>Dunkel</item>
 		<item>Hell</item>
 	</string-array>
+	<string name="preftitle_ui">Darstellung</string>
 	<string-array name="fontSizesChat">
 		<item>klein</item>
-		<item>mittel</item>
+		<item>normal</item>
 		<item>groß</item>
 	</string-array>
 
@@ -167,7 +168,7 @@
 	<string name="chat_from_me">Ich:</string>
 	<string name="toast_connectfail_message">Verbindung getrennt!</string>
 	<string name="toast_stored_offline">Nachricht zum Versand gespeichert.</string>
-	<string name="chat_enterMsgHint">Nachricht schreiben</string>
+	<string name="chat_enterMsgHint">Mitteilung eingeben</string> 
 
 	<!-- GPS settings -->
 	<!--
@@ -193,10 +194,11 @@
 	<string name="translator_credits">Launchpad Contributions:
   Daniel Winzen https://launchpad.net/~q-d
   Georg Lukas https://launchpad.net/~ge0rg
+  Jan Kiszka https://launchpad.net/~jan-kiszka
   Markus Unterwaditzer https://launchpad.net/~untitaker
   Michael Kanis https://launchpad.net/~mkanis
   René Moser https://launchpad.net/~resmo</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Kontakt wählen</string>
+	<string name="chooseContact">Kontakt auswählen</string>
 </resources>

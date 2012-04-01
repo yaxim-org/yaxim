@@ -9,8 +9,8 @@
 	<string name="conn_offline">Non connesso</string>
 	<string name="conn_empty_roster">Nessun contatto presente!</string>
 	<string name="conn_reconnect">\nRiconnessione tra %d secondi.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_disconnected">Connessione chiusa</string>
+	<string name="conn_networkchg">Rete cambiata</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Esci</string>
@@ -23,58 +23,62 @@
 	<string name="StartupDialog_pwHint">Inserisci la password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Password:</string>
-	<string name="StartupDialog_advanced">Advanced…</string>
+	<string name="StartupDialog_advanced">Avanzate…</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s</string>
+	<string name="notification_message">Messaggio da %s</string>
+	<string name="notification_anonymous_message">Message received</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notifica messaggi</string>
 	<string name="led_title">Lampeggia LED</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
+	<string name="led_summ">LED lampeggiante per i messaggi in arrivo</string>
 	<string name="vibr_title">Vibrazione</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="vibr_summ">Vibrazione per i messaggi in arrivo</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
-		<item>System preference</item>
-		<item>Always</item>
+		<item>Mai</item>
+		<item>Preferenze di sistema</item>
+		<item>Sempre</item>
 	</string-array>
 	<string name="ringtone_title">Suoneria</string>
 	<string name="ringtone_summ">Suono per i messaggi in arrivo</string>
+	<string name="ticker_title">Message preview</string>
+	<string name="ticker_summ">Show sender and message in status bar</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opzioni di avvio</string>
 	<string name="boot_title">Carica yaxim all\'avvio del telefono</string>
-	<string name="boot_summ">Launch app when phone is turned on</string>
+	<string name="boot_summ">Avvia applicazione all\'accensione del telefono</string>
 	<string name="statuspopup_name">Imposta il tuo stato</string>
-	<string name="showOffline_summ">Always show all contacts in the roster</string>
+	<string name="showOffline_summ">Mostra sempre tutti i contatti nella lista</string>
 	<string name="showOffline_title">Mostra contatti offline</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="foregroundService_summ">Mantieni yaxim in memoria per garantire una connessione sempre attiva (servizio in background)</string>
+	<string name="foregroundService_title">Icona barra di stato</string>
 
 	<string name="preftitle_debug">Debug</string>
 	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
 	<string name="smackdebug_title">Debug SMACK</string>
 
 	<string name="reportcrash_title">Invia rapporti sui crash</string>
-	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
+	<string name="reportcrash_summ">Invia report anonimi sui crash allo sviluppatore</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Appearance</string>
 	<string name="FontChat_title">Chat font size</string>
 	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontChat_dialog">Chat font size</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Tema</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Scuro</item>
+		<item>Chiaro</item>
 	</string-array>
+	<string name="preftitle_ui">Appearance</string>
 	<string-array name="fontSizesChat">
 		<item>small</item>
 		<item>normal</item>
@@ -103,7 +107,7 @@
 	<string name="roster_contextmenu_title">Opzioni per %s</string>
 	<string name="roster_contextmenu_group_rename">Rinomina gruppo</string>
 	<string name="roster_contextmenu_contact_delete">Elimina contatto</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
+	<string name="roster_contextmenu_contact_delmsg">Cancella la cronologia della chat</string>
 	<string name="roster_contextmenu_contact_open_chat">Apri chat</string>
 	<string name="roster_contextmenu_contact_rename">Rinomina</string>
 	<string name="roster_contextmenu_contact_request_auth">Richiedi autorizzazione</string>
@@ -132,7 +136,7 @@
 	<string name="account_resource_dialog_title">Inserisci la risorsa:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorità del client</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_summ">Default: 0 (ammessi: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Inserisci la priorità:</string>
 	<string name="account_port_title">Porta del server</string>
 	<string name="account_port_sum">Predefinita: 5222</string>
@@ -157,8 +161,8 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Cambia gruppo</string>
 	<string name="deleteRosterItem_text">Vuoi veramente eliminare %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Elimina contatto</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Delete Chat History</string>
+	<string name="deleteChatHistory_text">Rimuovere definitivamente tutti i messaggi con %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Cancella la cronologia della chat</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Io:</string>
@@ -188,6 +192,8 @@
 	<string name="status_offline">Non connesso</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Ema987 https://launchpad.net/~ema987
+  Georg Lukas https://launchpad.net/~ge0rg
   Pietro Pecchi https://launchpad.net/~pietro-pecchi</string>
 
 	<!-- SEND listener popup -->

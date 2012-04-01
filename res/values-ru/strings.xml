@@ -27,6 +27,7 @@
 
 	<!-- Notifications -->
 	<string name="notification_message">Сообщение от %s</string>
+	<string name="notification_anonymous_message">Message received</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Уведомление о сообщении</string>
@@ -41,6 +42,8 @@
 	</string-array>
 	<string name="ringtone_title">Мелодия вызова</string>
 	<string name="ringtone_summ">Мелодия для входящих сообщений</string>
+	<string name="ticker_title">Message preview</string>
+	<string name="ticker_summ">Show sender and message in status bar</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Настройки запуска</string>
@@ -63,18 +66,19 @@
 	<string name="preftitle_app">Appearance</string>
 	<string name="FontChat_title">Chat font size</string>
 	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="FontChat_dialog">Chat font size</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Оформление</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Тёмное</item>
+		<item>Светлое</item>
 	</string-array>
+	<string name="preftitle_ui">Appearance</string>
 	<string-array name="fontSizesChat">
 		<item>small</item>
 		<item>normal</item>

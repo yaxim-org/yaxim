@@ -27,6 +27,7 @@
 
 	<!-- Notifications -->
 	<string name="notification_message">Wiadomość od %s</string>
+	<string name="notification_anonymous_message">Otrzymano wiadomość</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Powiadamianie o wiadomościach</string>
@@ -35,12 +36,14 @@
 	<string name="vibr_title">Wibracja</string>
 	<string name="vibr_summ">Wibruj przy nowej wiadomości</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
+		<item>Nigdy</item>
 		<item>System preference</item>
-		<item>Always</item>
+		<item>Zawsze</item>
 	</string-array>
 	<string name="ringtone_title">Dzwonek</string>
 	<string name="ringtone_summ">Dzwonek dla przychodzących wiadomości</string>
+	<string name="ticker_title">Podgląd wiadomości</string>
+	<string name="ticker_summ">Show sender and message in status bar</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opcje uruchamiania</string>
@@ -60,25 +63,26 @@
 	<string name="reportcrash_summ">Wysyłanie anonimowych zgłoszeń awarii do programisty</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font fize</string>
+	<string name="preftitle_app">Wygląd</string>
+	<string name="FontChat_title">Rozmiar czcionki czatu</string>
+	<string name="FontChat_summ">Ustaw rozmiar czcionki czatu</string>
+	<string name="FontChat_dialog">Rozmiar czcionki czatu</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Styl</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Ciemny</item>
+		<item>Jasny</item>
 	</string-array>
+	<string name="preftitle_ui">Wygląd</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
-		<item>normal</item>
-		<item>large</item>
+		<item>mały</item>
+		<item>normalny</item>
+		<item>duży</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -164,7 +168,7 @@
 	<string name="chat_from_me">Ja:</string>
 	<string name="toast_connectfail_message">Połączenie zakończone</string>
 	<string name="toast_stored_offline">Wiadomość została zapisana do wysłania.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_enterMsgHint">Wpisz wpiadomość</string> 
 
 	<!-- GPS settings -->
 	<!--
@@ -188,8 +192,10 @@
 	<string name="status_offline">Rozłączony</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Adam Maćkowiak https://launchpad.net/~admc</string>
+  Adam Maćkowiak https://launchpad.net/~admc
+  Antoni Kudelski https://launchpad.net/~antoni-kudelski
+  Georg Lukas https://launchpad.net/~ge0rg</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Wybierz kontakt</string>
 </resources>
