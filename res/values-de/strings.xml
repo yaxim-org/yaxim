@@ -191,6 +191,14 @@
 	<string name="status_xa">Nicht verfügbar</string>
 	<string name="status_offline">Offline</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Erscheinungsbild</string>
+	<string-array name="pref_theme_entries">
+		<item>Dunkel</item>
+		<item>Hell</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Daniel Winzen https://launchpad.net/~q-d
   Georg Lukas https://launchpad.net/~ge0rg
