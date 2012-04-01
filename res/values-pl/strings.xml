@@ -203,6 +203,14 @@
 	<string name="status_xa">Niedostępny</string>
 	<string name="status_offline">Rozłączony</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Styl</string>
+	<string-array name="pref_theme_entries">
+		<item>Ciemny</item>
+		<item>Jasny</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Adam Maćkowiak https://launchpad.net/~admc
   Antoni Kudelski https://launchpad.net/~antoni-kudelski-deactivatedaccount

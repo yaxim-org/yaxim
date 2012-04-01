@@ -203,6 +203,14 @@
 	<string name="status_xa">Inte tillgänglig</string>
 	<string name="status_offline">Frånkopplad</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Theme</string>
+	<string-array name="pref_theme_entries">
+		<item>Dark</item>
+		<item>Light</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Argafål https://launchpad.net/~argafal
   Erik Lindström https://launchpad.net/~erikl

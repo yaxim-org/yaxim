@@ -203,6 +203,14 @@
 	<string name="status_xa">Non disponibile</string>
 	<string name="status_offline">Non connesso</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Tema</string>
+	<string-array name="pref_theme_entries">
+		<item>Scuro</item>
+		<item>Chiaro</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Ema987 https://launchpad.net/~ema987
   Georg Lukas https://launchpad.net/~ge0rg

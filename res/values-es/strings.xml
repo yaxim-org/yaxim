@@ -203,6 +203,14 @@
 	<string name="status_xa">No está disponible</string>
 	<string name="status_offline">Fuera de Línea</string>
 
+	<string name="preftitle_ui">User Interface</string>
+	<string name="pref_theme">Theme</string>
+	<string-array name="pref_theme_entries">
+		<item>Dark</item>
+		<item>Light</item>
+		<item>Pine</item>
+	</string-array>
+
 	<string name="translator_credits">Launchpad Contributions:
   Adolfo Jayme https://launchpad.net/~fitoschido
   Argafål https://launchpad.net/~argafal
