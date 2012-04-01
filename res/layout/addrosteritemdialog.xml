@@ -16,6 +16,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/addFriend_Summ"
 			android:paddingBottom="20dp"
+			style="?attr/dialogTextColor"
 		/>
 	<EditText
 			android:id="@+id/AddContact_EditTextField"

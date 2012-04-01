@@ -5,6 +5,7 @@
 	android:paddingLeft="15dp" android:paddingRight="15dp" android:paddingBottom="15dp" android:paddingTop="10dp" android:layout_gravity="top">
 	<TextView android:id="@+id/text" android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		style="?attr/dialogTextColor"
 		android:gravity="top" android:textSize="16sp" android:paddingBottom="20dp"/>
 	<EditText android:layout_height="wrap_content" android:id="@+id/editText" android:layout_width="match_parent">
 		<requestFocus></requestFocus>

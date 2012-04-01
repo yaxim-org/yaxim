@@ -16,6 +16,7 @@
 			android:text="@string/MoveRosterEntryToGroupDialog_summ"
 			android:layout_marginBottom="10dp"
 			android:focusable="true"
+			style="?attr/dialogTextColor"
 			/>
 		<org.yaxim.androidclient.dialogs.GroupNameView
 			android:id="@+id/moverosterentrytogroupview_gv"
