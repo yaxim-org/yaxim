@@ -38,6 +38,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/account_prio_title"
 			android:textSize="20sp"
+			style="?attr/dialogTextColor"
 			android:padding="10sp"
 			android:layout_weight="1" 
 			/>
