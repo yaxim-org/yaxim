@@ -255,7 +255,6 @@ public class SmackableImp implements Smackable {
 				public void reconnectionSuccessful() { }
 			});
 			initServiceDiscovery();
-			mStreamHandler.notifyInitialLogin();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				if (create_account) {
@@ -266,6 +265,7 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
+			mStreamHandler.notifyInitialLogin();
 			setStatusFromConfig();
 
 		} catch (XMPPException e) {
