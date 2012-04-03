@@ -1,7 +1,9 @@
 package org.yaxim.androidclient.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jivesoftware.smack.ConnectionListener;
@@ -29,7 +31,15 @@ public class XMPPStreamHandler {
 	private long previousIncomingStanzaCount = -1;
 	private String sessionId;
 	private long incomingStanzaCount = 0;
+	private long outgoingStanzaCount = 0;
+	private List<ManagedPacket> sendList = null;
 
+	public class ManagedPacket {
+		Packet packet;
+		long stanzaCount;
+		long timeStamp;		// to calculate how long the packet's ack is pending
+	}
+	
 	public XMPPStreamHandler(XMPPConnection connection) {
 		mConnection = connection;
 		startListening();
@@ -65,6 +75,7 @@ public class XMPPStreamHandler {
 			StreamHandlingPacket enablePacket = new StreamHandlingPacket("enable", URN_SM_2);
 			enablePacket.addAttribute("resume", "true");
 			mConnection.sendPacket(enablePacket);
+			outgoingStanzaCount = 0;
 		}
 	}
 	
@@ -95,6 +106,35 @@ public class XMPPStreamHandler {
 				previousIncomingStanzaCount = -1;
 			}});
         
+        mConnection.addPacketSendingListener(new PacketListener() {
+
+			@Override
+			public void processPacket(Packet packet) {
+				if (!(packet instanceof StreamHandlingPacket)) {
+					if (isSmAvailable) {
+						// for packets sent directly after <enable/>, before <enabled/> is received.
+						outgoingStanzaCount++;
+					}
+					if (isSmEnabled) {
+						StreamHandlingPacket reqPacket = new StreamHandlingPacket("r", URN_SM_2);
+						mConnection.sendPacket(reqPacket);
+						ManagedPacket managedPacket = new ManagedPacket();
+						managedPacket.packet = packet;
+						managedPacket.stanzaCount = outgoingStanzaCount;
+						managedPacket.timeStamp = System.nanoTime();
+						sendList.add(managedPacket);
+					}
+				}
+			}
+        	
+        }, new PacketFilter() {
+			
+			@Override
+			public boolean accept(Packet arg0) {
+				return true;
+			}
+		});
+        
 		mConnection.addPacketListener(new PacketListener() {
 			public void processPacket(Packet packet) {
 				incomingStanzaCount++;
@@ -110,7 +150,14 @@ public class XMPPStreamHandler {
 						mConnection.sendPacket(ackPacket);
 					} else if ("a".equals(name)) {
 						incomingStanzaCount--;
-						// ignore for now 
+						long ackedCount = Long.valueOf(((StreamHandlingPacket) packet).getAttribute("h"));
+						debug("got ack " + ackedCount);
+						for (ManagedPacket mp : sendList) {
+							if (mp.stanzaCount <= ackedCount) {
+								debug("remove acked msg " + mp.stanzaCount + " from queue");
+								sendList.remove(mp);
+							}
+						}
 					} else if ("enabled".equals(name)) {
 						incomingStanzaCount = 0;
 						isSmEnabled = true;
@@ -119,6 +166,7 @@ public class XMPPStreamHandler {
 						if ("true".equals(resume) || "1".equals(resume)) {
 							sessionId = shPacket.getAttribute("id");
 						}
+						sendList = new ArrayList<ManagedPacket>();
 					} else if ("resumed".equals(name)) {
 						incomingStanzaCount = previousIncomingStanzaCount;
 						isSmEnabled = true;
