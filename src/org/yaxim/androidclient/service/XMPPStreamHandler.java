@@ -33,15 +33,16 @@ public class XMPPStreamHandler {
 	private long incomingStanzaCount = 0;
 	private long outgoingStanzaCount = 0;
 	private List<ManagedPacket> sendList = null;
+	private StreamManagementListener mSmListener;
 
 	public class ManagedPacket {
 		Packet packet;
 		long stanzaCount;
-		long timeStamp;		// to calculate how long the packet's ack is pending
 	}
 	
-	public XMPPStreamHandler(XMPPConnection connection) {
+	public XMPPStreamHandler(XMPPConnection connection, StreamManagementListener smListener) {
 		mConnection = connection;
+		mSmListener = smListener;
 		startListening();
 	}
 	
@@ -80,7 +81,7 @@ public class XMPPStreamHandler {
 	}
 	
 	private void startListening() {
-        mConnection.addConnectionListener(new ConnectionListener() {
+		mConnection.addConnectionListener(new ConnectionListener() {
 			public void reconnectionSuccessful() {
 				if (isSmAvailable) {
 					sendEnablePacket();
@@ -105,36 +106,34 @@ public class XMPPStreamHandler {
 			public void connectionClosed() {
 				previousIncomingStanzaCount = -1;
 			}});
-        
-        mConnection.addPacketSendingListener(new PacketListener() {
+		
+		mConnection.addPacketSendingListener(new PacketListener() {
 
 			@Override
 			public void processPacket(Packet packet) {
-				if (!(packet instanceof StreamHandlingPacket)) {
-					if (isSmAvailable) {
-						// for packets sent directly after <enable/>, before <enabled/> is received.
-						outgoingStanzaCount++;
-					}
-					if (isSmEnabled) {
-						StreamHandlingPacket reqPacket = new StreamHandlingPacket("r", URN_SM_2);
-						mConnection.sendPacket(reqPacket);
-						ManagedPacket managedPacket = new ManagedPacket();
-						managedPacket.packet = packet;
-						managedPacket.stanzaCount = outgoingStanzaCount;
-						managedPacket.timeStamp = System.nanoTime();
-						sendList.add(managedPacket);
-					}
+				if (isSmAvailable) {
+					// for packets sent directly after <enable/>, before <enabled/> is received.
+					outgoingStanzaCount++;
+					if (mSmListener != null) mSmListener.SmPacketStatusIndication(packet, StreamManagementListener.SM_PACKET_STATUS_SM_UNAVAILABLE);
+				}
+				if (isSmEnabled) {
+					StreamHandlingPacket reqPacket = new StreamHandlingPacket("r", URN_SM_2);
+					mConnection.sendPacket(reqPacket);
+					ManagedPacket managedPacket = new ManagedPacket();
+					managedPacket.packet = packet;
+					managedPacket.stanzaCount = outgoingStanzaCount;
+					sendList.add(managedPacket);
 				}
 			}
-        	
-        }, new PacketFilter() {
+			
+		}, new PacketFilter() {
 			
 			@Override
-			public boolean accept(Packet arg0) {
-				return true;
+			public boolean accept(Packet packet) {
+				return (!(packet instanceof StreamHandlingPacket));
 			}
 		});
-        
+		
 		mConnection.addPacketListener(new PacketListener() {
 			public void processPacket(Packet packet) {
 				incomingStanzaCount++;
@@ -156,6 +155,7 @@ public class XMPPStreamHandler {
 							if (mp.stanzaCount <= ackedCount) {
 								debug("remove acked msg " + mp.stanzaCount + " from queue");
 								sendList.remove(mp);
+								if (mSmListener != null) mSmListener.SmPacketStatusIndication(mp.packet, StreamManagementListener.SM_PACKET_STATUS_ACKED);
 							}
 						}
 					} else if ("enabled".equals(name)) {
@@ -239,14 +239,14 @@ public class XMPPStreamHandler {
 			buf.append("<").append(getElementName());
 			
 			// TODO Xmlns??
-	        if (getNamespace() != null) {
-	            buf.append(" xmlns=\"").append(getNamespace()).append("\"");
-	        }
-	        for (String key : attributes.keySet()) {
-	        	buf.append(" ").append(key).append("=\"").append(StringUtils.escapeForXML(attributes.get(key))).append("\"");
-	        }
-	        buf.append("/>");
-	        return buf.toString();
+			if (getNamespace() != null) {
+				buf.append(" xmlns=\"").append(getNamespace()).append("\"");
+			}
+			for (String key : attributes.keySet()) {
+				buf.append(" ").append(key).append("=\"").append(StringUtils.escapeForXML(attributes.get(key))).append("\"");
+			}
+			buf.append("/>");
+			return buf.toString();
 		}
 
 	}

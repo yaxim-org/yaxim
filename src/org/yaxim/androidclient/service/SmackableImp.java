@@ -241,7 +241,7 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setKeepAliveInterval(-1);
 			mXMPPConnection.connect();
-			mStreamHandler = new XMPPStreamHandler(mXMPPConnection);
+			mStreamHandler = new XMPPStreamHandler(mXMPPConnection, new YaximSmHandler());
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
