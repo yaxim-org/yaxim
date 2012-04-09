@@ -51,6 +51,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
 public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		TextWatcher {
 
