@@ -61,7 +61,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private static final String TAG = "yaxim.ChatWindow";
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
-			ChatProvider.ChatConstants.FROM_ME, ChatProvider.ChatConstants.JID,
+			ChatProvider.ChatConstants.DIRECTION, ChatProvider.ChatConstants.JID,
 			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.DELIVERY_STATUS };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
@@ -303,7 +303,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
 			int from_me = cursor.getInt(cursor
-					.getColumnIndex(ChatProvider.ChatConstants.FROM_ME));
+					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION));
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.JID));
 			int delivery_status = cursor.getInt(cursor

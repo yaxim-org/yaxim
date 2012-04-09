@@ -210,8 +210,9 @@ public class ChatProvider extends ContentProvider {
 
 			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + ChatConstants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ ChatConstants.DATE + " INTEGER," + ChatConstants.FROM_ME
-					+ " INTEGER," + ChatConstants.JID + " TEXT,"
+					+ ChatConstants.DATE + " INTEGER,"
+					+ ChatConstants.DIRECTION + " INTEGER,"
+					+ ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
 					+ ChatConstants.DELIVERY_STATUS + " INTEGER,"
 					+ ChatConstants.PACKET_ID + " TEXT);");
@@ -245,15 +246,15 @@ public class ChatProvider extends ContentProvider {
 				+ " ASC";
 
 		public static final String DATE = "date";
-		public static final String FROM_ME = "from_me";
+		public static final String DIRECTION = "from_me";
 		public static final String JID = "jid";
 		public static final String MESSAGE = "message";
 		public static final String DELIVERY_STATUS = "read"; // SQLite can not rename columns, reuse old name
 		public static final String PACKET_ID = "pid";
 
 		// boolean mappings
-		public static final boolean INCOMING = false;
-		public static final boolean OUTGOING = true;
+		public static final int INCOMING = 0;
+		public static final int OUTGOING = 1;
 		public static final int DS_NEW = 0; //< this message has not been sent/displayed yet
 		public static final int DS_SENT = 1; //< this message was sent but not yet acked
 		public static final int DS_DELIVERED = 2; //< this message was XEP-0184 acknowledged
@@ -261,7 +262,7 @@ public class ChatProvider extends ContentProvider {
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
 			tmpList.add(DATE);
-			tmpList.add(FROM_ME);
+			tmpList.add(DIRECTION);
 			tmpList.add(JID);
 			tmpList.add(MESSAGE);
 			return tmpList;

@@ -59,7 +59,9 @@ public class SmackableImp implements Smackable {
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
 			ChatConstants.MESSAGE, ChatConstants.DATE, ChatConstants.PACKET_ID };
-	final static private String SEND_OFFLINE_SELECTION = "from_me = 1 AND read = 0";
+	final static private String SEND_OFFLINE_SELECTION =
+			ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING + " AND " +
+			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
 
 	static {
 		registerSmackProviders();
@@ -372,7 +374,7 @@ public class SmackableImp implements Smackable {
 
 	public static void sendOfflineMessage(ContentResolver cr, String toJID, String message) {
 		ContentValues values = new ContentValues();
-		values.put(ChatConstants.FROM_ME, true);
+		values.put(ChatConstants.DIRECTION, ChatConstants.OUTGOING);
 		values.put(ChatConstants.JID, toJID);
 		values.put(ChatConstants.MESSAGE, message);
 		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_NEW);
@@ -513,7 +515,9 @@ public class SmackableImp implements Smackable {
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
 				+ ChatProvider.TABLE_NAME);
 		mContentResolver.update(rowuri, cv,
-				ChatConstants.PACKET_ID + " = ? AND " + ChatConstants.FROM_ME + " = 1", new String[] { packetID });
+				ChatConstants.PACKET_ID + " = ? AND " +
+				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
+				new String[] { packetID });
 	}
 
 	private void registerMessageSendFailureListener() {
@@ -600,11 +604,11 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 
-	private void addChatMessageToDB(boolean from_me, String JID,
+	private void addChatMessageToDB(int direction, String JID,
 			String message, int delivery_status, long ts, String packetID) {
 		ContentValues values = new ContentValues();
 
-		values.put(ChatConstants.FROM_ME, from_me);
+		values.put(ChatConstants.DIRECTION, direction);
 		values.put(ChatConstants.JID, JID);
 		values.put(ChatConstants.MESSAGE, message);
 		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);

@@ -1013,7 +1013,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			int JIDIdx = cursor.getColumnIndex(RosterProvider.RosterConstants.JID);
 			String selection = ChatConstants.JID + " = '" + cursor.getString(JIDIdx) + "' AND " +
-					ChatConstants.FROM_ME + " = 0 AND " +
+					ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
 					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
 			Cursor msgcursor = getContentResolver().query(ChatProvider.CONTENT_URI,
 					new String[] { ChatConstants.PACKET_ID }, selection, null, null);
