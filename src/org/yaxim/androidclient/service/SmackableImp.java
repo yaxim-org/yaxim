@@ -665,11 +665,11 @@ public class SmackableImp implements Smackable {
 
 	private String getName(RosterEntry rosterEntry) {
 		String name = rosterEntry.getName();
-		if (name != null && name != "") {
+		if (name != null && name.length() > 0) {
 			return name;
 		}
 		name = StringUtils.parseName(rosterEntry.getUser());
-		if (name != "") {
+		if (name.length() > 0) {
 			return name;
 		}
 		return rosterEntry.getUser();
