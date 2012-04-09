@@ -101,7 +101,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				PreferenceConstants.DEFAULT_PORT_INT);
 
 		this.priority = validatePriority(XMPPHelper.tryToParseInt(prefs
-				.getString("account_prio", "0"), 0));
+				.getString(PreferenceConstants.PRIORITY, "0"), 0));
 
 		this.bootstart = prefs.getBoolean(PreferenceConstants.BOOTSTART, false);
 

@@ -2,6 +2,7 @@ package org.yaxim.androidclient.preferences;
 
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
+import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.content.SharedPreferences;
@@ -17,9 +18,6 @@ import android.text.TextWatcher;
 import org.yaxim.androidclient.R;
 
 public class AccountPrefs extends PreferenceActivity {
-
-	private final static String ACCOUNT_JABBERID = "account_jabberID";
-	private final static String ACCOUNT_PRIO = "account_prio";
 
 	private SharedPreferences sharedPreference;
 
@@ -37,7 +35,7 @@ public class AccountPrefs extends PreferenceActivity {
 		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
 		themedTextColor = XMPPHelper.getEditTextColor(this);
 
-		this.prefAccountID = (EditTextPreference) findPreference(ACCOUNT_JABBERID);
+		this.prefAccountID = (EditTextPreference) findPreference(PreferenceConstants.JID);
 		this.prefAccountID.getEditText().addTextChangedListener(
 				new TextWatcher() {
 					public void afterTextChanged(Editable s) {
@@ -61,7 +59,7 @@ public class AccountPrefs extends PreferenceActivity {
 					}
 				});
 
-		this.prefPrio = (EditTextPreference) findPreference(ACCOUNT_PRIO);
+		this.prefPrio = (EditTextPreference) findPreference(PreferenceConstants.PRIORITY);
 		this.prefPrio
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 					public boolean onPreferenceChange(Preference preference,
@@ -70,15 +68,15 @@ public class AccountPrefs extends PreferenceActivity {
 							int prioIntValue = Integer.parseInt(newValue
 									.toString());
 							if (prioIntValue <= 127 && prioIntValue >= -128) {
-								sharedPreference.edit().putInt(ACCOUNT_PRIO,
+								sharedPreference.edit().putInt(PreferenceConstants.PRIORITY,
 										prioIntValue);
 							} else {
-								sharedPreference.edit().putInt(ACCOUNT_PRIO, 0);
+								sharedPreference.edit().putInt(PreferenceConstants.PRIORITY, 0);
 							}
 							return true;
 
 						} catch (NumberFormatException ex) {
-							sharedPreference.edit().putInt(ACCOUNT_PRIO, 0);
+							sharedPreference.edit().putInt(PreferenceConstants.PRIORITY, 0);
 							return true;
 						}
 

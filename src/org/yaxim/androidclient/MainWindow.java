@@ -602,7 +602,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (statusMode != StatusMode.offline)
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
-		prefedit.putString("account_prio", "" + priority);
+		prefedit.putString(PreferenceConstants.PRIORITY, String.valueOf(priority));
 		prefedit.commit();
 
 		// check if we are connected and want to go offline

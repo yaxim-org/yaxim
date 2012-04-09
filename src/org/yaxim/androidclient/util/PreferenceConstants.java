@@ -6,6 +6,7 @@ public class PreferenceConstants {
 	public final static String CUSTOM_SERVER = "account_customserver";
 	public final static String PORT = "account_port";
 	public final static String RESSOURCE = "account_resource";
+	public final static String PRIORITY = "account_prio";
 	public final static String DEFAULT_PORT = "5222";
 	public final static int DEFAULT_PORT_INT = 5222;
 	public final static String CONN_STARTUP = "connstartup";
