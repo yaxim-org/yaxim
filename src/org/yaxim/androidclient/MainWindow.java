@@ -1017,10 +1017,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 					ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
 					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
 			Cursor msgcursor = getContentResolver().query(ChatProvider.CONTENT_URI,
-					new String[] { ChatConstants.PACKET_ID }, selection, null, null);
+					new String[] { "count(" + ChatConstants.PACKET_ID + ")" },
+					selection, null, null);
+			msgcursor.moveToFirst();
 			TextView unreadmsg = (TextView)view.findViewById(R.id.roster_unreadmsg_cnt);
-			unreadmsg.setText(String.valueOf(msgcursor.getCount()));
-			unreadmsg.setVisibility(msgcursor.getCount() > 0 ? View.VISIBLE : View.GONE);
+			unreadmsg.setText(msgcursor.getString(0));
+			unreadmsg.setVisibility(msgcursor.getInt(0) > 0 ? View.VISIBLE : View.GONE);
 			unreadmsg.bringToFront();
 			msgcursor.close();
 		}
