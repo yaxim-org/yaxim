@@ -192,12 +192,12 @@ public class RosterProvider extends ContentProvider {
 
 		case GROUPS:
 			qBuilder.setTables(TABLE_ROSTER);
-			groupBy = "roster_group";
+			groupBy = RosterConstants.GROUP;
 			break;
 
 		case GROUP_MEMBERS:
 			qBuilder.setTables(TABLE_ROSTER);
-			qBuilder.appendWhere("roster_group=");
+			qBuilder.appendWhere(RosterConstants.GROUP + "=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
 			break;
 
