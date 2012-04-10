@@ -497,7 +497,7 @@ public class SmackableImp implements Smackable {
 
 				String jabberID = getJabberID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
-				updateOrInsertRosterEntryToDB(rosterEntry);
+				updateRosterEntryInDB(rosterEntry);
 				mServiceCallBack.rosterChanged();
 			}
 		};
@@ -649,15 +649,6 @@ public class SmackableImp implements Smackable {
 
 		mContentResolver.update(RosterProvider.CONTENT_URI, values,
 				RosterConstants.JID + " = ?", new String[] { entry.getUser() });
-	}
-
-	private void updateOrInsertRosterEntryToDB(final RosterEntry entry) {
-		try {
-			//deleteRosterEntryFromDB(entry.getUser());
-			addRosterEntryToDB(entry);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {
