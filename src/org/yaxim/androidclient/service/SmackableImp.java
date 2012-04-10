@@ -618,12 +618,6 @@ public class SmackableImp implements Smackable {
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 	}
 
-	private void addRosterEntryToDB(final RosterEntry entry) {
-		ContentValues values = getContentValuesForRosterEntry(entry);
-		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
-		debugLog("addRosterEntryToDB: Inserted " + uri);
-	}
-
 	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
 		final ContentValues values = new ContentValues();
 
@@ -636,6 +630,12 @@ public class SmackableImp implements Smackable {
 		values.put(RosterConstants.GROUP, getGroup(entry.getGroups()));
 
 		return values;
+	}
+
+	private void addRosterEntryToDB(final RosterEntry entry) {
+		ContentValues values = getContentValuesForRosterEntry(entry);
+		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
+		debugLog("addRosterEntryToDB: Inserted " + uri);
 	}
 
 	private void deleteRosterEntryFromDB(final String jabberID) {
