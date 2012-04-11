@@ -319,7 +319,7 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 		Collection<RosterEntry> rosterEntries = mRoster.getEntries();
 		for (RosterEntry rosterEntry : rosterEntries) {
-			addRosterEntryToDB(rosterEntry);
+			updateRosterEntryInDB(rosterEntry);
 		}
 	}
 
@@ -647,8 +647,9 @@ public class SmackableImp implements Smackable {
 	private void updateRosterEntryInDB(final RosterEntry entry) {
 		final ContentValues values = getContentValuesForRosterEntry(entry);
 
-		mContentResolver.update(RosterProvider.CONTENT_URI, values,
-				RosterConstants.JID + " = ?", new String[] { entry.getUser() });
+		if (mContentResolver.update(RosterProvider.CONTENT_URI, values,
+				RosterConstants.JID + " = ?", new String[] { entry.getUser() }) == 0)
+			addRosterEntryToDB(entry);
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {
