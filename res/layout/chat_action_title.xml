@@ -17,8 +17,7 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
-	android:paddingRight="16dip"
-	android:enabled="false">
+	android:paddingRight="16dip">
 
 	<ImageView android:id="@+id/action_bar_status"
 		android:layout_gravity="center_vertical|left"
