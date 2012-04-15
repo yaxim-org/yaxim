@@ -491,7 +491,7 @@ public class SmackableImp implements Smackable {
 			}
 
 			public void presenceChanged(Presence presence) {
-				debugLog("presenceChanged(" + presence.getFrom() + ")");
+				debugLog("presenceChanged(" + presence.getFrom() + "): " + presence);
 
 				String jabberID = getJabberID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
