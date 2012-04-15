@@ -50,12 +50,12 @@ public class RosterProvider extends ContentProvider {
 		public void run() {
 			Log.d(TAG, "notifying change");
 			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+			getContext().getContentResolver().notifyChange(GROUPS_URI, null);
 		}
 	};
 	private Handler mNotifyHandler = new Handler();
 
 	private SQLiteOpenHelper mOpenHelper;
-	private java.util.Set<String> mGroups = new java.util.HashSet<String>();
 
 
 	public RosterProvider() {
@@ -66,11 +66,6 @@ public class RosterProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int count;
 		switch (URI_MATCHER.match(url)) {
-
-		case GROUPS:
-			count = db.delete(TABLE_GROUPS, where, whereArgs);
-			mGroups = new java.util.HashSet<String>();
-			break;
 
 		case CONTACTS:
 			count = db.delete(TABLE_ROSTER, where, whereArgs);
@@ -111,39 +106,8 @@ public class RosterProvider extends ContentProvider {
 		}
 	}
 
-	public Uri insertGroup(ContentValues initialValues) {
-		String groupName = initialValues.getAsString(RosterConstants.GROUP);
-		if (mGroups.contains(groupName))
-			return null;
-		mGroups.add(groupName);
-		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		long rowId = db.insert(TABLE_GROUPS, RosterConstants.GROUP, initialValues);
-
-		Log.d(TAG, "insert group " + groupName + " = " + rowId);
-		if (rowId < 0) {
-			throw new SQLException("Failed to insert row into " + GROUPS_URI);
-		}
-
-		Uri noteUri = ContentUris.withAppendedId(GROUPS_URI, rowId);
-		// only notify if the group was actually added
-		if (rowId > 0) {
-			Log.d(TAG, "notifying group change for " + groupName);
-			getContext().getContentResolver().notifyChange(GROUPS_URI, null);
-		}
-		return noteUri;
-	}
-	public Uri insertGroupForContact(ContentValues contact) {
-		ContentValues cv = new ContentValues();
-		String groupName = contact.getAsString(RosterConstants.GROUP);
-		cv.put(GroupsConstants.GROUP, groupName);
-		return insertGroup(cv);
-	}
-
 	@Override
 	public Uri insert(Uri url, ContentValues initialValues) {
-		if (URI_MATCHER.match(url) == GROUPS)
-			return insertGroup(initialValues);
-
 		if (URI_MATCHER.match(url) != CONTACTS) {
 			throw new IllegalArgumentException("Cannot insert into URL: " + url);
 		}
@@ -169,8 +133,6 @@ public class RosterProvider extends ContentProvider {
 
 		notifyChange();
 
-		// we also need to notify groups change
-		insertGroupForContact(values);
 		return noteUri;
 	}
 
@@ -257,8 +219,7 @@ public class RosterProvider extends ContentProvider {
 		}
 
 		notifyChange();
-		// we also need to notify groups change
-		insertGroupForContact(values);
+
 		return count;
 
 	}
@@ -286,7 +247,7 @@ public class RosterProvider extends ContentProvider {
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "roster.db";
-		private static final int DATABASE_VERSION = 3;
+		private static final int DATABASE_VERSION = 4;
 
 		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -296,11 +257,6 @@ public class RosterProvider extends ContentProvider {
 		public void onCreate(SQLiteDatabase db) {
 			infoLog("creating new roster table");
 
-			db.execSQL("CREATE TABLE " + TABLE_GROUPS + " ("
-					+ GroupsConstants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ GroupsConstants.GROUP + " TEXT UNIQUE ON CONFLICT IGNORE, "
-					+ GroupsConstants.COLLAPSED + " INTEGER);");
 			db.execSQL("CREATE TABLE " + TABLE_ROSTER + " ("
 					+ RosterConstants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -351,27 +307,6 @@ public class RosterProvider extends ContentProvider {
 			tmpList.add(ALIAS);
 			tmpList.add(STATUS_MODE);
 			tmpList.add(STATUS_MESSAGE);
-			tmpList.add(GROUP);
-			return tmpList;
-		}
-
-	}
-
-	public static final class GroupsConstants implements BaseColumns {
-
-		private GroupsConstants() {
-		}
-
-		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.groups";
-		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.groups";
-		public static final String DEFAULT_SORT_ORDER = GroupsConstants.GROUP
-				+ " ASC";
-
-		public static final String GROUP = "roster_group";
-		public static final String COLLAPSED = "collapsed";
-
-		public static ArrayList<String> getRequiredColumns() {
-			ArrayList<String> tmpList = new ArrayList<String>();
 			tmpList.add(GROUP);
 			return tmpList;
 		}

@@ -7,7 +7,6 @@ import java.util.List;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
-import org.yaxim.androidclient.data.RosterProvider.GroupsConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
@@ -108,7 +107,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		registerCrashReporter();
 
 		showFirstStartUpDialogIfPrefsEmpty();
-		getContentResolver().registerContentObserver(RosterProvider.GROUPS_URI,
+		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mRosterObserver);
 		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
 				true, mChatObserver);
@@ -911,11 +910,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private static final String[] GROUPS_QUERY = new String[] {
-		GroupsConstants._ID,
-		GroupsConstants.GROUP,
+		RosterConstants._ID,
+		RosterConstants.GROUP,
 	};
 	private static final String[] GROUPS_FROM = new String[] {
-		GroupsConstants.GROUP
+		RosterConstants.GROUP
 	};
 	private static final int[] GROUPS_TO = new int[] {
 		R.id.groupname
@@ -932,8 +931,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		// we want all, online and offline
 		List<String> list = new ArrayList<String>();
 		Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
-					null, null, GroupsConstants.GROUP);
-		int idx = cursor.getColumnIndex(GroupsConstants.GROUP);
+					null, null, RosterConstants.GROUP);
+		int idx = cursor.getColumnIndex(RosterConstants.GROUP);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			list.add(cursor.getString(idx));
@@ -987,7 +986,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				selectWhere = RosterConstants.STATUS_MODE + " > 0";
 			*/
 			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
-					selectWhere, null, GroupsConstants.GROUP);
+					selectWhere, null, RosterConstants.GROUP);
 			Cursor oldCursor = getCursor();
 			changeCursor(cursor);
 			stopManagingCursor(oldCursor);
