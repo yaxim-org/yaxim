@@ -909,6 +909,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	private static final String OFFLINE_EXCLUSION =
+			RosterConstants.STATUS_MODE + " != " + StatusMode.offline.ordinal();
 	private static final String[] GROUPS_QUERY = new String[] {
 		RosterConstants._ID,
 		RosterConstants.GROUP,
@@ -981,10 +983,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		public void requery() {
 			String selectWhere = null;
-			/* show all groups, including offline
 			if (!showOffline)
-				selectWhere = RosterConstants.STATUS_MODE + " > 0";
-			*/
+				selectWhere = OFFLINE_EXCLUSION;
 			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
 					selectWhere, null, RosterConstants.GROUP);
 			Cursor oldCursor = getCursor();
@@ -999,7 +999,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			String selectWhere = RosterConstants.GROUP + " = ?";
 			if (!showOffline)
-				selectWhere += " AND " + RosterConstants.STATUS_MODE + " > 0";
+				selectWhere += " AND " + OFFLINE_EXCLUSION;
 			return getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
 				selectWhere, new String[] { groupname }, null);
 		}
