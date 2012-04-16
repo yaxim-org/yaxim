@@ -49,12 +49,6 @@
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_boot">
 		<CheckBoxPreference
-			android:id="@+id/bootstart"
-			android:key="bootstart"
-			android:title="@string/boot_title"
-			android:summary="@string/boot_summ"
-		/>
-		<CheckBoxPreference
 			android:id="@+id/showOffline"
 			android:key="showOffline"
 			android:title="@string/showOffline_title"

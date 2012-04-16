@@ -32,16 +32,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 
 		YaximConfiguration config = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(context));
-		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-			// Received intent only when the system boot is completed
-			if (config.bootstart) {
-				Log.d(TAG, "start service");
-				Intent xmppServiceIntent = new Intent(context, XMPPService.class);
-				xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
-				xmppServiceIntent.putExtra("autostart", true);
-				context.startService(xmppServiceIntent);
-			}
-		} else if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
+		if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 			Log.d(TAG, "stop service");
 			Intent xmppServiceIntent = new Intent(context, XMPPService.class);
 			xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
