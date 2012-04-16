@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView android:id="@+id/groupname"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:textSize="22sp" android:textStyle="bold" android:paddingLeft="40dp"
-	android:paddingTop="2dp" android:paddingBottom="2dp"
-	android:layout_width="fill_parent" android:layout_height="wrap_content"
-	style="?attr/MainGroup" 
-	/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+	<TextView android:id="@+id/groupname"
+		android:textSize="22sp" android:textStyle="bold" android:paddingLeft="40dp"
+		android:paddingTop="2dp" android:paddingBottom="2dp"
+		android:paddingRight="4dp"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		style="?attr/MainGroup" 
+		/>
+
+	<TextView android:id="@+id/members"
+		android:textSize="22sp" android:textStyle="bold"
+		android:paddingTop="2dp" android:paddingBottom="2dp"
+		android:paddingRight="6dp"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		/>
+
+</RelativeLayout>

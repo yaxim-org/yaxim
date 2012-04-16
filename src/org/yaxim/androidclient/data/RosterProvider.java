@@ -29,6 +29,7 @@ public class RosterProvider extends ContentProvider {
 			+ "/" + TABLE_ROSTER);
 	public static final Uri GROUPS_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + TABLE_GROUPS);
+	public static final String QUERY_ALIAS = "main_result";
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -153,22 +154,22 @@ public class RosterProvider extends ContentProvider {
 		switch (match) {
 
 		case GROUPS:
-			qBuilder.setTables(TABLE_ROSTER);
+			qBuilder.setTables(TABLE_ROSTER + " " + QUERY_ALIAS);
 			groupBy = RosterConstants.GROUP;
 			break;
 
 		case GROUP_MEMBERS:
-			qBuilder.setTables(TABLE_ROSTER);
+			qBuilder.setTables(TABLE_ROSTER + " " + QUERY_ALIAS);
 			qBuilder.appendWhere(RosterConstants.GROUP + "=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
 			break;
 
 		case CONTACTS:
-			qBuilder.setTables(TABLE_ROSTER);
+			qBuilder.setTables(TABLE_ROSTER + " " + QUERY_ALIAS);
 			break;
 
 		case CONTACT_ID:
-			qBuilder.setTables(TABLE_ROSTER);
+			qBuilder.setTables(TABLE_ROSTER + " " + QUERY_ALIAS);
 			qBuilder.appendWhere("_id=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
 			break;
