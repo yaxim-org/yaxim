@@ -448,7 +448,6 @@ public class XMPPService extends GenericService {
 			mSmackable.unRegisterCallback();
 			mSmackable = null;
 		}
-		mSmackable = null;
 		connectionFailed(getString(R.string.conn_offline));
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 	}
