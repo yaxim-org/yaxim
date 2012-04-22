@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Zerbitzarira konektatzen...</string>
+	<string name="conn_online">Linean</string>
+	<string name="conn_offline">Lineaz kanpo</string>
+	<string name="conn_empty_roster">Ez dago kontakturik erakusteko!</string>
+	<string name="conn_reconnect">\nBirkonektatu %d segundotan.</string>
+	<string name="conn_disconnected">Konexioa itxita</string>
+	<string name="conn_networkchg">Sarea aldatuta</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Irten</string>
+	<string name="Global_authenticate_first">Mesedez, konektatu lehenik</string>
+	<string name="Global_JID_hint">erabiltzailea@jabber.adibidea.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Ongietorri yaxim-era!</string>
+	<string name="StartupDialog_Summary">Erabili aurretik yaxim konfiguratu behar duzu. Mesedez, sartu zure Jabber IDa eta pasahitza.</string>
+	<string name="StartupDialog_pwHint">Sartu pasahitza</string>
+	<string name="StartupDialog_Username_title">Jabber IDa:</string>
+	<string name="StartupDialog_passwd_title">Pasahitza:</string>
+	<string name="StartupDialog_advanced">Aurreratua...</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">%s-(r)en mezua</string>
+	<string name="notification_anonymous_message">Mezua jasota</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Mezu jakinarazpena</string>
+	<string name="led_title">LED keinukaria</string>
+	<string name="led_summ">Egin keinuak telefonoaren LEDarekin sarrerako mezuak iristean</string>
+	<string name="vibr_title">Bibrazioa</string>
+	<string name="vibr_summ">Bibratu sarrerako mezuak iristean</string>
+	<string-array name="vibr_values_displayed">
+		<item>Inoiz ez</item>
+		<item>Sistemaren hobespena</item>
+		<item>Beti</item>
+	</string-array>
+	<string name="ringtone_title">Tonua</string>
+	<string name="ringtone_summ">Sarrerako mezuen tonua</string>
+	<string name="ticker_title">Mezuaren aurrebista</string>
+	<string name="ticker_summ">Erakutsi bidaltzailea eta mezua egoera-barran</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Abioko aukerak</string>
+	<string name="statuspopup_name">Ezarri zure egoera</string>
+	<string name="showOffline_summ">Beti erakutsi zerrendako kontaktu guztiak</string>
+	<string name="showOffline_title">Erakutsi lineaz kanpo dauden kontaktuak</string>
+	<string name="foregroundService_summ">Mantendu yaxim memorian beti konektatuta dagoela ziurtatzeko (aurreko planoko zerbitzua)</string>
+	<string name="foregroundService_title">Egoera-barra ikonoa</string>
+
+	<string name="preftitle_debug">Arazketa</string>
+	<string name="smackdebug_summ">Pakete eta arazketa irteera logcat bidez (informazio pertsonala eduki dezake)</string>
+	<string name="smackdebug_title">SMACK arazketa</string>
+
+	<string name="reportcrash_title">Bidali kraskadura txostena</string>
+	<string name="reportcrash_summ">Bidali kraskadura txosten anonimoak garatzaileari</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Itxura</string>
+	<string name="FontChat_title">Berriketaren letra tamaina</string>
+	<string name="FontChat_summ">Ezarri berriketaren letra tamaina</string>
+	<string name="FontChat_dialog">Berriketaren letra tamaina</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">Gaia</string>
+	<string-array name="pref_theme_entries">
+		<item>Iluna</item>
+		<item>Argia</item>
+	</string-array>
+	<string name="preftitle_ui">Itxura</string>
+	<string-array name="fontSizesChat">
+		<item>txikia</item>
+		<item>normala</item>
+		<item>handia</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Gehitu kontaktua</string>
+	<string name="Menu_ShowOff">Erakutsi lineaz kanpo</string>
+	<string name="Menu_HideOff">Ezkutatu lineaz kanpo</string>
+	<string name="Menu_AccSettings">Editatu kontua</string>
+	<string name="Menu_Settings">Ezarpenak</string>
+	<string name="Menu_Status">Egoera</string>
+	<string name="Menu_connect">Konektatu</string>
+	<string name="Menu_disconnect">Deskonektatu</string>
+	<string name="Menu_about">yaxim-i buruz</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Gehitu kontaktu bat</string>
+	<string name="addFriend_Summ">Mesedez, sartu zure lagunaren Jabber IDa, pantailan agertzea nahi duzun izena eta aukeratu bere kontaktu taldea!</string>
+	<string name="addFriend_aliasHint">Pantailako izena</string>
+	<string name="addrosteritemaddgroupchoice">Gehitu talde berri batera</string>
+	<string name="NewGroup_EditTextField_Hint">Talde berriaren izena</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">%s-(r)en aukerak</string>
+	<string name="roster_contextmenu_group_rename">Berrizendatu taldea</string>
+	<string name="roster_contextmenu_contact_delete">Ezabatu kontaktua</string>
+	<string name="roster_contextmenu_contact_delmsg">Ezabatu berriketa historia</string>
+	<string name="roster_contextmenu_contact_open_chat">Ireki berriketa</string>
+	<string name="roster_contextmenu_contact_rename">Berrizendatu</string>
+	<string name="roster_contextmenu_contact_request_auth">Eskatu baimena</string>
+	<string name="roster_contextmenu_contact_change_group">Aldatu taldea</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Saio hasieraren informazioa</string>
+	<string name="account_settings_title">Kontuaren ezarpenak</string>
+	<string name="account_options_title">Konexioaren aukerak</string>
+	<string name="account_options_advanced">Aukera aurreratuak</string>
+	<string name="connstartup_title">Konektatu abioan</string>
+	<string name="connstartup_summOn">Konektatu yaxim irekitzean</string>
+	<string name="connstartup_summOff">Ez konektatu automatikoki</string>
+	<string name="reconnect_title">Birkonektatu automatikoki</string>
+	<string name="reconnect_summ">Birkonektatu konexioa etetean</string>
+	<string name="account_jabberID_title">Jabber IDa</string>
+	<string name="account_jabberID_sum">adibidea: ni@jabber.adibidea.com</string>
+	<string name="account_jabberID_dialog_title">Sartu zure Jabber IDa:</string>
+	<string name="account_jabberPW_title">Kontuaren pasahitza</string>
+	<string name="account_jabberPW_sum">Zure Jabber kontuaren pasahitza</string>
+	<string name="account_jabberPW_dialog_title">Sartu pasahitza:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Bezeroaren baliabidea</string>
+	<string name="account_resource_summ">Lehenetsia: yaxim</string>
+	<string name="account_resource_dialog_title">Sartu zure baliabidea:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Bezeroaren lehentasuna</string>
+	<string name="account_prio_summ">Lehenetsia: 0 (baimenduak: -128 .. 127)</string>
+	<string name="account_prio_dialog_title">Sartu zure lehentasuna:</string>
+	<string name="account_port_title">Zerbitzariaren ataka</string>
+	<string name="account_port_sum">Lehenetsia: 5222</string>
+	<string name="account_port_dialog_title">Sartu zerbitzariaren ataka:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Zerbitzari pertsonalizatua</string>
+	<string name="account_customserver_summ">(Hautazkoa) zerbitzariaren ostalari-izen alternatiboa</string>
+	<string name="account_customserver_dialog_title">Sartu zerbitzariaren ostalari-izena:</string>
+	<string name="account_customserver_hint">ostalaria.adibidea.com</string>
+	<string name="require_ssl_title">Behartu SSL/TLS</string>
+	<string name="require_ssl_summ">Beti zifratu zerbitzarirako konexioa</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Aukeratu taldea</string>
+	<string name="setStatusmsgHint">Zure egoera mezua</string>
+	<string name="setStatusTitle">Ezarri zure egoera</string>
+	<string name="RenameGroup_summ">Berrizendatu %s taldea honela:</string>
+	<string name="RenameGroup_title">Berrizendatu taldea</string>
+	<string name="RenameEntry_summ">Berrizendatu %1$s (%2$s) honela:</string>
+	<string name="RenameEntry_title">Berrizendatu kontaktua</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Hautatu talde bat beheko birakaritik</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Aldatu taldea</string>
+	<string name="deleteRosterItem_text">Ziur zaude %1$s (%2$s) kendu nahi duzula?</string>
+	<string name="deleteRosterItem_title">Ezabatu kontaktua</string>
+	<string name="deleteChatHistory_text">Ziur zaude %1$s (%2$s) duten mezu guztiak kendu nahi dituzula?</string>
+	<string name="deleteChatHistory_title">Ezabatu berriketa historia</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Ni:</string>
+	<string name="toast_connectfail_message">Konexioa itxita!</string>
+	<string name="toast_stored_offline">Mezua gorde da transmisiorako.</string>
+	<string name="chat_enterMsgHint">Sartu mezua</string> 
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">YAXIM-i BURUZ</string>
+	<string name="AboutDialog_DevelopersTitle">Garatzaileak</string>
+	<string name="AboutDialog_DevelopersText">Garatzaileen kredituak:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Euskal itzulpena:\n * Asier Iturralde Sarasola\n\n Bat egin gurekin, eskatu ezaugarri berriak edo oparitu \"Club Mate\" botilak http://yaxim.org helbidean edo #yaxim freenode IRC-n</string>
+	<string name="AboutDialog_LicenceTitle">Lizentzia</string>
+	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+
+	<string name="status_available">Linean</string>
+	<string name="status_away">Aldendua</string>
+	<string name="status_chat">Libre berriketarako</string>
+	<string name="status_dnd">Ez eragotzi</string>
+	<string name="status_xa">Eskuraezin</string>
+	<string name="status_offline">Lineaz kanpo</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Asier Iturralde Sarasola https://launchpad.net/~asier-iturralde</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Aukeratu kontaktua</string>
+</resources>

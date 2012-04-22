@@ -27,68 +27,66 @@
 
 	<!-- Notifications -->
 	<string name="notification_message">Mensaje de %s</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_anonymous_message">Mensaje recibido</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notificación de mensajes</string>
-	<string name="led_title">LED parpadeante</string>
-	<string name="led_summ">Parpadeo del LED con mensajes entrantes</string>
+	<string name="led_title">Parpadeo del LED</string>
+	<string name="led_summ">Parpadeo del LED al recibir un mensaje</string>
 	<string name="vibr_title">Vibración</string>
-	<string name="vibr_summ">Vibra con mensajes entrantes</string>
+	<string name="vibr_summ">Vibrar al recibir un mensaje</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
-		<item>System preference</item>
-		<item>Always</item>
+		<item>Nunca</item>
+		<item>Preferencias del sistema</item>
+		<item>Siempre</item>
 	</string-array>
 	<string name="ringtone_title">Tono</string>
 	<string name="ringtone_summ">Tono para mensajes entrantes</string>
-	<string name="ticker_title">Message preview</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ticker_title">Vista previa de mensajes</string>
+	<string name="ticker_summ">Mostrar remitente y mensaje en la barra de estado</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Opciones de inicio</string>
-	<string name="boot_title">Cargar yaxim al iniciar el dispositivo</string>
-	<string name="boot_summ">Iniciar aplicacion cuando el telefono se encienda</string>
+	<string name="preftitle_boot">Opciones de arranque</string>
 	<string name="statuspopup_name">Configure su estado</string>
-	<string name="showOffline_summ">Siempre muestra todos los contactos en la lista</string>
+	<string name="showOffline_summ">Mostrar siempre todos los contactos en la lista</string>
 	<string name="showOffline_title">Mostrar contactos desconectados</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Mantener yaxim en memoria para asegurar conexiones persistentes (servicio en primer plano)</string>
 	<string name="foregroundService_title">Icono de barra de estado</string>
 
 	<string name="preftitle_debug">Depuración</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
+	<string name="smackdebug_summ">Registro de depuración y paquetes vía logcat (puede contener información personal)</string>
 	<string name="smackdebug_title">Depuración SMACK</string>
 
-	<string name="reportcrash_title">Enviar reportes de error</string>
-	<string name="reportcrash_summ">Enviar reportes anónimos de errores críticos a los desarrolladores</string>
+	<string name="reportcrash_title">Enviar informes de error</string>
+	<string name="reportcrash_summ">Enviar informes anónimos de errores críticos a los desarrolladores</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="preftitle_app">Apariencia</string>
+	<string name="FontChat_title">Tamaño de fuente del chat</string>
+	<string name="FontChat_summ">Definir tamaño de fuente del chat</string>
+	<string name="FontChat_dialog">Tamaño de fuente del chat</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Tema</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Oscuro</item>
+		<item>Claro</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Apariencia</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
+		<item>pequeño</item>
 		<item>normal</item>
-		<item>large</item>
+		<item>grande</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Añadir Contacto</string>
 	<string name="Menu_ShowOff">Ver desconectados</string>
-	<string name="Menu_HideOff">No ver desconectados</string>
+	<string name="Menu_HideOff">Ocultar desconectados</string>
 	<string name="Menu_AccSettings">Editar cuenta</string>
 	<string name="Menu_Settings">Opciones</string>
 	<string name="Menu_Status">Estado</string>
@@ -136,7 +134,7 @@
 	<string name="account_resource_dialog_title">Ingrese el recurso:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Prioridad del cliente:</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_summ">Predefinido: 0 (permitido: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Ingrese su prioridad:</string>
 	<string name="account_port_title">Puerto del servidor</string>
 	<string name="account_port_sum">Por omisión: 5222</string>
@@ -161,14 +159,14 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Cambiar grupo</string>
 	<string name="deleteRosterItem_text">¿Realmente desea eliminar %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Borrar contacto</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_text">¿Está seguro de que desea borrar todos los mensajes con %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Eliminar historial de charla</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Yo:</string>
 	<string name="toast_connectfail_message">Se ha cerrado la conexión</string>
 	<string name="toast_stored_offline">Este mensaje ha sido almacenado para su transmisión.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_enterMsgHint">Introduzca el mensaje</string> 
 
 	<!-- GPS settings -->
 	<!--
@@ -195,8 +193,10 @@
   Argafål https://launchpad.net/~78luphr0rnk2nuqimstywepozxn9kl19tqh0tx66b5dki1xxsh5mkz9gl21a5rlwfnr8jn6ln0m3j-8hcf0rcot-a811i2i3ytqlsztthjth0svbccw8inm65tmkqp9sarr553jq53in4xm1m8wn3o4rlwaer06ogwvqw
   Fitoschido https://launchpad.net/~fitoschido
   Georg Lukas https://launchpad.net/~ge0rg
-  Matias Castillo Felmer https://launchpad.net/~slashytu</string>
+  Leonardo Gastón De Luca https://launchpad.net/~leorockway
+  Matias Castillo Felmer https://launchpad.net/~slashytu
+  lImIt https://launchpad.net/~limit-gb</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Elija un contacto</string>
 </resources>

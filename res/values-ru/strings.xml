@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Настройки запуска</string>
-	<string name="boot_title">Запускать yaxim при включении устройтва</string>
-	<string name="boot_summ">Запускать приложение при включении телефона</string>
 	<string name="statuspopup_name">Установить ваш статус</string>
 	<string name="showOffline_summ">Всегда показывать все контакты в списке собеседников</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>

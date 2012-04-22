@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opções de inicialização</string>
-	<string name="boot_title">Carregar yaxim durante a inicialização</string>
-	<string name="boot_summ">Iniciar app quando o telefone for ligado</string>
 	<string name="statuspopup_name">Alterar o seu estado</string>
 	<string name="showOffline_summ">Sempre exibir todos os contatos na lista</string>
 	<string name="showOffline_title">Exibir os contactos desligados</string>

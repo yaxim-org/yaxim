@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Startalternativ</string>
-	<string name="boot_title">Starta yaxim när telefonen startas</string>
-	<string name="boot_summ">Launch app when phone is turned on</string>
 	<string name="statuspopup_name">Ange status</string>
 	<string name="showOffline_summ">Visa alltid alla kontakter i listan</string>
 	<string name="showOffline_title">Visa frånkopplade kontakter</string>

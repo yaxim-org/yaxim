@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Programmstart-Einstellungen</string>
-	<string name="boot_title">Bei Systemstart laden</string>
-	<string name="boot_summ">Automatisch starten wenn das Telefon eingeschaltet wird</string>
 	<string name="statuspopup_name">Status setzen</string>
 	<string name="showOffline_summ">Alle Kontakte immer in der Liste anzeigen</string>
 	<string name="showOffline_title">Offline-Kontakte anzeigen</string>
@@ -86,7 +84,7 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Kontakt hinzufügen</string>
+	<string name="Menu_addFriend">Neuer Kontakt</string>
 	<string name="Menu_ShowOff">Abgemeldete anzeigen</string>
 	<string name="Menu_HideOff">Abgemeldete verstecken</string>
 	<string name="Menu_AccSettings">Konto bearbeiten</string>
@@ -97,7 +95,7 @@
 	<string name="Menu_about">Über yaxim</string>
 
 	<!-- AddFriend -->
-	<string name="addFriend_Title">Kontakt hinzufügen</string>
+	<string name="addFriend_Title">Neuer Kontakt</string>
 	<string name="addFriend_Summ">Bitte geben Sie die Jabber-ID und den Anzeigenamen für Ihren Kontakt ein und ordnen Sie diesen in eine Kontakgruppe!</string>
 	<string name="addFriend_aliasHint">Anzeigename</string>
 	<string name="addrosteritemaddgroupchoice">Zu neuer Gruppe hinzufügen</string>

@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Options de démarrage</string>
-	<string name="boot_title">Charger yaxim au démarrage</string>
-	<string name="boot_summ">Launch app when phone is turned on</string>
 	<string name="statuspopup_name">Définissez votre status</string>
 	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Afficher les contacts hors ligne</string>

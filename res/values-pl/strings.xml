@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opcje uruchamiania</string>
-	<string name="boot_title">Uruchom yaxim przy starcie systemu</string>
-	<string name="boot_summ">Uruchom aplikację przy włączeniu telefon</string>
 	<string name="statuspopup_name">Ustaw swój status</string>
 	<string name="showOffline_summ">Zawsze pokazuj wszystkie kontakty na liście</string>
 	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>

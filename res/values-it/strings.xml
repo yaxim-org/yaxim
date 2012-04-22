@@ -47,8 +47,6 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opzioni di avvio</string>
-	<string name="boot_title">Carica yaxim all\'avvio del telefono</string>
-	<string name="boot_summ">Avvia applicazione all\'accensione del telefono</string>
 	<string name="statuspopup_name">Imposta il tuo stato</string>
 	<string name="showOffline_summ">Mostra sempre tutti i contatti nella lista</string>
 	<string name="showOffline_title">Mostra contatti offline</string>
