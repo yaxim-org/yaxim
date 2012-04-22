@@ -97,9 +97,6 @@
 	    -injars ${project.jars}
 	    -outjars ${out.absolute.dir}/classes.min.jar
 	    -libraryjars ${android.jar}
-	    -dontskipnonpubliclibraryclasses
-	    -dontobfuscate
-	    -dontoptimize
 	    -printusage ${out.absolute.dir}/proguard.usage
         </proguard>
     </target>
