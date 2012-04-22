@@ -11,6 +11,7 @@
 
 	<application android:icon="@drawable/icon"
 		android:name=".YaximApplication"
+		android:theme="@style/YaximDarkTheme"
 		android:debuggable="true" android:label="@string/app_name">
 
 		<activity android:name=".MainWindow" android:label="@string/app_name"
