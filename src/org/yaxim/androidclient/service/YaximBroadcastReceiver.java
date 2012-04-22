@@ -1,11 +1,8 @@
 package org.yaxim.androidclient.service;
 
-import org.yaxim.androidclient.data.YaximConfiguration;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,8 +27,6 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		//Log.d(TAG, "onReceive "+intent.getAction());
 
-		YaximConfiguration config = new YaximConfiguration(PreferenceManager
-				.getDefaultSharedPreferences(context));
 		if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 			Log.d(TAG, "stop service");
 			Intent xmppServiceIntent = new Intent(context, XMPPService.class);
