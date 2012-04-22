@@ -1,8 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
-		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
-		android:showAsAction="never"/>
-
 	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
 		android:alphabeticShortcut="o"
 		android:icon="@android:drawable/ic_menu_delete" android:showAsAction="ifRoom"/>
@@ -15,9 +11,9 @@
 		android:alphabeticShortcut="a"
 		android:icon="@android:drawable/ic_menu_add" />
 
-	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
-		android:alphabeticShortcut="x"
-		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
+		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
+		android:showAsAction="never"/>
 
 	<item android:id="@+id/menu_settings" android:title="@string/Menu_Settings"
 		android:alphabeticShortcut="p"
@@ -26,4 +22,8 @@
 	<item android:id="@+id/menu_about" android:title="@string/Menu_about"
 		android:alphabeticShortcut="y"
 		android:icon="@drawable/about" />
+
+	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
+		android:alphabeticShortcut="x"
+		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
 </menu>
