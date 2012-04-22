@@ -16,6 +16,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
@@ -190,7 +192,8 @@ public class XMPPService extends GenericService {
 			public int getConnectionState() throws RemoteException {
 				if (mSmackable != null && mSmackable.isAuthenticated()) {
 					return ConnectionState.AUTHENTICATED;
-				} else if (mConnectionDemanded.get()) {
+				} else if (mConnectionDemanded.get() &&
+						networkConnectedOrConnecting()) {
 					return ConnectionState.CONNECTING;
 				} else {
 					return ConnectionState.OFFLINE;
@@ -379,12 +382,37 @@ public class XMPPService extends GenericService {
 		mRosterCallbacks.finishBroadcast();
 	}
 
+	private NetworkInfo getNetworkInfo() {
+		Context ctx = getApplicationContext();
+		ConnectivityManager connMgr =
+				(ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+		return connMgr.getActiveNetworkInfo();
+	}
+	private boolean networkConnected() {
+		NetworkInfo info = getNetworkInfo();
+
+		return info != null && info.isConnected();
+	}
+	private boolean networkConnectedOrConnecting() {
+		NetworkInfo info = getNetworkInfo();
+
+		return info != null && info.isConnectedOrConnecting();
+	}
+
 	private void connectionFailed(String reason) {
 		logInfo("connectionFailed: " + reason);
 		mLastConnectionError = reason;
 		mIsConnected.set(false);
 		broadcastConnectionStatus(false, mConnectionDemanded.get());
-		if (mConnectionDemanded.get()) {
+		if (!networkConnected()) {
+			mLastConnectionError = null;
+			mReconnectInfo = "";
+			updateServiceNotification();
+			if (mSmackable != null) {
+				mSmackable.unRegisterCallback();
+				mSmackable = null;
+			}
+		} else if (mConnectionDemanded.get()) {
 			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
 			updateServiceNotification();
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
