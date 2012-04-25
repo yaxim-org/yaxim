@@ -30,6 +30,14 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:autoLink="web"
+			android:text="@string/AboutDialog_DevelopersList"
+			android:padding="2sp"
+			style="?attr/dialogTextColor"
+			/>
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:autoLink="web"
 			android:text="@string/AboutDialog_DevelopersText"
 			android:padding="2sp"
 			style="?attr/dialogTextColor"
