@@ -63,7 +63,7 @@ import android.util.Log;
 public class SmackableImp implements Smackable {
 	final static private String TAG = "yaxim.SmackableImp";
 
-	final static private int PACKET_TIMEOUT = 12000;
+	final static private int PACKET_TIMEOUT = 30000;
 	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
@@ -106,6 +106,20 @@ public class SmackableImp implements Smackable {
 
 	private PacketListener mSendFailureListener;
 	private PacketListener mPingListener;
+	private PacketListener mPongListener;
+	private String mPingID;
+
+	private PendingIntent mPingAlarmPendIntent;
+	private PendingIntent mPongTimeoutAlarmPendIntent;
+	private static final String PING_ALARM = "org.yaxim.androidclient.PING_ALARM";
+	private static final String PONG_TIMEOUT_ALARM = "org.yaxim.androidclient.PONG_TIMEOUT_ALARM";
+	private Intent mPingAlarmIntent = new Intent(PING_ALARM);
+	private Intent mPongTimeoutAlarmIntent = new Intent(PONG_TIMEOUT_ALARM);
+	private Service mService;
+
+	private PongTimeoutAlarmReceiver mPongTimeoutAlarmReceiver = new PongTimeoutAlarmReceiver();
+	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
+
 
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver,
@@ -135,6 +149,7 @@ public class SmackableImp implements Smackable {
 
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
 		this.mContentResolver = contentResolver;
+		this.mService = service;
 	}
 
 	public boolean doConnect(boolean create_account) throws YaximXMPPException {
@@ -145,6 +160,7 @@ public class SmackableImp implements Smackable {
 			registerMessageListener();
 			registerMessageSendFailureListener();
 			registerPingListener();
+			registerPongListener();
 			sendOfflineMessages();
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
@@ -221,7 +237,7 @@ public class SmackableImp implements Smackable {
 				}
 			}
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
-			SmackConfiguration.setKeepAliveInterval(KEEPALIVE_TIMEOUT);
+			SmackConfiguration.setKeepAliveInterval(-1);
 			mXMPPConnection.connect();
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
@@ -448,6 +464,11 @@ public class SmackableImp implements Smackable {
 			mXMPPConnection.removePacketListener(mPacketListener);
 			mXMPPConnection.removePacketSendFailureListener(mSendFailureListener);
 			mXMPPConnection.removePacketListener(mPingListener);
+			mXMPPConnection.removePacketListener(mPongListener);
+			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPingAlarmPendIntent);
+			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
+			mService.unregisterReceiver(mPingAlarmReceiver);
+			mService.unregisterReceiver(mPongTimeoutAlarmReceiver);
 		} catch (Exception e) {
 			// ignore it!
 		}
@@ -540,6 +561,90 @@ public class SmackableImp implements Smackable {
 				ChatConstants.PACKET_ID + " = ? AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
 				new String[] { packetID });
+	}
+
+	private void sendPing() {
+		Ping ping = new Ping();
+		ping.setType(Type.GET);
+		ping.setTo(mConfig.server);
+		mPingID = ping.getPacketID();
+		debugLog("Send PING with ID " + mPingID);
+		mXMPPConnection.sendPacket(ping);
+	}
+
+	/**
+	 * BroadcastReceiver to trigger reconnect on pong timeout.
+	 */
+	private class PongTimeoutAlarmReceiver extends BroadcastReceiver {
+		public void onReceive(Context ctx, Intent i) {
+			debugLog("Pong Timeout Alarm received.");
+			new Thread() {
+				public void run() {
+					mServiceCallBack.disconnectOnError();
+					unRegisterCallback();
+				}
+			}.start();
+		}
+	}
+
+	/**
+	 * BroadcastReceiver to trigger sending pings to the server
+	 */
+	private class PingAlarmReceiver extends BroadcastReceiver {
+		public void onReceive(Context ctx, Intent i) {
+			debugLog("Ping Alarm received.");
+			sendPing();
+			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, 
+					System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+		}
+	}
+
+	/**
+	 * Registers a smack packet listener for IQ packets, intended to recognize "pongs" with
+	 * a packet id matching the last "ping" sent to the server.
+	 *
+	 * Also sets up the AlarmManager Timer plus necessary intents.
+	 */
+	private void registerPongListener() {
+
+		if (mPongListener != null)
+			mXMPPConnection.removePacketListener(mPongListener);
+
+		PacketFilter filter = new PacketFilter() {
+
+			@Override
+			public boolean accept(Packet packet) {
+				if ((packet instanceof IQ)) {
+					debugLog("got IQ packet with ID: " + packet.getPacketID());
+					return true;
+				}
+				return false;
+			}
+		};
+
+		mPongListener = new PacketListener() {
+
+			@Override
+			public void processPacket(Packet packet) {
+				if (packet == null) return;
+
+				if (packet.getPacketID().equals(mPingID)) {
+					debugLog("got Pong");
+					((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
+				}
+			}
+
+		};
+
+		mXMPPConnection.addPacketListener(mPongListener, filter);
+		mPingAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPingAlarmIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		mService.registerReceiver(mPingAlarmReceiver, new IntentFilter(PING_ALARM));
+		mService.registerReceiver(mPongTimeoutAlarmReceiver, new IntentFilter(PONG_TIMEOUT_ALARM));
+		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).setInexactRepeating(AlarmManager.RTC_WAKEUP, 
+				System.currentTimeMillis() + KEEPALIVE_TIMEOUT, KEEPALIVE_TIMEOUT, mPingAlarmPendIntent);
 	}
 
 	/**
