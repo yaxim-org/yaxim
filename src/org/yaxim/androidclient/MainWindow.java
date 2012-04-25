@@ -92,6 +92,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.i(TAG, getString(R.string.build_version));
 		mConfig = YaximApplication.getConfig(this);
 		mTheme = mConfig.theme;
 		setTheme(mConfig.getTheme());

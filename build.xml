@@ -70,6 +70,23 @@
          build steps are used.
     -->
 
+    <target name="-pre-build">
+	<tstamp>
+	    <format property="build.date" pattern="yyyy-MM-dd" />
+	</tstamp>
+	<exec executable="git" outputproperty="git.revision">
+	    <arg line="describe --tags --dirty=+"/>
+	</exec>
+	<copy file="version.xml.tpl" tofile="${resource.absolute.dir}/values/version.xml" overwrite="true">
+	    <filterchain>
+		<replacetokens>
+		    <token key="build_version" value="${ant.project.name} ${git.revision} ${build.date}"/>
+		</replacetokens>
+	    </filterchain>
+
+	</copy>
+    </target>
+
     <target name="check-proguard">
         <available file="tools/proguard.jar" property="have.proguard"/>
     </target>
