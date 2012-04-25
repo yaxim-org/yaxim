@@ -16,7 +16,10 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
+import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.IQ.Type;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
@@ -43,9 +46,15 @@ import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 
 import android.net.Uri;
@@ -77,6 +86,8 @@ public class SmackableImp implements Smackable {
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
 		// add delivery receipts
 		pm.addExtensionProvider("received", DeliveryReceipt.NAMESPACE, new DeliveryReceiptProvider());
+		// add XMPP Ping (XEP-0199)
+		pm.addIQProvider("ping","urn:xmpp:ping", new PingProvider());
 
 		ServiceDiscoveryManager.setIdentityName(YaximApplication.XMPP_IDENTITY_NAME);
 		ServiceDiscoveryManager.setIdentityType(YaximApplication.XMPP_IDENTITY_TYPE);
@@ -94,6 +105,7 @@ public class SmackableImp implements Smackable {
 	private final ContentResolver mContentResolver;
 
 	private PacketListener mSendFailureListener;
+	private PacketListener mPingListener;
 
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver,
@@ -132,6 +144,7 @@ public class SmackableImp implements Smackable {
 		if (isAuthenticated()) {
 			registerMessageListener();
 			registerMessageSendFailureListener();
+			registerPingListener();
 			sendOfflineMessages();
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
@@ -150,6 +163,7 @@ public class SmackableImp implements Smackable {
 
 		sdm.addFeature("http://jabber.org/protocol/disco#info");
 		sdm.addFeature(DeliveryReceipt.NAMESPACE);
+		sdm.addFeature("urn:xmpp:ping");
 	}
 
 	public void addRosterItem(String user, String alias, String group)
@@ -433,6 +447,7 @@ public class SmackableImp implements Smackable {
 			mXMPPConnection.getRoster().removeRosterListener(mRosterListener);
 			mXMPPConnection.removePacketListener(mPacketListener);
 			mXMPPConnection.removePacketSendFailureListener(mSendFailureListener);
+			mXMPPConnection.removePacketListener(mPingListener);
 		} catch (Exception e) {
 			// ignore it!
 		}
@@ -525,6 +540,38 @@ public class SmackableImp implements Smackable {
 				ChatConstants.PACKET_ID + " = ? AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
 				new String[] { packetID });
+	}
+
+	/**
+	 * Registers a smack packet listener for IQ packets with a ping inside.
+	 * Generates and sends a matching IQ response ("pong") to the peer.
+	 */
+	private void registerPingListener() {
+
+		if (mPingListener != null)
+			mXMPPConnection.removePacketListener(mPingListener);
+
+		PacketFilter filter = new PacketFilter() {
+
+			@Override
+			public boolean accept(Packet packet) {
+				if (packet instanceof Ping) return true;
+				return false;
+			}
+		};
+
+		mPingListener = new PacketListener() {
+
+			@Override
+			public void processPacket(Packet packet) {
+				if (packet == null) return;
+
+				mXMPPConnection.sendPacket(new Pong((Ping)packet));
+			}
+
+		};
+
+		mXMPPConnection.addPacketListener(mPingListener, filter);
 	}
 
 	private void registerMessageSendFailureListener() {
