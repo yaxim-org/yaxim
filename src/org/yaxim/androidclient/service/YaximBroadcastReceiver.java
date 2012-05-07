@@ -15,6 +15,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 	public static void initNetworkStatus(Context context) {
 		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		networkType = -1;
 		if (networkInfo != null) {
 			Log.d(TAG, "Init: ACTIVE NetworkInfo: "+networkInfo.toString());
 			if (networkInfo.isConnected()) {
