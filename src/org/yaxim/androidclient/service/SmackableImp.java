@@ -64,7 +64,6 @@ public class SmackableImp implements Smackable {
 	final static private String TAG = "yaxim.SmackableImp";
 
 	final static private int PACKET_TIMEOUT = 30000;
-	final static private int KEEPALIVE_TIMEOUT = 300000; // 5min
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
@@ -578,12 +577,8 @@ public class SmackableImp implements Smackable {
 	private class PongTimeoutAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 			debugLog("Pong Timeout Alarm received.");
-			new Thread() {
-				public void run() {
-					mServiceCallBack.disconnectOnError();
-					unRegisterCallback();
-				}
-			}.start();
+			mServiceCallBack.disconnectOnError();
+			unRegisterCallback();
 		}
 	}
 
@@ -644,7 +639,7 @@ public class SmackableImp implements Smackable {
 		mService.registerReceiver(mPingAlarmReceiver, new IntentFilter(PING_ALARM));
 		mService.registerReceiver(mPongTimeoutAlarmReceiver, new IntentFilter(PONG_TIMEOUT_ALARM));
 		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).setInexactRepeating(AlarmManager.RTC_WAKEUP, 
-				System.currentTimeMillis() + KEEPALIVE_TIMEOUT, KEEPALIVE_TIMEOUT, mPingAlarmPendIntent);
+				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
 	}
 
 	/**
