@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Dark</item>
 		<item>Light</item>
+		<item>Pine</item>
+		<item>Ice</item>
 	</string-array>
 	<string name="preftitle_ui">Appearance</string>
 	<string-array name="fontSizesChat">
@@ -262,14 +264,6 @@
 	<string name="status_dnd">Do not disturb</string>
 	<string name="status_xa">Not available</string>
 	<string name="status_offline">Offline</string>
-
-	<string name="preftitle_ui">User Interface</string>
-	<string name="pref_theme">Theme</string>
-	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
-		<item>Pine</item>
-	</string-array>
 
 	<string name="translator_credits">translator-credits</string>
 

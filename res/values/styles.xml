@@ -71,4 +71,8 @@
 		<item name="android:background">@color/green_error</item>
 		<item name="android:textColor">#400</item>
 	</style>
+	<style name="StyleErrorView.LightIce">
+		<item name="android:background">@color/ice_error</item>
+		<item name="android:textColor">#400</item>
+	</style>
 </resources>
