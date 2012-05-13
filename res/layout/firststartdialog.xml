@@ -72,6 +72,14 @@
 			android:hint="@string/StartupDialog_pwHint"
 			android:contentDescription="@string/StartupDialog_passwd_title"
 			/>
+	<CheckBox
+			android:id="@+id/create_account"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/StartupDialog_create_new"
+			style="?attr/dialogTextColor"
+		/>
+
 	</LinearLayout>
 	</ScrollView>
 </LinearLayout>

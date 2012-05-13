@@ -746,8 +746,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			mConnectingText.setVisibility(View.GONE);
 	}
 	
-	public void startConnection() {
+	public void startConnection(boolean create_account) {
 		setConnectingStatus(true);
+		xmppServiceIntent.putExtra("create_account", create_account);
 		startService(xmppServiceIntent);
 	}
 
@@ -768,7 +769,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			}).start();
 
 		} else
-			startConnection();
+			startConnection(false);
 	}
 
 	private int getConnectDisconnectIcon() {

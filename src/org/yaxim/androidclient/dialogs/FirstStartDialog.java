@@ -21,6 +21,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
@@ -32,6 +33,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private Button mOkButton;
 	private EditText mEditJabberID;
 	private EditText mEditPassword;
+	private CheckBox mCreateAccount;
 	private int themedTextColor;
 
 	public FirstStartDialog(MainWindow mainWindow,
@@ -51,6 +53,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
+		mCreateAccount = (CheckBox) group.findViewById(R.id.create_account);
 		mEditJabberID.addTextChangedListener(this);
 		TypedValue tv = new TypedValue();
 		boolean found = mainWindow.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
@@ -75,7 +78,8 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		switch (which) {
 		case BUTTON_POSITIVE:
 			verifyAndSavePreferences();
-			mainWindow.startConnection();
+			boolean create_account = mCreateAccount.isChecked();
+			mainWindow.startConnection(create_account);
 			break;
 		case BUTTON_NEUTRAL:
 			verifyAndSavePreferences();
