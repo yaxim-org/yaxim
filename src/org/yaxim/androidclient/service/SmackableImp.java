@@ -246,18 +246,13 @@ public class SmackableImp implements Smackable {
 	private void tryToMoveRosterEntryToGroup(String userName, String groupName)
 			throws YaximXMPPException {
 
-		if (!(groupName.length() > 0)) {
-			throw new YaximXMPPException("Can't move " + userName
-					+ " to a group without a name!");
-		}
-
 		mRoster = mXMPPConnection.getRoster();
 		RosterGroup rosterGroup = getRosterGroup(groupName);
 		RosterEntry rosterEntry = mRoster.getEntry(userName);
 
 		removeRosterEntryFromGroups(rosterEntry);
 
-		if (groupName.equals(AdapterConstants.EMPTY_GROUP))
+		if (groupName.length() == 0)
 			return;
 		else {
 			try {
@@ -271,10 +266,9 @@ public class SmackableImp implements Smackable {
 	private RosterGroup getRosterGroup(String groupName) {
 		RosterGroup rosterGroup = mRoster.getGroup(groupName);
 
-		if (!(groupName.equals(AdapterConstants.EMPTY_GROUP))) {
-			if (rosterGroup == null) {
-				rosterGroup = mRoster.createGroup(groupName);
-			}
+		// create group if unknown
+		if ((groupName.length() > 0) && rosterGroup == null) {
+			rosterGroup = mRoster.createGroup(groupName);
 		}
 		return rosterGroup;
 
@@ -669,7 +663,7 @@ public class SmackableImp implements Smackable {
 		for (RosterGroup group : groups) {
 			return group.getName();
 		}
-		return AdapterConstants.EMPTY_GROUP;
+		return "";
 	}
 
 	private String getName(RosterEntry rosterEntry) {

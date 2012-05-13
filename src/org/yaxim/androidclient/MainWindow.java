@@ -336,7 +336,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild);
 		// display group menu for non-standard group
 		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
-				!menuName.equals(AdapterConstants.EMPTY_GROUP));
+				(menuName.length() > 0));
 
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
@@ -1034,6 +1034,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 				selectWhere += " AND " + OFFLINE_EXCLUSION;
 			return getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
 				selectWhere, new String[] { groupname }, null);
+		}
+
+		@Override
+		protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
+			super.bindGroupView(view, context, cursor, isExpanded);
+			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).length() == 0) {
+				TextView groupname = (TextView)view.findViewById(R.id.groupname);
+				groupname.setText(R.string.default_group);
+			}
 		}
 
 		@Override

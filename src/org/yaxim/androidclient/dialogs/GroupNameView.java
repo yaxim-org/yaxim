@@ -24,6 +24,7 @@ public class GroupNameView extends LinearLayout implements OnItemSelectedListene
 	private Spinner mGroupSpinner;
 	private EditText mNewGroupInput;
 	private String mAddGroupString;
+	private String mDefaultGroup;
 
 	public GroupNameView(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
@@ -36,13 +37,15 @@ public class GroupNameView extends LinearLayout implements OnItemSelectedListene
 		mNewGroupInput = (EditText)findViewById(R.id.newgroupinput);
 
 		mAddGroupString = ctx.getString(R.string.addrosteritemaddgroupchoice);
+		mDefaultGroup = ctx.getString(R.string.default_group);
 	}
 
 	public void setGroupList(List<String> groupList) {
 		mGroupList = groupList;
-		if (!mGroupList.contains(AdapterConstants.EMPTY_GROUP)) {
-			mGroupList.add(0, AdapterConstants.EMPTY_GROUP);
-		}
+		// replace the internal representation of the default group
+		mGroupList.remove("");
+		mGroupList.add(0, mDefaultGroup);
+
 		// add the string for "new group"
 		mGroupList.add(mAddGroupString);
 
@@ -56,7 +59,10 @@ public class GroupNameView extends LinearLayout implements OnItemSelectedListene
 
 	public String getGroupName() {
 		String spinnerItem = mGroupSpinner.getSelectedItem().toString();
-		if (spinnerItem.equals(mAddGroupString)) {
+		if (spinnerItem.equals(mDefaultGroup)) {
+			// return internal representation
+			return "";
+		} else if (spinnerItem.equals(mAddGroupString)) {
 			return mNewGroupInput.getText().toString();
 		} else {
 			return spinnerItem;

@@ -253,6 +253,9 @@
 
 	<string name="translator_credits">translator-credits</string>
 
+	<!-- default roster group with no name -->
+	<string name="default_group">General</string>
+
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>
 </resources>
