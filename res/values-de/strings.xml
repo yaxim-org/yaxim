@@ -24,6 +24,7 @@
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passwort:</string>
 	<string name="StartupDialog_advanced">Erweitert…</string>
+	<string name="StartupDialog_create_new">Neues Konto anlegen</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
@@ -58,7 +59,7 @@
 	<string name="smackdebug_title">SMACK-Debugging</string>
 
 	<string name="reportcrash_title">Fehlerberichte senden</string>
-	<string name="reportcrash_summ">Anonymen Absturzbericht sn die Entwickler senden</string>
+	<string name="reportcrash_summ">Anonymen Absturzbericht an die Entwickler senden</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Darstellung</string>
@@ -176,10 +177,11 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">ÜBER YAXIM</string>
+	<string name="AboutDialog_title">Über yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Entwickler</string>
-	<string name="AboutDialog_DevelopersText">Eingetragene Entwickler:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Macht mit, wünscht euch neue Funktionen oder sendet uns \"Club-Mate\" unter http://yaxim.org/ oder in #yaxim im freenode-IRC-Netzwerk.</string>
+	<string name="AboutDialog_DevelopersText">Kontakt mit den Entwicklern auf http://yaxim.org oder im freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Lizenzierung</string>
+	<string name="AboutDialog_Vote">Feedback geben</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Online</string>
@@ -196,6 +198,9 @@
   Markus Unterwaditzer https://launchpad.net/~untitaker
   Michael Kanis https://launchpad.net/~mkanis
   René Moser https://launchpad.net/~resmo</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">Allgemein</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Kontakt auswählen</string>

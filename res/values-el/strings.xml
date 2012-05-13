@@ -24,6 +24,7 @@
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Κωδικός Πρόσβασης:</string>
 	<string name="StartupDialog_advanced">Advanced…</string>
+	<string name="StartupDialog_create_new">Register new account</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>
@@ -176,10 +177,11 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">ΠΕΡΙ YAXIM</string>
+	<string name="AboutDialog_title">περί yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Προγραμματιστές</string>
-	<string name="AboutDialog_DevelopersText">Acknowledged Developers:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Join us, ask for more fancy features or send us some free \"Club Mate\" at http://yaxim.org/ or on #yaxim on freenode IRC.</string>
+	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Αδειοδότηση</string>
+	<string name="AboutDialog_Vote">Give Feedback</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Συνδεδεμένος</string>
@@ -192,6 +194,9 @@
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
   Theo Ioannidis https://launchpad.net/~xaroulhs1983</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">General</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>

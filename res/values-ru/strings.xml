@@ -24,6 +24,7 @@
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
 	<string name="StartupDialog_advanced">Дополнительно …</string>
+	<string name="StartupDialog_create_new">Register new account</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Сообщение от %s</string>
@@ -176,10 +177,11 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">О YAXIM</string>
+	<string name="AboutDialog_title">О yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Разработчики</string>
-	<string name="AboutDialog_DevelopersText">Разработчики:\n * Georg Lukas\n * Sven Pfleiderer\n * Christian Polzer\n\n Присоединяйтесь к нам, спрашивайте о тех или иных улучшениях или пришлите нам \"Club Mate\" на http://yaxim.org либо на канал #yaxim IRC сети freenode.</string>
+	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
+	<string name="AboutDialog_Vote">Give Feedback</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or
@@ -251,6 +253,9 @@
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
   Ilya https://launchpad.net/~me-detected</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">General</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>
