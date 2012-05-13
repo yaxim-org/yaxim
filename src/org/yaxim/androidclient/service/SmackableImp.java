@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
@@ -124,8 +125,8 @@ public class SmackableImp implements Smackable {
 		this.mContentResolver = contentResolver;
 	}
 
-	public boolean doConnect() throws YaximXMPPException {
-		tryToConnect();
+	public boolean doConnect(boolean create_account) throws YaximXMPPException {
+		tryToConnect(create_account);
 		// actually, authenticated must be true now, or an exception must have
 		// been thrown.
 		if (isAuthenticated()) {
@@ -196,7 +197,7 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.sendPacket(response);
 	}
 
-	private void tryToConnect() throws YaximXMPPException {
+	private void tryToConnect(boolean create_account) throws YaximXMPPException {
 		try {
 			if (mXMPPConnection.isConnected()) {
 				try {
@@ -223,6 +224,11 @@ public class SmackableImp implements Smackable {
 			initServiceDiscovery();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
+				if (create_account) {
+					Log.d(TAG, "creating new server account...");
+					AccountManager am = new AccountManager(mXMPPConnection);
+					am.createAccount(mConfig.userName, mConfig.password);
+				}
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}

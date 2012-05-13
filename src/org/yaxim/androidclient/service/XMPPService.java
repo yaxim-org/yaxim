@@ -42,6 +42,7 @@ public class XMPPService extends GenericService {
 	private Thread mConnectingThread;
 
 	private Smackable mSmackable;
+	private boolean create_account = false;
 	private IXMPPRosterService.Stub mService2RosterConnection;
 	private IXMPPChatService.Stub mServiceChatConnection;
 
@@ -125,6 +126,8 @@ public class XMPPService extends GenericService {
 		if (intent != null) {
 			boolean disconnect = intent.getBooleanExtra("disconnect", false);
 			boolean reconnect = intent.getBooleanExtra("reconnect", false);
+
+			create_account = intent.getBooleanExtra("create_account", false);
 			
 			logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
 			if (disconnect) {
@@ -324,7 +327,7 @@ public class XMPPService extends GenericService {
 			public void run() {
 				try {
 					createAdapter();
-					if (!mSmackable.doConnect()) {
+					if (!mSmackable.doConnect(create_account)) {
 						postConnectionFailed("Inconsistency in Smackable.doConnect()");
 					}
 					postConnectionEstablished();
@@ -339,6 +342,7 @@ public class XMPPService extends GenericService {
 					if (mConnectingThread != null) synchronized(mConnectingThread) {
 						mConnectingThread = null;
 					}
+					create_account = false;
 				}
 			}
 

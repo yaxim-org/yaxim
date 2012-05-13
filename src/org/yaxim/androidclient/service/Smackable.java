@@ -4,7 +4,7 @@ import org.yaxim.androidclient.exceptions.YaximXMPPException;
 
 
 public interface Smackable {
-	boolean doConnect() throws YaximXMPPException;
+	boolean doConnect(boolean create_account) throws YaximXMPPException;
 	boolean isAuthenticated();
 
 	void addRosterItem(String user, String alias, String group) throws YaximXMPPException;
