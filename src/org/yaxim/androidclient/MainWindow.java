@@ -645,6 +645,19 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setView(about)
 			.setPositiveButton(android.R.string.ok, null)
+			.setNeutralButton(R.string.AboutDialog_Vote, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+					Intent market = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("market://details?id=" + getPackageName()));
+					market.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+					try {
+						startActivity(market);
+					} catch (Exception e) {
+						// do not crash
+						Log.e(TAG, "could not go to market: " + e);
+					}
+				}
+			})
 			.create().show();
 	}
 
