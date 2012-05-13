@@ -12,4 +12,7 @@
 
     <color name="dark_green">#063306</color>
     <color name="green_error">#d4d600</color>
+
+    <color name="light_ice">#bfe8ff</color>
+    <color name="ice_error">#ef98ff</color>
 </resources>

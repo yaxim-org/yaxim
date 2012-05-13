@@ -69,4 +69,8 @@
 		<item name="android:windowBackground">@color/dark_green</item>
 		<item name="ErrorView">@style/StyleErrorView.Green</item>
 	</style>
+	<style name="LightIceTheme" parent="YaximLightTheme">
+		<item name="android:windowBackground">@color/light_ice</item>
+		<item name="ErrorView">@style/StyleErrorView.LightIce</item>
+	</style>
 </resources>
