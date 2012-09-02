@@ -229,16 +229,30 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+
+		View target = ((AdapterContextMenuInfo)menuInfo).targetView;
+		TextView from = (TextView)target.findViewById(R.id.chat_from);
 		getMenuInflater().inflate(R.menu.chat_contextmenu, menu);
+		if (!from.getText().equals(getString(R.string.chat_from_me))) {
+			menu.findItem(R.id.chat_contextmenu_resend).setEnabled(false);
+		}
+	}
+
+	private CharSequence getMessageFromContextMenu(MenuItem item) {
+		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
+		TextView message = (TextView)target.findViewById(R.id.chat_message);
+		return message.getText();
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
-		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
 		switch (item.getItemId()) {
 		case R.id.chat_contextmenu_copy_text:
-			TextView message = (TextView)target.findViewById(R.id.chat_message);
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-			cm.setText(message.getText());
+			cm.setText(getMessageFromContextMenu(item));
+			return true;
+		case R.id.chat_contextmenu_resend:
+			sendMessage(getMessageFromContextMenu(item).toString());
+			Log.d(TAG, "resend!");
 			return true;
 		default:
 			return super.onContextItemSelected((android.view.MenuItem) item);

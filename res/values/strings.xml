@@ -170,6 +170,9 @@
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
 
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
+
 	<!-- GPS settings -->
 	<!--
 	<string name="showGPS_title">GPS to status</string>

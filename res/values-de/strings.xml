@@ -169,6 +169,9 @@
 	<string name="toast_stored_offline">Nachricht zum Versand gespeichert.</string>
 	<string name="chat_enterMsgHint">Mitteilung eingeben</string> 
 
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Erneut senden</string>
+
 	<!-- GPS settings -->
 	<!--
 	<string name="showGPS_title">GPS to status</string>
