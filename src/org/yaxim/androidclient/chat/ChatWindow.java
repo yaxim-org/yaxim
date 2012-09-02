@@ -258,8 +258,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private void sendMessageIfNotNull() {
 		if (mChatInput.getText().length() >= 1) {
 			sendMessage(mChatInput.getText().toString());
-			if (!mServiceAdapter.isServiceAuthenticated())
-				showToastNotification(R.string.toast_stored_offline);
 		}
 	}
 
@@ -267,6 +265,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		mChatInput.setText(null);
 		mSendButton.setEnabled(false);
 		mServiceAdapter.sendMessage(mWithJabberID, message);
+		if (!mServiceAdapter.isServiceAuthenticated())
+			showToastNotification(R.string.toast_stored_offline);
 	}
 
 	private void markAsReadDelayed(final int id, int delay) {
