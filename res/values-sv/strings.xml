@@ -24,11 +24,11 @@
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Lösenord:</string>
 	<string name="StartupDialog_advanced">Avancerat…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
+	<string name="StartupDialog_create_new">Registrera nytt konto</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Meddelande från %s</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_anonymous_message">Meddelande mottaget</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Meddelandeavisering</string>
@@ -37,14 +37,14 @@
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Vibrera vid inkommande meddelande</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
+		<item>Aldrig</item>
 		<item>System preference</item>
-		<item>Always</item>
+		<item>Alltid</item>
 	</string-array>
 	<string name="ringtone_title">Ljudsignal</string>
 	<string name="ringtone_summ">Ljud vid inkommande meddelande</string>
-	<string name="ticker_title">Message preview</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ticker_title">Förhandsgranskning</string>
+	<string name="ticker_summ">Visa avsändare och meddelande i statusfältet</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Startalternativ</string>
@@ -52,7 +52,7 @@
 	<string name="showOffline_summ">Visa alltid alla kontakter i listan</string>
 	<string name="showOffline_title">Visa frånkopplade kontakter</string>
 	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="foregroundService_title">Statusfältikon</string>
 
 	<string name="preftitle_debug">Felsökning</string>
 	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
@@ -62,26 +62,26 @@
 	<string name="reportcrash_summ">Skicka anonyma kraschrapporter till utvecklare</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="preftitle_app">Utseende</string>
+	<string name="FontChat_title">Fontstorlek chatt</string>
+	<string name="FontChat_summ">Välj fontstorlek för chatt</string>
+	<string name="FontChat_dialog">Fontstorlek chatt</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Tema</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Mörk</item>
+		<item>Ljus</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Utseende</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
+		<item>liten</item>
 		<item>normal</item>
-		<item>large</item>
+		<item>stor</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -167,7 +167,7 @@
 	<string name="chat_from_me">Jag:</string>
 	<string name="toast_connectfail_message">Frånkopplad!</string>
 	<string name="toast_stored_offline">Meddelandet har lagrats för att kunna skickas senare.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_enterMsgHint">Skriv meddelande</string> 
 
 	<!-- GPS settings -->
 	<!--
@@ -179,9 +179,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Om yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Utvecklare</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Kontakta utvecklarna på http://yaxim.org eller freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Tyck till</string>
 	<string name="AboutDialog_LicenceText">Denna text har avsiktligt lämnats i sin helhet på orginalspråk: This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Ansluten</string>
@@ -200,5 +200,5 @@
 	<string name="default_group">General</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Välj kontakt</string>
 </resources>

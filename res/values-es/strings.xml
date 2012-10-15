@@ -24,7 +24,7 @@
 	<string name="StartupDialog_Username_title">Identificador de jabber:</string>
 	<string name="StartupDialog_passwd_title">Contraseña:</string>
 	<string name="StartupDialog_advanced">Avanzado…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
+	<string name="StartupDialog_create_new">Registrar nueva cuenta</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mensaje de %s</string>
@@ -179,7 +179,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Acerca de yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Desarrolladores</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contacte a los desarrolladores en http://yaxim.org o en IRC freenode: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
 	<string name="AboutDialog_Vote">Give Feedback</string>
 	<string name="AboutDialog_LicenceText">Este programa es software libre: usted puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU versión 2 publicada por la Fundación para el Software Libre. Enlace: http://www.gnu.org/licenses/gpl-2.0.html\n \n Partes de este software son ofrecidas bajo la licencia MIT: \n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Se autoriza, de forma gratuita, a cualquier persona que ha obtenido una copia de este software y archivos de documentación asociados (el "Software"), para tratar en el Software sin restricción, incluyendo sin ninguna limitación en lo que concierne a los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias de este Software, y para permitir a las personas que usan el Software a hacerlo, con sujeción a las siguientes condiciones: \n El aviso de copyright anterior y este aviso de permiso se incluirá en todas las copias o partes sustanciales de este Software. \n EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUIDAS PERO NO LIMITADAS A LAS GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y DE NO INFRACCIÓN. EN NINGÚN  CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE ALGÚN RECLAMO, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU UTILIZACIÓN U OTRAS OPERACIONES EN EL SOFTWARE.</string>
@@ -192,8 +192,8 @@
 	<string name="status_offline">Desconectado</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Adolfo Jayme Barrientos https://launchpad.net/~fitoschido
   Argafål https://launchpad.net/~78luphr0rnk2nuqimstywepozxn9kl19tqh0tx66b5dki1xxsh5mkz9gl21a5rlwfnr8jn6ln0m3j-8hcf0rcot-a811i2i3ytqlsztthjth0svbccw8inm65tmkqp9sarr553jq53in4xm1m8wn3o4rlwaer06ogwvqw
-  Fitoschido https://launchpad.net/~fitoschido
   Georg Lukas https://launchpad.net/~ge0rg
   Leonardo Gastón De Luca https://launchpad.net/~leorockway
   Matias Castillo Felmer https://launchpad.net/~slashytu

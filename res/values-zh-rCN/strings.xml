@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">正在连接服务端……</string>
+	<string name="conn_online">在线</string>
+	<string name="conn_offline">离线</string>
+	<string name="conn_empty_roster">没有联系人！</string>
+	<string name="conn_reconnect">\n重新连接 %s 秒</string>
+	<string name="conn_disconnected">连接已关闭</string>
+	<string name="conn_networkchg">网络已改变</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">退出</string>
+	<string name="Global_authenticate_first">请先连接</string>
+	<string name="Global_JID_hint">user@jabber.example.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
+	<string name="StartupDialog_Summary">你需要先配置yaxim才能使用。请输入你的Jabber标识和密码。</string>
+	<string name="StartupDialog_pwHint">输入密码</string>
+	<string name="StartupDialog_Username_title">Jabber ID</string>
+	<string name="StartupDialog_passwd_title">密码：</string>
+	<string name="StartupDialog_advanced">高级…</string>
+	<string name="StartupDialog_create_new">注册新账户</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">来自 %s 的消息</string>
+	<string name="notification_anonymous_message">收到消息</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">消息通知</string>
+	<string name="led_title">闪动 LED</string>
+	<string name="led_summ">当有消息时闪动手机LED</string>
+	<string name="vibr_title">振动</string>
+	<string name="vibr_summ">当有消息时振动</string>
+	<string-array name="vibr_values_displayed">
+		<item>从不</item>
+		<item>系统设置</item>
+		<item>总是</item>
+	</string-array>
+	<string name="ringtone_title">铃声</string>
+	<string name="ringtone_summ">来信息时响铃</string>
+	<string name="ticker_title">消息预览</string>
+	<string name="ticker_summ">在状态栏显示发送者和消息</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">启动选项</string>
+	<string name="statuspopup_name">设置您的状态</string>
+	<string name="showOffline_summ">总是显示所有联系人</string>
+	<string name="showOffline_title">显示离线联系人</string>
+	<string name="foregroundService_summ">保持yaxim一直在线（后台挂机）</string>
+	<string name="foregroundService_title">状态栏图标</string>
+
+	<string name="preftitle_debug">正在调试</string>
+	<string name="smackdebug_summ">使用logcat记录调试数据。（可能有个人敏感信息）</string>
+	<string name="smackdebug_title">SMACK 调试</string>
+
+	<string name="reportcrash_title">发送崩溃报告</string>
+	<string name="reportcrash_summ">给开发者发送崩溃报告(匿名)</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">界面外观</string>
+	<string name="FontChat_title">聊天字体大小</string>
+	<string name="FontChat_summ">设置聊天字体大小</string>
+	<string name="FontChat_dialog">聊天字体大小</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">主题</string>
+	<string-array name="pref_theme_entries">
+		<item>深色</item>
+		<item>浅色</item>
+	</string-array>
+	<string name="preftitle_ui">界面外观</string>
+	<string-array name="fontSizesChat">
+		<item>小</item>
+		<item>正常</item>
+		<item>大</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">添加联系人</string>
+	<string name="Menu_ShowOff">显示离线</string>
+	<string name="Menu_HideOff">隐藏离线</string>
+	<string name="Menu_AccSettings">编辑帐号</string>
+	<string name="Menu_Settings">设置</string>
+	<string name="Menu_Status">状态</string>
+	<string name="Menu_connect">连接</string>
+	<string name="Menu_disconnect">断开连接</string>
+	<string name="Menu_about">关于 yaxim</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">添加一个联系人</string>
+	<string name="addFriend_Summ">请输入你朋友的Jabber标识，显示的名字和联系人组</string>
+	<string name="addFriend_aliasHint">显示名字</string>
+	<string name="addrosteritemaddgroupchoice">增加到新的分组</string>
+	<string name="NewGroup_EditTextField_Hint">新的分组名字</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">%s 选项</string>
+	<string name="roster_contextmenu_group_rename">重命名分组</string>
+	<string name="roster_contextmenu_contact_delete">删除联系人</string>
+	<string name="roster_contextmenu_contact_delmsg">删除聊天记录</string>
+	<string name="roster_contextmenu_contact_open_chat">公众聊天</string>
+	<string name="roster_contextmenu_contact_rename">重命名</string>
+	<string name="roster_contextmenu_contact_request_auth">请求认证</string>
+	<string name="roster_contextmenu_contact_change_group">改变分组</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">登录信息</string>
+	<string name="account_settings_title">帐号设置</string>
+	<string name="account_options_title">连接选项</string>
+	<string name="account_options_advanced">高级选项</string>
+	<string name="connstartup_title">启动时连接</string>
+	<string name="connstartup_summOn">yaxim打开时自动切换成在线状态</string>
+	<string name="connstartup_summOff">不自动连接</string>
+	<string name="reconnect_title">自动连接</string>
+	<string name="reconnect_summ">连接丢失时自动重连</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">输入您的Jabber ID</string>
+	<string name="account_jabberPW_title">帐户密码</string>
+	<string name="account_jabberPW_sum">您的Jabber账户密码</string>
+	<string name="account_jabberPW_dialog_title">输入密码：</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">客户来源</string>
+	<string name="account_resource_summ">默认: yaxim</string>
+	<string name="account_resource_dialog_title">输入你的来源</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">客户端优先级</string>
+	<string name="account_prio_summ">默认：０（允许范围：-128..127）</string>
+	<string name="account_prio_dialog_title">输入您的优先级</string>
+	<string name="account_port_title">服务器端口</string>
+	<string name="account_port_sum">默认：5222</string>
+	<string name="account_port_dialog_title">输入服务器端口</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">配置服务器</string>
+	<string name="account_customserver_summ">（可选）手工设置服务器名</string>
+	<string name="account_customserver_dialog_title">输入服务器名</string>
+	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">需要 SSL/TLS</string>
+	<string name="require_ssl_summ">总是加密服务器连接</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">选择分组</string>
+	<string name="setStatusmsgHint">您的状态消息</string>
+	<string name="setStatusTitle">设置您的状态</string>
+	<string name="RenameGroup_summ">分组 %s 重命名为:</string>
+	<string name="RenameGroup_title">重命名分组</string>
+	<string name="RenameEntry_summ">重命名 %1$s (%2$s) 为:</string>
+	<string name="RenameEntry_title">重命名联系人</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">从下面选择一个分组</string>
+	<string name="MoveRosterEntryToGroupDialog_title">改变分组</string>
+	<string name="deleteRosterItem_text">确定删除%1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">删除联系人</string>
+	<string name="deleteChatHistory_text">确定删除全部信息　%1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">删除聊天记录</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">我：</string>
+	<string name="toast_connectfail_message">连接关闭！</string>
+	<string name="toast_stored_offline">消息已经保存随后发送。</string>
+	<string name="chat_enterMsgHint">输入消息</string> 
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">关于 yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">开发者</string>
+	<string name="AboutDialog_DevelopersText">联系开发者：http://yaxim.org 或者 freenode IRC: #yaxim</string>
+	<string name="AboutDialog_LicenceTitle">许可</string>
+	<string name="AboutDialog_Vote">提供反馈</string>
+	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+
+	<string name="status_available">在线</string>
+	<string name="status_away">离开</string>
+	<string name="status_chat">随时可聊</string>
+	<string name="status_dnd">请勿打扰</string>
+	<string name="status_xa">不可用</string>
+	<string name="status_offline">离线</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Road Tang https://launchpad.net/~roadtang</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">常规</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">选择联系人</string>
+</resources>

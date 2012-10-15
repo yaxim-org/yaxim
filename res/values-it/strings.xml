@@ -24,11 +24,11 @@
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_advanced">Avanzate…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
+	<string name="StartupDialog_create_new">Registra un nuovo account</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Messaggio da %s</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_anonymous_message">Messaggio ricevuto</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notifica messaggi</string>
@@ -43,8 +43,8 @@
 	</string-array>
 	<string name="ringtone_title">Suoneria</string>
 	<string name="ringtone_summ">Suono per i messaggi in arrivo</string>
-	<string name="ticker_title">Message preview</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ticker_title">Anteprima del messaggio</string>
+	<string name="ticker_summ">Visualizza il mittente e il messaggio nella barra di stato</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Opzioni di avvio</string>
@@ -55,17 +55,17 @@
 	<string name="foregroundService_title">Icona barra di stato</string>
 
 	<string name="preftitle_debug">Debug</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
+	<string name="smackdebug_summ">Output dei pacchetti e del debug via logcat (può contenere informazioni personali)</string>
 	<string name="smackdebug_title">Debug SMACK</string>
 
 	<string name="reportcrash_title">Invia rapporti sui crash</string>
 	<string name="reportcrash_summ">Invia report anonimi sui crash allo sviluppatore</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="preftitle_app">Aspetto</string>
+	<string name="FontChat_title">Dimensioni del carattere per la chat</string>
+	<string name="FontChat_summ">Imposta le dimensioni del carattere per la chat</string>
+	<string name="FontChat_dialog">Dimensioni del carattere per la chat</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
@@ -77,11 +77,11 @@
 		<item>Scuro</item>
 		<item>Chiaro</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Aspetto</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
-		<item>normal</item>
-		<item>large</item>
+		<item>piccolo</item>
+		<item>normale</item>
+		<item>grande</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -167,7 +167,7 @@
 	<string name="chat_from_me">Io:</string>
 	<string name="toast_connectfail_message">Connessione chiusa!</string>
 	<string name="toast_stored_offline">Il messaggio sarà trasmesso più tardi</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_enterMsgHint">Inserisci il messaggio</string> 
 
 	<!-- GPS settings -->
 	<!--
@@ -179,9 +179,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Informazioni su yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Sviluppatori</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contatta gli sviluppatori all\'indirizzo http://yaxim.org or on freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licenza</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Fornisci un feedback</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTW</string>
 
 	<string name="status_available">Connesso</string>
@@ -194,11 +194,13 @@
 	<string name="translator_credits">Launchpad Contributions:
   Ema987 https://launchpad.net/~ema987
   Georg Lukas https://launchpad.net/~ge0rg
+  Gianfranco Frisani https://launchpad.net/~gfrisani
+  Lorenzo J. Lucchini https://launchpad.net/~ljl
   Pietro Pecchi https://launchpad.net/~pietro-pecchi</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
+	<string name="default_group">Generale</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Scegli il contatto</string>
 </resources>
