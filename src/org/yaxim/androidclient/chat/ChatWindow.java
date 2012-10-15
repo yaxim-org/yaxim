@@ -66,6 +66,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
+	
+	private static final int DELAY_NEWMSG = 2000;
 
 	private ContentObserver mContactObserver = new ContactObserver();
 	private ImageView mStatusMode;
@@ -267,6 +269,15 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		mServiceAdapter.sendMessage(mWithJabberID, message);
 	}
 
+	private void markAsReadDelayed(final int id, int delay) {
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				markAsRead(id);
+			}
+		}, delay);
+	}
+	
 	private void markAsRead(int id) {
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
@@ -319,7 +330,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			}
 
 			if (from_me == 0 && delivery_status == 0) {
-				markAsRead(_id);
+				markAsReadDelayed(_id, DELAY_NEWMSG);
 			}
 
 			String from = jid;
@@ -388,7 +399,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
 				mRowView.setPadding(l, t, r, b);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
-				backgroundColorAnimation.startTransition(2000);
+				backgroundColorAnimation.startTransition(DELAY_NEWMSG);
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
 				break;
 			case 1:

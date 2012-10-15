@@ -40,7 +40,7 @@
 			android:fastScrollEnabled="true"
 			android:stackFromBottom="true"
 			android:layout_above="@id/details" 
-			android:transcriptMode="alwaysScroll" />
+			android:transcriptMode="normal" />
 
 	</RelativeLayout>
 
