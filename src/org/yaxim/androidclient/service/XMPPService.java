@@ -331,8 +331,8 @@ public class XMPPService extends GenericService {
 					createAdapter();
 					if (!mSmackable.doConnect(create_account)) {
 						postConnectionFailed("Inconsistency in Smackable.doConnect()");
-					}
-					postConnectionEstablished();
+					} else
+						postConnectionEstablished();
 				} catch (YaximXMPPException e) {
 					String message = e.getLocalizedMessage();
 					if (e.getCause() != null)
