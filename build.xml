@@ -101,7 +101,7 @@
 	<!-- following lines copied from android-sdk build.xml -->
 	<path id="project.jars.ref">
 		<pathelement location="${out.classes.absolute.dir}" />
-		<path refid="project.libraries.jars" />
+		<path refid="project.all.jars.path" />
 	</path>
 	<pathconvert property="project.jars" refid="project.jars.ref">
 		<firstmatchmapper>
@@ -113,7 +113,7 @@
         <proguard configuration="proguard.cfg">
 	    -injars ${project.jars}
 	    -outjars ${out.absolute.dir}/classes.min.jar
-	    -libraryjars ${android.jar}
+	    -libraryjars ${toString:project.target.class.path}
 	    -printusage ${out.absolute.dir}/proguard.usage
         </proguard>
     </target>
