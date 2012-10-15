@@ -1,3 +1,17 @@
+0.8.5:
+ * Implement XEP-0199 (client-to-server ping)
+ * Implement XEP-0184 (message delivery receipts)
+ * Privacy setting to suppress message content in notification
+ * Display number of new messages in roster
+ * Repair scrolling in chat window (fixes #53)
+ * Work around WiFi/3G reconnection bug
+ * Implement account creation with yaxim
+ * New actionbar
+ * Dark/light theme
+ * Font size preference
+ * Display number of members in roster group (fixes #41)
+ * Backend database changes
+
 0.8.4:
  * New user-friendly first startup dialog
  * Support Android 3.x and 4.x
