@@ -139,6 +139,12 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+		markAsRead();
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		updateContactStatus();
@@ -267,13 +273,13 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		mServiceAdapter.sendMessage(mWithJabberID, message);
 	}
 
-	private void markAsRead(int id) {
-		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
-			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
-		Log.d(TAG, "markAsRead: " + rowuri);
+	private void markAsRead() {
+		Log.d(TAG, "markAsRead " + mWithJabberID);
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT);
-		getContentResolver().update(rowuri, values, null, null);
+		getContentResolver().update(ChatProvider.CONTENT_URI, values,
+				"jid = ? AND read = ?",
+				new String[] { mWithJabberID, "" + ChatConstants.DS_NEW });
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -316,10 +322,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				row.setTag(wrapper);
 			} else {
 				wrapper = (ChatItemWrapper) row.getTag();
-			}
-
-			if (from_me == 0 && delivery_status == 0) {
-				markAsRead(_id);
 			}
 
 			String from = jid;
@@ -389,7 +391,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				mRowView.setPadding(l, t, r, b);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(2000);
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
+				// display "ok" on unread incoming messages
+				getIconView().setImageResource(from_me ? R.drawable.ic_chat_msg_status_queued : R.drawable.ic_chat_msg_status_unread);
 				break;
 			case 1:
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_unread);
