@@ -283,7 +283,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
 		Log.d(TAG, "markAsRead: " + rowuri);
 		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT);
+		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 		getContentResolver().update(rowuri, values, null, null);
 	}
 

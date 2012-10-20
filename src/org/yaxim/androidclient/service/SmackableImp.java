@@ -380,7 +380,7 @@ public class SmackableImp implements Smackable {
 		final int       TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
 		final int PACKETID_COL = cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID);
 		ContentValues mark_sent = new ContentValues();
-		mark_sent.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT);
+		mark_sent.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 		while (cursor.moveToNext()) {
 			int _id = cursor.getInt(_ID_COL);
 			String toJID = cursor.getString(JID_COL);
@@ -432,7 +432,7 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT,
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
 					System.currentTimeMillis(), newMessage.getPacketID());
 			mXMPPConnection.sendPacket(newMessage);
 		} else {
