@@ -313,8 +313,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
-			int from_me = cursor.getInt(cursor
-					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION));
+			boolean from_me = (cursor.getInt(cursor
+					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
+					ChatConstants.OUTGOING);
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.JID));
 			int delivery_status = cursor.getInt(cursor
@@ -329,14 +330,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			if (from_me == 0 && delivery_status == ChatConstants.DS_NEW) {
+			if (!from_me && delivery_status == ChatConstants.DS_NEW) {
 				markAsReadDelayed(_id, DELAY_NEWMSG);
 			}
 
 			String from = jid;
 			if (jid.equals(mJID))
 				from = mScreenName;
-			wrapper.populateFrom(date, from_me != 0, from, message, delivery_status);
+			wrapper.populateFrom(date, from_me, from, message, delivery_status);
 
 			return row;
 		}
