@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import org.yaxim.androidclient.util.AdapterConstants;
 import org.yaxim.androidclient.R;
 
 public class GroupNameView extends LinearLayout implements OnItemSelectedListener {
