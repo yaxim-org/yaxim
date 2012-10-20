@@ -721,7 +721,7 @@ public class SmackableImp implements Smackable {
 					DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension("received", DeliveryReceipt.NAMESPACE);
 					if (dr != null) {
 						Log.d(TAG, "got delivery receipt for " + dr.getId());
-						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_DELIVERED);
+						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 					}
 
 					if (chatMessage == null) {
