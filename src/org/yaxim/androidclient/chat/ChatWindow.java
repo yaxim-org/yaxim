@@ -329,7 +329,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				wrapper = (ChatItemWrapper) row.getTag();
 			}
 
-			if (from_me == 0 && delivery_status == 0) {
+			if (from_me == 0 && delivery_status == ChatConstants.DS_NEW) {
 				markAsReadDelayed(_id, DELAY_NEWMSG);
 			}
 
@@ -379,7 +379,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				getFromView().setTextColor(tv.data);
 			}
 			switch (delivery_status) {
-			case 0:
+			case ChatConstants.DS_NEW:
 				ColorDrawable layers[] = new ColorDrawable[2];
 				getTheme().resolveAttribute(R.attr.ChatNewMessageColor, tv, true);
 				layers[0] = new ColorDrawable(tv.data);
@@ -402,11 +402,11 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				backgroundColorAnimation.startTransition(DELAY_NEWMSG);
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
 				break;
-			case 1:
+			case ChatConstants.DS_SENT_OR_READ:
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_unread);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
-			case 2:
+			case ChatConstants.DS_ACKED:
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_ok);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
@@ -414,7 +414,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			getMessageView().setText(message);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 		}
-        
 		
 		TextView getDateView() {
 			if (mDateView == null) {
