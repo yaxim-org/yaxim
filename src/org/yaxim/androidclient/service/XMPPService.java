@@ -496,7 +496,6 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
-
 			public void newMessage(String from, String message) {
 				logInfo("notification: " + from);
 				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from));
@@ -509,10 +508,6 @@ public class XMPPService extends GenericService {
 			public void disconnectOnError() {
 				logInfo("Smackable disconnected on error");
 				postConnectionFailed(getString(R.string.conn_disconnected));
-			}
-
-			public boolean isBoundTo(String jabberID) {
-				return mIsBoundTo.contains(jabberID);
 			}
 		});
 	}
