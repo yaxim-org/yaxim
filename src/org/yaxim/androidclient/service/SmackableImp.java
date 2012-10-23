@@ -587,10 +587,13 @@ public class SmackableImp implements Smackable {
 	 */
 	private class PingAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
-			debugLog("Ping Alarm received.");
-			sendPing();
-			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, 
-					System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+			if (mXMPPConnection.isAuthenticated()) {
+				debugLog("Ping Alarm received.");
+				sendPing();
+				((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, 
+						System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+			} else
+				debugLog("Ping Alarm received, but not connected to server.");
 		}
 	}
 
