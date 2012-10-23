@@ -242,8 +242,7 @@ public class ChatProvider extends ContentProvider {
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.yaxim.chat";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.yaxim.chat";
-		public static final String DEFAULT_SORT_ORDER = ChatConstants.DATE
-				+ " ASC";
+		public static final String DEFAULT_SORT_ORDER = "_id ASC"; // sort by auto-id
 
 		public static final String DATE = "date";
 		public static final String DIRECTION = "from_me";
