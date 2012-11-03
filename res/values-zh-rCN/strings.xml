@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">正在连接服务端……</string>
 	<string name="conn_online">在线</string>
 	<string name="conn_offline">离线</string>
@@ -18,8 +18,8 @@
 	<string name="Global_JID_hint">user@jabber.example.com</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
-	<string name="StartupDialog_Summary">你需要先配置yaxim才能使用。请输入你的Jabber标识和密码。</string>
+	<string name="StartupDialog_Title">欢迎使用Bruno！</string>
+	<string name="StartupDialog_Summary">你需要先配置Bruno才能使用。请输入你的Jabber标识和密码。</string>
 	<string name="StartupDialog_pwHint">输入密码</string>
 	<string name="StartupDialog_Username_title">Jabber ID</string>
 	<string name="StartupDialog_passwd_title">密码：</string>
@@ -51,7 +51,7 @@
 	<string name="statuspopup_name">设置您的状态</string>
 	<string name="showOffline_summ">总是显示所有联系人</string>
 	<string name="showOffline_title">显示离线联系人</string>
-	<string name="foregroundService_summ">保持yaxim一直在线（后台挂机）</string>
+	<string name="foregroundService_summ">保持Bruno一直在线（后台挂机）</string>
 	<string name="foregroundService_title">状态栏图标</string>
 
 	<string name="preftitle_debug">正在调试</string>
@@ -93,7 +93,7 @@
 	<string name="Menu_Status">状态</string>
 	<string name="Menu_connect">连接</string>
 	<string name="Menu_disconnect">断开连接</string>
-	<string name="Menu_about">关于 yaxim</string>
+	<string name="Menu_about">关于 Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">添加一个联系人</string>
@@ -118,7 +118,7 @@
 	<string name="account_options_title">连接选项</string>
 	<string name="account_options_advanced">高级选项</string>
 	<string name="connstartup_title">启动时连接</string>
-	<string name="connstartup_summOn">yaxim打开时自动切换成在线状态</string>
+	<string name="connstartup_summOn">Bruno打开时自动切换成在线状态</string>
 	<string name="connstartup_summOff">不自动连接</string>
 	<string name="reconnect_title">自动连接</string>
 	<string name="reconnect_summ">连接丢失时自动重连</string>
@@ -131,9 +131,9 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">客户来源</string>
-	<string name="account_resource_summ">默认: yaxim</string>
+	<string name="account_resource_summ">默认: Bruno</string>
 	<string name="account_resource_dialog_title">输入你的来源</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">客户端优先级</string>
 	<string name="account_prio_summ">默认：０（允许范围：-128..127）</string>
 	<string name="account_prio_dialog_title">输入您的优先级</string>
@@ -177,7 +177,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">关于 yaxim</string>
+	<string name="AboutDialog_title">关于 Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">开发者</string>
 	<string name="AboutDialog_DevelopersText">联系开发者：http://yaxim.org 或者 freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">许可</string>

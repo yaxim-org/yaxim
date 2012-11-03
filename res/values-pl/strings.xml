@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Łączenie z serwerem…</string>
 	<string name="conn_online">Połączony</string>
 	<string name="conn_offline">Rozłączony</string>
@@ -18,8 +18,8 @@
 	<string name="Global_JID_hint">uzytkownik@jabber.serwer.com</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Witaj w yaxim!</string>
-	<string name="StartupDialog_Summary">Używanie yaxima wymaga konfiguracji. Podaj swój Jabber ID i hasło.</string>
+	<string name="StartupDialog_Title">Witaj w Bruno!</string>
+	<string name="StartupDialog_Summary">Używanie Brunoa wymaga konfiguracji. Podaj swój Jabber ID i hasło.</string>
 	<string name="StartupDialog_pwHint">Hasło</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Hasło:</string>
@@ -51,7 +51,7 @@
 	<string name="statuspopup_name">Ustaw swój status</string>
 	<string name="showOffline_summ">Zawsze pokazuj wszystkie kontakty na liście</string>
 	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>
-	<string name="foregroundService_summ">Utrzymuj yaxima w pamięci aby zapewnić stałe połączenie (usługa w tle)</string>
+	<string name="foregroundService_summ">Utrzymuj Brunoa w pamięci aby zapewnić stałe połączenie (usługa w tle)</string>
 	<string name="foregroundService_title">Ikona na pasku powiadomień</string>
 
 	<string name="preftitle_debug">Debugowanie</string>
@@ -131,9 +131,9 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">Zasób</string>
-	<string name="account_resource_summ">Domyślnie: yaxim</string>
+	<string name="account_resource_summ">Domyślnie: Bruno</string>
 	<string name="account_resource_dialog_title">Podaj zasób:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Priorytet klienta</string>
 	<string name="account_prio_summ">Domyślnie: 0 (dozwolone wartości: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Podaj priorytet klienta:</string>

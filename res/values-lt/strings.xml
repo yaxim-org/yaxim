@@ -18,8 +18,8 @@
 	<string name="Global_JID_hint">vartotojas@jabber.example.com</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Sveiki atvykę į yaxim!</string>
-	<string name="StartupDialog_Summary">Prieš naudojantis Jums reikia sukonfigūruoti yaxim. Įveskite savo Jabber ID ir slaptažodį.</string>
+	<string name="StartupDialog_Title">Sveiki atvykę į Bruno!</string>
+	<string name="StartupDialog_Summary">Prieš naudojantis Jums reikia sukonfigūruoti Bruno. Įveskite savo Jabber ID ir slaptažodį.</string>
 	<string name="StartupDialog_pwHint">Įveskite slaptažodį</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Slaptažodis:</string>
@@ -51,7 +51,7 @@
 	<string name="statuspopup_name">Nustatykite savo būseną</string>
 	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Rodyti atsijungusius adresatus</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Keep Bruno in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Programų derinimas</string>
@@ -93,7 +93,7 @@
 	<string name="Menu_Status">Būsena</string>
 	<string name="Menu_connect">Prisijungti</string>
 	<string name="Menu_disconnect">Atsijungti</string>
-	<string name="Menu_about">Apie yaxim</string>
+	<string name="Menu_about">Apie Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Pridėti kontaktą</string>
@@ -118,7 +118,7 @@
 	<string name="account_options_title">Prisijungimo parinktys</string>
 	<string name="account_options_advanced">Išplėstinės parinktys</string>
 	<string name="connstartup_title">Prisijungti paleidus programą</string>
-	<string name="connstartup_summOn">Tapti prisijungusiu kai yaxim atidarytas</string>
+	<string name="connstartup_summOn">Tapti prisijungusiu kai Bruno atidarytas</string>
 	<string name="connstartup_summOff">Neprisijungti automatiškai</string>
 	<string name="reconnect_title">Automatinis prisijungimas iš naujo</string>
 	<string name="reconnect_summ">Prisijungti iš naujo kai prarandamas ryšys</string>
@@ -131,7 +131,7 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">Kliento resursas</string>
-	<string name="account_resource_summ">Pagal nutylėjimą: yaxim</string>
+	<string name="account_resource_summ">Pagal nutylėjimą: Bruno</string>
 	<string name="account_resource_dialog_title">Įveskite resursą:</string>
 	<string name="account_resource_hint">Yaxim</string>
 	<string name="account_prio_title">Prioritetas</string>
@@ -177,7 +177,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Apie yaxim</string>
+	<string name="AboutDialog_title">Apie Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Plėtotojai</string>
 	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licencija</string>

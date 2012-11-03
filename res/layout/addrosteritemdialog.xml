@@ -41,7 +41,7 @@
 			android:maxWidth="200sp"
 			android:hint="@string/addFriend_aliasHint"
 			/>
-		<org.yaxim.androidclient.dialogs.GroupNameView
+		<org.yaxim.bruno.dialogs.GroupNameView
 			android:id="@+id/AddRosterItem_GroupName"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
