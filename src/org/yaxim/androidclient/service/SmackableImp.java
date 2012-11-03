@@ -120,7 +120,7 @@ public class SmackableImp implements Smackable {
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
 
 
-	private XMPPStreamHandler mStreamHandler;
+	private static XMPPStreamHandler mStreamHandler;
 
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver,
@@ -240,11 +240,17 @@ public class SmackableImp implements Smackable {
 			}
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setKeepAliveInterval(-1);
-			mXMPPConnection.connect();
-			mStreamHandler = new XMPPStreamHandler(mXMPPConnection, new YaximSmHandler());
+
+			boolean isResumePossible = (mStreamHandler != null) && mStreamHandler.isResumePossible();
+			debugLog("conn.tryToConnect: isResumePossible=" + isResumePossible);
+			// only bind if no resume possible
+			mXMPPConnection.connect(!isResumePossible);
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
+			if (mStreamHandler == null) {
+				mStreamHandler = new XMPPStreamHandler(mXMPPConnection, new YaximSmHandler());
+			} else mStreamHandler.switchConnection(mXMPPConnection);
 			mXMPPConnection.addConnectionListener(new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
 					mServiceCallBack.disconnectOnError();
@@ -254,20 +260,22 @@ public class SmackableImp implements Smackable {
 				public void reconnectionFailed(Exception e) { }
 				public void reconnectionSuccessful() { }
 			});
-			initServiceDiscovery();
-			// SMACK auto-logins if we were authenticated before
-			if (!mXMPPConnection.isAuthenticated()) {
-				if (create_account) {
-					Log.d(TAG, "creating new server account...");
-					AccountManager am = new AccountManager(mXMPPConnection);
-					am.createAccount(mConfig.userName, mConfig.password);
+			//mStreamHandler.notifyInitialLogin();
+			if (!isResumePossible) {
+				initServiceDiscovery();
+				// SMACK auto-logins if we were authenticated before
+				if (!mXMPPConnection.isAuthenticated()) {
+					if (create_account) {
+						Log.d(TAG, "creating new server account...");
+						AccountManager am = new AccountManager(mXMPPConnection);
+						am.createAccount(mConfig.userName, mConfig.password);
+					}
+					mXMPPConnection.login(mConfig.userName, mConfig.password,
+							mConfig.ressource);
 				}
-				mXMPPConnection.login(mConfig.userName, mConfig.password,
-						mConfig.ressource);
+				setStatusFromConfig();
 			}
-			mStreamHandler.notifyInitialLogin();
-			setStatusFromConfig();
-
+			Log.d(TAG, "tryToConnect: finished. " + isAuthenticated());
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
 		} catch (Exception e) {

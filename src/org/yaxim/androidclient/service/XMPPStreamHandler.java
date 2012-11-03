@@ -45,6 +45,11 @@ public class XMPPStreamHandler {
 		mSmListener = smListener;
 		startListening();
 	}
+
+	public void switchConnection(XMPPConnection newConnection) {
+		mConnection = newConnection;
+		startListening();
+	}
 	
 	public boolean isResumePossible() {
 		return sessionId != null;
@@ -68,11 +73,13 @@ public class XMPPStreamHandler {
 	private void sendEnablePacket() {
 		if (sessionId != null) {
 			// TODO binding
+			debug("sendEnablePacket(): " + sessionId);
 			StreamHandlingPacket resumePacket = new StreamHandlingPacket("resume", URN_SM_2);
 			resumePacket.addAttribute("h", String.valueOf(previousIncomingStanzaCount));
 			resumePacket.addAttribute("previd", sessionId);
 			mConnection.sendPacket(resumePacket);
 		} else {
+			debug("sendEnablePacket(). ");
 			StreamHandlingPacket enablePacket = new StreamHandlingPacket("enable", URN_SM_2);
 			enablePacket.addAttribute("resume", "true");
 			mConnection.sendPacket(enablePacket);
@@ -83,6 +90,7 @@ public class XMPPStreamHandler {
 	private void startListening() {
 		mConnection.addConnectionListener(new ConnectionListener() {
 			public void reconnectionSuccessful() {
+				debug("reconnectionSuccessful()");
 				if (isSmAvailable) {
 					sendEnablePacket();
 				} else {
@@ -96,6 +104,7 @@ public class XMPPStreamHandler {
 			public void reconnectingIn(int seconds) {}
 			
 			public void connectionClosedOnError(Exception e) {
+				debug("connectionClosedOnError(): "+ e);
 				if (isSmEnabled && sessionId != null) {
 					previousIncomingStanzaCount = incomingStanzaCount;
 				}
@@ -104,6 +113,7 @@ public class XMPPStreamHandler {
 			}
 			
 			public void connectionClosed() {
+				debug("connectionClosed().");
 				previousIncomingStanzaCount = -1;
 			}});
 		
@@ -141,7 +151,9 @@ public class XMPPStreamHandler {
 					StreamHandlingPacket shPacket = (StreamHandlingPacket)packet;
 					String name = shPacket.getElementName();
 					if ("sm".equals(name)) {
+						debug("SM available! \\o/");
 						isSmAvailable = true;
+						sendEnablePacket();
 					} else if ("r".equals(name)) {
 						incomingStanzaCount--;
 						StreamHandlingPacket ackPacket = new StreamHandlingPacket("a", URN_SM_2);
@@ -167,15 +179,18 @@ public class XMPPStreamHandler {
 							sessionId = shPacket.getAttribute("id");
 						}
 						sendList = new ArrayList<ManagedPacket>();
+						debug("Server enabled SM. id=" + sessionId);
 					} else if ("resumed".equals(name)) {
 						incomingStanzaCount = previousIncomingStanzaCount;
 						isSmEnabled = true;
+						debug("Server resumed SM. id=" + sessionId);
 					} else if ("failed".equals(name)) {
 						// Failed, shutdown and the parent will retry
 						mConnection.getRoster().setOfflineOnError(true);
 						mConnection.getRoster().setOfflinePresences();
 						sessionId = null;
 						mConnection.disconnect();
+						debug("Server failed SM!");
 						// isSmEnabled is already false
 					}
 				} else {

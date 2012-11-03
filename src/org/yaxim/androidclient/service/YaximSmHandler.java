@@ -10,7 +10,7 @@ public class YaximSmHandler implements StreamManagementListener {
 
 	@Override
 	public void SmPacketStatusIndication(Packet packet, int status) {
-		Log.d(TAG, "packetAcked called.");
+		Log.d(TAG, "packetAcked called:" + status);
 	}
 
 }
