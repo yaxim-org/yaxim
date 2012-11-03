@@ -9,8 +9,8 @@
 	<string name="conn_offline">Hors ligne</string>
 	<string name="conn_empty_roster">Aucun contact à afficher!</string>
 	<string name="conn_reconnect">\nReconnexion dans %d secondes.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_disconnected">Connexion fermée</string>
+	<string name="conn_networkchg">Le réseau a changé</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Quitter</string>
@@ -21,35 +21,35 @@
 	<string name="StartupDialog_Title">Bienvenue dans yaxim!</string>
 	<string name="StartupDialog_Summary">Vous devez configurer yaxim avant de pouvoir l\'utiliser. Merci d\'entrer votre identifiant Jabber et son mot de passe.</string>
 	<string name="StartupDialog_pwHint">Saisir un mot de passe</string>
-	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_Username_title">Identifiant Jabber :</string>
 	<string name="StartupDialog_passwd_title">Mot de passe :</string>
-	<string name="StartupDialog_advanced">Advanced…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
+	<string name="StartupDialog_advanced">Avancée...</string>
+	<string name="StartupDialog_create_new">Enregistrer un nouveau compte</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_message">Message de %s</string>
+	<string name="notification_anonymous_message">Message reçu</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notification de message</string>
 	<string name="led_title">LED clignotante</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
+	<string name="led_summ">LED clignotante lors de la réception d\'un nouveau message</string>
 	<string name="vibr_title">Vibration</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="vibr_summ">Vibration lors de la réception d\'un nouveau message</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
-		<item>System preference</item>
-		<item>Always</item>
+		<item>Jamais</item>
+		<item>Préférence système</item>
+		<item>Toujours</item>
 	</string-array>
 	<string name="ringtone_title">Sonnerie</string>
 	<string name="ringtone_summ">Sonnerie pour les messages entrants</string>
-	<string name="ticker_title">Message preview</string>
+	<string name="ticker_title">Prévisualisation du message</string>
 	<string name="ticker_summ">Show sender and message in status bar</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Options de démarrage</string>
 	<string name="statuspopup_name">Définissez votre status</string>
-	<string name="showOffline_summ">Always show all contacts in the roster</string>
+	<string name="showOffline_summ">Toujours afficher l\'ensemble des contacts dans la liste</string>
 	<string name="showOffline_title">Afficher les contacts hors ligne</string>
 	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Statusbar icon</string>
@@ -62,7 +62,7 @@
 	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
+	<string name="preftitle_app">Apparence</string>
 	<string name="FontChat_title">Chat font size</string>
 	<string name="FontChat_summ">Set chat font size</string>
 	<string name="FontChat_dialog">Chat font size</string>
@@ -72,16 +72,16 @@
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Thème</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Sombre</item>
+		<item>Clair</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Apparence</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
+		<item>petit</item>
 		<item>normal</item>
-		<item>large</item>
+		<item>grand</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -135,7 +135,7 @@
 	<string name="account_resource_dialog_title">Entrez votre resource :</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorité du client</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_summ">Par défaut: 0 (autorisé: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Entrez votre priorité</string>
 	<string name="account_port_title">Port du serveur</string>
 	<string name="account_port_sum">Par défaut : 5222</string>
@@ -167,7 +167,7 @@
 	<string name="chat_from_me">Moi :</string>
 	<string name="toast_connectfail_message">Connexion fermée !</string>
 	<string name="toast_stored_offline">Le message a été sauvegardé pour transmission.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_enterMsgHint">Entrer un message</string> 
 
 	<!-- GPS settings -->
 	<!--
@@ -179,7 +179,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">A propos de yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Communiquer avec les développeurs sur http://yaxim.org ou sur freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">License</string>
 	<string name="AboutDialog_Vote">Give Feedback</string>
 	<string name="AboutDialog_LicenceText">Ce programme est un logiciel libre : vous pouvez le redistribuez et/ou le modifier sous les termes de la version 2 de la licence GNU General Public License tel que publié par la Free Software Foundation. Lien : http://www.gnu.org/licenses/gpl-2.0.html\n \n Une partie de ce logiciel est fourni sous la licence MIT :\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \nis hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
@@ -192,6 +192,7 @@
 	<string name="status_offline">Hors ligne</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Cedric Heintz https://launchpad.net/~ced117
   Gabriel U. https://launchpad.net/~gabriel-ull
   Georg Lukas https://launchpad.net/~ge0rg
   Mathias Hablützel https://launchpad.net/~mathias-habluetzel
@@ -204,5 +205,5 @@
 	<string name="default_group">General</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Choisissez le contact</string>
 </resources>
