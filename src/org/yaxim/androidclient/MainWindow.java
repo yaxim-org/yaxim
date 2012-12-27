@@ -20,6 +20,7 @@ import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ComponentName;
@@ -33,6 +34,7 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -710,6 +712,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	/** Sets if all contacts are shown in the roster or online contacts only. */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 	private void setOfflinceContactsVisibility(boolean showOffline) {
 		this.showOffline = showOffline;
 		invalidateOptionsMenu();
@@ -793,6 +796,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		xmppServiceConnection = new ServiceConnection() {
 
+			@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				Log.i(TAG, "called onServiceConnected()");
 				serviceAdapter = new XMPPRosterServiceAdapter(
@@ -837,6 +841,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 						final boolean willReconnect)
 						throws RemoteException {
 				mainHandler.post(new Runnable() {
+					@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 					public void run() {
 						Log.d(TAG, "connectionStatusChanged: " + isConnected + "/" + willReconnect);
 						setConnectingStatus(!isConnected && willReconnect);
