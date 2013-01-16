@@ -24,14 +24,24 @@ import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.xmlpull.v1.XmlPullParser;
 
+/**
+ * Packet extension for XEP-0280: Message Carbons. This class implements
+ * the packet extension and a {@link PacketExtensionProvider} to parse
+ * message carbon copies from a packet. The extension
+ * <a href="http://xmpp.org/extensions/xep-0280.html">XEP-0280</a> is
+ * meant to synchronize a message flow to multiple presences of a user.
+ *
+ * <p>The {@link Carbon.Provider} must be registered in the
+ * <b>smack.properties</b> file for the elements <b>sent</b> and
+ * <b>received</b> with namespace <b>urn:xmpp:carbons:2</b></p> to be used.
+ *
+ * @author Georg Lukas
+ */
 public class Carbon implements PacketExtension {
     public static final String NAMESPACE = "urn:xmpp:carbons:2";
 
     Direction dir;
     Forwarded fwd;
-
-    public Carbon() {
-    }
 
     public Carbon(Direction dir, Forwarded fwd) {
         this.dir = dir;
@@ -64,6 +74,9 @@ public class Carbon implements PacketExtension {
 	return fwd;
     }
 
+    /**
+     * An enum to display the direction of a {@link Carbon} message.
+     */
     public static enum Direction {
 	received,
 	sent
@@ -73,15 +86,18 @@ public class Carbon implements PacketExtension {
 
 	public PacketExtension parseExtension(XmlPullParser parser) throws Exception {
 	    Direction dir = Direction.valueOf(parser.getName());
-	    Forwarded fwd;
-	    android.util.Log.d("Carbon", "at the beginning: " + parser.getName());
-	    parser.next();
-	    android.util.Log.d("Carbon", "after first: " + parser.getName());
-	    if (parser.getName().equals("forwarded"))
-		fwd = (Forwarded)new Forwarded.Provider().parseExtension(parser);
-	    else throw new Exception("sent/received must contain exactly one <forwarded> tag");
-	    int type = parser.next();
-	    android.util.Log.d("Carbon", "at the end: " + parser.getName() + " t="+type);
+	    Forwarded fwd = null;
+
+	    boolean done = false;
+	    while (!done) {
+		int eventType = parser.next();
+		if (eventType == XmlPullParser.START_TAG && parser.getName().equals("forwarded")) {
+		    fwd = (Forwarded)new Forwarded.Provider().parseExtension(parser);
+		} else if (eventType == XmlPullParser.END_TAG && parser.getName().equals(dir))
+		    done = true;
+	    }
+	    if (fwd == null)
+		throw new Exception("sent/received must contain exactly one <forwarded> tag");
 	    return new Carbon(dir, fwd);
 	}
     }
