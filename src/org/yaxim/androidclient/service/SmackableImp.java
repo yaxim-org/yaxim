@@ -45,6 +45,8 @@ import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
+import org.yaxim.androidclient.packet.*;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -725,7 +727,22 @@ public class SmackableImp implements Smackable {
 					}
 
 					if (chatMessage == null) {
-						return;
+						// first try to get an incoming copy
+						Carbon cc = (Carbon)msg.getExtension("received", Carbon.NAMESPACE);
+						if (cc == null) {
+							cc = (Carbon)msg.getExtension("sent", Carbon.NAMESPACE);
+							Log.d(TAG, "carbon: " + cc.toXML());
+							msg = (Message)cc.getForwarded().getPacket();
+							chatMessage = msg.getBody();
+							String fromJID = getJabberID(msg.getTo());
+
+							addChatMessageToDB(ChatConstants.OUTGOING, fromJID, chatMessage, ChatConstants.DS_SENT_OR_READ, System.currentTimeMillis(), msg.getPacketID());
+							return;
+						} 
+						Log.d(TAG, "carbon: " + cc.toXML());
+						msg = (Message)cc.getForwarded().getPacket();
+						chatMessage = msg.getBody();
+						if (chatMessage == null) return;
 					}
 					if (msg.getType() == Message.Type.error) {
 						chatMessage = "<Error> " + chatMessage;
