@@ -84,6 +84,10 @@ public class SmackableImp implements Smackable {
 		// add delayed delivery notifications
 		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
+		// add carbons and forwarding
+		pm.addExtensionProvider("forwarded", Forwarded.NAMESPACE, new Forwarded.Provider());
+		pm.addExtensionProvider("sent", Carbon.NAMESPACE, new Carbon.Provider());
+		pm.addExtensionProvider("received", Carbon.NAMESPACE, new Carbon.Provider());
 		// add delivery receipts
 		pm.addExtensionProvider("received", DeliveryReceipt.NAMESPACE, new DeliveryReceiptProvider());
 		// add XMPP Ping (XEP-0199)
@@ -179,6 +183,7 @@ public class SmackableImp implements Smackable {
 
 		sdm.addFeature("http://jabber.org/protocol/disco#info");
 		sdm.addFeature(DeliveryReceipt.NAMESPACE);
+		sdm.addFeature(Carbon.NAMESPACE);
 		sdm.addFeature("urn:xmpp:ping");
 	}
 
@@ -364,6 +369,14 @@ public class SmackableImp implements Smackable {
 
 
 	public void setStatusFromConfig() {
+		IQ enableCC = new IQ() {
+			public String getChildElementXML() {
+				return "<enable xmlns='urn:xmpp:carbons:2'/>";
+			}
+		};
+		enableCC.setType(IQ.Type.SET);
+		mXMPPConnection.sendPacket(enableCC);
+
 		Presence presence = new Presence(Presence.Type.available);
 		Mode mode = Mode.valueOf(mConfig.statusMode);
 		presence.setMode(mode);
