@@ -91,8 +91,10 @@ public class Forwarded implements PacketExtension {
 	    Packet packet = null;
 
 	    boolean done = false;
+	    android.util.Log.d("Forwarded", "I am standing at: " + parser.getName());
 	    while (!done) {
 		int eventType = parser.next();
+		android.util.Log.d("Forwarded", "got: " + parser.getName());
 		if (eventType == XmlPullParser.START_TAG) {
 		    if (parser.getName().equals("delay"))
 			di = (DelayInfo)dip.parseExtension(parser);
@@ -102,6 +104,7 @@ public class Forwarded implements PacketExtension {
 		} else if (eventType == XmlPullParser.END_TAG && parser.getName().equals(ELEMENT_NAME))
 		    done = true;
 	    }
+	    android.util.Log.d("Forwarded", "end: " + parser.getName());
 	    if (packet == null)
 		throw new Exception("forwarded extension must contain a packet");
 	    return new Forwarded(di, packet);

@@ -742,10 +742,12 @@ public class SmackableImp implements Smackable {
 					// try to extract a carbon
 					Carbon cc;
 					if ((cc = (Carbon)msg.getExtension("received", Carbon.NAMESPACE)) != null) {
+						Log.d(TAG, "carbon: " + cc.toXML());
 						msg = (Message)cc.getForwarded().getPacket();
 						chatMessage = msg.getBody();
 						// fall through
 					}  else if ((cc = (Carbon)msg.getExtension("sent", Carbon.NAMESPACE)) != null) {
+						Log.d(TAG, "carbon: " + cc.toXML());
 						msg = (Message)cc.getForwarded().getPacket();
 						chatMessage = msg.getBody();
 						String fromJID = getJabberID(msg.getTo());

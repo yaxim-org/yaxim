@@ -89,13 +89,16 @@ public class Carbon implements PacketExtension {
 	    Forwarded fwd = null;
 
 	    boolean done = false;
+	    android.util.Log.d("Carbon", "start: " + parser.getName());
 	    while (!done) {
 		int eventType = parser.next();
+		android.util.Log.d("Carbon", "got: " + parser.getName());
 		if (eventType == XmlPullParser.START_TAG && parser.getName().equals("forwarded")) {
 		    fwd = (Forwarded)new Forwarded.Provider().parseExtension(parser);
 		} else if (eventType == XmlPullParser.END_TAG && dir == Direction.valueOf(parser.getName()))
 		    done = true;
 	    }
+	    android.util.Log.d("Carbon", "end: " + parser.getName());
 	    if (fwd == null)
 		throw new Exception("sent/received must contain exactly one <forwarded> tag");
 	    return new Carbon(dir, fwd);
