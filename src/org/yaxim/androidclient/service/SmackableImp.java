@@ -739,24 +739,26 @@ public class SmackableImp implements Smackable {
 						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 					}
 
-					if (chatMessage == null) {
-						// first try to get an incoming copy
-						Carbon cc = (Carbon)msg.getExtension("received", Carbon.NAMESPACE);
-						if (cc == null) {
-							cc = (Carbon)msg.getExtension("sent", Carbon.NAMESPACE);
-							Log.d(TAG, "carbon: " + cc.toXML());
-							msg = (Message)cc.getForwarded().getPacket();
-							chatMessage = msg.getBody();
-							String fromJID = getJabberID(msg.getTo());
-
-							addChatMessageToDB(ChatConstants.OUTGOING, fromJID, chatMessage, ChatConstants.DS_SENT_OR_READ, System.currentTimeMillis(), msg.getPacketID());
-							return;
-						} 
-						Log.d(TAG, "carbon: " + cc.toXML());
+					// try to extract a carbon
+					Carbon cc;
+					if ((cc = (Carbon)msg.getExtension("received", Carbon.NAMESPACE)) != null) {
 						msg = (Message)cc.getForwarded().getPacket();
 						chatMessage = msg.getBody();
-						if (chatMessage == null) return;
+						// fall through
+					}  else if ((cc = (Carbon)msg.getExtension("sent", Carbon.NAMESPACE)) != null) {
+						msg = (Message)cc.getForwarded().getPacket();
+						chatMessage = msg.getBody();
+						String fromJID = getJabberID(msg.getTo());
+
+						addChatMessageToDB(ChatConstants.OUTGOING, fromJID, chatMessage, ChatConstants.DS_SENT_OR_READ, System.currentTimeMillis(), msg.getPacketID());
+						// always return after adding
+						return;
 					}
+
+					if (chatMessage == null) {
+						return;
+					}
+
 					if (msg.getType() == Message.Type.error) {
 						chatMessage = "<Error> " + chatMessage;
 					}
