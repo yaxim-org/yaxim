@@ -93,7 +93,7 @@ public class Carbon implements PacketExtension {
 		int eventType = parser.next();
 		if (eventType == XmlPullParser.START_TAG && parser.getName().equals("forwarded")) {
 		    fwd = (Forwarded)new Forwarded.Provider().parseExtension(parser);
-		} else if (eventType == XmlPullParser.END_TAG && parser.getName().equals(dir))
+		} else if (eventType == XmlPullParser.END_TAG && dir == Direction.valueOf(parser.getName()))
 		    done = true;
 	    }
 	    if (fwd == null)
