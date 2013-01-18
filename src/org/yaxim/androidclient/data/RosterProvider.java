@@ -300,7 +300,7 @@ public class RosterProvider extends ContentProvider {
 		public static final String STATUS_MESSAGE = "status_message";
 		public static final String GROUP = "roster_group";
 
-		public static final String DEFAULT_SORT_ORDER = STATUS_MODE + " DESC, " + ALIAS;
+		public static final String DEFAULT_SORT_ORDER = STATUS_MODE + " DESC, " + ALIAS + " COLLATE NOCASE";
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
