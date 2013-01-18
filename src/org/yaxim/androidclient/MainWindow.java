@@ -641,6 +641,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 			versionTitle += " v" + pi.versionName;
 		} catch (NameNotFoundException e) {
 		}
+
+		// fix translator-credits: hide if unset, format otherwise
+		TextView tcv = (TextView)about.findViewById(R.id.translator_credits);
+		if (tcv.getText().equals("translator-credits"))
+			tcv.setVisibility(View.GONE);
+
 		new AlertDialog.Builder(this)
 			.setTitle(versionTitle)
 			.setIcon(android.R.drawable.ic_dialog_info)

@@ -61,6 +61,7 @@
 			style="?attr/dialogTextColor"
 			/>
 		<TextView
+			android:id="@+id/translator_credits"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/translator_credits"
