@@ -750,6 +750,7 @@ public class SmackableImp implements Smackable {
 						Log.d(TAG, "carbon: " + cc.toXML());
 						msg = (Message)cc.getForwarded().getPacket();
 						chatMessage = msg.getBody();
+						if (chatMessage == null) return;
 						String fromJID = getJabberID(msg.getTo());
 
 						addChatMessageToDB(ChatConstants.OUTGOING, fromJID, chatMessage, ChatConstants.DS_SENT_OR_READ, System.currentTimeMillis(), msg.getPacketID());
