@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -15,6 +17,8 @@ import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
+import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -619,6 +623,29 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	
+	private void mucTest() {
+		Log.i(TAG, "called startXMPPService()");
+		Intent muctestIntent = new Intent(this, XMPPService.class);
+		Uri dtaUri = Uri.parse("test@conference.kanojo.de?chat");
+		muctestIntent.setData(dtaUri);
+		muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+
+		ServiceConnection muctestServiceConnection = new ServiceConnection() {
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				Log.i("muctest","Service Connected!");
+				IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+				try {
+					mucService.mucTest();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			}
+			public void onServiceDisconnected(ComponentName name) {}
+		};
+		bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
+	}
+	
 	private void aboutDialog() {
 		LayoutInflater inflater = (LayoutInflater)getSystemService(
 			      LAYOUT_INFLATER_SERVICE);
@@ -694,6 +721,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		case R.id.menu_about:
 			aboutDialog();
+			return true;
+			
+		case R.id.menu_testmuc:
+			mucTest();
 			return true;
 
 		}

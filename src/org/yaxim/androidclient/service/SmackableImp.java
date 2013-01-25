@@ -36,6 +36,7 @@ import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
@@ -1181,5 +1182,22 @@ public class SmackableImp implements Smackable {
 	@Override
 	public String getLastError() {
 		return mLastError;
+    }
+
+    @Override
+	public void mucTest() {
+		Log.i(TAG, "starting muctest");
+		MultiUserChat muc = new MultiUserChat(mXMPPConnection, "test@conference.kanojo.de");
+		try {
+			muc.join("test01");
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		}
+		Log.i(TAG, "muc obj is now: "+muc);
+		try {
+			muc.sendMessage("woah, i'm joined!");
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		}
 	}
 }
