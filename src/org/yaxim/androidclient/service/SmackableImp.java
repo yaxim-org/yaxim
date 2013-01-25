@@ -137,6 +137,7 @@ public class SmackableImp implements Smackable {
 			this.mXMPPConfig = new ConnectionConfiguration(mConfig.server); // use SRV
 		this.mXMPPConfig.setReconnectionAllowed(false);
 		this.mXMPPConfig.setSendPresence(false);
+		this.mXMPPConfig.setCompressionEnabled(true);
 		this.mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
 		if (config.require_ssl)
 			this.mXMPPConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
