@@ -1,14 +1,26 @@
 package org.yaxim.androidclient.service;
 
 import java.io.File;
+import java.text.Collator;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
 import org.jivesoftware.smack.AccountManager;
+import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
@@ -33,14 +45,24 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
 import org.jivesoftware.smackx.entitycaps.EntityCapsManager;
 import org.jivesoftware.smackx.entitycaps.cache.SimpleDirectoryPersistentCache;
+import org.jivesoftware.smackx.Form;
+import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
+import org.jivesoftware.smackx.muc.DiscussionHistory;
+import org.jivesoftware.smackx.muc.InvitationListener;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.muc.Occupant;
 import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
+import org.jivesoftware.smackx.provider.MUCAdminProvider;
+import org.jivesoftware.smackx.provider.MUCOwnerProvider;
+import org.jivesoftware.smackx.provider.MUCUserProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
@@ -53,6 +75,7 @@ import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
 import org.jivesoftware.smackx.receipts.ReceiptReceivedListener;
 import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
@@ -77,6 +100,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 
 import android.net.Uri;
+import android.telephony.gsm.SmsMessage.MessageClass;
 import android.util.Log;
 
 public class SmackableImp implements Smackable {
@@ -132,6 +156,13 @@ public class SmackableImp implements Smackable {
 		// XEP-0115 Entity Capabilities
 		pm.addExtensionProvider("c", "http://jabber.org/protocol/caps", new CapsExtensionProvider());
 
+		//  MUC User
+		pm.addExtensionProvider("x","http://jabber.org/protocol/muc#user", new MUCUserProvider());
+		//  MUC Admin
+		pm.addIQProvider("query","http://jabber.org/protocol/muc#admin", new MUCAdminProvider());
+		//  MUC Owner
+		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
+
 		XmppStreamHandler.addExtensionProviders();
 	}
 
@@ -171,6 +202,9 @@ public class SmackableImp implements Smackable {
 
 	private PongTimeoutAlarmReceiver mPongTimeoutAlarmReceiver = new PongTimeoutAlarmReceiver();
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
+	
+	private final HashSet<String> mucJIDs = new HashSet<String>();
+	private Map<String, MultiUserChat> multiUserChats;
 
 
 	public SmackableImp(YaximConfiguration config,
@@ -219,6 +253,7 @@ public class SmackableImp implements Smackable {
 		});
 		mConfig.reconnect_required = false;
 
+		multiUserChats = new HashMap<String, MultiUserChat>();
 		initServiceDiscovery();
 	}
 
@@ -235,6 +270,7 @@ public class SmackableImp implements Smackable {
 			registerMessageListener();
 			registerPresenceListener();
 			registerPongListener();
+			syncDbRooms();
 			sendOfflineMessages();
 			sendUserWatching();
 			// we need to "ping" the service to let it know we are actually
@@ -528,11 +564,18 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.removeConnectionListener(mConnectionListener);
 			mConnectionListener = new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
+					// XXX: this is the only callback we get from errors, so
+					// we need to check for non-resumability and work around
+					// here:
+					if (!mStreamHandler.isResumePossible()) {
+						multiUserChats.clear();
+					}
 					onDisconnected(e);
 				}
 				public void connectionClosed() {
 					// TODO: fix reconnect when we got kicked by the server or SM failed!
 					//onDisconnected(null);
+					multiUserChats.clear();
 					updateConnectionState(ConnectionState.OFFLINE);
 				}
 				public void reconnectingIn(int seconds) { }
@@ -555,6 +598,7 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
 			if (need_bind) {
 				mStreamHandler.notifyInitialLogin();
+				cleanupMUCs();
 				setStatusFromConfig();
 			}
 
@@ -643,6 +687,7 @@ public class SmackableImp implements Smackable {
 		Collection<RosterEntry> rosterEntries = mRoster.getEntries();
 		StringBuilder exclusion = new StringBuilder(RosterConstants.JID + " NOT IN (");
 		boolean first = true;
+		
 		for (RosterEntry rosterEntry : rosterEntries) {
 			updateRosterEntryInDB(rosterEntry);
 			if (first)
@@ -651,7 +696,8 @@ public class SmackableImp implements Smackable {
 				exclusion.append(",");
 			exclusion.append("'").append(rosterEntry.getUser()).append("'");
 		}
-		exclusion.append(")");
+		
+		exclusion.append(") AND "+RosterConstants.GROUP+" NOT IN ('" + RosterProvider.RosterConstants.MUCS + "');");
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI, exclusion.toString(), null);
 		Log.d(TAG, "deleted " + count + " old roster entries");
 	}
@@ -746,9 +792,14 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
-					System.currentTimeMillis(), newMessage.getPacketID());
-			mXMPPConnection.sendPacket(newMessage);
+
+			if(mucJIDs.contains(toJID)) {
+				sendMucMessage(toJID, message);
+			} else {
+				addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
+						System.currentTimeMillis(), newMessage.getPacketID());
+				mXMPPConnection.sendPacket(newMessage);
+			}
 		} else {
 			// send offline -> store to DB
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_NEW,
@@ -788,12 +839,23 @@ public class SmackableImp implements Smackable {
 		setStatusOffline();
 		mService.unregisterReceiver(mPingAlarmReceiver);
 		mService.unregisterReceiver(mPongTimeoutAlarmReceiver);
+//		multiUserChats.clear(); // TODO: right place
 		this.mServiceCallBack = null;
 	}
 	
 	public String getNameForJID(String jid) {
-		if (null != this.mRoster.getEntry(jid) && null != this.mRoster.getEntry(jid).getName() && this.mRoster.getEntry(jid).getName().length() > 0) {
-			return this.mRoster.getEntry(jid).getName();
+		RosterEntry re = mRoster.getEntry(jid);
+		if (null != re && null != re.getName() && re.getName().length() > 0) {
+			return re.getName();
+		} else if (mucJIDs.contains(jid)) {
+			// query the DB as we do not have the room name in memory
+			Cursor c = mContentResolver.query(RosterProvider.CONTENT_URI, new String[] { RosterConstants.ALIAS },
+					RosterConstants.JID + " = ?", new String[] { jid }, null);
+			String result = jid;
+			if (c.moveToFirst())
+				result = c.getString(0);
+			c.close();
+			return result;
 		} else {
 			return jid;
 		}			
@@ -871,6 +933,15 @@ public class SmackableImp implements Smackable {
 	private String getBareJID(String from) {
 		String[] res = from.split("/");
 		return res[0].toLowerCase();
+	}
+
+	private String[] getJabberID(String from) {
+		if(from.contains("/")) {
+			String[] res = from.split("/");
+			return new String[] { res[0], res[1] };
+		} else {
+			return new String[] {from, ""};
+		}
 	}
 
 	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
@@ -1028,9 +1099,17 @@ public class SmackableImp implements Smackable {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 
-					String fromJID = getBareJID(msg.getFrom());
+					String[] fromJID = getJabberID(msg.getFrom());
+					
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
+
+					// check for jabber MUC invitation
+					if(msg.getExtension("jabber:x:conference") != null) {
+						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
+						handleMucInvitation(msg);
+						return;
+					}
 
 					// extract timestamp
 					long ts;
@@ -1051,10 +1130,10 @@ public class SmackableImp implements Smackable {
 
 						// outgoing carbon: fromJID is actually chat peer's JID
 						if (cc.getDirection() == Carbon.Direction.sent) {
-							fromJID = getBareJID(msg.getTo());
+							fromJID = getJabberID(msg.getTo());
 							direction = ChatConstants.OUTGOING;
 						} else {
-							fromJID = getBareJID(msg.getFrom());
+							fromJID = getJabberID(msg.getFrom());
 
 							// hook off carbonated delivery receipts
 							DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension(
@@ -1071,7 +1150,7 @@ public class SmackableImp implements Smackable {
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
 						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
-							mServiceCallBack.messageError(fromJID, msg.getError().toString(), (cc != null));
+							mServiceCallBack.notifyMessage(fromJID, msg.getError().toString(), (cc != null), Message.Type.error);
 						return; // we do not want to add errors as "incoming messages"
 					}
 
@@ -1086,9 +1165,22 @@ public class SmackableImp implements Smackable {
 					if (msg.getType() == Message.Type.error)
 						is_new = ChatConstants.DS_FAILED;
 
-					addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
-					if (direction == ChatConstants.INCOMING)
-						mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null));
+					boolean is_muc = (msg.getType() == Message.Type.groupchat);
+					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
+						(is_muc && multiUserChats.get(fromJID[0]).getNickname().equals(fromJID[1]));
+
+					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
+						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
+						// only notify on private messages or when MUC notification requested
+						boolean need_notify = !is_muc || mConfig.needMucNotification(multiUserChats.get(fromJID[0]).getNickname(), chatMessage);
+						// outgoing carbon -> clear notification by signalling 'null' message
+						if (is_from_me) {
+							mServiceCallBack.notifyMessage(fromJID, null, true, msg.getType());
+							// TODO: MUC PMs
+							ChatHelper.markAsRead(mService, fromJID[0]);
+						} else if (direction == ChatConstants.INCOMING && need_notify)
+							mServiceCallBack.notifyMessage(fromJID, chatMessage, (cc != null), msg.getType());
+					}
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
@@ -1099,6 +1191,34 @@ public class SmackableImp implements Smackable {
 		};
 
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
+	}
+
+
+	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
+		String muc = fromJid[0];
+		String nick = fromJid[1];
+		if (timestamp == null)
+			return true;
+
+		long ts = timestamp.getStamp().getTime();
+
+		final String[] projection = new String[] {
+				ChatConstants._ID, ChatConstants.MESSAGE,
+				ChatConstants.JID, ChatConstants.RESOURCE,
+				ChatConstants.PACKET_ID
+		};
+
+		if (packet_id == null) packet_id = "";
+		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)";
+		final String[] selectionArgs = new String[] { nick, packet_id, ""+ts, msg.getBody(), muc };
+		try {
+			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
+			Log.d(TAG, "message from " + nick + " matched " + cursor.getCount() + " items.");
+			boolean result = (cursor.getCount() == 0);
+			cursor.close();
+			return result;
+		} catch (Exception e) { e.printStackTrace(); } // just return true...
+		return true;	
 	}
 
 	private void registerPresenceListener() {
@@ -1128,18 +1248,25 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPresenceListener, new PacketTypeFilter(Presence.class));
 	}
 
-	private void addChatMessageToDB(int direction, String JID,
+	private void addChatMessageToDB(int direction, String[] tJID,
 			String message, int delivery_status, long ts, String packetID) {
 		ContentValues values = new ContentValues();
 
 		values.put(ChatConstants.DIRECTION, direction);
-		values.put(ChatConstants.JID, JID);
+		values.put(ChatConstants.JID, tJID[0]);
+		values.put(ChatConstants.RESOURCE, tJID[1]);
 		values.put(ChatConstants.MESSAGE, message);
 		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
 		values.put(ChatConstants.DATE, ts);
 		values.put(ChatConstants.PACKET_ID, packetID);
 
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
+	}
+
+	private void addChatMessageToDB(int direction, String JID,
+			String message, int delivery_status, long ts, String packetID) {
+		String[] tJID = {JID, ""};
+		addChatMessageToDB(direction, tJID, message, delivery_status, ts, packetID);
 	}
 
 	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
@@ -1220,5 +1347,148 @@ public class SmackableImp implements Smackable {
 	@Override
 	public String getLastError() {
 		return mLastError;
+	}
+
+	private void cleanupMUCs() {
+		mContentResolver.delete(RosterProvider.CONTENT_URI,
+				RosterProvider.RosterConstants.GROUP + " = ?",
+				new String[] { RosterProvider.RosterConstants.MUCS });
+	}
+
+	public void syncDbRooms() {
+		if (!isAuthenticated()) {
+			debugLog("syncDbRooms: aborting, not yet authenticated");
+		}
+
+		java.util.Set<String> joinedRooms = multiUserChats.keySet();
+		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI, 
+				new String[] {RosterProvider.RosterConstants._ID,
+					RosterProvider.RosterConstants.JID, 
+					RosterProvider.RosterConstants.PASSWORD, 
+					RosterProvider.RosterConstants.NICKNAME}, 
+				null, null, null);
+		final int ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants._ID);
+		final int JID_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.JID);
+		final int PASSWORD_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.PASSWORD);
+		final int NICKNAME_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.NICKNAME);
+		
+		mucJIDs.clear();
+		while(cursor.moveToNext()) {
+			int id = cursor.getInt(ID);
+			String jid = cursor.getString(JID_ID);
+			String password = cursor.getString(PASSWORD_ID);
+			String nickname = cursor.getString(NICKNAME_ID);
+			mucJIDs.add(jid);
+			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
+			if(!joinedRooms.contains(jid)) {
+				debugLog("room " + jid + " isn't joined yet, i wanna join...");
+				joinRoom(jid, nickname, password); // TODO: make historyLen configurable
+			}
+			//debugLog("found data in contentprovider: "+jid+" "+password+" "+nickname);
+		}
+		cursor.close();
+		
+		for(String room : new HashSet<String>(joinedRooms)) {
+			if(!mucJIDs.contains(room)) {
+				quitRoom(room);
+			}
+		}
+	}
+	
+	protected void handleMucInvitation(Message msg) {
+		mServiceCallBack.mucInvitationReceived(
+				msg.getFrom(),
+				msg.getBody()
+				);
+	}
+	
+	private boolean joinRoom(String room, String nickname, String password) {
+		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
+		
+		DiscussionHistory history = new DiscussionHistory();
+		final String[] projection = new String[] {
+				ChatConstants._ID, ChatConstants.DATE,
+				ChatConstants.JID, ChatConstants.MESSAGE,
+				ChatConstants.PACKET_ID
+		};
+		final String selection = String.format("%s = '%s'", projection[2], room);
+		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, 
+				selection, null, "date DESC LIMIT 1");
+		if(cursor.getCount()>0) {
+			cursor.moveToFirst();
+			long lastDate = cursor.getLong( cursor.getColumnIndexOrThrow(projection[1]) );
+			String msg =  cursor.getString( cursor.getColumnIndexOrThrow(projection[3]) );
+			Log.d(TAG, String.format("joining room %s i found %d rows of last date %d with msg %s, setting since to %s", room, cursor.getCount(), lastDate, msg, (new Date(lastDate)).toString()) );
+			history.setSince( new Date(lastDate) );
+		} else Log.d(TAG, "found no old DB messages");
+		cursor.close();
+		
+		try {
+			muc.join(nickname, password, history, 10*PACKET_TIMEOUT);
+		} catch (Exception e) {
+			Log.e(TAG, "Could not join MUC-room "+room);
+			e.printStackTrace();
+			return false;
+		}
+
+		if(muc.isJoined()) {
+			multiUserChats.put(room, muc);
+			ContentValues cvR = new ContentValues();
+			cvR.put(RosterProvider.RosterConstants.JID,room);
+			cvR.put(RosterProvider.RosterConstants.ALIAS,room);
+			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,"");
+			cvR.put(RosterProvider.RosterConstants.STATUS_MODE,4);
+			cvR.put(RosterProvider.RosterConstants.GROUP,"MUCs");
+			upsertRoster(cvR, room);
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void sendMucMessage(String room, String message) {
+		Message newMessage = new Message(room, Message.Type.groupchat);
+		newMessage.setBody(message);
+		addChatMessageToDB(ChatConstants.OUTGOING, room, message, ChatConstants.DS_NEW,
+				System.currentTimeMillis(), newMessage.getPacketID());
+		mXMPPConnection.sendPacket(newMessage);
+	}
+
+	private void quitRoom(String room) {
+		MultiUserChat muc = multiUserChats.get(room); 
+		muc.leave();
+		multiUserChats.remove(room);
+		mContentResolver.delete(RosterProvider.CONTENT_URI, "jid LIKE ?", new String[] {room});
+	}
+
+	@Override
+	public boolean inviteToRoom(String contactJid, String roomJid) {
+		MultiUserChat muc = multiUserChats.get(roomJid);
+		if(contactJid.contains("/")) {
+			contactJid = contactJid.split("/")[0];
+		}
+		Log.d(TAG, "invitng contact: "+contactJid+" to room: "+muc);
+		muc.invite(contactJid, "User "+contactJid+" has invited you to a chat!");
+		return false;
+	}
+
+	@Override
+	public List<ParcelablePresence> getUserList(String jid) {
+		MultiUserChat muc = multiUserChats.get(jid);
+		if (muc == null) {
+			return null;
+		}
+		Iterator<String> occIter = muc.getOccupants();
+		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
+		while(occIter.hasNext())
+			tmpList.add(new ParcelablePresence(muc.getOccupantPresence(occIter.next())));
+		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
+			@Override
+			public int compare(ParcelablePresence lhs, ParcelablePresence rhs) {
+				return java.text.Collator.getInstance().compare(lhs.resource, rhs.resource);
+			}
+		});
+		return tmpList;
 	}
 }

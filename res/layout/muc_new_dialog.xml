@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="15dp"
+    android:paddingTop="10dp"
+    >
+
+    <EditText
+        android:id="@+id/muc_new_jid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	android:layout_marginBottom="15dp"
+        android:hint="Room-JID"
+        android:inputType="textEmailAddress" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+	android:id="@+id/muc_status"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_marginBottom="15dp"
+	android:visibility="gone"
+	/>
+    <EditText
+        android:id="@+id/muc_new_nick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	android:layout_marginBottom="15dp"
+        android:hint="Nickname" />
+
+    <EditText
+        android:id="@+id/muc_new_pw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+</LinearLayout>

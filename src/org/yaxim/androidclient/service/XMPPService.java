@@ -1,15 +1,20 @@
 package org.yaxim.androidclient.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
+import org.yaxim.androidclient.MucInviteActivity;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.MucInviteActivity;
+
+import org.jivesoftware.smack.packet.Message.Type;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -24,9 +29,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.Toast;
 
 public class XMPPService extends GenericService {
 
+	private static final String TAG="yaxim.XMPPService";
+	
 	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false); // should we try to reconnect?
 	private static final int RECONNECT_AFTER = 5;
 	private static final int RECONNECT_MAXIMUM = 10*60;
@@ -43,6 +54,7 @@ public class XMPPService extends GenericService {
 	private boolean create_account = false;
 	private IXMPPRosterService.Stub mService2RosterConnection;
 	private IXMPPChatService.Stub mServiceChatConnection;
+	private IXMPPMucService.Stub mServiceMucConnection;
 
 	private RemoteCallbackList<IXMPPRosterCallback> mRosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
 	private HashSet<String> mIsBoundTo = new HashSet<String>();
@@ -53,7 +65,9 @@ public class XMPPService extends GenericService {
 		userStartedWatching();
 
 		String chatPartner = intent.getDataString();
-		if ((chatPartner != null)) {
+		if(chatPartner != null && chatPartner.endsWith("?chat")) {
+			return mServiceMucConnection;
+		} else if (chatPartner != null) {
 			resetNotificationCounter(chatPartner);
 			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
@@ -88,6 +102,7 @@ public class XMPPService extends GenericService {
 
 		createServiceRosterStub();
 		createServiceChatStub();
+		createServiceMucStub();
 
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
@@ -174,6 +189,47 @@ public class XMPPService extends GenericService {
 			
 			public void clearNotifications(String Jid) throws RemoteException {
 				clearNotification(Jid);
+			}
+		};
+	}
+	
+	private void createServiceMucStub() {
+		mServiceMucConnection = new IXMPPMucService.Stub() {
+			private void fail(String error) {
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						error, Toast.LENGTH_LONG);
+				toast.show();
+			}
+			@Override
+			public void sendMessage(String room, String message)
+					throws RemoteException {
+				if(mSmackable!=null)
+					mSmackable.sendMucMessage(room, message);
+				else
+					shortToastNotify(getString(R.string.Global_authenticate_first));
+			}
+			@Override
+			public void syncDbRooms() throws RemoteException {
+				if(mSmackable!=null)
+					mSmackable.syncDbRooms();
+			}
+			@Override
+			public boolean inviteToRoom(String contactJid, String roomJid) {
+				if(mSmackable!=null)
+					return mSmackable.inviteToRoom(contactJid, roomJid);
+				else {
+					shortToastNotify(getString(R.string.Global_authenticate_first));
+					return false;
+				}
+			}
+			@Override
+			public List<ParcelablePresence> getUserList(String jid) throws RemoteException {
+				if(mSmackable!=null)
+					return mSmackable.getUserList(jid);
+				else {
+					shortToastNotify(getString(R.string.Global_authenticate_first));
+					return null;
+				}
 			}
 		};
 	}
@@ -446,18 +502,14 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
-			public void newMessage(String from, String message, boolean silent_notification) {
-				logInfo("notification: " + from);
-				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from), silent_notification, false);
-			}
-
-			public void messageError(final String from, final String error, final boolean silent_notification) {
-				logInfo("error notification: " + from);
+			public void notifyMessage(final String[] from, final String message,
+					final boolean silent_notification, final Type msgType) {
+				logInfo("notification: " + from +" with type: "+msgType.name());
 				mMainHandler.post(new Runnable() {
 					public void run() {
 						// work around Toast fallback for errors
-						notifyClient(from, mSmackable.getNameForJID(from), error,
-							!mIsBoundTo.contains(from), silent_notification, true);
+						notifyClient(from, mSmackable.getNameForJID(from[0]), message,
+							!mIsBoundTo.contains(from[0]), silent_notification, msgType);
 					}});
 				}
 
@@ -477,6 +529,28 @@ public class XMPPService extends GenericService {
 				default:
 					updateServiceNotification();
 				}
+			}
+
+			@Override
+			public void mucInvitationReceived(String room, String body) {
+				//TypedValue tv = new TypedValue();
+				//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
+				Notification invNotify = new NotificationCompat.Builder(getApplicationContext()) // TODO: make translateable
+						 .setContentTitle("Chat Room "+room)
+						 .setContentText(body)
+						 .setSmallIcon(R.drawable.ic_action_group_dark) // TODO: make themed		
+						 .setTicker(body)
+						 .getNotification();
+				Intent invIntent = new Intent(getApplicationContext(), MucInviteActivity.class);
+				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_BODY, body);
+				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ROOM, room);
+				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ID, lastNotificationId);
+				invIntent.setAction("android.intent.action.SEND");
+				PendingIntent invPending = PendingIntent.getActivity(getApplicationContext(), 0, 
+						invIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+				invNotify.setLatestEventInfo(getApplicationContext(), body, body, invPending);
+				mNotificationMGR.notify(lastNotificationId, invNotify);
+				lastNotificationId += 1;
 			}
 		});
 	}

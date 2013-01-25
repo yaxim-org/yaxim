@@ -13,10 +13,18 @@ public class PreferenceConstants {
 	public final static String MESSAGE_CARBONS = "carbons";
 	public final static String SHOW_OFFLINE = "showOffline";
 	public final static String ENABLE_GROUPS = "enableGroups";
+
 	public final static String LEDNOTIFY = "led";
 	public final static String VIBRATIONNOTIFY = "vibration_list";
 	public final static String RINGTONENOTIFY= "ringtone";
 	public final static String TICKER = "ticker";
+	
+	public final static String HIGHLIGHTMUC = "muc_highlight";
+	public final static String LEDNOTIFYMUC = "muc_led";
+	public final static String VIBRATIONNOTIFYMUC = "muc_vibration_list";
+	public final static String RINGTONENOTIFYMUC = "muc_ringtone";
+	public final static String TICKERMUC = "muc_ticker";
+	
 	public final static String FOREGROUND = "foregroundService";
 	public final static String SMACKDEBUG = "smackdebug";
 	public final static String REPORT_CRASH = "reportcrash";

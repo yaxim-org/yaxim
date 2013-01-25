@@ -23,6 +23,7 @@
 		<item name="ChatStoredMessageColor">#60b0b0b0</item>
         <item name="ChatText">@style/ChatText.Light</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
+	<item name="ic_action_group">@drawable/ic_action_group_light</item>
     </style>
 
     <style name="IndeterminateProgress" parent="Widget.Sherlock.ProgressBar">
@@ -58,6 +59,7 @@
 		<item name="ErrorView">@style/StyleErrorView</item>
         <item name="ChatText">@style/ChatText</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
+	<item name="ic_action_group">@drawable/ic_action_group_dark</item>
     </style>
 
 </resources>

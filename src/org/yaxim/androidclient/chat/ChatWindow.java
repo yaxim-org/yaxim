@@ -38,7 +38,6 @@ import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
@@ -62,7 +61,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
 			ChatProvider.ChatConstants.DIRECTION, ChatProvider.ChatConstants.JID,
-			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.DELIVERY_STATUS };
+			ChatProvider.ChatConstants.RESOURCE, ChatProvider.ChatConstants.MESSAGE, 
+			ChatProvider.ChatConstants.DELIVERY_STATUS };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
@@ -74,34 +74,38 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private TextView mTitle;
 	private TextView mSubTitle;
 	private Button mSendButton = null;
-	private EditText mChatInput = null;
-	private String mWithJabberID = null;
+	protected EditText mChatInput = null;
+	protected String mWithJabberID = null;
 	private String mUserScreenName = null;
-	private Intent mServiceIntent;
-	private ServiceConnection mServiceConnection;
-	private XMPPChatServiceAdapter mServiceAdapter;
+	private Intent mChatServiceIntent;
+	private ServiceConnection mChatServiceConnection;
+	private XMPPChatServiceAdapter mChatServiceAdapter;
 	private int mChatFontSize;
+	private ActionBar actionBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		setContactFromUri();
+		Log.d(TAG, "onCreate, registering XMPP service");
+		registerXMPPService();
+
 		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
-	
+		
 		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.mainchat);
-		
+
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mContactObserver);
-
-		ActionBar actionBar = getSupportActionBar();
+		
+		actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		Log.d(TAG, "registrs for contextmenu...");
 		registerForContextMenu(getListView());
-		setContactFromUri();
-		registerXMPPService();
 		setSendButton();
 		setUserInput();
 		
@@ -174,42 +178,41 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		getContentResolver().unregisterContentObserver(mContactObserver);
 	}
 
-	private void registerXMPPService() {
+	protected void registerXMPPService() {
 		Log.i(TAG, "called startXMPPService()");
-		mServiceIntent = new Intent(this, XMPPService.class);
+		mChatServiceIntent = new Intent(this, XMPPService.class);
 		Uri chatURI = Uri.parse(mWithJabberID);
-		mServiceIntent.setData(chatURI);
-		mServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-
-		mServiceConnection = new ServiceConnection() {
-
+		mChatServiceIntent.setData(chatURI);
+		mChatServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+		
+		mChatServiceConnection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName name, IBinder service) {
-				Log.i(TAG, "called onServiceConnected()");
-				mServiceAdapter = new XMPPChatServiceAdapter(
+				Log.i(TAG, "called onServiceConnected() (for ChatService)");
+				mChatServiceAdapter = new XMPPChatServiceAdapter(
 						IXMPPChatService.Stub.asInterface(service),
 						mWithJabberID);
 				
-				mServiceAdapter.clearNotifications(mWithJabberID);
+				mChatServiceAdapter.clearNotifications(mWithJabberID);
 				updateContactStatus();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
-				Log.i(TAG, "called onServiceDisconnected()");
+				Log.i(TAG, "called onServiceDisconnected() (for ChatService)");
 			}
 
 		};
 	}
 
-	private void unbindXMPPService() {
+	protected void unbindXMPPService() {
 		try {
-			unbindService(mServiceConnection);
+			unbindService(mChatServiceConnection);
 		} catch (IllegalArgumentException e) {
 			Log.e(TAG, "Service wasn't bound!");
 		}
 	}
 
-	private void bindXMPPService() {
-		bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+	protected void bindXMPPService() {
+		bindService(mChatServiceIntent, mChatServiceConnection, BIND_AUTO_CREATE);
 	}
 
 	private void setSendButton() {
@@ -231,6 +234,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private void setContactFromUri() {
 		Intent i = getIntent();
 		mWithJabberID = i.getDataString().toLowerCase();
+		Log.d(TAG, "setting contact from URI: "+mWithJabberID);
 		if (i.hasExtra(INTENT_EXTRA_USERNAME)) {
 			mUserScreenName = i.getExtras().getString(INTENT_EXTRA_USERNAME);
 		} else {
@@ -251,13 +255,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		}
 	}
 
-	private CharSequence getMessageFromContextMenu(MenuItem item) {
+	private CharSequence getMessageFromContextMenu(android.view.MenuItem item) {
 		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
 		TextView message = (TextView)target.findViewById(R.id.chat_message);
 		return message.getText();
 	}
 
-	public boolean onContextItemSelected(MenuItem item) {
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.chat_contextmenu_copy_text:
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
@@ -273,6 +278,20 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 	
 
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		Log.d(TAG, "options item selected");
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, MainWindow.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	private View.OnClickListener getOnSetListener() {
 		return new View.OnClickListener() {
 
@@ -291,8 +310,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private void sendMessage(String message) {
 		mChatInput.setText(null);
 		mSendButton.setEnabled(false);
-		mServiceAdapter.sendMessage(mWithJabberID, message);
-		if (!mServiceAdapter.isServiceAuthenticated())
+		mChatServiceAdapter.sendMessage(mWithJabberID, message);
+		if (!mChatServiceAdapter.isServiceAuthenticated())
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
@@ -313,6 +332,15 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 		getContentResolver().update(rowuri, values, null, null);
+	}
+	
+	public String jid2nickname(String jid, String resource) {
+		String from = jid;
+		if (jid.equals(mWithJabberID))
+			from = mUserScreenName;
+		if (resource != null && resource.length() > 0)
+			from=from+"/"+resource;
+		return from;
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -346,6 +374,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 					ChatConstants.OUTGOING);
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.JID));
+			String resource = cursor.getString(
+					cursor.getColumnIndex(ChatProvider.ChatConstants.RESOURCE)
+					);
 			int delivery_status = cursor.getInt(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DELIVERY_STATUS));
 
@@ -362,11 +393,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				markAsReadDelayed(_id, DELAY_NEWMSG);
 			}
 
-			String from = jid;
-			if (jid.equals(mJID))
-				from = mScreenName;
-			wrapper.populateFrom(date, from_me, from, message, delivery_status);
-
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status);
 			return row;
 		}
 	}
@@ -391,9 +418,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			this.chatWindow = chatWindow;
 		}
 
+
 		void populateFrom(String date, boolean from_me, String from, String message,
 				int delivery_status) {
-//			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
@@ -402,7 +429,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
 			} else {
-				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
+				nick2Color(from, tv);
 				getDateView().setTextColor(tv.data);
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(tv.data);
@@ -515,19 +542,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		toastNotification.show();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			Intent intent = new Intent(this, MainWindow.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	private static final String[] STATUS_QUERY = new String[] {
 		RosterProvider.RosterConstants.STATUS_MODE,
 		RosterProvider.RosterConstants.STATUS_MESSAGE,
@@ -546,13 +560,19 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			mSubTitle.setVisibility((status_message != null && status_message.length() != 0)?
 					View.VISIBLE : View.GONE);
 			mSubTitle.setText(status_message);
-			if (mServiceAdapter == null || !mServiceAdapter.isServiceAuthenticated())
+			
+			if (mChatServiceAdapter == null || !mChatServiceAdapter.isServiceAuthenticated())
 				status_mode = 0; // override icon if we are offline
 			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
 		cursor.close();
 	}
 
+	// this method is a "virtual" placeholder for the MUC activity
+	public void nick2Color(String nick, TypedValue tv) {
+		getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
+	}
+	
 	private class ContactObserver extends ContentObserver {
 		public ContactObserver() {
 			super(new Handler());

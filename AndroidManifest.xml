@@ -39,6 +39,17 @@
 			android:windowSoftInputMode="stateHidden">
 		</activity>
 
+		<activity android:name=".MucInviteActivity" android:label="@string/app_name"
+			android:alwaysRetainTaskState="true"
+			android:configChanges="orientation|keyboardHidden|screenSize"
+			>
+		</activity>
+
+		<activity android:name=".chat.MUCChatWindow" android:label="@string/app_name"
+			android:alwaysRetainTaskState="true"
+			android:windowSoftInputMode="stateHidden">
+		</activity>
+
 		<activity android:name=".preferences.MainPrefs"
 			android:label="@string/Menu_Settings">
 		</activity>

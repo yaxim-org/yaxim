@@ -59,6 +59,12 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String vibraNotify;
 	public Uri notifySound;
 	public boolean ticker;
+	
+	public boolean highlightNickMuc;
+	public boolean isLEDNotifyMuc;
+	public String vibraNotifyMuc;
+	public Uri notifySoundMuc;
+	public boolean tickerMuc;
 
 	public boolean smackdebug;
     public String theme;
@@ -117,6 +123,16 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void loadPrefs(SharedPreferences prefs) {
 		this.jid_configured = false;
 
+		this.highlightNickMuc = prefs.getBoolean(PreferenceConstants.HIGHLIGHTMUC, false);
+		this.isLEDNotifyMuc = prefs.getBoolean(PreferenceConstants.LEDNOTIFYMUC,
+				false);
+		this.vibraNotifyMuc = prefs.getString(
+				PreferenceConstants.VIBRATIONNOTIFYMUC, "SYSTEM");
+		this.notifySoundMuc = Uri.parse(prefs.getString(
+				PreferenceConstants.RINGTONENOTIFYMUC, ""));
+		this.tickerMuc = prefs.getBoolean(PreferenceConstants.TICKERMUC,
+				true);
+		
 		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
 				false);
 		this.vibraNotify = prefs.getString(
@@ -125,6 +141,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				PreferenceConstants.RINGTONENOTIFY, ""));
 		this.ticker = prefs.getBoolean(PreferenceConstants.TICKER,
 				true);
+		
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs
 				.getString(PreferenceConstants.RESSOURCE, "yaxim");
@@ -167,6 +184,11 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public boolean needMucNotification(String nick, String message) {
+		if (!highlightNickMuc)
+			return true;
+		return message.toLowerCase().contains(nick.toLowerCase());
+	}
 
 	public int getTheme() {
 		if (theme.equals("light")) {

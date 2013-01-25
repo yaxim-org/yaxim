@@ -34,10 +34,12 @@
 		<item name="android:shadowColor">#44000000</item>
 		<item name="android:shadowRadius">3.0</item>
 	</style>
+		
 	<style name="StyleErrorView.Light">
 		<item name="android:background">#f88</item>
 		<item name="android:textColor">#400</item>
 	</style>
+	
     <style name="RosterMessageCounter">
         <item name="android:visibility">gone</item>
         <item name="android:layout_width">wrap_content</item>
@@ -73,4 +75,5 @@
 	<item name="android:textColor">#000000</item>
     </style>
 
+    <attr name="ic_action_group" format="reference"/>
 </resources>

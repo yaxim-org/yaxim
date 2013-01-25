@@ -1,38 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-		<item android:id="@+id/roster_contextmenu_contact_open_chat" android:visible="true"
-			android:enabled="true" android:orderInCategory="1"
-			android:title="@string/roster_contextmenu_contact_open_chat">
-		</item>
 
-		<item android:id="@+id/roster_contextmenu_contact_mark_all_as_read" android:visible="true"
-			android:enabled="true" android:orderInCategory="1"
-			android:title="@string/roster_contextmenu_contact_mark_all_as_read">
-		</item>
+	<group android:id="@+id/roster_contextmenu_group_menu" android:orderInCategory="2">
 
-		<item android:id="@+id/roster_contextmenu_contact_rename" android:visible="true"
-			android:enabled="true" android:orderInCategory="3"
-			android:title="@string/roster_contextmenu_contact_rename">
-		</item>
+		<item   android:id="@+id/roster_contextmenu_group_rename"
+			android:title="@string/roster_contextmenu_group_rename"
+			/>
 
-		<item android:id="@+id/roster_contextmenu_contact_request_auth" android:visible="true"
-			android:enabled="true" android:orderInCategory="4"
-			android:title="@string/roster_contextmenu_contact_request_auth">
-		</item>
+	</group>
 
-		<item android:visible="true" android:enabled="true"
-			android:orderInCategory="5" android:id="@+id/roster_contextmenu_contact_change_group"
-			android:title="@string/roster_contextmenu_contact_change_group">
-		</item>
+	<group android:id="@+id/roster_contextmenu_item_menu" android:orderInCategory="1">
 
-		<item android:visible="true" android:enabled="true"
-			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delmsg"
-			android:title="@string/roster_contextmenu_contact_delmsg">
-		</item>
+		<item   android:id="@+id/roster_contextmenu_contact_open_chat"
+			android:title="@string/roster_contextmenu_contact_open_chat"
+			android:orderInCategory="1"
+			/>
 
-		<item android:visible="true" android:enabled="true"
-			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delete"
-			android:title="@string/roster_contextmenu_contact_delete">
-		</item>
+		<item   android:id="@+id/roster_contextmenu_contact_mark_all_as_read"
+			android:title="@string/roster_contextmenu_contact_mark_all_as_read"
+			android:orderInCategory="2"
+			/>
 
+		<item   android:id="@+id/roster_contextmenu_contact_delmsg"
+			android:title="@string/roster_contextmenu_contact_delmsg"
+			android:orderInCategory="2"
+			/>
+
+		<item   android:id="@+id/roster_contextmenu_contact_delete"
+			android:title="@string/roster_contextmenu_contact_delete"
+			android:orderInCategory="10"
+			/>
+
+	</group>
+
+	<group android:id="@+id/roster_contextmenu_contact_menu" android:orderInCategory="1">
+
+		<item   android:id="@+id/roster_contextmenu_contact_invite"
+			android:orderInCategory="3"
+			android:title="@string/roster_contextmenu_contact_invite"
+			/>
+
+		<item   android:id="@+id/roster_contextmenu_contact_request_auth"
+			android:title="@string/roster_contextmenu_contact_request_auth"
+			android:orderInCategory="4"
+			/>
+
+		<item   android:id="@+id/roster_contextmenu_contact_rename"
+			android:title="@string/roster_contextmenu_contact_rename"
+			android:orderInCategory="4"
+			/>
+
+		<item   android:id="@+id/roster_contextmenu_contact_change_group"
+			android:title="@string/roster_contextmenu_contact_change_group"
+			android:orderInCategory="4"
+			/>
+
+	</group>
+
+	<group android:id="@+id/roster_contextmenu_muc_menu" android:orderInCategory="1">
+		<item   android:id="@+id/roster_contextmenu_muc_edit"
+			android:title="@string/roster_contextmenu_muc_edit"
+			android:orderInCategory="4"
+			/>
+
+	</group>
 </menu>

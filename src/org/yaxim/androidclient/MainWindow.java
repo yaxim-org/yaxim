@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.yaxim.androidclient.chat.MUCChatWindow;
+import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
@@ -15,16 +19,24 @@ import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
+import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.ComponentName;
+import android.content.DialogInterface.OnClickListener;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -35,6 +47,7 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,9 +61,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
 import org.yaxim.androidclient.util.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,7 +118,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		mTheme = mConfig.theme;
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
-
+		
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		actionBar = getSupportActionBar();
@@ -288,17 +310,28 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		// get the entry name for the item
 		String menuName;
+		boolean isMuc=false;
 		if (isChild) {
 			getMenuInflater().inflate(R.menu.roster_item_contextmenu, menu);
 			menuName = String.format("%s (%s)",
 				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
 				getPackedItemRow(packedPosition, RosterConstants.JID));
+			isMuc = ChatRoomHelper.isRoom(this, getPackedItemRow(packedPosition, RosterConstants.JID));
 		} else {
 			menuName = getPackedItemRow(packedPosition, RosterConstants.GROUP);
-			if (menuName.equals(""))
+			if (menuName.equals("") || menuName.equals(RosterConstants.MUCS))
 				return; // no options for default menu
 			getMenuInflater().inflate(R.menu.roster_group_contextmenu, menu);
 		}
+
+		// display contact menu for contacts
+		menu.setGroupVisible(R.id.roster_contextmenu_item_menu, isChild);
+		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild && !isMuc);
+		// display group menu for non-standard groups
+		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
+				(menuName.length() > 0));
+		// display stripped down menu for MUCs
+		menu.setGroupVisible(R.id.roster_contextmenu_muc_menu, isChild && isMuc);
 
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
@@ -496,6 +529,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
+			case R.id.roster_contextmenu_contact_invite:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
+				mucInviteDialog(userJid, userName);
+				return true;
 			}
 		} else {
 
@@ -514,6 +551,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return false;
 	}
 
+	private void markAllAsRead() {
+		ContentValues cv = new ContentValues();
+		cv.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
+		getContentResolver().update(ChatProvider.CONTENT_URI, cv,
+						ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
+						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW, null);
+	}
+	
 	private boolean isChild(long packedPosition) {
 		int type = ExpandableListView.getPackedPositionType(packedPosition);
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
@@ -522,6 +567,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private void startChatActivity(String user, String userName, String message) {
 		Intent chatIntent = new Intent(this,
 				org.yaxim.androidclient.chat.ChatWindow.class);
+		if (ChatRoomHelper.isRoom(this, user))
+			chatIntent.setClass(this, MUCChatWindow.class);
 		Uri userNameUri = Uri.parse(user);
 		chatIntent.setData(userNameUri);
 		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);
@@ -619,6 +666,20 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	
+	private void mucActions() {
+		MucDialogBuilder builder = new MucDialogBuilder(MucDialogBuilder.MANAGE_DIALOG);
+		Dialog dialog = builder.createDialog(MainWindow.this);
+		dialog.show();
+	}
+	
+	private void mucInviteDialog(String userJid, String userName) {
+		MucDialogBuilder builder = new MucDialogBuilder(MucDialogBuilder.INVITE_DIALOG);
+		builder.setContactName(userJid);
+		Dialog dialog = builder.createDialog(MainWindow.this);
+		dialog.show();
+	}
+	
 	private void aboutDialog() {
 		LayoutInflater inflater = (LayoutInflater)getSystemService(
 			      LAYOUT_INFLATER_SERVICE);
@@ -674,6 +735,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 			setOfflinceContactsVisibility(!mConfig.showOffline);
 			updateRoster();
 			return true;
+			
+		case R.id.menu_markallread:
+			markAllAsRead();
+			return true;
 
 		case android.R.id.home:
 		case R.id.menu_status:
@@ -694,6 +759,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		case R.id.menu_about:
 			aboutDialog();
+			return true;
+		case R.id.menu_muc:
+			mucActions();
 			return true;
 
 		}
@@ -895,7 +963,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String name = getGroupName(count);
 			if (!mGroupsExpanded.containsKey(name))
 				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
-			Log.d(TAG, "restoreGroupsExpanded: " + name + ": " + mGroupsExpanded.get(name));
 			if (mGroupsExpanded.get(name))
 				getExpandableListView().expandGroup(count);
 			else
@@ -998,6 +1065,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		list.remove(RosterProvider.RosterConstants.MUCS);
 		return list;
 	}
 
@@ -1080,6 +1148,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).length() == 0) {
 				TextView groupname = (TextView)view.findViewById(R.id.groupname);
 				groupname.setText(mConfig.enableGroups ? R.string.default_group : R.string.all_contacts_group);
+			} else
+			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).equals(RosterProvider.RosterConstants.MUCS)) {
+				((TextView)view.findViewById(R.id.groupname)).setText(R.string.muc_group);
 			}
 		}
 
@@ -1153,4 +1224,206 @@ public class MainWindow extends SherlockExpandableListActivity {
 			updateRoster();
 		}
 	}
+	
+	class MucDialogBuilder {
+		ListView mucsList;
+		Cursor mucsCursor;
+		
+		public static final int MANAGE_DIALOG=0;
+		public static final int INVITE_DIALOG=1;
+		
+		private final int mode;
+		private String contactName="";
+		
+		public MucDialogBuilder(int mode) {
+			this.mode = mode;
+		}
+		
+		public void setContactName(String name) {
+			contactName = name;
+		}
+		
+		public void finishDialog() {
+			
+		}
+		
+		public void deleteItem(int dbID, final String roomJid) {
+			if (ChatRoomHelper.removeRoom(MainWindow.this, roomJid))
+				ChatRoomHelper.syncDbRooms(MainWindow.this);
+		}
+		
+		
+		public void selectInviteMuc(int pos, long id) {
+			
+			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
+			final String mucJid = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			
+			builder.setMessage("Really invite contact "+contactName+"to MUC "+mucJid+"?"); // TODO: make translateable
+			builder.setPositiveButton("Yes", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					inviteToMuc(contactName, mucJid);
+				}});
+			builder.setNegativeButton("No", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}});
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void inviteToMuc(final String contactJid, final String roomJid) {
+			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
+			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+			Uri dtaUri = Uri.parse(roomJid+"?chat");
+			muctestIntent.setData(dtaUri);
+			
+			ServiceConnection muctestServiceConnection = new ServiceConnection() {
+				public void onServiceConnected(ComponentName name, IBinder service) {
+					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+					try {
+						mucService.inviteToRoom(contactJid, roomJid);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+					unbindService(this);
+				}
+				public void onServiceDisconnected(ComponentName name) {}
+			};
+			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
+		}
+		
+		public void longClickElement(int pos, final long id) {
+			if(mode!=MANAGE_DIALOG) {
+				return;
+			}
+			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
+			final String item = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
+			final int dbID = itemCursor.getInt(itemCursor.getColumnIndex(RosterConstants._ID));
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			
+			builder.setMessage("Really leave MUC "+item+"?"); // TODO: make translateable
+			builder.setPositiveButton("Yes", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					deleteItem(dbID, item);
+				}});
+			builder.setNegativeButton("No", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			
+		}
+		
+		public void clickAddButton(Activity parent) { 
+			LayoutInflater inflater = parent.getLayoutInflater();
+			View view = inflater.inflate(R.layout.muc_new_dialog, null);
+			final EditText jidET = (EditText) view.findViewById(R.id.muc_new_jid);
+			final EditText nickET = (EditText) view.findViewById(R.id.muc_new_nick);
+			final EditText pwET = (EditText) view.findViewById(R.id.muc_new_pw);
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			
+			builder.setTitle("Add MUC via JID"); // TODO: make translatable
+			builder.setView(view);
+			builder.setPositiveButton("Add", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String jid = jidET.getText().toString();
+					String nick = nickET.getText().toString();
+					String pw = pwET.getText().toString();
+					addRoom(jid, nick, pw);
+				}});
+			builder.setNegativeButton("Cancel", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void addRoom(final String jid, final String nick, final String pw) {
+			if (ChatRoomHelper.addRoom(MainWindow.this, jid, pw, nick))
+				ChatRoomHelper.syncDbRooms();
+		}
+
+		
+		public Dialog createDialog(final Activity parent) {
+			Log.d(TAG, "crateing MucDialog with mode: "+mode);
+			AlertDialog.Builder builder = new AlertDialog.Builder(parent);
+			LayoutInflater inflater = LayoutInflater.from(parent);
+			View view = inflater.inflate(R.layout.muc_dialog, null);
+			builder.setView(view);
+			
+			if(mode==MANAGE_DIALOG) builder.setMessage("Configure MUCs"); //TODO: translate
+			else if(mode==INVITE_DIALOG) builder.setMessage("Invite to MUC");
+			builder.setPositiveButton("OK", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finishDialog();
+				}
+			});
+			
+			Dialog ret = builder.create();
+			
+			Button mucAddButton = (Button) view.findViewById(R.id.muc_add_button);
+			
+			if(mode != MANAGE_DIALOG) {
+				mucAddButton.setVisibility(View.GONE);
+			}
+			
+			mucAddButton.setOnClickListener(new View.OnClickListener() {
+	             public void onClick(View v) {
+	                 clickAddButton(parent);
+	             }
+	         });
+
+			
+			mucsCursor = getContentResolver().query(RosterProvider.MUCS_URI,
+					new String[] {RosterConstants._ID, RosterConstants.JID},
+					null, null, RosterConstants._ID);
+			String[] columns = new String[] {RosterConstants.JID};
+			int[] guiObjects = new int[] {R.id.muc_screenname}; 
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
+					R.layout.muclist_row, mucsCursor,
+					columns, guiObjects);
+			mucsList = (ListView) view.findViewById(R.id.mucsList);
+			mucsList.setAdapter(adapter);
+			
+			mucsList.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					if(mode != INVITE_DIALOG) {
+						return;
+					}
+					selectInviteMuc(position, id);
+				}
+			});
+			
+			mucsList.setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					if(mode != MANAGE_DIALOG) {
+						return true;
+					}
+					longClickElement(position, id);
+					return true;
+				}});
+			
+			return ret;
+		}
+
+	}
+	
 }

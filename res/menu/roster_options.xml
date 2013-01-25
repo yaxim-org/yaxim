@@ -11,9 +11,16 @@
 		android:alphabeticShortcut="a"
 		android:icon="@android:drawable/ic_menu_add" />
 
+	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" 
+	    android:alphabeticShortcut="t" />
+	
 	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
 		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
 		android:showAsAction="never"/>
+
+	<item android:id="@+id/menu_markallread" android:title="@string/roster_contextmenu_contact_mark_all_as_read"
+		android:alphabeticShortcut="m"/>
+		
 
 	<item android:id="@+id/menu_settings" android:title="@string/Menu_Settings"
 		android:alphabeticShortcut="p"
@@ -26,4 +33,5 @@
 	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
 		android:alphabeticShortcut="x"
 		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+	
 </menu>
