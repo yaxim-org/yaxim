@@ -27,6 +27,9 @@ import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
+import org.jivesoftware.smackx.carbons.Carbon;
+import org.jivesoftware.smackx.carbons.CarbonManager;
+import org.jivesoftware.smackx.forward.Forwarded;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DeliveryReceiptProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
@@ -378,13 +381,7 @@ public class SmackableImp implements Smackable {
 
 
 	public void setStatusFromConfig() {
-		IQ enableCC = new IQ() {
-			public String getChildElementXML() {
-				return "<enable xmlns='urn:xmpp:carbons:2'/>";
-			}
-		};
-		enableCC.setType(IQ.Type.SET);
-		mXMPPConnection.sendPacket(enableCC);
+		CarbonManager.getInstanceFor(mXMPPConnection).sendCarbonsEnabled(true);
 
 		Presence presence = new Presence(Presence.Type.available);
 		Mode mode = Mode.valueOf(mConfig.statusMode);
@@ -716,15 +713,15 @@ public class SmackableImp implements Smackable {
 					}
 
 					// try to extract a carbon
-					Carbon cc;
-					if ((cc = (Carbon)msg.getExtension("received", Carbon.NAMESPACE)) != null) {
+					Carbon cc = CarbonManager.getCarbon(msg);
+					if (cc != null && cc.getDirection() == Carbon.Direction.received) {
 						Log.d(TAG, "carbon: " + cc.toXML());
-						msg = (Message)cc.getForwarded().getPacket();
+						msg = (Message)cc.getForwarded().getForwardedPacket();
 						chatMessage = msg.getBody();
 						// fall through
-					}  else if ((cc = (Carbon)msg.getExtension("sent", Carbon.NAMESPACE)) != null) {
+					}  else if (cc != null && cc.getDirection() == Carbon.Direction.sent) {
 						Log.d(TAG, "carbon: " + cc.toXML());
-						msg = (Message)cc.getForwarded().getPacket();
+						msg = (Message)cc.getForwarded().getForwardedPacket();
 						chatMessage = msg.getBody();
 						if (chatMessage == null) return;
 						String fromJID = getJabberID(msg.getTo());
