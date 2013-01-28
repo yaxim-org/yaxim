@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Zerbitzarira konektatzen...</string>
 	<string name="conn_online">Linean</string>
 	<string name="conn_offline">Lineaz kanpo</string>
@@ -18,8 +18,8 @@
 	<string name="Global_JID_hint">erabiltzailea@jabber.adibidea.com</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Ongietorri yaxim-era!</string>
-	<string name="StartupDialog_Summary">Erabili aurretik yaxim konfiguratu behar duzu. Mesedez, sartu zure Jabber IDa eta pasahitza.</string>
+	<string name="StartupDialog_Title">Ongietorri Bruno-era!</string>
+	<string name="StartupDialog_Summary">Erabili aurretik Bruno konfiguratu behar duzu. Mesedez, sartu zure Jabber IDa eta pasahitza.</string>
 	<string name="StartupDialog_pwHint">Sartu pasahitza</string>
 	<string name="StartupDialog_Username_title">Jabber IDa:</string>
 	<string name="StartupDialog_passwd_title">Pasahitza:</string>
@@ -51,7 +51,7 @@
 	<string name="statuspopup_name">Ezarri zure egoera</string>
 	<string name="showOffline_summ">Beti erakutsi zerrendako kontaktu guztiak</string>
 	<string name="showOffline_title">Erakutsi lineaz kanpo dauden kontaktuak</string>
-	<string name="foregroundService_summ">Mantendu yaxim memorian beti konektatuta dagoela ziurtatzeko (aurreko planoko zerbitzua)</string>
+	<string name="foregroundService_summ">Mantendu Bruno memorian beti konektatuta dagoela ziurtatzeko (aurreko planoko zerbitzua)</string>
 	<string name="foregroundService_title">Egoera-barra ikonoa</string>
 
 	<string name="preftitle_debug">Arazketa</string>
@@ -95,7 +95,7 @@
 	<string name="Menu_Status">Egoera</string>
 	<string name="Menu_connect">Konektatu</string>
 	<string name="Menu_disconnect">Deskonektatu</string>
-	<string name="Menu_about">yaxim-i buruz</string>
+	<string name="Menu_about">Bruno-i buruz</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Gehitu kontaktu bat</string>
@@ -120,7 +120,7 @@
 	<string name="account_options_title">Konexioaren aukerak</string>
 	<string name="account_options_advanced">Aukera aurreratuak</string>
 	<string name="connstartup_title">Konektatu abioan</string>
-	<string name="connstartup_summOn">Konektatu yaxim irekitzean</string>
+	<string name="connstartup_summOn">Konektatu Bruno irekitzean</string>
 	<string name="connstartup_summOff">Ez konektatu automatikoki</string>
 	<string name="reconnect_title">Birkonektatu automatikoki</string>
 	<string name="reconnect_summ">Birkonektatu konexioa etetean</string>
@@ -135,9 +135,9 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">Bezeroaren baliabidea</string>
-	<string name="account_resource_summ">Lehenetsia: yaxim</string>
+	<string name="account_resource_summ">Lehenetsia: Bruno</string>
 	<string name="account_resource_dialog_title">Sartu zure baliabidea:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Bezeroaren lehentasuna</string>
 	<string name="account_prio_summ">Lehenetsia: 0 (baimenduak: -128 .. 127)</string>
 	<string name="account_prio_dialog_title">Sartu zure lehentasuna:</string>
@@ -184,7 +184,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">yaxim-i buruz</string>
+	<string name="AboutDialog_title">Bruno-i buruz</string>
 	<string name="AboutDialog_DevelopersTitle">Garatzaileak</string>
 	<string name="AboutDialog_DevelopersText">Kontaktatu garatzaileak http://yaxim.org edo freenode IRC: #yaxim bidez</string>
 	<string name="AboutDialog_LicenceTitle">Lizentzia</string>

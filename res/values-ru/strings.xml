@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Подключение к серверу…</string>
 	<string name="conn_online">В сети</string>
 	<string name="conn_offline">Отключён</string>
@@ -18,8 +18,8 @@
 	<string name="Global_JID_hint">пользователь@jabber.example.com</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Добро пожаловать в yaxim!</string>
-	<string name="StartupDialog_Summary">Перед использованием следует сначала настроить yaxim. Пожалуйста введите Jabber ID и пароль.</string>
+	<string name="StartupDialog_Title">Добро пожаловать в Bruno!</string>
+	<string name="StartupDialog_Summary">Перед использованием следует сначала настроить Bruno. Пожалуйста введите Jabber ID и пароль.</string>
 	<string name="StartupDialog_pwHint">Введите пароль</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
@@ -51,7 +51,7 @@
 	<string name="statuspopup_name">Установить ваш статус</string>
 	<string name="showOffline_summ">Всегда показывать все контакты в списке собеседников</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>
-	<string name="foregroundService_summ">Удерживать yaxim в памяти для обеспечения постоянного соединения(фоновый сервис)</string>
+	<string name="foregroundService_summ">Удерживать Bruno в памяти для обеспечения постоянного соединения(фоновый сервис)</string>
 	<string name="foregroundService_title">Значок в статусной строке</string>
 
 	<string name="preftitle_debug">Отладка</string>
@@ -95,7 +95,7 @@
 	<string name="Menu_Status">Статус</string>
 	<string name="Menu_connect">Соединиться</string>
 	<string name="Menu_disconnect">Отключиться</string>
-	<string name="Menu_about">О yaxim</string>
+	<string name="Menu_about">О Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Добавить контакт</string>
@@ -120,7 +120,7 @@
 	<string name="account_options_title">Настройки подключения</string>
 	<string name="account_options_advanced">Расширенные настройки</string>
 	<string name="connstartup_title">Соединяться при запуске</string>
-	<string name="connstartup_summOn">Подключиться когда yaxim открыт</string>
+	<string name="connstartup_summOn">Подключиться когда Bruno открыт</string>
 	<string name="connstartup_summOff">Не подключаться автоматически</string>
 	<string name="reconnect_title">Автоматически переподключаться</string>
 	<string name="reconnect_summ">Переподключиться при разрыве соединения</string>
@@ -135,9 +135,9 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ресурс клиента</string>
-	<string name="account_resource_summ">По умолчанию: yaxim</string>
+	<string name="account_resource_summ">По умолчанию: Bruno</string>
 	<string name="account_resource_dialog_title">Введите ресурс:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Приоритет клиента</string>
 	<string name="account_prio_summ">По умолчанию: 0(разрешено: -128 ..127)</string>
 	<string name="account_prio_dialog_title">Введите приоритет:</string>
@@ -184,7 +184,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">О yaxim</string>
+	<string name="AboutDialog_title">О Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Разработчики</string>
 	<string name="AboutDialog_DevelopersText">Свяжитесь с разработчиком через http://yaxim.org или в IRC freenode, канал #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
