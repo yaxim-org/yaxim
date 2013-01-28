@@ -11,6 +11,7 @@ public class PreferenceConstants {
 	public final static int DEFAULT_PORT_INT = 5222;
 	public final static String CONN_STARTUP = "connstartup";
 	public final static String AUTO_RECONNECT = "reconnect";
+	public final static String MESSAGE_CARBONS = "carbons";
 	public final static String SHOW_OFFLINE = "showOffline";
 	public final static String LEDNOTIFY = "led";
 	public final static String VIBRATIONNOTIFY = "vibration_list";

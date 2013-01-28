@@ -50,6 +50,13 @@
 			android:title="@string/reconnect_title"
 			android:summary="@string/reconnect_summ"
 		/>
+		<CheckBoxPreference
+			android:id="@+id/carbons"
+			android:key="carbons"
+			android:defaultValue="true"
+			android:title="@string/carbons_title"
+			android:summary="@string/carbons_summ"
+		/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_options_advanced">
 		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
