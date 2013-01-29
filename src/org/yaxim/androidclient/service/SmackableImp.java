@@ -713,6 +713,11 @@ public class SmackableImp implements Smackable {
 						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 					}
 
+					if (msg.getExtension("request", DeliveryReceipt.NAMESPACE) != null) {
+						// got XEP-0184 request, send receipt
+						sendReceipt(msg.getFrom(), msg.getPacketID());
+					}
+
 					// try to extract a carbon
 					Carbon cc = CarbonManager.getCarbon(msg);
 					if (cc != null && cc.getDirection() == Carbon.Direction.received) {
@@ -751,10 +756,6 @@ public class SmackableImp implements Smackable {
 
 					String fromJID = getJabberID(msg.getFrom());
 
-					if (msg.getExtension("request", DeliveryReceipt.NAMESPACE) != null) {
-						// got XEP-0184 request, send receipt
-						sendReceipt(msg.getFrom(), msg.getPacketID());
-					}
 					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
 					mServiceCallBack.newMessage(fromJID, chatMessage);
 				}
