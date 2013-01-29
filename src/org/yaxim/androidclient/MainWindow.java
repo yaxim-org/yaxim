@@ -330,8 +330,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 		getMenuInflater().inflate(R.menu.roster_contextmenu, menu);
 
 		// get the entry name for the item
-		String menuName = getPackedItemRow(packedPosition,
-				isChild ? RosterConstants.ALIAS : RosterConstants.GROUP);
+		String menuName;
+		if (isChild) {
+			menuName = String.format("%s (%s)",
+				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
+				getPackedItemRow(packedPosition, RosterConstants.JID));
+		} else {
+			menuName = getPackedItemRow(packedPosition, RosterConstants.GROUP);
+			if (menuName.equals(""))
+				menuName = getString(R.string.default_group);
+		}
 
 		// display contact menu for contacts
 		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild);
