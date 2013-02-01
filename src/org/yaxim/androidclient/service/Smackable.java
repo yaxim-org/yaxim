@@ -29,8 +29,10 @@ public interface Smackable {
 	
 	void mucTest();
 	boolean joinRoom(String room, String nickname, String password, int historyLen);
-	String[] getJoinedRooms();
 	boolean createRoom(String room, String nickname, String password);
+	void quitRoom(String room);
+	String[] getJoinedRooms();
+	void sendMucMessage(String room, String message);
 	
 	String getNameForJID(String jid);
 }
