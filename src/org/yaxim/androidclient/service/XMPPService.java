@@ -126,6 +126,7 @@ public class XMPPService extends GenericService {
 		if (intent != null) {
 			boolean disconnect = intent.getBooleanExtra("disconnect", false);
 			boolean reconnect = intent.getBooleanExtra("reconnect", false);
+			boolean ping = intent.getBooleanExtra("ping", false);
 
 			create_account = intent.getBooleanExtra("create_account", false);
 			
@@ -145,6 +146,9 @@ public class XMPPService extends GenericService {
 				else
 					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
 				return START_STICKY;
+			} else
+			if (ping && mSmackable != null && mSmackable.isAuthenticated()) {
+				mSmackable.sendServerPing();
 			}
 		}
 		

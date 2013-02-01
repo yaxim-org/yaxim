@@ -52,6 +52,13 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 				xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
 				xmppServiceIntent.putExtra("reconnect", true);
 				context.startService(xmppServiceIntent);
+			} else
+			if ((networkInfo != null) && (networkInfo.isConnected() == true) && (networkInfo.getType() == networkType)) {
+				Log.d(TAG, "we stay connected, sending a ping");
+				Intent xmppServiceIntent = new Intent(context, XMPPService.class);
+				xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
+				xmppServiceIntent.putExtra("ping", true);
+				context.startService(xmppServiceIntent);
 			}
 		}
 	}
