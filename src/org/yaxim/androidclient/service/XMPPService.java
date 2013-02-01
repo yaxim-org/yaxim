@@ -184,9 +184,25 @@ public class XMPPService extends GenericService {
 		mServiceMucConnection = new IXMPPMucService.Stub() {
 			@Override
 			public void mucTest() throws RemoteException {
-				logInfo("mucTest IXMPPMucService Stub Called!");
 				mSmackable.mucTest();
 			}
+
+			@Override
+			public boolean joinRoom(String room, String nickname,
+					String password, int historyLen) throws RemoteException {
+				return mSmackable.joinRoom(room, nickname, password, historyLen);
+			}
+
+			@Override
+			public String[] getJoinedRooms() throws RemoteException {
+				return mSmackable.getJoinedRooms();
+			}
+			
+			@Override
+			public boolean createRoom(String room, String nickname, String password) {
+				return mSmackable.createRoom(room, nickname, password);
+			}
+
 		};
 	}
 
