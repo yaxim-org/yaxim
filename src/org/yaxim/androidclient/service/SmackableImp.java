@@ -115,6 +115,7 @@ public class SmackableImp implements Smackable {
 	private PacketListener mSendFailureListener;
 	private PacketListener mPongListener;
 	private String mPingID;
+	private long mPingTimestamp;
 
 	private PendingIntent mPingAlarmPendIntent;
 	private PendingIntent mPongTimeoutAlarmPendIntent;
@@ -593,13 +594,18 @@ public class SmackableImp implements Smackable {
 				new String[] { packetID });
 	}
 
-	private void sendPing() {
+	public void sendServerPing() {
 		Ping ping = new Ping();
 		ping.setType(Type.GET);
 		ping.setTo(mConfig.server);
 		mPingID = ping.getPacketID();
+		mPingTimestamp = System.currentTimeMillis();
 		debugLog("Send PING with ID " + mPingID);
 		mXMPPConnection.sendPacket(ping);
+
+		// register ping timeout handler: PACKET_TIMEOUT(30s) + 3s
+		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
+			System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
 	}
 
 	/**
@@ -620,9 +626,7 @@ public class SmackableImp implements Smackable {
 		public void onReceive(Context ctx, Intent i) {
 			if (mXMPPConnection.isAuthenticated()) {
 				debugLog("Ping Alarm received.");
-				sendPing();
-				((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, 
-						System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+				sendServerPing();
 			} else
 				debugLog("Ping Alarm received, but not connected to server.");
 		}
@@ -659,6 +663,7 @@ public class SmackableImp implements Smackable {
 
 				if (packet.getPacketID().equals(mPingID)) {
 					debugLog("got Pong");
+					Log.i(TAG, String.format("Server latency: %1.3fs", (System.currentTimeMillis() - mPingTimestamp)/1000.));
 					((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
 				}
 			}

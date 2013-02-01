@@ -17,6 +17,7 @@ public interface Smackable {
 	
 	void setStatusFromConfig();
 	void sendMessage(String user, String message);
+	void sendServerPing();
 	
 	void registerCallback(XMPPServiceCallback callBack);
 	void unRegisterCallback();
