@@ -525,15 +525,25 @@ public class SmackableImp implements Smackable {
 		mRoster = mXMPPConnection.getRoster();
 
 		mRosterListener = new RosterListener() {
+			private boolean first_roster = true;
 
 			public void entriesAdded(Collection<String> entries) {
 				debugLog("entriesAdded(" + entries + ")");
 
+				ContentValues[] cvs = new ContentValues[entries.size()];
+				int i = 0;
 				for (String entry : entries) {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
-					addRosterEntryToDB(rosterEntry);
+					cvs[i++] = getContentValuesForRosterEntry(rosterEntry);
 				}
-				mServiceCallBack.rosterChanged();
+				mContentResolver.bulkInsert(RosterProvider.CONTENT_URI, cvs);
+				// when getting the roster in the beginning, remove remains of old one
+				if (first_roster) {
+					removeOldRosterEntries();
+					first_roster = false;
+					mServiceCallBack.rosterChanged();
+				}
+				debugLog("entriesAdded() done");
 			}
 
 			public void entriesDeleted(Collection<String> entries) {
