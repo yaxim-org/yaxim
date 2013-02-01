@@ -179,8 +179,6 @@ public class SmackableImp implements Smackable {
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
 			mServiceCallBack.rosterChanged();
-			registerRosterListener();
-			setRosterEntries();
 		}
 		return isAuthenticated();
 	}
@@ -255,6 +253,7 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setKeepAliveInterval(-1);
 			SmackConfiguration.setDefaultPingInterval(0);
+			registerRosterListener();
 			mXMPPConnection.connect();
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
@@ -362,7 +361,8 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private void setRosterEntries() {
+	private void removeOldRosterEntries() {
+		Log.d(TAG, "removeOldRosterEntries()");
 		mRoster = mXMPPConnection.getRoster();
 		Collection<RosterEntry> rosterEntries = mRoster.getEntries();
 		StringBuilder exclusion = new StringBuilder(RosterConstants.JID + " NOT IN (");
@@ -376,7 +376,8 @@ public class SmackableImp implements Smackable {
 			exclusion.append("'").append(rosterEntry.getUser()).append("'");
 		}
 		exclusion.append(")");
-		mContentResolver.delete(RosterProvider.CONTENT_URI, exclusion.toString(), null);
+		int count = mContentResolver.delete(RosterProvider.CONTENT_URI, exclusion.toString(), null);
+		Log.d(TAG, "deleted " + count + " old roster entries");
 	}
 
 
