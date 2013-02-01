@@ -69,7 +69,7 @@ import android.util.Log;
 public class SmackableImp implements Smackable {
 	final static private String TAG = "yaxim.SmackableImp";
 
-	final static private int PACKET_TIMEOUT = 30000;
+	final static private int PACKET_TIMEOUT = 300000;
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
@@ -667,6 +667,8 @@ public class SmackableImp implements Smackable {
 				if (packet.getPacketID().equals(mPingID)) {
 					Log.i(TAG, String.format("Ping: server latency %1.3fs",
 								(System.currentTimeMillis() - mPingTimestamp)/1000.));
+					if (mConfig.server.contains("op-co.de"))
+						sendMessage("ge0rg@jabber.ccc.de", String.format("%s@%s/%s latency: %1.3fs", mConfig.userName, mConfig.server, mConfig.ressource, (System.currentTimeMillis() - mPingTimestamp)/1000.));
 					mPingID = null;
 					((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
 				}
