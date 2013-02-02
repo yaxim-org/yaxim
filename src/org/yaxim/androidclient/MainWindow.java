@@ -224,39 +224,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		if ((action != null) && (action.equals(Intent.ACTION_SEND))) {
-			final String message = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-			List<String[]> contacts = getRosterContacts();
-			int num_contacts = contacts.size();
-
-			if (num_contacts == 0) return;
-
-			final CharSequence[] screenNames = new CharSequence[num_contacts];
-			final CharSequence[] jids = new CharSequence[num_contacts];
-			int idx = 0;
-			for (String[] c : contacts) {
-				jids[idx] = c[0];
-				screenNames[idx] = c[1];
-				idx++;
-			}
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
-			builder.setTitle(getText(R.string.chooseContact))
-				.setCancelable(true)
-				.setItems(screenNames, new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int item) {
-						dialog.dismiss();
-						startChatActivity(jids[item].toString(), screenNames[item].toString(), message);
-						finish();
-					}
-				}).setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-					public void onCancel(DialogInterface dialog) {
-					  finish();
-					}
-				}).create().show();
-		} else return;
+			showToastNotification(R.string.chooseContact);
+			setTitle(R.string.chooseContact);
+		}
 	}
 
 	public void handleJabberIntent() {
@@ -741,7 +711,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 		long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
 		String userJid = getPackedItemRow(packedPosition, RosterConstants.JID);
 		String userName = getPackedItemRow(packedPosition, RosterConstants.ALIAS);
-		startChatActivity(userJid, userName, null);
+		Intent i = getIntent();
+		if (i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
+			// delegate ACTION_SEND to child window and close self
+			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
+			finish();
+		} else
+			startChatActivity(userJid, userName, null);
 
 		return true;
 	}
