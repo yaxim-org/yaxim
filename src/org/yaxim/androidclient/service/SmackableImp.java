@@ -32,15 +32,15 @@ import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.forward.Forwarded;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
-import org.jivesoftware.smackx.provider.DeliveryReceiptProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
-import org.jivesoftware.smackx.packet.DeliveryReceipt;
-import org.jivesoftware.smackx.packet.DeliveryReceiptRequest;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.ping.packet.*;
 import org.jivesoftware.smackx.ping.provider.PingProvider;
+import org.jivesoftware.smackx.receipts.DeliveryReceipt;
+import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
+import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -94,7 +94,8 @@ public class SmackableImp implements Smackable {
 		pm.addExtensionProvider("sent", Carbon.NAMESPACE, new Carbon.Provider());
 		pm.addExtensionProvider("received", Carbon.NAMESPACE, new Carbon.Provider());
 		// add delivery receipts
-		pm.addExtensionProvider("received", DeliveryReceipt.NAMESPACE, new DeliveryReceiptProvider());
+		pm.addExtensionProvider(DeliveryReceipt.ELEMENT, DeliveryReceipt.NAMESPACE, new DeliveryReceipt.Provider());
+		pm.addExtensionProvider(DeliveryReceiptRequest.ELEMENT, DeliveryReceipt.NAMESPACE, new DeliveryReceiptRequest.Provider());
 		// add XMPP Ping (XEP-0199)
 		pm.addIQProvider("ping","urn:xmpp:ping", new PingProvider());
 
@@ -192,10 +193,18 @@ public class SmackableImp implements Smackable {
 			sdm = new ServiceDiscoveryManager(mXMPPConnection);
 
 		sdm.addFeature("http://jabber.org/protocol/disco#info");
-		sdm.addFeature(DeliveryReceipt.NAMESPACE);
 
 		// reference PingManager, set ping flood protection to 10s
 		PingManager.getInstanceFor(mXMPPConnection).setPingMinimumInterval(10*1000);
+		// reference DeliveryReceiptManager, add listener
+
+		DeliveryReceiptManager dm = DeliveryReceiptManager.getInstanceFor(mXMPPConnection);
+		dm.enableAutoReceipts();
+		dm.registerReceiptReceivedListener(new DeliveryReceiptManager.ReceiptReceivedListener() {
+			public void onReceiptReceived(String fromJid, String toJid, String receiptId) {
+				Log.d(TAG, "got delivery receipt for " + receiptId);
+				changeMessageDeliveryStatus(receiptId, ChatConstants.DS_ACKED);
+			}});
 	}
 
 	public void addRosterItem(String user, String alias, String group)
@@ -714,17 +723,6 @@ public class SmackableImp implements Smackable {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 					String chatMessage = msg.getBody();
-
-					DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension("received", DeliveryReceipt.NAMESPACE);
-					if (dr != null) {
-						Log.d(TAG, "got delivery receipt for " + dr.getId());
-						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
-					}
-
-					if (msg.getExtension("request", DeliveryReceipt.NAMESPACE) != null) {
-						// got XEP-0184 request, send receipt
-						sendReceipt(msg.getFrom(), msg.getPacketID());
-					}
 
 					// try to extract a carbon
 					Carbon cc = CarbonManager.getCarbon(msg);
