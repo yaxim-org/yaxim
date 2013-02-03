@@ -122,7 +122,7 @@ public class XMPPService extends GenericService {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		logInfo("onStartCommand()");
+		logInfo("onStartCommand(), mConnectionDemanded=" + mConnectionDemanded.get());
 		if (intent != null) {
 			boolean disconnect = intent.getBooleanExtra("disconnect", false);
 			boolean reconnect = intent.getBooleanExtra("reconnect", false);
@@ -130,7 +130,7 @@ public class XMPPService extends GenericService {
 
 			create_account = intent.getBooleanExtra("create_account", false);
 			
-			logInfo("disconnect/reconnect: "+disconnect+ " " + reconnect);
+			logInfo("disconnect="+disconnect+" reconnect="+reconnect+" ping="+ping);
 			if (disconnect) {
 				if (mConnectingThread != null || mIsConnected.get())
 					connectionFailed(getString(R.string.conn_networkchg));
@@ -148,7 +148,11 @@ public class XMPPService extends GenericService {
 				return START_STICKY;
 			} else
 			if (ping && mSmackable != null && mSmackable.isAuthenticated()) {
-				mSmackable.sendServerPing();
+				if (mConnectionDemanded.get())
+					mSmackable.sendServerPing();
+				else
+					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
+				return START_STICKY;
 			}
 		}
 		
