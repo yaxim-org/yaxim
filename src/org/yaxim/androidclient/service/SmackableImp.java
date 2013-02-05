@@ -16,6 +16,7 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.IQTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
@@ -595,6 +596,8 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void sendServerPing() {
+		if (mPingID != null)
+			return; // a ping is still on its way
 		Ping ping = new Ping();
 		ping.setType(Type.GET);
 		ping.setTo(mConfig.server);
@@ -643,18 +646,6 @@ public class SmackableImp implements Smackable {
 		if (mPongListener != null)
 			mXMPPConnection.removePacketListener(mPongListener);
 
-		PacketFilter filter = new PacketFilter() {
-
-			@Override
-			public boolean accept(Packet packet) {
-				if ((packet instanceof IQ)) {
-					debugLog("got IQ packet with ID: " + packet.getPacketID());
-					return true;
-				}
-				return false;
-			}
-		};
-
 		mPongListener = new PacketListener() {
 
 			@Override
@@ -664,13 +655,14 @@ public class SmackableImp implements Smackable {
 				if (packet.getPacketID().equals(mPingID)) {
 					debugLog("got Pong");
 					Log.i(TAG, String.format("Server latency: %1.3fs", (System.currentTimeMillis() - mPingTimestamp)/1000.));
+					mPingID = null;
 					((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
 				}
 			}
 
 		};
 
-		mXMPPConnection.addPacketListener(mPongListener, filter);
+		mXMPPConnection.addPacketListener(mPongListener, new IQTypeFilter(IQ.Type.RESULT));
 		mPingAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPingAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
