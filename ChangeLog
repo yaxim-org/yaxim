@@ -1,3 +1,14 @@
+0.8.6:
+ * Fix server-to-client pings (error caused periodic reconnects)
+ * Better connectivity when changing WiFi networks
+ * Implement Message Carbons (XEP-0280)
+ * Share with yaxim: using main contact list now
+ * Contact context menu: display JID
+ * Sent messages context menu: new "Resend" option
+ * Contact sorting is case insensitive now
+ * Large contact list loads slightly faster
+ * Minor bug fix when aborting a connection
+
 0.8.5:
  * Implement XEP-0199 (client-to-server ping)
  * Implement XEP-0184 (message delivery receipts)
