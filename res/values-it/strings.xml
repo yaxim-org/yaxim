@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Non connettersi automaticamente</string>
 	<string name="reconnect_title">Riconnessione automatica</string>
 	<string name="reconnect_summ">Riconnettersi quando cade la connessione</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">ID Jabber</string>
 	<string name="account_jabberID_sum">esempio: io@jabber.esempio.it</string>
 	<string name="account_jabberID_dialog_title">Inserisci il tuo ID Jabber:</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Connessione chiusa!</string>
 	<string name="toast_stored_offline">Il messaggio sarà trasmesso più tardi</string>
 	<string name="chat_enterMsgHint">Inserisci il messaggio</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
 	<!--

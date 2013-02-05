@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Не подключаться автоматически</string>
 	<string name="reconnect_title">Автоматически переподключаться</string>
 	<string name="reconnect_summ">Переподключиться при разрыве соединения</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">пример: я@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Ведите свой Jabber ID:</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Соединение закрыто!</string>
 	<string name="toast_stored_offline">Сообщение было сохранено для отправки.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
 	<!--

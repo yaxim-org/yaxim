@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Nie łącz automatycznie po uruchomieniu programu</string>
 	<string name="reconnect_title">Połącz ponownie</string>
 	<string name="reconnect_summ">Połącz ponownie po utracie połączenia</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">przykład: ja@jabber.serwer.com</string>
 	<string name="account_jabberID_dialog_title">Jabber ID:</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Połączenie zakończone</string>
 	<string name="toast_stored_offline">Wiadomość została zapisana do wysłania.</string>
 	<string name="chat_enterMsgHint">Wpisz wpiadomość</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
 	<!--

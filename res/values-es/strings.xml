@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">No conectar automáticamente</string>
 	<string name="reconnect_title">Reconectar automáticamente</string>
 	<string name="reconnect_summ">Reconectar cuando se pierde la conexión</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">ID de Jabber:</string>
 	<string name="account_jabberID_sum">ejemplo: yo@jabber.ejemplo.com</string>
 	<string name="account_jabberID_dialog_title">Ingrese su ID de Jabber:</string>
@@ -169,6 +171,9 @@
 	<string name="toast_stored_offline">Este mensaje ha sido almacenado para su transmisión.</string>
 	<string name="chat_enterMsgHint">Introduzca el mensaje</string> 
 
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Enviar de nuevo</string>
+
 	<!-- GPS settings -->
 	<!--
 	<string name="showGPS_title">GPS to status</string>
@@ -181,7 +186,7 @@
 	<string name="AboutDialog_DevelopersTitle">Desarrolladores</string>
 	<string name="AboutDialog_DevelopersText">Contacte a los desarrolladores en http://yaxim.org o en IRC freenode: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Dar retroalimentación</string>
 	<string name="AboutDialog_LicenceText">Este programa es software libre: usted puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU versión 2 publicada por la Fundación para el Software Libre. Enlace: http://www.gnu.org/licenses/gpl-2.0.html\n \n Partes de este software son ofrecidas bajo la licencia MIT: \n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Se autoriza, de forma gratuita, a cualquier persona que ha obtenido una copia de este software y archivos de documentación asociados (el "Software"), para tratar en el Software sin restricción, incluyendo sin ninguna limitación en lo que concierne a los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias de este Software, y para permitir a las personas que usan el Software a hacerlo, con sujeción a las siguientes condiciones: \n El aviso de copyright anterior y este aviso de permiso se incluirá en todas las copias o partes sustanciales de este Software. \n EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUIDAS PERO NO LIMITADAS A LAS GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y DE NO INFRACCIÓN. EN NINGÚN  CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE ALGÚN RECLAMO, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU UTILIZACIÓN U OTRAS OPERACIONES EN EL SOFTWARE.</string>
 
 	<string name="status_available">Disponible</string>

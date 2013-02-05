@@ -10,7 +10,7 @@
 	<string name="conn_empty_roster">Inga kontakter att visa!</string>
 	<string name="conn_reconnect">\nAnsluter igen om %d sekunder.</string>
 	<string name="conn_disconnected">Anslutningen stängd</string>
-	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_networkchg">Nätverk ändrat</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Avsluta</string>
@@ -38,7 +38,7 @@
 	<string name="vibr_summ">Vibrera vid inkommande meddelande</string>
 	<string-array name="vibr_values_displayed">
 		<item>Aldrig</item>
-		<item>System preference</item>
+		<item>Systeminställning</item>
 		<item>Alltid</item>
 	</string-array>
 	<string name="ringtone_title">Ljudsignal</string>
@@ -51,11 +51,11 @@
 	<string name="statuspopup_name">Ange status</string>
 	<string name="showOffline_summ">Visa alltid alla kontakter i listan</string>
 	<string name="showOffline_title">Visa frånkopplade kontakter</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Behåll yaxim i minnet för att säkerställa bibehållen anslutning (tjänsten körs i förgrunden)</string>
 	<string name="foregroundService_title">Statusfältikon</string>
 
 	<string name="preftitle_debug">Felsökning</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
+	<string name="smackdebug_summ">Paket- och felsökningsinfo via logcat (kan innehålla privata data)</string>
 	<string name="smackdebug_title">SMACK-felsökning</string>
 
 	<string name="reportcrash_title">Skicka rapport vid programkrasch</string>
@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Anslut inte automatiskt</string>
 	<string name="reconnect_title">Försök återansluta automatiskt</string>
 	<string name="reconnect_summ">Återansluter om anslutningen bryts</string>
+	<string name="carbons_title">"Message Carbons" (XEP-0280)</string>
+	<string name="carbons_summ">Begär kopior av meddelanden från andra klienter</string>
 	<string name="account_jabberID_title">Jabber-ID</string>
 	<string name="account_jabberID_sum">example: jag@jabber.exempel.com</string>
 	<string name="account_jabberID_dialog_title">Ange ditt Jabber-ID:</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Frånkopplad!</string>
 	<string name="toast_stored_offline">Meddelandet har lagrats för att kunna skickas senare.</string>
 	<string name="chat_enterMsgHint">Skriv meddelande</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Skicka igen</string>
 
 	<!-- GPS settings -->
 	<!--

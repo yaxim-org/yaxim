@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Neprisijungti automatiškai</string>
 	<string name="reconnect_title">Automatinis prisijungimas iš naujo</string>
 	<string name="reconnect_summ">Prisijungti iš naujo kai prarandamas ryšys</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">pvz: as@jabber.pavyzdys.com</string>
 	<string name="account_jabberID_dialog_title">Įveskite savo Jabber ID:</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">Žinutė išsaugota perdavimui.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
 	<!--

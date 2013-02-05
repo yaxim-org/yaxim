@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Όχι αυτόματη σύνδεση</string>
 	<string name="reconnect_title">Αυτόματη επανασύνδεση</string>
 	<string name="reconnect_summ">Επανασύνδεση σε περίπτωση που κοπεί η σύνδεση</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">παράδειγμα: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Εισαγάγετε το Jabber ID σας:</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Η σύνδεση έκλεισε!</string>
 	<string name="toast_stored_offline">Το μήνυμα έχει αποθηκευτεί για την μετάδοση.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
 	<!--

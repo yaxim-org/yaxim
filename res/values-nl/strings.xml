@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Maak niet automatisch verbinding</string>
 	<string name="reconnect_title">Maak automatisch opnieuw verbinding</string>
 	<string name="reconnect_summ">Probeer opnieuw te verbinden wanneer de verbindinging verbroken wordt.</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">Voorbeeld: ik@jabber.voorbeeld.com</string>
 	<string name="account_jabberID_dialog_title">Voer uw Jabber ID in:</string>
@@ -146,7 +148,7 @@
 	<string name="account_customserver_dialog_title">Voer server hostnaam in:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">SSL/TLS Vereist</string>
-	<string name="require_ssl_summ">Always encrypt server connection</string>
+	<string name="require_ssl_summ">Altijd de serververbinding versleutelen</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Groep kiezen</string>
@@ -168,6 +170,9 @@
 	<string name="toast_connectfail_message">Connectie verbroken!</string>
 	<string name="toast_stored_offline">Het bericht is opgeslagen voor verzenden.</string>
 	<string name="chat_enterMsgHint">Bericht invoeren</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -251,6 +256,7 @@
 	<string name="status_offline">Afgemeld</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Barry Zoot https://launchpad.net/~barryzoot
   Jeroen Tietema https://launchpad.net/~jtietema
   NightWhistler https://launchpad.net/~0k53dmx9cig8-alex-f830mk0e7z07</string>
 

@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Nicht automatisch verbinden</string>
 	<string name="reconnect_title">Verbindung wiederherstellen</string>
 	<string name="reconnect_summ">Bei Verbindungsabbruch neu verbinden</string>
+	<string name="carbons_title">Nachrichtenkopien (XEP-0280)</string>
+	<string name="carbons_summ">Gesprächsverlauf über mehrere Chat-Anwendungen abgleichen</string>
 	<string name="account_jabberID_title">Jabber-ID</string>
 	<string name="account_jabberID_sum">Beispiel: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Jabber-ID eingeben:</string>

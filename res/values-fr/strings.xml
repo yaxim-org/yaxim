@@ -44,28 +44,28 @@
 	<string name="ringtone_title">Sonnerie</string>
 	<string name="ringtone_summ">Sonnerie pour les messages entrants</string>
 	<string name="ticker_title">Prévisualisation du message</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ticker_summ">Affiché l\'expéditeur et le messsage dans la barre d\'état</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Options de démarrage</string>
 	<string name="statuspopup_name">Définissez votre status</string>
 	<string name="showOffline_summ">Toujours afficher l\'ensemble des contacts dans la liste</string>
 	<string name="showOffline_title">Afficher les contacts hors ligne</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="foregroundService_summ">Conserver yaxim en mémoire afin d\'assurer la connexion permanente (service au premier plan)</string>
+	<string name="foregroundService_title">Icone de la barre d\'état</string>
 
 	<string name="preftitle_debug">Débogage</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
+	<string name="smackdebug_summ">Paquets et informations de débogage via logcat (peut contenir des informations personnels)</string>
 	<string name="smackdebug_title">Débogage de SMACK</string>
 
 	<string name="reportcrash_title">Envoyer les rapports d\'erreur</string>
-	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
+	<string name="reportcrash_summ">Envoyer des rapports de crash anonymes au développeur</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Apparence</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="FontChat_title">Taille de la police lors d\'un chat</string>
+	<string name="FontChat_summ">Paramétrer la taille de la police lors d\'un chat</string>
+	<string name="FontChat_dialog">Taille de la police lors d\'un chat</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
@@ -122,6 +122,8 @@
 	<string name="connstartup_summOff">Ne pas connecter automatiquement</string>
 	<string name="reconnect_title">Reconnexion automatique</string>
 	<string name="reconnect_summ">Se reconnecter lorsque la connexion est interrompue</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Identifiant Jabber</string>
 	<string name="account_jabberID_sum">exemple : moi@jabber.exemple.com</string>
 	<string name="account_jabberID_dialog_title">Saisir votre identifiant Jabber:</string>
@@ -169,6 +171,9 @@
 	<string name="toast_stored_offline">Le message a été sauvegardé pour transmission.</string>
 	<string name="chat_enterMsgHint">Entrer un message</string> 
 
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
+
 	<!-- GPS settings -->
 	<!--
 	<string name="showGPS_title">GPS to status</string>
@@ -181,7 +186,7 @@
 	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
 	<string name="AboutDialog_DevelopersText">Communiquer avec les développeurs sur http://yaxim.org ou sur freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">License</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Donner votre avis</string>
 	<string name="AboutDialog_LicenceText">Ce programme est un logiciel libre : vous pouvez le redistribuez et/ou le modifier sous les termes de la version 2 de la licence GNU General Public License tel que publié par la Free Software Foundation. Lien : http://www.gnu.org/licenses/gpl-2.0.html\n \n Une partie de ce logiciel est fourni sous la licence MIT :\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \nis hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">En ligne</string>
@@ -202,7 +207,7 @@
   sebseb01 https://launchpad.net/~sebseb01</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
+	<string name="default_group">Général</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choisissez le contact</string>
