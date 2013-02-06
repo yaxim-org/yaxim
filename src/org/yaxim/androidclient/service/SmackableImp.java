@@ -605,14 +605,16 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void sendServerPing() {
-		if (mPingID != null)
+		if (mPingID != null) {
+			debugLog("Ping: requested, but still waiting for " + mPingID);
 			return; // a ping is still on its way
+		}
 		Ping ping = new Ping();
 		ping.setType(Type.GET);
 		ping.setTo(mConfig.server);
 		mPingID = ping.getPacketID();
 		mPingTimestamp = System.currentTimeMillis();
-		debugLog("Send PING with ID " + mPingID);
+		debugLog("Ping: sending ping " + mPingID);
 		mXMPPConnection.sendPacket(ping);
 
 		// register ping timeout handler: PACKET_TIMEOUT(30s) + 3s
@@ -625,7 +627,7 @@ public class SmackableImp implements Smackable {
 	 */
 	private class PongTimeoutAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
-			debugLog("Pong Timeout Alarm received.");
+			debugLog("Ping: timeout for " + mPingID);
 			mServiceCallBack.disconnectOnError();
 			unRegisterCallback();
 		}
@@ -637,10 +639,9 @@ public class SmackableImp implements Smackable {
 	private class PingAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 			if (mXMPPConnection.isAuthenticated()) {
-				debugLog("Ping Alarm received.");
 				sendServerPing();
 			} else
-				debugLog("Ping Alarm received, but not connected to server.");
+				debugLog("Ping: alarm received, but not connected to server.");
 		}
 	}
 
@@ -651,6 +652,8 @@ public class SmackableImp implements Smackable {
 	 * Also sets up the AlarmManager Timer plus necessary intents.
 	 */
 	private void registerPongListener() {
+		// reset ping expectation on new connection
+		mPingID = null;
 
 		if (mPongListener != null)
 			mXMPPConnection.removePacketListener(mPongListener);
@@ -662,8 +665,8 @@ public class SmackableImp implements Smackable {
 				if (packet == null) return;
 
 				if (packet.getPacketID().equals(mPingID)) {
-					debugLog("got Pong");
-					Log.i(TAG, String.format("Server latency: %1.3fs", (System.currentTimeMillis() - mPingTimestamp)/1000.));
+					Log.i(TAG, String.format("Ping: server latency %1.3fs",
+								(System.currentTimeMillis() - mPingTimestamp)/1000.));
 					mPingID = null;
 					((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
 				}
