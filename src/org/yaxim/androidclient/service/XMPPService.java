@@ -147,10 +147,11 @@ public class XMPPService extends GenericService {
 					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
 				return START_STICKY;
 			} else
-			if (ping && mSmackable != null && mSmackable.isAuthenticated()) {
-				if (mConnectionDemanded.get())
-					mSmackable.sendServerPing();
-				else
+			if (ping) {
+				if (mConnectionDemanded.get()) {
+					if (mSmackable != null && mSmackable.isAuthenticated())
+						mSmackable.sendServerPing();
+				} else
 					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
 				return START_STICKY;
 			}
