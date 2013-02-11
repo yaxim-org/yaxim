@@ -76,6 +76,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Dunkel</item>
 		<item>Hell</item>
+		<item>Pinie</item>
+		<item>Eis</item>
 	</string-array>
 	<string name="preftitle_ui">Darstellung</string>
 	<string-array name="fontSizesChat">
@@ -195,14 +197,6 @@
 	<string name="status_dnd">Bitte nicht stören</string>
 	<string name="status_xa">Nicht verfügbar</string>
 	<string name="status_offline">Offline</string>
-
-	<string name="preftitle_ui">User Interface</string>
-	<string name="pref_theme">Erscheinungsbild</string>
-	<string-array name="pref_theme_entries">
-		<item>Dunkel</item>
-		<item>Hell</item>
-		<item>Pine</item>
-	</string-array>
 
 	<string name="translator_credits">Launchpad Contributions:
   Daniel Winzen https://launchpad.net/~q-d

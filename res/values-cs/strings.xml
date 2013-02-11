@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Připojuji se k serveru...</string>
+	<string name="conn_online">Připojen</string>
+	<string name="conn_offline">Odpojen</string>
+	<string name="conn_empty_roster">Žádné kontakty k zobrazení!</string>
+	<string name="conn_reconnect">\nDalší pokus o připojení za %d vteřin.</string>
+	<string name="conn_disconnected">Spojení ukončeno</string>
+	<string name="conn_networkchg">Síť změněna</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Ukončit</string>
+	<string name="Global_authenticate_first">Nejprve se prosím připojte</string>
+	<string name="Global_JID_hint">user@jabber.example.com</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Vítejte v klientu yaxim!</string>
+	<string name="StartupDialog_Summary">Před použitím je potřeba yaxim nakonfigurovat. Prosím zadejte své Jabber ID a heslo.</string>
+	<string name="StartupDialog_pwHint">Zadejte heslo</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_passwd_title">Heslo:</string>
+	<string name="StartupDialog_advanced">Pokročilé...</string>
+	<string name="StartupDialog_create_new">Registrovat nový účet</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Zpráva od %s</string>
+	<string name="notification_anonymous_message">Přijata nová zpráva</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Nastavení upozornění na zprávy</string>
+	<string name="led_title">Blikání LED diody</string>
+	<string name="led_summ">Blikat při příchozích zprávách diodou na telefonu</string>
+	<string name="vibr_title">Vibrace</string>
+	<string name="vibr_summ">Vibrovat při příchozích zprávách</string>
+	<string-array name="vibr_values_displayed">
+		<item>Nikdy</item>
+		<item>Podle nastavení systému</item>
+		<item>Vždy</item>
+	</string-array>
+	<string name="ringtone_title">Vyzvánění</string>
+	<string name="ringtone_summ">Zvuk pro příchozí zprávy</string>
+	<string name="ticker_title">Náhled zprávy</string>
+	<string name="ticker_summ">Zobrazovat zprávu a jejího odesílatele ve stavové liště</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Počáteční volby</string>
+	<string name="statuspopup_name">Nastavte si svůj stav</string>
+	<string name="showOffline_summ">Vždy zobrazovat všechny kontakty v seznamu</string>
+	<string name="showOffline_title">Zobrazení odpojených kontaktů</string>
+	<string name="foregroundService_summ">Uchovávat yaxim v paměti pro zajištění stálého připojení (foreground service)</string>
+	<string name="foregroundService_title">Ikona ve stavové liště</string>
+
+	<string name="preftitle_debug">Ladění</string>
+	<string name="smackdebug_summ">Výstup paketů a ladění pomocí logcat (může obsahovat osobní data)</string>
+	<string name="smackdebug_title">SMACK debugging</string>
+
+	<string name="reportcrash_title">Odesílání zpráv o selhání</string>
+	<string name="reportcrash_summ">Posílat anonymní zprávy o selhání vývojářům</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Vzhled</string>
+	<string name="FontChat_title">Velikost písma v chatu</string>
+	<string name="FontChat_summ">Nastavit velikost písma</string>
+	<string name="FontChat_dialog">Velikost písma v chatu</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">Motiv</string>
+	<string-array name="pref_theme_entries">
+		<item>Tmavý</item>
+		<item>Světlý</item>
+		<item>Borovice</item>
+		<item>Led</item>
+	</string-array>
+	<string name="preftitle_ui">Vzhled</string>
+	<string-array name="fontSizesChat">
+		<item>malé</item>
+		<item>normální</item>
+		<item>velké</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Přidat kontakt</string>
+	<string name="Menu_ShowOff">Zobrazovat odpojené</string>
+	<string name="Menu_HideOff">Skrývat odpojené</string>
+	<string name="Menu_AccSettings">Upravit účet</string>
+	<string name="Menu_Settings">Nastavení</string>
+	<string name="Menu_Status">Stav</string>
+	<string name="Menu_connect">Připojit</string>
+	<string name="Menu_disconnect">Odpojit</string>
+	<string name="Menu_about">O aplikaci yaxim</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Přidat kontakt</string>
+	<string name="addFriend_Summ">Prosím vložte Jabber ID vašeho kamaráda, zadejte požadovanou přezdívku a přidejte ho do skupiny!</string>
+	<string name="addFriend_aliasHint">Přezdívka</string>
+	<string name="addrosteritemaddgroupchoice">Přidat do nové skupiny</string>
+	<string name="NewGroup_EditTextField_Hint">Název nové skupiny</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Možnosti pro skupinu %s</string>
+	<string name="roster_contextmenu_group_rename">Přejmenovat skupinu</string>
+	<string name="roster_contextmenu_contact_delete">Odstranit kontakt</string>
+	<string name="roster_contextmenu_contact_delmsg">Vymazat historii chatu</string>
+	<string name="roster_contextmenu_contact_open_chat">Otevřít chat</string>
+	<string name="roster_contextmenu_contact_rename">Přejmenovat</string>
+	<string name="roster_contextmenu_contact_request_auth">Požadovat autorizaci</string>
+	<string name="roster_contextmenu_contact_change_group">Změnit skupinu</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Přihlašovací údaje</string>
+	<string name="account_settings_title">Nastavení účtu</string>
+	<string name="account_options_title">Možnosti připojení</string>
+	<string name="account_options_advanced">Pokročilé nastavení</string>
+	<string name="connstartup_title">Připojovat se při spuštění</string>
+	<string name="connstartup_summOn">Připojovat se při otevření aplikace yaxim</string>
+	<string name="connstartup_summOff">Nepřipojovat se automaticky</string>
+	<string name="reconnect_title">Opětovné připojení</string>
+	<string name="reconnect_summ">Po selhání spojení se znovu připojovat</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">např: ja@jabber.nekde.cz</string>
+	<string name="account_jabberID_dialog_title">Napište své Jabber ID:</string>
+	<string name="account_jabberPW_title">Heslo</string>
+	<string name="account_jabberPW_sum">Vaše heslo k Jabber účtu</string>
+	<string name="account_jabberPW_dialog_title">Napište své heslo:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Zdroj</string>
+	<string name="account_resource_summ">Výchozí: yaxim</string>
+	<string name="account_resource_dialog_title">Zadejte zdroj:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Priorita:</string>
+	<string name="account_prio_summ">Výchozí: 0 (povolené hodnoty: -128 až 127)</string>
+	<string name="account_prio_dialog_title">Zvolte prioritu:</string>
+	<string name="account_port_title">Port serveru</string>
+	<string name="account_port_sum">Výchozí: 5222</string>
+	<string name="account_port_dialog_title">Zadejte port serveru:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Vlastní server</string>
+	<string name="account_customserver_summ">(volitelné) alternativní adresa serveru</string>
+	<string name="account_customserver_dialog_title">Zadejte adresu serveru:</string>
+	<string name="account_customserver_hint">host.nekde.cz</string>
+	<string name="require_ssl_title">Vyžadovat SSL/TLS</string>
+	<string name="require_ssl_summ">Vždy šifrovat spojení se serverem</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Vyberte skupinu</string>
+	<string name="setStatusmsgHint">Váš stav</string>
+	<string name="setStatusTitle">Nastavte si svůj stav</string>
+	<string name="RenameGroup_summ">Přejmenovat skupinu %s na:</string>
+	<string name="RenameGroup_title">Přejmenovat skupinu</string>
+	<string name="RenameEntry_summ">Přejmenovat %1$s (%2$s) na:</string>
+	<string name="RenameEntry_title">Přejmenovat kontakt</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Vyberte skupinu z níže uvedené nabídky</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Změnit skupinu</string>
+	<string name="deleteRosterItem_text">Opravdu odstranit %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">Odstranit kontakt</string>
+	<string name="deleteChatHistory_text">Opravdu odstranit všechny zprávy s %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Vymazat historii chatu</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Já:</string>
+	<string name="toast_connectfail_message">Spojení bylo ukončeno!</string>
+	<string name="toast_stored_offline">Zpráva byla uložena k odeslání.</string>
+	<string name="chat_enterMsgHint">Vložte zprávu</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Resend</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">O aplikaci yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">Vývojáři</string>
+	<string name="AboutDialog_DevelopersText">Kontaktujte vývojáře na http://yaxim.org nebo na freenode IRC: #yaxim</string>
+	<string name="AboutDialog_LicenceTitle">Licence</string>
+	<string name="AboutDialog_Vote">Ohodnoťte aplikaci</string>
+	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+
+	<string name="status_available">Připojen</string>
+	<string name="status_away">Pryč</string>
+	<string name="status_chat">Můžu si povídat</string>
+	<string name="status_dnd">Nerušit</string>
+	<string name="status_xa">Nejsem k zastižení</string>
+	<string name="status_offline">Odpojen</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Mirek Ryšán https://launchpad.net/~mirek-rysan</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">Nezařazení</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Vyberte kontakt</string>
+</resources>
