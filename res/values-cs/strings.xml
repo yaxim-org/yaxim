@@ -9,7 +9,7 @@
 	<string name="conn_online">Připojen</string>
 	<string name="conn_offline">Odpojen</string>
 	<string name="conn_empty_roster">Žádné kontakty k zobrazení!</string>
-	<string name="conn_reconnect">Další pokus o připojení za %d vteřin.</string>
+	<string name="conn_reconnect">\nDalší pokus o připojení za %d vteřin.</string>
 	<string name="conn_disconnected">Spojení ukončeno</string>
 	<string name="conn_no_network">No network connection</string>
 
@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Tmavý</item>
 		<item>Světlý</item>
+		<item>Borovice</item>
+		<item>Led</item>
 	</string-array>
 	<string name="preftitle_ui">Vzhled</string>
 	<string-array name="fontSizesChat">
@@ -126,7 +128,8 @@
 	<string name="connstartup_title">Připojovat se při spuštění</string>
 	<string name="connstartup_summOn">Připojovat se při otevření aplikace yaxim</string>
 	<string name="connstartup_summOff">Nepřipojovat se automaticky</string>
-	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="reconnect_title">Opětovné připojení</string>
+	<string name="reconnect_summ">Po selhání spojení se znovu připojovat</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">např: ja@jabber.nekde.cz</string>

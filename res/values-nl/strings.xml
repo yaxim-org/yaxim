@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Donker</item>
 		<item>Licht</item>
+		<item>Pine</item>
+		<item>IJs</item>
 	</string-array>
 	<string name="preftitle_ui">Weergave</string>
 	<string-array name="fontSizesChat">

@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Тёмное</item>
 		<item>Светлое</item>
+		<item>Хвоя</item>
+		<item>Лёд</item>
 	</string-array>
 	<string name="preftitle_ui">Внешний вид</string>
 	<string-array name="fontSizesChat">
@@ -261,14 +263,6 @@
 	<string name="status_dnd">Не беспокоить</string>
 	<string name="status_xa">Недоступен</string>
 	<string name="status_offline">Отключён</string>
-
-	<string name="preftitle_ui">User Interface</string>
-	<string name="pref_theme">Оформление</string>
-	<string-array name="pref_theme_entries">
-		<item>Тёмное</item>
-		<item>Светлое</item>
-		<item>Pine</item>
-	</string-array>
 
 	<string name="translator_credits">Launchpad Contributions:
   Drow_Ranger https://launchpad.net/~d3jow9y5j

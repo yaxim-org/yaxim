@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Escuro</item>
 		<item>Claro</item>
+		<item>Pine</item>
+		<item>Ice</item>
 	</string-array>
 	<string name="preftitle_ui">Aparência</string>
 	<string-array name="fontSizesChat">
@@ -202,14 +204,6 @@
 	<string name="status_dnd">Não Perturbe</string>
 	<string name="status_xa">Indisponível</string>
 	<string name="status_offline">Desligado</string>
-
-	<string name="preftitle_ui">User Interface</string>
-	<string name="pref_theme">Tema</string>
-	<string-array name="pref_theme_entries">
-		<item>Escuro</item>
-		<item>Claro</item>
-		<item>Pine</item>
-	</string-array>
 
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg

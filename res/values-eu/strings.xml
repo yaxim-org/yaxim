@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Iluna</item>
 		<item>Argia</item>
+		<item>Pinua</item>
+		<item>Izotza</item>
 	</string-array>
 	<string name="preftitle_ui">Itxura</string>
 	<string-array name="fontSizesChat">
