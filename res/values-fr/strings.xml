@@ -123,7 +123,7 @@
 	<string name="reconnect_title">Reconnexion automatique</string>
 	<string name="reconnect_summ">Se reconnecter lorsque la connexion est interrompue</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="carbons_summ">Demander des copies de message de vos autres clients</string>
 	<string name="account_jabberID_title">Identifiant Jabber</string>
 	<string name="account_jabberID_sum">exemple : moi@jabber.exemple.com</string>
 	<string name="account_jabberID_dialog_title">Saisir votre identifiant Jabber:</string>
@@ -172,7 +172,7 @@
 	<string name="chat_enterMsgHint">Entrer un message</string> 
 
 	<!-- Chat menu -->
-	<string name="chatmenu_resend">Resend</string>
+	<string name="chatmenu_resend">Renvoyer</string>
 
 	<!-- GPS settings -->
 	<!--
