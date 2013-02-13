@@ -1,3 +1,6 @@
+0.8.6b:
+ * Also fix client-to-server pings (Oops, sorry!)
+
 0.8.6:
  * Fix server-to-client pings (error caused periodic reconnects)
  * Better connectivity when changing WiFi networks
