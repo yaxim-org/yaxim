@@ -34,6 +34,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 			xmppServiceIntent.setAction("de.hdmstuttgart.yaxim.XMPPSERVICE");
 			context.stopService(xmppServiceIntent);
 		} else if (intent.getAction().equals(android.net.ConnectivityManager.CONNECTIVITY_ACTION)) {
+			org.xbill.DNS.ResolverConfig.refresh();
 			ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 			Log.d(TAG, "ACTIVE NetworkInfo: "+(networkInfo != null ? networkInfo.toString() : "NONE"));
