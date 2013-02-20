@@ -131,7 +131,11 @@
 
     <!-- Convert this project's .class files into .dex files. -->
     <target name="dex.vanilla" depends="-compile, -post-compile" unless="have.proguard">
-	<dex-helper />
+	<dex-helper>
+	    <external-libs>
+		<path refid="project.all.jars.path" />
+	    </external-libs>
+	</dex-helper>
     </target>
 
     <target name="-dex" depends="dex.vanilla, dex.proguard" />
