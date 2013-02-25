@@ -1206,14 +1206,14 @@ public class SmackableImp implements Smackable {
 		Log.i(TAG, "status of join: "+ret);
 		Log.i(TAG, "writing message");
 		sendMucMessage("chat@conference.kanojo.de", "le test");
-		//Log.i(TAG, "creating room");
-		//createRoom("yaximtest@conference.kanojo.de", "le testing me", null);
+		Log.i(TAG, "creating room");
+		createRoom("yaximtest@conference.kanojo.de", "le testing me", null);
 		
-		//String rooms = "";
-		//for(String room : getJoinedRooms()) {
-		//	rooms = rooms + ", "+room;
-		//}
-		//Log.i(TAG, "joined rooms: "+rooms);
+		String rooms = "";
+		for(String room : getJoinedRooms()) {
+			rooms = rooms + ", "+room;
+		}
+		Log.i(TAG, "joined rooms: "+rooms);
 	}
 
 	@Override
@@ -1298,7 +1298,7 @@ public class SmackableImp implements Smackable {
 	@Override
 	public void sendMucMessage(String room, String message) {
 		try {
-			multiUserChats.get("room").sendMessage(message);
+			multiUserChats.get(room).sendMessage(message);
 		} catch (XMPPException e) {
 			Log.e(TAG, "error while sending message to muc room "+room);
 			e.printStackTrace();

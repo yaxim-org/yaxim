@@ -248,7 +248,7 @@ public class RosterProvider extends ContentProvider {
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "roster.db";
-		private static final int DATABASE_VERSION = 4;
+		private static final int DATABASE_VERSION = 5;
 
 		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -259,13 +259,13 @@ public class RosterProvider extends ContentProvider {
 			infoLog("creating new roster table");
 
 			db.execSQL("CREATE TABLE " + TABLE_ROSTER + " ("
-					+ RosterConstants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ RosterConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ RosterConstants.JID + " TEXT UNIQUE ON CONFLICT REPLACE, "
-					+ RosterConstants.ALIAS
-					+ " TEXT, " + RosterConstants.STATUS_MODE + " INTEGER, "
+					+ RosterConstants.ALIAS + " TEXT, " 
+					+ RosterConstants.STATUS_MODE + " INTEGER, "
 					+ RosterConstants.STATUS_MESSAGE + " TEXT, "
-					+ RosterConstants.GROUP + " TEXT);");
+					+ RosterConstants.GROUP + " TEXT"
+					+ RosterConstants.MUC_NICK + " TEXT default '');");
 			db.execSQL("CREATE INDEX idx_roster_group ON " + TABLE_ROSTER
 				        + " (" + RosterConstants.GROUP + ")");
 			db.execSQL("CREATE INDEX idx_roster_alias ON " + TABLE_ROSTER
@@ -299,6 +299,7 @@ public class RosterProvider extends ContentProvider {
 		public static final String STATUS_MODE = "status_mode";
 		public static final String STATUS_MESSAGE = "status_message";
 		public static final String GROUP = "roster_group";
+		public static final String MUC_NICK = "muc_nick"; // for muc only
 
 		public static final String DEFAULT_SORT_ORDER = STATUS_MODE + " DESC, " + ALIAS + " COLLATE NOCASE";
 
