@@ -215,8 +215,8 @@ public class ChatProvider extends ContentProvider {
 					+ ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
 					+ ChatConstants.DELIVERY_STATUS + " INTEGER,"
-					+ ChatConstants.PACKET_ID + " TEXT" 
-					+ ChatConstants.MUC_FROM_JID + " TEXT default '');");
+					+ ChatConstants.PACKET_ID + " TEXT,"
+					+ ChatConstants.RESOURCE + " TEXT DEFAULT NULL);");
 		}
 
 		@Override
@@ -227,9 +227,9 @@ public class ChatProvider extends ContentProvider {
 				db.execSQL("UPDATE " + TABLE_NAME + " SET READ=1");
 			case 4:
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.PACKET_ID + " TEXT");
-				break;
 			case 5:
-				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.MUC_FROM_JID + " TEXT default ''");
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.RESOURCE + " TEXT DEFAULT NULL");
+				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 				onCreate(db);
@@ -253,7 +253,7 @@ public class ChatProvider extends ContentProvider {
 		public static final String MESSAGE = "message";
 		public static final String DELIVERY_STATUS = "read"; // SQLite can not rename columns, reuse old name
 		public static final String PACKET_ID = "pid";
-		public static final String MUC_FROM_JID = "muc_from_jid"; // For MUC only 
+		public static final String RESOURCE = "resource"; // to identify senders in MUCs (among others)
 
 		// boolean mappings
 		public static final int INCOMING = 0;
