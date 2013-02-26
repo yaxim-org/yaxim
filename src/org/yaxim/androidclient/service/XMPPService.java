@@ -103,7 +103,6 @@ public class XMPPService extends GenericService {
 			 * unbound
 			 */
 			Intent xmppServiceIntent = new Intent(this, XMPPService.class);
-			xmppServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
 			startService(xmppServiceIntent);
 		}
 
@@ -124,35 +123,22 @@ public class XMPPService extends GenericService {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		logInfo("onStartCommand(), mConnectionDemanded=" + mConnectionDemanded.get());
 		if (intent != null) {
-			boolean disconnect = intent.getBooleanExtra("disconnect", false);
-			boolean reconnect = intent.getBooleanExtra("reconnect", false);
-			boolean ping = intent.getBooleanExtra("ping", false);
-
 			create_account = intent.getBooleanExtra("create_account", false);
 			
-			logInfo("disconnect="+disconnect+" reconnect="+reconnect+" ping="+ping);
-			if (disconnect) {
+			if ("disconnect".equals(intent.getAction())) {
 				if (mConnectingThread != null || mIsConnected.get())
 					connectionFailed(getString(R.string.conn_networkchg));
 				return START_STICKY;
-			}
-			if (reconnect) {
-				// reset DNS cache
-				org.xbill.DNS.Lookup.refreshDefault();
+			} else
+			if ("reconnect".equals(intent.getAction())) {
 				// reset reconnection timeout
 				mReconnectTimeout = RECONNECT_AFTER;
-				if (mConnectionDemanded.get())
-					doConnect();
-				else
-					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
+				doConnect();
 				return START_STICKY;
 			} else
-			if (ping) {
-				if (mConnectionDemanded.get()) {
-					if (mSmackable != null && mSmackable.isAuthenticated())
-						mSmackable.sendServerPing();
-				} else
-					stopSelf(); // started by YaximBroadcastReceiver, no connection initiation
+			if ("ping".equals(intent.getAction())) {
+				if (mSmackable != null && mSmackable.isAuthenticated())
+					mSmackable.sendServerPing();
 				return START_STICKY;
 			}
 		}
