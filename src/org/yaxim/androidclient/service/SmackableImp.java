@@ -1213,7 +1213,6 @@ public class SmackableImp implements Smackable {
 	public void mucTest() {
 		Log.i(TAG, "starting muctest");
 		addRoom("yaximtest@conference.kanojo.de", "", "le dai testing yaxim");
-		syncDbRooms();
 //		Log.i(TAG, "joining existing room");
 //		boolean ret;
 //		ret = joinRoom("yaximtest@conference.kanojo.de", "le testing me", null, 15);
@@ -1285,8 +1284,7 @@ public class SmackableImp implements Smackable {
 		return (deleted > 0);
 	}
 	
-	@Override
-	public boolean joinRoom(String room, String nickname, String password,
+	private boolean joinRoom(String room, String nickname, String password,
 			int historyLen) {
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
 		DiscussionHistory history = new DiscussionHistory();
@@ -1317,8 +1315,7 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	@Override
-	public boolean createRoom(String room, String nickname, String password) {
+	private boolean createRoom(String room, String nickname, String password) { // TODO: public wrapper method that syncs db backend?
 		// Create a MultiUserChat using a Connection for a room
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
 		Form form = null; // TODO: maybe not good style?
@@ -1378,8 +1375,7 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	@Override
-	public void quitRoom(String room) {
+	private void quitRoom(String room) {
 		MultiUserChat muc = multiUserChats.get(room); 
 		muc.leave();
 		multiUserChats.remove(room);
