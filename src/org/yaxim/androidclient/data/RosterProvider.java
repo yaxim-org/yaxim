@@ -122,6 +122,8 @@ public class RosterProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri url, ContentValues initialValues) { // TODO: add MUC stuff?!
+		infoLog("got insert query with uri: "+URI_MATCHER.toString());
+		
 		if(URI_MATCHER.match(url) == CONTACTS) {
 		ContentValues values = (initialValues != null) ? new ContentValues(
 				initialValues) : new ContentValues();
@@ -164,8 +166,8 @@ public class RosterProvider extends ContentProvider {
 
 		SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 		int match = URI_MATCHER.match(url);
+		
 		String groupBy = null;
-
 		switch (match) {
 
 		case GROUPS:
