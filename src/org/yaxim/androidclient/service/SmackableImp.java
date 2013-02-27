@@ -1212,22 +1212,79 @@ public class SmackableImp implements Smackable {
     @Override
 	public void mucTest() {
 		Log.i(TAG, "starting muctest");
-		Log.i(TAG, "joining existing room");
-		boolean ret;
-		ret = joinRoom("chat@conference.kanojo.de", "le testing me", null, 15);
-		Log.i(TAG, "status of join: "+ret);
-		Log.i(TAG, "writing message");
-		sendMucMessage("chat@conference.kanojo.de", "le test");
-		Log.i(TAG, "creating room");
-		createRoom("yaximtest@conference.kanojo.de", "le testing me", null);
-		
-		String rooms = "";
-		for(String room : getJoinedRooms()) {
-			rooms = rooms + ", "+room;
-		}
-		Log.i(TAG, "joined rooms: "+rooms);
+		addRoom("yaximtest@conference.kanojo.de", "", "le dai testing yaxim");
+		syncDbRooms();
+//		Log.i(TAG, "joining existing room");
+//		boolean ret;
+//		ret = joinRoom("yaximtest@conference.kanojo.de", "le testing me", null, 15);
+//		Log.i(TAG, "status of join: "+ret);
+//		Log.i(TAG, "writing message");
+//		sendMucMessage("yaximtest@conference.kanojo.de", "le test");
+//		Log.i(TAG, "creating room");
+//		createRoom("yaximtest@conference.kanojo.de", "le testing me", null);
+//		
+//		String rooms = "";
+//		for(String room : getJoinedRooms()) {
+//			rooms = rooms + ", "+room;
+//		}
+//		Log.i(TAG, "joined rooms: "+rooms);
+		//createRoom("yaximtest@conference.kanojo.de", "le testing me", null);
+		//joinRoom("yaximtest@conference.kanojo.de", "le testing me", null, 15);
+		//sendMucMessage("yaximtest@conference.kanojo.de", "le test");
 	}
 
+	public void syncDbRooms() {
+		ArrayList<String> joinedRooms = new ArrayList<String>(Arrays.asList(getJoinedRooms()));
+		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI, 
+				new String[] {RosterProvider.RosterConstants._ID,
+					RosterProvider.RosterConstants.JID, 
+					RosterProvider.RosterConstants.PASSWORD, 
+					RosterProvider.RosterConstants.NICKNAME}, 
+				null, null, null);
+		final int ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants._ID);
+		final int JID_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.JID);
+		final int PASSWORD_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.PASSWORD);
+		final int NICKNAME_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.NICKNAME);
+		
+		ArrayList<String> dbRooms = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			int id = cursor.getInt(ID);
+			String jid = cursor.getString(JID_ID);
+			String password = cursor.getString(PASSWORD_ID);
+			String nickname = cursor.getString(NICKNAME_ID);
+			dbRooms.add(jid);
+			debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
+			if(!joinedRooms.contains(jid)) {
+				debugLog("room " + jid + " isn't joined yet, i wanna join...");
+				joinRoom(jid, nickname, password, 50); // TODO: make historyLen configurable
+			}
+			debugLog("found data in contentprovider: "+jid+" "+password+" "+nickname);
+		}
+		cursor.close();
+		
+		for(String room : joinedRooms) {
+			if(!dbRooms.contains(room)) {
+				quitRoom(room);
+			}
+		}
+	}
+	
+	public boolean addRoom(String jid, String password, String nickname) {
+		ContentValues cv = new ContentValues();
+		cv.put(RosterProvider.RosterConstants.JID, jid);
+		cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
+		cv.put(RosterProvider.RosterConstants.PASSWORD, password);
+		Uri ret = mContentResolver.insert(RosterProvider.MUCS_URI, cv);
+		syncDbRooms();
+		return (ret != null);
+	}
+	
+	public boolean removeRoom(String jid) {
+		int deleted = mContentResolver.delete(RosterProvider.MUCS_URI, RosterProvider.RosterConstants.JID+" LIKE ?", new String[] {jid});
+		syncDbRooms();
+		return (deleted > 0);
+	}
+	
 	@Override
 	public boolean joinRoom(String room, String nickname, String password,
 			int historyLen) {
@@ -1253,7 +1310,11 @@ public class SmackableImp implements Smackable {
 
 	@Override
 	public String[] getJoinedRooms() {
-		return (String[]) multiUserChats.keySet().toArray();
+		if (multiUserChats.keySet().size() != 0) {
+			return (String[]) multiUserChats.keySet().toArray();
+		} else {
+			return new String[] {};
+		}
 	}
 
 	@Override

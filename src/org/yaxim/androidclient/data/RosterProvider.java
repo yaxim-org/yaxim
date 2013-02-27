@@ -48,7 +48,7 @@ public class RosterProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, "roster/#", CONTACT_ID);
 		URI_MATCHER.addURI(AUTHORITY, "groups", GROUPS);
 		URI_MATCHER.addURI(AUTHORITY, "groups/*", GROUP_MEMBERS);
-		URI_MATCHER.addURI(AUTHORITY, "muc", MUCS);
+		URI_MATCHER.addURI(AUTHORITY, "mucs", MUCS);
 	}
 
 	private static final String TAG = "yaxim.RosterProvider";
@@ -121,13 +121,11 @@ public class RosterProvider extends ContentProvider {
 	}
 
 	@Override
-	public Uri insert(Uri url, ContentValues initialValues) { // TODO: add MUC stuff?!
-		infoLog("got insert query with uri: "+URI_MATCHER.toString());
+	public Uri insert(Uri url, ContentValues initialValues) {
 		
 		if(URI_MATCHER.match(url) == CONTACTS) {
 		ContentValues values = (initialValues != null) ? new ContentValues(
 				initialValues) : new ContentValues();
-
 		for (String colName : RosterConstants.getRequiredContactColumns()) {
 			if (values.containsKey(colName) == false) {
 				throw new IllegalArgumentException("Missing column: " + colName);
@@ -135,23 +133,36 @@ public class RosterProvider extends ContentProvider {
 		}
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-
 		long rowId = db.insert(TABLE_ROSTER, RosterConstants.JID, values);
-
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
 		}
-
 		Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
-
 		notifyChange();
 
 		return noteUri;
 		} else if (URI_MATCHER.match(url) == MUCS) {
-			return null; // TODO
+			ContentValues values = (initialValues != null) ? new ContentValues(
+					initialValues) : new ContentValues();
+			for (String colName : RosterConstants.getRequiredMUCColumns()) {
+				if (values.containsKey(colName) == false) {
+					throw new IllegalArgumentException("Missing column: " + colName);
+				}
+			}
+			
+			SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+			long rowId = db.insert(TABLE_MUCS, RosterConstants.JID, values);
+			if (rowId < 0) {
+				throw new SQLException("Failed to insert row into " + url);
+			}
+			Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
+			notifyChange();
+			
+			return noteUri;
 		} else {
 			throw new IllegalArgumentException("Cannot insert into URL: " + url);
 		}
+		
 	}
 
 	@Override
@@ -338,7 +349,6 @@ public class RosterProvider extends ContentProvider {
 		public static final String STATUS_MESSAGE = "status_message";
 		public static final String GROUP = "roster_group";
 		
-		public static final String NEEDS_JOIN = "needs_join";
 		public static final String PASSWORD = "password";
 		public static final String NICKNAME = "nickname";
 
@@ -359,7 +369,6 @@ public class RosterProvider extends ContentProvider {
 			tmpList.add(JID);
 			tmpList.add(NICKNAME);
 			tmpList.add(PASSWORD);
-			tmpList.add(NEEDS_JOIN);
 			return tmpList;
 		}
 
