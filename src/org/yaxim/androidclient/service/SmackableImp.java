@@ -1315,7 +1315,20 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private boolean createRoom(String room, String nickname, String password) { // TODO: public wrapper method that syncs db backend?
+	@Override
+	public boolean createAndJoinRoom(String jid, String password, String nickname) { // TODO: ugly!
+		createRoom(jid, nickname, password);
+		if(new ArrayList<String>(Arrays.asList(getJoinedRooms())).contains(jid)) {
+			ContentValues cv = new ContentValues();
+			cv.put(RosterProvider.RosterConstants.JID, jid);
+			cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
+			cv.put(RosterProvider.RosterConstants.PASSWORD, password);
+			Uri ret = mContentResolver.insert(RosterProvider.MUCS_URI, cv);
+		}
+		return false;
+	}
+	
+	private boolean createRoom(String room, String nickname, String password) { // TODO: ugly!
 		// Create a MultiUserChat using a Connection for a room
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
 		Form form = null; // TODO: maybe not good style?
