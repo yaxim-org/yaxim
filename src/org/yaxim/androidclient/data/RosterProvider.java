@@ -92,8 +92,7 @@ public class RosterProvider extends ContentProvider {
 			break;
 
 		case MUCS:
-			// TODO
-			count = 0;
+			count = db.delete(TABLE_MUCS, where, whereArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Cannot delete from URL: " + url);

@@ -748,9 +748,14 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(message);
 		newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
-					System.currentTimeMillis(), newMessage.getPacketID());
-			mXMPPConnection.sendPacket(newMessage);
+
+			if(new ArrayList<String>(Arrays.asList(getJoinedRooms())).contains(toJID)) {
+				sendMucMessage(toJID, message);
+			} else {
+				addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
+						System.currentTimeMillis(), newMessage.getPacketID());
+				mXMPPConnection.sendPacket(newMessage);
+			}
 		} else {
 			// send offline -> store to DB
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_NEW,
@@ -1215,8 +1220,7 @@ public class SmackableImp implements Smackable {
     @Override
 	public void mucTest() {
 		Log.i(TAG, "starting muctest");
-		syncDbRooms();
-		Log.i(TAG, "joined rooms: "+Arrays.toString(getJoinedRooms()));
+		addRoom("yaximtest@conference.kanojo.de", "", "HonestTester");
 	}
 
 	public void syncDbRooms() {
@@ -1380,5 +1384,16 @@ public class SmackableImp implements Smackable {
 		MultiUserChat muc = multiUserChats.get(room); 
 		muc.leave();
 		multiUserChats.remove(room);
+	}
+
+	@Override
+	public String[] getRooms() {
+		syncDbRooms();
+		return getJoinedRooms();
+	}
+
+	@Override
+	public boolean isRoom(String jid) {
+		return new ArrayList<String>(Arrays.asList(getJoinedRooms())).contains(jid);
 	}
 }

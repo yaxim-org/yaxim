@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class XMPPService extends GenericService {
 
@@ -208,6 +209,15 @@ public class XMPPService extends GenericService {
 			public boolean createAndJoinRoom(String jid, String password,
 					String nickname) throws RemoteException {
 				return mSmackable.createAndJoinRoom(jid, password, nickname);
+			}
+			@Override
+			public String[] getRooms() throws RemoteException {
+				return mSmackable.getRooms();
+			}
+			@Override
+			public boolean isRoom(String jid) throws RemoteException {
+				Log.d("MucServiceStub", "called isRoom with jid "+jid);
+				return mSmackable.isRoom(jid);
 			}
 		};
 	}

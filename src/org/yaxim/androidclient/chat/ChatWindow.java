@@ -10,6 +10,7 @@ import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
 
@@ -78,8 +79,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private String mWithJabberID = null;
 	private String mUserScreenName = null;
 	private Intent mServiceIntent;
-	private ServiceConnection mServiceConnection;
-	private XMPPChatServiceAdapter mServiceAdapter;
+	private ServiceConnection mChatServiceConnection;
+	private ServiceConnection mMucServiceConnection;
+	private XMPPChatServiceAdapter mChatServiceAdapter;
+	private XMPPMucServiceAdapter mMucServiceAdapter;
 	private int mChatFontSize;
 
 	@Override
@@ -168,17 +171,16 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		Uri chatURI = Uri.parse(mWithJabberID);
 		mServiceIntent.setData(chatURI);
 		mServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-
-		mServiceConnection = new ServiceConnection() {
+		
+		mChatServiceConnection = new ServiceConnection() {
 
 			public void onServiceConnected(ComponentName name, IBinder service) {
-				Log.i(TAG, "called onServiceConnected()");
-				mServiceAdapter = new XMPPChatServiceAdapter(
+				Log.i(TAG, "called onServiceConnected() (for ChatService)");
+				mChatServiceAdapter = new XMPPChatServiceAdapter(
 						IXMPPChatService.Stub.asInterface(service),
 						mWithJabberID);
 				
-				mServiceAdapter.clearNotifications(mWithJabberID);
-				updateContactStatus();
+				mChatServiceAdapter.clearNotifications(mWithJabberID);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -186,18 +188,35 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			}
 
 		};
+		mMucServiceConnection = new ServiceConnection() {
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				Log.i(TAG, "called onServiceConnected() (for MucService");
+				mMucServiceAdapter = new XMPPMucServiceAdapter(
+						IXMPPMucService.Stub.asInterface(service),
+						mWithJabberID);
+				Log.d(TAG, "is muc?"+mMucServiceAdapter.isRoom(mWithJabberID));
+				}
+
+			public void onServiceDisconnected(ComponentName name) {
+				Log.i(TAG, "called onServiceDisconnected()");
+			}
+
+		};
+		
 	}
 
 	private void unbindXMPPService() {
 		try {
-			unbindService(mServiceConnection);
+			unbindService(mChatServiceConnection);
+			unbindService(mMucServiceConnection);
 		} catch (IllegalArgumentException e) {
 			Log.e(TAG, "Service wasn't bound!");
 		}
 	}
 
 	private void bindXMPPService() {
-		bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+		bindService(mServiceIntent, mChatServiceConnection, BIND_AUTO_CREATE);
+		bindService(mServiceIntent, mMucServiceConnection, BIND_AUTO_CREATE);
 	}
 
 	private void setSendButton() {
@@ -219,6 +238,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private void setContactFromUri() {
 		Intent i = getIntent();
 		mWithJabberID = i.getDataString().toLowerCase();
+		Log.d(TAG, "setting contact from URI: "+mWithJabberID);
 		if (i.hasExtra(INTENT_EXTRA_USERNAME)) {
 			mUserScreenName = i.getExtras().getString(INTENT_EXTRA_USERNAME);
 		} else {
@@ -279,8 +299,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private void sendMessage(String message) {
 		mChatInput.setText(null);
 		mSendButton.setEnabled(false);
-		mServiceAdapter.sendMessage(mWithJabberID, message);
-		if (!mServiceAdapter.isServiceAuthenticated())
+		mChatServiceAdapter.sendMessage(mWithJabberID, message);
+		if (!mChatServiceAdapter.isServiceAuthenticated())
 			showToastNotification(R.string.toast_stored_offline);
 	}
 

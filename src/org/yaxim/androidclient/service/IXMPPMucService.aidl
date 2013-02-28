@@ -7,6 +7,8 @@ interface IXMPPMucService {
 	boolean removeRoom(String jid);
 	boolean createAndJoinRoom(String jid, String password, String nickname);
 	void sendMessage(String room, String message);	
+	String[] getRooms();
+	boolean isRoom(String jid);
 	
 	
 	// TODO: invite
