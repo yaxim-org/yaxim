@@ -3,6 +3,7 @@ package org.yaxim.androidclient.chat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.jivesoftware.smack.Chat;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
@@ -64,7 +65,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
 			ChatProvider.ChatConstants.DIRECTION, ChatProvider.ChatConstants.JID,
-			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.DELIVERY_STATUS };
+			ChatProvider.ChatConstants.RESOURCE, ChatProvider.ChatConstants.MESSAGE, 
+			ChatProvider.ChatConstants.DELIVERY_STATUS };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
@@ -201,7 +203,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				mMucServiceAdapter = new XMPPMucServiceAdapter(
 						IXMPPMucService.Stub.asInterface(service), 
 						mWithJabberID);
-				Log.d(TAG, "isRoom? "+mMucServiceAdapter.isRoom(mWithJabberID));
+				Log.d(TAG, "isRoom? "+mMucServiceAdapter.isRoom());
 			}
 			public void onServiceDisconnected(ComponentName name) {
 				Log.i(TAG, "called onServiceDisconnected() (for MucService)");
@@ -359,6 +361,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 					ChatConstants.OUTGOING);
 			String jid = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.JID));
+			String resource = cursor.getString(
+					cursor.getColumnIndex(ChatProvider.ChatConstants.RESOURCE)
+					);
 			int delivery_status = cursor.getInt(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DELIVERY_STATUS));
 
@@ -378,8 +383,11 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			String from = jid;
 			if (jid.equals(mJID))
 				from = mScreenName;
+			from=from+"/"+resource;
+			if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+				from = resource;
+			}
 			wrapper.populateFrom(date, from_me, from, message, delivery_status);
-
 			return row;
 		}
 	}
