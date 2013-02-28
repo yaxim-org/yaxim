@@ -19,6 +19,7 @@ public class XMPPMucServiceAdapter {
 	}
 	
 	public boolean isRoom(String jid) {
+		
 		try {
 			Log.d(TAG, "called isRoom with jid "+jid+" and got response "+xmppServiceStub.isRoom(jid));
 			return xmppServiceStub.isRoom(jid);
