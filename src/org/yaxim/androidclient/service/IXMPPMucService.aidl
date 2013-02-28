@@ -2,11 +2,13 @@ package org.yaxim.androidclient.service;
 
 interface IXMPPMucService {
 	void mucTest();
-	boolean joinRoom(String room, String nickname, String password, int historyLen);
-	boolean createRoom(String room, String nickname, String password);
-	void quitRoom(String room);
-	String[] getJoinedRooms();
+	void syncDbRooms();
+	boolean addRoom(String jid, String password, String nickname);
+	boolean removeRoom(String jid);
+	boolean createAndJoinRoom(String jid, String password, String nickname);
 	void sendMessage(String room, String message);	
+	
+	
 	// TODO: invite
 	// TODO: private chat in a room
 	//RoomInfo getRoomInfo(String room); TODO: make RoomInfo "parcelable"??
