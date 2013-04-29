@@ -25,7 +25,9 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.provider.ProviderManager;
+import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smack.util.dns.DNSJavaResolver;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
@@ -40,6 +42,7 @@ import org.jivesoftware.smackx.ping.provider.PingProvider;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
+import org.jivesoftware.smackx.receipts.ReceiptReceivedListener;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -80,6 +83,7 @@ public class SmackableImp implements Smackable {
 
 	static {
 		registerSmackProviders();
+		DNSUtil.setDNSResolver(DNSJavaResolver.getInstance());
 	}
 
 	static void registerSmackProviders() {
@@ -287,7 +291,7 @@ public class SmackableImp implements Smackable {
 
 		DeliveryReceiptManager dm = DeliveryReceiptManager.getInstanceFor(mXMPPConnection);
 		dm.enableAutoReceipts();
-		dm.registerReceiptReceivedListener(new DeliveryReceiptManager.ReceiptReceivedListener() {
+		dm.addReceiptReceivedListener(new ReceiptReceivedListener() {
 			public void onReceiptReceived(String fromJid, String toJid, String receiptId) {
 				Log.d(TAG, "got delivery receipt for " + receiptId);
 				changeMessageDeliveryStatus(receiptId, ChatConstants.DS_ACKED);
@@ -355,7 +359,6 @@ public class SmackableImp implements Smackable {
 				}
 			}
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
-			SmackConfiguration.setKeepAliveInterval(-1);
 			SmackConfiguration.setDefaultPingInterval(0);
 			registerRosterListener();
 			mXMPPConnection.connect();
