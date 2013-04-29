@@ -215,7 +215,7 @@ public class SmackableImp implements Smackable {
 		debugLog("removeRosterItem(" + user + ")");
 
 		tryToRemoveRosterEntry(user);
-		mServiceCallBack.rosterChanged();
+		mServiceCallBack.stateChanged();
 	}
 
 	public void renameRosterItem(String user, String newName)
@@ -551,7 +551,7 @@ public class SmackableImp implements Smackable {
 				if (first_roster) {
 					removeOldRosterEntries();
 					first_roster = false;
-					mServiceCallBack.rosterChanged();
+					mServiceCallBack.stateChanged();
 				}
 				debugLog("entriesAdded() done");
 			}
@@ -562,7 +562,7 @@ public class SmackableImp implements Smackable {
 				for (String entry : entries) {
 					deleteRosterEntryFromDB(entry);
 				}
-				mServiceCallBack.rosterChanged();
+				mServiceCallBack.stateChanged();
 			}
 
 			public void entriesUpdated(Collection<String> entries) {
@@ -572,22 +572,22 @@ public class SmackableImp implements Smackable {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					updateRosterEntryInDB(rosterEntry);
 				}
-				mServiceCallBack.rosterChanged();
+				mServiceCallBack.stateChanged();
 			}
 
 			public void presenceChanged(Presence presence) {
 				debugLog("presenceChanged(" + presence.getFrom() + "): " + presence);
 
-				String jabberID = getJabberID(presence.getFrom());
+				String jabberID = getBareJID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				updateRosterEntryInDB(rosterEntry);
-				mServiceCallBack.rosterChanged();
+				mServiceCallBack.stateChanged();
 			}
 		};
 		mRoster.addRosterListener(mRosterListener);
 	}
 
-	private String getJabberID(String from) {
+	private String getBareJID(String from) {
 		String[] res = from.split("/");
 		return res[0].toLowerCase();
 	}
@@ -738,7 +738,7 @@ public class SmackableImp implements Smackable {
 						msg = (Message)cc.getForwarded().getForwardedPacket();
 						chatMessage = msg.getBody();
 						if (chatMessage == null) return;
-						String fromJID = getJabberID(msg.getTo());
+						String fromJID = getBareJID(msg.getTo());
 
 						addChatMessageToDB(ChatConstants.OUTGOING, fromJID, chatMessage, ChatConstants.DS_SENT_OR_READ, System.currentTimeMillis(), msg.getPacketID());
 						// always return after adding
@@ -762,7 +762,7 @@ public class SmackableImp implements Smackable {
 					else
 						ts = System.currentTimeMillis();
 
-					String fromJID = getJabberID(msg.getFrom());
+					String fromJID = getBareJID(msg.getFrom());
 
 					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
 					mServiceCallBack.newMessage(fromJID, chatMessage);

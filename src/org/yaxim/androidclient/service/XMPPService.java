@@ -191,12 +191,12 @@ public class XMPPService extends GenericService {
 
 			public int getConnectionState() throws RemoteException {
 				if (mSmackable != null && mSmackable.isAuthenticated()) {
-					return ConnectionState.AUTHENTICATED;
+					return ConnectionState.ONLINE.ordinal();
 				} else if (mConnectionDemanded.get() &&
 						networkConnectedOrConnecting()) {
-					return ConnectionState.CONNECTING;
+					return ConnectionState.CONNECTING.ordinal();
 				} else {
-					return ConnectionState.OFFLINE;
+					return ConnectionState.OFFLINE.ordinal();
 				}
 			}
 
@@ -490,7 +490,7 @@ public class XMPPService extends GenericService {
 				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from));
 			}
 
-			public void rosterChanged() {
+			public void stateChanged() {
 				postRosterChanged();
 			}
 

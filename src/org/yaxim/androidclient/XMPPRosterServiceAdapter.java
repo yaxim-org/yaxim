@@ -110,9 +110,9 @@ public class XMPPRosterServiceAdapter {
 		}
 	}
 
-	public int getConnectionState() {
+	public ConnectionState getConnectionState() {
 		try {
-			return xmppServiceStub.getConnectionState();
+			return ConnectionState.values()[xmppServiceStub.getConnectionState()];
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -129,7 +129,7 @@ public class XMPPRosterServiceAdapter {
 	}
 
 	public boolean isAuthenticated() {
-		return getConnectionState() == ConnectionState.AUTHENTICATED;
+		return getConnectionState() == ConnectionState.ONLINE;
 	}
 
 	public void requestAuthorizationForRosterItem(String user) {

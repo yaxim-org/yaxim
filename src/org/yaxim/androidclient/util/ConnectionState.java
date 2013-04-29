@@ -1,7 +1,10 @@
 package org.yaxim.androidclient.util;
 
-public class ConnectionState {
-	public static final int OFFLINE = 0;
-	public static final int CONNECTING = 1;
-	public static final int AUTHENTICATED = 2;
+public enum ConnectionState {
+	OFFLINE,
+	CONNECTING,
+	ONLINE,
+	DISCONNECTING,
+	RECONNECT_NETWORK,
+	RECONNECT_DELAYED;
 };
