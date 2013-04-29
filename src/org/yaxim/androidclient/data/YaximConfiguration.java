@@ -43,6 +43,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
     public String theme;
     public String chatFontSize;
 
+    public boolean reconnect_required = false;
+
 	private final SharedPreferences prefs;
 
 	public YaximConfiguration(SharedPreferences _prefs) {
@@ -59,6 +61,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
 		loadPrefs(prefs);
+		if (key == PreferenceConstants.JID || key == PreferenceConstants.CUSTOM_SERVER)
+			reconnect_required = true;
 	}
 
 	private void splitAndSetJabberID(String jid) {
