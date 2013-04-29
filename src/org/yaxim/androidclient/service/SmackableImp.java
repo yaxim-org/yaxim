@@ -122,7 +122,6 @@ public class SmackableImp implements Smackable {
 
 	private final ContentResolver mContentResolver;
 
-	private PacketListener mSendFailureListener;
 	private PacketListener mPongListener;
 	private String mPingID;
 	private long mPingTimestamp;
@@ -187,7 +186,6 @@ public class SmackableImp implements Smackable {
 		// been thrown.
 		if (isAuthenticated()) {
 			registerMessageListener();
-			registerMessageSendFailureListener();
 			registerPongListener();
 			sendOfflineMessages();
 			if (mServiceCallBack == null) {
@@ -592,7 +590,6 @@ public class SmackableImp implements Smackable {
 		try {
 			mXMPPConnection.getRoster().removeRosterListener(mRosterListener);
 			mXMPPConnection.removePacketListener(mPacketListener);
-			mXMPPConnection.removePacketSendFailureListener(mSendFailureListener);
 			mXMPPConnection.removePacketListener(mPongListener);
 			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPingAlarmPendIntent);
 			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
@@ -784,34 +781,6 @@ public class SmackableImp implements Smackable {
 		mService.registerReceiver(mPongTimeoutAlarmReceiver, new IntentFilter(PONG_TIMEOUT_ALARM));
 		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).setInexactRepeating(AlarmManager.RTC_WAKEUP, 
 				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
-	}
-
-	private void registerMessageSendFailureListener() {
-		// do not register multiple packet listeners
-		if (mSendFailureListener != null)
-			mXMPPConnection.removePacketSendFailureListener(mSendFailureListener);
-
-		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
-
-		mSendFailureListener = new PacketListener() {
-			public void processPacket(Packet packet) {
-				try {
-				if (packet instanceof Message) {
-					Message msg = (Message) packet;
-					String chatMessage = msg.getBody();
-
-					Log.d("SmackableImp", "message " + chatMessage + " could not be sent (ID:" + (msg.getPacketID() == null ? "null" : msg.getPacketID()) + ")");
-					changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_NEW);
-				}
-				} catch (Exception e) {
-					// SMACK silently discards exceptions dropped from processPacket :(
-					Log.e(TAG, "failed to process packet:");
-					e.printStackTrace();
-				}
-			}
-		};
-
-		mXMPPConnection.addPacketSendFailureListener(mSendFailureListener, filter);
 	}
 
 	private void registerMessageListener() {
