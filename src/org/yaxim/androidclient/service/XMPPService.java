@@ -315,15 +315,14 @@ public class XMPPService extends GenericService {
 
 		mLastConnectionError = getString(R.string.conn_connecting);
 		updateServiceNotification();
-		if (mSmackable != null) {
-			mSmackable.unRegisterCallback();
+		if (mSmackable == null) {
+			createAdapter();
 		}
 
 		mConnectingThread = new Thread() {
 
 			public void run() {
 				try {
-					createAdapter();
 					if (!mSmackable.doConnect(create_account)) {
 						postConnectionFailed("Inconsistency in Smackable.doConnect()");
 					} else
@@ -410,8 +409,7 @@ public class XMPPService extends GenericService {
 			mReconnectInfo = "";
 			updateServiceNotification();
 			if (mSmackable != null) {
-				mSmackable.unRegisterCallback();
-				mSmackable = null;
+				mSmackable.requestConnectionState(ConnectionState.OFFLINE);
 			}
 			YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 		} else if (mConnectionDemanded.get()) {
@@ -469,8 +467,8 @@ public class XMPPService extends GenericService {
 			}
 		}
 		if (mSmackable != null) {
-			mSmackable.unRegisterCallback();
-			mSmackable = null;
+			// TODO: blocking
+			mSmackable.requestConnectionState(ConnectionState.OFFLINE);
 		}
 		connectionFailed(getString(R.string.conn_offline));
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);

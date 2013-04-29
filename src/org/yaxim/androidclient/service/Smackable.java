@@ -1,11 +1,15 @@
 package org.yaxim.androidclient.service;
 
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.util.ConnectionState;
 
 
 public interface Smackable {
 	boolean doConnect(boolean create_account) throws YaximXMPPException;
 	boolean isAuthenticated();
+	void requestConnectionState(ConnectionState new_state);
+	ConnectionState getConnectionState();
+	String getLastError();
 
 	void addRosterItem(String user, String alias, String group) throws YaximXMPPException;
 	void removeRosterItem(String user) throws YaximXMPPException;

@@ -47,6 +47,7 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
@@ -103,9 +104,13 @@ public class SmackableImp implements Smackable {
 	}
 
 	private final YaximConfiguration mConfig;
-	private final ConnectionConfiguration mXMPPConfig;
-	private final XMPPConnection mXMPPConnection;
+	private ConnectionConfiguration mXMPPConfig;
+	private XMPPConnection mXMPPConnection;
 
+	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
+	private ConnectionState mState = ConnectionState.OFFLINE;
+	private String mLastError;
+	
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
 	private RosterListener mRosterListener;
@@ -134,23 +139,29 @@ public class SmackableImp implements Smackable {
 			ContentResolver contentResolver,
 			Service service) {
 		this.mConfig = config;
+		this.mContentResolver = contentResolver;
+		this.mService = service;
+	}
+		
+	// this code runs a DNS resolver, might be blocking
+	private synchronized void initXMPPConnection() {
 		// allow custom server / custom port to override SRV record
 		if (mConfig.customServer.length() > 0 || mConfig.port != PreferenceConstants.DEFAULT_PORT_INT)
-			this.mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
+			mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
 					mConfig.port, mConfig.server);
 		else
-			this.mXMPPConfig = new ConnectionConfiguration(mConfig.server); // use SRV
-		this.mXMPPConfig.setReconnectionAllowed(false);
-		this.mXMPPConfig.setSendPresence(false);
-		this.mXMPPConfig.setCompressionEnabled(false); // disable for now
-		this.mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
-		if (config.require_ssl)
+			mXMPPConfig = new ConnectionConfiguration(mConfig.server); // use SRV
+		mXMPPConfig.setReconnectionAllowed(false);
+		mXMPPConfig.setSendPresence(false);
+		mXMPPConfig.setCompressionEnabled(false); // disable for now
+		mXMPPConfig.setDebuggerEnabled(mConfig.smackdebug);
+		if (mConfig.require_ssl)
 			this.mXMPPConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
 
 		// register MemorizingTrustManager for HTTPS
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new X509TrustManager[] { YaximApplication.getApp(service).mMTM },
+			sc.init(null, new X509TrustManager[] { YaximApplication.getApp(mService).mMTM },
 					new java.security.SecureRandom());
 			this.mXMPPConfig.setCustomSSLContext(sc);
 		} catch (java.security.GeneralSecurityException e) {
@@ -158,11 +169,15 @@ public class SmackableImp implements Smackable {
 		}
 
 		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
-		this.mContentResolver = contentResolver;
-		this.mService = service;
+		mConfig.reconnect_required = false;
 	}
 
+	// blocking, run from a thread!
 	public boolean doConnect(boolean create_account) throws YaximXMPPException {
+		mRequestedState = ConnectionState.ONLINE;
+		updateConnectionState(ConnectionState.CONNECTING);
+		if (mXMPPConnection == null || mConfig.reconnect_required)
+			initXMPPConnection();
 		tryToConnect(create_account);
 		// actually, authenticated must be true now, or an exception must have
 		// been thrown.
@@ -180,11 +195,84 @@ public class SmackableImp implements Smackable {
 			}
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
-			mServiceCallBack.rosterChanged();
-		}
+			updateConnectionState(ConnectionState.ONLINE);
+		} else onDisconnected(null);
 		return isAuthenticated();
 	}
 
+	// called from outside, possible inputs:
+	// OFFLINE to disconnect
+	// ONLINE to connect
+	@Override
+	public void requestConnectionState(ConnectionState new_state) {
+		Log.d(TAG, "requestConnState: " + new_state + " from " + mState);
+		mRequestedState = new_state;
+		if (new_state == mState)
+			return;
+		switch (new_state) {
+		case ONLINE:
+			switch (mState) {
+			case RECONNECT_DELAYED:
+				// TODO: cancel timer
+			case OFFLINE:
+				Thread starter = new Thread() {
+					@Override
+					public void run() {
+						try {
+							updateConnectionState(ConnectionState.CONNECTING);
+							doConnect(false);
+							updateConnectionState(ConnectionState.ONLINE);
+						} catch (YaximXMPPException e) {
+							onDisconnected(e.getLocalizedMessage());
+						}
+					}
+				}; 
+				starter.start();
+				break;
+			case CONNECTING:
+			case RECONNECT_NETWORK:
+			case DISCONNECTING:
+				// ignore all other cases
+				break;
+			}
+			break;
+		case OFFLINE:
+			switch (mState) {
+			case CONNECTING:
+			case ONLINE:
+				// TODO: spawn thread to do disconnect
+				new Thread() {
+					public void run() {
+						updateConnectionState(ConnectionState.DISCONNECTING);
+						mXMPPConnection.disconnect();
+						updateConnectionState(ConnectionState.OFFLINE);
+					}
+				}.start();
+				break;
+			case DISCONNECTING:
+				break;
+			case RECONNECT_DELAYED:
+				// TODO: clear timer
+			case RECONNECT_NETWORK:
+				updateConnectionState(ConnectionState.OFFLINE);
+			}
+		}
+	}
+	
+
+	@Override
+	public ConnectionState getConnectionState() {
+		return mState;
+	}
+
+	// called at the end of a state transition
+	private synchronized void updateConnectionState(ConnectionState new_state) {
+		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state);
+		if (new_state == mState)
+			return;
+		mState = new_state;
+		mServiceCallBack.stateChanged();
+	}
 	private void initServiceDiscovery() {
 		// register connection features
 		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
@@ -250,6 +338,12 @@ public class SmackableImp implements Smackable {
 		response.setTo(user);
 		mXMPPConnection.sendPacket(response);
 	}
+	
+	private void onDisconnected(String reason) {
+		mServiceCallBack.disconnectOnError();
+		mLastError = reason;
+		updateConnectionState(ConnectionState.OFFLINE);
+	}
 
 	private void tryToConnect(boolean create_account) throws YaximXMPPException {
 		try {
@@ -270,9 +364,11 @@ public class SmackableImp implements Smackable {
 			}
 			mXMPPConnection.addConnectionListener(new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
-					mServiceCallBack.disconnectOnError();
+					onDisconnected(e.getLocalizedMessage());
 				}
-				public void connectionClosed() { }
+				public void connectionClosed() {
+					onDisconnected(null);
+				}
 				public void reconnectingIn(int seconds) { }
 				public void reconnectionFailed(Exception e) { }
 				public void reconnectionSuccessful() { }
@@ -501,14 +597,17 @@ public class SmackableImp implements Smackable {
 			mService.unregisterReceiver(mPongTimeoutAlarmReceiver);
 		} catch (Exception e) {
 			// ignore it!
+			e.printStackTrace();
 		}
 		if (mXMPPConnection.isConnected()) {
 			// work around SMACK's #%&%# blocking disconnect()
 			new Thread() {
 				public void run() {
+					updateConnectionState(ConnectionState.DISCONNECTING);
 					debugLog("shutDown thread started");
 					mXMPPConnection.disconnect();
 					debugLog("shutDown thread finished");
+					updateConnectionState(ConnectionState.OFFLINE);
 				}
 			}.start();
 		}
@@ -863,5 +962,10 @@ public class SmackableImp implements Smackable {
 		if (LogConstants.LOG_DEBUG) {
 			Log.d(TAG, data);
 		}
+	}
+
+	@Override
+	public String getLastError() {
+		return mLastError;
 	}
 }
