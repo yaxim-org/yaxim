@@ -73,6 +73,9 @@ public class RosterProvider extends ContentProvider {
 	public int delete(Uri url, String where, String[] whereArgs) {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int count;
+		
+		Log.d(TAG, "delete on uri "+url+" where "+where);
+		
 		switch (URI_MATCHER.match(url)) {
 
 		case CONTACTS:
@@ -173,9 +176,11 @@ public class RosterProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri url, String[] projectionIn, String selection,
 			String[] selectionArgs, String sortOrder) {
-
+		
 		SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 		int match = URI_MATCHER.match(url);
+		
+		Log.d(TAG, "got query on url "+url);
 		
 		String groupBy = null;
 		switch (match) {
