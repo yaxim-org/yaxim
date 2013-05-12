@@ -26,5 +26,5 @@
 	<item android:id="@+id/menu_exit" android:title="@string/Global_Exit"
 		android:alphabeticShortcut="x"
 		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
-	<item android:id="@+id/menu_testmuc" android:title="@string/Menu_testmuc" android:alphabeticShortcut="t"></item>
+	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" android:alphabeticShortcut="t"></item>
 </menu>

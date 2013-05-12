@@ -27,8 +27,13 @@ import org.yaxim.androidclient.util.StatusMode;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.ComponentName;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -52,9 +57,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
 import org.yaxim.androidclient.util.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -624,26 +635,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	
-	private void mucTest() {
-		Log.i(TAG, "called startXMPPService()");
-		Intent muctestIntent = new Intent(this, XMPPService.class);
-		Uri dtaUri = Uri.parse("test@conference.kanojo.de?chat");
-		muctestIntent.setData(dtaUri);
-		muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-
-		ServiceConnection muctestServiceConnection = new ServiceConnection() {
-			public void onServiceConnected(ComponentName name, IBinder service) {
-				Log.i("muctest","Service Connected!");
-				IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
-				try {
-					mucService.mucTest();
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
-			public void onServiceDisconnected(ComponentName name) {}
-		};
-		bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
+	private void mucActions() {
+		FragmentManager manager = getFragmentManager();
+		MucDialogFragment mucDialog = new MucDialogFragment();
+		mucDialog.show(manager, "dialog");
+		
 	}
 	
 	private void aboutDialog() {
@@ -722,8 +718,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case R.id.menu_about:
 			aboutDialog();
 			return true;
-			
-		case R.id.menu_testmuc:
+		case R.id.menu_muc:
 			mucTest();
 			return true;
 
@@ -1181,4 +1176,145 @@ public class MainWindow extends SherlockExpandableListActivity {
 			updateRoster();
 		}
 	}
+	
+	class MucDialogFragment extends DialogFragment {
+		ListView mucsList;
+		Cursor mucsCursor;
+		
+		
+//		Log.i(TAG, "called startXMPPService()");
+//		Intent muctestIntent = new Intent(this, XMPPService.class);
+//		Uri dtaUri = Uri.parse("test@conference.kanojo.de?chat");
+//		muctestIntent.setData(dtaUri);
+//		muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+//
+//		ServiceConnection muctestServiceConnection = new ServiceConnection() {
+//			public void onServiceConnected(ComponentName name, IBinder service) {
+//				Log.i("muctest","Service Connected!");
+//				IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+//				try {
+//					mucService.mucTest();
+//				} catch (RemoteException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			public void onServiceDisconnected(ComponentName name) {}
+//		};
+//		bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
+		
+		public void finishDialog() {
+			
+		}
+		
+		public void deleteItem(int dbID, final String roomJid) {
+			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
+			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+	
+			ServiceConnection muctestServiceConnection = new ServiceConnection() {
+				public void onServiceConnected(ComponentName name, IBinder service) {
+					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+					try {
+						mucService.removeRoom(roomJid); // java.lang.SecurityException: Binder invocation to an incorrect interface
+
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+				public void onServiceDisconnected(ComponentName name) {}
+			};
+			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
+		}
+		
+		public void longClickElement(int pos, final long id) {
+			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
+			final String item = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
+			final int dbID = itemCursor.getInt(itemCursor.getColumnIndex(RosterConstants._ID));
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			
+			builder.setMessage("Really leave MUC "+item+"?"); // TODO: make translateable
+			builder.setPositiveButton("Yes", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					deleteItem(dbID, item);
+				}});
+			builder.setNegativeButton("No!", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			
+		}
+		
+		public void clickAddButton() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			builder.setTitle("Add MUC via JID"); // TODO: make translatable
+			final EditText input = new EditText(MainWindow.this);
+			input.setHint("Room-JID");
+			builder.setView(input);
+			builder.setPositiveButton("Add", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String jid = input.getText().toString();
+					Log.d(TAG, "adding JID "+jid);
+				}});
+			builder.setNegativeButton("Cancel", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.muc_dialog, null);
+			builder.setView(view);
+			
+			builder.setMessage("Configure MUCs"); // TODO: translate?
+			builder.setPositiveButton("OK", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finishDialog();
+				}
+			});
+			
+			Dialog ret = builder.create();
+			
+			Button mucAddButton = (Button) view.findViewById(R.id.muc_add_button);
+			mucAddButton.setOnClickListener(new View.OnClickListener() {
+	             public void onClick(View v) {
+	                 clickAddButton();
+	             }
+	         });
+
+			
+			mucsCursor = getContentResolver().query(RosterProvider.MUCS_URI,
+					new String[] {RosterConstants._ID, RosterConstants.JID},
+					null, null, RosterConstants._ID);
+			String[] columns = new String[] {RosterConstants.JID};
+			int[] guiObjects = new int[] {R.id.muc_screenname}; 
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
+					R.layout.muclist_row, mucsCursor,
+					columns, guiObjects);
+			mucsList = (ListView) view.findViewById(R.id.mucsList);
+			mucsList.setAdapter(adapter);
+			
+			mucsList.setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					longClickElement(position, id);
+					return true;
+				}});
+			
+			return ret;
+		}
+	}
+	
 }

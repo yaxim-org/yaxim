@@ -104,7 +104,7 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
-	<string name="Menu_about">About yaxim</string><string name="Menu_testmuc">Test MUC</string>
+	<string name="Menu_about">About yaxim</string><string name="Menu_muc">MUC Actions</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Add a Contact</string>
@@ -277,4 +277,6 @@
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>
+	<string name="muc_add">Add Room</string>
+	<string name="muc_remove">Remove Room</string>
 </resources>
