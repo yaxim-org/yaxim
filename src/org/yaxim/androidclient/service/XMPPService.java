@@ -184,10 +184,6 @@ public class XMPPService extends GenericService {
 	private void createServiceMucStub() { // TODO
 		mServiceMucConnection = new IXMPPMucService.Stub() {
 			@Override
-			public void mucTest() throws RemoteException {
-				mSmackable.mucTest();
-			}
-			@Override
 			public void sendMessage(String room, String message)
 					throws RemoteException {
 				mSmackable.sendMucMessage(room, message);

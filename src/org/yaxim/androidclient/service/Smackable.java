@@ -27,7 +27,6 @@ public interface Smackable {
 	void registerCallback(XMPPServiceCallback callBack);
 	void unRegisterCallback();
 	
-	void mucTest();
 	void sendMucMessage(String room, String message);
 	void syncDbRooms();
 	public boolean addRoom(String jid, String password, String nickname);

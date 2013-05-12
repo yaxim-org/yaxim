@@ -1,7 +1,6 @@
 package org.yaxim.androidclient.service;
 
 interface IXMPPMucService {
-	void mucTest();
 	void syncDbRooms();
 	boolean addRoom(String jid, String password, String nickname);
 	boolean removeRoom(String jid);

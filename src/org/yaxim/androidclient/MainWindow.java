@@ -57,12 +57,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -1209,7 +1211,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		public void deleteItem(int dbID, final String roomJid) {
 			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
 			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-	
+			Uri dtaUri = Uri.parse(roomJid+"?chat");
+			muctestIntent.setData(dtaUri);
+			
 			ServiceConnection muctestServiceConnection = new ServiceConnection() {
 				public void onServiceConnected(ComponentName name, IBinder service) {
 					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
@@ -1248,17 +1252,25 @@ public class MainWindow extends SherlockExpandableListActivity {
 			
 		}
 		
-		public void clickAddButton() {
+		public void clickAddButton() { 
+			
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.muc_new_dialog, null);
+			final EditText jidET = (EditText) view.findViewById(R.id.muc_new_jid);
+			final EditText nickET = (EditText) view.findViewById(R.id.muc_new_nick);
+			final EditText pwET = (EditText) view.findViewById(R.id.muc_new_pw);
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			
 			builder.setTitle("Add MUC via JID"); // TODO: make translatable
-			final EditText input = new EditText(MainWindow.this);
-			input.setHint("Room-JID");
-			builder.setView(input);
+			builder.setView(view);
 			builder.setPositiveButton("Add", new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String jid = input.getText().toString();
-					Log.d(TAG, "adding JID "+jid);
+					String jid = jidET.getText().toString();
+					String nick = nickET.getText().toString();
+					String pw = pwET.getText().toString();
+					addRoom(jid, nick, pw);
 				}});
 			builder.setNegativeButton("Cancel", new OnClickListener() {
 				@Override
@@ -1267,6 +1279,26 @@ public class MainWindow extends SherlockExpandableListActivity {
 				}});
 			AlertDialog dialog = builder.create();
 			dialog.show();
+		}
+		
+		public void addRoom(final String jid, final String nick, final String pw) {
+			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
+			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+			Uri dtaUri = Uri.parse(jid+"?chat");
+			muctestIntent.setData(dtaUri);
+			
+			ServiceConnection muctestServiceConnection = new ServiceConnection() {
+				public void onServiceConnected(ComponentName name, IBinder service) {
+					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+					try {
+						mucService.addRoom(jid, pw, nick);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+				public void onServiceDisconnected(ComponentName name) {}
+			};
+			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
 		}
 		
 		@Override
