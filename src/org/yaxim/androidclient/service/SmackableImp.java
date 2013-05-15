@@ -1081,7 +1081,7 @@ public class SmackableImp implements Smackable {
 
 					addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
 					if (direction == ChatConstants.INCOMING)
-						mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null));
+						mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(

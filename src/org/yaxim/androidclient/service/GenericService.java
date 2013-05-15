@@ -3,6 +3,7 @@ package org.yaxim.androidclient.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jivesoftware.smack.packet.Message;
 import org.yaxim.androidclient.chat.ChatWindow;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.util.LogConstants;
@@ -92,7 +93,7 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String fromJid, String fromUserName, String message,
-			boolean showNotification, boolean silent_notification, boolean is_error) {
+			boolean showNotification, boolean silent_notification, boolean is_error, Message.Type msgType) {
 		if (!showNotification) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
@@ -121,6 +122,8 @@ public abstract class GenericService extends Service {
 		setLEDNotification();
 		if (!silent_notification)
 			mNotification.sound = mConfig.notifySound;
+		
+		// TODO: do something with messagetype
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {

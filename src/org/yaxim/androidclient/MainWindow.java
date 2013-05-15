@@ -25,12 +25,12 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.DialogInterface.OnClickListener;
@@ -50,6 +50,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -105,6 +107,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private ActionBar actionBar;
 	private String mTheme;
+	
+	private FragmentActivity fa = new FragmentActivity();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -113,7 +117,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		mTheme = mConfig.theme;
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
-
+		
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		actionBar = getSupportActionBar();
@@ -638,10 +642,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	
 	private void mucActions() {
-		FragmentManager manager = getFragmentManager();
-		MucDialogFragment mucDialog = new MucDialogFragment();
-		mucDialog.show(manager, "dialog");
-		
+		MucDialogBuilder builder = new MucDialogBuilder();
+		Dialog dialog = builder.createDialog(MainWindow.this);
+		dialog.show();
 	}
 	
 	private void aboutDialog() {
@@ -721,7 +724,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			aboutDialog();
 			return true;
 		case R.id.menu_muc:
-			mucTest();
+			mucActions();
 			return true;
 
 		}
@@ -1179,30 +1182,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 	
-	class MucDialogFragment extends DialogFragment {
+	class MucDialogBuilder {
 		ListView mucsList;
 		Cursor mucsCursor;
-		
-		
-//		Log.i(TAG, "called startXMPPService()");
-//		Intent muctestIntent = new Intent(this, XMPPService.class);
-//		Uri dtaUri = Uri.parse("test@conference.kanojo.de?chat");
-//		muctestIntent.setData(dtaUri);
-//		muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-//
-//		ServiceConnection muctestServiceConnection = new ServiceConnection() {
-//			public void onServiceConnected(ComponentName name, IBinder service) {
-//				Log.i("muctest","Service Connected!");
-//				IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
-//				try {
-//					mucService.mucTest();
-//				} catch (RemoteException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			public void onServiceDisconnected(ComponentName name) {}
-//		};
-//		bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
 		
 		public void finishDialog() {
 			
@@ -1252,9 +1234,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			
 		}
 		
-		public void clickAddButton() { 
-			
-			LayoutInflater inflater = getActivity().getLayoutInflater();
+		public void clickAddButton(Activity parent) { 
+			LayoutInflater inflater = parent.getLayoutInflater();
 			View view = inflater.inflate(R.layout.muc_new_dialog, null);
 			final EditText jidET = (EditText) view.findViewById(R.id.muc_new_jid);
 			final EditText nickET = (EditText) view.findViewById(R.id.muc_new_nick);
@@ -1301,10 +1282,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
 		}
 		
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			LayoutInflater inflater = getActivity().getLayoutInflater();
+		public Dialog createDialog(final Activity parent) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(parent);
+			LayoutInflater inflater = LayoutInflater.from(parent);
 			View view = inflater.inflate(R.layout.muc_dialog, null);
 			builder.setView(view);
 			
@@ -1321,7 +1301,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			Button mucAddButton = (Button) view.findViewById(R.id.muc_add_button);
 			mucAddButton.setOnClickListener(new View.OnClickListener() {
 	             public void onClick(View v) {
-	                 clickAddButton();
+	                 clickAddButton(parent);
 	             }
 	         });
 

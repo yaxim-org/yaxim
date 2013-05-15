@@ -11,6 +11,9 @@ import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
 
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Message.Type;
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -479,9 +482,9 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
-			public void newMessage(String from, String message, boolean silent_notification) {
-				logInfo("notification: " + from);
-				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from), silent_notification, false);
+			public void newMessage(String from, String message, boolean silent_notification, Type msgType) {
+				logInfo("notification: " + from +" with type: "+msgType.name());
+				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from), silent_notification, false, msgType);
 			}
 
 			public void messageError(final String from, final String error, final boolean silent_notification) {
