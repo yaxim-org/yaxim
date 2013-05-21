@@ -1079,10 +1079,15 @@ public class SmackableImp implements Smackable {
 					if (msg.getType() == Message.Type.error)
 						is_new = ChatConstants.DS_FAILED;
 
-					addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
-					if (direction == ChatConstants.INCOMING)
-						mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
-				}
+					if(msg.getType() != Message.Type.groupchat
+						|| 
+						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, ts, fromJID))
+						) {
+						Log.d(TAG, "actually adding msg...");
+						addChatMessageToDB(direction, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
+						if (direction == ChatConstants.INCOMING)
+							mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
+					}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
 					Log.e(TAG, "failed to process packet:");
@@ -1092,6 +1097,19 @@ public class SmackableImp implements Smackable {
 		};
 
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
+	}
+	
+	private boolean checkAddMucMessage(Message msg, String[] fromJid ) {
+		final String[] projection = new String[] {
+				ChatConstants._ID, ChatConstants.DATE,
+				ChatConstants.JID, ChatConstants.MESSAGE
+		};
+		final String selection = ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'";
+		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, null, null);
+		if(cursor.getCount()==0)
+			return true;	
+		else
+			return false;
 	}
 
 	private void registerPresenceListener() {
