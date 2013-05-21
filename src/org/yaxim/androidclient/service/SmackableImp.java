@@ -1099,7 +1099,7 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 	
-	private boolean checkAddMucMessage(Message msg, String[] fromJid ) { // TODO: this also inhibits the same person from saying things over and over again?
+	private boolean checkAddMucMessage(Message msg, String[] fromJid ) {
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.DATE,
 				ChatConstants.JID, ChatConstants.MESSAGE

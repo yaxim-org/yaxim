@@ -22,6 +22,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.telephony.gsm.SmsMessage.MessageClass;
 import android.util.Log;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
@@ -94,13 +95,28 @@ public abstract class GenericService extends Service {
 
 	protected void notifyClient(String fromJid, String fromUserName, String message,
 			boolean showNotification, boolean silent_notification, boolean is_error, Message.Type msgType) {
+		boolean isMuc = (msgType==Message.Type.groupchat);
+		
+		if(isMuc && mConfig.highlightNickMuc) {
+			Cursor cursor = getContentResolver().query(RosterProvider.MUCS_URI, new String[] {RosterConstants.NICKNAME},
+					RosterConstants.JID+"='"+fromJid+"'", null, null);
+			cursor.moveToFirst();
+			String nick = cursor.getString( cursor.getColumnIndexOrThrow(RosterConstants.NICKNAME) );
+			Log.d(TAG, "highlightNickMuc is set and nick is: "+nick+" fromJid is: "+fromJid+" message is: "+message);
+			if(!message.contains(nick)) {
+				return;
+			}
+		}
+		
 		if (!showNotification) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
 			try {
-				if (!silent_notification)
-					RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
+				if (!silent_notification) {
+					Uri sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+					RingtoneManager.getRingtone(getApplicationContext(), sound).play();
+				}
 			} catch (NullPointerException e) {
 				// ignore NPE when ringtone was not found
 			}
@@ -118,12 +134,10 @@ public abstract class GenericService extends Service {
 			silent_notification = false;		
 		}
 
-		setNotification(fromJid, fromUserName, message, is_error);
-		setLEDNotification();
-		if (!silent_notification)
-			mNotification.sound = mConfig.notifySound;
+		setNotification(fromJid, fromUserName, message, is_error, isMuc);
+		setLEDNotification(isMuc);
+		mNotification.sound = mConfig.notifySound;
 		
-		// TODO: do something with messagetype
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
@@ -136,19 +150,22 @@ public abstract class GenericService extends Service {
 
 		// If vibration is set to "system default", add the vibration flag to the 
 		// notification and let the system decide.
-		if(!silent_notification && "SYSTEM".equals(mConfig.vibraNotify)) {
+		if(!silent_notification && ((!isMuc && "SYSTEM".equals(mConfig.vibraNotify)) 
+				|| (isMuc && "SYSTEM".equals(mConfig.vibraNotifyMuc)))) {
 			mNotification.defaults |= Notification.DEFAULT_VIBRATE;
 		}
 		mNotificationMGR.notify(notifyId, mNotification);
 		
 		// If vibration is forced, vibrate now.
-		if(!silent_notification && "ALWAYS".equals(mConfig.vibraNotify)) {
+		if(!silent_notification && ((!isMuc && "ALWAYS".equals(mConfig.vibraNotify))
+				|| (isMuc && "ALWAYS".equals(mConfig.vibraNotifyMuc)))) {
 			mVibrator.vibrate(400);
 		}
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error) {
+	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error,
+			boolean isMuc) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -164,12 +181,7 @@ public abstract class GenericService extends Service {
 		}
 		String title = getString(R.string.notification_message, author);
 		String ticker;
-		if (is_error) {
-			title = getString(R.string.notification_error);
-			ticker = title;
-			message = author + ": " + message;
-		} else
-		if (mConfig.ticker) {
+		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
 			int newline = message.indexOf('\n');
 			int limit = 0;
 			String messageSummary = message;
@@ -181,7 +193,7 @@ public abstract class GenericService extends Service {
 				messageSummary = message.substring(0, limit) + " [...]";
 			ticker = title + ":\n" + messageSummary;
 		} else
-			ticker = getString(R.string.notification_anonymous_message);
+			ticker = getString(R.string.notification_anonymous_message, author);
 		mNotification = new Notification(R.drawable.sb_message, ticker,
 				System.currentTimeMillis());
 		Uri userNameUri = Uri.parse(fromJid);
@@ -199,8 +211,8 @@ public abstract class GenericService extends Service {
 		mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 	}
 
-	private void setLEDNotification() {
-		if (mConfig.isLEDNotify) {
+	private void setLEDNotification(boolean isMuc) {
+		if ((!isMuc && mConfig.isLEDNotify) || (isMuc && mConfig.isLEDNotifyMuc)) {
 			mNotification.ledARGB = Color.MAGENTA;
 			mNotification.ledOnMS = 300;
 			mNotification.ledOffMS = 1000;

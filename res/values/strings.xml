@@ -40,6 +40,9 @@
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Message Notification</string>
+	<string name="preftitle_notify_muc">MUC Notification</string>
+	<string name="muc_highlight_title">Only notify on nickname</string>
+	<string name="muc_highlight_sum">Only notify when your nickname is mentioned in a room</string>
 	<string name="led_title">Blinking LED</string>
 	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Vibration</string>
