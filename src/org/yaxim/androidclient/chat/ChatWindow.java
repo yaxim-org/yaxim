@@ -199,14 +199,11 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 		mMucServiceConnection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName name, IBinder service) {
-				Log.i(TAG, "called onServiceConnected() (for MucService)");
 				mMucServiceAdapter = new XMPPMucServiceAdapter(
 						IXMPPMucService.Stub.asInterface(service), 
 						mWithJabberID);
-				Log.d(TAG, "isRoom? "+mMucServiceAdapter.isRoom());
 			}
 			public void onServiceDisconnected(ComponentName name) {
-				Log.i(TAG, "called onServiceDisconnected() (for MucService)");
 			}
 		};
 	

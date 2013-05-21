@@ -20,10 +20,9 @@ public class XMPPMucServiceAdapter {
 	
 	public boolean isRoom() {
 		try {
-			Log.d(TAG, "called isRoom with jid "+jabberID+" and got response "+xmppServiceStub.isRoom(jabberID));
 			return xmppServiceStub.isRoom(jabberID);
-		} catch (RemoteException e) {
-			Log.e(TAG, "Caught RemoteException: "+e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG, "Caught Exception: "+e.getMessage());
 			return false;
 		}
 	}
