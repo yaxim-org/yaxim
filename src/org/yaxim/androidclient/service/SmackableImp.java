@@ -1099,12 +1099,14 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 	
-	private boolean checkAddMucMessage(Message msg, String[] fromJid ) {
+	private boolean checkAddMucMessage(Message msg, String[] fromJid ) { // TODO: this also inhibits the same person from saying things over and over again?
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.DATE,
 				ChatConstants.JID, ChatConstants.MESSAGE
 		};
-		final String selection = ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'";
+				
+		final String selection = ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'"
+				+ " AND "+ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, null, null);
 		if(cursor.getCount()==0)
 			return true;	
