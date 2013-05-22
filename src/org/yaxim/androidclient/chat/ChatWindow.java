@@ -2,6 +2,8 @@ package org.yaxim.androidclient.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 import org.jivesoftware.smack.Chat;
 import org.yaxim.androidclient.MainWindow;
@@ -24,8 +26,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.ColorStateList;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -403,15 +407,34 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 		private final View mRowView;
 		private ChatWindow chatWindow;
+		
+		private final int[] nickColorList = new int[] {
+			Color.CYAN, Color.GRAY, Color.GREEN, Color.LTGRAY, Color.YELLOW,
+			Color.MAGENTA, Color.MAGENTA, Color.RED, Color.WHITE
+		};
 
 		ChatItemWrapper(View row, ChatWindow chatWindow) {
 			this.mRowView = row;
 			this.chatWindow = chatWindow;
 		}
+		
+		int nick2Color(String nick) {
+			Checksum nickCRC = new CRC32();
+			nickCRC.update(nick.getBytes(), 0, nick.length());
+			int nickInt = (int)nickCRC.getValue();
+			int nickBasicColor = 
+					nickColorList[ Math.abs(nickInt%nickColorList.length) ];
+			int nickColor = Color.rgb(
+					Color.red(nickBasicColor) + (int)( (byte)(nickInt>>>24)),
+					Color.green(nickBasicColor) + (int)( (byte)(nickInt>>>16)),
+					Color.blue(nickBasicColor) + (int)( (byte)(nickInt>>>8))
+					);
+			return nickColor;
+		}
+
 
 		void populateFrom(String date, boolean from_me, String from, String message,
 				int delivery_status) {
-//			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
 			getDateView().setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
@@ -419,6 +442,12 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				getDateView().setTextColor(tv.data);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
+			} else if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
+				getDateView().setTextColor(nick2Color(from));
+				getFromView().setText(from + ":");
+				getFromView().setTextColor(nick2Color(from));
+				
 			} else {
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 				getDateView().setTextColor(tv.data);
