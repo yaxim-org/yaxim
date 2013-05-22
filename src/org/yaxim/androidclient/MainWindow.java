@@ -34,6 +34,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.DialogInterface.OnClickListener;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -309,17 +310,30 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		// get the entry name for the item
 		String menuName;
+		boolean isMuc=false;
 		if (isChild) {
 			getMenuInflater().inflate(R.menu.roster_item_contextmenu, menu);
 			menuName = String.format("%s (%s)",
 				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
 				getPackedItemRow(packedPosition, RosterConstants.JID));
+			ContentResolver contentResolver = getContentResolver();
+			Cursor res = contentResolver.query(RosterProvider.MUCS_URI, new String[]{}, 
+					RosterConstants.JID+"='"+getPackedItemRow(packedPosition, RosterConstants.JID)+"'", null, null);
+			isMuc = (res.getCount()>0);
 		} else {
 			menuName = getPackedItemRow(packedPosition, RosterConstants.GROUP);
 			if (menuName.equals(""))
 				return; // no options for default menu
 			getMenuInflater().inflate(R.menu.roster_group_contextmenu, menu);
 		}
+
+		// display contact menu for contacts
+		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild && !isMuc);
+		// display group menu for non-standard groups
+		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
+				(menuName.length() > 0) && !menuName.equals("MUCs"));
+		// display stripped down menu for MUCs
+		menu.setGroupVisible(R.id.roster_contextmenu_muc_menu, isChild && isMuc);
 
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group android:enabled="true" android:visible="true"
+		android:orderInCategory="2" android:id="@+id/roster_contextmenu_group_menu">
+
+		<item android:id="@+id/roster_contextmenu_group_rename" android:visible="true"
+			android:enabled="true" android:orderInCategory="7"
+			android:title="@string/roster_contextmenu_group_rename">
+		</item>
+
+	</group>
+
+	<group android:enabled="true" android:visible="true"
+		android:id="@+id/roster_contextmenu_contact_menu" android:orderInCategory="1">
+
 		<item android:id="@+id/roster_contextmenu_contact_open_chat" android:visible="true"
 			android:enabled="true" android:orderInCategory="1"
 			android:title="@string/roster_contextmenu_contact_open_chat">
@@ -35,4 +49,20 @@
 			android:title="@string/roster_contextmenu_contact_delete">
 		</item>
 
+	</group>
+
+	<group android:enabled="true" android:visible="true"
+		android:id="@+id/roster_contextmenu_muc_menu" android:orderInCategory="1">
+
+	<item android:id="@+id/roster_contextmenu_contact_open_chat" android:visible="true"
+			android:enabled="true" android:orderInCategory="1"
+			android:title="@string/roster_contextmenu_contact_open_chat">
+	</item>
+
+	<item android:visible="true" android:enabled="true"
+			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delmsg"
+			android:title="@string/roster_contextmenu_contact_delmsg">
+	</item>
+
+	</group>
 </menu>
