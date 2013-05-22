@@ -14,6 +14,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import org.jivesoftware.smack.AccountManager;
+import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
@@ -42,6 +43,7 @@ import org.jivesoftware.smackx.Form;
 import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
+import org.jivesoftware.smackx.muc.InvitationListener;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
@@ -882,8 +884,12 @@ public class SmackableImp implements Smackable {
 	}
 
 	private String[] getJabberID(String from) {
-		String[] res = from.split("/");
-		return new String[] { res[0].toLowerCase(), res[1] };
+		if(from.contains("/")) {
+			String[] res = from.split("/");
+			return new String[] { res[0].toLowerCase(), res[1].toLowerCase() };
+		} else {
+			return new String[] {from, ""};
+		}
 	}
 
 	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
@@ -1021,9 +1027,15 @@ public class SmackableImp implements Smackable {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 
-					String fromJID = getBareJID(msg.getFrom());
+					String[] fromJID = getJabberID(msg.getFrom());
+					
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
+
+					// check for jabber MUC invitation
+					if(msg.getExtension("jabber:x:conference") != null) {
+						handleMucInvitation(msg);
+					}
 
 					// extract timestamp
 					long ts;
@@ -1044,10 +1056,10 @@ public class SmackableImp implements Smackable {
 
 						// outgoing carbon: fromJID is actually chat peer's JID
 						if (cc.getDirection() == Carbon.Direction.sent) {
-							fromJID = getBareJID(msg.getTo());
+							fromJID = getJabberID(msg.getTo());
 							direction = ChatConstants.OUTGOING;
 						} else {
-							fromJID = getBareJID(msg.getFrom());
+							fromJID = getJabberID(msg.getFrom());
 
 							// hook off carbonated delivery receipts
 							DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension(
@@ -1064,7 +1076,7 @@ public class SmackableImp implements Smackable {
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
 						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
-							mServiceCallBack.messageError(fromJID, msg.getError().toString(), (cc != null));
+							mServiceCallBack.messageError(fromJID[0], msg.getError().toString(), (cc != null));
 						return; // we do not want to add errors as "incoming messages"
 					}
 
@@ -1079,12 +1091,16 @@ public class SmackableImp implements Smackable {
 					if (msg.getType() == Message.Type.error)
 						is_new = ChatConstants.DS_FAILED;
 
+
+					Log.d(TAG, 
+							String.format("attempting to add message '''%s''' from %s to db, msgtype==groupchat?: %b, checkaddmucmessage is: %b", chatMessage, fromJID[0], msg.getType()==Message.Type.groupchat, checkAddMucMessage(msg, ts, fromJID))
+							);
 					if(msg.getType() != Message.Type.groupchat
 						|| 
 						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, ts, fromJID))
 						) {
 						Log.d(TAG, "actually adding msg...");
-						addChatMessageToDB(direction, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
+						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
 						if (direction == ChatConstants.INCOMING)
 							mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
 					}
@@ -1275,6 +1291,13 @@ public class SmackableImp implements Smackable {
 		}
 	}
 	
+	protected void handleMucInvitation(Message msg) {
+		mServiceCallBack.mucInvitationReceived(
+				msg.getFrom(),
+				msg.getBody()
+				);
+	}
+	
 	public boolean addRoom(String jid, String password, String nickname) {
 		ContentValues cv = new ContentValues();
 		cv.put(RosterProvider.RosterConstants.JID, jid);
@@ -1298,10 +1321,7 @@ public class SmackableImp implements Smackable {
 			int historyLen) {
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
 		DiscussionHistory history = new DiscussionHistory();
-		history.setMaxStanzas(historyLen);
-		
-
-		
+		history.setMaxStanzas(historyLen);		
 		try {
 			muc.join(nickname, password, history, SmackConfiguration.getPacketReplyTimeout());
 		} catch (Exception e) {

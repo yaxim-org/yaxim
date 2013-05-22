@@ -7,4 +7,5 @@ public interface XMPPServiceCallback {
 	void messageError(String from, String errorBody, boolean silent_notification);
 	void connectionStateChanged();
 	void rosterChanged(); // TODO: remove that!
+	void mucInvitationReceived(String room, String body);
 }
