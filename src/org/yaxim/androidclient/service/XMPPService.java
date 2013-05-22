@@ -189,33 +189,45 @@ public class XMPPService extends GenericService {
 			@Override
 			public void sendMessage(String room, String message)
 					throws RemoteException {
-				mSmackable.sendMucMessage(room, message);
+				if(mSmackable!=null)
+					mSmackable.sendMucMessage(room, message);
 			}
 			@Override
 			public void syncDbRooms() throws RemoteException {
-				mSmackable.syncDbRooms();
+				if(mSmackable!=null)
+					mSmackable.syncDbRooms();
 			}
 			@Override
 			public boolean addRoom(String jid, String password, String nickname)
 					throws RemoteException {
-				return mSmackable.addRoom(jid, password, nickname);
+				if(mSmackable!=null)
+					return mSmackable.addRoom(jid, password, nickname);
+				return false;
 			}
 			@Override
 			public boolean removeRoom(String jid) throws RemoteException {
-				return mSmackable.removeRoom(jid);
+				if(mSmackable!=null)
+						return mSmackable.removeRoom(jid);
+				return false;
 			}
 			@Override
 			public boolean createAndJoinRoom(String jid, String password,
 					String nickname) throws RemoteException {
-				return mSmackable.createAndJoinRoom(jid, password, nickname);
+				if(mSmackable!=null)
+					return mSmackable.createAndJoinRoom(jid, password, nickname);
+				return false;
 			}
 			@Override
 			public String[] getRooms() throws RemoteException {
-				return mSmackable.getRooms();
+				if(mSmackable!=null)
+					return mSmackable.getRooms();
+				return new String[]{};
 			}
 			@Override
 			public boolean isRoom(String jid) throws RemoteException {
-				return mSmackable.isRoom(jid);
+				if(mSmackable!=null)
+					return mSmackable.isRoom(jid);
+				return false;
 			}
 		};
 	}
