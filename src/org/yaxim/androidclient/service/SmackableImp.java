@@ -1304,7 +1304,7 @@ public class SmackableImp implements Smackable {
 		
 		try {
 			muc.join(nickname, password, history, SmackConfiguration.getPacketReplyTimeout());
-		} catch (XMPPException e) {
+		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
 			if(nickname == null || nickname.equals("")) {
