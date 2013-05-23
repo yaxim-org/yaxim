@@ -1032,9 +1032,12 @@ public class SmackableImp implements Smackable {
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
 
+					Log.d(TAG, "message got :x:conference: "+msg.getExtension("jabber:x:conference"));
 					// check for jabber MUC invitation
 					if(msg.getExtension("jabber:x:conference") != null) {
+						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
 						handleMucInvitation(msg);
+						return;
 					}
 
 					// extract timestamp
@@ -1121,8 +1124,9 @@ public class SmackableImp implements Smackable {
 				ChatConstants.JID, ChatConstants.MESSAGE
 		};
 				
-		final String selection = ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'"
-				+ " AND "+ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
+		//final String selection = ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'"
+		//		+ " AND "+ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
+		final String selection = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, null, null);
 		if(cursor.getCount()==0)
 			return true;	
