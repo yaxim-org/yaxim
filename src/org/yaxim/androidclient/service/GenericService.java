@@ -33,7 +33,7 @@ public abstract class GenericService extends Service {
 	private static final String APP_NAME = "yaxim";
 	private static final int MAX_TICKER_MSG_LEN = 50;
 
-	private NotificationManager mNotificationMGR;
+	protected NotificationManager mNotificationMGR;
 	private Notification mNotification;
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
@@ -43,7 +43,7 @@ public abstract class GenericService extends Service {
 	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
 	private Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
 	protected static int SERVICE_NOTIFICATION = 1;
-	private int lastNotificationId = 2;
+	protected int lastNotificationId = 2;
 
 	protected YaximConfiguration mConfig;
 
@@ -102,7 +102,6 @@ public abstract class GenericService extends Service {
 					RosterConstants.JID+"='"+fromJid+"'", null, null);
 			cursor.moveToFirst();
 			String nick = cursor.getString( cursor.getColumnIndexOrThrow(RosterConstants.NICKNAME) );
-			Log.d(TAG, "highlightNickMuc is set and nick is: "+nick+" fromJid is: "+fromJid+" message is: "+message);
 			if(!message.contains(nick)) {
 				return;
 			}

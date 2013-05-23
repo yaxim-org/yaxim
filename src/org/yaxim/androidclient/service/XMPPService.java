@@ -5,11 +5,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
+import org.yaxim.androidclient.MucInviteActivity;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.MucInviteActivity;
 
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Message.Type;
@@ -529,7 +531,22 @@ public class XMPPService extends GenericService {
 
 			@Override
 			public void mucInvitationReceived(String room, String body) {
-				// TODO make a notification...
+				Notification invNotify = new Notification.Builder(getApplicationContext()) // TODO: make translateable
+											 .setContentTitle("New invitation to MUC "+room)
+											 .setContentText(body)
+											 .setSmallIcon(R.drawable.ic_action_online_friends_dark)						
+											 .setTicker("New invitation to Muc "+room+": "+body)
+											 .getNotification();
+				Intent invIntent = new Intent(getApplicationContext(), MucInviteActivity.class);
+				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_BODY, body);
+				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ROOM, room);
+				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ID, lastNotificationId);
+				invIntent.setAction("android.intent.action.SEND");
+				PendingIntent invPending = PendingIntent.getActivity(getApplicationContext(), 0, 
+						invIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+				invNotify.setLatestEventInfo(getApplicationContext(), body, body, invPending);
+				mNotificationMGR.notify(lastNotificationId, invNotify);
+				lastNotificationId += 1;
 			}
 		});
 	}
