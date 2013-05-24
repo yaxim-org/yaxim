@@ -48,6 +48,11 @@
 			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_delete"
 			android:title="@string/roster_contextmenu_contact_delete">
 		</item>
+		
+				<item android:visible="true" android:enabled="true"
+			android:orderInCategory="2" android:id="@+id/roster_contextmenu_contact_invite"
+			android:title="@string/roster_contextmenu_contact_invite">
+		</item>
 
 	</group>
 

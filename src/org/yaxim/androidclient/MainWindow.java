@@ -45,6 +45,7 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,6 +63,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -531,6 +533,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
+			case R.id.roster_contextmenu_contact_invite:
+				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
+				mucInviteDialog(userJid, userName);
+				return true;
 			}
 		} else {
 
@@ -656,7 +662,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	
 	private void mucActions() {
-		MucDialogBuilder builder = new MucDialogBuilder();
+		MucDialogBuilder builder = new MucDialogBuilder(MucDialogBuilder.MANAGE_DIALOG);
+		Dialog dialog = builder.createDialog(MainWindow.this);
+		dialog.show();
+	}
+	
+	private void mucInviteDialog(String userJid, String userName) {
+		MucDialogBuilder builder = new MucDialogBuilder(MucDialogBuilder.INVITE_DIALOG);
 		Dialog dialog = builder.createDialog(MainWindow.this);
 		dialog.show();
 	}
@@ -1200,15 +1212,29 @@ public class MainWindow extends SherlockExpandableListActivity {
 		ListView mucsList;
 		Cursor mucsCursor;
 		
+		public static final int MANAGE_DIALOG=0;
+		public static final int INVITE_DIALOG=1;
+		
+		private final int mode;
+		private String contactName="";
+		
+		public MucDialogBuilder(int mode) {
+			this.mode = mode;
+		}
+		
+		public void setContactName(String name) {
+			contactName = name;
+		}
+		
 		public void finishDialog() {
 			
 		}
 		
 		public void deleteItem(int dbID, final String roomJid) {
-			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
-			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+			Intent mucDeleteIntent = new Intent(MainWindow.this, XMPPService.class);
+			mucDeleteIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
 			Uri dtaUri = Uri.parse(roomJid+"?chat");
-			muctestIntent.setData(dtaUri);
+			mucDeleteIntent.setData(dtaUri);
 			
 			ServiceConnection muctestServiceConnection = new ServiceConnection() {
 				public void onServiceConnected(ComponentName name, IBinder service) {
@@ -1222,10 +1248,56 @@ public class MainWindow extends SherlockExpandableListActivity {
 				}
 				public void onServiceDisconnected(ComponentName name) {}
 			};
+			bindService(mucDeleteIntent, muctestServiceConnection, BIND_AUTO_CREATE);
+		}
+		
+		
+		public void selectInviteMuc(int pos, long id) {
+			
+			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
+			final String mucJid = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+			
+			builder.setMessage("Really invite contact "+contactName+"to MUC "+mucJid+"?"); // TODO: make translateable
+			builder.setPositiveButton("Yes", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					inviteToMuc(contactName, mucJid);
+				}});
+			builder.setNegativeButton("No", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void inviteToMuc(final String contactJid, final String roomJid) {
+			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
+			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+			Uri dtaUri = Uri.parse(roomJid+"?chat");
+			muctestIntent.setData(dtaUri);
+			
+			ServiceConnection muctestServiceConnection = new ServiceConnection() {
+				public void onServiceConnected(ComponentName name, IBinder service) {
+					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+					try {
+						mucService.inviteToRoom(contactJid, roomJid);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+				public void onServiceDisconnected(ComponentName name) {}
+			};
 			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
 		}
 		
 		public void longClickElement(int pos, final long id) {
+			if(mode!=MANAGE_DIALOG) {
+				return;
+			}
 			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
 			final String item = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
 			final int dbID = itemCursor.getInt(itemCursor.getColumnIndex(RosterConstants._ID));
@@ -1238,7 +1310,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					deleteItem(dbID, item);
 				}});
-			builder.setNegativeButton("No!", new OnClickListener() {
+			builder.setNegativeButton("No", new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// do nothing
@@ -1295,8 +1367,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 			};
 			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
 		}
+
 		
 		public Dialog createDialog(final Activity parent) {
+			Log.d(TAG, "crateing MucDialog with mode: "+mode);
 			AlertDialog.Builder builder = new AlertDialog.Builder(parent);
 			LayoutInflater inflater = LayoutInflater.from(parent);
 			View view = inflater.inflate(R.layout.muc_dialog, null);
@@ -1313,6 +1387,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 			Dialog ret = builder.create();
 			
 			Button mucAddButton = (Button) view.findViewById(R.id.muc_add_button);
+			
+			if(mode != MANAGE_DIALOG) {
+				mucAddButton.setVisibility(View.GONE);
+			}
+			
 			mucAddButton.setOnClickListener(new View.OnClickListener() {
 	             public void onClick(View v) {
 	                 clickAddButton(parent);
@@ -1331,16 +1410,31 @@ public class MainWindow extends SherlockExpandableListActivity {
 			mucsList = (ListView) view.findViewById(R.id.mucsList);
 			mucsList.setAdapter(adapter);
 			
+			mucsList.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					if(mode != INVITE_DIALOG) {
+						return;
+					}
+					selectInviteMuc(position, id);
+				}
+			});
+			
 			mucsList.setOnItemLongClickListener(new OnItemLongClickListener() {
 				@Override
 				public boolean onItemLongClick(AdapterView<?> parent,
 						View view, int position, long id) {
+					if(mode != MANAGE_DIALOG) {
+						return true;
+					}
 					longClickElement(position, id);
 					return true;
 				}});
 			
 			return ret;
 		}
+
 	}
 	
 }

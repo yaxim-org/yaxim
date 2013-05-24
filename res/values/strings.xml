@@ -127,6 +127,7 @@
 	<string name="roster_contextmenu_contact_rename">Rename</string>
 	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change Group</string>
+    <string name="roster_contextmenu_contact_invite">Invite to MUC</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Login Information</string>

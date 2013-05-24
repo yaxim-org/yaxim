@@ -231,6 +231,12 @@ public class XMPPService extends GenericService {
 					return mSmackable.isRoom(jid);
 				return false;
 			}
+			@Override
+			public boolean inviteToRoom(String contactJid, String roomJid) {
+				if(mSmackable!=null)
+					return mSmackable.inviteToRoom(contactJid, roomJid);
+				return false;				
+			}
 		};
 	}
 
