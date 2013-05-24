@@ -54,6 +54,9 @@ public class MucInviteActivity extends SherlockActivity {
 	    Button rejectButton = (Button) findViewById(R.id.rejectButton);
 	    final EditText nickText = (EditText) findViewById(R.id.nickEditText);
 	    
+	    roomText.setText(room);
+	    bodyText.setText(body);
+	    
 	    joinButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) { // TODO: code-duplication from MainWindow.addRoom ...but how to generalize/call?

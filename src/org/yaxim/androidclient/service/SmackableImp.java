@@ -1032,7 +1032,6 @@ public class SmackableImp implements Smackable {
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
 
-					Log.d(TAG, "message got :x:conference: "+msg.getExtension("jabber:x:conference"));
 					// check for jabber MUC invitation
 					if(msg.getExtension("jabber:x:conference") != null) {
 						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
@@ -1454,6 +1453,10 @@ public class SmackableImp implements Smackable {
 	@Override
 	public boolean inviteToRoom(String contactJid, String roomJid) {
 		MultiUserChat muc = multiUserChats.get(roomJid);
+		if(contactJid.contains("/")) {
+			contactJid = contactJid.split("/")[0];
+		}
+		Log.d(TAG, "invitng contact: "+contactJid+" to room: "+muc);
 		muc.invite(contactJid, "User "+contactJid+" has invited you to a chat!");
 		return false;
 	}
