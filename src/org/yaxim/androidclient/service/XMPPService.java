@@ -13,7 +13,6 @@ import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.MucInviteActivity;
 
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Message.Type;
 
 import android.app.AlarmManager;
@@ -29,10 +28,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class XMPPService extends GenericService {
 
+	private static final String TAG="yaxim.XMPPService";
+	
 	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false); // should we try to reconnect?
 	private static final int RECONNECT_AFTER = 5;
 	private static final int RECONNECT_MAXIMUM = 10*60;
@@ -537,12 +539,14 @@ public class XMPPService extends GenericService {
 
 			@Override
 			public void mucInvitationReceived(String room, String body) {
-				Notification invNotify = new Notification.Builder(getApplicationContext()) // TODO: make translateable
+				Log.d(TAG, "received MUC invitation, creating notification");
+				Notification invNotify = new NotificationCompat.Builder(getApplicationContext()) // TODO: make translateable
 											 .setContentTitle("New invitation to MUC "+room)
 											 .setContentText(body)
 											 .setSmallIcon(R.drawable.ic_action_online_friends_dark)						
 											 .setTicker("New invitation to Muc "+room+": "+body)
 											 .getNotification();
+				Log.d(TAG, "noticiation is: "+invNotify);
 				Intent invIntent = new Intent(getApplicationContext(), MucInviteActivity.class);
 				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_BODY, body);
 				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ROOM, room);
@@ -551,7 +555,9 @@ public class XMPPService extends GenericService {
 				PendingIntent invPending = PendingIntent.getActivity(getApplicationContext(), 0, 
 						invIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 				invNotify.setLatestEventInfo(getApplicationContext(), body, body, invPending);
+				Log.d(TAG, "notifying..");
 				mNotificationMGR.notify(lastNotificationId, invNotify);
+				Log.d(TAG, "notified");
 				lastNotificationId += 1;
 			}
 		});
