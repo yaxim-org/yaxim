@@ -37,5 +37,6 @@ public interface Smackable {
 	boolean inviteToRoom(String contactJid, String roomJid);
 	
 	String getNameForJID(String jid);
+	String[] getUserList(String jid);
 
 }

@@ -19,11 +19,17 @@ import org.yaxim.androidclient.util.StatusMode;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.ColorStateList;
@@ -45,7 +51,6 @@ import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
@@ -92,27 +97,29 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private XMPPChatServiceAdapter mChatServiceAdapter;
 	private XMPPMucServiceAdapter mMucServiceAdapter;
 	private int mChatFontSize;
+	private ActionBar actionBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		setContactFromUri();
+		Log.d(TAG, "onCreate, registering XMPP service");
+		registerXMPPService();
+		Log.d(TAG, "onCreate, registered xmpp service, is: "+mMucServiceAdapter+" and "+mChatServiceAdapter);
+
 		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
-	
+		
 		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.mainchat);
-		
-		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
-				true, mContactObserver);
 
-		ActionBar actionBar = getSupportActionBar();
+		
+		actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		registerForContextMenu(getListView());
-		setContactFromUri();
-		registerXMPPService();
 		setSendButton();
 		setUserInput();
 		
@@ -206,6 +213,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				mMucServiceAdapter = new XMPPMucServiceAdapter(
 						IXMPPMucService.Stub.asInterface(service), 
 						mWithJabberID);
+				supportInvalidateOptionsMenu();
 			}
 			public void onServiceDisconnected(ComponentName name) {
 			}
@@ -570,8 +578,52 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
+		case R.id.chat_optionsmenu_userlist:
+			showUserList();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private void showUserList() {
+		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+			final String[] users = mMucServiceAdapter.getUserList();
+			AlertDialog usersDialog = new AlertDialog.Builder(ChatWindow.this)
+									.setItems(users, new OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											String postfix=mChatInput.getText().toString().equals("")? ", " : "";
+											mChatInput.append(users[which]+postfix);
+										}
+									})
+									.setTitle("Users in room "+mWithJabberID)
+									.setNeutralButton("Close", null)
+									.create();
+			usersDialog.show();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater(); 
+		inflater.inflate(R.menu.chat_options, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		Log.d(TAG, "preparing options menu "+mMucServiceAdapter);
+		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+			Log.d(TAG, "prepare mucserviceadapter thinks we're are room");
+			com.actionbarsherlock.view.MenuItem item = menu.findItem(R.id.chat_optionsmenu_userlist); // TODO: find new icon
+			//TypedValue tv = new TypedValue();
+			//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
+			item.setIcon(R.drawable.ic_groupchat); // TODO: make themed
+			item.setTitle(R.string.Menu_userlist);
+			return true;
+		} else {
+			return false;
 		}
 	}
 

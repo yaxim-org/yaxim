@@ -11,7 +11,10 @@
 		android:alphabeticShortcut="a"
 		android:icon="@android:drawable/ic_menu_add" />
 
-	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" android:alphabeticShortcut="t"></item><item android:id="@+id/menu_status" android:title="@string/Menu_Status"
+	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" 
+	    android:alphabeticShortcut="t" />
+	
+	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
 		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
 		android:showAsAction="never"/>
 

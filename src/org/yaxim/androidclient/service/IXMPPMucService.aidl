@@ -9,6 +9,7 @@ interface IXMPPMucService {
 	String[] getRooms();
 	boolean isRoom(String jid);
 	boolean inviteToRoom(String contactJid, String roomJid);
+	String[] getUserList(String jid);
 	
 	// TODO: private chat in a room
 	//RoomInfo getRoomInfo(String room); TODO: make RoomInfo "parcelable"??

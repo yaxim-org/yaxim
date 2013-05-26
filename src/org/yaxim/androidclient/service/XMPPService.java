@@ -30,6 +30,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.util.TypedValue;
 
 public class XMPPService extends GenericService {
 
@@ -238,6 +239,12 @@ public class XMPPService extends GenericService {
 				if(mSmackable!=null)
 					return mSmackable.inviteToRoom(contactJid, roomJid);
 				return false;				
+			}
+			@Override
+			public String[] getUserList(String jid) throws RemoteException {
+				if(mSmackable!=null)
+					return mSmackable.getUserList(jid);				
+				return new String[]{};
 			}
 		};
 	}
@@ -539,14 +546,14 @@ public class XMPPService extends GenericService {
 
 			@Override
 			public void mucInvitationReceived(String room, String body) {
-				Log.d(TAG, "received MUC invitation, creating notification");
+				//TypedValue tv = new TypedValue();
+				//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext()) // TODO: make translateable
 											 .setContentTitle("New invitation to MUC "+room)
 											 .setContentText(body)
-											 .setSmallIcon(R.drawable.ic_action_online_friends_dark)						
+											 .setSmallIcon(R.drawable.ic_groupchat) // TODO: make themed		
 											 .setTicker("New invitation to Muc "+room+": "+body)
 											 .getNotification();
-				Log.d(TAG, "noticiation is: "+invNotify);
 				Intent invIntent = new Intent(getApplicationContext(), MucInviteActivity.class);
 				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_BODY, body);
 				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ROOM, room);
@@ -555,9 +562,7 @@ public class XMPPService extends GenericService {
 				PendingIntent invPending = PendingIntent.getActivity(getApplicationContext(), 0, 
 						invIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 				invNotify.setLatestEventInfo(getApplicationContext(), body, body, invPending);
-				Log.d(TAG, "notifying..");
 				mNotificationMGR.notify(lastNotificationId, invNotify);
-				Log.d(TAG, "notified");
 				lastNotificationId += 1;
 			}
 		});

@@ -26,5 +26,13 @@ public class XMPPMucServiceAdapter {
 			return false;
 		}
 	}
+	
+	public String[] getUserList() {
+		try {
+			return xmppServiceStub.getUserList(this.jabberID);
+		} catch (RemoteException e) {
+			return new String[]{};
+		}
+	}
 
 }

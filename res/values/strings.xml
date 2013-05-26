@@ -107,7 +107,9 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
-	<string name="Menu_about">About yaxim</string><string name="Menu_muc">MUC Actions</string>
+	<string name="Menu_about">About yaxim</string>
+	<string name="Menu_muc">MUC Actions</string>
+    <string name="Menu_userlist">Users</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Add a Contact</string>
@@ -293,5 +295,7 @@
     <string name="muc_room_jid">Rooms JID: </string>
     <string name="muc_invite_ok_button">Join Room!</string>
     <string name="muc_invite_reject">Reject Invitation!</string>
-	
+    <string name="chat_muc_userlist">Users</string>
+    
+
 </resources>

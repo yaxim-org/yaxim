@@ -162,7 +162,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	void handleGroupChange(int groupPosition, boolean isExpanded) {
 		String groupName = getGroupName(groupPosition);
 		if (groupClicked) {
-			Log.d(TAG, "group status change: " + groupName + " -> " + isExpanded);
 			mGroupsExpanded.put(groupName, isExpanded);
 			groupClicked = false;
 		//} else {
@@ -950,7 +949,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String name = getGroupName(count);
 			if (!mGroupsExpanded.containsKey(name))
 				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
-			Log.d(TAG, "restoreGroupsExpanded: " + name + ": " + mGroupsExpanded.get(name));
 			if (mGroupsExpanded.get(name))
 				getExpandableListView().expandGroup(count);
 			else
