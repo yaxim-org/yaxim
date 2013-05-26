@@ -25,6 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -36,6 +37,7 @@ import android.content.res.ColorStateList;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -45,7 +47,10 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.text.ClipboardManager;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -55,10 +60,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -415,29 +422,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 		private final View mRowView;
 		private ChatWindow chatWindow;
-		
-		private final int[] nickColorList = new int[] {
-			Color.CYAN, Color.GRAY, Color.GREEN, Color.LTGRAY, Color.YELLOW,
-			Color.MAGENTA, Color.MAGENTA, Color.RED, Color.WHITE
-		};
 
 		ChatItemWrapper(View row, ChatWindow chatWindow) {
 			this.mRowView = row;
 			this.chatWindow = chatWindow;
-		}
-		
-		int nick2Color(String nick) {
-			Checksum nickCRC = new CRC32();
-			nickCRC.update(nick.getBytes(), 0, nick.length());
-			int nickInt = (int)nickCRC.getValue();
-			int nickBasicColor = 
-					nickColorList[ Math.abs(nickInt%nickColorList.length) ];
-			int nickColor = Color.rgb(
-					Color.red(nickBasicColor) + (int)( (byte)(nickInt>>>24)),
-					Color.green(nickBasicColor) + (int)( (byte)(nickInt>>>16)),
-					Color.blue(nickBasicColor) + (int)( (byte)(nickInt>>>8))
-					);
-			return nickColor;
 		}
 
 
@@ -589,18 +577,29 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private void showUserList() {
 		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
 			final String[] users = mMucServiceAdapter.getUserList();
-			AlertDialog usersDialog = new AlertDialog.Builder(ChatWindow.this)
-									.setItems(users, new OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											String postfix=mChatInput.getText().toString().equals("")? ", " : "";
-											mChatInput.append(users[which]+postfix);
-										}
-									})
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ChatWindow.this)
 									.setTitle("Users in room "+mWithJabberID)
-									.setNeutralButton("Close", null)
-									.create();
-			usersDialog.show();
+									.setNeutralButton("Close", null);
+			
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChatWindow.this, R.layout.single_string) {
+			    @Override
+			    public View getView(int position, View convertView, ViewGroup parent) {
+			        View v = super.getView(position, convertView, parent);
+			        ((TextView) v).setTextColor( nick2Color(getItem(position)) );
+			        return v;
+			    }
+			};
+			adapter.addAll(users);
+			Log.d(TAG, "adapter has values: "+adapter.getCount());
+			dialogBuilder.setAdapter(adapter, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String postfix=mChatInput.getSelectionStart()==0 ? ", " : ""; 
+					mChatInput.getText().insert(mChatInput.getSelectionStart(), users[which]+postfix);
+				}
+			});
+			AlertDialog dialog = dialogBuilder.create();
+			dialog.show();
 		}
 	}
 
@@ -652,6 +651,25 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		cursor.close();
 	}
 
+	final static int nick2Color(String nick) {
+		nick = nick.toLowerCase();
+		final int[] nickColorList = new int[] {
+				Color.CYAN, Color.GRAY, Color.GREEN, Color.LTGRAY, Color.YELLOW,
+				Color.MAGENTA, Color.MAGENTA, Color.RED, Color.WHITE
+			};
+		Checksum nickCRC = new CRC32();
+		nickCRC.update(nick.getBytes(), 0, nick.length());
+		int nickInt = (int)nickCRC.getValue();
+		int nickBasicColor = 
+				nickColorList[ Math.abs(nickInt%nickColorList.length) ];
+		int nickColor = Color.rgb(
+				Color.red(nickBasicColor) + (int)( (byte)(nickInt>>>24)),
+				Color.green(nickBasicColor) + (int)( (byte)(nickInt>>>16)),
+				Color.blue(nickBasicColor) + (int)( (byte)(nickInt>>>8))
+				);
+		return nickColor;
+	}
+	
 	private class ContactObserver extends ContentObserver {
 		public ContactObserver() {
 			super(new Handler());
