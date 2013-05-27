@@ -589,7 +589,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			        return v;
 			    }
 			};
-			adapter.addAll(users);
+			for(String user : users)
+				adapter.add(user);
 			Log.d(TAG, "adapter has values: "+adapter.getCount());
 			dialogBuilder.setAdapter(adapter, new OnClickListener() {
 				@Override
