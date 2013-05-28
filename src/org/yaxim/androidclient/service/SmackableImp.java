@@ -105,11 +105,14 @@ public class SmackableImp implements Smackable {
 
 		ServiceDiscoveryManager.setIdentityName(YaximApplication.XMPP_IDENTITY_NAME);
 		ServiceDiscoveryManager.setIdentityType(YaximApplication.XMPP_IDENTITY_TYPE);
+		
+		XmppStreamHandler.addExtensionProviders();
 	}
 
 	private final YaximConfiguration mConfig;
 	private ConnectionConfiguration mXMPPConfig;
 	private XMPPConnection mXMPPConnection;
+	private XmppStreamHandler mStreamHandler;
 
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
 	private ConnectionState mState = ConnectionState.OFFLINE;
@@ -171,7 +174,7 @@ public class SmackableImp implements Smackable {
 			debugLog("initialize MemorizingTrustManager: " + e);
 		}
 
-		this.mXMPPConnection = new XMPPConnection(mXMPPConfig);
+		this.mXMPPConnection = new XmppStreamHandler.ExtXMPPConnection(mXMPPConfig);
 		mConfig.reconnect_required = false;
 	}
 
@@ -192,7 +195,7 @@ public class SmackableImp implements Smackable {
 				// sometimes we get disconnected while not yet quite connected.
 				// bail out if this is the case
 				debugLog("doConnect: mServiceCallBack is null, aborting connection...");
-				mXMPPConnection.disconnect();
+				mXMPPConnection.quickShutdown();
 				return false;
 			}
 			// we need to "ping" the service to let it know we are actually
@@ -246,7 +249,7 @@ public class SmackableImp implements Smackable {
 				new Thread() {
 					public void run() {
 						updateConnectionState(ConnectionState.DISCONNECTING);
-						mXMPPConnection.disconnect();
+						mXMPPConnection.quickShutdown();
 						updateConnectionState(ConnectionState.OFFLINE);
 					}
 				}.start();
@@ -359,10 +362,14 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setDefaultPingInterval(0);
 			registerRosterListener();
-			mXMPPConnection.connect();
+			boolean need_bind = !(mStreamHandler != null && mStreamHandler.isResumePossible());
+			mXMPPConnection.connect(need_bind);
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
+			if (mStreamHandler == null)
+				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
+			
 			mXMPPConnection.addConnectionListener(new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
 					onDisconnected(e.getLocalizedMessage());
@@ -385,6 +392,9 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						mConfig.ressource);
 			}
+			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
+			if (need_bind)
+				mStreamHandler.notifyInitialLogin();
 			setStatusFromConfig();
 
 		} catch (XMPPException e) {
@@ -590,6 +600,7 @@ public class SmackableImp implements Smackable {
 		try {
 			mXMPPConnection.getRoster().removeRosterListener(mRosterListener);
 			mXMPPConnection.removePacketListener(mPacketListener);
+
 			mXMPPConnection.removePacketListener(mPongListener);
 			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPingAlarmPendIntent);
 			((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
