@@ -68,7 +68,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			R.id.chat_from, R.id.chat_message };
 	
 	private static final int DELAY_NEWMSG = 2000;
-
 	private ContentObserver mContactObserver = new ContactObserver();
 	private ImageView mStatusMode;
 	private TextView mTitle;
@@ -81,7 +80,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
 	private int mChatFontSize;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(YaximApplication.getConfig(this).getTheme());
