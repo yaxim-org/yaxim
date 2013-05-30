@@ -12,6 +12,7 @@ import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
@@ -661,22 +662,28 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		cursor.close();
 	}
 
-	final static int nick2Color(String nick) {
+	final int nick2Color(String nick) {
 		nick = nick.toLowerCase();
-		final int[] nickColorList = new int[] {
-				Color.CYAN, Color.GRAY, Color.GREEN, Color.LTGRAY, Color.YELLOW,
-				Color.MAGENTA, Color.MAGENTA, Color.RED, Color.WHITE
-			};
+		
 		Checksum nickCRC = new CRC32();
 		nickCRC.update(nick.getBytes(), 0, nick.length());
 		int nickInt = (int)nickCRC.getValue();
-		int nickBasicColor = 
-				nickColorList[ Math.abs(nickInt%nickColorList.length) ];
-		int nickColor = Color.rgb(
-				Color.red(nickBasicColor) + (int)( (byte)(nickInt>>>24)),
-				Color.green(nickBasicColor) + (int)( (byte)(nickInt>>>16)),
-				Color.blue(nickBasicColor) + (int)( (byte)(nickInt>>>8))
-				);
+	
+
+
+		float h, s, v;
+		h=Math.abs(   ((float)((byte)(nickInt>>8)))*1.4f   );
+		Log.d(TAG, "got H: "+h);
+		s=0.75f+Math.abs(   ((float)((byte)(nickInt>>16)))/1024.0f    );
+
+		if(YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme) {
+			v=0.75f+Math.abs(   ((float)((byte)(nickInt>>24)))/1024.0f   );
+		} else {
+			v=0.75f-Math.abs(   ((float)((byte)(nickInt>>24)))/1024.0f   );
+		}
+		
+		int nickColor = Color.HSVToColor(0xFF, new float[]{h, s, v});
+		
 		return nickColor;
 	}
 	

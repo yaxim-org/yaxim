@@ -1,5 +1,6 @@
 package org.yaxim.androidclient;
 
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 
@@ -32,9 +33,10 @@ public class MucInviteActivity extends SherlockActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_muc_invite);
-
+		
 		Intent intent = getIntent();
 	    
 	    if(!(intent.hasExtra(INTENT_EXTRA_BODY) && intent.hasExtra(INTENT_EXTRA_ROOM))) {
