@@ -39,6 +39,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
@@ -126,6 +128,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		Log.d(TAG, "registrs for contextmenu...");
 		registerForContextMenu(getListView());
 		setSendButton();
 		setUserInput();
@@ -282,13 +285,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		}
 	}
 
-	private CharSequence getMessageFromContextMenu(MenuItem item) {
+	private CharSequence getMessageFromContextMenu(android.view.MenuItem item) {
 		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
 		TextView message = (TextView)target.findViewById(R.id.chat_message);
 		return message.getText();
 	}
 
-	public boolean onContextItemSelected(MenuItem item) {
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.chat_contextmenu_copy_text:
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
@@ -304,6 +308,49 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 	
 
+	@Override
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+			Log.d(TAG, "creating options menu, we're a muc");
+			MenuInflater inflater = getSupportMenuInflater(); 
+			inflater.inflate(R.menu.chat_options, menu);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		Log.d(TAG, "preparing options menu "+mMucServiceAdapter);
+		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+			Log.d(TAG, "prepare mucserviceadapter thinks we're are room");
+			com.actionbarsherlock.view.MenuItem item = menu.findItem(R.id.chat_optionsmenu_userlist); // TODO: find new icon
+			//TypedValue tv = new TypedValue();
+			//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
+			item.setIcon(R.drawable.ic_groupchat); // TODO: make themed
+			item.setTitle(R.string.Menu_userlist);
+			return true;
+		} 
+		return false;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		Log.d(TAG, "options item selected");
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, MainWindow.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		case R.id.chat_optionsmenu_userlist:
+			showUserList();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	private View.OnClickListener getOnSetListener() {
 		return new View.OnClickListener() {
 
@@ -558,22 +605,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		toastNotification.show();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			Intent intent = new Intent(this, MainWindow.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			return true;
-		case R.id.chat_optionsmenu_userlist:
-			showUserList();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	
 	private void showUserList() {
 		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
 			final String[] users = mMucServiceAdapter.getUserList();
@@ -604,29 +635,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater(); 
-		inflater.inflate(R.menu.chat_options, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		Log.d(TAG, "preparing options menu "+mMucServiceAdapter);
-		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
-			Log.d(TAG, "prepare mucserviceadapter thinks we're are room");
-			com.actionbarsherlock.view.MenuItem item = menu.findItem(R.id.chat_optionsmenu_userlist); // TODO: find new icon
-			//TypedValue tv = new TypedValue();
-			//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
-			item.setIcon(R.drawable.ic_groupchat); // TODO: make themed
-			item.setTitle(R.string.Menu_userlist);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	
 	private static final String[] STATUS_QUERY = new String[] {
 		RosterProvider.RosterConstants.STATUS_MODE,
 		RosterProvider.RosterConstants.STATUS_MESSAGE,
