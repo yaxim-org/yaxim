@@ -2,6 +2,7 @@ package org.yaxim.androidclient.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
@@ -668,19 +669,29 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		Checksum nickCRC = new CRC32();
 		nickCRC.update(nick.getBytes(), 0, nick.length());
 		int nickInt = (int)nickCRC.getValue();
-	
-
-
+		Random rand = new Random(nickInt);
+		float r1 = -0.15f + ( rand.nextFloat() * (0.15f - -0.15f) );
+		float r2 = -0.1f + ( rand.nextFloat() * (0.1f - -0.1f) );
+		int blueShift = rand.nextBoolean() ? 45 : -45;
+		
 		float h, s, v;
-		h=Math.abs(   ((float)((byte)(nickInt>>8)))*1.4f   );
-		Log.d(TAG, "got H: "+h);
-		s=0.75f+Math.abs(   ((float)((byte)(nickInt>>16)))/1024.0f    );
+		h=Math.abs( nickInt%360 );
 
+		s=0.5f; v=0.5f;
 		if(YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme) {
-			v=0.75f+Math.abs(   ((float)((byte)(nickInt>>24)))/1024.0f   );
-		} else {
-			v=0.75f-Math.abs(   ((float)((byte)(nickInt>>24)))/1024.0f   );
+			s=0.75f + r1;
+			v=0.9f + r2;
+			if(h<=255.0f && h>=225.0f) {
+				h = h + blueShift;
+			}
+		} else if(YaximApplication.getConfig(this).getTheme() == R.style.YaximLightTheme) {
+			s=0.7f + r1; 
+			v=0.8f + r2;
 		}
+		
+		/*Log.d(TAG, String.format(
+				"nick2Color(%s): nickInt: %d, r1: %f, r2: %f, noBlue: %s, h: %f, s: %f, v: %f", 
+				nick, nickInt, r1, r2, blueShift, h, s, v));*/
 		
 		int nickColor = Color.HSVToColor(0xFF, new float[]{h, s, v});
 		
