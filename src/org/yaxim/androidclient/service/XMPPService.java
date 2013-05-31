@@ -31,6 +31,7 @@ import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.Toast;
 
 public class XMPPService extends GenericService {
 
@@ -191,11 +192,18 @@ public class XMPPService extends GenericService {
 	
 	private void createServiceMucStub() {
 		mServiceMucConnection = new IXMPPMucService.Stub() {
+			private void fail(String error) {
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						error, Toast.LENGTH_LONG);
+				toast.show();
+			}
 			@Override
 			public void sendMessage(String room, String message)
 					throws RemoteException {
 				if(mSmackable!=null)
 					mSmackable.sendMucMessage(room, message);
+				else
+					fail("Could not send message"); // TODO: make all below translateable
 			}
 			@Override
 			public void syncDbRooms() throws RemoteException {
@@ -207,26 +215,38 @@ public class XMPPService extends GenericService {
 					throws RemoteException {
 				if(mSmackable!=null)
 					return mSmackable.addRoom(jid, password, nickname);
-				return false;
+				else {
+					fail("Could not add room");
+					return false;
+				}
 			}
 			@Override
 			public boolean removeRoom(String jid) throws RemoteException {
 				if(mSmackable!=null)
 						return mSmackable.removeRoom(jid);
-				return false;
+				else {
+					fail("Could not delete room");
+					return false;
+				}
 			}
 			@Override
 			public boolean createAndJoinRoom(String jid, String password,
 					String nickname) throws RemoteException {
 				if(mSmackable!=null)
 					return mSmackable.createAndJoinRoom(jid, password, nickname);
-				return false;
+				else {
+					fail("Could not create/join Room");
+					return false;
+				}
 			}
 			@Override
 			public String[] getRooms() throws RemoteException {
 				if(mSmackable!=null)
 					return mSmackable.getRooms();
-				return new String[]{};
+				else {
+					fail("Could not list rooms");
+					return new String[]{};
+				}
 			}
 			@Override
 			public boolean isRoom(String jid) throws RemoteException {
@@ -238,13 +258,19 @@ public class XMPPService extends GenericService {
 			public boolean inviteToRoom(String contactJid, String roomJid) {
 				if(mSmackable!=null)
 					return mSmackable.inviteToRoom(contactJid, roomJid);
-				return false;				
+				else {
+					fail("Could not invite user to MUC");
+					return false;
+				}
 			}
 			@Override
 			public String[] getUserList(String jid) throws RemoteException {
 				if(mSmackable!=null)
-					return mSmackable.getUserList(jid);				
-				return new String[]{};
+					return mSmackable.getUserList(jid);
+				else {
+					fail("Could not get userlist");
+					return new String[]{};
+				}
 			}
 		};
 	}
