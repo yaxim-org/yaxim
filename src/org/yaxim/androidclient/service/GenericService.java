@@ -163,6 +163,38 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
+	private long fetchNewestOwnMsgDate(String fromJid) {
+		Cursor cursor = getContentResolver().query(ChatProvider.CONTENT_URI, 
+				new String[]{ChatConstants.DATE}, 
+				String.format("%s = '%s' AND %s = %s AND %s = %s", ChatConstants.JID, fromJid, 
+						ChatConstants.DIRECTION, ChatConstants.OUTGOING,
+						ChatConstants.WAS_CARBON, ChatConstants.MSG_CARBON), 
+				null, 
+				ChatConstants.DATE+" desc");
+		if(cursor.getCount() == 0) {
+			Log.w(TAG, "could not find newest own (carbons) msg");
+			return 0;
+		}
+		cursor.moveToFirst();
+		long ret = cursor.getLong( cursor.getColumnIndexOrThrow(ChatConstants.DATE) );
+		return ret;
+	}
+
+	private long fetchLastMsgDate(String fromJid) {
+		Cursor cursor = getContentResolver().query(ChatProvider.CONTENT_URI, 
+				new String[]{ChatConstants.DATE}, 
+				String.format("%s = '%s'", ChatConstants.JID, fromJid), 
+				null, ChatConstants.DATE+" desc");
+		cursor.moveToFirst();
+		if(cursor.getCount() < 2) {
+			Log.w(TAG, "could not fetch date oflast message, timeout won't work");
+			return 0;
+		}
+		cursor.moveToNext(); // we need the 2nd entry, as the first is the newly added message
+		long ret = cursor.getLong( cursor.getColumnIndexOrThrow(ChatConstants.DATE) );
+		return ret;
+	}
+
 	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error,
 			boolean isMuc) {
 		
