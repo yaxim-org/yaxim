@@ -633,6 +633,12 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				}
 			});
 			AlertDialog dialog = dialogBuilder.create();
+			// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
+			if(YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme) {
+				dialog.getListView().setBackgroundColor(Color.BLACK);
+			} else if(YaximApplication.getConfig(this).getTheme() == R.style.YaximLightTheme) {
+				dialog.getListView().setBackgroundColor(Color.WHITE);
+			}
 			dialog.show();
 		}
 	}
