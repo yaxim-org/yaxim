@@ -82,6 +82,10 @@ public class XmppStreamHandler {
 	}
 
 	private void sendEnablePacket() {
+		if (isOutgoingSmEnabled) {
+			Log.d(TAG, "duplicate sendEnablePacket()");
+			return;
+		}
 		if (sessionId != null) {
 			isOutgoingSmEnabled = true;
 			// TODO binding
