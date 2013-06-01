@@ -118,6 +118,14 @@ public class XmppStreamHandler {
 	private void startListening() {
 		mConnection.addConnectionListener(new ConnectionListener() {
 			public void reconnectionSuccessful() {
+				synchronized (XmppStreamHandler.this) {
+					if (!isSmAvailable) {
+						Log.d(TAG, "reconnected, waiting for SM packet to arrive...");
+						try {
+							XmppStreamHandler.this.wait(30000); // HACK: wait for SM packet to arrive
+						} catch (InterruptedException e) {}
+					}
+				}
 				Log.d(TAG, "reconnection: " + isSmAvailable);
 				if (isSmAvailable) {
 					sendEnablePacket();
@@ -198,7 +206,10 @@ public class XmppStreamHandler {
 					String name = shPacket.getElementName();
 					if ("sm".equals(name)) {
 						Log.d(TAG, "SM available!");
-						isSmAvailable = true;
+						synchronized(XmppStreamHandler.this) {
+							isSmAvailable = true;
+							XmppStreamHandler.this.notify();
+						}
 					} else if ("r".equals(name)) {
 						StreamHandlingPacket ackPacket = new StreamHandlingPacket("a", URN_SM_2);
 						ackPacket.addAttribute("h", String.valueOf(incomingStanzaCount));
