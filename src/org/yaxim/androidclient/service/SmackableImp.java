@@ -241,6 +241,18 @@ public class SmackableImp implements Smackable {
 				break;
 			}
 			break;
+		case RECONNECT_NETWORK:
+			// TODO: spawn thread to do disconnect
+			if (mState == ConnectionState.ONLINE) {
+				new Thread() {
+					public void run() {
+						updateConnectionState(ConnectionState.DISCONNECTING);
+						mXMPPConnection.quickShutdown();
+						updateConnectionState(ConnectionState.OFFLINE);
+					}
+				}.start();
+			}
+			break;
 		case OFFLINE:
 			switch (mState) {
 			case CONNECTING:
@@ -249,7 +261,7 @@ public class SmackableImp implements Smackable {
 				new Thread() {
 					public void run() {
 						updateConnectionState(ConnectionState.DISCONNECTING);
-						mXMPPConnection.quickShutdown();
+						((XmppStreamHandler.ExtXMPPConnection)mXMPPConnection).shutdown();
 						updateConnectionState(ConnectionState.OFFLINE);
 					}
 				}.start();
@@ -616,7 +628,7 @@ public class SmackableImp implements Smackable {
 				public void run() {
 					updateConnectionState(ConnectionState.DISCONNECTING);
 					debugLog("shutDown thread started");
-					mXMPPConnection.disconnect();
+					((XmppStreamHandler.ExtXMPPConnection)mXMPPConnection).shutdown();
 					debugLog("shutDown thread finished");
 					updateConnectionState(ConnectionState.OFFLINE);
 				}
