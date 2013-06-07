@@ -382,7 +382,7 @@ public class SmackableImp implements Smackable {
 			if (mStreamHandler == null)
 				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
 			
-			mXMPPConnection.addConnectionListener(new ConnectionListener() {
+			if (need_bind) mXMPPConnection.addConnectionListener(new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
 					onDisconnected(e.getLocalizedMessage());
 				}
@@ -405,9 +405,10 @@ public class SmackableImp implements Smackable {
 						mConfig.ressource);
 			}
 			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
-			if (need_bind)
+			if (need_bind) {
 				mStreamHandler.notifyInitialLogin();
-			setStatusFromConfig();
+				setStatusFromConfig();
+			}
 
 		} catch (XMPPException e) {
 			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
@@ -655,6 +656,8 @@ public class SmackableImp implements Smackable {
 	private void registerRosterListener() {
 		// flush roster on connecting.
 		mRoster = mXMPPConnection.getRoster();
+		if (mRosterListener != null)
+			mRoster.removeRosterListener(mRosterListener);
 
 		mRosterListener = new RosterListener() {
 			private boolean first_roster = true;
