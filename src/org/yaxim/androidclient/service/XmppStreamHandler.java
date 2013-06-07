@@ -131,6 +131,7 @@ public class XmppStreamHandler {
 					sendEnablePacket();
 				} else {
 					close();
+					mConnection.disconnect();
 				}
 			}
 
@@ -155,6 +156,7 @@ public class XmppStreamHandler {
 			public void connectionClosed() {
 				Log.d(TAG, "connectionClosed.");
 				previousIncomingStanzaCount = -1;
+				closeOnError(); // XXX
 			}
 		});
 
