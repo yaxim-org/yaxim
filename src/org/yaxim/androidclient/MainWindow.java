@@ -32,6 +32,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,6 +87,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private ActionBar actionBar;
 	private String mTheme;
+	private Typeface mRosterTypeface;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		mTheme = mConfig.theme;
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
+
+		mRosterTypeface = Typeface.createFromAsset(getAssets(),"fonts/brunofont.ttf");
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -1043,10 +1047,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 		@Override
 		protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
 			super.bindGroupView(view, context, cursor, isExpanded);
+			TextView groupname = (TextView)view.findViewById(R.id.groupname);
 			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).length() == 0) {
-				TextView groupname = (TextView)view.findViewById(R.id.groupname);
 				groupname.setText(R.string.default_group);
 			}
+			groupname.setTypeface(mRosterTypeface);
 		}
 
 		@Override
@@ -1055,6 +1060,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			TextView statusmsg = (TextView)view.findViewById(R.id.roster_statusmsg);
 			boolean hasStatus = statusmsg.getText() != null && statusmsg.getText().length() > 0;
 			statusmsg.setVisibility(hasStatus ? View.VISIBLE : View.GONE);
+			((TextView)view.findViewById(R.id.roster_screenname)).setTypeface(mRosterTypeface);
+
 
 			int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);
 			String selection = ChatConstants.JID + " = '" + cursor.getString(JIDIdx) + "' AND " +

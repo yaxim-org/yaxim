@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -81,6 +82,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
 	private int mChatFontSize;
+	private Typeface mRosterTypeface;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		super.onCreate(savedInstanceState);
 	
 		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
+		mRosterTypeface = Typeface.createFromAsset(getAssets(),"fonts/brunofont.ttf");
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.mainchat);
@@ -124,6 +127,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		mTitle = (TextView)layout.findViewById(R.id.action_bar_title);
 		mSubTitle = (TextView)layout.findViewById(R.id.action_bar_subtitle);
 		mTitle.setText(title);
+		mTitle.setTypeface(mRosterTypeface);
 
 		setTitle(null);
 		getSupportActionBar().setCustomView(layout);
@@ -433,6 +437,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			}
 			getMessageView().setText(message);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
+			getMessageView().setTypeface(mRosterTypeface);
 		}
 		
 		TextView getDateView() {
