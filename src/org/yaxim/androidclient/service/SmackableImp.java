@@ -122,6 +122,7 @@ public class SmackableImp implements Smackable {
 	private Roster mRoster;
 	private RosterListener mRosterListener;
 	private PacketListener mPacketListener;
+	private ConnectionListener mConnectionListener;
 
 	private final ContentResolver mContentResolver;
 
@@ -381,8 +382,10 @@ public class SmackableImp implements Smackable {
 			}
 			if (mStreamHandler == null)
 				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
-			
-			if (need_bind) mXMPPConnection.addConnectionListener(new ConnectionListener() {
+
+			if (mConnectionListener != null)
+				mXMPPConnection.removeConnectionListener(mConnectionListener);
+			mConnectionListener = new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
 					onDisconnected(e.getLocalizedMessage());
 				}
@@ -392,7 +395,9 @@ public class SmackableImp implements Smackable {
 				public void reconnectingIn(int seconds) { }
 				public void reconnectionFailed(Exception e) { }
 				public void reconnectionSuccessful() { }
-			});
+			};
+			mXMPPConnection.addConnectionListener(mConnectionListener);
+
 			initServiceDiscovery();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
