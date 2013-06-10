@@ -98,13 +98,16 @@ public abstract class GenericService extends Service {
 		boolean isMuc = (msgType==Message.Type.groupchat);
 		boolean beNoisy=true;
 		
-		if(isMuc && mConfig.highlightNickMuc) {
+		if(isMuc) {
 			Cursor cursor = getContentResolver().query(RosterProvider.MUCS_URI, new String[] {RosterConstants.NICKNAME},
 					RosterConstants.JID+"='"+fromJid+"'", null, null);
 			cursor.moveToFirst();
 			String nick = cursor.getString( cursor.getColumnIndexOrThrow(RosterConstants.NICKNAME) );
-			if(!message.contains(nick)) {
+			if((mConfig.highlightNickMuc && !message.contains(nick))) {
 				beNoisy=false;
+			}
+			if(fromJid.contains("/") && fromJid.split("/")[1]==nick) { // own message? never notify!
+				return;
 			}
 		}
 		
