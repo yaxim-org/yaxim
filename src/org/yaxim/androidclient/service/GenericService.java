@@ -96,21 +96,19 @@ public abstract class GenericService extends Service {
 	protected void notifyClient(String fromJid, String fromUserName, String message,
 			boolean showNotification, boolean silent_notification, boolean is_error, Message.Type msgType) {
 		boolean isMuc = (msgType==Message.Type.groupchat);
+		boolean beNoisy=true;
 		
 		if(isMuc && mConfig.highlightNickMuc) {
 			Cursor cursor = getContentResolver().query(RosterProvider.MUCS_URI, new String[] {RosterConstants.NICKNAME},
 					RosterConstants.JID+"='"+fromJid+"'", null, null);
 			cursor.moveToFirst();
 			String nick = cursor.getString( cursor.getColumnIndexOrThrow(RosterConstants.NICKNAME) );
-			if(!message.contains(nick) && mConfig.highlightNickMuc) { // if we're not mentioned and highlight only on nick is set
-				return;
+			if(!message.contains(nick)) {
+				beNoisy=false;
 			}
-			if((fromJid.contains("/") && fromJid.split("/")[1].equals(nick))) { // if this is a message from us
-				return;
-			}
-		} 
+		}
 		
-		if (!showNotification) {
+		if (!showNotification && beNoisy) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
@@ -138,7 +136,7 @@ public abstract class GenericService extends Service {
 
 		setNotification(fromJid, fromUserName, message, is_error, isMuc);
 		setLEDNotification(isMuc);
-		mNotification.sound = mConfig.notifySound;
+		mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
 		
 		
 		int notifyId = 0;
@@ -150,18 +148,23 @@ public abstract class GenericService extends Service {
 			notificationId.put(fromJid, Integer.valueOf(notifyId));
 		}
 
-		// If vibration is set to "system default", add the vibration flag to the 
-		// notification and let the system decide.
-		if(!silent_notification && ((!isMuc && "SYSTEM".equals(mConfig.vibraNotify)) 
-				|| (isMuc && "SYSTEM".equals(mConfig.vibraNotifyMuc)))) {
-			mNotification.defaults |= Notification.DEFAULT_VIBRATE;
-		}
-		mNotificationMGR.notify(notifyId, mNotification);
 		
-		// If vibration is forced, vibrate now.
-		if(!silent_notification && ((!isMuc && "ALWAYS".equals(mConfig.vibraNotify))
-				|| (isMuc && "ALWAYS".equals(mConfig.vibraNotifyMuc)))) {
-			mVibrator.vibrate(400);
+		if(beNoisy) {
+			setLEDNotification(isMuc);
+			mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+			// If vibration is set to "system default", add the vibration flag to the 
+			// notification and let the system decide.
+			if((!isMuc && "SYSTEM".equals(mConfig.vibraNotify)) 
+					|| (isMuc && "SYSTEM".equals(mConfig.vibraNotifyMuc))) {
+				mNotification.defaults |= Notification.DEFAULT_VIBRATE;
+			}
+			mNotificationMGR.notify(notifyId, mNotification);
+			
+			// If vibration is forced, vibrate now.
+			if((!isMuc && "ALWAYS".equals(mConfig.vibraNotify))
+					|| (isMuc && "ALWAYS".equals(mConfig.vibraNotifyMuc))) {
+				mVibrator.vibrate(400);
+			}
 		}
 		mWakeLock.release();
 	}
