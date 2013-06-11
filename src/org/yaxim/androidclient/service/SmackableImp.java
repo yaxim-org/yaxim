@@ -758,7 +758,7 @@ public class SmackableImp implements Smackable {
 		public void onReceive(Context ctx, Intent i) {
 			debugLog("Ping: timeout for " + mPingID);
 			mServiceCallBack.disconnectOnError();
-			unRegisterCallback();
+			requestConnectionState(ConnectionState.OFFLINE);
 		}
 	}
 
