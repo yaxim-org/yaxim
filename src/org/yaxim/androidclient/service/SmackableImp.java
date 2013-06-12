@@ -377,13 +377,13 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setDefaultPingInterval(0);
 			registerRosterListener();
 			boolean need_bind = !(mStreamHandler != null && mStreamHandler.isResumePossible());
+			if (mStreamHandler == null)
+				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
+
 			mXMPPConnection.connect(need_bind);
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
-			if (mStreamHandler == null)
-				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
-
 			if (mConnectionListener != null)
 				mXMPPConnection.removeConnectionListener(mConnectionListener);
 			mConnectionListener = new ConnectionListener() {
