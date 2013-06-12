@@ -1108,7 +1108,7 @@ public class SmackableImp implements Smackable {
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
 						if (direction == ChatConstants.INCOMING)
 							mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
-					}
+					//}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
 					Log.e(TAG, "failed to process packet:");
@@ -1287,7 +1287,7 @@ public class SmackableImp implements Smackable {
 			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
 			if(!joinedRooms.contains(jid)) {
 				debugLog("room " + jid + " isn't joined yet, i wanna join...");
-				joinRoom(jid, nickname, password, 50); // TODO: make historyLen configurable
+				joinRoom(jid, nickname, password); // TODO: make historyLen configurable
 			}
 			//debugLog("found data in contentprovider: "+jid+" "+password+" "+nickname);
 		}
@@ -1326,18 +1326,34 @@ public class SmackableImp implements Smackable {
 		return (deleted > 0);
 	}
 	
-	private boolean joinRoom(String room, String nickname, String password,
-			int historyLen) {
+	private boolean joinRoom(String room, String nickname, String password) {
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
+		
 		DiscussionHistory history = new DiscussionHistory();
-		history.setMaxStanzas(historyLen);		
+		final String[] projection = new String[] {
+				ChatConstants._ID, ChatConstants.DATE,
+				ChatConstants.JID, ChatConstants.MESSAGE,
+				ChatConstants.PACKET_ID
+		};
+		final String selection = String.format("%s = '%s'", projection[2], room);
+		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, 
+				selection, null, "date DESC LIMIT 1");
+		if(cursor.getCount()>0) {
+			cursor.moveToFirst();
+			long lastDate = cursor.getLong( cursor.getColumnIndexOrThrow(projection[1]) );
+			String msg =  cursor.getString( cursor.getColumnIndexOrThrow(projection[3]) );
+			Log.d(TAG, String.format("joining room %s i found %d rows of last date %d with msg %s, setting since to %s", room, cursor.getCount(), lastDate, msg, (new Date(lastDate)).toString()) );
+			history.setSince( new Date(lastDate) );
+		} else Log.d(TAG, "found no old DB messages");
+		cursor.close();
+		
 		try {
 			muc.join(nickname, password, history, SmackConfiguration.getPacketReplyTimeout());
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
 			if(nickname == null || nickname.equals("")) {
-				joinRoom(room, "NoNick", password, historyLen);
+				joinRoom(room, "NoNick", password);
 			}
 			return false;
 		}
