@@ -107,7 +107,10 @@ public abstract class GenericService extends Service {
 			if((mConfig.highlightNickMuc && !message.contains(nick))) {
 				beNoisy=false;
 			}
+			Log.d(TAG, "checking whehter MUC message is a own message, jid[0]: "+jid[0]);
+			if(jid.length>1) Log.d(TAG, "jid has 2nd field: ''"+jid[1]+"''' and i have nick ''"+nick+"''");
 			if(jid.length > 1 && jid[1].equals(nick)) { // if this is a message from us
+				Log.d(TAG, "this is a own message, i'm not notifying on this");
 				return;
 			}
 		} 
