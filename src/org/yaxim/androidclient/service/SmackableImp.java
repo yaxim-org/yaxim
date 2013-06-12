@@ -263,6 +263,7 @@ public class SmackableImp implements Smackable {
 					public void run() {
 						updateConnectionState(ConnectionState.DISCONNECTING);
 						((XmppStreamHandler.ExtXMPPConnection)mXMPPConnection).shutdown();
+						mStreamHandler.close();
 						updateConnectionState(ConnectionState.OFFLINE);
 					}
 				}.start();
@@ -628,18 +629,7 @@ public class SmackableImp implements Smackable {
 			// ignore it!
 			e.printStackTrace();
 		}
-		if (mXMPPConnection.isConnected()) {
-			// work around SMACK's #%&%# blocking disconnect()
-			new Thread() {
-				public void run() {
-					updateConnectionState(ConnectionState.DISCONNECTING);
-					debugLog("shutDown thread started");
-					((XmppStreamHandler.ExtXMPPConnection)mXMPPConnection).shutdown();
-					debugLog("shutDown thread finished");
-					updateConnectionState(ConnectionState.OFFLINE);
-				}
-			}.start();
-		}
+		requestConnectionState(ConnectionState.OFFLINE);
 		setStatusOffline();
 		this.mServiceCallBack = null;
 	}

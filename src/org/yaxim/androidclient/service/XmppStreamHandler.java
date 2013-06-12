@@ -362,7 +362,7 @@ public class XmppStreamHandler {
 		outgoingQueue.add(packet);
 	}
 
-	private void close() {
+	protected void close() {
 		isSmEnabled = false;
 		isOutgoingSmEnabled = false;
 		sessionId = null;
