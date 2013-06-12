@@ -1108,7 +1108,8 @@ public class SmackableImp implements Smackable {
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
 						if (direction == ChatConstants.INCOMING)
 							mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
-					//}
+						}
+					}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
 					Log.e(TAG, "failed to process packet:");
@@ -1124,19 +1125,28 @@ public class SmackableImp implements Smackable {
 	private boolean checkAddMucMessage(Message msg, long ts, String[] fromJid ) {
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.DATE,
-				ChatConstants.JID, ChatConstants.MESSAGE
+				ChatConstants.JID, ChatConstants.MESSAGE,
+				ChatConstants.PACKET_ID
 		};
-				
-		String content_match= ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'"
-				+" AND "+ChatConstants.DATE+"='"+ts+"'";
-		String packet_match = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
-		final String selection = "("+content_match+") OR ("+packet_match+")";
-		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, null, null);
-		
-		if(cursor.getCount()==0)
-			return true;	
-		else
-			return false;
+
+		//final String content_match= ChatConstants.JID+"='"+fromJid[0]+"' AND "+ChatConstants.MESSAGE+"='"+msg.getBody()+"'"
+		//		+" AND "+ChatConstants.DATE+"='"+ts+"'";
+		//final String packet_match = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
+		//final String selection = "("+content_match+") OR ("+packet_match+")";
+		final String selection = ChatConstants.JID+"='"+fromJid[0]+"'";
+		final String order = ChatConstants.DATE+" DESC LIMIT 5";
+		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, null, order);
+		cursor.moveToFirst();
+		while(!cursor.isLast()) {
+			String pid = cursor.getString( cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID) );
+			Log.d(TAG, "processing cursor row, got pid: "+pid+" comparing with "+msg.getPacketID());
+			if( pid.equals(msg.getPacketID()) ) {
+				return false;
+			}
+			cursor.moveToNext();
+		}
+
+		return true;	
 	}
 
 	private void registerPresenceListener() {
