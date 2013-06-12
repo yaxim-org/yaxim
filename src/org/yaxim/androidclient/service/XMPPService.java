@@ -537,9 +537,9 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
-			public void newMessage(String from, String message, boolean silent_notification, Type msgType) {
+			public void newMessage(String[] from, String message, boolean silent_notification, Type msgType) {
 				logInfo("notification: " + from +" with type: "+msgType.name());
-				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from), silent_notification, false, msgType);
+				notifyClient(from, mSmackable.getNameForJID(from[0]), message, !mIsBoundTo.contains(from[0]), silent_notification, msgType);
 			}
 
 			public void messageError(final String from, final String error, final boolean silent_notification) {
