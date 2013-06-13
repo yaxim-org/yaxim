@@ -111,7 +111,7 @@ public class SmackableImp implements Smackable {
 
 	private final YaximConfiguration mConfig;
 	private ConnectionConfiguration mXMPPConfig;
-	private XMPPConnection mXMPPConnection;
+	private XmppStreamHandler.ExtXMPPConnection mXMPPConnection;
 	private XmppStreamHandler mStreamHandler;
 
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
@@ -262,7 +262,7 @@ public class SmackableImp implements Smackable {
 				new Thread() {
 					public void run() {
 						updateConnectionState(ConnectionState.DISCONNECTING);
-						((XmppStreamHandler.ExtXMPPConnection)mXMPPConnection).shutdown();
+						mXMPPConnection.shutdown();
 						mStreamHandler.close();
 						updateConnectionState(ConnectionState.OFFLINE);
 					}
@@ -368,9 +368,9 @@ public class SmackableImp implements Smackable {
 		try {
 			if (mXMPPConnection.isConnected()) {
 				try {
-					mXMPPConnection.disconnect();
+					mXMPPConnection.quickShutdown(); // blocking shutdown prior to re-connection
 				} catch (Exception e) {
-					debugLog("conn.disconnect() failed: " + e);
+					debugLog("conn.shutdown() failed: " + e);
 				}
 			}
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
