@@ -137,9 +137,11 @@ public class XMPPService extends GenericService {
 				return START_STICKY;
 			} else
 			if ("ping".equals(intent.getAction())) {
-				if (mSmackable != null && mSmackable.isAuthenticated())
+				if (mSmackable != null && mSmackable.isAuthenticated()) {
 					mSmackable.sendServerPing();
-				return START_STICKY;
+					return START_STICKY;
+				}
+				// if not authenticated, fall through to doConnect()
 			}
 		}
 		
