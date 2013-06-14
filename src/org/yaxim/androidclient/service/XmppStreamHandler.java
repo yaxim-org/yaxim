@@ -34,7 +34,7 @@ public class XmppStreamHandler {
 	private boolean isSmAvailable = false;
 	private boolean isSmEnabled = false;
 	private boolean isOutgoingSmEnabled = false;
-	private long previousIncomingStanzaCount = -1;
+	private long previousIncomingStanzaCount = 0;
 	private String sessionId;
 	private long incomingStanzaCount = 0;
 	private long outgoingStanzaCount = 0;
