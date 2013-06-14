@@ -192,13 +192,6 @@ public class SmackableImp implements Smackable {
 			registerMessageListener();
 			registerPongListener();
 			sendOfflineMessages();
-			if (mServiceCallBack == null) {
-				// sometimes we get disconnected while not yet quite connected.
-				// bail out if this is the case
-				debugLog("doConnect: mServiceCallBack is null, aborting connection...");
-				mXMPPConnection.quickShutdown();
-				return false;
-			}
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
 			updateConnectionState(ConnectionState.ONLINE);
