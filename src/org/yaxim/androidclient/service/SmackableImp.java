@@ -200,8 +200,9 @@ public class SmackableImp implements Smackable {
 	}
 
 	// called from outside, possible inputs:
-	// OFFLINE to disconnect
+	// OFFLINE to properly close the connection
 	// ONLINE to connect
+	// DISCONNECTED when network goes down
 	@Override
 	public void requestConnectionState(ConnectionState new_state) {
 		Log.d(TAG, "requestConnState: " + new_state + " from " + mState);
@@ -235,7 +236,7 @@ public class SmackableImp implements Smackable {
 				break;
 			}
 			break;
-		case RECONNECT_NETWORK:
+		case DISCONNECTED:
 			// TODO: spawn thread to do disconnect
 			if (mState == ConnectionState.ONLINE) {
 				new Thread() {
@@ -741,7 +742,7 @@ public class SmackableImp implements Smackable {
 		public void onReceive(Context ctx, Intent i) {
 			debugLog("Ping: timeout for " + mPingID);
 			mServiceCallBack.disconnectOnError();
-			requestConnectionState(ConnectionState.OFFLINE);
+			requestConnectionState(ConnectionState.DISCONNECTED);
 		}
 	}
 

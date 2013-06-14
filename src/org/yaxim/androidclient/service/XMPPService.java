@@ -411,7 +411,7 @@ public class XMPPService extends GenericService {
 			mReconnectInfo = "";
 			updateServiceNotification();
 			if (mSmackable != null) {
-				mSmackable.requestConnectionState(ConnectionState.RECONNECT_NETWORK);
+				mSmackable.requestConnectionState(ConnectionState.DISCONNECTED);
 			}
 			YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 		} else if (mConnectionDemanded.get()) {
