@@ -111,6 +111,7 @@
 	<string name="Menu_muc">MUC Actions</string>
     <string name="Menu_userlist">Users</string>
 
+
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Add a Contact</string>
 	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the

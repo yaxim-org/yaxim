@@ -554,6 +554,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return false;
 	}
 
+	private void markAllAsRead() {
+		ContentValues cv = new ContentValues();
+		cv.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
+		getContentResolver().update(ChatProvider.CONTENT_URI, cv,
+						ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
+						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW, null);
+	}
+	
 	private boolean isChild(long packedPosition) {
 		int type = ExpandableListView.getPackedPositionType(packedPosition);
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
@@ -727,6 +735,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case R.id.menu_show_hide:
 			setOfflinceContactsVisibility(!mConfig.showOffline);
 			updateRoster();
+			return true;
+			
+		case R.id.menu_markallread:
+			markAllAsRead();
 			return true;
 
 		case android.R.id.home:
