@@ -889,7 +889,7 @@ public class SmackableImp implements Smackable {
 	private String[] getJabberID(String from) {
 		if(from.contains("/")) {
 			String[] res = from.split("/");
-			return new String[] { res[0].toLowerCase(), res[1].toLowerCase() };
+			return new String[] { res[0], res[1] };
 		} else {
 			return new String[] {from, ""};
 		}
