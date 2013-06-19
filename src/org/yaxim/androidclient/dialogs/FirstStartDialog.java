@@ -91,8 +91,11 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private void verifyAndSavePreferences() {
 		String password = mEditPassword.getText().toString();
 		String jabberID = mEditJabberID.getText().toString();
+		String resource = String.format("%s.%08X",
+			mainWindow.getString(R.string.app_name),
+			new java.util.Random().nextInt());
 
-		savePreferences(jabberID, password);
+		savePreferences(jabberID, password, resource);
 		cancel();
 	}
 
@@ -115,13 +118,14 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 
-	private void savePreferences(String jabberID, String password) {
+	private void savePreferences(String jabberID, String password, String resource) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(mainWindow);
 		Editor editor = sharedPreferences.edit();
 
 		editor.putString(PreferenceConstants.JID, jabberID);
 		editor.putString(PreferenceConstants.PASSWORD, password);
+		editor.putString(PreferenceConstants.RESSOURCE, resource);
 		editor.putString(PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT);
 		editor.commit();
 	}
