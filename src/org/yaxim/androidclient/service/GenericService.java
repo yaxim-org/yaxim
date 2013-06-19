@@ -96,7 +96,11 @@ public abstract class GenericService extends Service {
 			boolean showNotification) {
 		if (!showNotification) {
 			// only play sound and return
-			RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
+			try {
+				RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
+			} catch (NullPointerException e) {
+				// ignore NPE when ringtone was not found
+			}
 			return;
 		}
 		mWakeLock.acquire();
