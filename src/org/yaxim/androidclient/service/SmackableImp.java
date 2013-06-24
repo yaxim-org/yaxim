@@ -720,6 +720,10 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void sendServerPing() {
+		if (!mXMPPConnection.isAuthenticated()) {
+			debugLog("Ping: requested, but not connected to server.");
+			return;
+		}
 		if (mPingID != null) {
 			debugLog("Ping: requested, but still waiting for " + mPingID);
 			return; // a ping is still on its way
@@ -753,10 +757,7 @@ public class SmackableImp implements Smackable {
 	 */
 	private class PingAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
-			if (mXMPPConnection.isAuthenticated()) {
 				sendServerPing();
-			} else
-				debugLog("Ping: alarm received, but not connected to server.");
 		}
 	}
 
