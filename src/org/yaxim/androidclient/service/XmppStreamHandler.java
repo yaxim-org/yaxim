@@ -129,7 +129,8 @@ public class XmppStreamHandler {
 				Log.d(TAG, "reconnection: " + isSmAvailable);
 				if (isSmAvailable) {
 					sendEnablePacket();
-				} else {
+				} else if (isResumePossible()) {
+					// only tear down re-connect if we intended to resume
 					close();
 					mConnection.disconnect();
 				}
