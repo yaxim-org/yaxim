@@ -44,13 +44,6 @@
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/account_options_title">
 		<CheckBoxPreference
-			android:id="@+id/reconnect"
-			android:key="reconnect"
-			android:defaultValue="true"
-			android:title="@string/reconnect_title"
-			android:summary="@string/reconnect_summ"
-		/>
-		<CheckBoxPreference
 			android:id="@+id/carbons"
 			android:key="carbons"
 			android:defaultValue="true"

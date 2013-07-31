@@ -432,8 +432,6 @@ public class XMPPService extends GenericService {
 	}
 
 	private void connectionEstablished() {
-		// once we are connected, use autoReconnect to determine reconnections
-		mConnectionDemanded.set(mConfig.autoReconnect);
 		mLastConnectionError = null;
 		mIsConnected.set(true);
 		mReconnectTimeout = RECONNECT_AFTER;

@@ -22,7 +22,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public int priority;
 	public boolean foregroundService;
 	public boolean autoConnect;
-	public boolean autoReconnect;
 	public boolean messageCarbons;
 	public boolean reportCrash;
 	public String userName;
@@ -111,8 +110,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 		this.autoConnect = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);
-		this.autoReconnect = prefs.getBoolean(
-				PreferenceConstants.AUTO_RECONNECT, false);
 		this.messageCarbons = prefs.getBoolean(
 				PreferenceConstants.MESSAGE_CARBONS, true);
 
