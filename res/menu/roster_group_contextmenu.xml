@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+		<item android:id="@+id/roster_contextmenu_group_rename"
+			android:title="@string/roster_contextmenu_group_rename">
+		</item>
+</menu>
