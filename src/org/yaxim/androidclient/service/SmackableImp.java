@@ -815,48 +815,54 @@ public class SmackableImp implements Smackable {
 				try {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
-					String chatMessage = msg.getBody();
 
-					// try to extract a carbon
+					String fromJID = getBareJID(msg.getFrom());
+					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
-					if (cc != null && cc.getDirection() == Carbon.Direction.received) {
-						Log.d(TAG, "carbon: " + cc.toXML());
-						msg = (Message)cc.getForwarded().getForwardedPacket();
-						chatMessage = msg.getBody();
-						// fall through
-					}  else if (cc != null && cc.getDirection() == Carbon.Direction.sent) {
-						Log.d(TAG, "carbon: " + cc.toXML());
-						msg = (Message)cc.getForwarded().getForwardedPacket();
-						chatMessage = msg.getBody();
-						if (chatMessage == null) return;
-						String fromJID = getBareJID(msg.getTo());
 
-						addChatMessageToDB(ChatConstants.OUTGOING, fromJID, chatMessage, ChatConstants.DS_SENT_OR_READ, System.currentTimeMillis(), msg.getPacketID());
-						// always return after adding
-						return;
-					}
-
-					if (chatMessage == null) {
-						return;
-					}
-
-					if (msg.getType() == Message.Type.error) {
-						chatMessage = "<Error> " + chatMessage;
-					}
-
+					// extract timestamp
 					long ts;
 					DelayInfo timestamp = (DelayInfo)msg.getExtension("delay", "urn:xmpp:delay");
 					if (timestamp == null)
 						timestamp = (DelayInfo)msg.getExtension("x", "jabber:x:delay");
+					if (cc != null) // Carbon timestamp overrides packet timestamp
+						timestamp = cc.getForwarded().getDelayInfo();
 					if (timestamp != null)
 						ts = timestamp.getStamp().getTime();
 					else
 						ts = System.currentTimeMillis();
 
-					String fromJID = getBareJID(msg.getFrom());
+					// try to extract a carbon
+					if (cc != null) {
+						Log.d(TAG, "carbon: " + cc.toXML());
+						msg = (Message)cc.getForwarded().getForwardedPacket();
 
-					addChatMessageToDB(ChatConstants.INCOMING, fromJID, chatMessage, ChatConstants.DS_NEW, ts, msg.getPacketID());
-					mServiceCallBack.newMessage(fromJID, chatMessage);
+						// outgoing carbon: fromJID is actually chat peer's JID
+						if (cc.getDirection() == Carbon.Direction.sent) {
+							fromJID = getBareJID(msg.getTo());
+							direction = ChatConstants.OUTGOING;
+						} else
+							fromJID = getBareJID(msg.getFrom());
+					}
+
+					String chatMessage = msg.getBody();
+					// ignore empty messages
+					if (chatMessage == null) {
+						Log.d(TAG, "empty message.");
+						return;
+					}
+
+					// display error inline
+					if (msg.getType() == Message.Type.error) {
+						chatMessage = "<Error> " + chatMessage;
+					}
+
+					// carbons are old. all others are new
+					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
+
+					addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
+					if (direction == ChatConstants.INCOMING)
+						mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null));
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(

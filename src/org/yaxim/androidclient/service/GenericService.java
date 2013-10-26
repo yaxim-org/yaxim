@@ -93,11 +93,12 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String fromJid, String fromUserName, String message,
-			boolean showNotification) {
+			boolean showNotification, boolean silent_notification) {
 		if (!showNotification) {
 			// only play sound and return
 			try {
-				RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
+				if (!silent_notification)
+					RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
 			} catch (NullPointerException e) {
 				// ignore NPE when ringtone was not found
 			}
@@ -106,7 +107,8 @@ public abstract class GenericService extends Service {
 		mWakeLock.acquire();
 		setNotification(fromJid, fromUserName, message);
 		setLEDNotification();
-		mNotification.sound = mConfig.notifySound;
+		if (!silent_notification)
+			mNotification.sound = mConfig.notifySound;
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
@@ -119,13 +121,13 @@ public abstract class GenericService extends Service {
 
 		// If vibration is set to "system default", add the vibration flag to the 
 		// notification and let the system decide.
-		if("SYSTEM".equals(mConfig.vibraNotify)) {
+		if(!silent_notification && "SYSTEM".equals(mConfig.vibraNotify)) {
 			mNotification.defaults |= Notification.DEFAULT_VIBRATE;
 		}
 		mNotificationMGR.notify(notifyId, mNotification);
 		
 		// If vibration is forced, vibrate now.
-		if("ALWAYS".equals(mConfig.vibraNotify)) {
+		if(!silent_notification && "ALWAYS".equals(mConfig.vibraNotify)) {
 			mVibrator.vibrate(400);
 		}
 		mWakeLock.release();
