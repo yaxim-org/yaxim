@@ -511,7 +511,10 @@ public class XMPPService extends GenericService {
 			}
 
 			public void connectionStateChanged() {
-				updateServiceNotification();
+				if (mSmackable.getConnectionState() == ConnectionState.DISCONNECTED)
+					connectionFailed(getString(R.string.conn_disconnected));
+				else
+					updateServiceNotification();
 			}
 		});
 	}
