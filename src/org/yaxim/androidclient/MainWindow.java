@@ -716,24 +716,32 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return true;
 	}
 
-	private void setConnectingStatus(boolean isConnecting) {
+	private void updateConnectionState(ConnectionState cs) {
+		Log.d(TAG, "updateConnectionState: " + cs);
 
-		String lastStatus;
-
-		if (serviceAdapter != null && !serviceAdapter.isAuthenticated() &&
-				(lastStatus = serviceAdapter.getConnectionStateString()) != null) {
-			mConnectingText.setVisibility(View.VISIBLE);
-			mConnectingText.setText(lastStatus);
-		} else
-		if (serviceAdapter == null || serviceAdapter.isAuthenticated() == false) {
+		switch (cs) {
+		case OFFLINE:
 			mConnectingText.setVisibility(View.VISIBLE);
 			mConnectingText.setText(R.string.conn_offline);
-		} else
+			setSupportProgressBarIndeterminateVisibility(false);
+			break;
+		case CONNECTING:
+		case DISCONNECTING:
+		case DISCONNECTED:
+		case RECONNECT_NETWORK:
+		case RECONNECT_DELAYED:
+			String lastStatus = serviceAdapter.getConnectionStateString();
+			mConnectingText.setText(lastStatus);
+			mConnectingText.setVisibility(View.VISIBLE);
+			setSupportProgressBarIndeterminateVisibility(true);
+			break;
+		case ONLINE:
 			mConnectingText.setVisibility(View.GONE);
+			setSupportProgressBarIndeterminateVisibility(false);
+		}
 	}
 	
 	public void startConnection(boolean create_account) {
-		setConnectingStatus(true);
 		xmppServiceIntent.putExtra("create_account", create_account);
 		startService(xmppServiceIntent);
 	}
@@ -744,16 +752,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		boolean oldState = isConnected() || isConnecting();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
-		setSupportProgressBarIndeterminateVisibility(true);
 		if (oldState) {
-			setConnectingStatus(false);
-			(new Thread() {
-				public void run() {
-					serviceAdapter.disconnect();
-					stopService(xmppServiceIntent);
-				}
-			}).start();
-
+			serviceAdapter.disconnect();
+			stopService(xmppServiceIntent);
 		} else
 			startConnection(false);
 	}
@@ -789,8 +790,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 						+ serviceAdapter.getConnectionState());
 				invalidateOptionsMenu();	// to load the action bar contents on time for access to icons/progressbar
 				actionBar.setIcon(getStatusActionIcon());	// refresh on orientation change
-				setConnectingStatus(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
-				setSupportProgressBarIndeterminateVisibility(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING);
+				updateConnectionState(serviceAdapter.getConnectionState());
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -820,15 +820,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private void createUICallback() {
 		rosterCallback = new IXMPPRosterCallback.Stub() {
 			@Override
-			public void connectionStatusChanged(final boolean isConnected,
-						final boolean willReconnect)
+			public void connectionStateChanged(final int connectionstate)
 						throws RemoteException {
 				mainHandler.post(new Runnable() {
 					@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 					public void run() {
-						Log.d(TAG, "connectionStatusChanged: " + isConnected + "/" + willReconnect);
-						setConnectingStatus(!isConnected && willReconnect);
-						setSupportProgressBarIndeterminateVisibility(false);
+						ConnectionState cs = ConnectionState.values()[connectionstate];
+						//Log.d(TAG, "connectionStatusChanged: " + cs);
+						updateConnectionState(cs);
 						invalidateOptionsMenu();
 					}
 				});

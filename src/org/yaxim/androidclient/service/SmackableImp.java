@@ -237,13 +237,13 @@ public class SmackableImp implements Smackable {
 			}
 			break;
 		case DISCONNECTED:
-			// TODO: spawn thread to do disconnect
+			// spawn thread to do disconnect
 			if (mState == ConnectionState.ONLINE) {
 				new Thread() {
 					public void run() {
 						updateConnectionState(ConnectionState.DISCONNECTING);
 						mXMPPConnection.quickShutdown();
-						updateConnectionState(ConnectionState.OFFLINE);
+						//updateConnectionState(ConnectionState.OFFLINE);
 					}
 				}.start();
 			}
@@ -252,13 +252,12 @@ public class SmackableImp implements Smackable {
 			switch (mState) {
 			case CONNECTING:
 			case ONLINE:
-				// TODO: spawn thread to do disconnect
+				// spawn thread to do disconnect
 				new Thread() {
 					public void run() {
 						updateConnectionState(ConnectionState.DISCONNECTING);
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
-						updateConnectionState(ConnectionState.OFFLINE);
 					}
 				}.start();
 				break;
@@ -280,11 +279,13 @@ public class SmackableImp implements Smackable {
 
 	// called at the end of a state transition
 	private synchronized void updateConnectionState(ConnectionState new_state) {
-		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state);
+		if (new_state == ConnectionState.ONLINE)
+			mLastError = null;
+		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state + " (" + mLastError + ")");
 		if (new_state == mState)
 			return;
 		mState = new_state;
-		mServiceCallBack.stateChanged();
+		mServiceCallBack.connectionStateChanged();
 	}
 	private void initServiceDiscovery() {
 		// register connection features
@@ -316,7 +317,7 @@ public class SmackableImp implements Smackable {
 		debugLog("removeRosterItem(" + user + ")");
 
 		tryToRemoveRosterEntry(user);
-		mServiceCallBack.stateChanged();
+		mServiceCallBack.rosterChanged();
 	}
 
 	public void renameRosterItem(String user, String newName)
@@ -354,9 +355,8 @@ public class SmackableImp implements Smackable {
 	
 	private void onDisconnected(String reason) {
 		unregisterPongListener();
-		mServiceCallBack.disconnectOnError();
 		mLastError = reason;
-		updateConnectionState(ConnectionState.OFFLINE);
+		updateConnectionState(ConnectionState.DISCONNECTED);
 	}
 
 	private void tryToConnect(boolean create_account) throws YaximXMPPException {
@@ -386,7 +386,9 @@ public class SmackableImp implements Smackable {
 					onDisconnected(e.getLocalizedMessage());
 				}
 				public void connectionClosed() {
-					onDisconnected(null);
+					// TODO: fix reconnect when we got kicked by the server!
+					//onDisconnected(null);
+					updateConnectionState(ConnectionState.OFFLINE);
 				}
 				public void reconnectingIn(int seconds) { }
 				public void reconnectionFailed(Exception e) { }
@@ -667,7 +669,7 @@ public class SmackableImp implements Smackable {
 				if (first_roster) {
 					removeOldRosterEntries();
 					first_roster = false;
-					mServiceCallBack.stateChanged();
+					mServiceCallBack.rosterChanged();
 				}
 				debugLog("entriesAdded() done");
 			}
@@ -678,7 +680,7 @@ public class SmackableImp implements Smackable {
 				for (String entry : entries) {
 					deleteRosterEntryFromDB(entry);
 				}
-				mServiceCallBack.stateChanged();
+				mServiceCallBack.rosterChanged();
 			}
 
 			public void entriesUpdated(Collection<String> entries) {
@@ -688,7 +690,7 @@ public class SmackableImp implements Smackable {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					updateRosterEntryInDB(rosterEntry);
 				}
-				mServiceCallBack.stateChanged();
+				mServiceCallBack.rosterChanged();
 			}
 
 			public void presenceChanged(Presence presence) {
@@ -697,7 +699,7 @@ public class SmackableImp implements Smackable {
 				String jabberID = getBareJID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				updateRosterEntryInDB(rosterEntry);
-				mServiceCallBack.stateChanged();
+				mServiceCallBack.rosterChanged();
 			}
 		};
 		mRoster.addRosterListener(mRosterListener);
@@ -747,8 +749,7 @@ public class SmackableImp implements Smackable {
 	private class PongTimeoutAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 			debugLog("Ping: timeout for " + mPingID);
-			mServiceCallBack.disconnectOnError();
-			requestConnectionState(ConnectionState.DISCONNECTED);
+			onDisconnected("Ping timeout");
 		}
 	}
 

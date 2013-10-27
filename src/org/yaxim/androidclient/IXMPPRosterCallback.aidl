@@ -5,5 +5,5 @@ package org.yaxim.androidclient;
 */
 
 interface IXMPPRosterCallback {
-	void connectionStatusChanged(boolean isConnected, boolean willReconnect);
+	void connectionStateChanged(int connectionstate);
 }
