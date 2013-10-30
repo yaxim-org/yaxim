@@ -376,6 +376,7 @@ public class SmackableImp implements Smackable {
 				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
 
 			mXMPPConnection.connect(need_bind);
+			// the following should not happen as of smack 3.3.1
 			if (!mXMPPConnection.isConnected()) {
 				throw new YaximXMPPException("SMACK connect failed without exception!");
 			}
