@@ -177,6 +177,8 @@ public class SmackableImp implements Smackable {
 
 		this.mXMPPConnection = new XmppStreamHandler.ExtXMPPConnection(mXMPPConfig);
 		mConfig.reconnect_required = false;
+
+		initServiceDiscovery();
 	}
 
 	// blocking, run from a thread!
@@ -290,10 +292,6 @@ public class SmackableImp implements Smackable {
 	private void initServiceDiscovery() {
 		// register connection features
 		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
-		if (sdm == null)
-			sdm = new ServiceDiscoveryManager(mXMPPConnection);
-
-		sdm.addFeature("http://jabber.org/protocol/disco#info");
 
 		// reference PingManager, set ping flood protection to 10s
 		PingManager.getInstanceFor(mXMPPConnection).setPingMinimumInterval(10*1000);
@@ -397,7 +395,6 @@ public class SmackableImp implements Smackable {
 			};
 			mXMPPConnection.addConnectionListener(mConnectionListener);
 
-			initServiceDiscovery();
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				if (create_account) {
