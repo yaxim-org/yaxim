@@ -36,6 +36,7 @@ import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
+import org.jivesoftware.smackx.packet.DiscoverInfo;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.ping.packet.*;
 import org.jivesoftware.smackx.ping.provider.PingProvider;
@@ -81,6 +82,10 @@ public class SmackableImp implements Smackable {
 			ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING + " AND " +
 			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
 
+	static final DiscoverInfo.Identity YAXIM_IDENTITY = new DiscoverInfo.Identity("client",
+					YaximApplication.XMPP_IDENTITY_NAME,
+					YaximApplication.XMPP_IDENTITY_TYPE);
+
 	static {
 		registerSmackProviders();
 		DNSUtil.setDNSResolver(DNSJavaResolver.getInstance());
@@ -103,8 +108,7 @@ public class SmackableImp implements Smackable {
 		// add XMPP Ping (XEP-0199)
 		pm.addIQProvider("ping","urn:xmpp:ping", new PingProvider());
 
-		ServiceDiscoveryManager.setIdentityName(YaximApplication.XMPP_IDENTITY_NAME);
-		ServiceDiscoveryManager.setIdentityType(YaximApplication.XMPP_IDENTITY_TYPE);
+		ServiceDiscoveryManager.setDefaultIdentity(YAXIM_IDENTITY);
 		
 		XmppStreamHandler.addExtensionProviders();
 	}
