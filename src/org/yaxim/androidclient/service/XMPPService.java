@@ -114,7 +114,8 @@ public class XMPPService extends GenericService {
 
 		((AlarmManager)getSystemService(Context.ALARM_SERVICE)).cancel(mPAlarmIntent);
 		mRosterCallbacks.kill();
-		performDisconnect();
+		manualDisconnect();
+		mSmackable.unRegisterCallback();
 		unregisterReceiver(mAlarmReceiver);
 	}
 
