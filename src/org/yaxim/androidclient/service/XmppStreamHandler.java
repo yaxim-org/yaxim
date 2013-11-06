@@ -1,11 +1,13 @@
 package org.yaxim.androidclient.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
@@ -40,6 +42,9 @@ public class XmppStreamHandler {
 	private long outgoingStanzaCount = 0;
 	private Queue<Packet> outgoingQueue;
 	private int maxOutgoingQueueSize = MAX_OUTGOING_QUEUE_SIZE;
+
+	protected final Collection<AckReceivedListener> ackListeners =
+	    new CopyOnWriteArraySet<AckReceivedListener>();
 
 	public XmppStreamHandler(XMPPConnection connection) {
 		mConnection = (ExtXMPPConnection)connection;
@@ -283,11 +288,23 @@ public class XmppStreamHandler {
 			outgoingQueue.remove();
 			size--;
 		}
+
+		for (AckReceivedListener l : ackListeners) {
+		    l.ackReceived(ackCount, outgoingStanzaCount);
+		}
 	}
 
 	public long requestAck() {
 		mConnection.sendPacket(new StreamHandlingPacket("r", URN_SM_2));
 		return outgoingStanzaCount;
+	}
+
+	public void addAckReceivedListener(AckReceivedListener l) {
+	    ackListeners.add(l);
+	}
+
+	public void removeAckReceivedListener(AckReceivedListener l) {
+	    ackListeners.remove(l);
 	}
 
 	private static void addSimplePacketExtension(final String name, final String namespace) {
@@ -377,6 +394,17 @@ public class XmppStreamHandler {
 		isOutgoingSmEnabled = false;
 		sessionId = null;
 	}
+
+    /** Interface to allow application-level monitoring of the send queue.
+     */
+    public static interface AckReceivedListener {
+	/** Called on a received <resumed>/<a> packet with an h element.
+	 *
+	 * @param handled number of stanzas handled by the other side
+	 * @param total number of stanzas sent to other side
+	 */
+	public void ackReceived(long handled, long total);
+    }
 
     public static class ExtXMPPConnection extends XMPPConnection {
 
