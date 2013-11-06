@@ -193,6 +193,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		this.mXMPPConnection = new XmppStreamHandler.ExtXMPPConnection(mXMPPConfig);
+		this.mStreamHandler = new XmppStreamHandler(mXMPPConnection);
 		mConfig.reconnect_required = false;
 
 		initServiceDiscovery();
@@ -403,9 +404,7 @@ public class SmackableImp implements Smackable {
 			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
 			SmackConfiguration.setDefaultPingInterval(0);
 			registerRosterListener();
-			boolean need_bind = !(mStreamHandler != null && mStreamHandler.isResumePossible());
-			if (mStreamHandler == null)
-				mStreamHandler = new XmppStreamHandler(mXMPPConnection);
+			boolean need_bind = !mStreamHandler.isResumePossible();
 
 			mXMPPConnection.connect(need_bind);
 			// the following should not happen as of smack 3.3.1
