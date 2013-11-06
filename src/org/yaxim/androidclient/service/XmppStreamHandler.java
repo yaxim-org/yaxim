@@ -65,6 +65,10 @@ public class XmppStreamHandler {
 		return sessionId != null;
 	}
 
+	public boolean isSmEnabled() {
+		return isSmEnabled;
+	}
+
 	public static void addExtensionProviders() {
 		addSimplePacketExtension("sm", URN_SM_2);
 		addSimplePacketExtension("r", URN_SM_2);
@@ -178,7 +182,7 @@ public class XmppStreamHandler {
 					// Don't let the queue grow beyond max size.  Request acks and drop old packets
 					// if acks are not coming.
 					if (outgoingQueue.size() >= maxOutgoingQueueSize / OUTGOING_FILL_RATIO) {
-						mConnection.sendPacket(new StreamHandlingPacket("r", URN_SM_2));
+						requestAck();
 					}
 
 					if (outgoingQueue.size() > maxOutgoingQueueSize) {
@@ -279,6 +283,11 @@ public class XmppStreamHandler {
 			outgoingQueue.remove();
 			size--;
 		}
+	}
+
+	public long requestAck() {
+		mConnection.sendPacket(new StreamHandlingPacket("r", URN_SM_2));
+		return outgoingStanzaCount;
 	}
 
 	private static void addSimplePacketExtension(final String name, final String namespace) {
