@@ -41,6 +41,7 @@ import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
+import org.jivesoftware.smackx.packet.Version;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.ping.packet.*;
 import org.jivesoftware.smackx.ping.provider.PingProvider;
@@ -104,6 +105,9 @@ public class SmackableImp implements Smackable {
 		// add delayed delivery notifications
 		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
+		// add XEP-0092 Software Version
+		pm.addIQProvider("query", Version.NAMESPACE, new Version.Provider());
+
 		// add carbons and forwarding
 		pm.addExtensionProvider("forwarded", Forwarded.NAMESPACE, new Forwarded.Provider());
 		pm.addExtensionProvider("sent", Carbon.NAMESPACE, new Carbon.Provider());
@@ -319,8 +323,14 @@ public class SmackableImp implements Smackable {
 
 		// reference PingManager, set ping flood protection to 10s
 		PingManager.getInstanceFor(mXMPPConnection).setPingMinimumInterval(10*1000);
-		// reference DeliveryReceiptManager, add listener
 
+		// set Version for replies
+		String app_name = mService.getString(org.yaxim.androidclient.R.string.app_name);
+		String build_version[] = mService.getString(org.yaxim.androidclient.R.string.build_version).split(" ");
+		Version.Manager.getInstanceFor(mXMPPConnection).setVersion(
+				new Version(app_name, build_version[1], "Android"));
+
+		// reference DeliveryReceiptManager, add listener
 		DeliveryReceiptManager dm = DeliveryReceiptManager.getInstanceFor(mXMPPConnection);
 		dm.enableAutoReceipts();
 		dm.addReceiptReceivedListener(new ReceiptReceivedListener() {
