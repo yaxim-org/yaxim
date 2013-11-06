@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.service;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 import javax.net.ssl.SSLContext;
@@ -28,9 +29,12 @@ import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
+import org.jivesoftware.smackx.entitycaps.EntityCapsManager;
+import org.jivesoftware.smackx.entitycaps.cache.SimpleDirectoryPersistentCache;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
+import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
@@ -86,6 +90,8 @@ public class SmackableImp implements Smackable {
 					YaximApplication.XMPP_IDENTITY_NAME,
 					YaximApplication.XMPP_IDENTITY_TYPE);
 
+	static File capsCacheDir = null; ///< this is used to cache if we already initialized EntityCapsCache
+
 	static {
 		registerSmackProviders();
 		DNSUtil.setDNSResolver(DNSJavaResolver.getInstance());
@@ -110,6 +116,9 @@ public class SmackableImp implements Smackable {
 
 		ServiceDiscoveryManager.setDefaultIdentity(YAXIM_IDENTITY);
 		
+		// XEP-0115 Entity Capabilities
+		pm.addExtensionProvider("c", "http://jabber.org/protocol/caps", new CapsExtensionProvider());
+
 		XmppStreamHandler.addExtensionProviders();
 	}
 
@@ -296,6 +305,17 @@ public class SmackableImp implements Smackable {
 	private void initServiceDiscovery() {
 		// register connection features
 		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
+
+		// init Entity Caps manager with storage in app's cache dir
+		try {
+			if (capsCacheDir == null) {
+				capsCacheDir = new File(mService.getCacheDir(), "entity-caps-cache");
+				capsCacheDir.mkdirs();
+				EntityCapsManager.setPersistentCache(new SimpleDirectoryPersistentCache(capsCacheDir));
+			}
+		} catch (java.io.IOException e) {
+			Log.e(TAG, "Could not init Entity Caps cache: " + e.getLocalizedMessage());
+		}
 
 		// reference PingManager, set ping flood protection to 10s
 		PingManager.getInstanceFor(mXMPPConnection).setPingMinimumInterval(10*1000);
