@@ -334,7 +334,7 @@ public class SmackableImp implements Smackable {
 		// reference DeliveryReceiptManager, add listener
 		DeliveryReceiptManager dm = DeliveryReceiptManager.getInstanceFor(mXMPPConnection);
 		dm.enableAutoReceipts();
-		dm.addReceiptReceivedListener(new ReceiptReceivedListener() {
+		dm.addReceiptReceivedListener(new ReceiptReceivedListener() { // DOES NOT WORK IN CARBONS
 			public void onReceiptReceived(String fromJid, String toJid, String receiptId) {
 				Log.d(TAG, "got delivery receipt for " + receiptId);
 				changeMessageDeliveryStatus(receiptId, ChatConstants.DS_ACKED);
@@ -873,8 +873,17 @@ public class SmackableImp implements Smackable {
 						if (cc.getDirection() == Carbon.Direction.sent) {
 							fromJID = getBareJID(msg.getTo());
 							direction = ChatConstants.OUTGOING;
-						} else
+						} else {
 							fromJID = getBareJID(msg.getFrom());
+
+							// hook off carbonated delivery receipts
+							DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension(
+									DeliveryReceipt.ELEMENT, DeliveryReceipt.NAMESPACE);
+							if (dr != null) {
+								Log.d(TAG, "got CC'ed delivery receipt for " + dr.getId());
+								changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
+							}
+						}
 					}
 
 					String chatMessage = msg.getBody();
