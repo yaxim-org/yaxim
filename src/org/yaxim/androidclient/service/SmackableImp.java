@@ -194,6 +194,11 @@ public class SmackableImp implements Smackable {
 
 		this.mXMPPConnection = new XmppStreamHandler.ExtXMPPConnection(mXMPPConfig);
 		this.mStreamHandler = new XmppStreamHandler(mXMPPConnection);
+		mStreamHandler.addAckReceivedListener(new XmppStreamHandler.AckReceivedListener() {
+			public void ackReceived(long handled, long total) {
+				gotServerPong("" + handled);
+			}
+		});
 		mConfig.reconnect_required = false;
 
 		initServiceDiscovery();
@@ -761,17 +766,35 @@ public class SmackableImp implements Smackable {
 			debugLog("Ping: requested, but still waiting for " + mPingID);
 			return; // a ping is still on its way
 		}
-		Ping ping = new Ping();
-		ping.setType(Type.GET);
-		ping.setTo(mConfig.server);
-		mPingID = ping.getPacketID();
+
 		mPingTimestamp = System.currentTimeMillis();
-		debugLog("Ping: sending ping " + mPingID);
-		mXMPPConnection.sendPacket(ping);
+		if (mStreamHandler.isSmEnabled()) {
+			debugLog("Ping: sending SM request");
+			mPingID = "" + mStreamHandler.requestAck();
+		} else {
+			Ping ping = new Ping();
+			ping.setType(Type.GET);
+			ping.setTo(mConfig.server);
+			mPingID = ping.getPacketID();
+			debugLog("Ping: sending ping " + mPingID);
+			mXMPPConnection.sendPacket(ping);
+		}
 
 		// register ping timeout handler: PACKET_TIMEOUT(30s) + 3s
 		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
 			System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+	}
+
+	private void gotServerPong(String pongID) {
+		long latency = System.currentTimeMillis() - mPingTimestamp;
+		if (pongID != null && pongID.equals(mPingID))
+			Log.i(TAG, String.format("Ping: server latency %1.3fs",
+						latency/1000.));
+		else
+			Log.i(TAG, String.format("Ping: server latency %1.3fs (estimated)",
+						latency/1000.));
+		mPingID = null;
+		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
 	}
 
 	/**
@@ -812,12 +835,7 @@ public class SmackableImp implements Smackable {
 			public void processPacket(Packet packet) {
 				if (packet == null) return;
 
-				if (packet.getPacketID().equals(mPingID)) {
-					Log.i(TAG, String.format("Ping: server latency %1.3fs",
-								(System.currentTimeMillis() - mPingTimestamp)/1000.));
-					mPingID = null;
-					((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
-				}
+				gotServerPong(packet.getPacketID());
 			}
 
 		};
