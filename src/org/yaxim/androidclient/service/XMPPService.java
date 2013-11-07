@@ -25,7 +25,6 @@ import android.os.RemoteException;
 
 public class XMPPService extends GenericService {
 
-	private AtomicBoolean mIsConnected = new AtomicBoolean(false);
 	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false); // should we try to reconnect?
 	private static final int RECONNECT_AFTER = 5;
 	private static final int RECONNECT_MAXIMUM = 10*60;
@@ -37,8 +36,6 @@ public class XMPPService extends GenericService {
 	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
 
 	private ServiceNotification mServiceNotification = null;
-
-	private Thread mConnectingThread;
 
 	private Smackable mSmackable;
 	private boolean create_account = false;
@@ -114,8 +111,10 @@ public class XMPPService extends GenericService {
 
 		((AlarmManager)getSystemService(Context.ALARM_SERVICE)).cancel(mPAlarmIntent);
 		mRosterCallbacks.kill();
-		manualDisconnect();
-		mSmackable.unRegisterCallback();
+		if (mSmackable != null) {
+		    manualDisconnect();
+		    mSmackable.unRegisterCallback();
+		}
 		unregisterReceiver(mAlarmReceiver);
 	}
 
@@ -137,8 +136,7 @@ public class XMPPService extends GenericService {
 			} else
 			if ("ping".equals(intent.getAction())) {
 				if (mSmackable != null) {
-					if (mConnectingThread == null)
-						mSmackable.sendServerPing();
+					mSmackable.sendServerPing();
 					return START_STICKY;
 				}
 				// if not yet connected, fall through to doConnect()
@@ -326,66 +324,13 @@ public class XMPPService extends GenericService {
 	}
 
 	private void doConnect() {
-		if (mConnectingThread != null) {
-			// a connection is still goign on!
-			return;
-		}
-
 		mReconnectInfo = getString(R.string.conn_connecting);
 		updateServiceNotification();
 		if (mSmackable == null) {
 			createAdapter();
 		}
 
-		mConnectingThread = new Thread() {
-
-			public void run() {
-				try {
-					if (!mSmackable.doConnect(create_account)) {
-						postConnectionFailed("Inconsistency in Smackable.doConnect()");
-					} else
-						postConnectionEstablished();
-				} catch (YaximXMPPException e) {
-					String message = e.getLocalizedMessage();
-					if (e.getCause() != null)
-						message += "\n" + e.getCause().getLocalizedMessage();
-					postConnectionFailed(message);
-					logError("YaximXMPPException in doConnect():");
-					e.printStackTrace();
-				} finally {
-					if (mConnectingThread != null) synchronized(mConnectingThread) {
-						mConnectingThread = null;
-					}
-					create_account = false;
-				}
-			}
-
-		};
-		mConnectingThread.start();
-	}
-
-	private void postConnectionFailed(final String reason) {
-		mMainHandler.post(new Runnable() {
-			public void run() {
-				connectionFailed(reason);
-			}
-		});
-	}
-
-	private void postConnectionEstablished() {
-		mMainHandler.post(new Runnable() {
-			public void run() {
-				connectionEstablished();
-			}
-		});
-	}
-
-	private void postRosterChanged() {
-		mMainHandler.post(new Runnable() {
-			public void run() {
-				rosterChanged();
-			}
-		});
+		mSmackable.requestConnectionState(ConnectionState.ONLINE, create_account);
 	}
 
 	private void broadcastConnectionState(ConnectionState cs) {
@@ -432,17 +377,13 @@ public class XMPPService extends GenericService {
 		logInfo("connectionFailed: " + reason);
 		//TODO: error message from downstream?
 		//mLastConnectionError = reason;
-		mIsConnected.set(false);
 		if (!networkConnected()) {
-			mReconnectInfo = reason;
-			updateServiceNotification();
-			if (mSmackable != null) {
-				mSmackable.requestConnectionState(ConnectionState.DISCONNECTED);
-			}
-			YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
+			mReconnectInfo = getString(R.string.conn_no_network);
+			mSmackable.requestConnectionState(ConnectionState.RECONNECT_NETWORK);
+
 		} else if (mConnectionDemanded.get()) {
+			mSmackable.requestConnectionState(ConnectionState.RECONNECT_DELAYED);
 			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
-			updateServiceNotification();
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
 			((AlarmManager)getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
 					System.currentTimeMillis() + mReconnectTimeout * 1000, mPAlarmIntent);
@@ -457,26 +398,14 @@ public class XMPPService extends GenericService {
 
 	private void connectionClosed() {
 		logInfo("connectionClosed.");
-		mIsConnected.set(false);
 		mReconnectInfo = "";
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 	}
 
 	private void connectionEstablished() {
-		mIsConnected.set(true);
 		mReconnectInfo = "";
 		mReconnectTimeout = RECONNECT_AFTER;
 		updateServiceNotification();
-	}
-
-	private void rosterChanged() {
-		// gracefully handle^W ignore events after a disconnect
-		if (mSmackable == null)
-			return;
-		if (mIsConnected.get() && mSmackable != null && !mSmackable.isAuthenticated()) {
-			logInfo("rosterChanged(): disconnected without warning");
-			connectionFailed(getString(R.string.conn_disconnected));
-		}
 	}
 
 	public void manualDisconnect() {
@@ -485,18 +414,6 @@ public class XMPPService extends GenericService {
 	}
 
 	public void performDisconnect() {
-		if (mConnectingThread != null) {
-			synchronized(mConnectingThread) {
-				try {
-					mConnectingThread.interrupt();
-					mConnectingThread.join(50);
-				} catch (InterruptedException e) {
-					logError("doDisconnect: failed catching connecting thread");
-				} finally {
-					mConnectingThread = null;
-				}
-			}
-		}
 		if (mSmackable != null) {
 			// this is non-blocking
 			mSmackable.requestConnectionState(ConnectionState.OFFLINE);
@@ -518,10 +435,11 @@ public class XMPPService extends GenericService {
 			}
 
 			public void rosterChanged() {
-				//postRosterChanged();
 			}
 
 			public void connectionStateChanged() {
+				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
+				// connectionClosed() callback on an error, need to catch that?
 				if (mSmackable.getConnectionState() == ConnectionState.DISCONNECTED)
 					connectionFailed(getString(R.string.conn_disconnected));
 				else
@@ -536,7 +454,7 @@ public class XMPPService extends GenericService {
 			if (!mConnectionDemanded.get()) {
 				return;
 			}
-			if (mIsConnected.get()) {
+			if (mSmackable != null && mSmackable.getConnectionState() == ConnectionState.ONLINE) {
 				logError("Reconnect attempt aborted: we are connected again!");
 				return;
 			}

@@ -130,6 +130,9 @@ public class SmackableImp implements Smackable {
 	private ConnectionConfiguration mXMPPConfig;
 	private XmppStreamHandler.ExtXMPPConnection mXMPPConnection;
 	private XmppStreamHandler mStreamHandler;
+	private Thread mConnectingThread;
+	private Object mConnectingThreadMutex = new Object();
+
 
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
 	private ConnectionState mState = ConnectionState.OFFLINE;
@@ -220,8 +223,30 @@ public class SmackableImp implements Smackable {
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
 			updateConnectionState(ConnectionState.ONLINE);
-		} else onDisconnected(null);
-		return isAuthenticated();
+		} else throw new YaximXMPPException("SMACK connected, but authentication failed");
+		return true;
+	}
+
+	// BLOCKING, call on a new Thread!
+	private void updateConnectingThread(Thread new_thread) {
+		synchronized(mConnectingThreadMutex) {
+			if (mConnectingThread == null) {
+				mConnectingThread = new_thread;
+			} else try {
+				Log.d(TAG, "updateConnectingThread: old thread is still running, killing it.");
+				mConnectingThread.interrupt();
+				mConnectingThread.join(50);
+			} catch (InterruptedException e) {
+				Log.d(TAG, "updateConnectingThread: failed to join(): " + e);
+			} finally {
+				mConnectingThread = new_thread;
+			}
+		}
+	}
+	private void finishConnectingThread() {
+		synchronized(mConnectingThreadMutex) {
+			mConnectingThread = null;
+		}
 	}
 
 	// called from outside, possible inputs:
@@ -239,23 +264,23 @@ public class SmackableImp implements Smackable {
 			switch (mState) {
 			case RECONNECT_DELAYED:
 				// TODO: cancel timer
+			case RECONNECT_NETWORK:
 			case OFFLINE:
-				Thread starter = new Thread() {
+				new Thread() {
 					@Override
 					public void run() {
+						updateConnectingThread(this);
 						try {
-							updateConnectionState(ConnectionState.CONNECTING);
-							doConnect(false);
-							updateConnectionState(ConnectionState.ONLINE);
+							doConnect(create_account);
 						} catch (YaximXMPPException e) {
-							onDisconnected(e.getLocalizedMessage());
+							onDisconnected(e);
+						} finally {
+							finishConnectingThread();
 						}
 					}
-				}; 
-				starter.start();
+				}.start();
 				break;
 			case CONNECTING:
-			case RECONNECT_NETWORK:
 			case DISCONNECTING:
 				// ignore all other cases
 				break;
@@ -266,8 +291,10 @@ public class SmackableImp implements Smackable {
 			if (mState == ConnectionState.ONLINE) {
 				new Thread() {
 					public void run() {
+						updateConnectingThread(this);
 						updateConnectionState(ConnectionState.DISCONNECTING);
 						mXMPPConnection.quickShutdown();
+						finishConnectingThread();
 						//updateConnectionState(ConnectionState.OFFLINE);
 					}
 				}.start();
@@ -280,9 +307,11 @@ public class SmackableImp implements Smackable {
 				// spawn thread to do disconnect
 				new Thread() {
 					public void run() {
+						updateConnectingThread(this);
 						updateConnectionState(ConnectionState.DISCONNECTING);
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
+						finishConnectingThread();
 					}
 				}.start();
 				break;
@@ -786,7 +815,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void sendServerPing() {
-		if (!mXMPPConnection.isAuthenticated()) {
+		if (mXMPPConnection == null || !mXMPPConnection.isAuthenticated()) {
 			debugLog("Ping: requested, but not connected to server.");
 			return;
 		}
