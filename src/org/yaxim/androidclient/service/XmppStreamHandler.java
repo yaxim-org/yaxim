@@ -58,7 +58,9 @@ public class XmppStreamHandler {
 			// We will not necessarily get any notification from a quickShutdown, so adjust our state here.
 			closeOnError();
 		} else {
-			mConnection.shutdown();
+			// XXX: shutdown() would cause the connectionClosed listener to be called!
+			mConnection.quickShutdown();
+			close();
 		}
 	}
 
@@ -264,7 +266,9 @@ public class XmppStreamHandler {
 						mConnection.getRoster().setOfflineOnError(true);
 						mConnection.getRoster().setOfflinePresences();
 						sessionId = null;
-						mConnection.shutdown();
+						// normally, we would <bind> the connection here, but
+						// this is not supported in XMPPConnection's workflow.
+						mConnection.causeException(new Exception("XEP-0198 stream resumption failed"));
 						// isSmEnabled / isOutgoingSmEnabled are already false
 					}
 				}
@@ -431,6 +435,17 @@ public class XmppStreamHandler {
                 Log.e(TAG, "error on shutdown()", e);
             }
         }
+	public void causeException(Exception e) {
+	    // notifyConnectionError(e);
+	    try {
+		java.lang.reflect.Method nce = XMPPConnection.class.getDeclaredMethod("notifyConnectionError",
+			new Class[] { Exception.class });
+		nce.setAccessible(true);
+		nce.invoke(this, new Object[] { e });
+	    } catch (Exception fail) {
+		fail.printStackTrace();
+	    }
+	}
     }
 
 }
