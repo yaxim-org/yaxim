@@ -293,6 +293,18 @@ public class SmackableImp implements Smackable {
 			case RECONNECT_NETWORK:
 				updateConnectionState(ConnectionState.OFFLINE);
 			}
+			break;
+		case RECONNECT_NETWORK:
+		case RECONNECT_DELAYED:
+			switch (mState) {
+			case DISCONNECTED:
+			case RECONNECT_NETWORK:
+			case RECONNECT_DELAYED:
+				updateConnectionState(new_state);
+				break;
+			default:
+				throw new IllegalArgumentException("Can not go from " + mState + " to " + new_state);
+			}
 		}
 	}
 	@Override
