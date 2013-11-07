@@ -126,8 +126,7 @@ public class XMPPService extends GenericService {
 			create_account = intent.getBooleanExtra("create_account", false);
 			
 			if ("disconnect".equals(intent.getAction())) {
-				if (mConnectingThread != null || mIsConnected.get())
-					connectionFailed(getString(R.string.conn_networkchg));
+				failConnection(getString(R.string.conn_networkchg));
 				return START_STICKY;
 			} else
 			if ("reconnect".equals(intent.getAction())) {
@@ -419,6 +418,16 @@ public class XMPPService extends GenericService {
 		return info != null && info.isConnectedOrConnecting();
 	}
 
+	// call this when Android tells us to shut down
+	private void failConnection(String reason) {
+		logInfo("failConnection: " + reason);
+		mReconnectInfo = reason;
+		updateServiceNotification();
+		if (mSmackable != null)
+			mSmackable.requestConnectionState(ConnectionState.DISCONNECTED);
+	}
+
+	// called from Smackable when connection broke down
 	private void connectionFailed(String reason) {
 		logInfo("connectionFailed: " + reason);
 		//TODO: error message from downstream?
