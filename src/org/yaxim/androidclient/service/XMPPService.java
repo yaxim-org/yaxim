@@ -201,10 +201,7 @@ public class XMPPService extends GenericService {
 			}
 
 			public String getConnectionStateString() throws RemoteException {
-				if (mSmackable != null && mSmackable.getLastError() != null)
-					return mSmackable.getLastError() + "\n" + mReconnectInfo;
-				else
-					return mReconnectInfo;
+				return XMPPService.this.getConnectionStateString();
 			}
 
 
@@ -281,15 +278,21 @@ public class XMPPService extends GenericService {
 		};
 	}
 
+	private String getConnectionStateString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(mReconnectInfo);
+		if (mSmackable != null && mSmackable.getLastError() != null) {
+			sb.append("\n");
+			sb.append(mSmackable.getLastError());
+		}
+		return sb.toString();
+	}
+
 	private void updateServiceNotification() {
-		String message = null;
 		ConnectionState cs = ConnectionState.OFFLINE;
 		if (mSmackable != null) {
 			cs = mSmackable.getConnectionState();
-			message = mSmackable.getLastError();
 		}
-		else if (mConnectionDemanded.get())
-			cs = ConnectionState.CONNECTING;
 
 		broadcastConnectionState(cs);
 
@@ -311,14 +314,12 @@ public class XMPPService extends GenericService {
 		n.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		if (message == null)
-			message = mReconnectInfo;
-		else
-			message += " " + mReconnectInfo;
+		String message;
 		if (cs == ConnectionState.ONLINE) {
 			message = MainWindow.getStatusTitle(this, mConfig.statusMode, mConfig.statusMessage);
 			n.icon = R.drawable.ic_online;
-		}
+		} else
+			message = getConnectionStateString();
 		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
 		mServiceNotification.showNotification(this, SERVICE_NOTIFICATION,
