@@ -229,7 +229,7 @@ public class SmackableImp implements Smackable {
 	// ONLINE to connect
 	// DISCONNECTED when network goes down
 	@Override
-	public void requestConnectionState(ConnectionState new_state) {
+	public void requestConnectionState(ConnectionState new_state, final boolean create_account) {
 		Log.d(TAG, "requestConnState: " + new_state + " from " + mState);
 		mRequestedState = new_state;
 		if (new_state == mState)
@@ -295,7 +295,10 @@ public class SmackableImp implements Smackable {
 			}
 		}
 	}
-	
+	@Override
+	public void requestConnectionState(ConnectionState new_state) {
+		requestConnectionState(new_state, false);
+	}
 
 	@Override
 	public ConnectionState getConnectionState() {

@@ -8,6 +8,7 @@ public interface Smackable {
 	boolean doConnect(boolean create_account) throws YaximXMPPException;
 	boolean isAuthenticated();
 	void requestConnectionState(ConnectionState new_state);
+	void requestConnectionState(ConnectionState new_state, boolean create_account);
 	ConnectionState getConnectionState();
 	String getLastError();
 
