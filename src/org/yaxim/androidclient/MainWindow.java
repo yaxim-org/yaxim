@@ -718,22 +718,21 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private void updateConnectionState(ConnectionState cs) {
 		Log.d(TAG, "updateConnectionState: " + cs);
-
+		boolean spinTheSpinner = false;
 		switch (cs) {
-		case OFFLINE:
-			mConnectingText.setVisibility(View.VISIBLE);
-			mConnectingText.setText(R.string.conn_offline);
-			setSupportProgressBarIndeterminateVisibility(false);
-			break;
 		case CONNECTING:
 		case DISCONNECTING:
+			spinTheSpinner = true;
 		case DISCONNECTED:
 		case RECONNECT_NETWORK:
 		case RECONNECT_DELAYED:
-			String lastStatus = serviceAdapter.getConnectionStateString();
-			mConnectingText.setText(lastStatus);
+		case OFFLINE:
+			if (cs == ConnectionState.OFFLINE) // override with "Offline" string, no error message
+				mConnectingText.setText(R.string.conn_offline);
+			else
+				mConnectingText.setText(serviceAdapter.getConnectionStateString());
 			mConnectingText.setVisibility(View.VISIBLE);
-			setSupportProgressBarIndeterminateVisibility(true);
+			setSupportProgressBarIndeterminateVisibility(spinTheSpinner);
 			break;
 		case ONLINE:
 			mConnectingText.setVisibility(View.GONE);
