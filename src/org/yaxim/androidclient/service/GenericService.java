@@ -105,6 +105,17 @@ public abstract class GenericService extends Service {
 			return;
 		}
 		mWakeLock.acquire();
+
+		// Override silence when notification is created initially
+		// if there is no open notification for that JID, and we get a "silent"
+		// one (i.e. caused by an incoming carbon message), we still ring/vibrate,
+		// but only once. As long as the user ignores the notifications, no more
+		// sounds are made. When the user opens the chat window, the counter is
+		// reset and a new sound can be made.
+		if (silent_notification && !notificationCount.containsKey(fromJid)) {
+			silent_notification = false;		
+		}
+
 		setNotification(fromJid, fromUserName, message);
 		setLEDNotification();
 		if (!silent_notification)
