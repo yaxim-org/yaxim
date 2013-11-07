@@ -399,6 +399,19 @@ public class SmackableImp implements Smackable {
 		mLastError = reason;
 		updateConnectionState(ConnectionState.DISCONNECTED);
 	}
+	private void onDisconnected(Throwable reason) {
+		Log.e(TAG, "onDisconnected: " + reason);
+		reason.printStackTrace();
+		StringBuilder sb = new StringBuilder();
+		while (reason != null) {
+			sb.append(reason.getLocalizedMessage());
+			reason = reason.getCause();
+			// TODO parse XMPPError custom fields
+			if (reason != null)
+				sb.append("\n");
+		}
+		onDisconnected(sb.toString());
+	}
 
 	private void tryToConnect(boolean create_account) throws YaximXMPPException {
 		try {
@@ -423,10 +436,10 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.removeConnectionListener(mConnectionListener);
 			mConnectionListener = new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
-					onDisconnected(e.getLocalizedMessage());
+					onDisconnected(e);
 				}
 				public void connectionClosed() {
-					// TODO: fix reconnect when we got kicked by the server!
+					// TODO: fix reconnect when we got kicked by the server or SM failed!
 					//onDisconnected(null);
 					updateConnectionState(ConnectionState.OFFLINE);
 				}
