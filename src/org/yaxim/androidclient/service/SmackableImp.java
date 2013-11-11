@@ -249,13 +249,18 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	// called from outside, possible inputs:
-	// OFFLINE to properly close the connection
-	// ONLINE to connect
-	// DISCONNECTED when network goes down
+	/** Non-blocking, synchronized function to connect/disconnect XMPP.
+	 * This code is called from outside and returns immediately. The actual work
+	 * is done on a background thread, and notified via callback.
+	 * @param new_state The state to transition into. Possible values:
+	 * 	OFFLINE to properly close the connection
+	 * 	ONLINE to connect
+	 * 	DISCONNECTED when network goes down
+	 * @param create_account When going online, try to register an account.
+	 */
 	@Override
-	public void requestConnectionState(ConnectionState new_state, final boolean create_account) {
-		Log.d(TAG, "requestConnState: " + new_state + " from " + mState);
+	public synchronized void requestConnectionState(ConnectionState new_state, final boolean create_account) {
+		Log.d(TAG, "requestConnState: " + mState + " -> " + new_state + (create_account ? " create_account!" : ""));
 		mRequestedState = new_state;
 		if (new_state == mState)
 			return;
@@ -814,9 +819,15 @@ public class SmackableImp implements Smackable {
 				new String[] { packetID });
 	}
 
+	/** Check the server connection, reconnect if needed.
+	 *
+	 * This function will try to ping the server if we are connected, and try
+	 * to reestablish a connection otherwise.
+	 */
 	public void sendServerPing() {
 		if (mXMPPConnection == null || !mXMPPConnection.isAuthenticated()) {
 			debugLog("Ping: requested, but not connected to server.");
+			requestConnectionState(ConnectionState.ONLINE, false);
 			return;
 		}
 		if (mPingID != null) {
