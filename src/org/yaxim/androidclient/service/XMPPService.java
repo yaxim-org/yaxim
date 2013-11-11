@@ -265,6 +265,7 @@ public class XMPPService extends GenericService {
 
 			public void connect() throws RemoteException {
 				mConnectionDemanded.set(true);
+				mReconnectTimeout = RECONNECT_AFTER;
 				doConnect();
 			}
 
@@ -402,12 +403,6 @@ public class XMPPService extends GenericService {
 		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 	}
 
-	private void connectionEstablished() {
-		mReconnectInfo = "";
-		mReconnectTimeout = RECONNECT_AFTER;
-		updateServiceNotification();
-	}
-
 	public void manualDisconnect() {
 		mConnectionDemanded.set(false);
 		performDisconnect();
@@ -440,10 +435,16 @@ public class XMPPService extends GenericService {
 			public void connectionStateChanged() {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
-				if (mSmackable.getConnectionState() == ConnectionState.DISCONNECTED)
+				switch (mSmackable.getConnectionState()) {
+				//case OFFLINE:
+				case DISCONNECTED:
 					connectionFailed(getString(R.string.conn_disconnected));
-				else
+					break;
+				case ONLINE:
+					mReconnectTimeout = RECONNECT_AFTER;
+				default:
 					updateServiceNotification();
+				}
 			}
 		});
 	}
