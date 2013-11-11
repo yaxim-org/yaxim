@@ -44,8 +44,14 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 				return;
 
 			// refresh DNS servers from android prefs
-			org.xbill.DNS.ResolverConfig.refresh();
-			org.xbill.DNS.Lookup.refreshDefault();
+			try {
+				org.xbill.DNS.ResolverConfig.refresh();
+				org.xbill.DNS.Lookup.refreshDefault();
+			} catch (Exception e) {
+			    // sometimes refreshDefault() will cause a NetworkOnMainThreadException;
+			    // ignore and hope for the best.
+			    Log.i(TAG, "DNS init failed: " + e);
+			}
 
 			// prepare intent
 			Intent xmppServiceIntent = new Intent(context, XMPPService.class);
