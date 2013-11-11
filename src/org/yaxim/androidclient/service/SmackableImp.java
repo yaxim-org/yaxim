@@ -448,15 +448,10 @@ public class SmackableImp implements Smackable {
 	private void onDisconnected(Throwable reason) {
 		Log.e(TAG, "onDisconnected: " + reason);
 		reason.printStackTrace();
-		StringBuilder sb = new StringBuilder();
-		while (reason != null) {
-			sb.append(reason.getLocalizedMessage());
+		// iterate through to the deepest exception
+		while (reason.getCause() != null)
 			reason = reason.getCause();
-			// TODO parse XMPPError custom fields
-			if (reason != null)
-				sb.append("\n");
-		}
-		onDisconnected(sb.toString());
+		onDisconnected(reason.getLocalizedMessage());
 	}
 
 	private void tryToConnect(boolean create_account) throws YaximXMPPException {
