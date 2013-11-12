@@ -22,13 +22,14 @@
 			android:paddingBottom="20dp"
 			style="?attr/dialogTextColor"
 		/>
-	<EditText
+	<org.yaxim.androidclient.widget.AutoCompleteJidEdit
 			android:id="@+id/AddContact_EditTextField"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="20dp"
 			android:gravity="left"
 			android:singleLine="true"
+			android:imeOptions="actionNext"
 			android:textSize="18sp"
 			android:maxWidth="200sp"
 			android:inputType="textEmailAddress"
