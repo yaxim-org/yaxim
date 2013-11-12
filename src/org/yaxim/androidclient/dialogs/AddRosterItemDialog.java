@@ -27,6 +27,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 	private Button okButton;
 	private EditText userInputField;
 	private EditText aliasInputField;
+	private String generatedAlias = "";
 	private GroupNameView mGroupNameView;
 
 	public AddRosterItemDialog(MainWindow mainWindow,
@@ -65,12 +66,16 @@ public class AddRosterItemDialog extends AlertDialog implements
 		okButton = getButton(BUTTON_POSITIVE);
 		afterTextChanged(userInputField.getText());
 
+		aliasInputField.setText(generatedAlias);
 		userInputField.addTextChangedListener(this);
 	}
 
 	public void onClick(DialogInterface dialog, int which) {
+		String alias = aliasInputField.getText().toString();
+		if (alias.length() == 0)
+			alias = generatedAlias;
 		mServiceAdapter.addRosterItem(userInputField.getText()
-				.toString(), aliasInputField.getText().toString(),
+				.toString(), alias,
 				mGroupNameView.getGroupName());
 	}
 
@@ -82,6 +87,13 @@ public class AddRosterItemDialog extends AlertDialog implements
 		} catch (YaximXMPPAdressMalformedException e) {
 			okButton.setEnabled(false);
 			userInputField.setTextColor(Color.RED);
+		}
+		if (s.length() > 0) {
+			String userpart = s.toString().split("@")[0];
+			if (userpart.length() > 0) {
+				generatedAlias = XMPPHelper.capitalizeString(userpart);
+				aliasInputField.setHint(generatedAlias);
+			}
 		}
 	}
 

@@ -43,6 +43,11 @@ public class XMPPHelper {
 		return ret;
 	}
 
+	public static String capitalizeString(String original) {
+		return (original.length() == 0) ? original :
+			original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
+
 	public static int getEditTextColor(Context ctx) {
 		TypedValue tv = new TypedValue();
 		boolean found = ctx.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
