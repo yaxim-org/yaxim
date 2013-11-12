@@ -880,6 +880,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			PreferenceManager.setDefaultValues(this, R.layout.mainprefs, false);
 			PreferenceManager.setDefaultValues(this, R.layout.accountprefs, false);
 
+			// prevent a start-up with empty JID
+			prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
+
 			// show welcome dialog
 			new FirstStartDialog(this, serviceAdapter).show();
 		}

@@ -277,6 +277,9 @@ public class SmackableImp implements Smackable {
 						updateConnectingThread(this);
 						try {
 							doConnect(create_account);
+						} catch (IllegalArgumentException e) {
+							// this might happen when DNS resolution in ConnectionConfiguration fails
+							onDisconnected(e);
 						} catch (YaximXMPPException e) {
 							onDisconnected(e);
 						} finally {
