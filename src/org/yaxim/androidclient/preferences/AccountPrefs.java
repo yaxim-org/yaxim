@@ -6,7 +6,6 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -25,7 +24,6 @@ public class AccountPrefs extends PreferenceActivity {
 
 	private EditTextPreference prefPrio;
 	private EditTextPreference prefAccountID;
-	private int themedTextColor;
 
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(YaximApplication.getConfig(this).getTheme());
@@ -33,7 +31,6 @@ public class AccountPrefs extends PreferenceActivity {
 		addPreferencesFromResource(R.layout.accountprefs);
 
 		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		themedTextColor = XMPPHelper.getEditTextColor(this);
 
 		this.prefAccountID = (EditTextPreference) findPreference(PreferenceConstants.JID);
 		this.prefAccountID.getEditText().addTextChangedListener(
@@ -52,9 +49,9 @@ public class AccountPrefs extends PreferenceActivity {
 
 						try {
 							XMPPHelper.verifyJabberID(s.toString());
-							prefAccountID.getEditText().setTextColor(themedTextColor);
+							prefAccountID.getEditText().setError(null);
 						} catch (YaximXMPPAdressMalformedException e) {
-							prefAccountID.getEditText().setTextColor(Color.RED);
+							prefAccountID.getEditText().setError(getString(R.string.Global_JID_malformed));
 						}
 					}
 				});
@@ -88,14 +85,14 @@ public class AccountPrefs extends PreferenceActivity {
 				try {
 					prioIntValue = Integer.parseInt(s.toString());
 					if (prioIntValue <= 127 && prioIntValue >= -128) {
-						prefPrio.getEditText().setTextColor(themedTextColor);
+						prefPrio.getEditText().setError(null);
 						prefPrio.setPositiveButtonText(android.R.string.ok);
 					} else {
-						prefPrio.getEditText().setTextColor(Color.RED);
+						prefPrio.getEditText().setError(getString(R.string.account_prio_error));
 					}
 				} catch (NumberFormatException numF) {
 					prioIntValue = 0;
-					prefPrio.getEditText().setTextColor(Color.RED);
+					prefPrio.getEditText().setError(getString(R.string.account_prio_error));
 				}
 
 			}

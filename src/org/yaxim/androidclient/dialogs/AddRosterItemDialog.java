@@ -8,7 +8,6 @@ import org.yaxim.androidclient.MainWindow;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -83,10 +82,11 @@ public class AddRosterItemDialog extends AlertDialog implements
 		try {
 			XMPPHelper.verifyJabberID(s);
 			okButton.setEnabled(true);
-			userInputField.setTextColor(XMPPHelper.getEditTextColor(mMainWindow));
+			userInputField.setError(null);
 		} catch (YaximXMPPAdressMalformedException e) {
 			okButton.setEnabled(false);
-			userInputField.setTextColor(Color.RED);
+			if (s.length() > 0)
+				userInputField.setError(mMainWindow.getString(R.string.Global_JID_malformed));
 		}
 		if (s.length() > 0) {
 			String userpart = s.toString().split("@")[0];
