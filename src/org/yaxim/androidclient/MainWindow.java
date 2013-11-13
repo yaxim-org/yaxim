@@ -104,8 +104,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
 		actionBar.setHomeButtonEnabled(true);
-		mConfig = new YaximConfiguration(PreferenceManager
-				.getDefaultSharedPreferences(this));
 		registerCrashReporter();
 
 		showFirstStartUpDialogIfPrefsEmpty();
@@ -748,7 +746,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 	// this function changes the prefs to keep the connection
 	// according to the requested state
 	private void toggleConnection() {
+		if (mConfig.jabberID.length() < 3) {
+			new FirstStartDialog(this, serviceAdapter).show();
+			return;
+		}
 		boolean oldState = isConnected() || isConnecting();
+
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.CONN_STARTUP, !oldState).commit();
 		if (oldState) {
@@ -867,20 +870,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private void showFirstStartUpDialogIfPrefsEmpty() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		String configuredJabberID = prefs
-				.getString(PreferenceConstants.JID, "");
-
-		Log.i(TAG,
-				"called showFirstStartUpDialogIfPrefsEmpty, string from pref was:"
-						+ configuredJabberID);
-		if (configuredJabberID.length() < 3) {
+		Log.i(TAG, "showFirstStartUpDialogIfPrefsEmpty, JID: "
+						+ mConfig.jabberID);
+		if (mConfig.jabberID.length() < 3) {
 			// load preference defaults
 			PreferenceManager.setDefaultValues(this, R.layout.mainprefs, false);
 			PreferenceManager.setDefaultValues(this, R.layout.accountprefs, false);
 
 			// prevent a start-up with empty JID
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(this);
 			prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
 
 			// show welcome dialog
