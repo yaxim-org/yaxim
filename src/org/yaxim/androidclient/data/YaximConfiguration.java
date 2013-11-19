@@ -41,6 +41,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean smackdebug;
     public String theme;
     public String chatFontSize;
+    public boolean showOffline;
 
     public boolean reconnect_required = false;
 
@@ -126,6 +127,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
         this.theme = prefs.getString(PreferenceConstants.THEME, "dark");
         this.chatFontSize = prefs.getString("setSizeChat", "18");
+        this.showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, false);
 
 		try {
 			XMPPHelper.verifyJabberID(jabberID);

@@ -79,10 +79,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private Stub rosterCallback;
 	private RosterExpListAdapter rosterListAdapter;
 	private TextView mConnectingText;
-	private boolean showOffline;
-
-	private String mStatusMessage;
-	private StatusMode mStatusMode;
 
 	private ContentObserver mRosterObserver = new RosterObserver();
 	private ContentObserver mChatObserver = new ChatObserver();
@@ -115,8 +111,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		createUICallback();
 		setupContenView();
 		registerListAdapter();
-
-		actionBar.setSubtitle(mStatusMessage);
 	}
 
 	@Override
@@ -194,15 +188,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		getPreferences(PreferenceManager.getDefaultSharedPreferences(this));
-		String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferenceConstants.THEME, "dark");
-		if (theme.equals(mTheme) == false) {
+		if (mConfig.theme.equals(mTheme) == false) {
 			// restart
 			Intent restartIntent = new Intent(this, MainWindow.class);
 			restartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(restartIntent);
 			finish();
 		}
+		displayOwnStatus();
 		updateRoster();
 		bindXMPPService();
 
@@ -498,7 +491,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.roster_options, menu);
-		actionBar.setIcon(getStatusActionIcon());
 		return true;
 	}
 
@@ -526,7 +518,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private int getShowHideMenuIcon() {
 		TypedValue tv = new TypedValue();
-		if (showOffline) {
+		if (mConfig.showOffline) {
 			getTheme().resolveAttribute(R.attr.OnlineFriends, tv, true);
 			return tv.resourceId;
 		}
@@ -535,16 +527,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private String getShowHideMenuText() {
-		return showOffline ? getString(R.string.Menu_HideOff)
+		return mConfig.showOffline ? getString(R.string.Menu_HideOff)
 				: getString(R.string.Menu_ShowOff);
 	}
 
 	public StatusMode getStatusMode() {
-		return mStatusMode;
+		return StatusMode.fromString(mConfig.statusMode);
 	}
 
 	public String getStatusMessage() {
-		return mStatusMessage;
+		return mConfig.statusMessage;
 	}
 
 	public int getAccountPriority() {
@@ -562,9 +554,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
-		setStatus(statusMode, message);
-
-
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
 		// do not save "offline" to prefs, or else!
@@ -573,6 +562,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.putString(PreferenceConstants.PRIORITY, String.valueOf(priority));
 		prefedit.commit();
+
+		displayOwnStatus();
 
 		// check if we are connected and want to go offline
 		boolean needToDisconnect = (statusMode == StatusMode.offline) && isConnected();
@@ -586,17 +577,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 			serviceAdapter.setStatusFromConfig();
 	}
 
-	private void setStatus(StatusMode statusMode, String message) {
-		mStatusMode = statusMode;
-		mStatusMessage = message;
-
+	private void displayOwnStatus() {
 		// This and many other things like it should be done with observer
 		actionBar.setIcon(getStatusActionIcon());
 
-		if (mStatusMessage.equals("")) {
+		if (mConfig.statusMessage.equals("")) {
 			actionBar.setSubtitle(null);
 		} else {
-			actionBar.setSubtitle(mStatusMessage);
+			actionBar.setSubtitle(mConfig.statusMessage);
 		}
 	}
 
@@ -656,7 +644,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case R.id.menu_show_hide:
-			setOfflinceContactsVisibility(!showOffline);
+			setOfflinceContactsVisibility(!mConfig.showOffline);
 			updateRoster();
 			return true;
 
@@ -689,11 +677,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 	/** Sets if all contacts are shown in the roster or online contacts only. */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 	private void setOfflinceContactsVisibility(boolean showOffline) {
-		this.showOffline = showOffline;
-		invalidateOptionsMenu();
-
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
+		invalidateOptionsMenu();
 	}
 
 	@Override
@@ -716,6 +702,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private void updateConnectionState(ConnectionState cs) {
 		Log.d(TAG, "updateConnectionState: " + cs);
+		displayOwnStatus();
 		boolean spinTheSpinner = false;
 		switch (cs) {
 		case CONNECTING:
@@ -887,14 +874,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
-	private void getPreferences(SharedPreferences prefs) {
-		showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, true);
-
-		setStatus(StatusMode.fromString(prefs.getString(
-				PreferenceConstants.STATUS_MODE, StatusMode.available.name())),
-				prefs.getString(PreferenceConstants.STATUS_MESSAGE, ""));
-	}
-
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, MainWindow.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1002,7 +981,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		public void requery() {
 			String selectWhere = null;
-			if (!showOffline)
+			if (!mConfig.showOffline)
 				selectWhere = OFFLINE_EXCLUSION;
 			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI,
 					GROUPS_QUERY_COUNTED, selectWhere, null, RosterConstants.GROUP);
@@ -1018,7 +997,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String groupname = groupCursor.getString(idx);
 
 			String selectWhere = RosterConstants.GROUP + " = ?";
-			if (!showOffline)
+			if (!mConfig.showOffline)
 				selectWhere += " AND " + OFFLINE_EXCLUSION;
 			return getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
 				selectWhere, new String[] { groupname }, null);
