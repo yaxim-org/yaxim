@@ -273,6 +273,8 @@ public class SmackableImp implements Smackable {
 				// TODO: cancel timer
 			case RECONNECT_NETWORK:
 			case OFFLINE:
+				// update state before starting thread to prevent race conditions
+				updateConnectionState(ConnectionState.CONNECTING);
 				new Thread() {
 					@Override
 					public void run() {
@@ -299,10 +301,11 @@ public class SmackableImp implements Smackable {
 		case DISCONNECTED:
 			// spawn thread to do disconnect
 			if (mState == ConnectionState.ONLINE) {
+				// update state before starting thread to prevent race conditions
+				updateConnectionState(ConnectionState.DISCONNECTING);
 				new Thread() {
 					public void run() {
 						updateConnectingThread(this);
-						updateConnectionState(ConnectionState.DISCONNECTING);
 						mXMPPConnection.quickShutdown();
 						finishConnectingThread();
 						//updateConnectionState(ConnectionState.OFFLINE);
@@ -314,11 +317,12 @@ public class SmackableImp implements Smackable {
 			switch (mState) {
 			case CONNECTING:
 			case ONLINE:
+				// update state before starting thread to prevent race conditions
+				updateConnectionState(ConnectionState.DISCONNECTING);
 				// spawn thread to do disconnect
 				new Thread() {
 					public void run() {
 						updateConnectingThread(this);
-						updateConnectionState(ConnectionState.DISCONNECTING);
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
 						finishConnectingThread();
