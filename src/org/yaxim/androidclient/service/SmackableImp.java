@@ -418,7 +418,6 @@ public class SmackableImp implements Smackable {
 
 	public void renameRosterItem(String user, String newName)
 			throws YaximXMPPException {
-		mRoster = mXMPPConnection.getRoster();
 		RosterEntry rosterEntry = mRoster.getEntry(user);
 
 		if (!(newName.length() > 0) || (rosterEntry == null)) {
@@ -428,12 +427,10 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void addRosterGroup(String group) {
-		mRoster = mXMPPConnection.getRoster();
 		mRoster.createGroup(group);
 	}
 
 	public void renameRosterGroup(String group, String newGroup) {
-		mRoster = mXMPPConnection.getRoster();
 		RosterGroup groupToRename = mRoster.getGroup(group);
 		groupToRename.setName(newGroup);
 	}
@@ -527,7 +524,6 @@ public class SmackableImp implements Smackable {
 	private void tryToMoveRosterEntryToGroup(String userName, String groupName)
 			throws YaximXMPPException {
 
-		mRoster = mXMPPConnection.getRoster();
 		RosterGroup rosterGroup = getRosterGroup(groupName);
 		RosterEntry rosterEntry = mRoster.getEntry(userName);
 
@@ -574,7 +570,6 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void tryToRemoveRosterEntry(String user) throws YaximXMPPException {
-		mRoster = mXMPPConnection.getRoster();
 		try {
 			RosterEntry rosterEntry = mRoster.getEntry(user);
 
@@ -588,7 +583,6 @@ public class SmackableImp implements Smackable {
 
 	private void tryToAddRosterEntry(String user, String alias, String group)
 			throws YaximXMPPException {
-		mRoster = mXMPPConnection.getRoster();
 		try {
 			mRoster.createEntry(user, alias, new String[] { group });
 		} catch (XMPPException e) {
@@ -598,7 +592,6 @@ public class SmackableImp implements Smackable {
 
 	private void removeOldRosterEntries() {
 		Log.d(TAG, "removeOldRosterEntries()");
-		mRoster = mXMPPConnection.getRoster();
 		Collection<RosterEntry> rosterEntries = mRoster.getEntries();
 		StringBuilder exclusion = new StringBuilder(RosterConstants.JID + " NOT IN (");
 		boolean first = true;
