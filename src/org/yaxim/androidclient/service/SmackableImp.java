@@ -38,6 +38,7 @@ import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
+import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
@@ -102,6 +103,7 @@ public class SmackableImp implements Smackable {
 		ProviderManager pm = ProviderManager.getInstance();
 		// add IQ handling
 		pm.addIQProvider("query","http://jabber.org/protocol/disco#info", new DiscoverInfoProvider());
+		pm.addIQProvider("query","http://jabber.org/protocol/disco#items", new DiscoverItemsProvider());
 		// add delayed delivery notifications
 		pm.addExtensionProvider("delay","urn:xmpp:delay", new DelayInfoProvider());
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
