@@ -342,6 +342,26 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	void rosterAddRequestedDialog(final String jid, String message) {
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.subscriptionRequest_title)
+			.setMessage(getString(R.string.subscriptionRequest_text, jid, message))
+			.setPositiveButton(android.R.string.yes,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							serviceAdapter.sendPresenceRequest(jid, "subscribed");
+							addToRosterDialog(jid);
+						}
+					})
+			.setNegativeButton(android.R.string.no, 
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							serviceAdapter.sendPresenceRequest(jid, "unsubscribed");
+						}
+					})
+			.create().show();
+	}
+
 	abstract class EditOk {
 		abstract public void ok(String result);
 	}
@@ -687,15 +707,22 @@ public class MainWindow extends SherlockExpandableListActivity {
 			int groupPosition, int childPosition, long id) {
 
 		long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
-		String userJid = getPackedItemRow(packedPosition, RosterConstants.JID);
-		String userName = getPackedItemRow(packedPosition, RosterConstants.ALIAS);
+		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(getExpandableListView().getFlatListPosition(packedPosition));
+		String userJid = c.getString(c.getColumnIndexOrThrow(RosterConstants.JID));
+		String userName = c.getString(c.getColumnIndexOrThrow(RosterConstants.ALIAS));
 		Intent i = getIntent();
 		if (i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
 			// delegate ACTION_SEND to child window and close self
 			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
 			finish();
-		} else
-			startChatActivity(userJid, userName, null);
+		} else {
+			StatusMode s = StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
+			if (s == StatusMode.subscribe)
+				rosterAddRequestedDialog(userJid,
+					c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE)));
+			else
+				startChatActivity(userJid, userName, null);
+		}
 
 		return true;
 	}

@@ -167,6 +167,8 @@
 	<string name="deleteRosterItem_title">Delete Contact</string>
 	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Delete Chat History</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Me:</string>
