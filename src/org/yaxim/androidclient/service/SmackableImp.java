@@ -1071,6 +1071,8 @@ public class SmackableImp implements Smackable {
 	}
 
 	private StatusMode getStatus(Presence presence) {
+		if (presence.getType() == Presence.Type.subscribe)
+			return StatusMode.subscribe;
 		if (presence.getType() == Presence.Type.available) {
 			if (presence.getMode() != null) {
 				return StatusMode.valueOf(presence.getMode().name());
