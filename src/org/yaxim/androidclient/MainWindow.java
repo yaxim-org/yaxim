@@ -239,12 +239,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				}
 			}
 			// did not find in roster, try to add
-			if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
-				new AddRosterItemDialog(this, serviceAdapter, jid).show();
-			} else {
-				showToastNotification(R.string.Global_authenticate_first);
-				finish();
-			}
+			addToRosterDialog(jid);
 		}
 	}
 
@@ -336,6 +331,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 					})
 			.setNegativeButton(android.R.string.no, null)
 			.create().show();
+	}
+
+	void addToRosterDialog(String jid) {
+		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
+			new AddRosterItemDialog(this, serviceAdapter, jid).show();
+		} else {
+			showToastNotification(R.string.Global_authenticate_first);
+			finish();
+		}
 	}
 
 	abstract class EditOk {
@@ -636,11 +640,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case R.id.menu_add_friend:
-			if (serviceAdapter.isAuthenticated()) {
-				new AddRosterItemDialog(this, serviceAdapter).show();
-			} else {
-				showToastNotification(R.string.Global_authenticate_first);
-			}
+			addToRosterDialog(null);
 			return true;
 
 		case R.id.menu_show_hide:
