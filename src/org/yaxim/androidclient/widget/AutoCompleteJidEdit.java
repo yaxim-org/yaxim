@@ -18,10 +18,10 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 	private String userpart = null;
 	private ArrayAdapter<String> mServerAdapter;
 	ForegroundColorSpan span;
+	TextWatcher jtw;
 
 	public AutoCompleteJidEdit(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
-		addTextChangedListener(new JidTextWatcher());
 		servers = getResources().getStringArray(R.array.xmpp_servers); // XXX hard-coded array reference
 		mServerAdapter = new ArrayAdapter<String>(ctx,
 				android.R.layout.simple_dropdown_item_1line,
@@ -29,6 +29,13 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 		setAdapter(mServerAdapter);
 		span = new ForegroundColorSpan(getCurrentHintTextColor());
 		setThreshold(3);
+	}
+
+	protected void onAttachedToWindow() {
+		if (jtw == null) {
+			jtw = new JidTextWatcher();
+			addTextChangedListener(jtw);
+		}
 	}
 
 	boolean auto_appended = false;
