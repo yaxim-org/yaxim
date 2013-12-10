@@ -326,6 +326,9 @@ public class SmackableImp implements Smackable {
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
 						finishConnectingThread();
+						// reconnect if it was requested in the meantime
+						if (mRequestedState == ConnectionState.ONLINE)
+							requestConnectionState(ConnectionState.ONLINE);
 					}
 				}.start();
 				break;
@@ -610,8 +613,8 @@ public class SmackableImp implements Smackable {
 
 
 	public void setStatusFromConfig() {
-		if (mConfig.messageCarbons)
-			CarbonManager.getInstanceFor(mXMPPConnection).sendCarbonsEnabled(true);
+		// TODO: only call this when carbons changed, not on every presence change
+		CarbonManager.getInstanceFor(mXMPPConnection).sendCarbonsEnabled(mConfig.messageCarbons);
 
 		Presence presence = new Presence(Presence.Type.available);
 		Mode mode = Mode.valueOf(mConfig.statusMode);
@@ -619,6 +622,7 @@ public class SmackableImp implements Smackable {
 		presence.setStatus(mConfig.statusMessage);
 		presence.setPriority(mConfig.priority);
 		mXMPPConnection.sendPacket(presence);
+		mConfig.presence_required = false;
 	}
 
 	public void sendOfflineMessages() {

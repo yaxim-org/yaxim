@@ -10,11 +10,31 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "yaxim.Configuration";
 
 	private static final String GMAIL_SERVER = "talk.google.com";
+
+	private static final HashSet<String> RECONNECT_PREFS = new HashSet<String>(Arrays.asList(
+				PreferenceConstants.JID,
+				PreferenceConstants.PASSWORD,
+				PreferenceConstants.CUSTOM_SERVER,
+				PreferenceConstants.PORT,
+				PreferenceConstants.RESSOURCE,
+				PreferenceConstants.FOREGROUND,
+				PreferenceConstants.REQUIRE_SSL,
+				PreferenceConstants.SMACKDEBUG
+			));
+	private static final HashSet<String> PRESENCE_PREFS = new HashSet<String>(Arrays.asList(
+				PreferenceConstants.MESSAGE_CARBONS,
+				PreferenceConstants.PRIORITY,
+				PreferenceConstants.STATUS_MODE,
+				PreferenceConstants.STATUS_MESSAGE
+			));
 
 	public String password;
 	public String ressource;
@@ -44,6 +64,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
     public boolean showOffline;
 
     public boolean reconnect_required = false;
+    public boolean presence_required = false;
 
 	private final SharedPreferences prefs;
 
@@ -61,8 +82,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
 		loadPrefs(prefs);
-		if (key == PreferenceConstants.JID || key == PreferenceConstants.CUSTOM_SERVER)
+		if (RECONNECT_PREFS.contains(key))
 			reconnect_required = true;
+		if (PRESENCE_PREFS.contains(key))
+			presence_required = true;
 	}
 
 	private void splitAndSetJabberID(String jid) {

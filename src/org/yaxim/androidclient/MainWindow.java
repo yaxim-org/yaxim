@@ -778,8 +778,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 				Log.i(TAG, "getConnectionState(): "
 						+ serviceAdapter.getConnectionState());
 				invalidateOptionsMenu();	// to load the action bar contents on time for access to icons/progressbar
-				actionBar.setIcon(getStatusActionIcon());	// refresh on orientation change
-				updateConnectionState(serviceAdapter.getConnectionState());
+				ConnectionState cs = serviceAdapter.getConnectionState();
+				updateConnectionState(cs);
+
+				// when returning from prefs to main activity, apply new config
+				if (mConfig.reconnect_required && cs == ConnectionState.ONLINE) {
+					// login config changed, force reconnection
+					serviceAdapter.disconnect();
+					serviceAdapter.connect();
+				} else if (mConfig.presence_required)
+					serviceAdapter.setStatusFromConfig();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
