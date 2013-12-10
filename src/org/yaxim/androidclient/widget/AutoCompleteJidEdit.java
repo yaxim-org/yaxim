@@ -2,6 +2,8 @@ package org.yaxim.androidclient.widget;
 
 import org.yaxim.androidclient.R;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.text.Editable;
@@ -22,7 +24,8 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 		addTextChangedListener(new JidTextWatcher());
 		servers = getResources().getStringArray(R.array.xmpp_servers); // XXX hard-coded array reference
 		mServerAdapter = new ArrayAdapter<String>(ctx,
-				android.R.layout.simple_dropdown_item_1line, new String[0]);
+				android.R.layout.simple_dropdown_item_1line,
+				new ArrayList<String>(servers.length));
 		setAdapter(mServerAdapter);
 		span = new ForegroundColorSpan(getCurrentHintTextColor());
 		setThreshold(3);
