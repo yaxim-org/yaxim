@@ -144,6 +144,7 @@ public class SmackableImp implements Smackable {
 	private Roster mRoster;
 	private RosterListener mRosterListener;
 	private PacketListener mPacketListener;
+	private PacketListener mPresenceListener;
 	private ConnectionListener mConnectionListener;
 
 	private final ContentResolver mContentResolver;
@@ -220,6 +221,7 @@ public class SmackableImp implements Smackable {
 		// been thrown.
 		if (isAuthenticated()) {
 			registerMessageListener();
+			registerPresenceListener();
 			registerPongListener();
 			sendOfflineMessages();
 			// we need to "ping" the service to let it know we are actually
@@ -444,6 +446,9 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void sendPresenceRequest(String user, String type) {
+		// HACK: remove the fake roster entry added by handleIncomingSubscribe()
+		if ("unsubscribed".equals(type))
+			deleteRosterEntryFromDB(user);
 		Presence response = new Presence(Presence.Type.valueOf(type));
 		response.setTo(user);
 		mXMPPConnection.sendPacket(response);
@@ -577,6 +582,11 @@ public class SmackableImp implements Smackable {
 			RosterEntry rosterEntry = mRoster.getEntry(user);
 
 			if (rosterEntry != null) {
+				// first, unsubscribe the user
+				Presence unsub = new Presence(Presence.Type.unsubscribed);
+				unsub.setTo(rosterEntry.getUser());
+				mXMPPConnection.sendPacket(unsub);
+				// then, remove from roster
 				mRoster.removeEntry(rosterEntry);
 			}
 		} catch (XMPPException e) {
@@ -611,6 +621,20 @@ public class SmackableImp implements Smackable {
 		Log.d(TAG, "deleted " + count + " old roster entries");
 	}
 
+	// HACK: add an incoming subscription request as a fake roster entry
+	private void handleIncomingSubscribe(Presence request) {
+		final ContentValues values = new ContentValues();
+
+		values.put(RosterConstants.JID, request.getFrom());
+		values.put(RosterConstants.ALIAS, request.getFrom());
+		values.put(RosterConstants.GROUP, "");
+
+		values.put(RosterConstants.STATUS_MODE, getStatusInt(request));
+		values.put(RosterConstants.STATUS_MESSAGE, request.getStatus());
+		
+		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
+		debugLog("handleIncomingSubscribe: faked " + uri);
+	}
 
 	public void setStatusFromConfig() {
 		// TODO: only call this when carbons changed, not on every presence change
@@ -717,6 +741,7 @@ public class SmackableImp implements Smackable {
 		try {
 			mXMPPConnection.getRoster().removeRosterListener(mRosterListener);
 			mXMPPConnection.removePacketListener(mPacketListener);
+			mXMPPConnection.removePacketListener(mPresenceListener);
 
 			mXMPPConnection.removePacketListener(mPongListener);
 			unregisterPongListener();
@@ -748,6 +773,8 @@ public class SmackableImp implements Smackable {
 	private void registerRosterListener() {
 		// flush roster on connecting.
 		mRoster = mXMPPConnection.getRoster();
+		mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
+
 		if (mRosterListener != null)
 			mRoster.removeRosterListener(mRosterListener);
 
@@ -1001,6 +1028,33 @@ public class SmackableImp implements Smackable {
 		};
 
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
+	}
+
+	private void registerPresenceListener() {
+		// do not register multiple packet listeners
+		if (mPresenceListener != null)
+			mXMPPConnection.removePacketListener(mPresenceListener);
+
+		mPresenceListener = new PacketListener() {
+			public void processPacket(Packet packet) {
+				try {
+					Presence p = (Presence) packet;
+					switch (p.getType()) {
+					case subscribe:
+						handleIncomingSubscribe(p);
+						break;
+					case unsubscribe:
+						break;
+					}
+				} catch (Exception e) {
+					// SMACK silently discards exceptions dropped from processPacket :(
+					Log.e(TAG, "failed to process presence:");
+					e.printStackTrace();
+				}
+			}
+		};
+
+		mXMPPConnection.addPacketListener(mPresenceListener, new PacketTypeFilter(Presence.class));
 	}
 
 	private void addChatMessageToDB(int direction, String JID,
