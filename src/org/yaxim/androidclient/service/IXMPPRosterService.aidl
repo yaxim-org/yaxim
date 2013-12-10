@@ -20,7 +20,7 @@ interface IXMPPRosterService {
 	void addRosterGroup(String group);
 	void renameRosterGroup(String group, String newGroup);
 	void removeRosterItem(String user);
-	void requestAuthorizationForRosterItem(String user);
+	void sendPresenceRequest(String user, String type);
 	void renameRosterItem(String user, String newName);
 	void moveRosterItemToGroup(String user, String group);
 	

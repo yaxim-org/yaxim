@@ -269,10 +269,11 @@ public class XMPPService extends GenericService {
 				doConnect();
 			}
 
-			public void requestAuthorizationForRosterItem(String user)
+			public void sendPresenceRequest(String jid, String type)
 					throws RemoteException {
-				mSmackable.requestAuthorizationForRosterItem(user);
+				mSmackable.sendPresenceRequest(jid, type);
 			}
+
 		};
 	}
 

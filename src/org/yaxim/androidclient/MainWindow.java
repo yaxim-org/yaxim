@@ -450,7 +450,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			case R.id.roster_contextmenu_contact_request_auth:
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-				serviceAdapter.requestAuthorizationForRosterItem(userJid);
+				serviceAdapter.sendPresenceRequest(userJid, "subscribe");
 				return true;
 
 			case R.id.roster_contextmenu_contact_change_group:

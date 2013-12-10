@@ -443,8 +443,8 @@ public class SmackableImp implements Smackable {
 		tryToMoveRosterEntryToGroup(user, group);
 	}
 
-	public void requestAuthorizationForRosterItem(String user) {
-		Presence response = new Presence(Presence.Type.subscribe);
+	public void sendPresenceRequest(String user, String type) {
+		Presence response = new Presence(Presence.Type.valueOf(type));
 		response.setTo(user);
 		mXMPPConnection.sendPacket(response);
 	}

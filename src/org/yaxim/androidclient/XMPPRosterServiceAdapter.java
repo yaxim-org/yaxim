@@ -132,14 +132,11 @@ public class XMPPRosterServiceAdapter {
 		return getConnectionState() == ConnectionState.ONLINE;
 	}
 
-	public void requestAuthorizationForRosterItem(String user) {
+	public void sendPresenceRequest(String user, String type) {
 		try {
-			xmppServiceStub.requestAuthorizationForRosterItem(user);
+			xmppServiceStub.sendPresenceRequest(user, type);
 		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 	}
-
 }

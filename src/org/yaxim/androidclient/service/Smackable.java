@@ -17,7 +17,7 @@ public interface Smackable {
 	void renameRosterItem(String user, String newName) throws YaximXMPPException;
 	void moveRosterItemToGroup(String user, String group) throws YaximXMPPException;
 	void renameRosterGroup(String group, String newGroup);
-	void requestAuthorizationForRosterItem(String user);
+	void sendPresenceRequest(String user, String type);
 	void addRosterGroup(String group);
 	
 	void setStatusFromConfig();
