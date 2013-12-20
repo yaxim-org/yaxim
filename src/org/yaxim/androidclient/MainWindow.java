@@ -813,7 +813,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 					// login config changed, force reconnection
 					serviceAdapter.disconnect();
 					serviceAdapter.connect();
-				} else if (mConfig.presence_required)
+				} else if (mConfig.presence_required && isConnected())
 					serviceAdapter.setStatusFromConfig();
 			}
 
