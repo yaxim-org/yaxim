@@ -153,8 +153,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
         this.showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, false);
 
 		try {
-			XMPPHelper.verifyJabberID(jabberID);
-			splitAndSetJabberID(jabberID);
+			splitAndSetJabberID(XMPPHelper.verifyJabberID(jabberID));
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}

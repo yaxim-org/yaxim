@@ -79,7 +79,13 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 	private void verifyAndSavePreferences() {
 		String password = mEditPassword.getText().toString();
-		String jabberID = mEditJabberID.getText().toString();
+		String jabberID;
+		try {
+			jabberID = XMPPHelper.verifyJabberID(mEditJabberID.getText());
+		} catch (YaximXMPPAdressMalformedException e) {
+			e.printStackTrace();
+			jabberID = mEditJabberID.getText().toString();
+		}
 		String resource = String.format("%s.%08X",
 			mainWindow.getString(R.string.app_name),
 			new java.util.Random().nextInt());

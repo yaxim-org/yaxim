@@ -73,8 +73,16 @@ public class AddRosterItemDialog extends AlertDialog implements
 		String alias = aliasInputField.getText().toString();
 		if (alias.length() == 0)
 			alias = generatedAlias;
-		mServiceAdapter.addRosterItem(userInputField.getText()
-				.toString(), alias,
+		String realJid;
+		try {
+			realJid = XMPPHelper.verifyJabberID(userInputField.getText());
+		} catch (YaximXMPPAdressMalformedException e) {
+			e.printStackTrace();
+			return;
+		}
+		mServiceAdapter.addRosterItem(
+				realJid,
+				alias,
 				mGroupNameView.getGroupName());
 	}
 
@@ -98,12 +106,6 @@ public class AddRosterItemDialog extends AlertDialog implements
 	}
 
 	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
-
-	}
-
-	public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-	}
-
+			int after) {}
+	public void onTextChanged(CharSequence s, int start, int before, int count) {}
 }
