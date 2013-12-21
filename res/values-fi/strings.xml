@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Tumma</item>
 		<item>Vaalea</item>
+		<item>Mänty</item>
+		<item>Jää</item>
 	</string-array>
 	<string name="preftitle_ui">Ulkoasu</string>
 	<string-array name="fontSizesChat">

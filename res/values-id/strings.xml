@@ -82,6 +82,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Gelap</item>
 		<item>Terang</item>
+		<item>Pine</item>
+		<item>Es</item>
 	</string-array>
 	<string name="preftitle_ui">Tampilan</string>
 	<string-array name="fontSizesChat">
