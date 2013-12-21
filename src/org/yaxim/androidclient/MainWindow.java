@@ -239,7 +239,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 				}
 			}
 			// did not find in roster, try to add
-			addToRosterDialog(jid);
+			if (!addToRosterDialog(jid))
+				finish();
 		}
 	}
 
@@ -333,12 +334,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.create().show();
 	}
 
-	void addToRosterDialog(String jid) {
+	boolean addToRosterDialog(String jid) {
 		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
 			new AddRosterItemDialog(this, serviceAdapter, jid).show();
+			return true;
 		} else {
 			showToastNotification(R.string.Global_authenticate_first);
-			finish();
+			return false;
 		}
 	}
 
