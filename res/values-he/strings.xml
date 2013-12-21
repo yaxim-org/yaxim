@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">כעת מתחבר לשרת…</string>
+	<string name="conn_online">מקוון</string>
+	<string name="conn_offline">לא מקוון</string>
+	<string name="conn_empty_roster">אין אנשי קשר להצגה!</string>
+	<string name="conn_reconnect">התחברות מחדש בתוך %d שניות.</string>
+	<string name="conn_disconnected">חיבור נסגר</string>
+	<string name="conn_networkchg">רשת השתנתה</string>
+	<string name="conn_no_network">אין חיבור רשת</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">יציאה</string>
+	<string name="Global_authenticate_first">אנא התחבר תחילה</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">בדוק צורת כתובת!</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">ברוך בואך אל yaxim!</string>
+	<string name="StartupDialog_Summary">עליך להגדיר את yaxim טרם תעמוד לך האפשרות להפיק ממנה תועלת. יש להזין מזהה Jabber וסיסמה.</string>
+	<string name="StartupDialog_pwHint">הזן סיסמה</string>
+	<string name="StartupDialog_Username_title">מזהה Jabber:</string>
+	<string name="StartupDialog_passwd_title">ססמה:</string>
+	<string name="StartupDialog_advanced">מתקדם…</string>
+	<string name="StartupDialog_create_new">צור חשבון חדש</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">הודעה מאת %s</string>
+	<string name="notification_anonymous_message">הודעה התקבלה</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">התרעת הודעה</string>
+	<string name="led_title">LED מהבהב</string>
+	<string name="led_summ">הבהב טלפון LED בהודעות נכנסות</string>
+	<string name="vibr_title">רטט</string>
+	<string name="vibr_summ">הרטט בהודעות נכנסות</string>
+	<string-array name="vibr_values_displayed">
+		<item>אף פעם</item>
+		<item>העדפת מערכת</item>
+		<item>תמיד</item>
+	</string-array>
+	<string name="ringtone_title">צלצול</string>
+	<string name="ringtone_summ">צליל להודעות נכנסות</string>
+	<string name="ticker_title">תצוגת הודעה</string>
+	<string name="ticker_summ">הצג ממען והודעה בתוך שורת מצב</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">אפשרויות הפעלה</string>
+	<string name="statuspopup_name">קבע מצב</string>
+	<string name="showOffline_summ">הצג תמיד את כל אנשי הקשר בתוך הרשימה</string>
+	<string name="showOffline_title">הצג אנשי קשר לא מקוונים</string>
+	<string name="foregroundService_summ">השאר את yaxim כדי להבטיח חיבור תמידי (שירות קדמה)</string>
+	<string name="foregroundService_title">צלמית שורת מצב</string>
+
+	<string name="preftitle_debug">דיבאג</string>
+	<string name="smackdebug_summ">פלט חבילת מידע ודיבאג מבעד logcat (יכול להכיל מידע אישי)</string>
+	<string name="smackdebug_title">SMACK דיבאג</string>
+
+	<string name="reportcrash_title">שילחו דיווחי קריסה</string>
+	<string name="reportcrash_summ">שילחו דיווחי קריסה אלמוניים למפתח</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">מראה</string>
+	<string name="FontChat_title">גודל גופן שיחה</string>
+	<string name="FontChat_summ">קבע גודל גופן שיחה</string>
+	<string name="FontChat_dialog">גודל גופן שיחה</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">מוטיב</string>
+	<string-array name="pref_theme_entries">
+		<item>כהה</item>
+		<item>בהיר</item>
+	</string-array>
+	<string name="preftitle_ui">מראה</string>
+	<string-array name="fontSizesChat">
+		<item>קטן</item>
+		<item>רגיל</item>
+		<item>גדול</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">הוסף איש קשר</string>
+	<string name="Menu_ShowOff">הצג לא מקוונים</string>
+	<string name="Menu_HideOff">הסתר לא מקוונים</string>
+	<string name="Menu_AccSettings">ערוך חשבון</string>
+	<string name="Menu_Settings">הגדרות</string>
+	<string name="Menu_Status">מצב</string>
+	<string name="Menu_connect">התחבר</string>
+	<string name="Menu_disconnect">התנתק</string>
+	<string name="Menu_about">אודות yaxim</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">הוסף איש קשר</string>
+	<string name="addFriend_Summ">אנא הזן מזהה Jabber של חברך, שם תצוגה נחשק וכן בחר את קבוצת הקשר שלהם!</string>
+	<string name="addFriend_aliasHint">שם תצוגה</string>
+	<string name="addrosteritemaddgroupchoice">הוסף לקבוצה חדשה</string>
+	<string name="NewGroup_EditTextField_Hint">שם לקבוצה החדשה</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">אפשרויות עבור %s</string>
+	<string name="roster_contextmenu_group_rename">שנה שם קבוצה</string>
+	<string name="roster_contextmenu_contact_delete">מחק איש קשר</string>
+	<string name="roster_contextmenu_contact_delmsg">מחק היסטוריית שיחה</string>
+	<string name="roster_contextmenu_contact_open_chat">פתח שיחה</string>
+	<string name="roster_contextmenu_contact_rename">שנה שם</string>
+	<string name="roster_contextmenu_contact_request_auth">בקש אימות</string>
+	<string name="roster_contextmenu_contact_change_group">שנה קבוצה</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">מידע התחברות</string>
+	<string name="account_settings_title">הגדרות חשבון</string>
+	<string name="account_options_title">אפשרויות חיבור</string>
+	<string name="account_options_advanced">אפשרויות מתקדמות</string>
+	<string name="connstartup_title">התחבר בעת הפעלה</string>
+	<string name="connstartup_summOn">הפוך למקוון כאשר yaxim מופעל</string>
+	<string name="connstartup_summOff">אל תתחבר אוטומטית</string>
+	<string name="carbons_title">הודעות העתק (XEP-0280)</string>
+	<string name="carbons_summ">בקש העתקי הודעה מהלקוח(ות) האחר(ים) שלך</string>
+	<string name="account_jabberID_title">מזהה Jabber</string>
+	<string name="account_jabberID_sum">דוגמא: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">הזן מזהה Jabber:</string>
+	<string name="account_jabberPW_title">סיסמת חשבון</string>
+	<string name="account_jabberPW_sum">סיסמת חשבון Jabber</string>
+	<string name="account_jabberPW_dialog_title">הזן סיסמה:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">משאב לקוח</string>
+	<string name="account_resource_summ">ברירת מחדל: yaxim</string>
+	<string name="account_resource_dialog_title">הזן משאב:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">עדיפות לקוח</string>
+	<string name="account_prio_summ">ברירת מחדל: 0 (מותרים: -128 .. 127)</string>
+	<string name="account_prio_error">ערכים מורשים: -128 .. 127</string>
+	<string name="account_prio_dialog_title">הזן עדיפות:</string>
+	<string name="account_port_title">פורט שרת</string>
+	<string name="account_port_sum">ברירת מחדל: 5222</string>
+	<string name="account_port_dialog_title">הזן פורט שרת:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">שרת מותאם אישית</string>
+	<string name="account_customserver_summ">(רשות) שם מארח שרת חלופי</string>
+	<string name="account_customserver_dialog_title">הזן שם מארח שרת:</string>
+	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">דרוש SSL/TLS</string>
+	<string name="require_ssl_summ">הצפן תמיד חיבור שרת</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">בחר קבוצה</string>
+	<string name="setStatusmsgHint">הודעת מצב</string>
+	<string name="setStatusTitle">קבע מצב</string>
+	<string name="RenameGroup_summ">שנה שם קבוצה %s אל:</string>
+	<string name="RenameGroup_title">שנה שם קבוצה</string>
+	<string name="RenameEntry_summ">שנה שם %1$s (%2$s) אל:</string>
+	<string name="RenameEntry_title">שנה שם איש קשר</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">בחר קבוצה מתוך הטווה מטה</string>
+	<string name="MoveRosterEntryToGroupDialog_title">שנה קבוצה</string>
+	<string name="deleteRosterItem_text">האם באמת להסיר %1$s ‏(%2$s)?</string>
+	<string name="deleteRosterItem_title">מחק איש קשר</string>
+	<string name="deleteChatHistory_text">האם באמת להסיר את כל ההודעות עם %1$s ‏(%2$s)?</string>
+	<string name="deleteChatHistory_title">מחק היסטוריית שיחה</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">אני:</string>
+	<string name="toast_connectfail_message">חיבור נסגר!</string>
+	<string name="toast_stored_offline">ההודעה אוחסנה לתמסורת.</string>
+	<string name="chat_enterMsgHint">הזן הודעה</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">שלח שנית</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">אודות yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">מפתחים</string>
+	<string name="AboutDialog_DevelopersText">צרו קשר עם המפתח באתר http://yaxim.org או ברשת IRC ‏freenode: ‏yaxim#</string>
+	<string name="AboutDialog_LicenceTitle">רישוי</string>
+	<string name="AboutDialog_Vote">העניקו משוב</string>
+	<string name="AboutDialog_LicenceText">תוכנית זו הינה תכנה חופשית; זכותכם להפיצה ו/או לשנותה בכפוף לתנאי הרשיון GNU General Public License גרסא 2 כפי שזה פורסם על ידי Free Software Foundation. קישור: http://www.gnu.org/licenses/gpl-2.0.html\n \n חלקים של תוכנה זו מסופקים תחת הרשיון MIT:\n \n זכויות יוצרים © 2009 Mads Kristiansen, Nullwire ApS\n \n רשות מוענקת בזאת, חינם אין כסף, לכל אדם אשר משיג עותק של תכנה זו וגם קבצי תיעוד מסונפים ("התכנה"), להתעסק בתכנה ללא הגבלה, לרבות ללא הגבלת הזכויות להשתמש, להעתיק, לשנות, למזג, לפרסם, להפיץ, להעניק רשיונות משניים, ו/או למכור עותקים של התכנה, וגם להתיר לאנשים אשר להם התוכנה מסופקת לעשות כן, כפופים ומוכנעים לתנאים שלהלן: \n הודעת זכויות יוצרים לעיל וכן הודעת היתר זו יוכללו בכל העותקים או בחלקים מהותיים של התכנה. \n התכנה הינה מסופקת "AS IS" (כמות שהיא), ללא כתב אחריות מכל סוג שהוא, בין אם באופן מפורש או בין אם באופן מרומז, כולל אך לא מוגבלת לחבויות של סחירות, התאמה לתכלית מסוימת וכן גם לא מפרה. בשום מקרה המחברים או המחזיקים בזכויות יוצרים לא יישאו באחריות עבור כל תובענה, נזקים או חבות אחרת, בין אם בתוך פעולה של הסכם, עוולה או אחרת, אשר עולה מן, מתוך או בנוגע לתכנה או לשימוש או דין ודברים אחרים בתכנה.</string>
+
+	<string name="status_available">מקוון</string>
+	<string name="status_away">נעדר</string>
+	<string name="status_chat">חופשי לשיחה</string>
+	<string name="status_dnd">לא להפריע</string>
+	<string name="status_xa">לא זמין</string>
+	<string name="status_offline">לא מקוון</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  GenghisKhan https://launchpad.net/~genghiskhan</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">כללית</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">בחר איש קשר</string>
+</resources>

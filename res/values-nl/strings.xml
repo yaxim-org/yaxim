@@ -8,14 +8,17 @@
 	<string name="conn_online">Aangemeld</string>
 	<string name="conn_offline">Afgemeld</string>
 	<string name="conn_empty_roster">Er zijn geen contacten om weer te geven!</string>
-	<string name="conn_reconnect">\nProbeer opnieuw te verbinden over %d seconden.</string>
+	<string name="conn_reconnect">Probeer opnieuw te verbinden over %d seconden.</string>
 	<string name="conn_disconnected">Verbinding verbroken</string>
 	<string name="conn_networkchg">Netwerk gewijzigd.</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Sluiten</string>
 	<string name="Global_authenticate_first">Maak a.u.b. eerst verbinding</string>
-	<string name="Global_JID_hint">gebruiker@jabber.voorbeeld.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welkom bij yaxim!</string>
@@ -120,10 +123,8 @@
 	<string name="connstartup_title">Verbinding maken bij opstarten</string>
 	<string name="connstartup_summOn">Ga online wanneer yaxim wordt geopend</string>
 	<string name="connstartup_summOff">Maak niet automatisch verbinding</string>
-	<string name="reconnect_title">Maak automatisch opnieuw verbinding</string>
-	<string name="reconnect_summ">Probeer opnieuw te verbinden wanneer de verbindinging verbroken wordt.</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="carbons_summ">Verzoek kopieën van uw berichten van de ontvanger(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">Voorbeeld: ik@jabber.voorbeeld.com</string>
 	<string name="account_jabberID_dialog_title">Voer uw Jabber ID in:</string>
@@ -132,21 +133,22 @@
 	<string name="account_jabberPW_dialog_title">Voer wachtwoord in:</string>
 
 	<!-- accountprefs -->
-	<string name="account_resource_title">Client Resource</string>
-	<string name="account_resource_summ">Default: yaxim</string>
-	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_title">Client Bron</string>
+	<string name="account_resource_summ">Standaard: yaxim</string>
+	<string name="account_resource_dialog_title">Vul bron in:</string>
 	<string name="account_resource_hint">yaxim</string>
-	<string name="account_prio_title">Client Priority</string>
+	<string name="account_prio_title">Client prioriteit</string>
 	<string name="account_prio_summ">Standaard: 0</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Voer uw prioriteit in:</string>
 	<string name="account_port_title">Server Poort</string>
 	<string name="account_port_sum">Standaard: 5222</string>
 	<string name="account_port_dialog_title">Voer de server poort in:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Aangepaste Server</string>
-	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
+	<string name="account_customserver_summ">(Optioneel) alternatief domein</string>
 	<string name="account_customserver_dialog_title">Voer server hostnaam in:</string>
-	<string name="account_customserver_hint">host.example.com</string>
+	<string name="account_customserver_hint">host.voorbeeld.com</string>
 	<string name="require_ssl_title">SSL/TLS Vereist</string>
 	<string name="require_ssl_summ">Altijd de serververbinding versleutelen</string>
 
@@ -156,14 +158,16 @@
 	<string name="setStatusTitle">Stel uw status in</string>
 	<string name="RenameGroup_summ">Groep %s hernoemen naar:</string>
 	<string name="RenameGroup_title">Groep hernoemen</string>
-	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
+	<string name="RenameEntry_summ">Hernoem  %1$s (%2$s) naar:</string>
 	<string name="RenameEntry_title">Contact hernoemen</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Selecteer een groep van de spinner beneden</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Groep wijzigen</string>
-	<string name="deleteRosterItem_text">Really remove %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_text">Weet u zeker dat u %1$s (%2$s) wilt verwijderen?</string>
 	<string name="deleteRosterItem_title">Contactpersoon verwijderen</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_text">Weet u zeker dat u alle berichten met %1$s (%2$s) wilt verwijderen?</string>
 	<string name="deleteChatHistory_title">Bericht geschiedenis verwijderen</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ik:</string>
@@ -172,7 +176,7 @@
 	<string name="chat_enterMsgHint">Bericht invoeren</string> 
 
 	<!-- Chat menu -->
-	<string name="chatmenu_resend">Resend</string>
+	<string name="chatmenu_resend">Opnieuw verzenden</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -250,7 +254,7 @@
 
 	<string name="status_available">Aangemeld</string>
 	<string name="status_away">Afwezig</string>
-	<string name="status_chat">Free for chat</string>
+	<string name="status_chat">Beschikbaar om te chatten</string>
 	<string name="status_dnd">Niet storen</string>
 	<string name="status_xa">Niet beschikbaar</string>
 	<string name="status_offline">Afgemeld</string>
@@ -258,11 +262,12 @@
 	<string name="translator_credits">Launchpad Contributions:
   Barry Zoot https://launchpad.net/~barryzoot
   Jeroen Tietema https://launchpad.net/~jtietema
-  NightWhistler https://launchpad.net/~0k53dmx9cig8-alex-f830mk0e7z07</string>
+  NightWhistler https://launchpad.net/~0k53dmx9cig8-alex-f830mk0e7z07
+  sinezi https://launchpad.net/~degeneloy</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
+	<string name="default_group">Algemeen</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Kies contact</string>
 </resources>

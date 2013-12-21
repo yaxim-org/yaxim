@@ -4,17 +4,17 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Sunucuya bağlanılıyor…</string>
-	<string name="conn_online">Çevirimiçi</string>
-	<string name="conn_offline">Çevrimdışı</string>
+	<string name="conn_connecting">Connecting to server…</string>
+	<string name="conn_online">Online</string>
+	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_reconnect">Reconnect in %d seconds.</string>
-	<string name="conn_disconnected">Connection closed</string>
+	<string name="conn_disconnected">Veza je prekinuta</string>
 	<string name="conn_networkchg">Network changed</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Exit">Çıkış</string>
+	<string name="Global_Exit">Exit</string>
 	<string name="Global_authenticate_first">Please connect first</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
@@ -23,9 +23,9 @@
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
-	<string name="StartupDialog_pwHint">Parola girin</string>
+	<string name="StartupDialog_pwHint">Enter password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
-	<string name="StartupDialog_passwd_title">Parola:</string>
+	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_advanced">Advanced…</string>
 	<string name="StartupDialog_create_new">Register new account</string>
 
@@ -34,17 +34,17 @@
 	<string name="notification_anonymous_message">Message received</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Mesaj Uyarısı</string>
+	<string name="preftitle_notify">Message Notification</string>
 	<string name="led_title">Blinking LED</string>
 	<string name="led_summ">Blink phone LED on incoming messages</string>
-	<string name="vibr_title">Titreşim</string>
+	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Vibrate on incoming messages</string>
 	<string-array name="vibr_values_displayed">
 		<item>Never</item>
 		<item>System preference</item>
 		<item>Always</item>
 	</string-array>
-	<string name="ringtone_title">Melodi</string>
+	<string name="ringtone_title">Ringtone</string>
 	<string name="ringtone_summ">Tone for incoming messages</string>
 	<string name="ticker_title">Message preview</string>
 	<string name="ticker_summ">Show sender and message in status bar</string>
@@ -253,16 +253,15 @@
 		SOFTWARE.
     </string>
 
-	<string name="status_available">Çevirimiçi</string>
+	<string name="status_available">Online</string>
 	<string name="status_away">Away</string>
 	<string name="status_chat">Free for chat</string>
 	<string name="status_dnd">Do not disturb</string>
 	<string name="status_xa">Not available</string>
-	<string name="status_offline">Çevrimdışı</string>
+	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Georg Lukas https://launchpad.net/~ge0rg
-  zeugma https://launchpad.net/~sunder67</string>
+  freedomrun https://launchpad.net/~freedomrun</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>

@@ -3,55 +3,55 @@
 	<string name="app_name">yaxim</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Sunucuya bağlanılıyor…</string>
-	<string name="conn_online">Çevirimiçi</string>
-	<string name="conn_offline">Çevrimdışı</string>
-	<string name="conn_empty_roster">No contacts to show!</string>
-	<string name="conn_reconnect">Reconnect in %d seconds.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_title">Status sambungan</string>
+	<string name="conn_connecting">Menghubungi erver</string>
+	<string name="conn_online">Tersambung</string>
+	<string name="conn_offline">Terputus</string>
+	<string name="conn_empty_roster">Tidak ada daftar alamat</string>
+	<string name="conn_reconnect">Mencoba lagi dalam %d detik</string>
+	<string name="conn_disconnected">Koneksi terputus</string>
+	<string name="conn_networkchg">Jaringan berubah</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Exit">Çıkış</string>
-	<string name="Global_authenticate_first">Please connect first</string>
+	<string name="Global_Exit">Keluar</string>
+	<string name="Global_authenticate_first">Harus tersambung dulu</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
 	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Welcome to yaxim!</string>
-	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
-	<string name="StartupDialog_pwHint">Parola girin</string>
+	<string name="StartupDialog_Title">Selamat datang</string>
+	<string name="StartupDialog_Summary">Anda harus mengkonfigurasi Yaxim terlebih dahulu. Silahkan masukan Jabber ID dan kata sandi</string>
+	<string name="StartupDialog_pwHint">Masukkan kata sandi</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
-	<string name="StartupDialog_passwd_title">Parola:</string>
-	<string name="StartupDialog_advanced">Advanced…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
+	<string name="StartupDialog_passwd_title">Kata sandi:</string>
+	<string name="StartupDialog_advanced">Lanjutan...</string>
+	<string name="StartupDialog_create_new">Daftar akun baru</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_message">Pesan dari %s</string>
+	<string name="notification_anonymous_message">Pesan diterima</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Mesaj Uyarısı</string>
-	<string name="led_title">Blinking LED</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
-	<string name="vibr_title">Titreşim</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="preftitle_notify">Pemberitahuan Pesan</string>
+	<string name="led_title">LED berkedip</string>
+	<string name="led_summ">LED berkedip ketika ada pesan baru</string>
+	<string name="vibr_title">Getar</string>
+	<string name="vibr_summ">Bergetar ketika ada pesan baru</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
+		<item>Tidak Pernah</item>
 		<item>System preference</item>
-		<item>Always</item>
+		<item>Selalu</item>
 	</string-array>
-	<string name="ringtone_title">Melodi</string>
-	<string name="ringtone_summ">Tone for incoming messages</string>
-	<string name="ticker_title">Message preview</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ringtone_title">Nada dering</string>
+	<string name="ringtone_summ">Nada pesan baru</string>
+	<string name="ticker_title">Lihat pesan</string>
+	<string name="ticker_summ">Tampilkan pengirim dan pesan di status</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">Startup Options</string>
-	<string name="statuspopup_name">Set your status</string>
+	<string name="statuspopup_name">Atur status</string>
 	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Show offline contacts</string>
 	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
@@ -65,41 +65,41 @@
 	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="preftitle_app">Tampilan</string>
+	<string name="FontChat_title">Ukuran huruf</string>
+	<string name="FontChat_summ">Atur ukuran huruf</string>
+	<string name="FontChat_dialog">Ukuran huruf</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Tema</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Gelap</item>
+		<item>Terang</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Tampilan</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
+		<item>kecil</item>
 		<item>normal</item>
 		<item>large</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add Contact</string>
+	<string name="Menu_addFriend">Tambah Kontak</string>
 	<string name="Menu_ShowOff">Show Offline</string>
 	<string name="Menu_HideOff">Hide Offline</string>
-	<string name="Menu_AccSettings">Edit Account</string>
-	<string name="Menu_Settings">Settings</string>
+	<string name="Menu_AccSettings">Sunting Akun</string>
+	<string name="Menu_Settings">Pengaturan</string>
 	<string name="Menu_Status">Status</string>
-	<string name="Menu_connect">Connect</string>
-	<string name="Menu_disconnect">Disconnect</string>
-	<string name="Menu_about">About yaxim</string>
+	<string name="Menu_connect">Sambung</string>
+	<string name="Menu_disconnect">Putus</string>
+	<string name="Menu_about">Tentang Yaxim</string>
 
 	<!-- AddFriend -->
-	<string name="addFriend_Title">Add a Contact</string>
+	<string name="addFriend_Title">Tambah kontak</string>
 	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
 		desired screen name and choose their contact group!</string>
 	<string name="addFriend_aliasHint">Screen name</string>
@@ -156,7 +156,7 @@
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Choose Group</string>
 	<string name="setStatusmsgHint">Your status message</string>
-	<string name="setStatusTitle">Set your status</string>
+	<string name="setStatusTitle">Atur status</string>
 	<string name="RenameGroup_summ">Rename group %s to:</string>
 	<string name="RenameGroup_title">Rename group</string>
 	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
@@ -187,7 +187,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">About yaxim</string>
+	<string name="AboutDialog_title">Tentang Yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
 	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
@@ -253,16 +253,15 @@
 		SOFTWARE.
     </string>
 
-	<string name="status_available">Çevirimiçi</string>
+	<string name="status_available">Tersambung</string>
 	<string name="status_away">Away</string>
 	<string name="status_chat">Free for chat</string>
 	<string name="status_dnd">Do not disturb</string>
 	<string name="status_xa">Not available</string>
-	<string name="status_offline">Çevrimdışı</string>
+	<string name="status_offline">Terputus</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Georg Lukas https://launchpad.net/~ge0rg
-  zeugma https://launchpad.net/~sunder67</string>
+  Wiha Sjah https://launchpad.net/~wihasjah</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>

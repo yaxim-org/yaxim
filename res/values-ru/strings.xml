@@ -8,22 +8,25 @@
 	<string name="conn_online">В сети</string>
 	<string name="conn_offline">Отключён</string>
 	<string name="conn_empty_roster">Нет контактов для отображения!</string>
-	<string name="conn_reconnect">\nПереподключение через %d секунд.</string>
+	<string name="conn_reconnect">Переподключение через %d секунд.</string>
 	<string name="conn_disconnected">Соединение закрыто</string>
-	<string name="conn_networkchg">Сеть изменилась</string>
+	<string name="conn_networkchg">Сеть сменилась</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Выйти</string>
 	<string name="Global_authenticate_first">Пожалуйста, сначала соединитесь</string>
-	<string name="Global_JID_hint">пользователь@jabber.example.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Добро пожаловать в yaxim!</string>
-	<string name="StartupDialog_Summary">Перед использованием следует сначала настроить yaxim. Пожалуйста введите Jabber ID и пароль.</string>
+	<string name="StartupDialog_Summary">Необходимо настроить yaxim перед использованием. Пожалуйста, введите Jabber ID и пароль.</string>
 	<string name="StartupDialog_pwHint">Введите пароль</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
-	<string name="StartupDialog_advanced">Дополнительно …</string>
+	<string name="StartupDialog_advanced">Дополнительно...</string>
 	<string name="StartupDialog_create_new">Зарегистрировать новую учётную запись</string>
 
 	<!-- Notifications -->
@@ -31,7 +34,7 @@
 	<string name="notification_anonymous_message">Получено сообщение</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Уведомление о сообщении</string>
+	<string name="preftitle_notify">Уведомления о сообщениях</string>
 	<string name="led_title">Мигающий светодиод</string>
 	<string name="led_summ">СИД сигнализирует о входящих сообщениях</string>
 	<string name="vibr_title">Вибрация</string>
@@ -41,8 +44,8 @@
 		<item>Системные настройки</item>
 		<item>Всегда</item>
 	</string-array>
-	<string name="ringtone_title">Мелодия вызова</string>
-	<string name="ringtone_summ">Мелодия для входящих сообщений</string>
+	<string name="ringtone_title">Звук сообщения</string>
+	<string name="ringtone_summ">Проигрывать звук при получении сообщения</string>
 	<string name="ticker_title">Предпросмотр сообщения</string>
 	<string name="ticker_summ">Показывать отправителя и сообщение в статусной строке</string>
 
@@ -51,15 +54,15 @@
 	<string name="statuspopup_name">Установить ваш статус</string>
 	<string name="showOffline_summ">Всегда показывать все контакты в списке собеседников</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>
-	<string name="foregroundService_summ">Удерживать yaxim в памяти для обеспечения постоянного соединения(фоновый сервис)</string>
+	<string name="foregroundService_summ">Удерживать yaxim в памяти для обеспечения постоянного соединения (фоновый сервис)</string>
 	<string name="foregroundService_title">Значок в статусной строке</string>
 
 	<string name="preftitle_debug">Отладка</string>
-	<string name="smackdebug_summ">Пакетная и отладочная информация через logcat(может содержать личную информацию)</string>
+	<string name="smackdebug_summ">Пакетная и отладочная информация через logcat (может содержать личную информацию)</string>
 	<string name="smackdebug_title">Отладка с помощью SMACK</string>
 
 	<string name="reportcrash_title">Отправлять отчёты об ошибках</string>
-	<string name="reportcrash_summ">Посылать анонимные отчёты о крахах разработчику</string>
+	<string name="reportcrash_summ">Посылать анонимные отчёты о падениях разработчику</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Внешний вид</string>
@@ -91,13 +94,13 @@
 	<string name="Menu_AccSettings">Изменить учётную запись</string>
 	<string name="Menu_Settings">Настройки</string>
 	<string name="Menu_Status">Статус</string>
-	<string name="Menu_connect">Соединиться</string>
+	<string name="Menu_connect">Подключиться</string>
 	<string name="Menu_disconnect">Отключиться</string>
 	<string name="Menu_about">О yaxim</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Добавить контакт</string>
-	<string name="addFriend_Summ">Пожалуйста введите Jabber ID друга, желаемое имя для отображения и выберите его группу!</string>
+	<string name="addFriend_Summ">Пожалуйста, введите Jabber ID друга, желаемое имя для отображения и выберите его группу!</string>
 	<string name="addFriend_aliasHint">Имя для отображения</string>
 	<string name="addrosteritemaddgroupchoice">Добавить в новую группу</string>
 	<string name="NewGroup_EditTextField_Hint">Название новой группы</string>
@@ -118,17 +121,15 @@
 	<string name="account_options_title">Настройки подключения</string>
 	<string name="account_options_advanced">Расширенные настройки</string>
 	<string name="connstartup_title">Соединяться при запуске</string>
-	<string name="connstartup_summOn">Подключиться когда yaxim открыт</string>
+	<string name="connstartup_summOn">Подключиться, если yaxim открыт</string>
 	<string name="connstartup_summOff">Не подключаться автоматически</string>
-	<string name="reconnect_title">Автоматически переподключаться</string>
-	<string name="reconnect_summ">Переподключиться при разрыве соединения</string>
 	<string name="carbons_title">Копирование сообщений (XEP-0280)</string>
 	<string name="carbons_summ">Запрашивать копии сообщений от других ваших клиентов</string>
 	<string name="account_jabberID_title">Jabber ID</string>
-	<string name="account_jabberID_sum">пример: я@jabber.example.com</string>
-	<string name="account_jabberID_dialog_title">Ведите свой Jabber ID:</string>
+	<string name="account_jabberID_sum">пример: me@jabber.ru</string>
+	<string name="account_jabberID_dialog_title">Введите свой Jabber ID:</string>
 	<string name="account_jabberPW_title">Пароль учётной записи</string>
-	<string name="account_jabberPW_sum">Пароль вашей учётной записи jabber</string>
+	<string name="account_jabberPW_sum">Пароль вашей учётной записи Jabber</string>
 	<string name="account_jabberPW_dialog_title">Введите пароль:</string>
 
 	<!-- accountprefs -->
@@ -137,14 +138,15 @@
 	<string name="account_resource_dialog_title">Введите ресурс:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Приоритет клиента</string>
-	<string name="account_prio_summ">По умолчанию: 0(разрешено: -128 ..127)</string>
+	<string name="account_prio_summ">По умолчанию: 0 (разрешено от -128 до 127)</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Введите приоритет:</string>
 	<string name="account_port_title">Порт сервера</string>
 	<string name="account_port_sum">По умолчанию: 5222</string>
 	<string name="account_port_dialog_title">Введите порт сервера:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Пользовательский сервер</string>
-	<string name="account_customserver_summ">(Необязательное) альтернативное имя сервера</string>
+	<string name="account_customserver_summ">(Необязательно) альтернативный адрес сервера</string>
 	<string name="account_customserver_dialog_title">Введите имя сервера:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">Требовать SSL/TLS</string>
@@ -162,8 +164,10 @@
 	<string name="MoveRosterEntryToGroupDialog_title">Изменить группу</string>
 	<string name="deleteRosterItem_text">Действительно удалить %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Удалить контакт</string>
-	<string name="deleteChatHistory_text">Действительно удалить всю историю общения с %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_text">Действительно удалить всю историю сообщений с %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Удалить историю сообщений</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Я:</string>
@@ -184,7 +188,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">О yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Разработчики</string>
-	<string name="AboutDialog_DevelopersText">Свяжитесь с разработчиком через http://yaxim.org или в IRC freenode, канал #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Свяжитесь с разработчиком через http://yaxim.org или в IRC-канале #yaxim на freenode</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
 	<string name="AboutDialog_Vote">Оставить отзыв</string>
 	<string name="AboutDialog_LicenceText">
@@ -250,12 +254,13 @@
 
 	<string name="status_available">В сети</string>
 	<string name="status_away">Отсутствую</string>
-	<string name="status_chat">Желаю поболтать</string>
+	<string name="status_chat">Готов поболтать</string>
 	<string name="status_dnd">Не беспокоить</string>
 	<string name="status_xa">Недоступен</string>
 	<string name="status_offline">Отключён</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Drow_Ranger https://launchpad.net/~d3jow9y5j
   Georg Lukas https://launchpad.net/~ge0rg
   Ilya https://launchpad.net/~me-detected</string>
 

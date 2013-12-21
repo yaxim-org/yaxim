@@ -8,14 +8,17 @@
 	<string name="conn_online">Linean</string>
 	<string name="conn_offline">Lineaz kanpo</string>
 	<string name="conn_empty_roster">Ez dago kontakturik erakusteko!</string>
-	<string name="conn_reconnect">\nBirkonektatu %d segundotan.</string>
+	<string name="conn_reconnect">Birkonektatu %d segundotan.</string>
 	<string name="conn_disconnected">Konexioa itxita</string>
 	<string name="conn_networkchg">Sarea aldatuta</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Irten</string>
 	<string name="Global_authenticate_first">Mesedez, konektatu lehenik</string>
-	<string name="Global_JID_hint">erabiltzailea@jabber.adibidea.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Ongietorri yaxim-era!</string>
@@ -120,8 +123,6 @@
 	<string name="connstartup_title">Konektatu abioan</string>
 	<string name="connstartup_summOn">Konektatu yaxim irekitzean</string>
 	<string name="connstartup_summOff">Ez konektatu automatikoki</string>
-	<string name="reconnect_title">Birkonektatu automatikoki</string>
-	<string name="reconnect_summ">Birkonektatu konexioa etetean</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber IDa</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Bezeroaren lehentasuna</string>
 	<string name="account_prio_summ">Lehenetsia: 0 (baimenduak: -128 .. 127)</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Sartu zure lehentasuna:</string>
 	<string name="account_port_title">Zerbitzariaren ataka</string>
 	<string name="account_port_sum">Lehenetsia: 5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">Ezabatu kontaktua</string>
 	<string name="deleteChatHistory_text">Ziur zaude %1$s (%2$s) duten mezu guztiak kendu nahi dituzula?</string>
 	<string name="deleteChatHistory_title">Ezabatu berriketa historia</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ni:</string>

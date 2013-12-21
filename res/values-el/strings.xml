@@ -11,11 +11,14 @@
 	<string name="conn_reconnect">Επανασύνδεση σε %d δευτερόλεπτα</string>
 	<string name="conn_disconnected">Connection closed</string>
 	<string name="conn_networkchg">Network changed</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Έξοδος</string>
 	<string name="Global_authenticate_first">παρακαλώ συνδεθείτε πρώτα</string>
-	<string name="Global_JID_hint">user@jabber.example.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Καλωσορίσατε στο yaxim!</string>
@@ -120,8 +123,6 @@
 	<string name="connstartup_title">Αυτόματη σύνδεση</string>
 	<string name="connstartup_summOn">Κατά την έναρξη του yaxim να γίνετε σύνδεση</string>
 	<string name="connstartup_summOff">Όχι αυτόματη σύνδεση</string>
-	<string name="reconnect_title">Αυτόματη επανασύνδεση</string>
-	<string name="reconnect_summ">Επανασύνδεση σε περίπτωση που κοπεί η σύνδεση</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Προτεραιότητά του Client</string>
 	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Εισάγετε την προτεραιότητά σας:</string>
 	<string name="account_port_title">Server Port</string>
 	<string name="account_port_sum">Default: 5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">Διαγραφή επαφής</string>
 	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Delete Chat History</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Εγώ:</string>

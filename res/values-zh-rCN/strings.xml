@@ -11,11 +11,14 @@
 	<string name="conn_reconnect">%s 后连接。</string>
 	<string name="conn_disconnected">连接已关闭</string>
 	<string name="conn_networkchg">网络连接改变</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">退出</string>
 	<string name="Global_authenticate_first">请先连接</string>
-	<string name="Global_JID_hint">user@jabber.example.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
@@ -120,8 +123,6 @@
 	<string name="connstartup_title">启动时连接</string>
 	<string name="connstartup_summOn">yaxim打开时自动切换成在线状态</string>
 	<string name="connstartup_summOff">不自动连接</string>
-	<string name="reconnect_title">自动连接</string>
-	<string name="reconnect_summ">连接丢失时自动重连</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">客户端优先级</string>
 	<string name="account_prio_summ">默认：０（允许范围：-128..127）</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">输入您的优先级</string>
 	<string name="account_port_title">服务器端口</string>
 	<string name="account_port_sum">默认：5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">删除联系人</string>
 	<string name="deleteChatHistory_text">确定删除全部信息　%1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">删除聊天记录</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">我：</string>
@@ -172,7 +176,7 @@
 	<string name="chat_enterMsgHint">输入消息</string> 
 
 	<!-- Chat menu -->
-	<string name="chatmenu_resend">Resend</string>
+	<string name="chatmenu_resend">重新发送</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -198,7 +202,8 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Mariotaku https://launchpad.net/~leeningyuan
-  Road Tang https://launchpad.net/~roadtang</string>
+  Road Tang https://launchpad.net/~roadtang
+  wangbin https://launchpad.net/~wangbin-zibo</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">常规</string>

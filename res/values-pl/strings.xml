@@ -8,14 +8,17 @@
 	<string name="conn_online">Połączony</string>
 	<string name="conn_offline">Rozłączony</string>
 	<string name="conn_empty_roster">Brak kontaktów</string>
-	<string name="conn_reconnect">\nPonowne połączenie w ciągu %d sekund.</string>
+	<string name="conn_reconnect">Ponowne połączenie w ciągu %d sekund.</string>
 	<string name="conn_disconnected">Połączenie zostało zakończone</string>
 	<string name="conn_networkchg">Sieć zmieniona</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Wyjdź</string>
 	<string name="Global_authenticate_first">Najpier nawiąż połączenie</string>
-	<string name="Global_JID_hint">uzytkownik@jabber.serwer.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Witaj w yaxim!</string>
@@ -120,8 +123,6 @@
 	<string name="connstartup_title">Połącz przy starcie</string>
 	<string name="connstartup_summOn">Połącz automatycznie po uruchomieniu programu</string>
 	<string name="connstartup_summOff">Nie łącz automatycznie po uruchomieniu programu</string>
-	<string name="reconnect_title">Połącz ponownie</string>
-	<string name="reconnect_summ">Połącz ponownie po utracie połączenia</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorytet klienta</string>
 	<string name="account_prio_summ">Domyślnie: 0 (dozwolone wartości: -128 .. 127)</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Podaj priorytet klienta:</string>
 	<string name="account_port_title">Port serwera</string>
 	<string name="account_port_sum">Domyślnie: 5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">Usuń kontakt</string>
 	<string name="deleteChatHistory_text">Usunąć wszystkie wiadomości z %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Usuń historię czatu</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ja:</string>
@@ -198,7 +202,7 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Adam Maćkowiak https://launchpad.net/~admc
-  Antoni Kudelski https://launchpad.net/~antoni-kudelski
+  Antoni Kudelski https://launchpad.net/~antoni-kudelski-deactivatedaccount
   Georg Lukas https://launchpad.net/~ge0rg</string>
 
 	<!-- default roster group with no name -->

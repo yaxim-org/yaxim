@@ -8,14 +8,17 @@
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Keine Kontakte zum Anzeigen!</string>
-	<string name="conn_reconnect">\nNeue Verbindung in %d Sekunden.</string>
+	<string name="conn_reconnect">Neue Verbindung in %d Sekunden.</string>
 	<string name="conn_disconnected">Verbindung getrennt</string>
 	<string name="conn_networkchg">Netzwerkwechsel</string>
+	<string name="conn_no_network">Keine Netzwerkverbindung</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Beenden</string>
 	<string name="Global_authenticate_first">Bitte zuerst verbinden!</string>
-	<string name="Global_JID_hint">user@jabber.example.com</string>
+	<string name="Global_JID_hint">nutzer@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Adressformat überprüfen!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Willkommen zu yaxim!</string>
@@ -120,8 +123,6 @@
 	<string name="connstartup_title">Automatisch verbinden</string>
 	<string name="connstartup_summOn">Beim Start von yaxim verbinden</string>
 	<string name="connstartup_summOff">Nicht automatisch verbinden</string>
-	<string name="reconnect_title">Verbindung wiederherstellen</string>
-	<string name="reconnect_summ">Bei Verbindungsabbruch neu verbinden</string>
 	<string name="carbons_title">Nachrichtenkopien (XEP-0280)</string>
 	<string name="carbons_summ">Gesprächsverlauf über mehrere Chat-Anwendungen abgleichen</string>
 	<string name="account_jabberID_title">Jabber-ID</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Client-Priorität</string>
 	<string name="account_prio_summ">Standard: 0 (erlaubt: -128 .. 127)</string>
+	<string name="account_prio_error">Erlaubte Werte: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Priorität eingeben:</string>
 	<string name="account_port_title">Server-Port</string>
 	<string name="account_port_sum">Standard: 5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">Kontakt löschen</string>
 	<string name="deleteChatHistory_text">Wirklich alle Nachrichten mit %1$s (%2$s) löschen?</string>
 	<string name="deleteChatHistory_title">Chat-Verlauf löschen</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ich:</string>

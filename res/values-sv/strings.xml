@@ -8,14 +8,17 @@
 	<string name="conn_online">Ansluten</string>
 	<string name="conn_offline">Frånkopplad</string>
 	<string name="conn_empty_roster">Inga kontakter att visa!</string>
-	<string name="conn_reconnect">\nAnsluter igen om %d sekunder.</string>
+	<string name="conn_reconnect">Ansluter igen om %d sekunder.</string>
 	<string name="conn_disconnected">Anslutningen stängd</string>
 	<string name="conn_networkchg">Nätverk ändrat</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Avsluta</string>
 	<string name="Global_authenticate_first">Anslut först</string>
-	<string name="Global_JID_hint">anvnamn@jabber.exempel.com</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Välkommen till yaxim!</string>
@@ -120,8 +123,6 @@
 	<string name="connstartup_title">Anslut vid programstart</string>
 	<string name="connstartup_summOn">Anslut när yaxim startas</string>
 	<string name="connstartup_summOff">Anslut inte automatiskt</string>
-	<string name="reconnect_title">Försök återansluta automatiskt</string>
-	<string name="reconnect_summ">Återansluter om anslutningen bryts</string>
 	<string name="carbons_title">"Message Carbons" (XEP-0280)</string>
 	<string name="carbons_summ">Begär kopior av meddelanden från andra klienter</string>
 	<string name="account_jabberID_title">Jabber-ID</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Prioritet</string>
 	<string name="account_prio_summ">Förvalt: 0 (tillåtet: -128 .. 127)</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Ange prioritet:</string>
 	<string name="account_port_title">Serverport</string>
 	<string name="account_port_sum">Förvalt: 5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">Ta bort kontakt</string>
 	<string name="deleteChatHistory_text">Ta bort alla meddelanden för %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Ta bort chatthistorik</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Jag:</string>

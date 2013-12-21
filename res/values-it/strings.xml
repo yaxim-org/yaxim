@@ -8,14 +8,17 @@
 	<string name="conn_online">Connesso</string>
 	<string name="conn_offline">Non connesso</string>
 	<string name="conn_empty_roster">Nessun contatto presente!</string>
-	<string name="conn_reconnect">\nRiconnessione tra %d secondi.</string>
+	<string name="conn_reconnect">Riconnessione tra %d secondi.</string>
 	<string name="conn_disconnected">Connessione chiusa</string>
 	<string name="conn_networkchg">Rete cambiata</string>
+	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Esci</string>
 	<string name="Global_authenticate_first">Prima è necessario connettersi</string>
-	<string name="Global_JID_hint">utente@jabber.esempio.it</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Benvenuto in yaxim!</string>
@@ -120,10 +123,8 @@
 	<string name="connstartup_title">Connettersi all\'avvio</string>
 	<string name="connstartup_summOn">Connettersi quando yaxim viene aperto</string>
 	<string name="connstartup_summOff">Non connettersi automaticamente</string>
-	<string name="reconnect_title">Riconnessione automatica</string>
-	<string name="reconnect_summ">Riconnettersi quando cade la connessione</string>
-	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="carbons_title">Messagggio Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Richiedi copie di messaggi da tuoi altri accreditamenti</string>
 	<string name="account_jabberID_title">ID Jabber</string>
 	<string name="account_jabberID_sum">esempio: io@jabber.esempio.it</string>
 	<string name="account_jabberID_dialog_title">Inserisci il tuo ID Jabber:</string>
@@ -138,6 +139,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorità del client</string>
 	<string name="account_prio_summ">Default: 0 (ammessi: -128 .. 127)</string>
+	<string name="account_prio_error">Allowed values: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Inserisci la priorità:</string>
 	<string name="account_port_title">Porta del server</string>
 	<string name="account_port_sum">Predefinita: 5222</string>
@@ -164,6 +166,8 @@
 	<string name="deleteRosterItem_title">Elimina contatto</string>
 	<string name="deleteChatHistory_text">Rimuovere definitivamente tutti i messaggi con %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Cancella la cronologia della chat</string>
+	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Io:</string>
@@ -172,7 +176,7 @@
 	<string name="chat_enterMsgHint">Inserisci il messaggio</string> 
 
 	<!-- Chat menu -->
-	<string name="chatmenu_resend">Resend</string>
+	<string name="chatmenu_resend">Invia nuovamente</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -201,7 +205,8 @@
   Georg Lukas https://launchpad.net/~ge0rg
   Gianfranco Frisani https://launchpad.net/~gfrisani
   Lorenzo J. Lucchini https://launchpad.net/~ljl
-  Pietro Pecchi https://launchpad.net/~pietro-pecchi</string>
+  Pietro Pecchi https://launchpad.net/~pietro-pecchi
+  SILVIO BARLETTA https://launchpad.net/~ik1bqd</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Generale</string>
