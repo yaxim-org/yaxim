@@ -8,7 +8,7 @@
 	<string name="conn_online">מקוון</string>
 	<string name="conn_offline">לא מקוון</string>
 	<string name="conn_empty_roster">אין אנשי קשר להצגה!</string>
-	<string name="conn_reconnect">התחברות מחדש בתוך %d שניות.</string>
+	<string name="conn_reconnect">התחברות חוזרת בתוך %d שניות.</string>
 	<string name="conn_disconnected">חיבור נסגר</string>
 	<string name="conn_networkchg">רשת השתנתה</string>
 	<string name="conn_no_network">אין חיבור רשת</string>
@@ -22,10 +22,10 @@
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">ברוך בואך אל yaxim!</string>
-	<string name="StartupDialog_Summary">עליך להגדיר את yaxim טרם תעמוד לך האפשרות להפיק ממנה תועלת. יש להזין מזהה Jabber וסיסמה.</string>
+	<string name="StartupDialog_Summary">עליך להגדיר את yaxim טרם תעמוד לך האפשרות להפיק ממנה תועלת. אנא הזן מזהה Jabber וסיסמה.</string>
 	<string name="StartupDialog_pwHint">הזן סיסמה</string>
 	<string name="StartupDialog_Username_title">מזהה Jabber:</string>
-	<string name="StartupDialog_passwd_title">ססמה:</string>
+	<string name="StartupDialog_passwd_title">סיסמה:</string>
 	<string name="StartupDialog_advanced">מתקדם…</string>
 	<string name="StartupDialog_create_new">צור חשבון חדש</string>
 
@@ -36,9 +36,9 @@
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">התרעת הודעה</string>
 	<string name="led_title">LED מהבהב</string>
-	<string name="led_summ">הבהב טלפון LED בהודעות נכנסות</string>
+	<string name="led_summ">הבהב LED טלפון בהודעות נכנסות</string>
 	<string name="vibr_title">רטט</string>
-	<string name="vibr_summ">הרטט בהודעות נכנסות</string>
+	<string name="vibr_summ">רטט בהודעות נכנסות</string>
 	<string-array name="vibr_values_displayed">
 		<item>אף פעם</item>
 		<item>העדפת מערכת</item>
@@ -46,15 +46,15 @@
 	</string-array>
 	<string name="ringtone_title">צלצול</string>
 	<string name="ringtone_summ">צליל להודעות נכנסות</string>
-	<string name="ticker_title">תצוגת הודעה</string>
+	<string name="ticker_title">תצוגה מקדימה של הודעה</string>
 	<string name="ticker_summ">הצג ממען והודעה בתוך שורת מצב</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_boot">אפשרויות הפעלה</string>
-	<string name="statuspopup_name">קבע מצב</string>
+	<string name="statuspopup_name">קבע את המצב שלך</string>
 	<string name="showOffline_summ">הצג תמיד את כל אנשי הקשר בתוך הרשימה</string>
 	<string name="showOffline_title">הצג אנשי קשר לא מקוונים</string>
-	<string name="foregroundService_summ">השאר את yaxim כדי להבטיח חיבור תמידי (שירות קדמה)</string>
+	<string name="foregroundService_summ">השאר את yaxim בזיכרון כדי להבטיח חיבור תמידי (שירות מרקע)</string>
 	<string name="foregroundService_title">צלמית שורת מצב</string>
 
 	<string name="preftitle_debug">דיבאג</string>
@@ -155,7 +155,7 @@
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">בחר קבוצה</string>
 	<string name="setStatusmsgHint">הודעת מצב</string>
-	<string name="setStatusTitle">קבע מצב</string>
+	<string name="setStatusTitle">קבע את המצב שלך</string>
 	<string name="RenameGroup_summ">שנה שם קבוצה %s אל:</string>
 	<string name="RenameGroup_title">שנה שם קבוצה</string>
 	<string name="RenameEntry_summ">שנה שם %1$s (%2$s) אל:</string>
@@ -166,8 +166,8 @@
 	<string name="deleteRosterItem_title">מחק איש קשר</string>
 	<string name="deleteChatHistory_text">האם באמת להסיר את כל ההודעות עם %1$s ‏(%2$s)?</string>
 	<string name="deleteChatHistory_title">מחק היסטוריית שיחה</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscriptionRequest_text">%1$s רוצה להוסיפך בתור איש קשר: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">בקשת הרשמה</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">אני:</string>
@@ -191,7 +191,7 @@
 	<string name="AboutDialog_DevelopersText">צרו קשר עם המפתח באתר http://yaxim.org או ברשת IRC ‏freenode: ‏yaxim#</string>
 	<string name="AboutDialog_LicenceTitle">רישוי</string>
 	<string name="AboutDialog_Vote">העניקו משוב</string>
-	<string name="AboutDialog_LicenceText">תוכנית זו הינה תכנה חופשית; זכותכם להפיצה ו/או לשנותה בכפוף לתנאי הרשיון GNU General Public License גרסא 2 כפי שזה פורסם על ידי Free Software Foundation. קישור: http://www.gnu.org/licenses/gpl-2.0.html\n \n חלקים של תוכנה זו מסופקים תחת הרשיון MIT:\n \n זכויות יוצרים © 2009 Mads Kristiansen, Nullwire ApS\n \n רשות מוענקת בזאת, חינם אין כסף, לכל אדם אשר משיג עותק של תכנה זו וגם קבצי תיעוד מסונפים ("התכנה"), להתעסק בתכנה ללא הגבלה, לרבות ללא הגבלת הזכויות להשתמש, להעתיק, לשנות, למזג, לפרסם, להפיץ, להעניק רשיונות משניים, ו/או למכור עותקים של התכנה, וגם להתיר לאנשים אשר להם התוכנה מסופקת לעשות כן, כפופים ומוכנעים לתנאים שלהלן: \n הודעת זכויות יוצרים לעיל וכן הודעת היתר זו יוכללו בכל העותקים או בחלקים מהותיים של התכנה. \n התכנה הינה מסופקת "AS IS" (כמות שהיא), ללא כתב אחריות מכל סוג שהוא, בין אם באופן מפורש או בין אם באופן מרומז, כולל אך לא מוגבלת לחבויות של סחירות, התאמה לתכלית מסוימת וכן גם לא מפרה. בשום מקרה המחברים או המחזיקים בזכויות יוצרים לא יישאו באחריות עבור כל תובענה, נזקים או חבות אחרת, בין אם בתוך פעולה של הסכם, עוולה או אחרת, אשר עולה מן, מתוך או בנוגע לתכנה או לשימוש או דין ודברים אחרים בתכנה.</string>
+	<string name="AboutDialog_LicenceText">תוכנית זו הינה תכנה חופשית; זכותכם להפיצה ו/או לשנותה בכפוף לתנאי הרשיון GNU General Public License גרסא 2 כפי שזה פורסם על ידי Free Software Foundation. קישור: http://www.gnu.org/licenses/gpl-2.0.html\n \n חלקים של תוכנה זו מסופקים תחת הרשיון MIT:\n \n זכויות יוצרים © 2009 Mads Kristiansen, Nullwire ApS\n \n רשות מוענקת בזאת, חינם אין כסף, לכל אדם אשר משיג עותק של תכנה זו וגם קבצי תיעוד מסונפים ("התכנה"), להתעסק בתכנה ללא הגבלה, לרבות ללא הגבלת הזכויות להשתמש, להעתיק, לשנות, למזג, לפרסם, להפיץ, להעניק רשיונות נגזרים, ו/או למכור עותקים של התכנה, וגם להתיר לאנשים אשר להם התוכנה מסופקת לעשות כן, כפופים ומוכנעים לתנאים שלהלן: \n הודעת זכויות יוצרים לעיל וכן הודעת היתר זו יוכללו בכל העותקים או בחלקים מהותיים של התכנה. \n התכנה הינה מסופקת "AS IS" (כמות שהיא), ללא כתב אחריות מכל סוג שהוא, בין אם באופן מפורש או בין אם באופן מרומז, כולל אך לא מוגבלת לחבויות של סחירות, התאמה לתכלית מסוימת וכן גם לא מפרה. בשום מקרה המחברים או המחזיקים בזכויות יוצרים לא יישאו באחריות עבור כל תובענה, נזקים או חבות אחרת, בין אם בתוך פעולה של הסכם, עוולה או אחרת, אשר עולה מן, מתוך או בנוגע לתכנה או לשימוש או דין ודברים אחרים בתכנה.</string>
 
 	<string name="status_available">מקוון</string>
 	<string name="status_away">נעדר</string>
