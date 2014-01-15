@@ -1002,19 +1002,23 @@ public class SmackableImp implements Smackable {
 					}
 
 					String chatMessage = msg.getBody();
+
+					// display error inline
+					if (msg.getType() == Message.Type.error) {
+						changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED);
+						chatMessage = msg.getError().toString();
+					}
+
 					// ignore empty messages
 					if (chatMessage == null) {
 						Log.d(TAG, "empty message.");
 						return;
 					}
 
-					// display error inline
-					if (msg.getType() == Message.Type.error) {
-						chatMessage = "<Error> " + chatMessage;
-					}
-
 					// carbons are old. all others are new
 					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
+					if (msg.getType() == Message.Type.error)
+						is_new = ChatConstants.DS_FAILED;
 
 					addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
 					if (direction == ChatConstants.INCOMING)
