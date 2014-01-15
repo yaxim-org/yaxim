@@ -425,6 +425,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				getIconView().setImageResource(R.drawable.ic_chat_msg_status_ok);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
+			case ChatConstants.DS_FAILED:
+				getIconView().setImageResource(R.drawable.ic_chat_msg_status_failed);
+				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
+				break;
 			}
 			getMessageView().setText(message);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);

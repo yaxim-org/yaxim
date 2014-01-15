@@ -257,6 +257,7 @@ public class ChatProvider extends ContentProvider {
 		public static final int DS_NEW = 0; //< this message has not been sent/displayed yet
 		public static final int DS_SENT_OR_READ = 1; //< this message was sent but not yet acked, or it was received and read
 		public static final int DS_ACKED = 2; //< this message was XEP-0184 acknowledged
+		public static final int DS_FAILED = 3; //< this message was returned as failed
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
