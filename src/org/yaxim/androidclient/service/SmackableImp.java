@@ -373,7 +373,8 @@ public class SmackableImp implements Smackable {
 		if (new_state == mState)
 			return;
 		mState = new_state;
-		mServiceCallBack.connectionStateChanged();
+		if (mServiceCallBack != null)
+			mServiceCallBack.connectionStateChanged();
 	}
 	private void initServiceDiscovery() {
 		// register connection features
