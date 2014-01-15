@@ -6,7 +6,9 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		android:paddingLeft="10dp"
+		android:paddingStart="10dp"
 		android:paddingRight="10dp"
+		android:paddingEnd="10dp"
 		android:paddingBottom="15dp"
 		android:paddingTop="10dp" >
 	
@@ -16,6 +18,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/icon"
+			android:drawableStart="@drawable/icon"
 			android:text="@string/StartupDialog_Summary"
 			android:drawablePadding="10sp"
 			android:padding="10sp"

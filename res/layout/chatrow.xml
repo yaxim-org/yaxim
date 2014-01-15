@@ -10,7 +10,10 @@
 			<TextView android:id="@+id/chat_date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="11sp" android:textStyle="bold" android:textColor="#88f"
-				android:ellipsize="end" android:paddingRight="6dp"/>
+				android:ellipsize="end"
+				android:paddingRight="6dp"
+				android:paddingEnd="6dp"
+				/>
 
 			<TextView android:id="@+id/chat_from" android:layout_width="0dp"
 				android:layout_height="wrap_content" android:layout_weight="1"
@@ -24,6 +27,7 @@
 			    android:layout_height="wrap_content"
 			    android:layout_gravity="center_vertical"
 			    android:layout_marginLeft="6dp"
+			    android:layout_marginStart="6dp"
 			    android:src="@drawable/ic_chat_msg_status_unread" />
 
 		</LinearLayout>

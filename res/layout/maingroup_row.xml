@@ -9,7 +9,9 @@
 	<TextView android:id="@+id/groupname"
 		style="@style/RosterGroupName"
 		android:paddingLeft="40dp"
+		android:paddingStart="40dp"
 		android:paddingRight="4dp"
+		android:paddingEnd="4dp"
 		android:layout_weight="1"
 		android:layout_width="100dp"
 		android:layout_height="wrap_content"
@@ -20,6 +22,7 @@
 	<TextView android:id="@+id/members"
 		style="@style/RosterGroupName"
 		android:paddingRight="6dp"
+		android:paddingEnd="6dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		/>

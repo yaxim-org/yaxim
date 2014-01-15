@@ -2,7 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/layout_root" android:orientation="vertical"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:paddingLeft="15dp" android:paddingRight="15dp" android:paddingBottom="15dp" android:paddingTop="10dp" android:layout_gravity="top">
+	android:paddingLeft="15dp"
+	android:paddingStart="15dp"
+	android:paddingRight="15dp"
+	android:paddingEnd="15dp"
+	android:paddingBottom="15dp"
+	android:paddingTop="10dp"
+	android:layout_gravity="top">
 	<TextView android:id="@+id/text" android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		style="?attr/dialogTextColor"
