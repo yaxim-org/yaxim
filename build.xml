@@ -80,6 +80,8 @@
 	<copy file="version.xml.tpl" tofile="${resource.absolute.dir}/values/version.xml" overwrite="true">
 	    <filterchain>
 		<replacetokens>
+		    <token key="build_revision" value="${git.revision}"/>
+		    <token key="build_date" value="${build.date}"/>
 		    <token key="build_version" value="${ant.project.name} ${git.revision} ${build.date}"/>
 		</replacetokens>
 	    </filterchain>
