@@ -1,3 +1,15 @@
+0.8.7:
+ * XEP-0198: Stream Management now fully supported
+ * Chat: Returned messages (errors) are displayed in red
+ * Settings: IDNA servers are supported now
+ * Roster: Ask user about new contact requests
+ * Preferences: Auto-reconnect option removed (use "Quit" or set status to "Offline")
+ * Status notification: improve display of connection status, error messages
+ * XEP-0092: Software Version replies implemented
+ * XEP-0280: incoming carbons now only ring once
+ * XEP-0184 + XEP-0280: ack status fixed for CC'ed messages
+ * Action Bar: ActionBarSherlock updated from 4.2.0 to 4.4.0
+
 0.8.6b:
  * Also fix client-to-server pings (Oops, sorry!)
 
