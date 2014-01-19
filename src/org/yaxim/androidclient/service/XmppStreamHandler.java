@@ -36,6 +36,7 @@ public class XmppStreamHandler {
 	private boolean isSmAvailable = false;
 	private boolean isSmEnabled = false;
 	private boolean isOutgoingSmEnabled = false;
+	private boolean debugStanzas = false;
 	private long previousIncomingStanzaCount = 0;
 	private String sessionId;
 	private long incomingStanzaCount = 0;
@@ -46,8 +47,9 @@ public class XmppStreamHandler {
 	protected final Collection<AckReceivedListener> ackListeners =
 	    new CopyOnWriteArraySet<AckReceivedListener>();
 
-	public XmppStreamHandler(XMPPConnection connection) {
+	public XmppStreamHandler(XMPPConnection connection, boolean debug_stanzas) {
 		mConnection = (ExtXMPPConnection)connection;
+		debugStanzas = debug_stanzas;
 		startListening();
 	}
 
@@ -179,7 +181,7 @@ public class XmppStreamHandler {
 			public void processPacket(Packet packet) {
 				// Ignore our own request for acks - they are not counted
 				if (!isStanza(packet)) {
-					Log.d(TAG, "send non-stanza " + packet.toXML());
+					if (debugStanzas) Log.d(TAG, "send non-stanza " + packet.toXML());
 					return;
 				}
 
@@ -187,7 +189,7 @@ public class XmppStreamHandler {
 					outgoingStanzaCount++;
 					outgoingQueue.add(packet);
 
-					Log.d(TAG, "adding " + outgoingStanzaCount + " : " + packet.toXML());
+					if (debugStanzas) Log.d(TAG, "adding " + outgoingStanzaCount + " : " + packet.toXML());
 					//
 					// Don't let the queue grow beyond max size.  Request acks and drop old packets
 					// if acks are not coming.
@@ -200,7 +202,7 @@ public class XmppStreamHandler {
 						outgoingQueue.remove();
 					}
 				} else {
-					Log.d(TAG, "sending " + packet.toXML());
+					if (debugStanzas) Log.d(TAG, "sending " + packet.toXML());
 				}
 			}
 		}, new PacketFilter() {
@@ -213,9 +215,9 @@ public class XmppStreamHandler {
 			public void processPacket(Packet packet) {
 				if (isSmEnabled && isStanza(packet)) {
 					incomingStanzaCount++;
-					Log.d(TAG, "recv " + incomingStanzaCount + " : " + packet.toXML());
+					if (debugStanzas) Log.d(TAG, "recv " + incomingStanzaCount + " : " + packet.toXML());
 				} else {
-					Log.d(TAG, "recv " + packet.toXML());
+					if (debugStanzas) Log.d(TAG, "recv " + packet.toXML());
 				}
 
 				if (packet instanceof StreamHandlingPacket) {

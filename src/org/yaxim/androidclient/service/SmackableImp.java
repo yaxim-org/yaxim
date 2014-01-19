@@ -199,7 +199,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		this.mXMPPConnection = new XmppStreamHandler.ExtXMPPConnection(mXMPPConfig);
-		this.mStreamHandler = new XmppStreamHandler(mXMPPConnection);
+		this.mStreamHandler = new XmppStreamHandler(mXMPPConnection, mConfig.smackdebug);
 		mStreamHandler.addAckReceivedListener(new XmppStreamHandler.AckReceivedListener() {
 			public void ackReceived(long handled, long total) {
 				gotServerPong("" + handled);
