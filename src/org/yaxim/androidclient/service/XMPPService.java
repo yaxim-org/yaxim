@@ -204,8 +204,10 @@ public class XMPPService extends GenericService {
 
 			public void setStatusFromConfig()
 					throws RemoteException {
-				mSmackable.setStatusFromConfig();
-				updateServiceNotification();
+				if (mSmackable != null) { // this should always be true, but stil...
+					mSmackable.setStatusFromConfig();
+					updateServiceNotification();
+				}
 			}
 
 			public void addRosterItem(String user, String alias, String group)
