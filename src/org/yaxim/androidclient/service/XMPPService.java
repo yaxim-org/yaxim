@@ -386,8 +386,8 @@ public class XMPPService extends GenericService {
 			mSmackable.requestConnectionState(ConnectionState.RECONNECT_NETWORK);
 
 		} else if (mConnectionDemanded.get()) {
-			mSmackable.requestConnectionState(ConnectionState.RECONNECT_DELAYED);
 			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
+			mSmackable.requestConnectionState(ConnectionState.RECONNECT_DELAYED);
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
 			((AlarmManager)getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
 					System.currentTimeMillis() + mReconnectTimeout * 1000, mPAlarmIntent);
