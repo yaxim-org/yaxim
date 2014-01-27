@@ -408,6 +408,7 @@ public class XMPPService extends GenericService {
 
 	public void manualDisconnect() {
 		mConnectionDemanded.set(false);
+		mReconnectInfo = getString(R.string.conn_disconnecting);
 		performDisconnect();
 	}
 
