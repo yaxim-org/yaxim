@@ -844,6 +844,7 @@ public class SmackableImp implements Smackable {
 				+ ChatProvider.TABLE_NAME);
 		mContentResolver.update(rowuri, cv,
 				ChatConstants.PACKET_ID + " = ? AND " +
+				ChatConstants.DELIVERY_STATUS + " != " + ChatConstants.DS_ACKED + " AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
 				new String[] { packetID });
 	}
