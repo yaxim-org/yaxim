@@ -837,16 +837,16 @@ public class SmackableImp implements Smackable {
 		return res[0].toLowerCase();
 	}
 
-	public void changeMessageDeliveryStatus(String packetID, int new_status) {
+	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
 		ContentValues cv = new ContentValues();
 		cv.put(ChatConstants.DELIVERY_STATUS, new_status);
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
 				+ ChatProvider.TABLE_NAME);
-		mContentResolver.update(rowuri, cv,
+		return mContentResolver.update(rowuri, cv,
 				ChatConstants.PACKET_ID + " = ? AND " +
 				ChatConstants.DELIVERY_STATUS + " != " + ChatConstants.DS_ACKED + " AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
-				new String[] { packetID });
+				new String[] { packetID }) > 0;
 	}
 
 	/** Check the server connection, reconnect if needed.
