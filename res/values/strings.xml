@@ -34,6 +34,9 @@
 	<string name="notification_message">Message from %s</string>
 	<string name="notification_anonymous_message">Message received</string>
 
+	<!-- Notifications -->
+	<string name="notification_error">Error while sending message!</string>
+
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Message Notification</string>
 	<string name="led_title">Blinking LED</string>

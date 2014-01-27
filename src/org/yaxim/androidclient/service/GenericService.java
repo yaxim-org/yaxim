@@ -92,7 +92,7 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String fromJid, String fromUserName, String message,
-			boolean showNotification, boolean silent_notification) {
+			boolean showNotification, boolean silent_notification, boolean is_error) {
 		if (!showNotification) {
 			// only play sound and return
 			try {
@@ -115,7 +115,7 @@ public abstract class GenericService extends Service {
 			silent_notification = false;		
 		}
 
-		setNotification(fromJid, fromUserName, message);
+		setNotification(fromJid, fromUserName, message, is_error);
 		setLEDNotification();
 		if (!silent_notification)
 			mNotification.sound = mConfig.notifySound;
@@ -143,7 +143,7 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromUserId, String message) {
+	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -159,6 +159,11 @@ public abstract class GenericService extends Service {
 		}
 		String title = getString(R.string.notification_message, author);
 		String ticker;
+		if (is_error) {
+			title = getString(R.string.notification_error);
+			ticker = title;
+			message = author + ": " + message;
+		} else
 		if (mConfig.ticker) {
 			int newline = message.indexOf('\n');
 			int limit = 0;
@@ -171,7 +176,7 @@ public abstract class GenericService extends Service {
 				messageSummary = message.substring(0, limit) + " [...]";
 			ticker = title + ":\n" + messageSummary;
 		} else
-			ticker = getString(R.string.notification_anonymous_message, author);
+			ticker = getString(R.string.notification_anonymous_message);
 		mNotification = new Notification(R.drawable.sb_message, ticker,
 				System.currentTimeMillis());
 		Uri userNameUri = Uri.parse(fromJid);
