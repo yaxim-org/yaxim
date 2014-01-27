@@ -117,6 +117,14 @@ public class XmppStreamHandler {
 			enablePacket.addAttribute("resume", "true");
 			mConnection.sendPacket(enablePacket);
 		}
+		synchronized(this) {
+			try {
+				this.wait(30000); // HACK: wait for SM answer to arrive
+			}
+			catch (InterruptedException e) {
+				// Ignore.
+			}
+		}
 	}
 
 	private void closeOnError() {
@@ -246,6 +254,7 @@ public class XmppStreamHandler {
 						if ("true".equals(resume) || "1".equals(resume)) {
 							sessionId = shPacket.getAttribute("id");
 						}
+						synchronized(XmppStreamHandler.this) { XmppStreamHandler.this.notify(); }
 					} else if ("resumed".equals(name)) {
 						Log.d(TAG, "SM resumed: " + sessionId);
 						incomingStanzaCount = previousIncomingStanzaCount;
@@ -262,6 +271,7 @@ public class XmppStreamHandler {
 						// Enable only after resend, so that the interceptor does not
 						// queue these again or increment outgoingStanzaCount.
 						isSmEnabled = true;
+						synchronized(XmppStreamHandler.this) { XmppStreamHandler.this.notify(); }
 					} else if ("failed".equals(name)) {
 						// Failed, shutdown and the parent will retry
 						Log.d(TAG, "SM failed! :(");
@@ -272,6 +282,7 @@ public class XmppStreamHandler {
 						// this is not supported in XMPPConnection's workflow.
 						mConnection.causeException(new Exception("XEP-0198 stream resumption failed"));
 						// isSmEnabled / isOutgoingSmEnabled are already false
+						synchronized(XmppStreamHandler.this) { XmppStreamHandler.this.notify(); }
 					}
 				}
 			}
