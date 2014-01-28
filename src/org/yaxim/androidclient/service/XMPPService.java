@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 
@@ -294,6 +295,11 @@ public class XMPPService extends GenericService {
 		if (mSmackable != null) {
 			cs = mSmackable.getConnectionState();
 		}
+
+		// HACK to trigger show-offline when XEP-0198 reconnect is going on
+		getContentResolver().notifyChange(RosterProvider.CONTENT_URI, null);
+		getContentResolver().notifyChange(RosterProvider.GROUPS_URI, null);
+		// end-of-HACK
 
 		broadcastConnectionState(cs);
 

@@ -1077,6 +1077,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		 }
 
 		private int getIconForPresenceMode(int presenceMode) {
+			if (!isConnected()) // override icon if we are offline
+				presenceMode = 0;
 			return StatusMode.values()[presenceMode].getDrawableId();
 		}
 	}
