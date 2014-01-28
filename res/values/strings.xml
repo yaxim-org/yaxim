@@ -9,7 +9,7 @@
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
-	<string name="conn_reconnect">Reconnect in %d seconds.</string>
+	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
 	<string name="conn_disconnected">Connection closed</string>
 	<string name="conn_no_network">No network connection</string>
 
