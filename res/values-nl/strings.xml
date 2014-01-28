@@ -5,20 +5,21 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Bezig met verbinden...</string>
-	<string name="conn_online">Aangemeld</string>
-	<string name="conn_offline">Afgemeld</string>
-	<string name="conn_empty_roster">Er zijn geen contacten om weer te geven!</string>
-	<string name="conn_reconnect">Probeer opnieuw te verbinden over %d seconden.</string>
-	<string name="conn_disconnected">Verbinding verbroken</string>
+	<string name="conn_disconnecting">Bezig met afsluiten ...</string>
+	<string name="conn_online">Online</string>
+	<string name="conn_offline">Offline</string>
+	<string name="conn_empty_roster">Er zijn geen contacten beschikbaar!</string>
+	<string name="conn_reconnect">Probeert te verbinden in %d seconden.</string>
+	<string name="conn_disconnected">Verbinding gesloten</string>
 	<string name="conn_networkchg">Netwerk gewijzigd.</string>
-	<string name="conn_no_network">No network connection</string>
+	<string name="conn_no_network">Geen netwerkverbinding</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Sluiten</string>
 	<string name="Global_authenticate_first">Maak a.u.b. eerst verbinding</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">Controleer adres!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welkom bij yaxim!</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Bericht van %s</string>
 	<string name="notification_anonymous_message">Bericht ontvangen</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Fout het verzenden van het bericht!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Bericht-attendering</string>
@@ -139,7 +143,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Client prioriteit</string>
 	<string name="account_prio_summ">Standaard: 0</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
+	<string name="account_prio_error">Toegelaten waarden: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Voer uw prioriteit in:</string>
 	<string name="account_port_title">Server Poort</string>
 	<string name="account_port_sum">Standaard: 5222</string>
@@ -166,8 +170,8 @@
 	<string name="deleteRosterItem_title">Contactpersoon verwijderen</string>
 	<string name="deleteChatHistory_text">Weet u zeker dat u alle berichten met %1$s (%2$s) wilt verwijderen?</string>
 	<string name="deleteChatHistory_title">Bericht geschiedenis verwijderen</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscriptionRequest_text">%1$s wil je toevogen als een contact:  \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Inschrijvingsverzoek</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ik:</string>
@@ -189,7 +193,7 @@
 	<string name="AboutDialog_title">Over yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Ontwikkelaars</string>
 	<string name="AboutDialog_DevelopersText">Contacteer de ontwikkelaars op http://yaxim.org of op freenode IRC: #yaxim</string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
+	<string name="AboutDialog_LicenceTitle">Licentie</string>
 	<string name="AboutDialog_Vote">Geef Feedback</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
@@ -252,14 +256,15 @@
 		SOFTWARE.
     </string>
 
-	<string name="status_available">Aangemeld</string>
+	<string name="status_available">Online</string>
 	<string name="status_away">Afwezig</string>
 	<string name="status_chat">Beschikbaar om te chatten</string>
 	<string name="status_dnd">Niet storen</string>
 	<string name="status_xa">Niet beschikbaar</string>
-	<string name="status_offline">Afgemeld</string>
+	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Argafål https://launchpad.net/~argafal
   Barry Zoot https://launchpad.net/~barryzoot
   Georg Lukas https://launchpad.net/~ge0rg
   Jeroen Tietema https://launchpad.net/~jtietema

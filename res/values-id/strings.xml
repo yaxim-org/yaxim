@@ -5,6 +5,7 @@
 	<!-- Connection state -->
 	<string name="conn_title">Status sambungan</string>
 	<string name="conn_connecting">Menghubungi erver</string>
+	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">Tersambung</string>
 	<string name="conn_offline">Terputus</string>
 	<string name="conn_empty_roster">Tidak ada daftar alamat</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Pesan dari %s</string>
 	<string name="notification_anonymous_message">Pesan diterima</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Pemberitahuan Pesan</string>

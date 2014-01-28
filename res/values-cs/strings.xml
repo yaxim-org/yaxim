@@ -5,6 +5,7 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Připojuji se k serveru...</string>
+	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">Připojen</string>
 	<string name="conn_offline">Odpojen</string>
 	<string name="conn_empty_roster">Žádné kontakty k zobrazení!</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Zpráva od %s</string>
 	<string name="notification_anonymous_message">Přijata nová zpráva</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Nastavení upozornění na zprávy</string>

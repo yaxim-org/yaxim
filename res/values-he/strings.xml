@@ -5,6 +5,7 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">כעת מתחבר לשרת…</string>
+	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">מקוון</string>
 	<string name="conn_offline">לא מקוון</string>
 	<string name="conn_empty_roster">אין אנשי קשר להצגה!</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">הודעה מאת %s</string>
 	<string name="notification_anonymous_message">הודעה התקבלה</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">התרעת הודעה</string>

@@ -5,20 +5,21 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Conectándose al servidor…</string>
+	<string name="conn_disconnecting">Desconectando...</string>
 	<string name="conn_online">En línea</string>
 	<string name="conn_offline">Fuera de Línea</string>
 	<string name="conn_empty_roster">No hay contactos para mostrar!</string>
 	<string name="conn_reconnect">Reconectar en %d segundos.</string>
 	<string name="conn_disconnected">Conexión cerrada</string>
 	<string name="conn_networkchg">La red ha cambiado</string>
-	<string name="conn_no_network">No network connection</string>
+	<string name="conn_no_network">Sin conexión de red</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Salida</string>
 	<string name="Global_authenticate_first">Por favor, conéctarse antes</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">Verifique el formato de la dirección!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">¡Bienvenido/a a yaxim!</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Mensaje de %s</string>
 	<string name="notification_anonymous_message">Mensaje recibido</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Errores al enviar el mensaje!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notificación de mensajes</string>
@@ -139,7 +143,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Prioridad Client</string>
 	<string name="account_prio_summ">Predefinido: 0 (permitido: -128 .. 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
+	<string name="account_prio_error">Valores permitidos: -128 a 127</string>
 	<string name="account_prio_dialog_title">Escribe  su prioridad:</string>
 	<string name="account_port_title">Puertas servidor</string>
 	<string name="account_port_sum">Standard : 5222</string>
@@ -166,8 +170,8 @@
 	<string name="deleteRosterItem_title">Eliminar contacto</string>
 	<string name="deleteChatHistory_text">¿Está seguro de que desea borrar todos los mensajes con %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Eliminar historial de charla</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscriptionRequest_text">%1$s quiere agregarte como contacto: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Pedido de suscripción</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Yo:</string>
@@ -204,6 +208,7 @@
   Adolfo Jayme https://launchpad.net/~fitoschido
   Argafål https://launchpad.net/~argafal
   Georg Lukas https://launchpad.net/~ge0rg
+  Javier Henderson https://launchpad.net/~javier-3
   Leonardo Gastón De Luca https://launchpad.net/~leorockway
   Matias Castillo Felmer https://launchpad.net/~slashytu
   SILVIO BARLETTA https://launchpad.net/~ik1bqd

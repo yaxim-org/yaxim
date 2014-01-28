@@ -5,6 +5,7 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">正在连接服务器…</string>
+	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">在线</string>
 	<string name="conn_offline">离线</string>
 	<string name="conn_empty_roster">没有联系人！</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">来自 %s 的消息</string>
 	<string name="notification_anonymous_message">收到消息</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">消息通知</string>

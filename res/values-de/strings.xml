@@ -5,6 +5,7 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Verbinde mit Server…</string>
+	<string name="conn_disconnecting">Trenne…</string>
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Keine Kontakte zum Anzeigen!</string>
@@ -32,6 +33,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
 	<string name="notification_anonymous_message">Mitteilung empfangen</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Fehler beim Nachrichtenversand!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Benachrichtigung</string>

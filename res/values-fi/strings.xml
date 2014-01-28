@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Yhdistetään palvelimeen...</string>
+	<string name="conn_disconnecting">Katkaistaan yhteyttä...</string>
+	<string name="conn_online">Verkossa</string>
+	<string name="conn_offline">Poissa verkosta</string>
+	<string name="conn_empty_roster">Ei kontakteja!</string>
+	<string name="conn_reconnect">Uudelleenyhdistäminen %d sekunnin kuluttua.</string>
+	<string name="conn_disconnected">Yhteys suljettiin</string>
+	<string name="conn_networkchg">Verkko vaihtui</string>
+	<string name="conn_no_network">Ei verkkoyhteyttä</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Poistu</string>
+	<string name="Global_authenticate_first">Ole hyvä, ja muodosta yhteys ensin</string>
+	<string name="Global_JID_hint">käyttäjä@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Tarkista osoitteen kelvollisuus</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Tervetuloa yaxim-viestimeen!</string>
+	<string name="StartupDialog_Summary">Yaxim on määriteltävä ennen käyttöä. Ole hyvä, ja anna Jabber käyttäjätunnuksesi sekä salasanasi.</string>
+	<string name="StartupDialog_pwHint">Syötä salasana</string>
+	<string name="StartupDialog_Username_title">Jabber-tunnus:</string>
+	<string name="StartupDialog_passwd_title">Salasana:</string>
+	<string name="StartupDialog_advanced">Lisäominaisuudet...</string>
+	<string name="StartupDialog_create_new">Luo uusi tunnus</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Viesti käyttäjältä %s</string>
+	<string name="notification_anonymous_message">Viesti vastaanotettu</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Virhe lähetettäessä viestiä!</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Viesti-ilmoitus</string>
+	<string name="led_title">Vilkkuva LED</string>
+	<string name="led_summ">Vilkauta puhelimen LEDiä viestin saapuessa</string>
+	<string name="vibr_title">Värinä</string>
+	<string name="vibr_summ">Värise viestin saapuessa</string>
+	<string-array name="vibr_values_displayed">
+		<item>Ei koskaan</item>
+		<item>Järjestelmäasetus</item>
+		<item>Aina</item>
+	</string-array>
+	<string name="ringtone_title">Soittoääni</string>
+	<string name="ringtone_summ">Vastaanotettujen viestien hälytysääni</string>
+	<string name="ticker_title">Viestin esikatselu</string>
+	<string name="ticker_summ">Näytä lähettäjä sekä viesti tilapalkissa</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_boot">Käynnistysasetukset</string>
+	<string name="statuspopup_name">Aseta tilasi</string>
+	<string name="showOffline_summ">Näytä aina kaikki kontaktit listalla</string>
+	<string name="showOffline_title">Näytä poissaolevat kontaktit</string>
+	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_title">Tilapalkin kuvake</string>
+
+	<string name="preftitle_debug">Virheenjäljitys</string>
+	<string name="smackdebug_summ">Paketti- ja virheenjäljitystiedot logcatin avulla (voi sisältää henkilökohtaista tietoa)</string>
+	<string name="smackdebug_title">SMACK virheenjäljitys</string>
+
+	<string name="reportcrash_title">Lähetä kaatumisraportit</string>
+	<string name="reportcrash_summ">Lähetä anonyymit kaatumisraportit kehittäjälle</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Ulkoasu</string>
+	<string name="FontChat_title">Keskusteluikkunan kirjaisinkoko</string>
+	<string name="FontChat_summ">Aseta keskusteluikkunan kirjaisinkoko</string>
+	<string name="FontChat_dialog">Keskusteluikkunan kirjaisinkoko</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">Teema</string>
+	<string-array name="pref_theme_entries">
+		<item>Tumma</item>
+		<item>Vaalea</item>
+	</string-array>
+	<string name="preftitle_ui">Ulkoasu</string>
+	<string-array name="fontSizesChat">
+		<item>pieni</item>
+		<item>normaali</item>
+		<item>suuri</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Lisää kontakti</string>
+	<string name="Menu_ShowOff">Näytä poissaolevat kontaktit</string>
+	<string name="Menu_HideOff">Piilota poissaolevat kontaktit</string>
+	<string name="Menu_AccSettings">Muokkaa tiliä</string>
+	<string name="Menu_Settings">Asetukset</string>
+	<string name="Menu_Status">Tila</string>
+	<string name="Menu_connect">Yhdistä</string>
+	<string name="Menu_disconnect">Katkaise yhteys</string>
+	<string name="Menu_about">Tietoja yaximista</string>
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Lisää kontakti</string>
+	<string name="addFriend_Summ">Ole hyvä ja anna tuttavasi Jabber tunnus, haluamasi kutsunimi sekä kohderyhmä.</string>
+	<string name="addFriend_aliasHint">Screen name</string>
+	<string name="addrosteritemaddgroupchoice">Lisää uuteen ryhmään</string>
+	<string name="NewGroup_EditTextField_Hint">Nimi uudelle ryhmälle</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Valinnat kohteelle %s</string>
+	<string name="roster_contextmenu_group_rename">Nimeä ryhmä uudelleen</string>
+	<string name="roster_contextmenu_contact_delete">Poista kontakti</string>
+	<string name="roster_contextmenu_contact_delmsg">Pyyhi viestihistoria</string>
+	<string name="roster_contextmenu_contact_open_chat">Avaa keskustelu</string>
+	<string name="roster_contextmenu_contact_rename">Nimeä uudelleen</string>
+	<string name="roster_contextmenu_contact_request_auth">Pyydä valtuutusta</string>
+	<string name="roster_contextmenu_contact_change_group">Vaihda ryhmää</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Kirjautumistiedot</string>
+	<string name="account_settings_title">Tiliasetukset</string>
+	<string name="account_options_title">Yhteysasetukset</string>
+	<string name="account_options_advanced">Lisäasetukset</string>
+	<string name="connstartup_title">Yhdistä käynnistettäessä</string>
+	<string name="connstartup_summOn">Siirry linjoille kun yaxim avataan</string>
+	<string name="connstartup_summOff">Älä yhdistä automaattisesti</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="account_jabberID_title">Jabber-tunnus</string>
+	<string name="account_jabberID_sum">esimerkki: minä@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Anna Jabber-tunnus:</string>
+	<string name="account_jabberPW_title">Tilin salasana</string>
+	<string name="account_jabberPW_sum">Jabber-tilisi salasana</string>
+	<string name="account_jabberPW_dialog_title">Anna salasana:</string>
+
+	<!-- accountprefs -->
+	<string name="account_resource_title">Client Resource</string>
+	<string name="account_resource_summ">Oletus: yaxim</string>
+	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Client Priority</string>
+	<string name="account_prio_summ">Oletus: 0 (sallittu: -128 .. 127)</string>
+	<string name="account_prio_error">Sallitut arvot: -128 .. 127</string>
+	<string name="account_prio_dialog_title">Anna prioriteetti:</string>
+	<string name="account_port_title">Palvelimen portti</string>
+	<string name="account_port_sum">Oletus: 5222</string>
+	<string name="account_port_dialog_title">Anna palvelimen portti:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Muu palvelin</string>
+	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
+	<string name="account_customserver_dialog_title">Anna palvelimen verkkotunnus:</string>
+	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">Vaadi SSL/TLS</string>
+	<string name="require_ssl_summ">Always encrypt server connection</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Valitse ryhmä</string>
+	<string name="setStatusmsgHint">Tilaviestisi</string>
+	<string name="setStatusTitle">Aseta tilasi</string>
+	<string name="RenameGroup_summ">Nimeä ryhmä %s uudelleen:</string>
+	<string name="RenameGroup_title">Nimeä ryhmä uudelleen</string>
+	<string name="RenameEntry_summ">Nimeä %1$s (%2$s) uudelleen:</string>
+	<string name="RenameEntry_title">Rename contact</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Vaihda ryhmää</string>
+	<string name="deleteRosterItem_text">Poistetaanko %1$s (%2$s) varmasti?</string>
+	<string name="deleteRosterItem_title">Poista kontakti</string>
+	<string name="deleteChatHistory_text">Poistetaanko kaikki kontaktin %1$s (%2$s) viestit?</string>
+	<string name="deleteChatHistory_title">Pyyhi viestihistoria</string>
+	<string name="subscriptionRequest_text">%1$s haluaa lisätä sinut kontakteihinsa: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Subscription Request</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Minä:</string>
+	<string name="toast_connectfail_message">Yhteys suljettu!</string>
+	<string name="toast_stored_offline">Viesti on tallennettu lähetystä varten.</string>
+	<string name="chat_enterMsgHint">Syötä viesti</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Lähetä uudelleen</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">Tietoja yaximista</string>
+	<string name="AboutDialog_DevelopersTitle">Kehittäjät</string>
+	<string name="AboutDialog_DevelopersText">Ota yhteyttä kehittäjiin sivustolla http://yaxim.org tai freenode IRC-verkostossa kanavalla #yaxim</string>
+	<string name="AboutDialog_LicenceTitle">Licensing</string>
+	<string name="AboutDialog_Vote">Anna palautetta</string>
+	<string name="AboutDialog_LicenceText">
+		This program is free software; you can redistribute
+		it and/or
+		modify it under the terms of the GNU General Public License
+		version 2
+		as published by the Free Software Foundation.
+		Link:
+		http://www.gnu.org/licenses/gpl-2.0.html\n
+		\n
+		Parts of this software are
+		provided under the MIT License:\n
+		\n
+		Copyright © 2009 Mads
+		Kristiansen, Nullwire ApS\n
+		\n
+		Permission is hereby granted, free of
+		charge, to any person obtaining
+		a copy
+		of this software and associated
+		documentation files (the
+		"Software"), to deal
+		in the Software without
+		restriction, including
+		without limitation the rights
+		to use, copy,
+		modify, merge, publish,
+		distribute, sublicense, and/or sell
+		copies of
+		the Software, and to
+		permit persons to whom the Software is
+		furnished to
+		do so, subject to
+		the following conditions:
+		\n
+		The above copyright notice
+		and this permission notice shall be
+		included in all
+		copies or
+		substantial portions of the Software.
+		\n
+		THE SOFTWARE IS PROVIDED "AS
+		IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT
+		LIMITED TO THE WARRANTIES OF
+		MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR
+		PURPOSE AND NONINFRINGEMENT.
+		IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY
+		CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN
+		AN ACTION OF CONTRACT,
+		TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN
+		CONNECTION WITH THE
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+    </string>
+
+	<string name="status_available">Verkossa</string>
+	<string name="status_away">Poissa</string>
+	<string name="status_chat">Free for chat</string>
+	<string name="status_dnd">Do not disturb</string>
+	<string name="status_xa">Not available</string>
+	<string name="status_offline">Poissa verkosta</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Jussi Karttunen https://launchpad.net/~jkarttunen</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">General</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Valitse kontakti</string>
+</resources>
