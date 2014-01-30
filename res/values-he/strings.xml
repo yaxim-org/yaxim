@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">כעת מתחבר לשרת…</string>
 	<string name="conn_disconnecting">כעת מתנתק…</string>
 	<string name="conn_online">מקוון</string>
@@ -21,8 +21,8 @@
 	<string name="Global_JID_malformed">בדוק צורת כתובת!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">ברוך בואך אל yaxim!</string>
-	<string name="StartupDialog_Summary">עליך להגדיר את yaxim טרם תעמוד לך האפשרות להפיק ממנה תועלת. אנא הזן מזהה Jabber וסיסמה.</string>
+	<string name="StartupDialog_Title">ברוך בואך אל Bruno!</string>
+	<string name="StartupDialog_Summary">עליך להגדיר את Bruno טרם תעמוד לך האפשרות להפיק ממנה תועלת. אנא הזן מזהה Jabber וסיסמה.</string>
 	<string name="StartupDialog_pwHint">הזן סיסמה</string>
 	<string name="StartupDialog_Username_title">מזהה Jabber:</string>
 	<string name="StartupDialog_passwd_title">סיסמה:</string>
@@ -57,7 +57,7 @@
 	<string name="statuspopup_name">קבע את המצב שלך</string>
 	<string name="showOffline_summ">הצג תמיד את כל אנשי הקשר בתוך הרשימה</string>
 	<string name="showOffline_title">הצג אנשי קשר לא מקוונים</string>
-	<string name="foregroundService_summ">השאר את yaxim בזיכרון כדי להבטיח חיבור תמידי (שירות מרקע)</string>
+	<string name="foregroundService_summ">השאר את Bruno בזיכרון כדי להבטיח חיבור תמידי (שירות מרקע)</string>
 	<string name="foregroundService_title">צלמית שורת מצב</string>
 
 	<string name="preftitle_debug">דיבאג</string>
@@ -101,7 +101,7 @@
 	<string name="Menu_Status">מצב</string>
 	<string name="Menu_connect">התחבר</string>
 	<string name="Menu_disconnect">התנתק</string>
-	<string name="Menu_about">אודות yaxim</string>
+	<string name="Menu_about">אודות Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">הוסף איש קשר</string>
@@ -126,7 +126,7 @@
 	<string name="account_options_title">אפשרויות חיבור</string>
 	<string name="account_options_advanced">אפשרויות מתקדמות</string>
 	<string name="connstartup_title">התחבר בעת הפעלה</string>
-	<string name="connstartup_summOn">הפוך למקוון כאשר yaxim מופעל</string>
+	<string name="connstartup_summOn">הפוך למקוון כאשר Bruno מופעל</string>
 	<string name="connstartup_summOff">אל תתחבר אוטומטית</string>
 	<string name="carbons_title">הודעות העתק (XEP-0280)</string>
 	<string name="carbons_summ">בקש העתקי הודעה מהלקוח(ות) האחר(ים) שלך</string>
@@ -139,9 +139,9 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">משאב לקוח</string>
-	<string name="account_resource_summ">ברירת מחדל: yaxim</string>
+	<string name="account_resource_summ">ברירת מחדל: Bruno</string>
 	<string name="account_resource_dialog_title">הזן משאב:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">עדיפות לקוח</string>
 	<string name="account_prio_summ">ברירת מחדל: 0 (מותרים: -128 .. 127)</string>
 	<string name="account_prio_error">ערכים מורשים: -128 .. 127</string>
@@ -191,9 +191,9 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">אודות yaxim</string>
+	<string name="AboutDialog_title">אודות Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">מפתחים</string>
-	<string name="AboutDialog_DevelopersText">צרו קשר עם המפתח באתר http://yaxim.org או ברשת IRC ‏freenode: ‏yaxim#</string>
+	<string name="AboutDialog_DevelopersText">צרו קשר עם המפתח באתר http://yaxim.org או ברשת IRC ‏freenode: ‏Bruno#</string>
 	<string name="AboutDialog_LicenceTitle">רישוי</string>
 	<string name="AboutDialog_Vote">העניקו משוב</string>
 	<string name="AboutDialog_LicenceText">תוכנית זו הינה תכנה חופשית; זכותכם להפיצה ו/או לשנותה בכפוף לתנאי הרשיון GNU General Public License גרסא 2 כפי שזה פורסם על ידי Free Software Foundation. קישור: http://www.gnu.org/licenses/gpl-2.0.html\n \n חלקים של תוכנה זו מסופקים תחת הרשיון MIT:\n \n זכויות יוצרים © 2009 Mads Kristiansen, Nullwire ApS\n \n רשות מוענקת בזאת, חינם אין כסף, לכל אדם אשר משיג עותק של תכנה זו וגם קבצי תיעוד מסונפים ("התכנה"), להתעסק בתכנה ללא הגבלה, לרבות ללא הגבלת הזכויות להשתמש, להעתיק, לשנות, למזג, לפרסם, להפיץ, להעניק רשיונות נגזרים, ו/או למכור עותקים של התכנה, וגם להתיר לאנשים אשר להם התוכנה מסופקת לעשות כן, כפופים ומוכנעים לתנאים שלהלן: \n הודעת זכויות יוצרים לעיל וכן הודעת היתר זו יוכללו בכל העותקים או בחלקים מהותיים של התכנה. \n התכנה הינה מסופקת "AS IS" (כמות שהיא), ללא כתב אחריות מכל סוג שהוא, בין אם באופן מפורש או בין אם באופן מרומז, כולל אך לא מוגבלת לחבויות של סחירות, התאמה לתכלית מסוימת ובלתי מפרה. בשום מקרה המחברים או המחזיקים בזכויות יוצרים לא יישאו באחריות עבור כל תובענה, נזקים או חבות אחרת, בין אם בתוך פעולה של הסכם, עוולה או אחרת, אשר עולה מן, מתוך או בנוגע לתכנה או לשימוש או דין ודברים אחרים בתכנה.</string>

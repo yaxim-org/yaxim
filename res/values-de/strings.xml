@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Verbinde mit Server…</string>
 	<string name="conn_disconnecting">Trenne…</string>
 	<string name="conn_online">Online</string>
@@ -21,8 +21,8 @@
 	<string name="Global_JID_malformed">Adressformat überprüfen!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Willkommen zu yaxim!</string>
-	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte geben Sie Ihre Jabber-ID und Ihr Passwort ein.</string>
+	<string name="StartupDialog_Title">Willkommen zu Bruno!</string>
+	<string name="StartupDialog_Summary">Sie müssen Bruno zuerst konfigurieren. Bitte geben Sie Ihre Jabber-ID und Ihr Passwort ein.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passwort:</string>
@@ -101,7 +101,7 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Verbinden</string>
 	<string name="Menu_disconnect">Trennen</string>
-	<string name="Menu_about">Über yaxim</string>
+	<string name="Menu_about">Über Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Neuer Kontakt</string>
@@ -126,7 +126,7 @@
 	<string name="account_options_title">Verbindungseinstellungen</string>
 	<string name="account_options_advanced">Erweiterte Einstellungen</string>
 	<string name="connstartup_title">Automatisch verbinden</string>
-	<string name="connstartup_summOn">Beim Start von yaxim verbinden</string>
+	<string name="connstartup_summOn">Beim Start von Bruno verbinden</string>
 	<string name="connstartup_summOff">Nicht automatisch verbinden</string>
 	<string name="carbons_title">Nachrichtenkopien (XEP-0280)</string>
 	<string name="carbons_summ">Gesprächsverlauf über mehrere Chat-Anwendungen abgleichen</string>
@@ -139,9 +139,9 @@
 
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client-Ressource</string>
-	<string name="account_resource_summ">Standard: yaxim</string>
+	<string name="account_resource_summ">Standard: Bruno</string>
 	<string name="account_resource_dialog_title">Ressource eingeben:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Client-Priorität</string>
 	<string name="account_prio_summ">Standard: 0 (erlaubt: -128 .. 127)</string>
 	<string name="account_prio_error">Erlaubte Werte: -128 .. 127</string>
@@ -191,7 +191,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Über yaxim</string>
+	<string name="AboutDialog_title">Über Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Entwickler</string>
 	<string name="AboutDialog_DevelopersText">Kontakt mit den Entwicklern auf http://yaxim.org oder im freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Lizenzierung</string>
