@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Conectándose al servidor…</string>
 	<string name="conn_disconnecting">Desconectando...</string>
 	<string name="conn_online">En línea</string>
@@ -21,8 +21,8 @@
 	<string name="Global_JID_malformed">Verifique el formato de la dirección!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">¡Bienvenido/a a yaxim!</string>
-	<string name="StartupDialog_Summary">Necesita configurar yaxim antes de usarlo. Por favor, escribe su identidad de Jabber y su contaseña.</string>
+	<string name="StartupDialog_Title">¡Bienvenido/a a Bruno!</string>
+	<string name="StartupDialog_Summary">Necesita configurar Bruno antes de usarlo. Por favor, escribe su identidad de Jabber y su contaseña.</string>
 	<string name="StartupDialog_pwHint">Escribe la contraseña</string>
 	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Identidad Jabber:</string>
@@ -61,7 +61,7 @@
 	<string name="showOffline_title">Mostrar contactos desconectados</string>
 	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
 	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Mantener yaxim en memoria para asegurar conexiones persistentes (servicio en primer plano)</string>
+	<string name="foregroundService_summ">Mantener Bruno en memoria para asegurar conexiones persistentes (servicio en primer plano)</string>
 	<string name="foregroundService_title">Icono de barra de estado</string>
 
 	<string name="preftitle_debug">Depuración</string>
@@ -106,7 +106,7 @@
 	<string name="Menu_Status">Estatus</string>
 	<string name="Menu_connect">Conectar</string>
 	<string name="Menu_disconnect">Desconectar</string>
-	<string name="Menu_about">Acerca de yaxim</string>
+	<string name="Menu_about">Acerca de Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Añadir un contacto</string>
@@ -132,7 +132,7 @@
 	<string name="account_options_title">Opciones de conexión</string>
 	<string name="account_options_advanced">Opciones avanzadas</string>
 	<string name="connstartup_title">Conectar al encauzamiento</string>
-	<string name="connstartup_summOn">Iniciar sesión cuando se abre yaxim</string>
+	<string name="connstartup_summOn">Iniciar sesión cuando se abre Bruno</string>
 	<string name="connstartup_summOff">No conectar automáticamente</string>
 	<string name="carbons_title">Messaje Carbons (XEP-0280</string>
 	<string name="carbons_summ">Pregunta copia tu messajes para  otros acreditación</string>
@@ -151,9 +151,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">centro de consulta Client</string>
-	<string name="account_resource_summ">Standard : yaxim</string>
+	<string name="account_resource_summ">Standard : Bruno</string>
 	<string name="account_resource_dialog_title">Escribe tu habilidad :</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Prioridad Client</string>
 	<string name="account_prio_summ">Predefinido: 0 (permitido: -128 .. 127)</string>
 	<string name="account_prio_error">Valores permitidos: -128 a 127</string>
@@ -203,7 +203,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Acerca de yaxim</string>
+	<string name="AboutDialog_title">Acerca de Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Desarrolladores</string>
 	<string name="AboutDialog_DevelopersText">Contacte a los desarrolladores en http://yaxim.org o en IRC freenode: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>

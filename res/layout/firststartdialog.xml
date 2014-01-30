@@ -42,7 +42,7 @@
 			android:padding="2sp"
 			style="?attr/dialogTextColor"
 		/>
-	<org.yaxim.androidclient.widget.AutoCompleteJidEdit
+	<org.yaxim.bruno.widget.AutoCompleteJidEdit
 			android:id="@+id/StartupDialog_JID_EditTextField"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Ansluter till server…</string>
 	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">Ansluten</string>
@@ -21,7 +21,7 @@
 	<string name="Global_JID_malformed">Kontrollera adressformat!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Välkommen till yaxim!</string>
+	<string name="StartupDialog_Title">Välkommen till Bruno!</string>
 	<string name="StartupDialog_Summary">Vissa inställningar måste göras innan du kan börja använda programmet. Ange ditt Jabber-ID och lösenord.</string>
 	<string name="StartupDialog_pwHint">Ange lösenord</string>
 	<string name="StartupDialog_pwrHint">Repeat password</string>
@@ -61,7 +61,7 @@
 	<string name="showOffline_title">Visa frånkopplade kontakter</string>
 	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
 	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Behåll yaxim i minnet för att säkerställa bibehållen anslutning (tjänsten körs i förgrunden)</string>
+	<string name="foregroundService_summ">Behåll Bruno i minnet för att säkerställa bibehållen anslutning (tjänsten körs i förgrunden)</string>
 	<string name="foregroundService_title">Statusfältikon</string>
 
 	<string name="preftitle_debug">Felsökning</string>
@@ -106,7 +106,7 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Anslut</string>
 	<string name="Menu_disconnect">Koppla från</string>
-	<string name="Menu_about">Om yaxim</string>
+	<string name="Menu_about">Om Bruno</string>
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Lägg till kontakt</string>
@@ -132,7 +132,7 @@
 	<string name="account_options_title">Anslutningsalternativ</string>
 	<string name="account_options_advanced">Avancerade alternativ</string>
 	<string name="connstartup_title">Anslut vid programstart</string>
-	<string name="connstartup_summOn">Anslut när yaxim startas</string>
+	<string name="connstartup_summOn">Anslut när Bruno startas</string>
 	<string name="connstartup_summOff">Anslut inte automatiskt</string>
 	<string name="carbons_title">"Message Carbons" (XEP-0280)</string>
 	<string name="carbons_summ">Begär kopior av meddelanden från andra klienter</string>
@@ -151,9 +151,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Instans</string>
-	<string name="account_resource_summ">Förvalt: yaxim</string>
+	<string name="account_resource_summ">Förvalt: Bruno</string>
 	<string name="account_resource_dialog_title">Ange instans:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Prioritet</string>
 	<string name="account_prio_summ">Förvalt: 0 (tillåtet: -128 .. 127)</string>
 	<string name="account_prio_error">Tillåtna värden: -128 .. 127</string>
@@ -203,7 +203,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Om yaxim</string>
+	<string name="AboutDialog_title">Om Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Utvecklare</string>
 	<string name="AboutDialog_DevelopersText">Kontakta utvecklarna på http://yaxim.org eller freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>

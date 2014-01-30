@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">Status sambungan</string>
@@ -61,7 +61,7 @@
 	<string name="showOffline_title">Show offline contacts</string>
 	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
 	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Keep Bruno in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Debugging</string>
@@ -133,7 +133,7 @@
 	<string name="account_options_title">Connecting Options</string>
 	<string name="account_options_advanced">Advanced Options</string>
 	<string name="connstartup_title">Connect at Startup</string>
-	<string name="connstartup_summOn">Go online when yaxim is opened</string>
+	<string name="connstartup_summOn">Go online when Bruno is opened</string>
 	<string name="connstartup_summOff">Do not automatically connect</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
@@ -152,9 +152,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client Resource</string>
-	<string name="account_resource_summ">Default: yaxim</string>
+	<string name="account_resource_summ">Default: Bruno</string>
 	<string name="account_resource_dialog_title">Enter your resource:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Client Priority</string>
 	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_error">Allowed values: -128 .. 127</string>
