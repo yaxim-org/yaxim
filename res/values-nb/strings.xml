@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Kobler til tjener…</string>
 	<string name="conn_disconnecting">Kobler fra…</string>
 	<string name="conn_online">Tilkoblet</string>
@@ -24,8 +24,8 @@
 	<string name="Global_JID_malformed">Se over adresseformatet.</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Velkommen til yaxim!</string>
-	<string name="StartupDialog_Summary">Du må sette opp yaxim før du bruker det. Skriv inn din Jabber-ID og passordet ditt.</string>
+	<string name="StartupDialog_Title">Velkommen til Bruno!</string>
+	<string name="StartupDialog_Summary">Du må sette opp Bruno før du bruker det. Skriv inn din Jabber-ID og passordet ditt.</string>
 	<string name="StartupDialog_pwHint">Skriv inn passord</string>
 	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
@@ -42,9 +42,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Melding fra %s</string>
 	<string name="notification_anonymous_message">Melding mottatt</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s i %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Svar</string>
@@ -84,7 +84,7 @@
 	<string name="showOffline_title">Vis frakoblede kontakter</string>
 	<string name="enableGroups_summ">Arranger kontakter etter gruppetilhørighet</string>
 	<string name="enableGroups_title">Vis kontaktgrupper</string>
-	<string name="foregroundService_summ">Behold yaxim i minnet for å besørge alltid-på tilkobling (forgrunnstjeneste)</string>
+	<string name="foregroundService_summ">Behold Bruno i minnet for å besørge alltid-på tilkobling (forgrunnstjeneste)</string>
 	<string name="foregroundService_title">Statusfeltikon</string>
 
 	<string name="preftitle_debug">Feilsøking</string>
@@ -130,7 +130,7 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Koble til</string>
 	<string name="Menu_disconnect">Koble fra</string>
-	<string name="Menu_about">Om yaxim</string>
+	<string name="Menu_about">Om Bruno</string>
 	<string name="Menu_muc">Legg til gruppesludring</string>
 	<string name="Menu_mark_all_as_read">Merk alt som lest</string>
 	<string name="Menu_send_invitation">Opprett invitasjon</string>
@@ -180,9 +180,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Klientressurs</string>
-	<string name="account_resource_summ">Forvalg: yaxim</string>
+	<string name="account_resource_summ">Forvalg: Bruno</string>
 	<string name="account_resource_dialog_title">Skriv inn din ressurs:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Klientprioritet</string>
 	<string name="account_prio_summ">Forvalg: 0 (tillatt: -128 .. 127)</string>
 	<string name="account_prio_error">Tillatte verdier: -128 .. 127</string>
@@ -237,7 +237,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Om yaxim</string>
+	<string name="AboutDialog_title">Om Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Utviklere</string>
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Lisens</string>

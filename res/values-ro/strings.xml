@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Conectare la server…</string>
 	<string name="conn_disconnecting">Deconectare…</string>
 	<string name="conn_online">Conectat</string>
@@ -24,8 +24,8 @@
 	<string name="Global_JID_malformed">Verificați formatul adresei!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Bine ați venit la yaxim!</string>
-	<string name="StartupDialog_Summary">Trebuie să configurați yaxim înainte de a-l folosi. Vă rugăm să introduceți ID-ul Jabber și parola.</string>
+	<string name="StartupDialog_Title">Bine ați venit la Bruno!</string>
+	<string name="StartupDialog_Summary">Trebuie să configurați Bruno înainte de a-l folosi. Vă rugăm să introduceți ID-ul Jabber și parola.</string>
 	<string name="StartupDialog_pwHint">Introducere parolă</string>
 	<string name="StartupDialog_pwshowHint">Arată parola</string>
 	<string name="StartupDialog_Username_title">ID Jabber:</string>
@@ -42,9 +42,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Mesaj de la %s</string>
 	<string name="notification_anonymous_message">Mesaj primit</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s în %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Răspunde</string>
@@ -84,7 +84,7 @@
 	<string name="showOffline_title">Arată contactele deconectate</string>
 	<string name="enableGroups_summ">Aranjare contacte în grupuri</string>
 	<string name="enableGroups_title">Arată grupurile contactelor</string>
-	<string name="foregroundService_summ">Se păstrează yaxim în memorie pentru a asigura o conexiune în permanență (serviciul în prim-plan)</string>
+	<string name="foregroundService_summ">Se păstrează Bruno în memorie pentru a asigura o conexiune în permanență (serviciul în prim-plan)</string>
 	<string name="foregroundService_title">Iconița în bara de stare</string>
 
 	<string name="preftitle_debug">Rapoarte erori</string>
@@ -132,7 +132,7 @@
 	<string name="Menu_disconnect">Stare</string>
 	<string name="Menu_about">Conectare</string>
 	<string name="Menu_muc">Deconectare</string>
-	<string name="Menu_mark_all_as_read">Despre yaxim</string>
+	<string name="Menu_mark_all_as_read">Despre Bruno</string>
 	<string name="Menu_send_invitation">Adaugă discuție de grup</string>
     <string name="Menu_userlist">Marchează totul ca citit</string>
 
@@ -182,11 +182,11 @@
 	<string name="account_resource_title">Vă rugăm să așteptați, se schimbă parola…</string>
 	<string name="account_resource_summ">Parola a fost schimbată cu succes.</string>
 	<string name="account_resource_dialog_title">Eroare la schimbarea parolei: %s</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Nume resursa client</string>
-	<string name="account_prio_summ">Implicit: yaxim</string>
+	<string name="account_prio_summ">Implicit: Bruno</string>
 	<string name="account_prio_error">Introducere nume resursa:</string>
-	<string name="account_prio_dialog_title">yaxim</string>
+	<string name="account_prio_dialog_title">Bruno</string>
 	<string name="account_port_title">Prioritate client</string>
 	<string name="account_port_sum">Implicit: 0 (permis: -128 .. 127)</string>
 	<string name="account_port_dialog_title">Valori permise: -128 .. 127</string>
@@ -307,7 +307,7 @@
 	<string name="status_away">Introduceți mesajul</string>
 	<string name="status_chat">Citează</string>
 	<string name="status_dnd">Retrimite</string>
-	<string name="status_xa">Despre yaxim</string>
+	<string name="status_xa">Despre Bruno</string>
 	<string name="status_offline">Deconectat</string>
 
 	<string name="translator_credits">Dezvoltatori

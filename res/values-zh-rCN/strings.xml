@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">正在连接服务器…</string>
 	<string name="conn_disconnecting">断开连接...</string>
 	<string name="conn_online">在线</string>
@@ -28,8 +28,8 @@
 	<string name="Global_JID_malformed">检查地址格式</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
-	<string name="StartupDialog_Summary">你需要先配置yaxim才能使用。请输入你的Jabber标识和密码。</string>
+	<string name="StartupDialog_Title">欢迎使用Bruno！</string>
+	<string name="StartupDialog_Summary">你需要先配置Bruno才能使用。请输入你的Jabber标识和密码。</string>
 	<string name="StartupDialog_pwHint">输入密码</string>
 	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID</string>
@@ -46,9 +46,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">来自 %s 的消息</string>
 	<string name="notification_anonymous_message">收到消息</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Reply</string>
@@ -88,7 +88,7 @@
 	<string name="showOffline_title">显示离线联系人</string>
 	<string name="enableGroups_summ">移动该联系人到分组中</string>
 	<string name="enableGroups_title">显示联系人分组</string>
-	<string name="foregroundService_summ">保持yaxim一直在线（后台挂机）</string>
+	<string name="foregroundService_summ">保持Bruno一直在线（后台挂机）</string>
 	<string name="foregroundService_title">状态栏图标</string>
 
 	<string name="preftitle_debug">正在调试</string>
@@ -134,7 +134,7 @@
 	<string name="Menu_Status">状态</string>
 	<string name="Menu_connect">连接</string>
 	<string name="Menu_disconnect">断开连接</string>
-	<string name="Menu_about">关于 yaxim</string>
+	<string name="Menu_about">关于 Bruno</string>
 	<string name="Menu_muc">Add group chat</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
@@ -184,9 +184,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">客户来源</string>
-	<string name="account_resource_summ">默认: yaxim</string>
+	<string name="account_resource_summ">默认: Bruno</string>
 	<string name="account_resource_dialog_title">输入你的来源</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">客户端优先级</string>
 	<string name="account_prio_summ">默认：０（允许范围：-128..127）</string>
 	<string name="account_prio_error">输入范围: -128 .. 127</string>
@@ -241,7 +241,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">关于 yaxim</string>
+	<string name="AboutDialog_title">关于 Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">开发者</string>
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">许可</string>

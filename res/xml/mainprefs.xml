@@ -8,8 +8,8 @@
 		android:summary="">
 
 		<intent android:action="android.intent.action.MAIN"
-			android:targetPackage="org.yaxim.androidclient"
-			android:targetClass="org.yaxim.androidclient.preferences.AccountPrefs" />
+			android:targetPackage="org.yaxim.bruno"
+			android:targetClass="org.yaxim.bruno.preferences.AccountPrefs" />
 	</PreferenceScreen>
 	</PreferenceCategory>
 
@@ -19,8 +19,8 @@
 			android:summary="">
 
 			<intent android:action="android.intent.action.MAIN"
-					android:targetPackage="org.yaxim.androidclient"
-					android:targetClass="org.yaxim.androidclient.preferences.NotificationPrefs" />
+					android:targetPackage="org.yaxim.bruno"
+					android:targetClass="org.yaxim.bruno.preferences.NotificationPrefs" />
 		</PreferenceScreen>
 		<PreferenceScreen
 			android:title="@string/preftitle_notify_muc"
@@ -28,8 +28,8 @@
 
 			<intent android:action="android.intent.action.MAIN"
 					android:data="muc"
-					android:targetPackage="org.yaxim.androidclient"
-					android:targetClass="org.yaxim.androidclient.preferences.NotificationPrefs" />
+					android:targetPackage="org.yaxim.bruno"
+					android:targetClass="org.yaxim.bruno.preferences.NotificationPrefs" />
 		</PreferenceScreen>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_general">

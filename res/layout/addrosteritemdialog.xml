@@ -22,7 +22,7 @@
 			android:paddingBottom="20dp"
 			style="?attr/dialogTextColor"
 		/>
-	<org.yaxim.androidclient.widget.AutoCompleteJidEdit
+	<org.yaxim.bruno.widget.AutoCompleteJidEdit
 			android:id="@+id/AddContact_EditTextField"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
 			android:hint="@string/addFriend_aliasHint"
 			style="@style/dialogEditText"
 			/>
-		<org.yaxim.androidclient.dialogs.GroupNameView
+		<org.yaxim.bruno.dialogs.GroupNameView
 			android:id="@+id/AddRosterItem_GroupName"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"

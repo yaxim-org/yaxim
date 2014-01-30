@@ -16,7 +16,7 @@
 	android:layout_marginBottom="15dp"
 	android:visibility="gone"
 	/>
-    <org.yaxim.androidclient.widget.AutoCompleteJidEdit
+    <org.yaxim.bruno.widget.AutoCompleteJidEdit
 	android:id="@+id/muc_new_jid"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"

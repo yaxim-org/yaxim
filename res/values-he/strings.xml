@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">כעת מתחבר לשרת…</string>
 	<string name="conn_disconnecting">כעת מתנתק…</string>
 	<string name="conn_online">מקוון</string>
@@ -28,8 +28,8 @@
 	<string name="Global_JID_malformed">בדוק צורת כתובת!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">ברוך בואך אל yaxim!</string>
-	<string name="StartupDialog_Summary">עליך להגדיר את yaxim טרם תעמוד לך האפשרות להפיק ממנה תועלת. אנא הזן מזהה Jabber וסיסמה.</string>
+	<string name="StartupDialog_Title">ברוך בואך אל Bruno!</string>
+	<string name="StartupDialog_Summary">עליך להגדיר את Bruno טרם תעמוד לך האפשרות להפיק ממנה תועלת. אנא הזן מזהה Jabber וסיסמה.</string>
 	<string name="StartupDialog_pwHint">הזן סיסמה</string>
 	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">מזהה Jabber:</string>
@@ -46,9 +46,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">הודעה מאת %s</string>
 	<string name="notification_anonymous_message">הודעה התקבלה</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Reply</string>
@@ -88,7 +88,7 @@
 	<string name="showOffline_title">הצג אנשי קשר לא מקוונים</string>
 	<string name="enableGroups_summ">ארגן אנשי קשר לפי הקבוצות שלהם</string>
 	<string name="enableGroups_title">הצג קבוצות איש קשר</string>
-	<string name="foregroundService_summ">השאר את yaxim בזיכרון כדי להבטיח חיבור תמידי (שירות מרקע)</string>
+	<string name="foregroundService_summ">השאר את Bruno בזיכרון כדי להבטיח חיבור תמידי (שירות מרקע)</string>
 	<string name="foregroundService_title">צלמית שורת מצב</string>
 
 	<string name="preftitle_debug">דיבאג</string>
@@ -134,7 +134,7 @@
 	<string name="Menu_Status">מצב</string>
 	<string name="Menu_connect">התחבר</string>
 	<string name="Menu_disconnect">התנתק</string>
-	<string name="Menu_about">אודות yaxim</string>
+	<string name="Menu_about">אודות Bruno</string>
 	<string name="Menu_muc">Add group chat</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
@@ -184,9 +184,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">משאב לקוח</string>
-	<string name="account_resource_summ">ברירת מחדל: yaxim</string>
+	<string name="account_resource_summ">ברירת מחדל: Bruno</string>
 	<string name="account_resource_dialog_title">הזן משאב:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">עדיפות לקוח</string>
 	<string name="account_prio_summ">ברירת מחדל: 0 (מותרים: -128 .. 127)</string>
 	<string name="account_prio_error">ערכים מורשים: -128 .. 127</string>
@@ -241,7 +241,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">אודות yaxim</string>
+	<string name="AboutDialog_title">אודות Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">מפתחים</string>
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">רישוי</string>

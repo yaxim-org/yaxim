@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">サーバーに接続しています…</string>
 	<string name="conn_disconnecting">切断しています…</string>
 	<string name="conn_online">オンライン</string>
@@ -24,8 +24,8 @@
 	<string name="Global_JID_malformed">アドレスの形式を確認してください!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">yaximへようこそ！</string>
-	<string name="StartupDialog_Summary">yaxim を使用する前に、yaxim を設定する必要があります。 あなたの Jabber ID とパスワードを入力してください。</string>
+	<string name="StartupDialog_Title">Brunoへようこそ！</string>
+	<string name="StartupDialog_Summary">Bruno を使用する前に、Bruno を設定する必要があります。 あなたの Jabber ID とパスワードを入力してください。</string>
 	<string name="StartupDialog_pwHint">パスワードを入力</string>
 	<string name="StartupDialog_pwshowHint">パスワードを表示</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
@@ -42,9 +42,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">%s さんからのメッセージ</string>
 	<string name="notification_anonymous_message">メッセージを受信しました</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%2$s の %1$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">返信</string>
@@ -84,7 +84,7 @@
 	<string name="showOffline_title">オフラインの連絡先を表示する</string>
 	<string name="enableGroups_summ">連絡先をグループ別に整理する</string>
 	<string name="enableGroups_title">連絡先グループを表示する</string>
-	<string name="foregroundService_summ">yaxim を常時接続 (フォアグラウンドサービス) するために、メモリに保存する</string>
+	<string name="foregroundService_summ">Bruno を常時接続 (フォアグラウンドサービス) するために、メモリに保存する</string>
 	<string name="foregroundService_title">ステータスバーアイコン</string>
 
 	<string name="preftitle_debug">デバッグ</string>
@@ -130,7 +130,7 @@
 	<string name="Menu_Status">ステータス</string>
 	<string name="Menu_connect">接続</string>
 	<string name="Menu_disconnect">切断</string>
-	<string name="Menu_about">yaxim について</string>
+	<string name="Menu_about">Bruno について</string>
 	<string name="Menu_muc">グループチャットを追加</string>
 	<string name="Menu_mark_all_as_read">すべて既読にする</string>
 	<string name="Menu_send_invitation">招待状を作成</string>
@@ -180,9 +180,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">クライアント リソース</string>
-	<string name="account_resource_summ">デフォルト: yaxim</string>
+	<string name="account_resource_summ">デフォルト: Bruno</string>
 	<string name="account_resource_dialog_title">リソースを入力してください:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">クライアントの優先度</string>
 	<string name="account_prio_summ">デフォルト: 0 (可能な範囲: -128 .. 127)</string>
 	<string name="account_prio_error">可能な範囲は: -128 .. 127</string>
@@ -237,7 +237,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">yaxim について</string>
+	<string name="AboutDialog_title">Bruno について</string>
 	<string name="AboutDialog_DevelopersTitle">開発者</string>
 	<string name="AboutDialog_DevelopersText">連絡先</string>
 	<string name="AboutDialog_LicenceTitle">ライセンス</string>

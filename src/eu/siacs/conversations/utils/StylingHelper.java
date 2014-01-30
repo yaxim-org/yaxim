@@ -46,7 +46,7 @@ import android.text.style.TypefaceSpan;
 import android.util.DisplayMetrics;
 import android.widget.EditText;
 
-import org.yaxim.androidclient.util.MessageStylingHelper;
+import org.yaxim.bruno.util.MessageStylingHelper;
 
 import java.util.Arrays;
 import java.util.List;

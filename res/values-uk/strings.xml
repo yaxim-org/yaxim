@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Підключення до сервера...</string>
 	<string name="conn_disconnecting">Відключення...</string>
 	<string name="conn_online">На зв’язку</string>
@@ -24,7 +24,7 @@
 	<string name="Global_JID_malformed">Перевірте формат!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Вітаємо в yaxim</string>
+	<string name="StartupDialog_Title">Вітаємо в Bruno</string>
 	<string name="StartupDialog_Summary">Для початку користування вам необхідно налаштувати програму. Будь ласка, введіть ваш Jabber ID та пароль.</string>
 	<string name="StartupDialog_pwHint">Введіть пароль</string>
 	<string name="StartupDialog_pwshowHint">Show password</string>
@@ -42,9 +42,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Повідомлення від %s</string>
 	<string name="notification_anonymous_message">Отримано повідомлення</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s в %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Відповісти</string>
@@ -84,7 +84,7 @@
 	<string name="showOffline_title">Показувати співрозмовників, що відключені</string>
 	<string name="enableGroups_summ">Впорядкувати контакти по групам</string>
 	<string name="enableGroups_title">Показувати групи контактів</string>
-	<string name="foregroundService_summ">Запустити yaxim в режимі сервісу</string>
+	<string name="foregroundService_summ">Запустити Bruno в режимі сервісу</string>
 	<string name="foregroundService_title">Іконка в статусному рідку</string>
 
 	<string name="preftitle_debug">Діагностика</string>
@@ -130,7 +130,7 @@
 	<string name="Menu_Status">Статус</string>
 	<string name="Menu_connect">З’єднатися</string>
 	<string name="Menu_disconnect">Від’єднатися</string>
-	<string name="Menu_about">Про yaxim</string>
+	<string name="Menu_about">Про Bruno</string>
 	<string name="Menu_muc">Додати конференцію</string>
 	<string name="Menu_mark_all_as_read">Позначити всі як прочитані</string>
 	<string name="Menu_send_invitation">Створити запрошення</string>
@@ -180,9 +180,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ресурс</string>
-	<string name="account_resource_summ">За замовчування: yaxim</string>
+	<string name="account_resource_summ">За замовчування: Bruno</string>
 	<string name="account_resource_dialog_title">Введіть ваш ресурс:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Приоритет</string>
 	<string name="account_prio_summ">За замовчуванням: 0 (дозволено: -128 .. 127)</string>
 	<string name="account_prio_error">Допустимі значення: -128 .. 127</string>
@@ -237,7 +237,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Про yaxim</string>
+	<string name="AboutDialog_title">Про Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Розробники</string>
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Ліцензія</string>
