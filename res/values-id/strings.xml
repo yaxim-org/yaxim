@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">Tidak ada daftar alamat</string>
 	<string name="conn_reconnect">Mencoba lagi dalam %d detik</string>
 	<string name="conn_disconnected">Koneksi terputus</string>
-	<string name="conn_networkchg">Jaringan berubah</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->

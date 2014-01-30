@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">Ez dago kontakturik erakusteko!</string>
 	<string name="conn_reconnect">Birkonektatu %d segundotan.</string>
 	<string name="conn_disconnected">Konexioa itxita</string>
-	<string name="conn_networkchg">Sarea aldatuta</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->

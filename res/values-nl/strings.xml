@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">Er zijn geen contacten beschikbaar!</string>
 	<string name="conn_reconnect">Probeert te verbinden in %d seconden.</string>
 	<string name="conn_disconnected">Verbinding gesloten</string>
-	<string name="conn_networkchg">Netwerk gewijzigd.</string>
 	<string name="conn_no_network">Geen netwerkverbinding</string>
 
 	<!-- Global Strings -->

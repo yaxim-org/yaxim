@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">Ei kontakteja!</string>
 	<string name="conn_reconnect">Uudelleenyhdistäminen %d sekunnin kuluttua.</string>
 	<string name="conn_disconnected">Yhteys suljettiin</string>
-	<string name="conn_networkchg">Verkko vaihtui</string>
 	<string name="conn_no_network">Ei verkkoyhteyttä</string>
 
 	<!-- Global Strings -->
@@ -58,7 +57,7 @@
 	<string name="statuspopup_name">Aseta tilasi</string>
 	<string name="showOffline_summ">Näytä aina kaikki kontaktit listalla</string>
 	<string name="showOffline_title">Näytä poissaolevat kontaktit</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Pidä yaxim muistissa, jotta yhteys ei katkeaisi (palvelu toimii etualalla)</string>
 	<string name="foregroundService_title">Tilapalkin kuvake</string>
 
 	<string name="preftitle_debug">Virheenjäljitys</string>
@@ -105,7 +104,7 @@
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Lisää kontakti</string>
 	<string name="addFriend_Summ">Ole hyvä ja anna tuttavasi Jabber tunnus, haluamasi kutsunimi sekä kohderyhmä.</string>
-	<string name="addFriend_aliasHint">Screen name</string>
+	<string name="addFriend_aliasHint">Näyttönimi</string>
 	<string name="addrosteritemaddgroupchoice">Lisää uuteen ryhmään</string>
 	<string name="NewGroup_EditTextField_Hint">Nimi uudelle ryhmälle</string>
 
@@ -128,7 +127,7 @@
 	<string name="connstartup_summOn">Siirry linjoille kun yaxim avataan</string>
 	<string name="connstartup_summOff">Älä yhdistä automaattisesti</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="carbons_summ">Pyydä viestikopiot muilta asiakasohjelmiltasi</string>
 	<string name="account_jabberID_title">Jabber-tunnus</string>
 	<string name="account_jabberID_sum">esimerkki: minä@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Anna Jabber-tunnus:</string>
@@ -137,11 +136,11 @@
 	<string name="account_jabberPW_dialog_title">Anna salasana:</string>
 
 	<!-- accountprefs -->
-	<string name="account_resource_title">Client Resource</string>
+	<string name="account_resource_title">Ohjelman resurssi</string>
 	<string name="account_resource_summ">Oletus: yaxim</string>
-	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_dialog_title">Anna haluamasi resurssi:</string>
 	<string name="account_resource_hint">yaxim</string>
-	<string name="account_prio_title">Client Priority</string>
+	<string name="account_prio_title">Ohjelman prioriteetti</string>
 	<string name="account_prio_summ">Oletus: 0 (sallittu: -128 .. 127)</string>
 	<string name="account_prio_error">Sallitut arvot: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Anna prioriteetti:</string>
@@ -150,11 +149,11 @@
 	<string name="account_port_dialog_title">Anna palvelimen portti:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Muu palvelin</string>
-	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
+	<string name="account_customserver_summ">(Valinnainen) Vaihtoehtoinen palvelimen osoite</string>
 	<string name="account_customserver_dialog_title">Anna palvelimen verkkotunnus:</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">Vaadi SSL/TLS</string>
-	<string name="require_ssl_summ">Always encrypt server connection</string>
+	<string name="require_ssl_summ">Pakota salattu palvelinyhteys</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Valitse ryhmä</string>
@@ -163,15 +162,15 @@
 	<string name="RenameGroup_summ">Nimeä ryhmä %s uudelleen:</string>
 	<string name="RenameGroup_title">Nimeä ryhmä uudelleen</string>
 	<string name="RenameEntry_summ">Nimeä %1$s (%2$s) uudelleen:</string>
-	<string name="RenameEntry_title">Rename contact</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
+	<string name="RenameEntry_title">Uudelleennimeä kontakti</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Valitse ryhmä kiekosta alapuolella</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Vaihda ryhmää</string>
 	<string name="deleteRosterItem_text">Poistetaanko %1$s (%2$s) varmasti?</string>
 	<string name="deleteRosterItem_title">Poista kontakti</string>
 	<string name="deleteChatHistory_text">Poistetaanko kaikki kontaktin %1$s (%2$s) viestit?</string>
 	<string name="deleteChatHistory_title">Pyyhi viestihistoria</string>
 	<string name="subscriptionRequest_text">%1$s haluaa lisätä sinut kontakteihinsa: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscriptionRequest_title">Hyväksyntäpyyntö</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Minä:</string>
@@ -193,7 +192,7 @@
 	<string name="AboutDialog_title">Tietoja yaximista</string>
 	<string name="AboutDialog_DevelopersTitle">Kehittäjät</string>
 	<string name="AboutDialog_DevelopersText">Ota yhteyttä kehittäjiin sivustolla http://yaxim.org tai freenode IRC-verkostossa kanavalla #yaxim</string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
+	<string name="AboutDialog_LicenceTitle">Lisenssit</string>
 	<string name="AboutDialog_Vote">Anna palautetta</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
@@ -258,16 +257,16 @@
 
 	<string name="status_available">Verkossa</string>
 	<string name="status_away">Poissa</string>
-	<string name="status_chat">Free for chat</string>
-	<string name="status_dnd">Do not disturb</string>
-	<string name="status_xa">Not available</string>
+	<string name="status_chat">Vapaa keskustelemaan</string>
+	<string name="status_dnd">Älä häiritse</string>
+	<string name="status_xa">Ei saatavilla</string>
 	<string name="status_offline">Poissa verkosta</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Jussi Karttunen https://launchpad.net/~jkarttunen</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
+	<string name="default_group">Yleiset</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Valitse kontakti</string>

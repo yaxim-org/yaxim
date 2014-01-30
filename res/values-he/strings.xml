@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">אין אנשי קשר להצגה!</string>
 	<string name="conn_reconnect">התחברות חוזרת בתוך %d שניות.</string>
 	<string name="conn_disconnected">חיבור נסגר</string>
-	<string name="conn_networkchg">רשת השתנתה</string>
 	<string name="conn_no_network">אין חיבור רשת</string>
 
 	<!-- Global Strings -->

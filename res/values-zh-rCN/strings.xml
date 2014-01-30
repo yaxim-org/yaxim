@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">没有联系人！</string>
 	<string name="conn_reconnect">%s 后连接。</string>
 	<string name="conn_disconnected">连接已关闭</string>
-	<string name="conn_networkchg">网络连接改变</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->

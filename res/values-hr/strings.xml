@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_reconnect">Reconnect in %d seconds.</string>
 	<string name="conn_disconnected">Veza je prekinuta</string>
-	<string name="conn_networkchg">Network changed</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->

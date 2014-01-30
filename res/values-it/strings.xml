@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">Nessun contatto presente!</string>
 	<string name="conn_reconnect">Riconnessione tra %d secondi.</string>
 	<string name="conn_disconnected">Connessione chiusa</string>
-	<string name="conn_networkchg">Rete cambiata</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->

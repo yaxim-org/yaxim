@@ -11,7 +11,6 @@
 	<string name="conn_empty_roster">Nėra rodytinų kontaktų!</string>
 	<string name="conn_reconnect">Kitas prisijungimas po %d sekundžių</string>
 	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_networkchg">Network changed</string>
 	<string name="conn_no_network">No network connection</string>
 
 	<!-- Global Strings -->
