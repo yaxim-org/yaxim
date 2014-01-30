@@ -94,6 +94,8 @@ public abstract class GenericService extends Service {
 	protected void notifyClient(String fromJid, String fromUserName, String message,
 			boolean showNotification, boolean silent_notification, boolean is_error) {
 		if (!showNotification) {
+			if (is_error)
+				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
 			try {
 				if (!silent_notification)
