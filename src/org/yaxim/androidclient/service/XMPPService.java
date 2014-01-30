@@ -439,10 +439,15 @@ public class XMPPService extends GenericService {
 				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from), silent_notification, false);
 			}
 
-			public void messageError(String from, String error, boolean silent_notification) {
+			public void messageError(final String from, final String error, final boolean silent_notification) {
 				logInfo("error notification: " + from);
-				notifyClient(from, mSmackable.getNameForJID(from), error, !mIsBoundTo.contains(from), silent_notification, true);
-			}
+				mMainHandler.post(new Runnable() {
+					public void run() {
+						// work around Toast fallback for errors
+						notifyClient(from, mSmackable.getNameForJID(from), error,
+							!mIsBoundTo.contains(from), silent_notification, true);
+					}});
+				}
 
 			public void rosterChanged() {
 			}
