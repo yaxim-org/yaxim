@@ -126,7 +126,7 @@ public class XMPPService extends GenericService {
 			create_account = intent.getBooleanExtra("create_account", false);
 			
 			if ("disconnect".equals(intent.getAction())) {
-				failConnection(getString(R.string.conn_networkchg));
+				failConnection(getString(R.string.conn_no_network));
 				return START_STICKY;
 			} else
 			if ("reconnect".equals(intent.getAction())) {
