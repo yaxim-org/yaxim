@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim : %s</string>
+	<string name="conn_title">Bruno : %s</string>
 	<string name="conn_connecting">Connexion au serveur…</string>
 	<string name="conn_disconnecting">Déconnexion…</string>
 	<string name="conn_online">En ligne</string>
@@ -24,8 +24,8 @@
 	<string name="Global_JID_malformed">Vérifiez le format de l\'adresse !</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Bienvenue dans yaxim !</string>
-	<string name="StartupDialog_Summary">Vous devez configurer yaxim avant de pouvoir l\'utiliser. Merci d\'entrer votre identifiant Jabber et son mot de passe.</string>
+	<string name="StartupDialog_Title">Bienvenue dans Bruno !</string>
+	<string name="StartupDialog_Summary">Vous devez configurer Bruno avant de pouvoir l\'utiliser. Merci d\'entrer votre identifiant Jabber et son mot de passe.</string>
 	<string name="StartupDialog_pwHint">Saisir un mot de passe</string>
 	<string name="StartupDialog_pwrHint">Ressaisir le mot de passe</string>
 	<string name="StartupDialog_Username_title">Identifiant Jabber :</string>
@@ -39,9 +39,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Message de %s</string>
 	<string name="notification_anonymous_message">Message reçu</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s dans %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Répondre</string>
@@ -79,7 +79,7 @@
 	<string name="showOffline_title">Afficher les contacts hors ligne</string>
 	<string name="enableGroups_summ">Organiser vos contacts selon leurs groupes</string>
 	<string name="enableGroups_title">Afficher les groupes du contact</string>
-	<string name="foregroundService_summ">Conserver yaxim en mémoire afin d\'assurer la connexion permanente (service au premier plan)</string>
+	<string name="foregroundService_summ">Conserver Bruno en mémoire afin d\'assurer la connexion permanente (service au premier plan)</string>
 	<string name="foregroundService_title">Icône de la barre d\'état</string>
 
 	<string name="preftitle_debug">Débogage</string>
@@ -124,7 +124,7 @@
 	<string name="Menu_Status">État</string>
 	<string name="Menu_connect">Se connecter</string>
 	<string name="Menu_disconnect">Se déconnecter</string>
-	<string name="Menu_about">À propos de yaxim</string>
+	<string name="Menu_about">À propos de Bruno</string>
 	<string name="Menu_muc">Ajouter un salon</string>
 	<string name="Menu_mark_all_as_read">Tout marquer comme lu</string>
 	<string name="Menu_send_invitation">Créer une invitation</string>
@@ -175,9 +175,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ressource client</string>
-	<string name="account_resource_summ">Par défaut : yaxim</string>
+	<string name="account_resource_summ">Par défaut : Bruno</string>
 	<string name="account_resource_dialog_title">Entrez votre ressource :</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Priorité du client</string>
 	<string name="account_prio_summ">Par défaut : 0 (autorisé: -128 .. 127)</string>
 	<string name="account_prio_error">Valeurs autorisées : -128 .. 127</string>
@@ -229,7 +229,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">À propos de yaxim</string>
+	<string name="AboutDialog_title">À propos de Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
 	<string name="AboutDialog_DevelopersText">Communiquer avec les développeurs sur http://yaxim.org ou sur freenode IRC : #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licence</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Zerbitzarira konektatzen...</string>
 	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">Linean</string>
@@ -28,8 +28,8 @@
 	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Ongietorri yaxim-era!</string>
-	<string name="StartupDialog_Summary">Erabili aurretik yaxim konfiguratu behar duzu. Mesedez, sartu zure Jabber IDa eta pasahitza.</string>
+	<string name="StartupDialog_Title">Ongietorri Bruno-era!</string>
+	<string name="StartupDialog_Summary">Erabili aurretik Bruno konfiguratu behar duzu. Mesedez, sartu zure Jabber IDa eta pasahitza.</string>
 	<string name="StartupDialog_pwHint">Sartu pasahitza</string>
 	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Jabber IDa:</string>
@@ -43,9 +43,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">%s-(r)en mezua</string>
 	<string name="notification_anonymous_message">Mezua jasota</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Reply</string>
@@ -83,7 +83,7 @@
 	<string name="showOffline_title">Erakutsi lineaz kanpo dauden kontaktuak</string>
 	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
 	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Mantendu yaxim memorian beti konektatuta dagoela ziurtatzeko (aurreko planoko zerbitzua)</string>
+	<string name="foregroundService_summ">Mantendu Bruno memorian beti konektatuta dagoela ziurtatzeko (aurreko planoko zerbitzua)</string>
 	<string name="foregroundService_title">Egoera-barra ikonoa</string>
 
 	<string name="preftitle_debug">Arazketa</string>
@@ -128,7 +128,7 @@
 	<string name="Menu_Status">Egoera</string>
 	<string name="Menu_connect">Konektatu</string>
 	<string name="Menu_disconnect">Deskonektatu</string>
-	<string name="Menu_about">yaxim-i buruz</string>
+	<string name="Menu_about">Bruno-i buruz</string>
 	<string name="Menu_muc">Add group chat</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
@@ -179,9 +179,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Bezeroaren baliabidea</string>
-	<string name="account_resource_summ">Lehenetsia: yaxim</string>
+	<string name="account_resource_summ">Lehenetsia: Bruno</string>
 	<string name="account_resource_dialog_title">Sartu zure baliabidea:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Bezeroaren lehentasuna</string>
 	<string name="account_prio_summ">Lehenetsia: 0 (baimenduak: -128 .. 127)</string>
 	<string name="account_prio_error">Allowed values: -128 .. 127</string>
@@ -233,7 +233,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">yaxim-i buruz</string>
+	<string name="AboutDialog_title">Bruno-i buruz</string>
 	<string name="AboutDialog_DevelopersTitle">Garatzaileak</string>
 	<string name="AboutDialog_DevelopersText">Kontaktatu garatzaileak http://yaxim.org edo freenode IRC: #yaxim bidez</string>
 	<string name="AboutDialog_LicenceTitle">Lizentzia</string>

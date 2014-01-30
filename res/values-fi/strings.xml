@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Yhdistetään palvelimeen...</string>
 	<string name="conn_disconnecting">Katkaistaan yhteyttä...</string>
 	<string name="conn_online">Verkossa</string>
@@ -32,7 +32,7 @@
 	<string name="Global_JID_malformed">Tarkista osoitteen muotoilu ja oikeinkirjoitus</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Tervetuloa yaxim-viestimeen!</string>
+	<string name="StartupDialog_Title">Tervetuloa Bruno-viestimeen!</string>
 	<string name="StartupDialog_Summary">Yaximin asetukset on määriteltävä ennen käyttöä. Ole hyvä ja anna Jabber-käyttäjätunnuksesi sekä salasanasi.</string>
 	<string name="StartupDialog_pwHint">Syötä salasana</string>
 	<string name="StartupDialog_pwrHint">Toista salasana</string>
@@ -47,9 +47,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Viesti käyttäjältä %s</string>
 	<string name="notification_anonymous_message">Viesti vastaanotettu</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s huoneessa %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Vastaa</string>
@@ -87,7 +87,7 @@
 	<string name="showOffline_title">Näytä poissaolevat kontaktit</string>
 	<string name="enableGroups_summ">Järjestä kontaktit ryhmien mukaan</string>
 	<string name="enableGroups_title">Näytä ryhmät</string>
-	<string name="foregroundService_summ">Pidä yaxim muistissa, jotta yhteys ei katkeaisi (palvelu toimii etualalla)</string>
+	<string name="foregroundService_summ">Pidä Bruno muistissa, jotta yhteys ei katkeaisi (palvelu toimii etualalla)</string>
 	<string name="foregroundService_title">Tilapalkin kuvake</string>
 
 	<string name="preftitle_debug">Virheenjäljitys</string>
@@ -132,7 +132,7 @@
 	<string name="Menu_Status">Tila</string>
 	<string name="Menu_connect">Yhdistä</string>
 	<string name="Menu_disconnect">Katkaise yhteys</string>
-	<string name="Menu_about">Tietoja yaximista</string>
+	<string name="Menu_about">Tietoja Brunoista</string>
 	<string name="Menu_muc">Lisää ryhmäkeskustelu</string>
 	<string name="Menu_mark_all_as_read">Merkitse kaikki luetuiksi</string>
 	<string name="Menu_send_invitation">Luo kutsu</string>
@@ -183,9 +183,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ohjelman resurssi</string>
-	<string name="account_resource_summ">Oletus: yaxim</string>
+	<string name="account_resource_summ">Oletus: Bruno</string>
 	<string name="account_resource_dialog_title">Anna haluamasi resurssi:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Ohjelman prioriteetti</string>
 	<string name="account_prio_summ">Oletus: 0 (sallittu: -128 .. 127)</string>
 	<string name="account_prio_error">Sallitut arvot: -128 .. 127</string>
@@ -237,7 +237,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Tietoja yaximista</string>
+	<string name="AboutDialog_title">Tietoja Brunoista</string>
 	<string name="AboutDialog_DevelopersTitle">Kehittäjät</string>
 	<string name="AboutDialog_DevelopersText">Ota yhteyttä kehittäjiin sivustolla http://yaxim.org tai freenode IRC-verkostossa kanavalla #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Lisenssit</string>
