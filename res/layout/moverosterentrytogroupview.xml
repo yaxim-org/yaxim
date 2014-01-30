@@ -18,7 +18,7 @@
 			android:focusable="true"
 			style="?attr/dialogTextColor"
 			/>
-		<org.yaxim.androidclient.dialogs.GroupNameView
+		<org.yaxim.bruno.dialogs.GroupNameView
 			android:id="@+id/moverosterentrytogroupview_gv"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
