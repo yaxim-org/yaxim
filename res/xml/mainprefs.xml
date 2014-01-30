@@ -8,8 +8,8 @@
 		android:summary="">
 
 		<intent android:action="android.intent.action.MAIN"
-			android:targetPackage="org.yaxim.androidclient"
-			android:targetClass="org.yaxim.androidclient.preferences.AccountPrefs" />
+			android:targetPackage="org.yaxim.bruno"
+			android:targetClass="org.yaxim.bruno.preferences.AccountPrefs" />
 	</PreferenceScreen>
 	</PreferenceCategory>
 

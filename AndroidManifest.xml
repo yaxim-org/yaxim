@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="31" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
+	android:versionCode="31" android:versionName="@string/build_revision" package="org.yaxim.bruno">
 
 	<uses-sdk android:targetSdkVersion="17" android:minSdkVersion="7"/>
 
@@ -98,17 +98,17 @@
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 			</intent-filter>
 			<intent-filter>
-				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_HEARD" />
-				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_REPLY" />
+				<action android:name="org.yaxim.bruno.ACTION_MESSAGE_HEARD" />
+				<action android:name="org.yaxim.bruno.ACTION_MESSAGE_REPLY" />
 			</intent-filter>
 		</receiver>
 
 		<provider android:name=".data.ChatProvider"
 			android:exported="false"
-			android:authorities="org.yaxim.androidclient.provider.Chats" />
+			android:authorities="org.yaxim.bruno.provider.Chats" />
 		<provider android:name=".data.RosterProvider"
 			android:exported="false"
-			android:authorities="org.yaxim.androidclient.provider.Roster" />
+			android:authorities="org.yaxim.bruno.provider.Roster" />
 
 		<activity android:name="de.duenndns.ssl.MemorizingActivity" />
 

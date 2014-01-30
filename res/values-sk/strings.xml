@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Pripájanie k serveru...</string>
 	<string name="conn_disconnecting">Odpájanie...</string>
 	<string name="conn_online">Pripojené</string>
@@ -28,8 +28,8 @@
 	<string name="Global_JID_malformed">Overte formát adresy!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Vitajte v yaxim!</string>
-	<string name="StartupDialog_Summary">Pred používaním musíte yaxim nastaviť. Prosím, zadajte vaše Jabber ID a heslo.</string>
+	<string name="StartupDialog_Title">Vitajte v Bruno!</string>
+	<string name="StartupDialog_Summary">Pred používaním musíte Bruno nastaviť. Prosím, zadajte vaše Jabber ID a heslo.</string>
 	<string name="StartupDialog_pwHint">Zadajte heslo</string>
 	<string name="StartupDialog_pwrHint">Znovu zadajte heslo</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
@@ -43,9 +43,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Správa od %s</string>
 	<string name="notification_anonymous_message">Prijatá správa</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Reply</string>
@@ -83,7 +83,7 @@
 	<string name="showOffline_title">Zobraziť odpojené kontakty</string>
 	<string name="enableGroups_summ">Usporiadanie kontaktov do skupín</string>
 	<string name="enableGroups_title">Zobraziť skupiny kontaktov</string>
-	<string name="foregroundService_summ">Ponechať yaxim v pamäti - na zabezpečenie stáleho pripojenia</string>
+	<string name="foregroundService_summ">Ponechať Bruno v pamäti - na zabezpečenie stáleho pripojenia</string>
 	<string name="foregroundService_title">Ikona v stavovom riadku</string>
 
 	<string name="preftitle_debug">Ladenie</string>
@@ -128,7 +128,7 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Pripojiť</string>
 	<string name="Menu_disconnect">Odpojiť</string>
-	<string name="Menu_about">O aplikácii yaxim</string>
+	<string name="Menu_about">O aplikácii Bruno</string>
 	<string name="Menu_muc">Add group chat</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
@@ -177,9 +177,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client Resource</string>
-	<string name="account_resource_summ">Štandardné: yaxim</string>
+	<string name="account_resource_summ">Štandardné: Bruno</string>
 	<string name="account_resource_dialog_title">Enter your resource:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Client Priority</string>
 	<string name="account_prio_summ">Základné: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_error">Povolené hodnoty: -128 .. 127</string>
@@ -231,7 +231,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">O aplikácii yaxim</string>
+	<string name="AboutDialog_title">O aplikácii Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Vývojári</string>
 	<string name="AboutDialog_DevelopersText">Kontaktujte vývojárov na: http://yaxim.org alebo na freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>

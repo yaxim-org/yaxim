@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
+	<string name="app_name">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title">Bruno: %s</string>
 	<string name="conn_connecting">Verbinde mit Server…</string>
 	<string name="conn_disconnecting">Verbindung wird getrennt…</string>
 	<string name="conn_online">Online</string>
@@ -24,8 +24,8 @@
 	<string name="Global_JID_malformed">Adressformat überprüfen!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Willkommen bei yaxim!</string>
-	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte Ihre Jabber-ID und Ihr Passwort eingeben.</string>
+	<string name="StartupDialog_Title">Willkommen bei Bruno!</string>
+	<string name="StartupDialog_Summary">Sie müssen Bruno zuerst konfigurieren. Bitte Ihre Jabber-ID und Ihr Passwort eingeben.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
 	<string name="StartupDialog_pwrHint">Passwort wiederholen</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
@@ -39,9 +39,9 @@
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
 	<string name="notification_anonymous_message">Mitteilung empfangen</string>
-	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {Bruno Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
-	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {Bruno Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Antworten</string>
@@ -124,7 +124,7 @@
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Verbinden</string>
 	<string name="Menu_disconnect">Trennen</string>
-	<string name="Menu_about">Über yaxim</string>
+	<string name="Menu_about">Über Bruno</string>
 	<string name="Menu_muc">Gruppenchat hinzufügen</string>
 	<string name="Menu_mark_all_as_read">Alle als gelesen markieren</string>
 	<string name="Menu_send_invitation">Einladung erzeugen</string>
@@ -173,9 +173,9 @@
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client-Ressource</string>
-	<string name="account_resource_summ">Vorgabe: yaxim</string>
+	<string name="account_resource_summ">Vorgabe: Bruno</string>
 	<string name="account_resource_dialog_title">Quelle eingeben:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">Bruno</string>
 	<string name="account_prio_title">Client-Priorität</string>
 	<string name="account_prio_summ">Vorgabe: 0 (erlaubt: -128 .. 127)</string>
 	<string name="account_prio_error">Erlaubte Werte: -128 .. 127</string>
@@ -227,7 +227,7 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">Über yaxim</string>
+	<string name="AboutDialog_title">Über Bruno</string>
 	<string name="AboutDialog_DevelopersTitle">Entwickler</string>
 	<string name="AboutDialog_DevelopersText">Kontakt mit den Entwicklern auf http://yaxim.org oder im freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Lizenzierung</string>
