@@ -153,6 +153,7 @@ public class SmackableImp implements Smackable {
 
 	private final ContentResolver mContentResolver;
 
+	private AlarmManager mAlarmManager;
 	private PacketListener mPongListener;
 	private String mPingID;
 	private long mPingTimestamp;
@@ -175,6 +176,7 @@ public class SmackableImp implements Smackable {
 		this.mConfig = config;
 		this.mContentResolver = contentResolver;
 		this.mService = service;
+		this.mAlarmManager = (AlarmManager)mService.getSystemService(Context.ALARM_SERVICE);
 	}
 		
 	// this code runs a DNS resolver, might be blocking
@@ -867,7 +869,6 @@ public class SmackableImp implements Smackable {
 			return; // a ping is still on its way
 		}
 
-		mPingTimestamp = System.currentTimeMillis();
 		if (mStreamHandler.isSmEnabled()) {
 			debugLog("Ping: sending SM request");
 			mPingID = "" + mStreamHandler.requestAck();
@@ -881,8 +882,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		// register ping timeout handler: PACKET_TIMEOUT(30s) + 3s
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
-			System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+		registerPongTimeout(PACKET_TIMEOUT + 3000, mPingID);
 	}
 
 	private void gotServerPong(String pongID) {
@@ -894,7 +894,17 @@ public class SmackableImp implements Smackable {
 			Log.i(TAG, String.format("Ping: server latency %1.3fs (estimated)",
 						latency/1000.));
 		mPingID = null;
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
+		mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
+	}
+
+	/** Register a "pong" timeout on the connection. */
+	private void registerPongTimeout(long wait_time, String id) {
+		mPingID = id;
+		mPingTimestamp = System.currentTimeMillis();
+		debugLog(String.format("Ping: registering timeout for %s: %1.3fs", id, wait_time/1000.));
+		mAlarmManager.set(AlarmManager.RTC_WAKEUP,
+				System.currentTimeMillis() + wait_time,
+				mPongTimeoutAlarmPendIntent);
 	}
 
 	/**
@@ -945,12 +955,12 @@ public class SmackableImp implements Smackable {
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).setInexactRepeating(AlarmManager.RTC_WAKEUP, 
+		mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 
 				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
 	}
 	private void unregisterPongListener() {
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPingAlarmPendIntent);
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
+		mAlarmManager.cancel(mPingAlarmPendIntent);
+		mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 	}
 
 	private void registerMessageListener() {
