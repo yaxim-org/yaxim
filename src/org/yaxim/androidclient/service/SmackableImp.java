@@ -176,7 +176,7 @@ public class SmackableImp implements Smackable {
 	// this code runs a DNS resolver, might be blocking
 	private synchronized void initXMPPConnection() {
 		// allow custom server / custom port to override SRV record
-		if (mConfig.customServer.length() > 0 || mConfig.port != PreferenceConstants.DEFAULT_PORT_INT)
+		if (mConfig.customServer.length() > 0)
 			mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
 					mConfig.port, mConfig.server);
 		else
