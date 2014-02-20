@@ -97,6 +97,10 @@ public class SmackableImp implements Smackable {
 	static {
 		registerSmackProviders();
 		DNSUtil.setDNSResolver(DNSJavaResolver.getInstance());
+
+		// initialize smack defaults before any connections are created
+		SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
+		SmackConfiguration.setDefaultPingInterval(0);
 	}
 
 	static void registerSmackProviders() {
@@ -478,8 +482,6 @@ public class SmackableImp implements Smackable {
 					debugLog("conn.shutdown() failed: " + e);
 				}
 			}
-			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
-			SmackConfiguration.setDefaultPingInterval(0);
 			registerRosterListener();
 			boolean need_bind = !mStreamHandler.isResumePossible();
 
