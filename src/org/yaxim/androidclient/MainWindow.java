@@ -196,7 +196,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			finish();
 		}
 		displayOwnStatus();
-		updateRoster();
 		bindXMPPService();
 
 		YaximApplication.getApp(this).mMTM.bindDisplayActivity(this);
@@ -809,6 +808,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				invalidateOptionsMenu();	// to load the action bar contents on time for access to icons/progressbar
 				ConnectionState cs = serviceAdapter.getConnectionState();
 				updateConnectionState(cs);
+				updateRoster();
 
 				// when returning from prefs to main activity, apply new config
 				if (mConfig.reconnect_required && cs == ConnectionState.ONLINE) {
