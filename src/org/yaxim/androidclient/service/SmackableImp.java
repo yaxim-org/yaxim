@@ -283,6 +283,10 @@ public class SmackableImp implements Smackable {
 			case OFFLINE:
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.CONNECTING);
+
+				// register ping (connection) timeout handler: 2*PACKET_TIMEOUT(30s) + 3s
+				registerPongTimeout(2*PACKET_TIMEOUT + 3000, "connection");
+
 				new Thread() {
 					@Override
 					public void run() {
@@ -295,6 +299,7 @@ public class SmackableImp implements Smackable {
 						} catch (YaximXMPPException e) {
 							onDisconnected(e);
 						} finally {
+							mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 							finishConnectingThread();
 						}
 					}
@@ -311,10 +316,15 @@ public class SmackableImp implements Smackable {
 			if (mState == ConnectionState.ONLINE) {
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.DISCONNECTING);
+
+				// register ping (connection) timeout handler: PACKET_TIMEOUT(30s)
+				registerPongTimeout(PACKET_TIMEOUT, "forced disconnect");
+
 				new Thread() {
 					public void run() {
 						updateConnectingThread(this);
 						mStreamHandler.quickShutdown();
+						onDisconnected("forced disconnect completed");
 						finishConnectingThread();
 						//updateConnectionState(ConnectionState.OFFLINE);
 					}
@@ -327,12 +337,17 @@ public class SmackableImp implements Smackable {
 			case ONLINE:
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.DISCONNECTING);
+
+				// register ping (connection) timeout handler: PACKET_TIMEOUT(30s)
+				registerPongTimeout(PACKET_TIMEOUT, "manual disconnect");
+
 				// spawn thread to do disconnect
 				new Thread() {
 					public void run() {
 						updateConnectingThread(this);
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
+						mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 						finishConnectingThread();
 						// reconnect if it was requested in the meantime
 						if (mRequestedState == ConnectionState.ONLINE)
