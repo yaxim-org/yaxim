@@ -568,16 +568,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return mConfig.priority;
 	}
 
-	public static String getStatusTitle(Context context, String status, String statusMessage) {
-		status = context.getString(StatusMode.fromString(status).getTextId());
-
-		if (statusMessage.length() > 0) {
-			status = status + " (" + statusMessage + ")";
-		}
-
-		return status;
-	}
-
 	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();

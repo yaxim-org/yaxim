@@ -9,6 +9,7 @@ import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
+import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -290,6 +291,18 @@ public class XMPPService extends GenericService {
 		return sb.toString();
 	}
 
+	public String getStatusTitle(ConnectionState cs) {
+		if (cs != ConnectionState.ONLINE)
+			return mReconnectInfo;
+		String status = getString(StatusMode.fromString(mConfig.statusMode).getTextId());
+
+		if (mConfig.statusMessage.length() > 0) {
+			status = status + " (" + mConfig.statusMessage + ")";
+		}
+
+		return status;
+	}
+
 	private void updateServiceNotification() {
 		ConnectionState cs = ConnectionState.OFFLINE;
 		if (mSmackable != null) {
@@ -311,7 +324,8 @@ public class XMPPService extends GenericService {
 			mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 			return;
 		}
-		String title = getString(R.string.conn_title, mConfig.jabberID);
+		String message = getStatusTitle(cs);
+		String title = getString(R.string.conn_title, message);
 		Notification n = new Notification(R.drawable.ic_offline, title,
 				System.currentTimeMillis());
 		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
@@ -321,12 +335,10 @@ public class XMPPService extends GenericService {
 		n.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		String message;
-		if (cs == ConnectionState.ONLINE) {
-			message = MainWindow.getStatusTitle(this, mConfig.statusMode, mConfig.statusMessage);
+		if (cs == ConnectionState.ONLINE)
 			n.icon = R.drawable.ic_online;
-		} else
-			message = getConnectionStateString();
+
+		title = getString(R.string.conn_title, mConfig.jabberID);
 		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
 		mServiceNotification.showNotification(this, SERVICE_NOTIFICATION,
