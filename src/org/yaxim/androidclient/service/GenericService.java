@@ -209,6 +209,12 @@ public abstract class GenericService extends Service {
 		Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
 		toast.show();
 	}
+	protected void shortToastNotify(Throwable e) {
+		e.printStackTrace();
+		while (e.getCause() != null)
+			e = e.getCause();
+		shortToastNotify(e.getMessage());
+	}
 
 	public void resetNotificationCounter(String userJid) {
 		notificationCount.remove(userJid);

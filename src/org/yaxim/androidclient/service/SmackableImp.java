@@ -540,12 +540,11 @@ public class SmackableImp implements Smackable {
 				setStatusFromConfig();
 			}
 
-		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
+		} catch (YaximXMPPException e) {
+			throw e;
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
-			Log.e(TAG, "tryToConnect(): " + Log.getStackTraceString(e));
-			throw new YaximXMPPException(e.getLocalizedMessage(), e.getCause());
+			throw new YaximXMPPException("tryToConnect failed", e);
 		}
 	}
 
@@ -563,7 +562,7 @@ public class SmackableImp implements Smackable {
 			try {
 				rosterGroup.addEntry(rosterEntry);
 			} catch (XMPPException e) {
-				throw new YaximXMPPException(e.getLocalizedMessage());
+				throw new YaximXMPPException("tryToMoveRosterEntryToGroup", e);
 			}
 		}
 	}
@@ -593,7 +592,7 @@ public class SmackableImp implements Smackable {
 		try {
 			group.removeEntry(rosterEntry);
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			throw new YaximXMPPException("tryToRemoveUserFromGroup", e);
 		}
 	}
 
@@ -610,7 +609,7 @@ public class SmackableImp implements Smackable {
 				mRoster.removeEntry(rosterEntry);
 			}
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			throw new YaximXMPPException("tryToRemoveRosterEntry", e);
 		}
 	}
 
@@ -619,7 +618,7 @@ public class SmackableImp implements Smackable {
 		try {
 			mRoster.createEntry(user, alias, new String[] { group });
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			throw new YaximXMPPException("tryToAddRosterEntry", e);
 		}
 	}
 

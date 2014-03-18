@@ -217,8 +217,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.addRosterItem(user, alias, group);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in addRosterItem(): " + e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -230,9 +229,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.removeRosterItem(user);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in removeRosterItem(): "
-							+ e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -241,9 +238,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.moveRosterItemToGroup(user, group);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in moveRosterItemToGroup(): "
-							+ e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -252,9 +247,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.renameRosterItem(user, newName);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in renameRosterItem(): "
-							+ e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
