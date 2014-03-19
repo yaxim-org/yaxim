@@ -129,6 +129,8 @@ public class XMPPService extends GenericService {
 				return START_STICKY;
 			} else
 			if ("reconnect".equals(intent.getAction())) {
+				// TODO: integrate the following steps into one "RECONNECT"
+				failConnection(getString(R.string.conn_no_network));
 				// reset reconnection timeout
 				mReconnectTimeout = RECONNECT_AFTER;
 				doConnect();
