@@ -13,6 +13,7 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
+import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -751,8 +752,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	// this function changes the prefs to keep the connection
 	// according to the requested state
 	private void toggleConnection() {
-		if (mConfig.jabberID.length() < 3) {
-			new FirstStartDialog(this, serviceAdapter).show();
+		if (!mConfig.jid_configured) {
+			startActivity(new Intent(this, AccountPrefs.class));
 			return;
 		}
 		boolean oldState = isConnected() || isConnecting();

@@ -91,11 +91,9 @@ public class XMPPService extends GenericService {
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM));
 
-		// for the initial connection, check if autoConnect is set
-		mConnectionDemanded.set(mConfig.autoConnect);
 		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 
-		if (mConfig.autoConnect) {
+		if (mConfig.autoConnect && mConfig.jid_configured) {
 			/*
 			 * start our own service so it remains in background even when
 			 * unbound

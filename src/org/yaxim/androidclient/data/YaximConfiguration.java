@@ -48,6 +48,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String server;
 	public String customServer;
 	public String jabberID;
+	public boolean jid_configured;
 	public boolean require_ssl;
 
 	public String statusMode;
@@ -112,6 +113,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	}
 
 	private void loadPrefs(SharedPreferences prefs) {
+		this.jid_configured = false;
+
 		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
 				false);
 		this.vibraNotify = prefs.getString(
@@ -154,6 +157,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 		try {
 			splitAndSetJabberID(XMPPHelper.verifyJabberID(jabberID));
+			this.jid_configured = true;
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
