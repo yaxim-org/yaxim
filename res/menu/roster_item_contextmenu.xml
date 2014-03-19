@@ -5,6 +5,11 @@
 			android:title="@string/roster_contextmenu_contact_open_chat">
 		</item>
 
+		<item android:id="@+id/roster_contextmenu_contact_mark_all_as_read" android:visible="true"
+			android:enabled="true" android:orderInCategory="1"
+			android:title="@string/roster_contextmenu_contact_mark_all_as_read">
+		</item>
+
 		<item android:id="@+id/roster_contextmenu_contact_rename" android:visible="true"
 			android:enabled="true" android:orderInCategory="3"
 			android:title="@string/roster_contextmenu_contact_rename">
