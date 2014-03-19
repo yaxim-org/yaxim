@@ -21,6 +21,7 @@ import org.yaxim.androidclient.util.StatusMode;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -300,6 +301,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
 
+	void doMarkAllAsRead(final String JID) {
+		ContentValues values = new ContentValues();
+		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
+
+		getContentResolver().update(ChatProvider.CONTENT_URI, values,
+				ChatProvider.ChatConstants.JID + " = ? AND "
+						+ ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
+						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW,
+				new String[]{JID});
+	}
+
 	void removeChatHistory(final String JID) {
 		getContentResolver().delete(ChatProvider.CONTENT_URI,
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { JID });
@@ -453,6 +465,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 			switch (itemID) {
 			case R.id.roster_contextmenu_contact_open_chat:
 				startChatActivity(userJid, userName, null);
+				return true;
+
+			case R.id.roster_contextmenu_contact_mark_all_as_read:
+				doMarkAllAsRead(userJid);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delmsg:
