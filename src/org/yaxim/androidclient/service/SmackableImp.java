@@ -348,6 +348,8 @@ public class SmackableImp implements Smackable {
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
 						mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
+						// we should reset XMPPConnection the next time
+						mConfig.reconnect_required = true;
 						finishConnectingThread();
 						// reconnect if it was requested in the meantime
 						if (mRequestedState == ConnectionState.ONLINE)
