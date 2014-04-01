@@ -26,7 +26,10 @@
 			    android:layout_weight="1"
 			    android:layout_height="wrap_content"
 			    android:hint="@string/chat_enterMsgHint"
-			    android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine" />
+			    android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+				>
+				<requestFocus />
+			</EditText>
 
 			<Button android:id="@+id/Chat_SendButton"
 				android:layout_width="wrap_content"
