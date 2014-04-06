@@ -5,20 +5,20 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Подключение к серверу…</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
+	<string name="conn_disconnecting">Отключение</string>
 	<string name="conn_online">В сети</string>
 	<string name="conn_offline">Отключён</string>
 	<string name="conn_empty_roster">Нет контактов для отображения!</string>
 	<string name="conn_reconnect">Переподключение через %d секунд.</string>
 	<string name="conn_disconnected">Соединение закрыто</string>
-	<string name="conn_no_network">No network connection</string>
+	<string name="conn_no_network">Отсутствует сетевое подключение</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Выйти</string>
 	<string name="Global_authenticate_first">Пожалуйста, сначала соединитесь</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">Проверьте формат адреса</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Добро пожаловать в yaxim!</string>
@@ -34,10 +34,10 @@
 	<string name="notification_anonymous_message">Получено сообщение</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Error while sending message!</string>
+	<string name="notification_error">Ошибка при отправлении сообщения</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Уведомления о сообщениях</string>
+	<string name="preftitle_notify">Уведомление о сообщении</string>
 	<string name="led_title">Мигающий светодиод</string>
 	<string name="led_summ">СИД сигнализирует о входящих сообщениях</string>
 	<string name="vibr_title">Вибрация</string>
@@ -142,7 +142,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Приоритет клиента</string>
 	<string name="account_prio_summ">По умолчанию: 0 (разрешено от -128 до 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
+	<string name="account_prio_error">Допустимые значения: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Введите приоритет:</string>
 	<string name="account_port_title">Порт сервера</string>
 	<string name="account_port_sum">По умолчанию: 5222</string>
@@ -169,8 +169,8 @@
 	<string name="deleteRosterItem_title">Удалить контакт</string>
 	<string name="deleteChatHistory_text">Действительно удалить всю историю сообщений с %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Удалить историю сообщений</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscriptionRequest_text">%1$s хочет добавить вас в контакты: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Запрос подписки</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Я:</string>
@@ -265,7 +265,8 @@
 	<string name="translator_credits">Launchpad Contributions:
   Drow_Ranger https://launchpad.net/~d3jow9y5j
   Georg Lukas https://launchpad.net/~ge0rg
-  Ilya https://launchpad.net/~me-detected</string>
+  Ilya https://launchpad.net/~me-detected
+  snm https://launchpad.net/~zastava-boty</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Общие</string>

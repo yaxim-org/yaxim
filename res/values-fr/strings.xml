@@ -5,7 +5,7 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim : %s</string>
 	<string name="conn_connecting">Connexion au serveur…</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
+	<string name="conn_disconnecting">Déconnexion…</string>
 	<string name="conn_online">En ligne</string>
 	<string name="conn_offline">Hors ligne</string>
 	<string name="conn_empty_roster">Aucun contact à afficher !</string>
@@ -34,7 +34,7 @@
 	<string name="notification_anonymous_message">Message reçu</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Error while sending message!</string>
+	<string name="notification_error">Erreur lors de l\'envoi du message !</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notification de message</string>
@@ -97,8 +97,8 @@
 	<string name="Menu_AccSettings">Modifier le compte</string>
 	<string name="Menu_Settings">Préférences</string>
 	<string name="Menu_Status">État</string>
-	<string name="Menu_connect">Connecter</string>
-	<string name="Menu_disconnect">Déconnecter</string>
+	<string name="Menu_connect">Se connecter</string>
+	<string name="Menu_disconnect">Se déconnecter</string>
 	<string name="Menu_about">À propos de yaxim</string>
 
 	<!-- AddFriend -->
@@ -125,7 +125,7 @@
 	<string name="account_options_advanced">Options avancées</string>
 	<string name="connstartup_title">Connexion au démarrage</string>
 	<string name="connstartup_summOn">Être en-ligne quand yaxim démarre</string>
-	<string name="connstartup_summOff">Ne pas connecter automatiquement</string>
+	<string name="connstartup_summOff">Ne pas se connecter automatiquement</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Demander des copies de message de vos autres clients</string>
 	<string name="account_jabberID_title">Identifiant Jabber</string>
