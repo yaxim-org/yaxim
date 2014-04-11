@@ -99,22 +99,6 @@ public abstract class GenericService extends Service {
 		boolean isMuc = (msgType==Message.Type.groupchat);
 		boolean beNoisy=true;
 		
-		if(isMuc) {
-			Cursor cursor = getContentResolver().query(RosterProvider.MUCS_URI, new String[] {RosterConstants.NICKNAME},
-					RosterConstants.JID+"='"+fromJid+"'", null, null);
-			cursor.moveToFirst();
-			String nick = cursor.getString( cursor.getColumnIndexOrThrow(RosterConstants.NICKNAME) );
-			if((mConfig.highlightNickMuc && !message.contains(nick))) {
-				beNoisy=false;
-			}
-			Log.d(TAG, "checking whehter MUC message is a own message, jid[0]: "+jid[0]);
-			if(jid.length>1) Log.d(TAG, "jid has 2nd field: ''"+jid[1]+"''' and i have nick ''"+nick+"''");
-			if(jid.length > 1 && jid[1].equals(nick)) { // if this is a message from us
-				Log.d(TAG, "this is a own message, i'm not notifying on this");
-				return;
-			}
-		} 
-		
 		if (!showNotification && beNoisy) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
@@ -176,38 +160,6 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
-	private long fetchNewestOwnMsgDate(String fromJid) {
-		Cursor cursor = getContentResolver().query(ChatProvider.CONTENT_URI, 
-				new String[]{ChatConstants.DATE}, 
-				String.format("%s = '%s' AND %s = %s AND %s = %s", ChatConstants.JID, fromJid, 
-						ChatConstants.DIRECTION, ChatConstants.OUTGOING,
-						ChatConstants.WAS_CARBON, ChatConstants.MSG_CARBON), 
-				null, 
-				ChatConstants.DATE+" desc");
-		if(cursor.getCount() == 0) {
-			Log.w(TAG, "could not find newest own (carbons) msg");
-			return 0;
-		}
-		cursor.moveToFirst();
-		long ret = cursor.getLong( cursor.getColumnIndexOrThrow(ChatConstants.DATE) );
-		return ret;
-	}
-
-	private long fetchLastMsgDate(String fromJid) {
-		Cursor cursor = getContentResolver().query(ChatProvider.CONTENT_URI, 
-				new String[]{ChatConstants.DATE}, 
-				String.format("%s = '%s'", ChatConstants.JID, fromJid), 
-				null, ChatConstants.DATE+" desc");
-		cursor.moveToFirst();
-		if(cursor.getCount() < 2) {
-			Log.w(TAG, "could not fetch date oflast message, timeout won't work");
-			return 0;
-		}
-		cursor.moveToNext(); // we need the 2nd entry, as the first is the newly added message
-		long ret = cursor.getLong( cursor.getColumnIndexOrThrow(ChatConstants.DATE) );
-		return ret;
-	}
-
 	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error,
 			boolean isMuc) {
 		
