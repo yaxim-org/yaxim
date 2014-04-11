@@ -665,7 +665,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			mSubTitle.setVisibility((status_message != null && status_message.length() != 0)?
 					View.VISIBLE : View.GONE);
 			mSubTitle.setText(status_message);
-			if (mServiceAdapter == null || !mServiceAdapter.isServiceAuthenticated())
+			if (mChatServiceAdapter == null || !mChatServiceAdapter.isServiceAuthenticated())
 				status_mode = 0; // override icon if we are offline
 			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
