@@ -97,6 +97,10 @@ public class SmackableImp implements Smackable {
 	static {
 		registerSmackProviders();
 		DNSUtil.setDNSResolver(DNSJavaResolver.getInstance());
+
+		// initialize smack defaults before any connections are created
+		SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
+		SmackConfiguration.setDefaultPingInterval(0);
 	}
 
 	static void registerSmackProviders() {
@@ -149,6 +153,7 @@ public class SmackableImp implements Smackable {
 
 	private final ContentResolver mContentResolver;
 
+	private AlarmManager mAlarmManager;
 	private PacketListener mPongListener;
 	private String mPingID;
 	private long mPingTimestamp;
@@ -171,12 +176,13 @@ public class SmackableImp implements Smackable {
 		this.mConfig = config;
 		this.mContentResolver = contentResolver;
 		this.mService = service;
+		this.mAlarmManager = (AlarmManager)mService.getSystemService(Context.ALARM_SERVICE);
 	}
 		
 	// this code runs a DNS resolver, might be blocking
 	private synchronized void initXMPPConnection() {
 		// allow custom server / custom port to override SRV record
-		if (mConfig.customServer.length() > 0 || mConfig.port != PreferenceConstants.DEFAULT_PORT_INT)
+		if (mConfig.customServer.length() > 0)
 			mXMPPConfig = new ConnectionConfiguration(mConfig.customServer,
 					mConfig.port, mConfig.server);
 		else
@@ -277,6 +283,10 @@ public class SmackableImp implements Smackable {
 			case OFFLINE:
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.CONNECTING);
+
+				// register ping (connection) timeout handler: 2*PACKET_TIMEOUT(30s) + 3s
+				registerPongTimeout(2*PACKET_TIMEOUT + 3000, "connection");
+
 				new Thread() {
 					@Override
 					public void run() {
@@ -289,6 +299,7 @@ public class SmackableImp implements Smackable {
 						} catch (YaximXMPPException e) {
 							onDisconnected(e);
 						} finally {
+							mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 							finishConnectingThread();
 						}
 					}
@@ -305,10 +316,15 @@ public class SmackableImp implements Smackable {
 			if (mState == ConnectionState.ONLINE) {
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.DISCONNECTING);
+
+				// register ping (connection) timeout handler: PACKET_TIMEOUT(30s)
+				registerPongTimeout(PACKET_TIMEOUT, "forced disconnect");
+
 				new Thread() {
 					public void run() {
 						updateConnectingThread(this);
-						mXMPPConnection.quickShutdown();
+						mStreamHandler.quickShutdown();
+						onDisconnected("forced disconnect completed");
 						finishConnectingThread();
 						//updateConnectionState(ConnectionState.OFFLINE);
 					}
@@ -321,12 +337,19 @@ public class SmackableImp implements Smackable {
 			case ONLINE:
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.DISCONNECTING);
+
+				// register ping (connection) timeout handler: PACKET_TIMEOUT(30s)
+				registerPongTimeout(PACKET_TIMEOUT, "manual disconnect");
+
 				// spawn thread to do disconnect
 				new Thread() {
 					public void run() {
 						updateConnectingThread(this);
 						mXMPPConnection.shutdown();
 						mStreamHandler.close();
+						mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
+						// we should reset XMPPConnection the next time
+						mConfig.reconnect_required = true;
 						finishConnectingThread();
 						// reconnect if it was requested in the meantime
 						if (mRequestedState == ConnectionState.ONLINE)
@@ -473,13 +496,11 @@ public class SmackableImp implements Smackable {
 		try {
 			if (mXMPPConnection.isConnected()) {
 				try {
-					mXMPPConnection.quickShutdown(); // blocking shutdown prior to re-connection
+					mStreamHandler.quickShutdown(); // blocking shutdown prior to re-connection
 				} catch (Exception e) {
 					debugLog("conn.shutdown() failed: " + e);
 				}
 			}
-			SmackConfiguration.setPacketReplyTimeout(PACKET_TIMEOUT);
-			SmackConfiguration.setDefaultPingInterval(0);
 			registerRosterListener();
 			boolean need_bind = !mStreamHandler.isResumePossible();
 
@@ -521,12 +542,11 @@ public class SmackableImp implements Smackable {
 				setStatusFromConfig();
 			}
 
-		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage(), e.getWrappedThrowable());
+		} catch (YaximXMPPException e) {
+			throw e;
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
-			Log.e(TAG, "tryToConnect(): " + Log.getStackTraceString(e));
-			throw new YaximXMPPException(e.getLocalizedMessage(), e.getCause());
+			throw new YaximXMPPException("tryToConnect failed", e);
 		}
 	}
 
@@ -544,7 +564,7 @@ public class SmackableImp implements Smackable {
 			try {
 				rosterGroup.addEntry(rosterEntry);
 			} catch (XMPPException e) {
-				throw new YaximXMPPException(e.getLocalizedMessage());
+				throw new YaximXMPPException("tryToMoveRosterEntryToGroup", e);
 			}
 		}
 	}
@@ -574,7 +594,7 @@ public class SmackableImp implements Smackable {
 		try {
 			group.removeEntry(rosterEntry);
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			throw new YaximXMPPException("tryToRemoveUserFromGroup", e);
 		}
 	}
 
@@ -591,7 +611,7 @@ public class SmackableImp implements Smackable {
 				mRoster.removeEntry(rosterEntry);
 			}
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			throw new YaximXMPPException("tryToRemoveRosterEntry", e);
 		}
 	}
 
@@ -600,7 +620,7 @@ public class SmackableImp implements Smackable {
 		try {
 			mRoster.createEntry(user, alias, new String[] { group });
 		} catch (XMPPException e) {
-			throw new YaximXMPPException(e.getLocalizedMessage());
+			throw new YaximXMPPException("tryToAddRosterEntry", e);
 		}
 	}
 
@@ -865,7 +885,6 @@ public class SmackableImp implements Smackable {
 			return; // a ping is still on its way
 		}
 
-		mPingTimestamp = System.currentTimeMillis();
 		if (mStreamHandler.isSmEnabled()) {
 			debugLog("Ping: sending SM request");
 			mPingID = "" + mStreamHandler.requestAck();
@@ -879,8 +898,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		// register ping timeout handler: PACKET_TIMEOUT(30s) + 3s
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP,
-			System.currentTimeMillis() + PACKET_TIMEOUT + 3000, mPongTimeoutAlarmPendIntent);
+		registerPongTimeout(PACKET_TIMEOUT + 3000, mPingID);
 	}
 
 	private void gotServerPong(String pongID) {
@@ -892,7 +910,17 @@ public class SmackableImp implements Smackable {
 			Log.i(TAG, String.format("Ping: server latency %1.3fs (estimated)",
 						latency/1000.));
 		mPingID = null;
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
+		mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
+	}
+
+	/** Register a "pong" timeout on the connection. */
+	private void registerPongTimeout(long wait_time, String id) {
+		mPingID = id;
+		mPingTimestamp = System.currentTimeMillis();
+		debugLog(String.format("Ping: registering timeout for %s: %1.3fs", id, wait_time/1000.));
+		mAlarmManager.set(AlarmManager.RTC_WAKEUP,
+				System.currentTimeMillis() + wait_time,
+				mPongTimeoutAlarmPendIntent);
 	}
 
 	/**
@@ -943,12 +971,12 @@ public class SmackableImp implements Smackable {
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).setInexactRepeating(AlarmManager.RTC_WAKEUP, 
+		mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 
 				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
 	}
 	private void unregisterPongListener() {
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPingAlarmPendIntent);
-		((AlarmManager)mService.getSystemService(Context.ALARM_SERVICE)).cancel(mPongTimeoutAlarmPendIntent);
+		mAlarmManager.cancel(mPingAlarmPendIntent);
+		mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 	}
 
 	private void registerMessageListener() {

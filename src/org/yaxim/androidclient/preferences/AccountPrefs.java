@@ -5,18 +5,21 @@ import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import org.yaxim.androidclient.R;
 
-public class AccountPrefs extends PreferenceActivity {
+public class AccountPrefs extends SherlockPreferenceActivity {
 
 	private SharedPreferences sharedPreference;
 
@@ -29,6 +32,10 @@ public class AccountPrefs extends PreferenceActivity {
 		setTheme(YaximApplication.getConfig(this).getPrefTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.accountprefs);
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -109,6 +116,19 @@ public class AccountPrefs extends PreferenceActivity {
 
 		});
 
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, MainPrefs.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

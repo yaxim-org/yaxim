@@ -178,10 +178,7 @@ public class XmppStreamHandler {
 			public void connectionClosed() {
 				Log.d(TAG, "connectionClosed.");
 				previousIncomingStanzaCount = -1;
-				// the connectionClosed callback is called from PacketReader.shutdown()
-				// - this can also happen when a connection attempt failed, so we can not
-				// assume a proper termination. Instead, try to recover SM if possible.
-				closeOnError();
+				close();
 			}
 		});
 

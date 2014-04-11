@@ -1,3 +1,9 @@
+0.8.7b:
+ * Server connection: fixed several reconnection issues
+ * Preferences: No more crashes with incorrect JID
+ * UI: Action Bar updates
+ * Notification: Removed distracting ticker for online/offline changes
+
 0.8.7:
  * XEP-0198: Stream Management now fully supported
  * Chat: Returned messages (errors) are displayed in red

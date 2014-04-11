@@ -13,6 +13,7 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
+import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -200,7 +201,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			finish();
 		}
 		displayOwnStatus();
-		updateRoster();
 		bindXMPPService();
 
 		YaximApplication.getApp(this).mMTM.bindDisplayActivity(this);
@@ -573,16 +573,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return mConfig.priority;
 	}
 
-	public static String getStatusTitle(Context context, String status, String statusMessage) {
-		status = context.getString(StatusMode.fromString(status).getTextId());
-
-		if (statusMessage.length() > 0) {
-			status = status + " (" + statusMessage + ")";
-		}
-
-		return status;
-	}
-
 	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
@@ -766,8 +756,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	// this function changes the prefs to keep the connection
 	// according to the requested state
 	private void toggleConnection() {
-		if (mConfig.jabberID.length() < 3) {
-			new FirstStartDialog(this, serviceAdapter).show();
+		if (!mConfig.jid_configured) {
+			startActivity(new Intent(this, AccountPrefs.class));
 			return;
 		}
 		boolean oldState = isConnected() || isConnecting();
@@ -813,6 +803,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				invalidateOptionsMenu();	// to load the action bar contents on time for access to icons/progressbar
 				ConnectionState cs = serviceAdapter.getConnectionState();
 				updateConnectionState(cs);
+				updateRoster();
 
 				// when returning from prefs to main activity, apply new config
 				if (mConfig.reconnect_required && cs == ConnectionState.ONLINE) {

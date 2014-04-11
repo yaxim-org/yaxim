@@ -9,6 +9,7 @@ import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
+import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -90,11 +91,9 @@ public class XMPPService extends GenericService {
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM));
 
-		// for the initial connection, check if autoConnect is set
-		mConnectionDemanded.set(mConfig.autoConnect);
 		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 
-		if (mConfig.autoConnect) {
+		if (mConfig.autoConnect && mConfig.jid_configured) {
 			/*
 			 * start our own service so it remains in background even when
 			 * unbound
@@ -130,6 +129,8 @@ public class XMPPService extends GenericService {
 				return START_STICKY;
 			} else
 			if ("reconnect".equals(intent.getAction())) {
+				// TODO: integrate the following steps into one "RECONNECT"
+				failConnection(getString(R.string.conn_no_network));
 				// reset reconnection timeout
 				mReconnectTimeout = RECONNECT_AFTER;
 				doConnect();
@@ -216,8 +217,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.addRosterItem(user, alias, group);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in addRosterItem(): " + e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -229,9 +229,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.removeRosterItem(user);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in removeRosterItem(): "
-							+ e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -240,9 +238,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.moveRosterItemToGroup(user, group);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in moveRosterItemToGroup(): "
-							+ e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -251,9 +247,7 @@ public class XMPPService extends GenericService {
 				try {
 					mSmackable.renameRosterItem(user, newName);
 				} catch (YaximXMPPException e) {
-					shortToastNotify(e.getMessage());
-					logError("exception in renameRosterItem(): "
-							+ e.getMessage());
+					shortToastNotify(e);
 				}
 			}
 
@@ -290,6 +284,18 @@ public class XMPPService extends GenericService {
 		return sb.toString();
 	}
 
+	public String getStatusTitle(ConnectionState cs) {
+		if (cs != ConnectionState.ONLINE)
+			return mReconnectInfo;
+		String status = getString(StatusMode.fromString(mConfig.statusMode).getTextId());
+
+		if (mConfig.statusMessage.length() > 0) {
+			status = status + " (" + mConfig.statusMessage + ")";
+		}
+
+		return status;
+	}
+
 	private void updateServiceNotification() {
 		ConnectionState cs = ConnectionState.OFFLINE;
 		if (mSmackable != null) {
@@ -311,8 +317,7 @@ public class XMPPService extends GenericService {
 			mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
 			return;
 		}
-		String title = getString(R.string.conn_title, mConfig.jabberID);
-		Notification n = new Notification(R.drawable.ic_status_offline, title,
+		Notification n = new Notification(R.drawable.ic_status_offline, null,
 				System.currentTimeMillis());
 		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 
@@ -321,12 +326,11 @@ public class XMPPService extends GenericService {
 		n.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		String message;
-		if (cs == ConnectionState.ONLINE) {
-			message = MainWindow.getStatusTitle(this, mConfig.statusMode, mConfig.statusMessage);
+		if (cs == ConnectionState.ONLINE)
 			n.icon = R.drawable.ic_online;
-		} else
-			message = getConnectionStateString();
+
+		String title = getString(R.string.conn_title, mConfig.jabberID);
+		String message = getStatusTitle(cs);
 		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
 		mServiceNotification.showNotification(this, SERVICE_NOTIFICATION,
