@@ -1081,7 +1081,7 @@ public class SmackableImp implements Smackable {
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
 						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
-							mServiceCallBack.messageError(fromJID[0], msg.getError().toString(), (cc != null));
+							mServiceCallBack.messageError(fromJID, msg.getError().toString(), (cc != null));
 						return; // we do not want to add errors as "incoming messages"
 					}
 
