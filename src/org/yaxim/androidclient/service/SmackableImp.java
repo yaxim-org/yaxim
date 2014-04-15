@@ -1108,11 +1108,11 @@ public class SmackableImp implements Smackable {
 
 
 					Log.d(TAG, 
-							String.format("attempting to add message '''%s''' from %s to db, msgtype==groupchat?: %b, checkaddmucmessage is: %b", chatMessage, fromJID[0], msg.getType()==Message.Type.groupchat, checkAddMucMessage(msg, ts, fromJID))
+							String.format("attempting to add message '''%s''' from %s to db, msgtype==groupchat?: %b", chatMessage, fromJID[0], msg.getType()==Message.Type.groupchat)
 							);
 					if(msg.getType() != Message.Type.groupchat
 						|| 
-						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, ts, fromJID))
+						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, msg.getPacketID(), fromJID))
 						) {
 						Log.d(TAG, "actually adding msg...");
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
@@ -1132,10 +1132,10 @@ public class SmackableImp implements Smackable {
 	}
 
 
-	private boolean checkAddMucMessage(Message msg, long ts, String[] fromJid ) {
+	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid ) {
 		final String[] projection = new String[] {
-				ChatConstants._ID, ChatConstants.DATE,
-				ChatConstants.JID, ChatConstants.MESSAGE,
+				ChatConstants._ID, ChatConstants.MESSAGE,
+				ChatConstants.JID, ChatConstants.RESOURCE,
 				ChatConstants.PACKET_ID
 		};
 
@@ -1143,20 +1143,14 @@ public class SmackableImp implements Smackable {
 		//		+" AND "+ChatConstants.DATE+"='"+ts+"'";
 		//final String packet_match = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
 		//final String selection = "("+content_match+") OR ("+packet_match+")";
-		final String selection = ChatConstants.JID+"='"+fromJid[0]+"'";
-		final String order = ChatConstants.DATE+" DESC LIMIT 5";
+		final String selection = ChatConstants.JID+" = ? AND " + ChatConstants.RESOURCE + " = ? AND " +
+					 ChatConstants.PACKET_ID + " = ?";
+		final String[] selectionArgs = new String[] { fromJid[0], fromJid[1], packet_id };
 		try {
-			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, null, order);
-			cursor.moveToFirst();
-			while(!cursor.isLast()) {
-				String pid = cursor.getString( cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID) );
-				Log.d(TAG, "processing cursor row, got pid: "+pid+" comparing with "+msg.getPacketID());
-				if( pid.equals(msg.getPacketID()) ) {
-					return false;
-				}
-				cursor.moveToNext();
-			}
+			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
+			boolean result = (cursor.getCount() == 0);
 			cursor.close();
+			return result;
 		} catch (Exception e) {} // just return true...
 
 		return true;	
