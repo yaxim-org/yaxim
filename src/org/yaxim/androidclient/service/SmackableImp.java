@@ -1278,6 +1278,10 @@ public class SmackableImp implements Smackable {
     }
 
 	public void syncDbRooms() {
+		if (!isAuthenticated()) {
+			debugLog("syncDbRooms: aborting, not yet authenticated");
+		}
+
 		ArrayList<String> joinedRooms = new ArrayList<String>(Arrays.asList(getJoinedRooms()));
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI, 
 				new String[] {RosterProvider.RosterConstants._ID,
