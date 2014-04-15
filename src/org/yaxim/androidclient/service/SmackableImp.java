@@ -55,6 +55,9 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
+import org.jivesoftware.smackx.provider.MUCAdminProvider;
+import org.jivesoftware.smackx.provider.MUCOwnerProvider;
+import org.jivesoftware.smackx.provider.MUCUserProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
@@ -145,6 +148,13 @@ public class SmackableImp implements Smackable {
 		
 		// XEP-0115 Entity Capabilities
 		pm.addExtensionProvider("c", "http://jabber.org/protocol/caps", new CapsExtensionProvider());
+
+		//  MUC User
+		pm.addExtensionProvider("x","http://jabber.org/protocol/muc#user", new MUCUserProvider());
+		//  MUC Admin
+		pm.addIQProvider("query","http://jabber.org/protocol/muc#admin", new MUCAdminProvider());
+		//  MUC Owner
+		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
 
 		XmppStreamHandler.addExtensionProviders();
 	}
