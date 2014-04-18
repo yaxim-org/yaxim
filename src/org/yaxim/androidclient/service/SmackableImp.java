@@ -671,7 +671,7 @@ public class SmackableImp implements Smackable {
 			exclusion.append("'").append(rosterEntry.getUser()).append("'");
 		}
 		
-		exclusion.append(") AND GROUP NOT 'MUCs';");
+		exclusion.append(") AND "+RosterConstants.GROUP+" NOT IN ('MUCs');");
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI, exclusion.toString(), null);
 		Log.d(TAG, "deleted " + count + " old roster entries");
 	}
