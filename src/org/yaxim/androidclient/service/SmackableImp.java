@@ -1517,6 +1517,7 @@ public class SmackableImp implements Smackable {
 		ArrayList<String> tmpList = new ArrayList<String>();
 		while(occIter.hasNext())
 			tmpList.add(occIter.next().split("/")[1]);
+		Collections.sort(tmpList, java.text.Collator.getInstance());
 		return (String[]) tmpList.toArray(new String[]{});
 	}
 }
