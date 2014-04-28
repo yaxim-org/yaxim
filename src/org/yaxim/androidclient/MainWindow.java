@@ -581,18 +581,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return mConfig.statusMessage;
 	}
 
-	public int getAccountPriority() {
-		return mConfig.priority;
-	}
-
-	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
+	public void setAndSaveStatus(StatusMode statusMode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
 		// do not save "offline" to prefs, or else!
 		if (statusMode != StatusMode.offline)
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
-		prefedit.putString(PreferenceConstants.PRIORITY, String.valueOf(priority));
 		prefedit.commit();
 
 		displayOwnStatus();
