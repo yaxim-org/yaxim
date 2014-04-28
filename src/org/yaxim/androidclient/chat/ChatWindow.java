@@ -433,6 +433,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			}
 			getMessageView().setText(message);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
+			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 		}
 		
 		TextView getDateView() {

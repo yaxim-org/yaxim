@@ -92,6 +92,7 @@
 		<item>small</item>
 		<item>normal</item>
 		<item>large</item>
+		<item>huge</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
