@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -48,6 +49,7 @@ public class XMPPService extends GenericService {
 	private Intent mAlarmIntent = new Intent(RECONNECT_ALARM);
 	private PendingIntent mPAlarmIntent;
 	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
+	private BroadcastReceiver mRingerModeReceiver = new RingerModeReceiver();
 
 	private Smackable mSmackable;
 	private boolean create_account = false;
@@ -106,6 +108,8 @@ public class XMPPService extends GenericService {
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM));
+		registerReceiver(mRingerModeReceiver, new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION));
+		configureSmartAwayMode();
 
 		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 
@@ -130,6 +134,7 @@ public class XMPPService extends GenericService {
 		    mSmackable.unRegisterCallback();
 		}
 		unregisterReceiver(mAlarmReceiver);
+		unregisterReceiver(mRingerModeReceiver);
 	}
 
 	@Override
@@ -608,5 +613,23 @@ public class XMPPService extends GenericService {
 				if (mSmackable != null && number_of_eyes == 0)
 					mSmackable.setUserWatching(false);
 			}}, 3000);
+	}
+
+	private void configureSmartAwayMode() {
+		AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		boolean is_silent = (am.getRingerMode() == AudioManager.RINGER_MODE_SILENT);
+		mConfig.smartAwayMode = is_silent ? StatusMode.dnd : null;
+		logInfo("configureSmartAwayMode: " + mConfig.smartAwayMode);
+	}
+
+	private class RingerModeReceiver extends BroadcastReceiver {
+		public void onReceive(Context ctx, Intent i) {
+			logInfo("Ringer mode changed: " + i);
+			configureSmartAwayMode();
+			if (mSmackable != null && mSmackable.isAuthenticated()) {
+				mSmackable.setStatusFromConfig();
+				updateServiceNotification();
+			}
+		}
 	}
 }
