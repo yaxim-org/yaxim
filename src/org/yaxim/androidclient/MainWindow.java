@@ -686,7 +686,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public StatusMode getStatusMode() {
-		return StatusMode.fromString(mConfig.statusMode);
+		return mConfig.getPresenceMode();
 	}
 
 	public void setAndSaveStatus(StatusMode statusMode, String message) {

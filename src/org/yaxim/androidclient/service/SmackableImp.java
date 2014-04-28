@@ -804,7 +804,7 @@ public class SmackableImp implements Smackable {
 		CarbonManager.getInstanceFor(mXMPPConnection).sendCarbonsEnabled(mConfig.messageCarbons);
 
 		Presence presence = new Presence(Presence.Type.available);
-		Mode mode = Mode.valueOf(mConfig.statusMode);
+		Mode mode = Mode.valueOf(mConfig.getPresenceMode().toString());
 		presence.setMode(mode);
 		presence.setStatus(mConfig.statusMessage);
 		presence.setPriority(mConfig.priority);

@@ -369,7 +369,7 @@ public class XMPPService extends GenericService {
 	public String getStatusTitle(ConnectionState cs) {
 		if (cs != ConnectionState.ONLINE)
 			return mReconnectInfo;
-		String status = getString(StatusMode.fromString(mConfig.statusMode).getTextId());
+		String status = getString(mConfig.getPresenceMode().getTextId());
 
 		if (mConfig.statusMessage.length() > 0) {
 			status = status + " (" + mConfig.statusMessage + ")";

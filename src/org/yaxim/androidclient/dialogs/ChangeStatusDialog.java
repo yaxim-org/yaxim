@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.yaxim.androidclient.MainWindow;
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.util.StatusMode;
 
