@@ -260,6 +260,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public void updateRoster() {
+		loadUnreadCounters();
 		rosterListAdapter.requery();
 		restoreGroupsExpanded();
 	}
@@ -1085,19 +1086,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 			boolean hasStatus = statusmsg.getText() != null && statusmsg.getText().length() > 0;
 			statusmsg.setVisibility(hasStatus ? View.VISIBLE : View.GONE);
 
-			int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);
-			String selection = ChatConstants.JID + " = '" + cursor.getString(JIDIdx) + "' AND " +
-					ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
-					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
-			Cursor msgcursor = getContentResolver().query(ChatProvider.CONTENT_URI,
-					new String[] { "count(" + ChatConstants.PACKET_ID + ")" },
-					selection, null, null);
-			msgcursor.moveToFirst();
+			String jid = cursor.getString(cursor.getColumnIndex(RosterConstants.JID));
 			TextView unreadmsg = (TextView)view.findViewById(R.id.roster_unreadmsg_cnt);
-			unreadmsg.setText(msgcursor.getString(0));
-			unreadmsg.setVisibility(msgcursor.getInt(0) > 0 ? View.VISIBLE : View.GONE);
+			Integer count = mUnreadCounters.get(jid);
+			if (count == null)
+				count = 0;
+			unreadmsg.setText(count.toString());
+			unreadmsg.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
 			unreadmsg.bringToFront();
-			msgcursor.close();
 		}
 
 		 protected void setViewImage(ImageView v, String value) {
@@ -1126,6 +1122,21 @@ public class MainWindow extends SherlockExpandableListActivity {
 						restoreGroupsExpanded();
 					}}, 100);
 		}
+	}
+
+	private HashMap<String, Integer> mUnreadCounters = new HashMap<String, Integer>();
+	private void loadUnreadCounters() {
+		final String[] PROJECTION = new String[] { ChatConstants.JID, "count(*)" };
+		final String SELECTION = ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
+			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW +
+			") GROUP BY (" + ChatConstants.JID; // hack!
+
+		Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
+				PROJECTION, SELECTION, null, null);
+		mUnreadCounters.clear();
+		while (c.moveToNext())
+			mUnreadCounters.put(c.getString(0), c.getInt(1));
+		c.close();
 	}
 
 	private class ChatObserver extends ContentObserver {
