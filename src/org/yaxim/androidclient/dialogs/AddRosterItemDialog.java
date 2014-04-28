@@ -97,9 +97,9 @@ public class AddRosterItemDialog extends AlertDialog implements
 				userInputField.setError(mMainWindow.getString(R.string.Global_JID_malformed));
 		}
 		if (s.length() > 0) {
-			String userpart = s.toString().split("@")[0];
-			if (userpart.length() > 0) {
-				generatedAlias = XMPPHelper.capitalizeString(userpart);
+			String userpart[] = s.toString().split("@");
+			if (userpart.length > 0 && userpart[0].length() > 0) {
+				generatedAlias = XMPPHelper.capitalizeString(userpart[0]);
 				aliasInputField.setHint(generatedAlias);
 			}
 		}

@@ -87,7 +87,7 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 			len = e.length();
 			if (auto_appended)
 				e.setSpan(span, atpos, len, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			else if (len > 0) {
+			else if (len > 1) {
 				// populate drop-down list with userpart@domain for all known domains
 				String u = jid.split("@")[0];
 				if (!u.equals(userpart)) {
