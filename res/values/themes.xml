@@ -12,7 +12,7 @@
         
         <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
         <item name="MainGroup">@style/RosterGroupName.Light</item>
-        <item name="MainChild">@style/RosterGroupItem</item>
+        <item name="MainChild">@style/RosterGroupItem.Light</item>
         <item name="OnlineFriends">@drawable/ic_action_online_friends_light</item>
         <item name="AllFriends">@drawable/ic_action_all_friends_light</item>
         <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
@@ -21,6 +21,7 @@
 		<item name="ErrorView">@style/StyleErrorView.Light</item>
 		<item name="ChatNewMessageColor">#ffb0b0b0</item>
 		<item name="ChatStoredMessageColor">#60b0b0b0</item>
+        <item name="ChatText">@style/ChatText.Light</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
     </style>
 
@@ -55,6 +56,7 @@
 		<item name="ChatNewMessageColor">#ff404040</item>
 		<item name="ChatStoredMessageColor">#60404040</item>
 		<item name="ErrorView">@style/StyleErrorView</item>
+        <item name="ChatText">@style/ChatText</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
     </style>
 

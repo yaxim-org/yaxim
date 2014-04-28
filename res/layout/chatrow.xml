@@ -33,8 +33,9 @@
 		</LinearLayout>
 
 		<TextView android:id="@+id/chat_message"
+			style="?attr/ChatText"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:textSize="18sp" android:gravity="center_vertical"
+			android:gravity="center_vertical"
 			android:autoLink="all"/>
 
 </LinearLayout>

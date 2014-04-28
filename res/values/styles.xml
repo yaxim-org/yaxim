@@ -12,7 +12,6 @@
 
     <style name="RosterGroupName.Dark">
         <item name="android:background">@drawable/group_background_9_dark</item>
-        <item name="background">@drawable/group_background_9_dark</item>
     </style>
 
     <style name="RosterGroupName.Light">
@@ -21,6 +20,10 @@
 
     <style name="RosterGroupItem">
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="RosterGroupItem.Light">
+	<item name="android:textColor">#000000</item>
     </style>
 
 	<style name="StyleErrorView">
@@ -61,6 +64,13 @@
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:background">@drawable/count_bcg</item>
         <item name="android:text"></item>
+    </style>
+
+    <style name="ChatText">
+	<item name="android:textSize">18sp</item>
+    </style>
+    <style name="ChatText.Light">
+	<item name="android:textColor">#000000</item>
     </style>
 
 </resources>
