@@ -20,16 +20,18 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AutoCompleteTextView;
 
 public class ChangeStatusDialog extends AlertDialog {
 
 	private final Spinner mStatus;
 
-	private final EditText mMessage;
+	private final AutoCompleteTextView mMessage;
 
 	private final MainWindow mContext;
 
-	public ChangeStatusDialog(final MainWindow context) {
+	public ChangeStatusDialog(final MainWindow context, final StatusMode status_mode,
+			final String status_message, final String[] status_message_history) {
 		super(context);
 
 		mContext = context;
@@ -57,13 +59,16 @@ public class ChangeStatusDialog extends AlertDialog {
 		mStatus.setAdapter(mStatusAdapter);
 
 		for (int i = 0; i < modes.size(); i++) {
-			if (modes.get(i).equals(context.getStatusMode())) {
+			if (modes.get(i).equals(status_mode)) {
 				mStatus.setSelection(i);
 			}
 		}
 
-		mMessage = (EditText) group.findViewById(R.id.statusview_message);
-		mMessage.setText(context.getStatusMessage());
+		mMessage = (AutoCompleteTextView) group.findViewById(R.id.statusview_message);
+		mMessage.setText(status_message);
+		mMessage.setAdapter(new ArrayAdapter<String>(context,
+					android.R.layout.simple_dropdown_item_1line, status_message_history));
+		mMessage.setThreshold(1);
 
 		setTitle(R.string.statuspopup_name);
 		setView(group);

@@ -577,16 +577,19 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return StatusMode.fromString(mConfig.statusMode);
 	}
 
-	public String getStatusMessage() {
-		return mConfig.statusMessage;
-	}
-
 	public void setAndSaveStatus(StatusMode statusMode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
 		// do not save "offline" to prefs, or else!
 		if (statusMode != StatusMode.offline)
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
+		if (!message.equals(mConfig.statusMessage)) {
+			List<String> smh = new ArrayList<String>(java.util.Arrays.asList(mConfig.statusMessageHistory));
+			if (!smh.contains(message))
+				smh.add(message);
+			String smh_joined = android.text.TextUtils.join("\036", smh);
+			prefedit.putString(PreferenceConstants.STATUS_MESSAGE_HISTORY, smh_joined);
+		}
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
 
@@ -673,7 +676,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		case android.R.id.home:
 		case R.id.menu_status:
-			new ChangeStatusDialog(this).show();
+			new ChangeStatusDialog(this, StatusMode.fromString(mConfig.statusMode),
+					mConfig.statusMessage, mConfig.statusMessageHistory).show();
 			return true;
 
 		case R.id.menu_exit:

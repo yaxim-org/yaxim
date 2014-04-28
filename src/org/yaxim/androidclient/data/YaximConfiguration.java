@@ -53,6 +53,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	public String statusMode;
 	public String statusMessage;
+	public String[] statusMessageHistory;
 
 	public boolean isLEDNotify;
 	public String vibraNotify;
@@ -152,9 +153,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				false);
 		this.statusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
-        this.theme = prefs.getString(PreferenceConstants.THEME, "dark");
-        this.chatFontSize = prefs.getString("setSizeChat", "18");
-        this.showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, false);
+		this.statusMessageHistory = prefs.getString(PreferenceConstants.STATUS_MESSAGE_HISTORY, statusMessage).split("\036");
+		this.theme = prefs.getString(PreferenceConstants.THEME, "dark");
+		this.chatFontSize = prefs.getString("setSizeChat", "18");
+		this.showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, false);
 		this.enableGroups = prefs.getBoolean(PreferenceConstants.ENABLE_GROUPS, true);
 
 		try {
