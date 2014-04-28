@@ -284,13 +284,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
-	private void markAsReadDelayed(final int id, int delay) {
-		new Handler().postDelayed(new Runnable() {
+	private void markAsReadDelayed(final int id, final int delay) {
+		new Thread() {
 			@Override
 			public void run() {
+				try { Thread.sleep(delay); } catch (Exception e) {}
 				markAsRead(id);
 			}
-		}, delay);
+		}.start();
 	}
 	
 	private void markAsRead(int id) {
