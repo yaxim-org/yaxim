@@ -9,11 +9,15 @@ import java.util.List;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.data.YaximConfiguration;
+import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +37,13 @@ public class ChangeStatusDialog extends AlertDialog {
 
 	private final MainWindow mContext;
 
-	public ChangeStatusDialog(final MainWindow context, final StatusMode status_mode,
-			final String status_message, final String[] status_message_history) {
+	private final YaximConfiguration mConfig;
+
+	public ChangeStatusDialog(final MainWindow context, final YaximConfiguration config) {
 		super(context);
 
 		mContext = context;
+		mConfig = config;
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,6 +67,7 @@ public class ChangeStatusDialog extends AlertDialog {
 		mStatusAdapter = new StatusModeAdapter(context, R.layout.status_spinner_item, modes);
 		mStatus.setAdapter(mStatusAdapter);
 
+		StatusMode status_mode = StatusMode.fromString(mConfig.statusMode);
 		for (int i = 0; i < modes.size(); i++) {
 			if (modes.get(i).equals(status_mode)) {
 				mStatus.setSelection(i);
@@ -68,9 +75,9 @@ public class ChangeStatusDialog extends AlertDialog {
 		}
 
 		mMessage = (AutoCompleteTextView) group.findViewById(R.id.statusview_message);
-		mMessage.setText(status_message);
+		mMessage.setText(mConfig.statusMessage);
 		mMessage.setAdapter(new ArrayAdapter<String>(context,
-					android.R.layout.simple_dropdown_item_1line, status_message_history));
+					android.R.layout.simple_dropdown_item_1line, mConfig.statusMessageHistory));
 		mMessage.setThreshold(1);
 
 		Button messageClearButton = (Button) group.findViewById(R.id.statusview_message_button_clear);
@@ -90,13 +97,35 @@ public class ChangeStatusDialog extends AlertDialog {
 				(OnClickListener) null);
 	}
 
+	private void setAndSaveStatus() {
+		StatusMode statusMode = (StatusMode) mStatus.getSelectedItem();
+		String message = mMessage.getText().toString();
+
+		// save update into prefs
+		SharedPreferences.Editor prefedit = PreferenceManager
+				.getDefaultSharedPreferences(mContext).edit();
+		// do not save "offline" to prefs, or else!
+		if (statusMode != StatusMode.offline)
+			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
+		if (!message.equals(mConfig.statusMessage)) {
+			List<String> smh = new ArrayList<String>(java.util.Arrays.asList(mConfig.statusMessageHistory));
+			if (!smh.contains(message))
+				smh.add(message);
+			String smh_joined = android.text.TextUtils.join("\036", smh);
+			prefedit.putString(PreferenceConstants.STATUS_MESSAGE_HISTORY, smh_joined);
+		}
+		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
+		prefedit.commit();
+		// on a manual status update, reset auto-away
+		mConfig.smartAwayMode = null;
+
+		mContext.updateStatus(statusMode);
+	}
+
 	private class OkListener implements OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			StatusMode status = (StatusMode) mStatus.getSelectedItem();
-			String message = mMessage.getText().toString();
-
-			mContext.setAndSaveStatus(status, message);
+			setAndSaveStatus();
 		}
 	}
 

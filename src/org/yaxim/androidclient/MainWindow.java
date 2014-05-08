@@ -689,24 +689,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return mConfig.getPresenceMode();
 	}
 
-	public void setAndSaveStatus(StatusMode statusMode, String message) {
-		SharedPreferences.Editor prefedit = PreferenceManager
-				.getDefaultSharedPreferences(this).edit();
-		// do not save "offline" to prefs, or else!
-		if (statusMode != StatusMode.offline)
-			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
-		if (!message.equals(mConfig.statusMessage)) {
-			List<String> smh = new ArrayList<String>(java.util.Arrays.asList(mConfig.statusMessageHistory));
-			if (!smh.contains(message))
-				smh.add(message);
-			String smh_joined = android.text.TextUtils.join("\036", smh);
-			prefedit.putString(PreferenceConstants.STATUS_MESSAGE_HISTORY, smh_joined);
-		}
-		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
-		prefedit.commit();
-		// on a manual status update, reset auto-away
-		mConfig.smartAwayMode = null;
-
+	public void updateStatus(StatusMode statusMode) {
 		displayOwnStatus();
 
 		// check if we are connected and want to go offline
@@ -793,8 +776,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case android.R.id.home:
-			new ChangeStatusDialog(this, StatusMode.fromString(mConfig.statusMode),
-					mConfig.statusMessage, mConfig.statusMessageHistory).show();
+			new ChangeStatusDialog(this, mConfig).show();
 			return true;
 
 		case R.id.menu_exit:
