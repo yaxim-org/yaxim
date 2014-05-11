@@ -49,8 +49,8 @@ To compile yaxim, the following steps need to be taken:
 	
 	# prepare android build (with subprojects)
 	android update project -p . -s
-	android update project -p ActionBarSherlock/library
-	android update project -p MemorizingTrustManager
+	android update project -p ActionBarSherlock/actionbarsherlock
+	android update project -p MemorizingTrustManager --subprojects
 	
 	# compile debug version
 	ant proguard debug
