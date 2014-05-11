@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -69,6 +70,13 @@ public class ChangeStatusDialog extends AlertDialog {
 		mMessage.setAdapter(new ArrayAdapter<String>(context,
 					android.R.layout.simple_dropdown_item_1line, status_message_history));
 		mMessage.setThreshold(1);
+
+		Button messageClearButton = (Button) group.findViewById(R.id.statusview_message_button_clear);
+		messageClearButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				mMessage.setText("");
+			}
+		});
 
 		setTitle(R.string.statuspopup_name);
 		setView(group);
