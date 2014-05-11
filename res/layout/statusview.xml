@@ -21,13 +21,30 @@
 		android:prompt="@string/setStatusTitle"
 		android:layout_marginBottom="15dp"
 	/>
-	<EditText android:id="@+id/statusview_message"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:hint="@string/setStatusmsgHint"
-		android:layout_marginBottom="15dp"
-		android:singleLine="true"
-	/>
+
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginBottom="15dp"
+	    >
+	  <EditText
+	      android:id="@+id/statusview_message"
+	      android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:hint="@string/setStatusmsgHint"
+	      android:paddingRight="35dip"
+	      />
+	  <Button
+	      android:id="@+id/statusview_message_button_clear"
+	      android:layout_width="30dip"
+	      android:layout_height="30dip"
+	      android:layout_alignParentRight="true"
+	      android:background="@android:drawable/ic_menu_close_clear_cancel"
+	      android:layout_centerVertical="true"
+	      android:layout_marginRight="5dip"
+	      />
+	</RelativeLayout>
+
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="fill_parent" 
