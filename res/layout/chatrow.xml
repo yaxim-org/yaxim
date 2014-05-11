@@ -36,6 +36,6 @@
 			style="?attr/ChatText"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:gravity="center_vertical"
-			android:autoLink="all"/>
+			android:autoLink="web|email"/>
 
 </LinearLayout>
