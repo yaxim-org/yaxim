@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -55,8 +56,7 @@ public class ChangeStatusDialog extends AlertDialog {
 
 		mStatus = (Spinner) group.findViewById(R.id.statusview_spinner);
 		StatusModeAdapter mStatusAdapter;
-		mStatusAdapter = new StatusModeAdapter(context, android.R.layout.simple_spinner_item, modes);
-		mStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mStatusAdapter = new StatusModeAdapter(context, R.layout.status_spinner_item, modes);
 		mStatus.setAdapter(mStatusAdapter);
 
 		for (int i = 0; i < modes.size(); i++) {
@@ -101,25 +101,30 @@ public class ChangeStatusDialog extends AlertDialog {
 		}
 
 		@Override
-		public View getDropDownView(int position, View convertView,
-				ViewGroup parent) {
-
-			TextView textView = (TextView) super.getDropDownView(position,
-					convertView, parent);
-			textView.setText(getItem(position).getTextId());
-			return textView;
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getCustomView(position, convertView, parent, true);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
-			TextView textView = (TextView) super.getView(position, convertView,
-					parent);
-			textView.setText(getItem(position).getTextId());
-			textView.setPadding(0, 0, 0, 0);
-			return textView;
+			return getCustomView(position, convertView, parent, false);
 		}
 
+		public View getCustomView(int position, View convertView, ViewGroup parent, boolean padding) {
+			LayoutInflater inflater = getLayoutInflater();
+			View spinner = inflater.inflate(R.layout.status_spinner_item, parent, false);
+
+			TextView text = (TextView) spinner.findViewById(R.id.status_text);
+			text.setText(getItem(position).getTextId());
+
+			ImageView icon = (ImageView) spinner.findViewById(R.id.status_icon);
+			icon.setImageResource(getItem(position).getDrawableId());
+
+			if (!padding)
+				spinner.setPadding(0, 0, 0, 0);
+
+			return spinner;
+		}
 	}
 
 }
