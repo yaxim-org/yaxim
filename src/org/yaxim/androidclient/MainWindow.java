@@ -465,10 +465,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			int itemID = item.getItemId();
 
 			switch (itemID) {
-			case R.id.roster_contextmenu_contact_open_chat:
-				startChatActivity(userJid, userName, null);
-				return true;
-
 			case R.id.roster_contextmenu_contact_mark_all_as_read:
 				doMarkAllAsRead(userJid);
 				return true;
