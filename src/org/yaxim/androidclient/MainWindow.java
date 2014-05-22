@@ -1134,9 +1134,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
 				PROJECTION, SELECTION, null, null);
 		mUnreadCounters.clear();
-		while (c.moveToNext())
-			mUnreadCounters.put(c.getString(0), c.getInt(1));
-		c.close();
+		if(c!=null){
+			while (c.moveToNext())
+				mUnreadCounters.put(c.getString(0), c.getInt(1));
+			c.close();
+		}
 	}
 
 	private class ChatObserver extends ContentObserver {
