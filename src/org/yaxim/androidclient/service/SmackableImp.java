@@ -1100,6 +1100,14 @@ public class SmackableImp implements Smackable {
 
 					// ignore empty messages
 					if (chatMessage == null) {
+						if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
+								&& multiUserChats.containsKey(fromJID[0])) {
+							// this is a MUC subject, update our DB
+							ContentValues cvR = new ContentValues();
+							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
+							upsertRoster(cvR, fromJID[0]);
+							return;
+						}
 						Log.d(TAG, "empty message.");
 						return;
 					}
@@ -1386,9 +1394,9 @@ public class SmackableImp implements Smackable {
 			multiUserChats.put(room, muc);
 			ContentValues cvR = new ContentValues();
 			cvR.put(RosterProvider.RosterConstants.JID,room);
-			cvR.put(RosterProvider.RosterConstants.ALIAS,room);
-			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,"");
-			cvR.put(RosterProvider.RosterConstants.STATUS_MODE,4);
+			cvR.put(RosterProvider.RosterConstants.ALIAS,room.split("@")[0]);
+			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,muc.getSubject());
+			cvR.put(RosterProvider.RosterConstants.STATUS_MODE,StatusMode.available.ordinal());
 			cvR.put(RosterProvider.RosterConstants.GROUP,"MUCs");
 			upsertRoster(cvR, room);
 			return true;
