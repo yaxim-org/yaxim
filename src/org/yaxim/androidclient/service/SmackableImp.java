@@ -1120,12 +1120,6 @@ public class SmackableImp implements Smackable {
 		return values;
 	}
 
-	private void addRosterEntryToDB(final RosterEntry entry) {
-		ContentValues values = getContentValuesForRosterEntry(entry);
-		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
-		debugLog("addRosterEntryToDB: Inserted " + uri);
-	}
-
 	private void deleteRosterEntryFromDB(final String jabberID) {
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI,
 				RosterConstants.JID + " = ?", new String[] { jabberID });
@@ -1133,11 +1127,14 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void updateRosterEntryInDB(final RosterEntry entry) {
-		final ContentValues values = getContentValuesForRosterEntry(entry);
+		upsertRoster(getContentValuesForRosterEntry(entry), entry.getUser());
+	}
 
+	private void upsertRoster(final ContentValues values, String jid) {
 		if (mContentResolver.update(RosterProvider.CONTENT_URI, values,
-				RosterConstants.JID + " = ?", new String[] { entry.getUser() }) == 0)
-			addRosterEntryToDB(entry);
+				RosterConstants.JID + " = ?", new String[] { jid }) == 0) {
+			mContentResolver.insert(RosterProvider.CONTENT_URI, values);
+		}
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {
