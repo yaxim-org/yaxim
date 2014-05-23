@@ -30,8 +30,8 @@ import android.util.Log;
 public class XmppStreamHandler {
 	private static final String TAG = "yaxim.StreamHandler";
 	private static final String URN_SM_2 = "urn:xmpp:sm:2";
-	private static final int MAX_OUTGOING_QUEUE_SIZE = 20;
-	private static final int OUTGOING_FILL_RATIO = 4;
+	private static final int MAX_OUTGOING_QUEUE_SIZE = 200;
+	private static final int REQUEST_ACK_AFTER_STANZAS = 10;
 	private ExtXMPPConnection mConnection;
 	private boolean isSmAvailable = false;
 	private boolean isSmEnabled = false;
@@ -41,6 +41,7 @@ public class XmppStreamHandler {
 	private String sessionId;
 	private long incomingStanzaCount = 0;
 	private long outgoingStanzaCount = 0;
+	private long outgoingStanzasSinceAckRequest = 0;
 	private Queue<Packet> outgoingQueue;
 	private int maxOutgoingQueueSize = MAX_OUTGOING_QUEUE_SIZE;
 
@@ -101,6 +102,7 @@ public class XmppStreamHandler {
 		}
 		if (sessionId != null) {
 			isOutgoingSmEnabled = true;
+			outgoingStanzasSinceAckRequest = 0;
 			// TODO binding
 			Log.d(TAG, "sendResume(): " + sessionId);
 			StreamHandlingPacket resumePacket = new StreamHandlingPacket("resume", URN_SM_2);
@@ -110,6 +112,7 @@ public class XmppStreamHandler {
 		} else {
 			Log.d(TAG, "sendEnable()");
 			outgoingStanzaCount = 0;
+			outgoingStanzasSinceAckRequest = 0;
 			outgoingQueue = new ConcurrentLinkedQueue<Packet>();
 			isOutgoingSmEnabled = true;
 
@@ -195,10 +198,11 @@ public class XmppStreamHandler {
 					outgoingQueue.add(packet);
 
 					if (debugStanzas) Log.d(TAG, "adding " + outgoingStanzaCount + " : " + packet.toXML());
-					//
+
+					outgoingStanzasSinceAckRequest++;
 					// Don't let the queue grow beyond max size.  Request acks and drop old packets
 					// if acks are not coming.
-					if (outgoingQueue.size() >= maxOutgoingQueueSize / OUTGOING_FILL_RATIO) {
+					if (outgoingStanzasSinceAckRequest >= REQUEST_ACK_AFTER_STANZAS) {
 						requestAck();
 					}
 
@@ -312,6 +316,7 @@ public class XmppStreamHandler {
 	}
 
 	public long requestAck() {
+		outgoingStanzasSinceAckRequest = 0;
 		mConnection.sendPacket(new StreamHandlingPacket("r", URN_SM_2));
 		return outgoingStanzaCount;
 	}
