@@ -769,7 +769,7 @@ public class SmackableImp implements Smackable {
 		newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
 
-			if(new ArrayList<String>(Arrays.asList(getJoinedRooms())).contains(toJID)) {
+			if(mucJIDs.contains(toJID)) {
 				sendMucMessage(toJID, message);
 			} else {
 				addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
@@ -1297,7 +1297,7 @@ public class SmackableImp implements Smackable {
 			debugLog("syncDbRooms: aborting, not yet authenticated");
 		}
 
-		ArrayList<String> joinedRooms = new ArrayList<String>(Arrays.asList(getJoinedRooms()));
+		java.util.Set<String> joinedRooms = multiUserChats.keySet();
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI, 
 				new String[] {RosterProvider.RosterConstants._ID,
 					RosterProvider.RosterConstants.JID, 
@@ -1416,7 +1416,7 @@ public class SmackableImp implements Smackable {
 	@Override
 	public boolean createAndJoinRoom(String jid, String password, String nickname) { // TODO: ugly and not working!
 		createRoom(jid, nickname, password);
-		if(new ArrayList<String>(Arrays.asList(getJoinedRooms())).contains(jid)) {
+		if(multiUserChats.containsKey(jid)) {
 			ContentValues cv = new ContentValues();
 			cv.put(RosterProvider.RosterConstants.JID, jid);
 			cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
