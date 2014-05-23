@@ -52,11 +52,13 @@ import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.InvitationListener;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.Occupant;
+import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.provider.DataFormProvider;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
@@ -140,6 +142,9 @@ public class SmackableImp implements Smackable {
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
 		// add XEP-0092 Software Version
 		pm.addIQProvider("query", Version.NAMESPACE, new Version.Provider());
+
+		// data forms
+		pm.addExtensionProvider("x","jabber:x:data", new DataFormProvider());
 
 		// add carbons and forwarding
 		pm.addExtensionProvider("forwarded", Forwarded.NAMESPACE, new Forwarded.Provider());
@@ -1156,6 +1161,14 @@ public class SmackableImp implements Smackable {
 
 					// ignore empty messages
 					if (chatMessage == null) {
+						if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
+								&& multiUserChats.containsKey(fromJID[0])) {
+							// this is a MUC subject, update our DB
+							ContentValues cvR = new ContentValues();
+							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
+							upsertRoster(cvR, fromJID[0]);
+							return;
+						}
 						Log.d(TAG, "empty message.");
 						return;
 					}
@@ -1434,11 +1447,24 @@ public class SmackableImp implements Smackable {
 		if(muc.isJoined()) {
 			multiUserChats.put(room, muc);
 			ContentValues cvR = new ContentValues();
-			cvR.put(RosterProvider.RosterConstants.JID,room);
-			cvR.put(RosterProvider.RosterConstants.ALIAS,room);
-			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,"");
-			cvR.put(RosterProvider.RosterConstants.STATUS_MODE,4);
-			cvR.put(RosterProvider.RosterConstants.GROUP,"MUCs");
+			String roomname = room.split("@")[0];
+			try {
+				RoomInfo ri = MultiUserChat.getRoomInfo(mXMPPConnection, room);
+				String rn = ri.getRoomName();
+				if (rn != null && rn.length() > 0)
+					roomname = rn;
+			} catch (XMPPException e) {
+				// ignore a failed room info request
+				Log.d(TAG, "MUC room IQ failed: " + room);
+				e.printStackTrace();
+			}
+			// delay requesting subject until room info IQ returned/failed
+			String subject = muc.getSubject();
+			cvR.put(RosterProvider.RosterConstants.JID, room);
+			cvR.put(RosterProvider.RosterConstants.ALIAS, roomname);
+			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, subject);
+			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
+			cvR.put(RosterProvider.RosterConstants.GROUP, "MUCs");
 			upsertRoster(cvR, room);
 			return true;
 		}
