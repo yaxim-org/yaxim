@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -196,6 +197,7 @@ public class SmackableImp implements Smackable {
 	private PongTimeoutAlarmReceiver mPongTimeoutAlarmReceiver = new PongTimeoutAlarmReceiver();
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
 	
+	private final HashSet<String> mucJIDs = new HashSet<String>();
 	private Map<String, MultiUserChat> multiUserChats;
 
 
@@ -1299,13 +1301,13 @@ public class SmackableImp implements Smackable {
 		final int PASSWORD_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.PASSWORD);
 		final int NICKNAME_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.NICKNAME);
 		
-		ArrayList<String> dbRooms = new ArrayList<String>();
+		mucJIDs.clear();
 		while(cursor.moveToNext()) {
 			int id = cursor.getInt(ID);
 			String jid = cursor.getString(JID_ID);
 			String password = cursor.getString(PASSWORD_ID);
 			String nickname = cursor.getString(NICKNAME_ID);
-			dbRooms.add(jid);
+			mucJIDs.add(jid);
 			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
 			if(!joinedRooms.contains(jid)) {
 				debugLog("room " + jid + " isn't joined yet, i wanna join...");
@@ -1316,7 +1318,7 @@ public class SmackableImp implements Smackable {
 		cursor.close();
 		
 		for(String room : joinedRooms) {
-			if(!dbRooms.contains(room)) {
+			if(!mucJIDs.contains(room)) {
 				quitRoom(room);
 			}
 		}
@@ -1485,13 +1487,12 @@ public class SmackableImp implements Smackable {
 
 	@Override
 	public String[] getRooms() {
-		syncDbRooms();
-		return getJoinedRooms();
+		return (String[]) mucJIDs.toArray(new String[]{});
 	}
 
 	@Override
 	public boolean isRoom(String jid) {
-		return new ArrayList<String>(Arrays.asList(getJoinedRooms())).contains(jid);
+		return mucJIDs.contains(jid);
 	}
 
 	@Override
