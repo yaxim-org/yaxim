@@ -324,21 +324,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		Log.d(TAG, "preparing options menu "+mMucServiceAdapter);
-		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
-			Log.d(TAG, "prepare mucserviceadapter thinks we're are room");
-			com.actionbarsherlock.view.MenuItem item = menu.findItem(R.id.chat_optionsmenu_userlist); // TODO: find new icon
-			//TypedValue tv = new TypedValue();
-			//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
-			item.setIcon(R.drawable.ic_groupchat); // TODO: make themed
-			item.setTitle(R.string.Menu_userlist);
-			return true;
-		} 
-		return false;
-	}
-	
-	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		Log.d(TAG, "options item selected");
 		switch (item.getItemId()) {
