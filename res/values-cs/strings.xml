@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Přejmenovat skupinu</string>
 	<string name="roster_contextmenu_contact_delete">Odstranit kontakt</string>
 	<string name="roster_contextmenu_contact_delmsg">Vymazat historii chatu</string>
-	<string name="roster_contextmenu_contact_open_chat">Otevřít chat</string>
 	<string name="roster_contextmenu_contact_rename">Přejmenovat</string>
 	<string name="roster_contextmenu_contact_request_auth">Požadovat autorizaci</string>
 	<string name="roster_contextmenu_contact_change_group">Změnit skupinu</string>

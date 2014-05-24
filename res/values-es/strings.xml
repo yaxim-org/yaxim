@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Renombrar grupo</string>
 	<string name="roster_contextmenu_contact_delete">Eliminar contacto</string>
 	<string name="roster_contextmenu_contact_delmsg">Eliminar historial de charla</string>
-	<string name="roster_contextmenu_contact_open_chat">Abrir la Charla</string>
 	<string name="roster_contextmenu_contact_rename">Renombrar</string>
 	<string name="roster_contextmenu_contact_request_auth">Pedir autorización</string>
 	<string name="roster_contextmenu_contact_change_group">Cambiar de grupo</string>

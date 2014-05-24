@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Groep hernoemen</string>
 	<string name="roster_contextmenu_contact_delete">Contactpersoon verwijderen</string>
 	<string name="roster_contextmenu_contact_delmsg">Bericht geschiedenis verwijderen</string>
-	<string name="roster_contextmenu_contact_open_chat">Chat openen</string>
 	<string name="roster_contextmenu_contact_rename">Naam wijzigen</string>
 	<string name="roster_contextmenu_contact_request_auth">Toestemming vragen</string>
 	<string name="roster_contextmenu_contact_change_group">Groep wijzigen</string>

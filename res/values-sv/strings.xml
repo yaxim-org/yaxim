@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Ändra namn på grupp</string>
 	<string name="roster_contextmenu_contact_delete">Ta bort kontakt</string>
 	<string name="roster_contextmenu_contact_delmsg">Ta bort chatthistorik</string>
-	<string name="roster_contextmenu_contact_open_chat">Öppna chatt</string>
 	<string name="roster_contextmenu_contact_rename">Ändra namn</string>
 	<string name="roster_contextmenu_contact_request_auth">Begär godkännande</string>
 	<string name="roster_contextmenu_contact_change_group">Byt grupp</string>

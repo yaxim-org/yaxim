@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">שנה שם קבוצה</string>
 	<string name="roster_contextmenu_contact_delete">מחק איש קשר</string>
 	<string name="roster_contextmenu_contact_delmsg">מחק היסטוריית שיחה</string>
-	<string name="roster_contextmenu_contact_open_chat">פתח שיחה</string>
 	<string name="roster_contextmenu_contact_rename">שנה שם</string>
 	<string name="roster_contextmenu_contact_request_auth">בקש אימות</string>
 	<string name="roster_contextmenu_contact_change_group">שנה קבוצה</string>

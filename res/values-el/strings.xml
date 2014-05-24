@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Μετονομασία ομάδας</string>
 	<string name="roster_contextmenu_contact_delete">Διαγραφή επαφής</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
-	<string name="roster_contextmenu_contact_open_chat">Άνοιγμα συζήτησης</string>
 	<string name="roster_contextmenu_contact_rename">Μετονομασία</string>
 	<string name="roster_contextmenu_contact_request_auth">Αίτηση έγκρισης</string>
 	<string name="roster_contextmenu_contact_change_group">Αλλαγή Ομάδας</string>

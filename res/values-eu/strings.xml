@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Berrizendatu taldea</string>
 	<string name="roster_contextmenu_contact_delete">Ezabatu kontaktua</string>
 	<string name="roster_contextmenu_contact_delmsg">Ezabatu berriketa historia</string>
-	<string name="roster_contextmenu_contact_open_chat">Ireki berriketa</string>
 	<string name="roster_contextmenu_contact_rename">Berrizendatu</string>
 	<string name="roster_contextmenu_contact_request_auth">Eskatu baimena</string>
 	<string name="roster_contextmenu_contact_change_group">Aldatu taldea</string>

@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Rinomina gruppo</string>
 	<string name="roster_contextmenu_contact_delete">Elimina contatto</string>
 	<string name="roster_contextmenu_contact_delmsg">Cancella la cronologia della chat</string>
-	<string name="roster_contextmenu_contact_open_chat">Apri chat</string>
 	<string name="roster_contextmenu_contact_rename">Rinomina</string>
 	<string name="roster_contextmenu_contact_request_auth">Richiedi autorizzazione</string>
 	<string name="roster_contextmenu_contact_change_group">Cambia gruppo</string>

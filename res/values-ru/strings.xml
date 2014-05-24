@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Переименовать группу</string>
 	<string name="roster_contextmenu_contact_delete">Удалить контакт</string>
 	<string name="roster_contextmenu_contact_delmsg">Удалить историю сообщений</string>
-	<string name="roster_contextmenu_contact_open_chat">Открыть чат</string>
 	<string name="roster_contextmenu_contact_rename">Переименовать</string>
 	<string name="roster_contextmenu_contact_request_auth">Запросить авторизацию</string>
 	<string name="roster_contextmenu_contact_change_group">Изменить группу</string>

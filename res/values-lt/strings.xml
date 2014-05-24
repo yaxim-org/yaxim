@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Pervadinti grupę</string>
 	<string name="roster_contextmenu_contact_delete">Pašalinti kontaktą</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
-	<string name="roster_contextmenu_contact_open_chat">Atidaryti pokalbį</string>
 	<string name="roster_contextmenu_contact_rename">Pervardinti</string>
 	<string name="roster_contextmenu_contact_request_auth">Prašyti įgaliojimų</string>
 	<string name="roster_contextmenu_contact_change_group">Keisti grupę</string>

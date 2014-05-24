@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">Nimeä ryhmä uudelleen</string>
 	<string name="roster_contextmenu_contact_delete">Poista kontakti</string>
 	<string name="roster_contextmenu_contact_delmsg">Pyyhi viestihistoria</string>
-	<string name="roster_contextmenu_contact_open_chat">Avaa keskustelu</string>
 	<string name="roster_contextmenu_contact_rename">Nimeä uudelleen</string>
 	<string name="roster_contextmenu_contact_request_auth">Pyydä valtuutusta</string>
 	<string name="roster_contextmenu_contact_change_group">Vaihda ryhmää</string>

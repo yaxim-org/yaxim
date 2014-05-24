@@ -113,7 +113,6 @@
 	<string name="roster_contextmenu_group_rename">重命名分组</string>
 	<string name="roster_contextmenu_contact_delete">删除联系人</string>
 	<string name="roster_contextmenu_contact_delmsg">删除聊天记录</string>
-	<string name="roster_contextmenu_contact_open_chat">公众聊天</string>
 	<string name="roster_contextmenu_contact_rename">重命名</string>
 	<string name="roster_contextmenu_contact_request_auth">请求认证</string>
 	<string name="roster_contextmenu_contact_change_group">改变分组</string>
