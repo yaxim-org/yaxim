@@ -61,8 +61,10 @@
 		</receiver>
 
 		<provider android:name=".data.ChatProvider"
+			android:exported="false"
 			android:authorities="org.yaxim.androidclient.provider.Chats" />
 		<provider android:name=".data.RosterProvider"
+			android:exported="false"
 			android:authorities="org.yaxim.androidclient.provider.Roster" />
 
 		<activity android:name="de.duenndns.ssl.MemorizingActivity" />
