@@ -1405,14 +1405,6 @@ public class SmackableImp implements Smackable {
 		return false;
 	}
 
-	private String[] getJoinedRooms() {
-		if (multiUserChats.keySet().size() != 0) {
-			return (String[]) multiUserChats.keySet().toArray(new String[]{});
-		} else {
-			return new String[] {};
-		}
-	}
-
 	@Override
 	public void sendMucMessage(String room, String message) {
 		try {
