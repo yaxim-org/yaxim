@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
@@ -220,12 +221,12 @@ public class XMPPService extends GenericService {
 				}
 			}
 			@Override
-			public String[] getUserList(String jid) throws RemoteException {
+			public List<ParcelablePresence> getUserList(String jid) throws RemoteException {
 				if(mSmackable!=null)
 					return mSmackable.getUserList(jid);
 				else {
 					shortToastNotify(getString(R.string.Global_authenticate_first));
-					return new String[]{};
+					return null;
 				}
 			}
 		};

@@ -1,8 +1,11 @@
 package org.yaxim.androidclient.chat;
 
+import java.util.List;
+
 import android.os.RemoteException;
 import android.util.Log;
 import org.yaxim.androidclient.service.IXMPPMucService;
+import org.yaxim.androidclient.service.ParcelablePresence;
 
 public class XMPPMucServiceAdapter {
 
@@ -17,11 +20,11 @@ public class XMPPMucServiceAdapter {
 		this.jabberID = jabberID;
 	}
 	
-	public String[] getUserList() {
+	public List<ParcelablePresence> getUserList() {
 		try {
 			return xmppServiceStub.getUserList(this.jabberID);
 		} catch (RemoteException e) {
-			return new String[]{};
+			return null;
 		}
 	}
 

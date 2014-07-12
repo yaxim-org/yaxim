@@ -1,5 +1,7 @@
 package org.yaxim.androidclient.service;
 
+import java.util.List;
+
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 
@@ -32,6 +34,6 @@ public interface Smackable {
 	boolean inviteToRoom(String contactJid, String roomJid);
 	
 	String getNameForJID(String jid);
-	String[] getUserList(String jid);
+	List<ParcelablePresence> getUserList(String jid);
 
 }

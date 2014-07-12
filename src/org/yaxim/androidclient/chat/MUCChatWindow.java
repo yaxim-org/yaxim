@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.chat;
 
+import java.util.List;
 import java.util.Random;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
@@ -7,6 +8,7 @@ import java.util.zip.Checksum;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.service.IXMPPMucService;
+import org.yaxim.androidclient.service.ParcelablePresence;
 import org.yaxim.androidclient.service.XMPPService;
 
 import android.app.AlertDialog;
@@ -103,8 +105,8 @@ public class MUCChatWindow extends ChatWindow {
 	
 
 	private void showUserList() {
-		final String[] users = mMucServiceAdapter.getUserList();
-		if (users.length == 0)
+		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
+		if (users == null)
 			return;
 		final TypedValue tv = new TypedValue();
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MUCChatWindow.this)
@@ -120,14 +122,14 @@ public class MUCChatWindow extends ChatWindow {
 				return v;
 			}
 		};
-		for(String user : users)
-			adapter.add(user);
+		for(ParcelablePresence user : users)
+			adapter.add(user.resource);
 		Log.d(TAG, "adapter has values: "+adapter.getCount());
 		dialogBuilder.setAdapter(adapter, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String postfix=mChatInput.getSelectionStart()==0 ? ", " : ""; 
-				mChatInput.getText().insert(mChatInput.getSelectionStart(), users[which]+postfix);
+				mChatInput.getText().insert(mChatInput.getSelectionStart(), users.get(which)+postfix);
 			}
 		});
 		AlertDialog dialog = dialogBuilder.create();

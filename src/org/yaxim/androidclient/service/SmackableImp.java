@@ -1434,16 +1434,16 @@ public class SmackableImp implements Smackable {
 	}
 
 	@Override
-	public String[] getUserList(String jid) {
+	public List<ParcelablePresence> getUserList(String jid) {
 		MultiUserChat muc = multiUserChats.get(jid);
 		if (muc == null) {
-			return new String[] {};
+			return null;
 		}
 		Iterator<String> occIter = muc.getOccupants();
-		ArrayList<String> tmpList = new ArrayList<String>();
+		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
 		while(occIter.hasNext())
-			tmpList.add(occIter.next().split("/")[1]);
-		Collections.sort(tmpList, java.text.Collator.getInstance());
-		return (String[]) tmpList.toArray(new String[]{});
+			tmpList.add(new ParcelablePresence(muc.getOccupantPresence(occIter.next())));
+		//Collections.sort(tmpList, java.text.Collator.getInstance());
+		return tmpList;
 	}
 }
