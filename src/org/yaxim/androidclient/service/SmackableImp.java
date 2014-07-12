@@ -1390,8 +1390,9 @@ public class SmackableImp implements Smackable {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
 			if(nickname == null || nickname.equals("")) {
-				joinRoom(room, "NoNick", password);
+				return joinRoom(room, "NoNick", password);
 			}
+			mContentResolver.delete(RosterProvider.CONTENT_URI, "jid LIKE ?", new String[] {room});
 			return false;
 		}
 
@@ -1534,10 +1535,8 @@ public class SmackableImp implements Smackable {
 
 	@Override
 	public String[] getUserList(String jid) {
-		MultiUserChat muc = null;
-		try {
-			muc = multiUserChats.get(jid);
-		} catch (Exception e) {
+		MultiUserChat muc = multiUserChats.get(jid);
+		if (muc == null) {
 			return new String[] {};
 		}
 		Iterator<String> occIter = muc.getOccupants();
