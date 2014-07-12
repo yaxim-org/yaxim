@@ -435,10 +435,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			String from = jid;
 			if (jid.equals(mJID))
 				from = mScreenName;
-			from=from+"/"+resource;
 			if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
 				from = resource;
-			}
+			} else if (resource != null && resource.length() > 0)
+				from=from+"/"+resource;
 			wrapper.populateFrom(date, from_me, from, message, delivery_status);
 			return row;
 		}
