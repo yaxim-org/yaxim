@@ -8,6 +8,7 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
@@ -1251,8 +1252,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 				public void onServiceConnected(ComponentName name, IBinder service) {
 					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
 					try {
-						mucService.removeRoom(roomJid); // java.lang.SecurityException: Binder invocation to an incorrect interface
-
+						if (ChatRoomHelper.removeRoom(MainWindow.this, roomJid))
+							mucService.syncDbRooms();
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
@@ -1370,7 +1371,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 				public void onServiceConnected(ComponentName name, IBinder service) {
 					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
 					try {
-						mucService.addRoom(jid, pw, nick);
+						if (ChatRoomHelper.addRoom(MainWindow.this, jid, pw, nick))
+							mucService.syncDbRooms();
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}

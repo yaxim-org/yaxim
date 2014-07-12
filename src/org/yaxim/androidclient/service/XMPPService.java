@@ -211,35 +211,6 @@ public class XMPPService extends GenericService {
 					mSmackable.syncDbRooms();
 			}
 			@Override
-			public boolean addRoom(String jid, String password, String nickname)
-					throws RemoteException {
-				if(mSmackable!=null)
-					return mSmackable.addRoom(jid, password, nickname);
-				else {
-					fail("Could not add room");
-					return false;
-				}
-			}
-			@Override
-			public boolean removeRoom(String jid) throws RemoteException {
-				if(mSmackable!=null)
-						return mSmackable.removeRoom(jid);
-				else {
-					fail("Could not delete room");
-					return false;
-				}
-			}
-			@Override
-			public boolean createAndJoinRoom(String jid, String password,
-					String nickname) throws RemoteException {
-				if(mSmackable!=null)
-					return mSmackable.createAndJoinRoom(jid, password, nickname);
-				else {
-					fail("Could not create/join Room");
-					return false;
-				}
-			}
-			@Override
 			public String[] getRooms() throws RemoteException {
 				if(mSmackable!=null)
 					return mSmackable.getRooms();

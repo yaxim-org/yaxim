@@ -1344,25 +1344,6 @@ public class SmackableImp implements Smackable {
 				);
 	}
 	
-	public boolean addRoom(String jid, String password, String nickname) {
-		ContentValues cv = new ContentValues();
-		cv.put(RosterProvider.RosterConstants.JID, jid);
-		cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
-		cv.put(RosterProvider.RosterConstants.PASSWORD, password);
-		Uri ret = mContentResolver.insert(RosterProvider.MUCS_URI, cv);
-		syncDbRooms();
-		
-		return (ret != null);
-	}
-	
-	public boolean removeRoom(String jid) {
-		int deleted = mContentResolver.delete(RosterProvider.MUCS_URI, 
-				RosterProvider.RosterConstants.JID+" LIKE ?", 
-				new String[] {jid});
-		syncDbRooms();
-		return (deleted > 0);
-	}
-	
 	private boolean joinRoom(String room, String nickname, String password) {
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
 		
@@ -1432,19 +1413,6 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	@Override
-	public boolean createAndJoinRoom(String jid, String password, String nickname) { // TODO: ugly and not working!
-		createRoom(jid, nickname, password);
-		if(multiUserChats.containsKey(jid)) {
-			ContentValues cv = new ContentValues();
-			cv.put(RosterProvider.RosterConstants.JID, jid);
-			cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
-			cv.put(RosterProvider.RosterConstants.PASSWORD, password);
-			Uri ret = mContentResolver.insert(RosterProvider.MUCS_URI, cv);
-		}
-		return false;
-	}
-	
 	private boolean createRoom(String room, String nickname, String password) { // TODO: ugly!
 		// Create a MultiUserChat using a Connection for a room
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);

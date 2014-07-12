@@ -1,5 +1,6 @@
 package org.yaxim.androidclient;
 
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
@@ -79,7 +80,8 @@ public class MucInviteActivity extends SherlockActivity {
 					public void onServiceConnected(ComponentName name, IBinder service) {
 						IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
 						try {
-							mucService.addRoom(room, "", nick);
+							if (ChatRoomHelper.addRoom(MucInviteActivity.this, room, "", nick))
+								mucService.syncDbRooms();
 						} catch (RemoteException e) {
 							e.printStackTrace();
 						}
