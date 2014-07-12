@@ -1413,56 +1413,6 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private boolean createRoom(String room, String nickname, String password) { // TODO: ugly!
-		// Create a MultiUserChat using a Connection for a room
-		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
-		Form form = null; // TODO: maybe not good style?
-
-		// Create the room
-		try {
-			muc.create(nickname);
-		} catch (XMPPException e) {
-			Log.e(TAG, "could not create MUC room "+room);
-			e.printStackTrace();
-			return false;
-		}
-
-
-		try {
-			form = muc.getConfigurationForm();
-		} catch (XMPPException e) {
-			Log.e(TAG, "could not get configuration for MUC room "+room);
-			e.printStackTrace();
-			return false;
-		}
-
-		Form submitForm = form.createAnswerForm();
-		for (Iterator fields = form.getFields(); fields.hasNext();) {
-			FormField field = (FormField) fields.next();
-			if (!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable() != null) {
-				Log.d(TAG, "found MUC configuration form field: "+field.getLabel()); // TODO: until i know which fields to change
-				submitForm.setDefaultAnswer(field.getVariable());
-			}	
-		}	
-
-		//List owners = new ArrayList();
-		//submitForm.setAnswer("",...); // TODO: adapt this to the fields found above 
-		// Send the completed form (with default values) to the server to configure the room
-		try {
-			muc.sendConfigurationForm(submitForm);
-		} catch (XMPPException e) {
-			Log.e(TAG, "could not send MUC configuration for room "+room);
-			e.printStackTrace();
-			return false;
-		}
-
-		if(muc.isJoined()) {
-			multiUserChats.put(room, muc);
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void sendMucMessage(String room, String message) {
 		try {
