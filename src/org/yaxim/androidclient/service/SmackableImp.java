@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.service;
 
 import java.io.File;
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -1447,7 +1448,7 @@ public class SmackableImp implements Smackable {
 		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
 			@Override
 			public int compare(ParcelablePresence lhs, ParcelablePresence rhs) {
-				return lhs.resource.compareTo(rhs.resource);
+				return java.text.Collator.getInstance().compare(lhs.resource, rhs.resource);
 			}
 		});
 		return tmpList;
