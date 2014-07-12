@@ -3,7 +3,6 @@ package org.yaxim.androidclient.service;
 interface IXMPPMucService {
 	void syncDbRooms();
 	void sendMessage(String room, String message);	
-	String[] getRooms();
 	boolean inviteToRoom(String contactJid, String roomJid);
 	String[] getUserList(String jid);
 	

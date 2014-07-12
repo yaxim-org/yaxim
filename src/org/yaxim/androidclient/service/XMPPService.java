@@ -211,15 +211,6 @@ public class XMPPService extends GenericService {
 					mSmackable.syncDbRooms();
 			}
 			@Override
-			public String[] getRooms() throws RemoteException {
-				if(mSmackable!=null)
-					return mSmackable.getRooms();
-				else {
-					fail("Could not list rooms");
-					return new String[]{};
-				}
-			}
-			@Override
 			public boolean inviteToRoom(String contactJid, String roomJid) {
 				if(mSmackable!=null)
 					return mSmackable.inviteToRoom(contactJid, roomJid);
