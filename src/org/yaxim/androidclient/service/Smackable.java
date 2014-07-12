@@ -30,7 +30,6 @@ public interface Smackable {
 	void sendMucMessage(String room, String message);
 	void syncDbRooms();
 	String[] getRooms();
-	boolean isRoom(String jid);
 	boolean inviteToRoom(String contactJid, String roomJid);
 	
 	String getNameForJID(String jid);

@@ -18,15 +18,6 @@ public class XMPPMucServiceAdapter {
 		this.jabberID = jabberID;
 	}
 	
-	public boolean isRoom() {
-		try {
-			return xmppServiceStub.isRoom(jabberID);
-		} catch (Exception e) {
-			Log.e(TAG, "Caught Exception: "+e.getMessage());
-			return false;
-		}
-	}
-	
 	public String[] getUserList() {
 		try {
 			return xmppServiceStub.getUserList(this.jabberID);

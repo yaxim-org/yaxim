@@ -4,7 +4,6 @@ interface IXMPPMucService {
 	void syncDbRooms();
 	void sendMessage(String room, String message);	
 	String[] getRooms();
-	boolean isRoom(String jid);
 	boolean inviteToRoom(String contactJid, String roomJid);
 	String[] getUserList(String jid);
 	

@@ -220,12 +220,6 @@ public class XMPPService extends GenericService {
 				}
 			}
 			@Override
-			public boolean isRoom(String jid) throws RemoteException {
-				if(mSmackable!=null)
-					return mSmackable.isRoom(jid);
-				return false;
-			}
-			@Override
 			public boolean inviteToRoom(String contactJid, String roomJid) {
 				if(mSmackable!=null)
 					return mSmackable.inviteToRoom(contactJid, roomJid);
