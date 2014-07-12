@@ -17,6 +17,7 @@ import android.content.ServiceConnection;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.TypedValue;
@@ -33,6 +34,11 @@ public class MUCChatWindow extends ChatWindow {
 	private Intent mMucServiceIntent;
 	private ServiceConnection mMucServiceConnection;
 	private XMPPMucServiceAdapter mMucServiceAdapter;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
 	@Override
 	protected void registerXMPPService() {
@@ -98,10 +104,12 @@ public class MUCChatWindow extends ChatWindow {
 
 	private void showUserList() {
 		final String[] users = mMucServiceAdapter.getUserList();
+		if (users.length == 0)
+			return;
 		final TypedValue tv = new TypedValue();
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MUCChatWindow.this)
 		.setTitle("Users in room "+mWithJabberID)
-		.setNeutralButton("Close", null);
+		.setNegativeButton(android.R.string.cancel, null);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(MUCChatWindow.this, R.layout.single_string) {
 			@Override
@@ -124,12 +132,9 @@ public class MUCChatWindow extends ChatWindow {
 		});
 		AlertDialog dialog = dialogBuilder.create();
 		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
-		if(YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme
-				&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			dialog.getListView().setBackgroundColor(Color.BLACK);
-		} else if(YaximApplication.getConfig(this).getTheme() == R.style.YaximLightTheme
-				&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			dialog.getListView().setBackgroundColor(Color.WHITE);
+		if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			boolean is_dark = (YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme);
+			dialog.getListView().setBackgroundColor(is_dark ? Color.BLACK : Color.WHITE);
 		}
 		dialog.show();
 	}
