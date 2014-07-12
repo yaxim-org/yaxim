@@ -13,6 +13,7 @@ import org.yaxim.androidclient.service.XMPPService;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -25,7 +26,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.MenuInflater;
@@ -108,31 +112,28 @@ public class MUCChatWindow extends ChatWindow {
 		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
 		if (users == null)
 			return;
-		final TypedValue tv = new TypedValue();
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MUCChatWindow.this)
 		.setTitle("Users in room "+mWithJabberID)
 		.setNegativeButton(android.R.string.cancel, null);
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(MUCChatWindow.this, R.layout.single_string) {
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				View v = super.getView(position, convertView, parent);
-				nick2Color(getItem(position), tv);
-				((TextView) v).setTextColor(tv.data);
-				return v;
-			}
-		};
-		for(ParcelablePresence user : users)
-			adapter.add(user.resource);
+		PresenceArrayAdapter adapter = new PresenceArrayAdapter(MUCChatWindow.this, users);
+
 		Log.d(TAG, "adapter has values: "+adapter.getCount());
 		dialogBuilder.setAdapter(adapter, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String postfix=mChatInput.getSelectionStart()==0 ? ", " : ""; 
-				mChatInput.getText().insert(mChatInput.getSelectionStart(), users.get(which)+postfix);
+				mChatInput.getText().insert(mChatInput.getSelectionStart(), users.get(which).resource+postfix);
 			}
 		});
 		AlertDialog dialog = dialogBuilder.create();
+		dialog.getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				Log.d(TAG, "long clicked: " + position + ": " + users.get(position).resource);
+				return true;
+			}});
 		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
 		if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
 			boolean is_dark = (YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme);
@@ -178,4 +179,34 @@ public class MUCChatWindow extends ChatWindow {
 	}
 	
 
+	private class PresenceArrayAdapter extends ArrayAdapter<ParcelablePresence> {
+		TypedValue tv = new TypedValue();
+
+		public PresenceArrayAdapter(Context context, List<ParcelablePresence> pp) {
+			super(context, R.layout.mainchild_row, pp);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ParcelablePresence pp = getItem(position);
+
+			if (convertView == null)
+				convertView = getLayoutInflater().inflate(R.layout.mainchild_row, parent, false);
+			
+			TextView nick = ((TextView)convertView.findViewById(R.id.roster_screenname));
+			TextView statusmsg = ((TextView)convertView.findViewById(R.id.roster_statusmsg));
+			
+			nick.setText(pp.resource);
+			nick2Color(pp.resource, tv);
+			nick.setTextColor(tv.data);
+			
+			boolean hasStatus = pp.status != null && pp.status.length() > 0;
+			statusmsg.setText(pp.status);
+			statusmsg.setVisibility(hasStatus ? View.VISIBLE : View.GONE);
+			
+			((ImageView)convertView.findViewById(R.id.roster_icon)).setImageResource(pp.status_mode.getDrawableId());
+			
+			return convertView;
+		}
+}
 }

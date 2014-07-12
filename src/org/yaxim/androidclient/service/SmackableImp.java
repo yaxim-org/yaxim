@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1443,7 +1444,12 @@ public class SmackableImp implements Smackable {
 		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
 		while(occIter.hasNext())
 			tmpList.add(new ParcelablePresence(muc.getOccupantPresence(occIter.next())));
-		//Collections.sort(tmpList, java.text.Collator.getInstance());
+		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
+			@Override
+			public int compare(ParcelablePresence lhs, ParcelablePresence rhs) {
+				return lhs.resource.compareTo(rhs.resource);
+			}
+		});
 		return tmpList;
 	}
 }
