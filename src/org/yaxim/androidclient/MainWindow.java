@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -571,6 +572,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private void startChatActivity(String user, String userName, String message) {
 		Intent chatIntent = new Intent(this,
 				org.yaxim.androidclient.chat.ChatWindow.class);
+		if (ChatRoomHelper.isRoom(this, user))
+			chatIntent.setClass(this, MUCChatWindow.class);
 		Uri userNameUri = Uri.parse(user);
 		chatIntent.setData(userNameUri);
 		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);

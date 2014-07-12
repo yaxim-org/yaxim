@@ -2,7 +2,6 @@ package org.yaxim.androidclient.chat;
 
 import android.os.RemoteException;
 import android.util.Log;
-import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.IXMPPMucService;
 
 public class XMPPMucServiceAdapter {

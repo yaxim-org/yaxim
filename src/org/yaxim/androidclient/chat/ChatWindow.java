@@ -2,75 +2,50 @@ package org.yaxim.androidclient.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
-import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
-import org.jivesoftware.smack.Chat;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
-import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
-import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
-import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.ColorStateList;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.text.ClipboardManager;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.TextPaint;
 import android.text.TextWatcher;
-import android.text.style.URLSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,25 +74,20 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private TextView mTitle;
 	private TextView mSubTitle;
 	private Button mSendButton = null;
-	private EditText mChatInput = null;
-	private String mWithJabberID = null;
+	protected EditText mChatInput = null;
+	protected String mWithJabberID = null;
 	private String mUserScreenName = null;
 	private Intent mChatServiceIntent;
-	private Intent mMucServiceIntent;
 	private ServiceConnection mChatServiceConnection;
-	private ServiceConnection mMucServiceConnection;
 	private XMPPChatServiceAdapter mChatServiceAdapter;
-	private XMPPMucServiceAdapter mMucServiceAdapter;
 	private int mChatFontSize;
 	private ActionBar actionBar;
-	private boolean is_room = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setContactFromUri();
 		Log.d(TAG, "onCreate, registering XMPP service");
 		registerXMPPService();
-		Log.d(TAG, "onCreate, registered xmpp service, is: "+mMucServiceAdapter+" and "+mChatServiceAdapter);
 
 		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
@@ -194,7 +164,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		getContentResolver().unregisterContentObserver(mContactObserver);
 	}
 
-	private void registerXMPPService() {
+	protected void registerXMPPService() {
 		Log.i(TAG, "called startXMPPService()");
 		mChatServiceIntent = new Intent(this, XMPPService.class);
 		Uri chatURI = Uri.parse(mWithJabberID);
@@ -217,38 +187,18 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			}
 
 		};
-		
-		mMucServiceIntent = new Intent(this, XMPPService.class);
-		Uri dtaUri = Uri.parse(mWithJabberID+"?chat");
-		mMucServiceIntent.setData(dtaUri);
-		mMucServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-
-		mMucServiceConnection = new ServiceConnection() {
-			public void onServiceConnected(ComponentName name, IBinder service) {
-				mMucServiceAdapter = new XMPPMucServiceAdapter(
-						IXMPPMucService.Stub.asInterface(service), 
-						mWithJabberID);
-				supportInvalidateOptionsMenu();
-				getListView().invalidateViews();
-			}
-			public void onServiceDisconnected(ComponentName name) {
-			}
-		};
-	
 	}
 
-	private void unbindXMPPService() {
+	protected void unbindXMPPService() {
 		try {
 			unbindService(mChatServiceConnection);
-			unbindService(mMucServiceConnection);
 		} catch (IllegalArgumentException e) {
 			Log.e(TAG, "Service wasn't bound!");
 		}
 	}
 
-	private void bindXMPPService() {
+	protected void bindXMPPService() {
 		bindService(mChatServiceIntent, mChatServiceConnection, BIND_AUTO_CREATE);
-		bindService(mMucServiceIntent, mMucServiceConnection, BIND_AUTO_CREATE);
 	}
 
 	private void setSendButton() {
@@ -276,7 +226,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		} else {
 			mUserScreenName = mWithJabberID;
 		}
-		is_room = ChatRoomHelper.isRoom(this, mWithJabberID);
 	}
 
 	@Override
@@ -316,17 +265,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	
 
 	@Override
-	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		if(is_room) {
-			Log.d(TAG, "creating options menu, we're a muc");
-			MenuInflater inflater = getSupportMenuInflater(); 
-			inflater.inflate(R.menu.chat_options, menu);
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		Log.d(TAG, "options item selected");
 		switch (item.getItemId()) {
@@ -334,9 +272,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			Intent intent = new Intent(this, MainWindow.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			return true;
-		case R.id.chat_optionsmenu_userlist:
-			showUserList();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -383,6 +318,15 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 		getContentResolver().update(rowuri, values, null, null);
+	}
+	
+	public String jid2nickname(String jid, String resource) {
+		String from = jid;
+		if (jid.equals(mWithJabberID))
+			from = mUserScreenName;
+		if (resource != null && resource.length() > 0)
+			from=from+"/"+resource;
+		return from;
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -435,14 +379,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				markAsReadDelayed(_id, DELAY_NEWMSG);
 			}
 
-			String from = jid;
-			if (jid.equals(mJID))
-				from = mScreenName;
-			if (is_room) {
-				from = resource;
-			} else if (resource != null && resource.length() > 0)
-				from=from+"/"+resource;
-			wrapper.populateFrom(date, from_me, from, message, delivery_status);
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status);
 			return row;
 		}
 	}
@@ -477,14 +414,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				getDateView().setTextColor(tv.data);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
-			} else if (is_room) {
-				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
-				getDateView().setTextColor(nick2Color(from));
-				getFromView().setText(from + ":");
-				getFromView().setTextColor(nick2Color(from));
-				
 			} else {
-				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
+				nick2Color(from, tv);
 				getDateView().setTextColor(tv.data);
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(tv.data);
@@ -597,45 +528,6 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		toastNotification.show();
 	}
 
-	private void showUserList() {
-		if(is_room) {
-			final String[] users = mMucServiceAdapter.getUserList();
-			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ChatWindow.this)
-									.setTitle("Users in room "+mWithJabberID)
-									.setNeutralButton("Close", null);
-			
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChatWindow.this, R.layout.single_string) {
-			    @Override
-			    public View getView(int position, View convertView, ViewGroup parent) {
-			        View v = super.getView(position, convertView, parent);
-			        ((TextView) v).setTextColor( nick2Color(getItem(position)) );
-			        return v;
-			    }
-			};
-			for(String user : users)
-				adapter.add(user);
-			Log.d(TAG, "adapter has values: "+adapter.getCount());
-			dialogBuilder.setAdapter(adapter, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String postfix=mChatInput.getSelectionStart()==0 ? ", " : ""; 
-					mChatInput.getText().insert(mChatInput.getSelectionStart(), users[which]+postfix);
-				}
-			});
-			AlertDialog dialog = dialogBuilder.create();
-			// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
-			if(YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme
-					&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-				dialog.getListView().setBackgroundColor(Color.BLACK);
-			} else if(YaximApplication.getConfig(this).getTheme() == R.style.YaximLightTheme
-					&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-				dialog.getListView().setBackgroundColor(Color.WHITE);
-			}
-			dialog.show();
-		}
-	}
-
-	
 	private static final String[] STATUS_QUERY = new String[] {
 		RosterProvider.RosterConstants.STATUS_MODE,
 		RosterProvider.RosterConstants.STATUS_MESSAGE,
@@ -662,39 +554,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		cursor.close();
 	}
 
-	final int nick2Color(String nick) {
-		nick = nick;
-		
-		Checksum nickCRC = new CRC32();
-		nickCRC.update(nick.getBytes(), 0, nick.length());
-		int nickInt = (int)nickCRC.getValue();
-		Random rand = new Random(nickInt);
-		float r1 = -0.15f + ( rand.nextFloat() * (0.15f - -0.15f) );
-		float r2 = -0.1f + ( rand.nextFloat() * (0.1f - -0.1f) );
-		int blueShift = rand.nextBoolean() ? 45 : -45;
-		
-		float h, s, v;
-		h=Math.abs( nickInt%360 );
-
-		s=0.5f; v=0.5f;
-		if(YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme) {
-			s=0.75f + r1;
-			v=0.9f + r2;
-			if(h<=255.0f && h>=225.0f) {
-				h = h + blueShift;
-			}
-		} else if(YaximApplication.getConfig(this).getTheme() == R.style.YaximLightTheme) {
-			s=0.7f + r1; 
-			v=0.8f + r2;
-		}
-		
-		/*Log.d(TAG, String.format(
-				"nick2Color(%s): nickInt: %d, r1: %f, r2: %f, noBlue: %s, h: %f, s: %f, v: %f", 
-				nick, nickInt, r1, r2, blueShift, h, s, v));*/
-		
-		int nickColor = Color.HSVToColor(0xFF, new float[]{h, s, v});
-		
-		return nickColor;
+	// this method is a "virtual" placeholder for the MUC activity
+	public void nick2Color(String nick, TypedValue tv) {
+		getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 	}
 	
 	private class ContactObserver extends ContentObserver {
