@@ -12,6 +12,7 @@ import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
@@ -109,6 +110,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private XMPPMucServiceAdapter mMucServiceAdapter;
 	private int mChatFontSize;
 	private ActionBar actionBar;
+	private boolean is_room = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -274,6 +276,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		} else {
 			mUserScreenName = mWithJabberID;
 		}
+		is_room = ChatRoomHelper.isRoom(this, mWithJabberID);
 	}
 
 	@Override
@@ -314,7 +317,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 	@Override
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+		if(is_room) {
 			Log.d(TAG, "creating options menu, we're a muc");
 			MenuInflater inflater = getSupportMenuInflater(); 
 			inflater.inflate(R.menu.chat_options, menu);
@@ -435,7 +438,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			String from = jid;
 			if (jid.equals(mJID))
 				from = mScreenName;
-			if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+			if (is_room) {
 				from = resource;
 			} else if (resource != null && resource.length() > 0)
 				from=from+"/"+resource;
@@ -474,7 +477,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				getDateView().setTextColor(tv.data);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
-			} else if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+			} else if (is_room) {
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 				getDateView().setTextColor(nick2Color(from));
 				getFromView().setText(from + ":");
@@ -595,7 +598,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	private void showUserList() {
-		if(mMucServiceAdapter != null && mMucServiceAdapter.isRoom()) {
+		if(is_room) {
 			final String[] users = mMucServiceAdapter.getUserList();
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ChatWindow.this)
 									.setTitle("Users in room "+mWithJabberID)

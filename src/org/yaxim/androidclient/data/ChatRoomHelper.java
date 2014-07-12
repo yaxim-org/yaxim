@@ -1,7 +1,10 @@
 package org.yaxim.androidclient.data;
 
+import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 public class ChatRoomHelper {
@@ -22,4 +25,14 @@ public class ChatRoomHelper {
 		return (deleted > 0);
 	}
 	
+	public static boolean isRoom(Context ctx, String jid) {
+		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI, 
+				new String[] {RosterProvider.RosterConstants._ID,
+					RosterProvider.RosterConstants.JID}, 
+					RosterConstants.JID + " = ?", new String[] { jid.toLowerCase() }, null);
+		boolean is_room = (cursor.getCount() == 1);
+		cursor.close();
+		return is_room;
+	}
+
 }
