@@ -203,7 +203,7 @@ public class XMPPService extends GenericService {
 				if(mSmackable!=null)
 					mSmackable.sendMucMessage(room, message);
 				else
-					fail("Could not send message"); // TODO: make all below translateable
+					shortToastNotify(getString(R.string.Global_authenticate_first));
 			}
 			@Override
 			public void syncDbRooms() throws RemoteException {
@@ -215,7 +215,7 @@ public class XMPPService extends GenericService {
 				if(mSmackable!=null)
 					return mSmackable.inviteToRoom(contactJid, roomJid);
 				else {
-					fail("Could not invite user to MUC");
+					shortToastNotify(getString(R.string.Global_authenticate_first));
 					return false;
 				}
 			}
@@ -224,7 +224,7 @@ public class XMPPService extends GenericService {
 				if(mSmackable!=null)
 					return mSmackable.getUserList(jid);
 				else {
-					fail("Could not get userlist");
+					shortToastNotify(getString(R.string.Global_authenticate_first));
 					return new String[]{};
 				}
 			}
