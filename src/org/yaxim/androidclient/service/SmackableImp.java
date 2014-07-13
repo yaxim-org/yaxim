@@ -490,7 +490,6 @@ public class SmackableImp implements Smackable {
 		debugLog("removeRosterItem(" + user + ")");
 
 		tryToRemoveRosterEntry(user);
-		mServiceCallBack.rosterChanged();
 	}
 
 	public void renameRosterItem(String user, String newName)
@@ -897,7 +896,6 @@ public class SmackableImp implements Smackable {
 				if (first_roster) {
 					removeOldRosterEntries();
 					first_roster = false;
-					mServiceCallBack.rosterChanged();
 				}
 				debugLog("entriesAdded() done");
 			}
@@ -908,7 +906,6 @@ public class SmackableImp implements Smackable {
 				for (String entry : entries) {
 					deleteRosterEntryFromDB(entry);
 				}
-				mServiceCallBack.rosterChanged();
 			}
 
 			public void entriesUpdated(Collection<String> entries) {
@@ -918,7 +915,6 @@ public class SmackableImp implements Smackable {
 					RosterEntry rosterEntry = mRoster.getEntry(entry);
 					updateRosterEntryInDB(rosterEntry);
 				}
-				mServiceCallBack.rosterChanged();
 			}
 
 			public void presenceChanged(Presence presence) {
@@ -926,10 +922,8 @@ public class SmackableImp implements Smackable {
 
 				String jabberID = getBareJID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
-				if (rosterEntry != null) {
+				if (rosterEntry != null)
 					updateRosterEntryInDB(rosterEntry);
-					mServiceCallBack.rosterChanged();
-				}
 			}
 		};
 		mRoster.addRosterListener(mRosterListener);

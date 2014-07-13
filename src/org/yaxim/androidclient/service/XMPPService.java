@@ -513,9 +513,6 @@ public class XMPPService extends GenericService {
 					}});
 				}
 
-			public void rosterChanged() {
-			}
-
 			public void connectionStateChanged() {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?

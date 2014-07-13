@@ -5,6 +5,5 @@ import org.jivesoftware.smack.packet.Message;
 public interface XMPPServiceCallback {
 	void notifyMessage(String[] from, String messageBody, boolean silent_notification, Message.Type msgType);
 	void connectionStateChanged();
-	void rosterChanged(); // TODO: remove that!
 	void mucInvitationReceived(String room, String body);
 }
