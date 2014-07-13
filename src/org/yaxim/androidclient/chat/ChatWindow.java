@@ -471,7 +471,11 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
-			getMessageView().setText(message);
+			boolean slash_me = message.startsWith("/me ");
+			if (slash_me)
+				message = String.format("\u25CF %s %s", from, message.substring(4));
+			getMessageView().setText(message.replaceFirst("^/me ", from));
+			getMessageView().setTypeface(null, slash_me ? android.graphics.Typeface.ITALIC : 0);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
