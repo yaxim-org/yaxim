@@ -32,7 +32,7 @@ public abstract class GenericService extends Service {
 
 	private static final String TAG = "yaxim.Service";
 	private static final String APP_NAME = "yaxim";
-	private static final int MAX_TICKER_MSG_LEN = 50;
+	private static final int MAX_TICKER_MSG_LEN = 45;
 
 	protected NotificationManager mNotificationMGR;
 	private Notification mNotification;
