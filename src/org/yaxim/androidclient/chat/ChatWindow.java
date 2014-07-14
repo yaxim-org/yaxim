@@ -547,12 +547,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	private static final String[] STATUS_QUERY = new String[] {
+		RosterProvider.RosterConstants.ALIAS,
 		RosterProvider.RosterConstants.STATUS_MODE,
 		RosterProvider.RosterConstants.STATUS_MESSAGE,
 	};
 	private void updateContactStatus() {
 		Cursor cursor = getContentResolver().query(RosterProvider.CONTENT_URI, STATUS_QUERY,
 					RosterProvider.RosterConstants.JID + " = ?", new String[] { mWithJabberID }, null);
+		int ALIAS_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.ALIAS);
 		int MODE_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MODE);
 		int MSG_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MESSAGE);
 
@@ -561,6 +563,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			int status_mode = cursor.getInt(MODE_IDX);
 			String status_message = cursor.getString(MSG_IDX);
 			Log.d(TAG, "contact status changed: " + status_mode + " " + status_message);
+			mTitle.setText(cursor.getString(ALIAS_IDX));
 			mSubTitle.setVisibility((status_message != null && status_message.length() != 0)?
 					View.VISIBLE : View.GONE);
 			mSubTitle.setText(status_message);
