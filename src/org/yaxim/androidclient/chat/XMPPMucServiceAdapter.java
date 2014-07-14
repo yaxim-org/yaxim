@@ -13,11 +13,21 @@ public class XMPPMucServiceAdapter {
 	private IXMPPMucService xmppServiceStub;
 	private String jabberID;
 
-	public XMPPMucServiceAdapter(IXMPPMucService xmppServiceStub,
+	public XMPPMucServiceAdapter(final IXMPPMucService xmppServiceStub,
 			String jabberID) {
 		Log.i(TAG, "New XMPPMucServiceAdapter construced");
 		this.xmppServiceStub = xmppServiceStub;
 		this.jabberID = jabberID;
+		new Thread() {public void run() {
+			Log.d(TAG, "HACK: starting background sync...");
+			try {
+				xmppServiceStub.syncDbRooms();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			Log.d(TAG, "HACK: finished background sync...");
+			};
+		}.start();
 	}
 	
 	public List<ParcelablePresence> getUserList() {
