@@ -1160,6 +1160,7 @@ public class SmackableImp implements Smackable {
 							// this is a MUC subject, update our DB
 							ContentValues cvR = new ContentValues();
 							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
+							cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
 							upsertRoster(cvR, fromJID[0]);
 							return;
 						}
@@ -1430,17 +1431,26 @@ public class SmackableImp implements Smackable {
 		} else Log.d(TAG, "found no old DB messages");
 		cursor.close();
 		
+		ContentValues cvR = new ContentValues();
+		cvR.put(RosterProvider.RosterConstants.JID, room);
+		cvR.put(RosterProvider.RosterConstants.ALIAS, room);
+		cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.muc_synchronizing));
+		cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.dnd.ordinal());
+		cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
+		upsertRoster(cvR, room);
 		try {
 			muc.join(nickname, password, history, 10*PACKET_TIMEOUT);
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
+			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, "Error: " + e.getLocalizedMessage());
+			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+			upsertRoster(cvR, room);
 			return false;
 		}
 
 		if(muc.isJoined()) {
 			multiUserChats.put(room, muc);
-			ContentValues cvR = new ContentValues();
 			String roomname = room.split("@")[0];
 			try {
 				RoomInfo ri = MultiUserChat.getRoomInfo(mXMPPConnection, room);
@@ -1454,11 +1464,9 @@ public class SmackableImp implements Smackable {
 			}
 			// delay requesting subject until room info IQ returned/failed
 			String subject = muc.getSubject();
-			cvR.put(RosterProvider.RosterConstants.JID, room);
 			cvR.put(RosterProvider.RosterConstants.ALIAS, roomname);
 			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, subject);
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
-			cvR.put(RosterProvider.RosterConstants.GROUP, "MUCs");
 			upsertRoster(cvR, room);
 			return true;
 		}
