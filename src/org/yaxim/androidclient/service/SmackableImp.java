@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import de.duenndns.ssl.MemorizingTrustManager;
+
 import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
@@ -197,9 +199,12 @@ public class SmackableImp implements Smackable {
 		// register MemorizingTrustManager for HTTPS
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new X509TrustManager[] { YaximApplication.getApp(mService).mMTM },
+			MemorizingTrustManager mtm = YaximApplication.getApp(mService).mMTM;
+			sc.init(null, new X509TrustManager[] { mtm },
 					new java.security.SecureRandom());
 			this.mXMPPConfig.setCustomSSLContext(sc);
+			this.mXMPPConfig.setHostnameVerifier(mtm.wrapHostnameVerifier(
+						new org.apache.http.conn.ssl.StrictHostnameVerifier()));
 		} catch (java.security.GeneralSecurityException e) {
 			debugLog("initialize MemorizingTrustManager: " + e);
 		}
