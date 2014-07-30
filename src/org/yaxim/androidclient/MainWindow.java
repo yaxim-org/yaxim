@@ -1048,7 +1048,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 					query, selectWhere, null, RosterConstants.GROUP);
 			Cursor oldCursor = getCursor();
 			changeCursor(cursor);
-			stopManagingCursor(oldCursor);
+			if (oldCursor != null)
+				stopManagingCursor(oldCursor);
 		}
 
 		@Override
