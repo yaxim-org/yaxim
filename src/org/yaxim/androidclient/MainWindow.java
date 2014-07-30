@@ -204,12 +204,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		// handle SEND action
 		handleSendIntent();
-
-		// handle imto:// intent after restoring service connection
-		mainHandler.post(new Runnable() {
-			public void run() {
-				handleJabberIntent();
-			}});
 	}
 
 	public void handleSendIntent() {
@@ -824,6 +818,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 					serviceAdapter.connect();
 				} else if (mConfig.presence_required && isConnected())
 					serviceAdapter.setStatusFromConfig();
+
+				// handle server-related intents after connecting to the backend
+				handleJabberIntent();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
