@@ -509,11 +509,6 @@ public class SmackableImp implements Smackable {
 			registerRosterListener();
 			boolean need_bind = !mStreamHandler.isResumePossible();
 
-			mXMPPConnection.connect(need_bind);
-			// the following should not happen as of smack 3.3.1
-			if (!mXMPPConnection.isConnected()) {
-				throw new YaximXMPPException("SMACK connect failed without exception!");
-			}
 			if (mConnectionListener != null)
 				mXMPPConnection.removeConnectionListener(mConnectionListener);
 			mConnectionListener = new ConnectionListener() {
@@ -531,6 +526,7 @@ public class SmackableImp implements Smackable {
 			};
 			mXMPPConnection.addConnectionListener(mConnectionListener);
 
+			mXMPPConnection.connect(need_bind);
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				if (create_account) {
@@ -547,8 +543,6 @@ public class SmackableImp implements Smackable {
 				setStatusFromConfig();
 			}
 
-		} catch (YaximXMPPException e) {
-			throw e;
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
 			throw new YaximXMPPException("tryToConnect failed", e);
