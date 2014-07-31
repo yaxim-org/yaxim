@@ -140,8 +140,14 @@
 	<string name="account_jabberID_dialog_title">Enter your Jabber ID:</string>
 	<string name="account_jabberPW_title">Account Password</string>
 	<string name="account_jabberPW_sum">Your Jabber account password</string>
-	<string name="account_jabberPW_dialog_title">Enter password:</string>
-
+	<string name="account_jabberPW_change_on_server">Change password on server</string>
+	<string name="account_jabberPW_password_old">Old Password:</string>
+	<string name="account_jabberPW_password_new">New Password:</string>
+	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
+	<string name="account_jabberPW_progress">Please wait, changing password&#8230;</string>
+	<string name="account_jabberPW_finished">Password successfully changed.</string>
+	<string name="account_jabberPW_error">Error changing password: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client Resource</string>
 	<string name="account_resource_summ">Default: yaxim</string>
