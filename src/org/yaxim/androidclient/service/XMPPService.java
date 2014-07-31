@@ -256,6 +256,12 @@ public class XMPPService extends GenericService {
 				mSmackable.renameRosterGroup(group, newGroup);
 			}
 
+			@Override
+			public String changePassword(String newPassword)
+					throws RemoteException {
+				return mSmackable.changePassword(newPassword);
+			}
+
 			public void disconnect() throws RemoteException {
 				manualDisconnect();
 			}

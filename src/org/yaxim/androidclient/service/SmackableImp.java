@@ -483,6 +483,19 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.sendPacket(response);
 	}
 	
+	@Override
+	public String changePassword(String newPassword) {
+		try {
+			new AccountManager(mXMPPConnection).changePassword(newPassword);
+			return "OK"; //HACK: hard coded string to differentiate from failure modes
+		} catch (XMPPException e) {
+			if (e.getXMPPError() != null)
+				return e.getXMPPError().toString();
+			else
+				return e.getLocalizedMessage();
+		}
+	}
+
 	private void onDisconnected(String reason) {
 		unregisterPongListener();
 		mLastError = reason;

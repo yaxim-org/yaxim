@@ -19,6 +19,7 @@ public interface Smackable {
 	void renameRosterGroup(String group, String newGroup);
 	void sendPresenceRequest(String user, String type);
 	void addRosterGroup(String group);
+	String changePassword(String newPassword);
 	
 	void setStatusFromConfig();
 	void sendMessage(String user, String message);
