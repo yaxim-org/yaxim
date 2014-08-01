@@ -98,7 +98,7 @@ public abstract class GenericService extends Service {
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
 			try {
-				if (!silent_notification)
+				if (!silent_notification && !Uri.EMPTY.equals(mConfig.notifySound))
 					RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
 			} catch (NullPointerException e) {
 				// ignore NPE when ringtone was not found
@@ -181,6 +181,7 @@ public abstract class GenericService extends Service {
 			ticker = getString(R.string.notification_anonymous_message);
 		mNotification = new Notification(R.drawable.sb_message, ticker,
 				System.currentTimeMillis());
+		mNotification.defaults = 0;
 		Uri userNameUri = Uri.parse(fromJid);
 		mNotificationIntent.setData(userNameUri);
 		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
