@@ -1,3 +1,16 @@
+0.8.8:
+ * Security: fix for CVE-2014-5075 Smack vulnerability
+ * Preferences: new password change dialog
+ * Start wizard: re-enter password on account creation
+ * Contacts: Revamped status dialog (icons, status message history)
+ * Contacts: New "mark as read" context menu option
+ * Contacts: Option to disable contact groups display
+ * Security: closed export of chat and roster ContentProviders
+ * Security: TLSv1.2 enabled by default, fallback to v1.1 or v1
+ * Network: minor improvements to XEP-0198 ack requests
+ * Chat: glued chat window "OK" button to the bottom
+ * UI: Improved text contrast in light theme
+
 0.8.7b:
  * Server connection: fixed several reconnection issues
  * Preferences: No more crashes with incorrect JID
