@@ -9,7 +9,7 @@
 	<string name="conn_online">在线</string>
 	<string name="conn_offline">离线</string>
 	<string name="conn_empty_roster">没有联系人！</string>
-	<string name="conn_reconnect">%s 后连接。</string>
+	<string name="conn_reconnect">%d 后连接。</string>
 	<string name="conn_disconnected">连接已关闭</string>
 	<string name="conn_no_network">No network connection</string>
 
@@ -24,10 +24,12 @@
 	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
 	<string name="StartupDialog_Summary">你需要先配置yaxim才能使用。请输入你的Jabber标识和密码。</string>
 	<string name="StartupDialog_pwHint">输入密码</string>
+	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Jabber ID</string>
 	<string name="StartupDialog_passwd_title">密码：</string>
 	<string name="StartupDialog_advanced">高级…</string>
 	<string name="StartupDialog_create_new">注册新账户</string>
+	<string name="StartupDialog_error_password">Password does not match!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">来自 %s 的消息</string>
@@ -57,6 +59,8 @@
 	<string name="statuspopup_name">设置您的状态</string>
 	<string name="showOffline_summ">总是显示所有联系人</string>
 	<string name="showOffline_title">显示离线联系人</string>
+	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
+	<string name="enableGroups_title">Show contact groups</string>
 	<string name="foregroundService_summ">保持yaxim一直在线（后台挂机）</string>
 	<string name="foregroundService_title">状态栏图标</string>
 
@@ -88,6 +92,7 @@
 		<item>小</item>
 		<item>正常</item>
 		<item>大</item>
+		<item>huge</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -111,6 +116,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">%s 选项</string>
 	<string name="roster_contextmenu_group_rename">重命名分组</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
 	<string name="roster_contextmenu_contact_delete">删除联系人</string>
 	<string name="roster_contextmenu_contact_delmsg">删除聊天记录</string>
 	<string name="roster_contextmenu_contact_open_chat">公众聊天</string>
@@ -133,8 +139,14 @@
 	<string name="account_jabberID_dialog_title">输入您的Jabber ID</string>
 	<string name="account_jabberPW_title">帐户密码</string>
 	<string name="account_jabberPW_sum">您的Jabber账户密码</string>
-	<string name="account_jabberPW_dialog_title">输入密码：</string>
-
+	<string name="account_jabberPW_change_on_server">Change password on server</string>
+	<string name="account_jabberPW_password_old">Old Password:</string>
+	<string name="account_jabberPW_password_new">New Password:</string>
+	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
+	<string name="account_jabberPW_progress">Please wait, changing password…</string>
+	<string name="account_jabberPW_finished">Password successfully changed.</string>
+	<string name="account_jabberPW_error">Error changing password: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">客户来源</string>
 	<string name="account_resource_summ">默认: yaxim</string>
@@ -210,6 +222,7 @@
 
 	<!-- default roster group with no name -->
 	<string name="default_group">常规</string>
+	<string name="all_contacts_group">All contacts</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">选择联系人</string>

@@ -24,10 +24,12 @@
 	<string name="StartupDialog_Title">Witaj w yaxim!</string>
 	<string name="StartupDialog_Summary">Używanie yaxima wymaga konfiguracji. Podaj swój Jabber ID i hasło.</string>
 	<string name="StartupDialog_pwHint">Hasło</string>
+	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Hasło:</string>
 	<string name="StartupDialog_advanced">Zaawansowane…</string>
 	<string name="StartupDialog_create_new">Zarejestruj nowe konto</string>
+	<string name="StartupDialog_error_password">Password does not match!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Wiadomość od %s</string>
@@ -57,6 +59,8 @@
 	<string name="statuspopup_name">Ustaw swój status</string>
 	<string name="showOffline_summ">Zawsze pokazuj wszystkie kontakty na liście</string>
 	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>
+	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
+	<string name="enableGroups_title">Show contact groups</string>
 	<string name="foregroundService_summ">Utrzymuj yaxima w pamięci aby zapewnić stałe połączenie (usługa w tle)</string>
 	<string name="foregroundService_title">Ikona na pasku powiadomień</string>
 
@@ -88,6 +92,7 @@
 		<item>mały</item>
 		<item>normalny</item>
 		<item>duży</item>
+		<item>huge</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -111,6 +116,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Ustawienia %s</string>
 	<string name="roster_contextmenu_group_rename">Zmień nazwę grupy</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
 	<string name="roster_contextmenu_contact_delete">Usuń kontakt</string>
 	<string name="roster_contextmenu_contact_delmsg">Usuń historię czatu</string>
 	<string name="roster_contextmenu_contact_open_chat">Otwórz chat</string>
@@ -133,8 +139,14 @@
 	<string name="account_jabberID_dialog_title">Jabber ID:</string>
 	<string name="account_jabberPW_title">Hasło</string>
 	<string name="account_jabberPW_sum">Hasło twojego konta jabber</string>
-	<string name="account_jabberPW_dialog_title">Podaj hasło:</string>
-
+	<string name="account_jabberPW_change_on_server">Change password on server</string>
+	<string name="account_jabberPW_password_old">Old Password:</string>
+	<string name="account_jabberPW_password_new">New Password:</string>
+	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
+	<string name="account_jabberPW_progress">Please wait, changing password…</string>
+	<string name="account_jabberPW_finished">Password successfully changed.</string>
+	<string name="account_jabberPW_error">Error changing password: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Zasób</string>
 	<string name="account_resource_summ">Domyślnie: yaxim</string>
@@ -210,6 +222,7 @@
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Grupa domyślna</string>
+	<string name="all_contacts_group">All contacts</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Wybierz kontakt</string>
