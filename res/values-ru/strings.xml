@@ -24,10 +24,12 @@
 	<string name="StartupDialog_Title">Добро пожаловать в yaxim!</string>
 	<string name="StartupDialog_Summary">Необходимо настроить yaxim перед использованием. Пожалуйста, введите Jabber ID и пароль.</string>
 	<string name="StartupDialog_pwHint">Введите пароль</string>
+	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
 	<string name="StartupDialog_advanced">Дополнительно...</string>
 	<string name="StartupDialog_create_new">Зарегистрировать новую учётную запись</string>
+	<string name="StartupDialog_error_password">Password does not match!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Сообщение от %s</string>
@@ -57,6 +59,8 @@
 	<string name="statuspopup_name">Установить ваш статус</string>
 	<string name="showOffline_summ">Всегда показывать все контакты в списке собеседников</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>
+	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
+	<string name="enableGroups_title">Show contact groups</string>
 	<string name="foregroundService_summ">Удерживать yaxim в памяти для обеспечения постоянного соединения (фоновый сервис)</string>
 	<string name="foregroundService_title">Значок в статусной строке</string>
 
@@ -90,6 +94,7 @@
 		<item>маленький</item>
 		<item>обычный</item>
 		<item>большой</item>
+		<item>huge</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -113,6 +118,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Настройки для %s</string>
 	<string name="roster_contextmenu_group_rename">Переименовать группу</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
 	<string name="roster_contextmenu_contact_delete">Удалить контакт</string>
 	<string name="roster_contextmenu_contact_delmsg">Удалить историю сообщений</string>
 	<string name="roster_contextmenu_contact_open_chat">Открыть чат</string>
@@ -135,8 +141,14 @@
 	<string name="account_jabberID_dialog_title">Введите свой Jabber ID:</string>
 	<string name="account_jabberPW_title">Пароль учётной записи</string>
 	<string name="account_jabberPW_sum">Пароль вашей учётной записи Jabber</string>
-	<string name="account_jabberPW_dialog_title">Введите пароль:</string>
-
+	<string name="account_jabberPW_change_on_server">Change password on server</string>
+	<string name="account_jabberPW_password_old">Old Password:</string>
+	<string name="account_jabberPW_password_new">New Password:</string>
+	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
+	<string name="account_jabberPW_progress">Please wait, changing password…</string>
+	<string name="account_jabberPW_finished">Password successfully changed.</string>
+	<string name="account_jabberPW_error">Error changing password: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ресурс клиента</string>
 	<string name="account_resource_summ">По умолчанию: yaxim</string>
@@ -272,6 +284,7 @@
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Общие</string>
+	<string name="all_contacts_group">All contacts</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Выберите контакт</string>

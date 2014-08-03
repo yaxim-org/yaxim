@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import de.duenndns.ssl.MemorizingTrustManager;
+
 import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
@@ -197,9 +199,12 @@ public class SmackableImp implements Smackable {
 		// register MemorizingTrustManager for HTTPS
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new X509TrustManager[] { YaximApplication.getApp(mService).mMTM },
+			MemorizingTrustManager mtm = YaximApplication.getApp(mService).mMTM;
+			sc.init(null, new X509TrustManager[] { mtm },
 					new java.security.SecureRandom());
 			this.mXMPPConfig.setCustomSSLContext(sc);
+			this.mXMPPConfig.setHostnameVerifier(mtm.wrapHostnameVerifier(
+						new org.apache.http.conn.ssl.StrictHostnameVerifier()));
 		} catch (java.security.GeneralSecurityException e) {
 			debugLog("initialize MemorizingTrustManager: " + e);
 		}
@@ -478,6 +483,19 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.sendPacket(response);
 	}
 	
+	@Override
+	public String changePassword(String newPassword) {
+		try {
+			new AccountManager(mXMPPConnection).changePassword(newPassword);
+			return "OK"; //HACK: hard coded string to differentiate from failure modes
+		} catch (XMPPException e) {
+			if (e.getXMPPError() != null)
+				return e.getXMPPError().toString();
+			else
+				return e.getLocalizedMessage();
+		}
+	}
+
 	private void onDisconnected(String reason) {
 		unregisterPongListener();
 		mLastError = reason;
@@ -504,11 +522,6 @@ public class SmackableImp implements Smackable {
 			registerRosterListener();
 			boolean need_bind = !mStreamHandler.isResumePossible();
 
-			mXMPPConnection.connect(need_bind);
-			// the following should not happen as of smack 3.3.1
-			if (!mXMPPConnection.isConnected()) {
-				throw new YaximXMPPException("SMACK connect failed without exception!");
-			}
 			if (mConnectionListener != null)
 				mXMPPConnection.removeConnectionListener(mConnectionListener);
 			mConnectionListener = new ConnectionListener() {
@@ -526,6 +539,7 @@ public class SmackableImp implements Smackable {
 			};
 			mXMPPConnection.addConnectionListener(mConnectionListener);
 
+			mXMPPConnection.connect(need_bind);
 			// SMACK auto-logins if we were authenticated before
 			if (!mXMPPConnection.isAuthenticated()) {
 				if (create_account) {
@@ -542,8 +556,6 @@ public class SmackableImp implements Smackable {
 				setStatusFromConfig();
 			}
 
-		} catch (YaximXMPPException e) {
-			throw e;
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
 			throw new YaximXMPPException("tryToConnect failed", e);
@@ -845,8 +857,10 @@ public class SmackableImp implements Smackable {
 
 				String jabberID = getBareJID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
-				updateRosterEntryInDB(rosterEntry);
-				mServiceCallBack.rosterChanged();
+				if (rosterEntry != null) {
+					updateRosterEntryInDB(rosterEntry);
+					mServiceCallBack.rosterChanged();
+				}
 			}
 		};
 		mRoster.addRosterListener(mRosterListener);
@@ -1120,12 +1134,6 @@ public class SmackableImp implements Smackable {
 		return values;
 	}
 
-	private void addRosterEntryToDB(final RosterEntry entry) {
-		ContentValues values = getContentValuesForRosterEntry(entry);
-		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
-		debugLog("addRosterEntryToDB: Inserted " + uri);
-	}
-
 	private void deleteRosterEntryFromDB(final String jabberID) {
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI,
 				RosterConstants.JID + " = ?", new String[] { jabberID });
@@ -1133,11 +1141,14 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void updateRosterEntryInDB(final RosterEntry entry) {
-		final ContentValues values = getContentValuesForRosterEntry(entry);
+		upsertRoster(getContentValuesForRosterEntry(entry), entry.getUser());
+	}
 
+	private void upsertRoster(final ContentValues values, String jid) {
 		if (mContentResolver.update(RosterProvider.CONTENT_URI, values,
-				RosterConstants.JID + " = ?", new String[] { entry.getUser() }) == 0)
-			addRosterEntryToDB(entry);
+				RosterConstants.JID + " = ?", new String[] { jid }) == 0) {
+			mContentResolver.insert(RosterProvider.CONTENT_URI, values);
+		}
 	}
 
 	private String getGroup(Collection<RosterGroup> groups) {

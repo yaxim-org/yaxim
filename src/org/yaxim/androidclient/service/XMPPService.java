@@ -256,6 +256,12 @@ public class XMPPService extends GenericService {
 				mSmackable.renameRosterGroup(group, newGroup);
 			}
 
+			@Override
+			public String changePassword(String newPassword)
+					throws RemoteException {
+				return mSmackable.changePassword(newPassword);
+			}
+
 			public void disconnect() throws RemoteException {
 				manualDisconnect();
 			}
@@ -319,7 +325,7 @@ public class XMPPService extends GenericService {
 		}
 		Notification n = new Notification(R.drawable.ic_status_offline, null,
 				System.currentTimeMillis());
-		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR | Notification.FLAG_ONLY_ALERT_ONCE;
 
 		Intent notificationIntent = new Intent(this, MainWindow.class);
 		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

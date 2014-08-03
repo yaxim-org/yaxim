@@ -9,7 +9,7 @@
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Keine Kontakte zum Anzeigen!</string>
-	<string name="conn_reconnect">Neue Verbindung in %d Sekunden.</string>
+	<string name="conn_reconnect">Nächster Versuch in %d Sekunden.</string>
 	<string name="conn_disconnected">Verbindung getrennt</string>
 	<string name="conn_no_network">Keine Netzwerkverbindung</string>
 
@@ -24,10 +24,12 @@
 	<string name="StartupDialog_Title">Willkommen zu yaxim!</string>
 	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte geben Sie Ihre Jabber-ID und Ihr Passwort ein.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
+	<string name="StartupDialog_pwrHint">Passwort wiederholen</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passwort:</string>
 	<string name="StartupDialog_advanced">Erweitert…</string>
 	<string name="StartupDialog_create_new">Neues Konto anlegen</string>
+	<string name="StartupDialog_error_password">Passwort stimmt nicht überein!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
@@ -57,6 +59,8 @@
 	<string name="statuspopup_name">Status setzen</string>
 	<string name="showOffline_summ">Alle Kontakte immer in der Liste anzeigen</string>
 	<string name="showOffline_title">Offline-Kontakte anzeigen</string>
+	<string name="enableGroups_summ">Kontakte anhand ihrer Gruppenzugehörigkeit anordnen</string>
+	<string name="enableGroups_title">Kontaktgruppen anzeigen</string>
 	<string name="foregroundService_summ">Yaxim im Speicher halten um immer verbunden zu bleiben (Vordergrund-Dienst)</string>
 	<string name="foregroundService_title">Symbol in der Statusleiste</string>
 
@@ -90,6 +94,7 @@
 		<item>klein</item>
 		<item>normal</item>
 		<item>groß</item>
+		<item>riesig</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -113,6 +118,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Optionen für %s</string>
 	<string name="roster_contextmenu_group_rename">Gruppe umbenennen</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Als gelesen markieren</string>
 	<string name="roster_contextmenu_contact_delete">Kontakt löschen</string>
 	<string name="roster_contextmenu_contact_delmsg">Chat-Verlauf löschen</string>
 	<string name="roster_contextmenu_contact_open_chat">Chat öffnen</string>
@@ -133,10 +139,16 @@
 	<string name="account_jabberID_title">Jabber-ID</string>
 	<string name="account_jabberID_sum">Beispiel: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Jabber-ID eingeben:</string>
-	<string name="account_jabberPW_title">Zugangspasswort</string>
+	<string name="account_jabberPW_title">Konto-Passwort</string>
 	<string name="account_jabberPW_sum">Ihr Jabber-Account-Passwort</string>
-	<string name="account_jabberPW_dialog_title">Passwort eingeben:</string>
-
+	<string name="account_jabberPW_change_on_server">Passwort auf Server ändern</string>
+	<string name="account_jabberPW_password_old">Altes Passwort:</string>
+	<string name="account_jabberPW_password_new">Neues Passwort:</string>
+	<string name="account_jabberPW_warning">ACHTUNG! Sie müssen auf dem Server das selbe Passwort einstellen, um sich anmelden zu können!</string>
+	<string name="account_jabberPW_progress">Bitte warten, Passwort wird geändert...</string>
+	<string name="account_jabberPW_finished">Das Passwort wurde erfolgreich geändert.</string>
+	<string name="account_jabberPW_error">Fehler beim Passwort ändern: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client-Ressource</string>
 	<string name="account_resource_summ">Standard: yaxim</string>
@@ -216,6 +228,7 @@
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Allgemein</string>
+	<string name="all_contacts_group">Alle Kontakte</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Kontakt auswählen</string>

@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.preferences;
 
 import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.dialogs.ChangePasswordDialog;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -116,6 +118,12 @@ public class AccountPrefs extends SherlockPreferenceActivity {
 
 		});
 
+		findPreference(PreferenceConstants.PASSWORD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				new ChangePasswordDialog(AccountPrefs.this).show();
+				return true;
+			}
+		});
 	}
 
 	@Override

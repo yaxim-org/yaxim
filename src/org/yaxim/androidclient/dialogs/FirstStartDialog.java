@@ -21,17 +21,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 
 public class FirstStartDialog extends AlertDialog implements DialogInterface.OnClickListener,
-		TextWatcher {
+		CompoundButton.OnCheckedChangeListener, TextWatcher {
 
 	private MainWindow mainWindow;
 	private Button mOkButton;
 	private EditText mEditJabberID;
 	private EditText mEditPassword;
+	private EditText mRepeatPassword;
 	private CheckBox mCreateAccount;
 
 	public FirstStartDialog(MainWindow mainWindow,
@@ -51,8 +53,13 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
+		mRepeatPassword = (EditText) group.findViewById(R.id.startup_password_repeat);
 		mCreateAccount = (CheckBox) group.findViewById(R.id.create_account);
+
 		mEditJabberID.addTextChangedListener(this);
+		mEditPassword.addTextChangedListener(this);
+		mRepeatPassword.addTextChangedListener(this);
+		mCreateAccount.setOnCheckedChangeListener(this);
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,17 +101,38 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		cancel();
 	}
 
-	public void afterTextChanged(Editable s) {
+	private void updateDialog() {
+		boolean is_ok = true;
+		// verify jabber ID
+		Editable jid = mEditJabberID.getText();
 		try {
-			XMPPHelper.verifyJabberID(s);
-			mOkButton.setEnabled(true);
+			XMPPHelper.verifyJabberID(jid);
 			//mOkButton.setOnClickListener(this);
 			mEditJabberID.setError(null);
 		} catch (YaximXMPPAdressMalformedException e) {
-			mOkButton.setEnabled(false);
-			if (s.length() > 0)
+			if (jid.length() > 0)
 				mEditJabberID.setError(mainWindow.getString(R.string.Global_JID_malformed));
 		}
+		if (mEditPassword.length() == 0)
+			is_ok = false;
+		if (mCreateAccount.isChecked()) {
+			boolean passwords_match = mEditPassword.getText().toString().equals(
+					mRepeatPassword.getText().toString());
+			is_ok = is_ok && passwords_match;
+			mRepeatPassword.setError((passwords_match || mRepeatPassword.length() == 0) ?
+					null : mainWindow.getString(R.string.StartupDialog_error_password));
+		}
+		mOkButton.setEnabled(is_ok);
+	}
+
+	/* CompoundButton.OnCheckedChangeListener for mCreateAccount */
+	@Override
+	public void onCheckedChanged(CompoundButton btn,boolean isChecked) {
+		mRepeatPassword.setVisibility(isChecked? View.VISIBLE : View.GONE);
+		updateDialog();
+	}
+	public void afterTextChanged(Editable s) {
+		updateDialog();
 	}
 
 	public void beforeTextChanged(CharSequence s, int start, int count,

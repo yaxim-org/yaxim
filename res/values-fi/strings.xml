@@ -9,25 +9,27 @@
 	<string name="conn_online">Verkossa</string>
 	<string name="conn_offline">Poissa verkosta</string>
 	<string name="conn_empty_roster">Ei kontakteja!</string>
-	<string name="conn_reconnect">Uudelleenyhdistäminen %d sekunnin kuluttua.</string>
+	<string name="conn_reconnect">Seuraava yhteydenmuodostus %d sekunnin kuluttua.</string>
 	<string name="conn_disconnected">Yhteys suljettiin</string>
 	<string name="conn_no_network">Ei verkkoyhteyttä</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Poistu</string>
-	<string name="Global_authenticate_first">Ole hyvä, ja muodosta yhteys ensin</string>
+	<string name="Global_authenticate_first">Ole hyvä ja muodosta yhteys ensin</string>
 	<string name="Global_JID_hint">käyttäjä@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Tarkista osoitteen kelvollisuus</string>
+	<string name="Global_JID_malformed">Tarkista osoitteen muotoilu ja oikeinkirjoitus</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Tervetuloa yaxim-viestimeen!</string>
-	<string name="StartupDialog_Summary">Yaxim on määriteltävä ennen käyttöä. Ole hyvä, ja anna Jabber käyttäjätunnuksesi sekä salasanasi.</string>
+	<string name="StartupDialog_Summary">Yaximin asetukset on määriteltävä ennen käyttöä. Ole hyvä ja anna Jabber-käyttäjätunnuksesi sekä salasanasi.</string>
 	<string name="StartupDialog_pwHint">Syötä salasana</string>
+	<string name="StartupDialog_pwrHint">Toista salasana</string>
 	<string name="StartupDialog_Username_title">Jabber-tunnus:</string>
 	<string name="StartupDialog_passwd_title">Salasana:</string>
 	<string name="StartupDialog_advanced">Lisäominaisuudet...</string>
 	<string name="StartupDialog_create_new">Luo uusi tunnus</string>
+	<string name="StartupDialog_error_password">Salasanassa on kirjoitusvirhe!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Viesti käyttäjältä %s</string>
@@ -44,7 +46,7 @@
 	<string name="vibr_summ">Värise viestin saapuessa</string>
 	<string-array name="vibr_values_displayed">
 		<item>Ei koskaan</item>
-		<item>Järjestelmäasetus</item>
+		<item>Järjestelmän asetukset</item>
 		<item>Aina</item>
 	</string-array>
 	<string name="ringtone_title">Soittoääni</string>
@@ -57,6 +59,8 @@
 	<string name="statuspopup_name">Aseta tilasi</string>
 	<string name="showOffline_summ">Näytä aina kaikki kontaktit listalla</string>
 	<string name="showOffline_title">Näytä poissaolevat kontaktit</string>
+	<string name="enableGroups_summ">Järjestä kontaktit ryhmien mukaan</string>
+	<string name="enableGroups_title">Näytä ryhmät</string>
 	<string name="foregroundService_summ">Pidä yaxim muistissa, jotta yhteys ei katkeaisi (palvelu toimii etualalla)</string>
 	<string name="foregroundService_title">Tilapalkin kuvake</string>
 
@@ -69,9 +73,9 @@
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Ulkoasu</string>
-	<string name="FontChat_title">Keskusteluikkunan kirjaisinkoko</string>
-	<string name="FontChat_summ">Aseta keskusteluikkunan kirjaisinkoko</string>
-	<string name="FontChat_dialog">Keskusteluikkunan kirjaisinkoko</string>
+	<string name="FontChat_title">Keskusteluikkunan kirjasinkoko</string>
+	<string name="FontChat_summ">Aseta keskusteluikkunan kirjasinkoko</string>
+	<string name="FontChat_dialog">Keskusteluikkunan kirjasinkoko</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
@@ -90,6 +94,7 @@
 		<item>pieni</item>
 		<item>normaali</item>
 		<item>suuri</item>
+		<item>valtava</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -105,14 +110,15 @@
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Lisää kontakti</string>
-	<string name="addFriend_Summ">Ole hyvä ja anna tuttavasi Jabber tunnus, haluamasi kutsunimi sekä kohderyhmä.</string>
-	<string name="addFriend_aliasHint">Näyttönimi</string>
+	<string name="addFriend_Summ">Ole hyvä ja anna tuttavasi Jabber-tunnus, näytettävä nimi ja kontaktiryhmä.</string>
+	<string name="addFriend_aliasHint">Näytettävä nimi</string>
 	<string name="addrosteritemaddgroupchoice">Lisää uuteen ryhmään</string>
 	<string name="NewGroup_EditTextField_Hint">Nimi uudelle ryhmälle</string>
 
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Valinnat kohteelle %s</string>
 	<string name="roster_contextmenu_group_rename">Nimeä ryhmä uudelleen</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Merkitse luetuksi</string>
 	<string name="roster_contextmenu_contact_delete">Poista kontakti</string>
 	<string name="roster_contextmenu_contact_delmsg">Pyyhi viestihistoria</string>
 	<string name="roster_contextmenu_contact_open_chat">Avaa keskustelu</string>
@@ -135,8 +141,14 @@
 	<string name="account_jabberID_dialog_title">Anna Jabber-tunnus:</string>
 	<string name="account_jabberPW_title">Tilin salasana</string>
 	<string name="account_jabberPW_sum">Jabber-tilisi salasana</string>
-	<string name="account_jabberPW_dialog_title">Anna salasana:</string>
-
+	<string name="account_jabberPW_change_on_server">Muuta salasana palvelimella</string>
+	<string name="account_jabberPW_password_old">Vanha salasana:</string>
+	<string name="account_jabberPW_password_new">Uusi salasana:</string>
+	<string name="account_jabberPW_warning">HUOMAA! Jotta kirjautuminen onnistuisi, salasana on vaihdettava myös palvelimella!</string>
+	<string name="account_jabberPW_progress">Odota hetki, salasanaa vaihdetaan...</string>
+	<string name="account_jabberPW_finished">Salasanan vaihto onnistui.</string>
+	<string name="account_jabberPW_error">Salasanan vaihto epäonnistui: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ohjelman resurssi</string>
 	<string name="account_resource_summ">Oletus: yaxim</string>
@@ -265,10 +277,12 @@
 	<string name="status_offline">Poissa verkosta</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Heikki Hannikainen https://launchpad.net/~hessu
   Jussi Karttunen https://launchpad.net/~jkarttunen</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Yleiset</string>
+	<string name="all_contacts_group">Kaikki yhteystiedot</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Valitse kontakti</string>

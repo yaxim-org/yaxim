@@ -139,4 +139,13 @@ public class XMPPRosterServiceAdapter {
 			e.printStackTrace();
 		}
 	}
+
+	public String changePassword(String newPassword) {
+		try {
+			return xmppServiceStub.changePassword(newPassword);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return "Internal yaxim service connection failure.";
+		}
+	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="18" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
+	android:versionCode="19" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
 
 	<uses-sdk android:targetSdkVersion="17" android:minSdkVersion="7"/>
 
@@ -37,7 +37,8 @@
 
 		<activity android:name=".chat.ChatWindow" android:label="@string/app_name"
 			android:theme="@style/PinkTheme"
-			android:alwaysRetainTaskState="true">
+			android:alwaysRetainTaskState="true"
+			android:windowSoftInputMode="stateHidden">
 		</activity>
 
 		<activity android:name=".preferences.MainPrefs"
@@ -62,8 +63,10 @@
 		</receiver>
 
 		<provider android:name=".data.ChatProvider"
+			android:exported="false"
 			android:authorities="org.yaxim.androidclient.provider.Chats" />
 		<provider android:name=".data.RosterProvider"
+			android:exported="false"
 			android:authorities="org.yaxim.androidclient.provider.Roster" />
 
 		<activity android:name="de.duenndns.ssl.MemorizingActivity" />

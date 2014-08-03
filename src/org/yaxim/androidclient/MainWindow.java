@@ -22,6 +22,7 @@ import org.yaxim.androidclient.util.StatusMode;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -139,14 +140,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 	// need this to workaround unwanted OnGroupCollapse/Expand events
 	boolean groupClicked = false;
 	void handleGroupChange(int groupPosition, boolean isExpanded) {
-		String groupName = getGroupName(groupPosition);
 		if (groupClicked) {
-			Log.d(TAG, "group status change: " + groupName + " -> " + isExpanded);
-			mGroupsExpanded.put(groupName, isExpanded);
+			try {
+				String groupName = getGroupName(groupPosition);
+				Log.d(TAG, "group status change: " + groupName + " -> " + isExpanded);
+				mGroupsExpanded.put(groupName, isExpanded);
+			} catch (NullPointerException e) {
+				// sometimes, it fails to obtain the cursor. We can ignore it
+			}
 			groupClicked = false;
-		//} else {
-		//	if (!mGroupsExpanded.containsKey(name))
-		//		restoreGroupsExpanded();
 		}
 	}
 
@@ -207,12 +209,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		// handle SEND action
 		handleSendIntent();
-
-		// handle imto:// intent after restoring service connection
-		mainHandler.post(new Runnable() {
-			public void run() {
-				handleJabberIntent();
-			}});
 	}
 
 	public void handleSendIntent() {
@@ -263,6 +259,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public void updateRoster() {
+		loadUnreadCounters();
 		rosterListAdapter.requery();
 		restoreGroupsExpanded();
 	}
@@ -303,6 +300,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
+	}
+
+	void doMarkAllAsRead(final String JID) {
+		ContentValues values = new ContentValues();
+		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
+
+		getContentResolver().update(ChatProvider.CONTENT_URI, values,
+				ChatProvider.ChatConstants.JID + " = ? AND "
+						+ ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
+						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW,
+				new String[]{JID});
 	}
 
 	void removeChatHistory(final String JID) {
@@ -460,6 +468,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 				startChatActivity(userJid, userName, null);
 				return true;
 
+			case R.id.roster_contextmenu_contact_mark_all_as_read:
+				doMarkAllAsRead(userJid);
+				return true;
+
 			case R.id.roster_contextmenu_contact_delmsg:
 				removeChatHistoryDialog(userJid, userName);
 				return true;
@@ -565,22 +577,20 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return StatusMode.fromString(mConfig.statusMode);
 	}
 
-	public String getStatusMessage() {
-		return mConfig.statusMessage;
-	}
-
-	public int getAccountPriority() {
-		return mConfig.priority;
-	}
-
-	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
+	public void setAndSaveStatus(StatusMode statusMode, String message) {
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(this).edit();
 		// do not save "offline" to prefs, or else!
 		if (statusMode != StatusMode.offline)
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
+		if (!message.equals(mConfig.statusMessage)) {
+			List<String> smh = new ArrayList<String>(java.util.Arrays.asList(mConfig.statusMessageHistory));
+			if (!smh.contains(message))
+				smh.add(message);
+			String smh_joined = android.text.TextUtils.join("\036", smh);
+			prefedit.putString(PreferenceConstants.STATUS_MESSAGE_HISTORY, smh_joined);
+		}
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
-		prefedit.putString(PreferenceConstants.PRIORITY, String.valueOf(priority));
 		prefedit.commit();
 
 		displayOwnStatus();
@@ -666,7 +676,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		case android.R.id.home:
 		case R.id.menu_status:
-			new ChangeStatusDialog(this).show();
+			new ChangeStatusDialog(this, StatusMode.fromString(mConfig.statusMode),
+					mConfig.statusMessage, mConfig.statusMessageHistory).show();
 			return true;
 
 		case R.id.menu_exit:
@@ -812,6 +823,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 					serviceAdapter.connect();
 				} else if (mConfig.presence_required && isConnected())
 					serviceAdapter.setStatusFromConfig();
+
+				// handle server-related intents after connecting to the backend
+				handleJabberIntent();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -943,6 +957,18 @@ public class MainWindow extends SherlockExpandableListActivity {
 		RosterConstants.GROUP,
 		"(" + countAvailableMembers + ") || '/' || (" + countMembers + ") AS members"
 	};
+
+	final String countAvailableMembersTotals =
+			"SELECT COUNT() FROM " + RosterProvider.TABLE_ROSTER + " inner_query" +
+					" WHERE inner_query." + OFFLINE_EXCLUSION;
+	final String countMembersTotals =
+			"SELECT COUNT() FROM " + RosterProvider.TABLE_ROSTER;
+	final String[] GROUPS_QUERY_CONTACTS_DISABLED = new String[] {
+			RosterConstants._ID,
+			"'' AS " + RosterConstants.GROUP,
+			"(" + countAvailableMembersTotals + ") || '/' || (" + countMembersTotals + ") AS members"
+	};
+
 	private static final String[] GROUPS_FROM = new String[] {
 		RosterConstants.GROUP,
 		"members"
@@ -1015,24 +1041,36 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String selectWhere = null;
 			if (!mConfig.showOffline)
 				selectWhere = OFFLINE_EXCLUSION;
+
+			String[] query = GROUPS_QUERY_COUNTED;
+			if(!mConfig.enableGroups) {
+				query = GROUPS_QUERY_CONTACTS_DISABLED;
+			}
 			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI,
-					GROUPS_QUERY_COUNTED, selectWhere, null, RosterConstants.GROUP);
+					query, selectWhere, null, RosterConstants.GROUP);
 			Cursor oldCursor = getCursor();
 			changeCursor(cursor);
-			stopManagingCursor(oldCursor);
+			if (oldCursor != null)
+				stopManagingCursor(oldCursor);
 		}
 
 		@Override
 		protected Cursor getChildrenCursor(Cursor groupCursor) {
 			// Given the group, we return a cursor for all the children within that group
+			String selectWhere;
 			int idx = groupCursor.getColumnIndex(RosterConstants.GROUP);
 			String groupname = groupCursor.getString(idx);
+			String[] args = null;
 
-			String selectWhere = RosterConstants.GROUP + " = ?";
-			if (!mConfig.showOffline)
-				selectWhere += " AND " + OFFLINE_EXCLUSION;
+			if(!mConfig.enableGroups) {
+				selectWhere = mConfig.showOffline ? "" : OFFLINE_EXCLUSION;
+			} else {
+				selectWhere = mConfig.showOffline ? "" : OFFLINE_EXCLUSION + " AND ";
+				selectWhere += RosterConstants.GROUP + " = ?";
+				args = new String[] { groupname };
+			}
 			return getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
-				selectWhere, new String[] { groupname }, null);
+				selectWhere, args, null);
 		}
 
 		@Override
@@ -1040,7 +1078,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			super.bindGroupView(view, context, cursor, isExpanded);
 			TextView groupname = (TextView)view.findViewById(R.id.groupname);
 			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).length() == 0) {
-				groupname.setText(R.string.default_group);
+				groupname.setText(mConfig.enableGroups ? R.string.default_group : R.string.all_contacts_group);
 			}
 			groupname.setTypeface(mRosterTypeface);
 		}
@@ -1054,19 +1092,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 			((TextView)view.findViewById(R.id.roster_screenname)).setTypeface(mRosterTypeface);
 
 
-			int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);
-			String selection = ChatConstants.JID + " = '" + cursor.getString(JIDIdx) + "' AND " +
-					ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
-					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
-			Cursor msgcursor = getContentResolver().query(ChatProvider.CONTENT_URI,
-					new String[] { "count(" + ChatConstants.PACKET_ID + ")" },
-					selection, null, null);
-			msgcursor.moveToFirst();
+			String jid = cursor.getString(cursor.getColumnIndex(RosterConstants.JID));
 			TextView unreadmsg = (TextView)view.findViewById(R.id.roster_unreadmsg_cnt);
-			unreadmsg.setText(msgcursor.getString(0));
-			unreadmsg.setVisibility(msgcursor.getInt(0) > 0 ? View.VISIBLE : View.GONE);
+			Integer count = mUnreadCounters.get(jid);
+			if (count == null)
+				count = 0;
+			unreadmsg.setText(count.toString());
+			unreadmsg.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
 			unreadmsg.bringToFront();
-			msgcursor.close();
 		}
 
 		 protected void setViewImage(ImageView v, String value) {
@@ -1094,6 +1127,23 @@ public class MainWindow extends SherlockExpandableListActivity {
 					public void run() {
 						restoreGroupsExpanded();
 					}}, 100);
+		}
+	}
+
+	private HashMap<String, Integer> mUnreadCounters = new HashMap<String, Integer>();
+	private void loadUnreadCounters() {
+		final String[] PROJECTION = new String[] { ChatConstants.JID, "count(*)" };
+		final String SELECTION = ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
+			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW +
+			") GROUP BY (" + ChatConstants.JID; // hack!
+
+		Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
+				PROJECTION, SELECTION, null, null);
+		mUnreadCounters.clear();
+		if(c!=null){
+			while (c.moveToNext())
+				mUnreadCounters.put(c.getString(0), c.getInt(1));
+			c.close();
 		}
 	}
 

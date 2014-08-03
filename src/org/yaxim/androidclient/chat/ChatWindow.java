@@ -288,13 +288,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
-	private void markAsReadDelayed(final int id, int delay) {
-		new Handler().postDelayed(new Runnable() {
+	private void markAsReadDelayed(final int id, final int delay) {
+		new Thread() {
 			@Override
 			public void run() {
+				try { Thread.sleep(delay); } catch (Exception e) {}
 				markAsRead(id);
 			}
-		}, delay);
+		}.start();
 	}
 	
 	private void markAsRead(int id) {
@@ -438,6 +439,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			getMessageView().setText(message);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getMessageView().setTypeface(mRosterTypeface);
+			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 		}
 		
 		TextView getDateView() {

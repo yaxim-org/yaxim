@@ -23,6 +23,7 @@ interface IXMPPRosterService {
 	void sendPresenceRequest(String user, String type);
 	void renameRosterItem(String user, String newName);
 	void moveRosterItemToGroup(String user, String group);
+	String changePassword(String newPassword);
 	
 	/* callback methods */
 	

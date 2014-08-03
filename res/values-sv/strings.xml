@@ -24,10 +24,12 @@
 	<string name="StartupDialog_Title">Välkommen till yaxim!</string>
 	<string name="StartupDialog_Summary">Vissa inställningar måste göras innan du kan börja använda programmet. Ange ditt Jabber-ID och lösenord.</string>
 	<string name="StartupDialog_pwHint">Ange lösenord</string>
+	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Lösenord:</string>
 	<string name="StartupDialog_advanced">Avancerat…</string>
 	<string name="StartupDialog_create_new">Registrera nytt konto</string>
+	<string name="StartupDialog_error_password">Password does not match!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Meddelande från %s</string>
@@ -57,6 +59,8 @@
 	<string name="statuspopup_name">Ange status</string>
 	<string name="showOffline_summ">Visa alltid alla kontakter i listan</string>
 	<string name="showOffline_title">Visa frånkopplade kontakter</string>
+	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
+	<string name="enableGroups_title">Show contact groups</string>
 	<string name="foregroundService_summ">Behåll yaxim i minnet för att säkerställa bibehållen anslutning (tjänsten körs i förgrunden)</string>
 	<string name="foregroundService_title">Statusfältikon</string>
 
@@ -90,6 +94,7 @@
 		<item>liten</item>
 		<item>normal</item>
 		<item>stor</item>
+		<item>huge</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -113,6 +118,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">%s - alternativ</string>
 	<string name="roster_contextmenu_group_rename">Ändra namn på grupp</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
 	<string name="roster_contextmenu_contact_delete">Ta bort kontakt</string>
 	<string name="roster_contextmenu_contact_delmsg">Ta bort chatthistorik</string>
 	<string name="roster_contextmenu_contact_open_chat">Öppna chatt</string>
@@ -135,8 +141,14 @@
 	<string name="account_jabberID_dialog_title">Ange ditt Jabber-ID:</string>
 	<string name="account_jabberPW_title">Lösenord</string>
 	<string name="account_jabberPW_sum">Jabberkontots lösenord</string>
-	<string name="account_jabberPW_dialog_title">Ange lösenord:</string>
-
+	<string name="account_jabberPW_change_on_server">Change password on server</string>
+	<string name="account_jabberPW_password_old">Old Password:</string>
+	<string name="account_jabberPW_password_new">New Password:</string>
+	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
+	<string name="account_jabberPW_progress">Please wait, changing password…</string>
+	<string name="account_jabberPW_finished">Password successfully changed.</string>
+	<string name="account_jabberPW_error">Error changing password: %s</string>
+	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Instans</string>
 	<string name="account_resource_summ">Förvalt: yaxim</string>
@@ -212,6 +224,7 @@
 
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>
+	<string name="all_contacts_group">All contacts</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Välj kontakt</string>

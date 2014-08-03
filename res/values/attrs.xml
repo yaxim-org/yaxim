@@ -4,6 +4,7 @@
 	<attr name="MainGroup" format="reference" />
 	<attr name="MainChild" format="reference" />
 	<attr name="ErrorView" format="reference" />
+	<attr name="ChatText" format="reference" />
 	<attr name="dialogTextColor" format="reference" />
 	
 	<!-- Attributes -->
