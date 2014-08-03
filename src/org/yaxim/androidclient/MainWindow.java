@@ -136,14 +136,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 	// need this to workaround unwanted OnGroupCollapse/Expand events
 	boolean groupClicked = false;
 	void handleGroupChange(int groupPosition, boolean isExpanded) {
-		String groupName = getGroupName(groupPosition);
 		if (groupClicked) {
-			Log.d(TAG, "group status change: " + groupName + " -> " + isExpanded);
-			mGroupsExpanded.put(groupName, isExpanded);
+			try {
+				String groupName = getGroupName(groupPosition);
+				Log.d(TAG, "group status change: " + groupName + " -> " + isExpanded);
+				mGroupsExpanded.put(groupName, isExpanded);
+			} catch (NullPointerException e) {
+				// sometimes, it fails to obtain the cursor. We can ignore it
+			}
 			groupClicked = false;
-		//} else {
-		//	if (!mGroupsExpanded.containsKey(name))
-		//		restoreGroupsExpanded();
 		}
 	}
 
