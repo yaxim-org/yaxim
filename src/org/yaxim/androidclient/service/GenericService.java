@@ -46,24 +46,6 @@ public abstract class GenericService extends Service {
 	protected YaximConfiguration mConfig;
 
 	@Override
-	public IBinder onBind(Intent arg0) {
-		Log.i(TAG, "called onBind()");
-		return null;
-	}
-
-	@Override
-	public boolean onUnbind(Intent intent) {
-		Log.i(TAG, "called onUnbind()");
-		return super.onUnbind(intent);
-	}
-
-	@Override
-	public void onRebind(Intent intent) {
-		Log.i(TAG, "called onRebind()");
-		super.onRebind(intent);
-	}
-
-	@Override
 	public void onCreate() {
 		Log.i(TAG, "called onCreate()");
 		super.onCreate();
