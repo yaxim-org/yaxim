@@ -1149,7 +1149,10 @@ public class SmackableImp implements Smackable {
 
 		Presence presence = mRoster.getPresence(entry.getUser());
 		values.put(RosterConstants.STATUS_MODE, getStatusInt(presence));
-		values.put(RosterConstants.STATUS_MESSAGE, presence.getStatus());
+		if (presence.getType() == Presence.Type.error) {
+			values.put(RosterConstants.STATUS_MESSAGE, presence.getError().toString());
+		} else
+			values.put(RosterConstants.STATUS_MESSAGE, presence.getStatus());
 		values.put(RosterConstants.GROUP, getGroup(entry.getGroups()));
 
 		return values;
