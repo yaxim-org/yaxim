@@ -140,19 +140,31 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		setListAdapter(adapter);
 	}
 
+	protected boolean needs_to_bind_unbind = false;
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		updateContactStatus();
+		needs_to_bind_unbind = true;
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		needs_to_bind_unbind = true;
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
+		if (!needs_to_bind_unbind)
+			return;
 		if (hasFocus)
 			bindXMPPService();
 		else
 			unbindXMPPService();
+		needs_to_bind_unbind = false;
 	}
 
 	@Override
