@@ -235,6 +235,7 @@ public class SmackableImp implements Smackable {
 			registerPresenceListener();
 			registerPongListener();
 			sendOfflineMessages();
+			sendUserWatching();
 			// we need to "ping" the service to let it know we are actually
 			// connected, even when no roster entries will come in
 			updateConnectionState(ConnectionState.ONLINE);
@@ -881,6 +882,26 @@ public class SmackableImp implements Smackable {
 				ChatConstants.DELIVERY_STATUS + " != " + ChatConstants.DS_ACKED + " AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
 				new String[] { packetID }) > 0;
+	}
+
+	protected boolean is_user_watching = false;
+	public void setUserWatching(boolean user_watching) {
+		if (is_user_watching == user_watching)
+			return;
+		is_user_watching = user_watching;
+		if (mXMPPConnection != null && mXMPPConnection.isAuthenticated())
+			sendUserWatching();
+	}
+
+	protected void sendUserWatching() {
+		IQ toggle_google_queue = new IQ() {
+			public String getChildElementXML() {
+				// enable g:q = start queueing packets = do it when the user is gone
+				return "<query xmlns='google:queue'><" + (is_user_watching ? "disable" : "enable") + "/></query>";
+			}
+		};
+		toggle_google_queue.setType(IQ.Type.SET);
+		mXMPPConnection.sendPacket(toggle_google_queue);
 	}
 
 	/** Check the server connection, reconnect if needed.
