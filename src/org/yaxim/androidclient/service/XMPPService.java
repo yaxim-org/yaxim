@@ -50,20 +50,20 @@ public class XMPPService extends GenericService {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		super.onBind(intent);
+		userStartedWatching();
+
 		String chatPartner = intent.getDataString();
 		if ((chatPartner != null)) {
 			resetNotificationCounter(chatPartner);
 			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
 		}
-
 		return mService2RosterConnection;
 	}
 
 	@Override
 	public void onRebind(Intent intent) {
-		super.onRebind(intent);
+		userStartedWatching();
 		String chatPartner = intent.getDataString();
 		if ((chatPartner != null)) {
 			mIsBoundTo.add(chatPartner);
@@ -77,6 +77,8 @@ public class XMPPService extends GenericService {
 		if ((chatPartner != null)) {
 			mIsBoundTo.remove(chatPartner);
 		}
+		userStoppedWatching();
+
 		return true;
 	}
 
@@ -491,5 +493,24 @@ public class XMPPService extends GenericService {
 			}
 			doConnect();
 		}
+	}
+
+	private int number_of_eyes = 0;
+	private void userStartedWatching() {
+		number_of_eyes += 1;
+		logInfo("userStartedWatching: " + number_of_eyes);
+		if (mSmackable != null)
+			mSmackable.setUserWatching(true);
+	}
+
+	private void userStoppedWatching() {
+		number_of_eyes -= 1;
+		logInfo("userStoppedWatching: " + number_of_eyes);
+		// delay deactivation by 3s, in case we happen to be immediately re-bound
+		mMainHandler.postDelayed(new Runnable() {
+			public void run() {
+				if (mSmackable != null && number_of_eyes == 0)
+					mSmackable.setUserWatching(false);
+			}}, 3000);
 	}
 }
