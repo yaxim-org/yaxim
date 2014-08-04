@@ -5,6 +5,7 @@ yaxim is a Jabber/XMPP client with open source (GPLv2). Why pay for SMS if you c
 
 yaxim aims at security, low overhead and keeping your server connection open. So far, it only supports a single account.
 
+Check the [yaxim homepage](https://yaxim.org/) for latest news and downloads.
 
 ## Features
 
@@ -13,21 +14,20 @@ The following is already supported:
  * Connection with a single XMPP server (or GTalk, or Facebook Chat, or ...)
  * You are asked about self-signed SSL certificates
  * Allows automatic connection after turning on your phone
- * Reconnect on 3G/WiFi network change
+ * Transparent reconnection on 3G/WiFi network change (XEP-0198)
  * Chat with your buddies (all messages are stored)
- * Adding/removing buddies from the roster
  * Delivery receipts (XEP-0184)
  * Message carbons (XEP-0280)
 
 
 ## Links
 
- * [Download APK](http://duenndns.de/yaxim/yaxim-current.apk)
- * [Screenshots](https://github.com/pfleidi/yaxim/wiki/Screenshots)
+ * [Download APK](http://yax.im/apk)
+ * [Screenshots](https://yaxim.org/screenshots/)
  * [Google Play](https://play.google.com/store/apps/details?id=org.yaxim.androidclient)
- * [Project Home](https://github.com/pfleidi/yaxim/wiki)
+ * [Project Home](https://yaxim.org/)
  * [Source on GitHub](https://github.com/pfleidi/yaxim)
- * [Translation](https://translations.launchpad.net/yaxim/master)
+ * [Translation](https://translations.launchpad.net/yaxim/master/+pots/yaxim/)
 
 
 ## Build Instructions
