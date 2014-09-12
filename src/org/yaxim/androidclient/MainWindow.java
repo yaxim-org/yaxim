@@ -178,6 +178,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	@Override
+	protected void onNewIntent(Intent i) {
+		setIntent(i);
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 		if (serviceAdapter != null)
