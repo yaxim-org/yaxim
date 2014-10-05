@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent" android:padding="4dp" 
 		android:layout_height="wrap_content" android:orientation="vertical"
+		android:descendantFocusability="blocksDescendants"
 		>
 
 		<LinearLayout android:layout_width="fill_parent"
