@@ -38,6 +38,7 @@
 	      android:id="@+id/statusview_message_button_clear"
 	      android:layout_width="30dip"
 	      android:layout_height="30dip"
+	      android:layout_alignParentEnd="true"
 	      android:layout_alignParentRight="true"
 	      android:background="@android:drawable/ic_menu_close_clear_cancel"
 	      android:layout_centerVertical="true"
