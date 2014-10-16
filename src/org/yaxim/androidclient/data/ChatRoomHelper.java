@@ -1,11 +1,17 @@
 package org.yaxim.androidclient.data;
 
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
+import org.yaxim.androidclient.service.IXMPPMucService;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.IBinder;
+import android.os.RemoteException;
 
 public class ChatRoomHelper {
 
@@ -33,6 +39,25 @@ public class ChatRoomHelper {
 		boolean is_room = (cursor.getCount() == 1);
 		cursor.close();
 		return is_room;
+	}
+
+	public static void syncDbRooms(final Context ctx) {
+		Intent serviceIntent = new Intent(ctx, org.yaxim.androidclient.service.XMPPService.class);
+		serviceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+		serviceIntent.setData(Uri.parse("?chat"));
+		ServiceConnection c = new ServiceConnection() {
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
+				try {
+					mucService.syncDbRooms();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				ctx.unbindService(this);
+			}
+			public void onServiceDisconnected(ComponentName name) {}
+		};
+		ctx.bindService(serviceIntent, c, Context.BIND_AUTO_CREATE);
 	}
 
 	public static RoomInfo getRoomInfo(Context ctx, String jid) {
