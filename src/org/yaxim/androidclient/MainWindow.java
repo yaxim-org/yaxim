@@ -15,6 +15,7 @@ import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
+import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
@@ -529,9 +530,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
-			case R.id.roster_contextmenu_contact_invite:
-				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-				mucInviteDialog(userJid, userName);
+			case R.id.roster_contextmenu_muc_edit:
+				new EditMUCDialog(this, userJid).show();
 				return true;
 			}
 		} else {
@@ -666,20 +666,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
-	
-	private void mucActions() {
-		MucDialogBuilder builder = new MucDialogBuilder(MucDialogBuilder.MANAGE_DIALOG);
-		Dialog dialog = builder.createDialog(MainWindow.this);
-		dialog.show();
-	}
-	
-	private void mucInviteDialog(String userJid, String userName) {
-		MucDialogBuilder builder = new MucDialogBuilder(MucDialogBuilder.INVITE_DIALOG);
-		builder.setContactName(userJid);
-		Dialog dialog = builder.createDialog(MainWindow.this);
-		dialog.show();
-	}
-	
 	private void aboutDialog() {
 		LayoutInflater inflater = (LayoutInflater)getSystemService(
 			      LAYOUT_INFLATER_SERVICE);
@@ -760,10 +746,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case R.id.menu_about:
 			aboutDialog();
 			return true;
-		case R.id.menu_muc:
-			mucActions();
-			return true;
-
 		}
 
 		return false;
@@ -1223,207 +1205,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		public void onChange(boolean selfChange) {
 			updateRoster();
 		}
-	}
-	
-	class MucDialogBuilder {
-		ListView mucsList;
-		Cursor mucsCursor;
-		
-		public static final int MANAGE_DIALOG=0;
-		public static final int INVITE_DIALOG=1;
-		
-		private final int mode;
-		private String contactName="";
-		
-		public MucDialogBuilder(int mode) {
-			this.mode = mode;
-		}
-		
-		public void setContactName(String name) {
-			contactName = name;
-		}
-		
-		public void finishDialog() {
-			
-		}
-		
-		public void deleteItem(int dbID, final String roomJid) {
-			if (ChatRoomHelper.removeRoom(MainWindow.this, roomJid))
-				ChatRoomHelper.syncDbRooms(MainWindow.this);
-		}
-		
-		
-		public void selectInviteMuc(int pos, long id) {
-			
-			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
-			final String mucJid = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
-			
-			builder.setMessage("Really invite contact "+contactName+"to MUC "+mucJid+"?"); // TODO: make translateable
-			builder.setPositiveButton("Yes", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					inviteToMuc(contactName, mucJid);
-				}});
-			builder.setNegativeButton("No", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// do nothing
-				}});
-			
-			AlertDialog dialog = builder.create();
-			dialog.show();
-		}
-		
-		public void inviteToMuc(final String contactJid, final String roomJid) {
-			Intent muctestIntent = new Intent(MainWindow.this, XMPPService.class);
-			muctestIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
-			Uri dtaUri = Uri.parse(roomJid+"?chat");
-			muctestIntent.setData(dtaUri);
-			
-			ServiceConnection muctestServiceConnection = new ServiceConnection() {
-				public void onServiceConnected(ComponentName name, IBinder service) {
-					IXMPPMucService mucService = IXMPPMucService.Stub.asInterface(service);
-					try {
-						mucService.inviteToRoom(contactJid, roomJid);
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-					unbindService(this);
-				}
-				public void onServiceDisconnected(ComponentName name) {}
-			};
-			bindService(muctestIntent, muctestServiceConnection, BIND_AUTO_CREATE);
-		}
-		
-		public void longClickElement(int pos, final long id) {
-			if(mode!=MANAGE_DIALOG) {
-				return;
-			}
-			Cursor itemCursor = (Cursor) mucsList.getItemAtPosition(pos);
-			final String item = itemCursor.getString(itemCursor.getColumnIndex(RosterConstants.JID));
-			final int dbID = itemCursor.getInt(itemCursor.getColumnIndex(RosterConstants._ID));
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
-			
-			builder.setMessage("Really leave MUC "+item+"?"); // TODO: make translateable
-			builder.setPositiveButton("Yes", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					deleteItem(dbID, item);
-				}});
-			builder.setNegativeButton("No", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// do nothing
-				}});
-			AlertDialog dialog = builder.create();
-			dialog.show();
-			
-		}
-		
-		public void clickAddButton(Activity parent) { 
-			LayoutInflater inflater = parent.getLayoutInflater();
-			View view = inflater.inflate(R.layout.muc_new_dialog, null);
-			final EditText jidET = (EditText) view.findViewById(R.id.muc_new_jid);
-			final EditText nickET = (EditText) view.findViewById(R.id.muc_new_nick);
-			final EditText pwET = (EditText) view.findViewById(R.id.muc_new_pw);
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
-			
-			builder.setTitle("Add MUC via JID"); // TODO: make translatable
-			builder.setView(view);
-			builder.setPositiveButton("Add", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String jid = jidET.getText().toString();
-					String nick = nickET.getText().toString();
-					String pw = pwET.getText().toString();
-					addRoom(jid, nick, pw);
-				}});
-			builder.setNegativeButton("Cancel", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// do nothing
-				}});
-			AlertDialog dialog = builder.create();
-			dialog.show();
-		}
-		
-		public void addRoom(final String jid, final String nick, final String pw) {
-			if (ChatRoomHelper.addRoom(MainWindow.this, jid, pw, nick))
-				ChatRoomHelper.syncDbRooms();
-		}
-
-		
-		public Dialog createDialog(final Activity parent) {
-			Log.d(TAG, "crateing MucDialog with mode: "+mode);
-			AlertDialog.Builder builder = new AlertDialog.Builder(parent);
-			LayoutInflater inflater = LayoutInflater.from(parent);
-			View view = inflater.inflate(R.layout.muc_dialog, null);
-			builder.setView(view);
-			
-			if(mode==MANAGE_DIALOG) builder.setMessage("Configure MUCs"); //TODO: translate
-			else if(mode==INVITE_DIALOG) builder.setMessage("Invite to MUC");
-			builder.setPositiveButton("OK", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finishDialog();
-				}
-			});
-			
-			Dialog ret = builder.create();
-			
-			Button mucAddButton = (Button) view.findViewById(R.id.muc_add_button);
-			
-			if(mode != MANAGE_DIALOG) {
-				mucAddButton.setVisibility(View.GONE);
-			}
-			
-			mucAddButton.setOnClickListener(new View.OnClickListener() {
-	             public void onClick(View v) {
-	                 clickAddButton(parent);
-	             }
-	         });
-
-			
-			mucsCursor = getContentResolver().query(RosterProvider.MUCS_URI,
-					new String[] {RosterConstants._ID, RosterConstants.JID},
-					null, null, RosterConstants._ID);
-			String[] columns = new String[] {RosterConstants.JID};
-			int[] guiObjects = new int[] {R.id.muc_screenname}; 
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
-					R.layout.muclist_row, mucsCursor,
-					columns, guiObjects);
-			mucsList = (ListView) view.findViewById(R.id.mucsList);
-			mucsList.setAdapter(adapter);
-			
-			mucsList.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					if(mode != INVITE_DIALOG) {
-						return;
-					}
-					selectInviteMuc(position, id);
-				}
-			});
-			
-			mucsList.setOnItemLongClickListener(new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent,
-						View view, int position, long id) {
-					if(mode != MANAGE_DIALOG) {
-						return true;
-					}
-					longClickElement(position, id);
-					return true;
-				}});
-			
-			return ret;
-		}
-
 	}
 	
 }

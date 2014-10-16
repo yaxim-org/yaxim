@@ -35,11 +35,6 @@
 
 	<group android:id="@+id/roster_contextmenu_contact_menu" android:orderInCategory="1">
 
-		<item   android:id="@+id/roster_contextmenu_contact_invite"
-			android:orderInCategory="3"
-			android:title="@string/roster_contextmenu_contact_invite"
-			/>
-
 		<item   android:id="@+id/roster_contextmenu_contact_request_auth"
 			android:title="@string/roster_contextmenu_contact_request_auth"
 			android:orderInCategory="4"
