@@ -35,4 +35,33 @@ public class ChatRoomHelper {
 		return is_room;
 	}
 
+	public static RoomInfo getRoomInfo(Context ctx, String jid) {
+		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI,
+				new String[] { RosterConstants._ID, RosterConstants.JID,
+					       RosterConstants.NICKNAME, RosterConstants.PASSWORD },
+				RosterConstants.JID + " = ?", new String[] { jid.toLowerCase() }, null);
+		if (cursor.getCount() == 1) {
+			cursor.moveToFirst();
+			RoomInfo ri = new RoomInfo(cursor);
+			cursor.close();
+			return ri;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public static class RoomInfo {
+		public String jid;
+		public String nickname;
+		public String password;
+		//public String status_message;
+
+		RoomInfo(Cursor c) {
+			jid = c.getString(c.getColumnIndexOrThrow(RosterConstants.JID));
+			nickname = c.getString(c.getColumnIndexOrThrow(RosterConstants.NICKNAME));
+			password = c.getString(c.getColumnIndexOrThrow(RosterConstants.PASSWORD));
+			//status_message = c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE));
+		}
+	}
 }
