@@ -344,6 +344,8 @@ public class SmackableImp implements Smackable {
 						} catch (IllegalArgumentException e) {
 							// this might happen when DNS resolution in ConnectionConfiguration fails
 							onDisconnected(e);
+						} catch (IllegalStateException e) {//TODO: work around old smack
+							onDisconnected(e);
 						} catch (YaximXMPPException e) {
 							onDisconnected(e);
 						} finally {
