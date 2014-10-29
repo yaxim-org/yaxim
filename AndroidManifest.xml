@@ -17,7 +17,7 @@
 
 		<activity android:name=".MainWindow" android:label="@string/app_name"
 			android:launchMode="singleTask"
-			android:configChanges="orientation|keyboardHidden">
+			android:configChanges="orientation|keyboardHidden|screenSize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -36,6 +36,7 @@
 
 		<activity android:name=".chat.ChatWindow" android:label="@string/app_name"
 			android:alwaysRetainTaskState="true"
+			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:windowSoftInputMode="stateHidden">
 		</activity>
 
@@ -47,6 +48,7 @@
 
 		<activity android:name=".chat.MUCChatWindow" android:label="@string/app_name"
 			android:alwaysRetainTaskState="true"
+			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:windowSoftInputMode="stateHidden">
 		</activity>
 
