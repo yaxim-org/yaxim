@@ -13,5 +13,6 @@
 		android:enabled="false"
 		android:singleLine="true"
 		android:hint="@string/NewGroup_EditTextField_Hint"
+		style="@style/dialogEditText"
 		/>
 </merge>

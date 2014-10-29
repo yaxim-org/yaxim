@@ -13,7 +13,12 @@
 		android:layout_height="wrap_content"
 		style="?attr/dialogTextColor"
 		android:gravity="top" android:textSize="16sp" android:paddingBottom="20dp"/>
-	<EditText android:layout_height="wrap_content" android:id="@+id/editText" android:layout_width="match_parent">
+	<EditText
+		android:layout_height="wrap_content"
+		android:id="@+id/editText"
+		android:layout_width="match_parent"
+		style="@style/dialogEditText"
+		>
 		<requestFocus></requestFocus>
 	</EditText>
 </LinearLayout>
