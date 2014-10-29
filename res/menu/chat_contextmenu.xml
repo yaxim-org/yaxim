@@ -4,7 +4,4 @@
 		android:title="@android:string/copy">
 	</item>
 	<item android:id="@+id/chat_contextmenu_resend" android:title="@string/chatmenu_resend"></item>
-	<item android:id="@+id/chat_contextmenu_exit" android:visible="true"
-		android:title="@android:string/cancel">
-	</item>
 </menu>
