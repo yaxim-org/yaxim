@@ -44,6 +44,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
+import android.view.WindowManager;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -72,6 +74,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private TextView mTitle;
 	private TextView mSubTitle;
 	private Button mSendButton = null;
+	private ProgressBar mLoadingProgress;
 	protected EditText mChatInput = null;
 	protected String mWithJabberID = null;
 	private String mUserScreenName = null;
@@ -82,6 +85,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ActionBar actionBar;
 	private ListView mListView;
 	private ChatWindowAdapter mChatAdapter;
+
+	private boolean mShowOrHide = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+
 		setContentView(R.layout.mainchat);
 
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
@@ -126,6 +133,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 		// Setup the loader
 		getSupportLoaderManager().initLoader(CHAT_MSG_LOADER, null, this);
+
+		// Loading progress
+		mLoadingProgress = (ProgressBar) findViewById(R.id.loading_progress);
+		mLoadingProgress.setVisibility(View.VISIBLE);
 	}
 
 	private void setCustomTitle(String title) {
@@ -156,7 +167,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+		mLoadingProgress.setVisibility(View.GONE);
 		mChatAdapter.changeCursor(cursor);
+
+		// Only do this the first time (show or hide the keyboard)
+		if (mShowOrHide) {
+			if (cursor.getCount() == 0) {
+				showKeyboard();
+			}
+			mShowOrHide = false;
+		}
 	}
 
 	@Override
@@ -601,6 +621,22 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 	}
 	
+	public ListView getListView() {
+		return mListView;
+	}
+
+	private void showKeyboard() {
+		mChatInput.requestFocus();
+		new Handler(getMainLooper()).postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				InputMethodManager keyboard = (InputMethodManager)
+						getSystemService(Context.INPUT_METHOD_SERVICE);
+				keyboard.showSoftInput(mChatInput, InputMethodManager.SHOW_IMPLICIT);
+			}
+		}, 200);
+	}
+
 	private class ContactObserver extends ContentObserver {
 		public ContactObserver() {
 			super(new Handler());
@@ -610,9 +646,5 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			Log.d(TAG, "ContactObserver.onChange: " + selfChange);
 			updateContactStatus();
 		}
-	}
-
-	public ListView getListView() {
-		return mListView;
 	}
 }
