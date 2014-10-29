@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-		android:id="@+id/statusLayout" 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="vertical"
-		android:layout_width="fill_parent" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:paddingLeft="10dp"
 		android:paddingStart="10dp"
@@ -11,8 +10,11 @@
 		android:paddingEnd="10dp"
 		android:paddingBottom="15dp"
 		android:paddingTop="10dp" >
-	
-	
+    <LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		>
 	<TextView
 			android:id="@+id/StartupDialog_Summary"
 			android:layout_width="wrap_content"
@@ -25,15 +27,6 @@
 			style="?attr/dialogTextColor"
 			android:focusable="true"
 		/>
-	<ScrollView android:id="@+id/StartupDialog_ScrollView" 
-     				android:layout_height="wrap_content" 
-     				android:layout_width="fill_parent" >
-    <LinearLayout
-		android:id="@+id/AddContact_ScrollLayout"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		>
 	<TextView
 			android:id="@+id/StartupDialog_Username_title"
 			android:layout_width="fill_parent"
@@ -54,6 +47,7 @@
 			android:maxWidth="200sp"
 			android:inputType="textEmailAddress"
 			android:hint="@string/Global_JID_hint"
+			style="@style/dialogEditText"
 			android:contentDescription="@string/StartupDialog_Username_title"/>
 	<TextView
 			android:id="@+id/StartupDialog_passwd_title"
@@ -75,12 +69,14 @@
 			android:maxWidth="200sp"
 			android:hint="@string/StartupDialog_pwHint"
 			android:contentDescription="@string/StartupDialog_passwd_title"
+			style="@style/dialogEditText"
 			/>
 	<CheckBox
 			android:id="@+id/create_account"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/StartupDialog_create_new"
+			android:focusableInTouchMode="true"
 			style="?attr/dialogTextColor"
 		/>
 	<EditText
@@ -96,8 +92,8 @@
 			android:maxWidth="200sp"
 			android:hint="@string/StartupDialog_pwrHint"
 			android:contentDescription="@string/StartupDialog_passwd_title"
+			style="@style/dialogEditText"
 			/>
 
-	</LinearLayout>
-	</ScrollView>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
