@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.content.*;
 import android.os.Message;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
@@ -19,7 +20,6 @@ import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Window;
 
 import android.database.ContentObserver;
@@ -30,6 +30,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,18 +45,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 @SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
-public class ChatWindow extends SherlockListActivity implements OnKeyListener,
-		TextWatcher {
+public class ChatWindow extends SherlockFragmentActivity implements OnKeyListener,
+		TextWatcher, LoaderManager.LoaderCallbacks<Cursor> {
 
 	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
 	public static final String INTENT_EXTRA_MESSAGE = ChatWindow.class.getName() + ".message";
@@ -68,6 +65,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			R.id.chat_from, R.id.chat_message };
 	
 	private static final int DELAY_NEWMSG = 2000;
+	private static final int CHAT_MSG_LOADER = 0;
 
 	private ContentObserver mContactObserver = new ContactObserver();
 	private ImageView mStatusMode;
@@ -82,6 +80,9 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
 	private int mChatFontSize;
+	private ActionBar actionBar;
+	private ListView mListView;
+	private ChatWindowAdapter mChatAdapter;
 
 	private final List<Uri> mReadMessages = new LinkedList<Uri>();
 
@@ -102,8 +103,17 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		registerForContextMenu(getListView());
+		// Get the user's information from the intent
 		setContactFromUri();
+
+		// Setup the actual chat view
+		mListView = (ListView) findViewById(android.R.id.list);
+		mChatAdapter = new ChatWindowAdapter(null, PROJECTION_FROM, PROJECTION_TO,
+				mWithJabberID, mUserScreenName);
+		mListView.setAdapter(mChatAdapter);
+
+		Log.d(TAG, "registrs for contextmenu...");
+		registerForContextMenu(mListView);
 		registerXMPPService();
 		setSendButton();
 		setUserInput();
@@ -125,7 +135,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 		setCustomTitle(titleUserid);
 
-		setChatWindowAdapter();
+		// Setup the loader
+		getSupportLoaderManager().initLoader(CHAT_MSG_LOADER, null, this);
 	}
 
 	private void setCustomTitle(String title) {
@@ -141,14 +152,28 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		getSupportActionBar().setDisplayShowCustomEnabled(true);
 	}
 
-	private void setChatWindowAdapter() {
-		String selection = ChatConstants.JID + "='" + mWithJabberID + "'";
-		Cursor cursor = managedQuery(ChatProvider.CONTENT_URI, PROJECTION_FROM,
-				selection, null, null);
-		ListAdapter adapter = new ChatWindowAdapter(cursor, PROJECTION_FROM,
-				PROJECTION_TO, mWithJabberID, mUserScreenName);
+	@Override
+	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+		// There's only one Loader, so ...
+		if (i == CHAT_MSG_LOADER) {
+			String selection = ChatConstants.JID + "='" + mWithJabberID + "'";
+			return new CursorLoader(this, ChatProvider.CONTENT_URI, PROJECTION_FROM,
+					selection, null, null);
+		} else {
+			Log.w(TAG, "Unknown loader id returned in LoaderCallbacks.onCreateLoader: " + i);
+			return null;
+		}
+	}
 
-		setListAdapter(adapter);
+	@Override
+	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+		mChatAdapter.changeCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> cursorLoader) {
+		// Make sure we don't leak the (memory of the) cursor
+		mChatAdapter.changeCursor(null);
 	}
 
 	protected boolean needs_to_bind_unbind = false;
@@ -565,6 +590,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
 		cursor.close();
+	}
+
+	public ListView getListView() {
+		return mListView;
 	}
 
 	private class ContactObserver extends ContentObserver {
