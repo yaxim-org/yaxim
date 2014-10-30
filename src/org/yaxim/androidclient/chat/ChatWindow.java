@@ -13,6 +13,7 @@ import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
@@ -76,6 +77,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
 	private String mUserScreenName = null;
+	private String mOurScreenName;
 	private Intent mServiceIntent;
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
@@ -111,6 +113,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			titleUserid = mUserScreenName;
 		} else {
 			titleUserid = mWithJabberID;
+		}
+
+		final YaximConfiguration config = YaximApplication.getConfig(this);
+		final String jid = config.jabberID;
+		if (jid != null) {
+			mOurScreenName = jid.substring(0, jid.indexOf('@'));
+		} else {
+			mOurScreenName = getString(R.string.chat_action_from_me);
 		}
 
 		setCustomTitle(titleUserid);
@@ -426,7 +436,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 
 			if (message.startsWith("/me ")) {
 				message = "\u25CF " + message.replaceFirst("^/me ",
-						(fromMe ? getString(R.string.chat_action_from_me) : from) + " ");
+						(fromMe ? mOurScreenName : from) + " ");
 				messageView.setTypeface(null, android.graphics.Typeface.ITALIC);
 			} else {
 				messageView.setTypeface(null, 0);
