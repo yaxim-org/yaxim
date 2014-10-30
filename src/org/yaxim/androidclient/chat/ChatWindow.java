@@ -381,6 +381,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		private TextView mDateView = null;
 		private TextView mFromView = null;
 		private TextView mMessageView = null;
+		private TextView mUnreadableView = null;
 		private ImageView mIconView = null;
 
 		private final View mRowView;
@@ -444,11 +445,22 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
+
 			boolean slash_me = message.startsWith("/me ");
 			if (slash_me)
 				message = String.format("\u25CF %s %s", from, message.substring(4));
 			getMessageView().setText(message.replaceFirst("^/me ", from));
 			getMessageView().setTypeface(null, slash_me ? android.graphics.Typeface.ITALIC : 0);
+
+			// FIXME: Implement better handling for OTR
+			if (message != null && looksLikeOtr(message)) {
+				getUnreadableView().setVisibility(View.VISIBLE);
+				getMessageView().setVisibility(View.INVISIBLE);
+			} else {
+				getUnreadableView().setVisibility(View.INVISIBLE);
+				getMessageView().setText(message);
+			}
+
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
@@ -476,6 +488,14 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			return mMessageView;
 		}
 
+		TextView getUnreadableView() {
+			if (mUnreadableView == null) {
+				mUnreadableView = (TextView) mRowView
+						.findViewById(R.id.unreadable_message);
+			}
+			return mUnreadableView;
+		}
+
 		ImageView getIconView() {
 			if (mIconView == null) {
 				mIconView = (ImageView) mRowView
@@ -484,6 +504,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			return mIconView;
 		}
 
+		boolean looksLikeOtr(final String message) {
+			return message.startsWith("?OTR?") || message.startsWith("?OTRv")
+					|| (message.startsWith("?OTR:") && message.endsWith("."));
+		}
 	}
 
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
