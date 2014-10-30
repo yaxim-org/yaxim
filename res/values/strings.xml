@@ -186,11 +186,14 @@
 	<string name="subscriptionRequest_title">Subscription Request</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_from_me">Me:</string>
+	<string name="chat_from_me">You:</string>
+	<string name="chat_action_from_me">You</string>
+	<string name="chat_from_you">%1$s:</string>
 	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 	<string name="chat_enterMsgHint">Enter message</string>
-    <string name="chat_unreadable_message">Unreadable Off-the-Record message</string>
+	<string name="chat_attempt_otr_start">%1$s attempted to begin an Off-The-Record chat, but this client does not yet support OTR.</string>
+    <string name="chat_unreadable_message">Unreadable Off-The-Record message</string>
 
 	<!-- Chat menu -->
 	<string name="chatmenu_resend">Resend</string>

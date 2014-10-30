@@ -33,23 +33,9 @@
 
 		</LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView android:id="@+id/chat_message"
-                      style="?attr/ChatText"
-                      android:layout_width="fill_parent" android:layout_height="wrap_content"
-                      android:gravity="center_vertical"
-                      android:autoLink="all"/>
-
-            <TextView android:id="@+id/unreadable_message"
-                      style="?attr/ChatText"
-                      android:layout_width="fill_parent" android:layout_height="wrap_content"
-                      android:text="@string/chat_unreadable_message"
-                      android:drawableLeft="@drawable/ic_dialog_alert_holo_light"
-                      android:drawablePadding="3dp"
-                      android:gravity="center_vertical"
-                      android:autoLink="all"/>
-        </FrameLayout>
+		<TextView android:id="@+id/chat_message"
+				  style="?attr/ChatText"
+				  android:layout_width="fill_parent" android:layout_height="wrap_content"
+				  android:gravity="center_vertical"
+				  android:autoLink="all"/>
 </LinearLayout>

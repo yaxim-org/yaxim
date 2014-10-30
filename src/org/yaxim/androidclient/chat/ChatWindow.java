@@ -352,7 +352,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
 				row = inflater.inflate(R.layout.chatrow, null);
-				wrapper = new ChatItemWrapper(row, ChatWindow.this);
+				wrapper = new ChatItemWrapper(row);
 				row.setTag(wrapper);
 			} else {
 				wrapper = (ChatItemWrapper) row.getTag();
@@ -362,10 +362,13 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 				markAsReadDelayed(_id, DELAY_NEWMSG);
 			}
 
-			String from = jid;
-			if (jid.equals(mJID))
-				from = mScreenName;
-			wrapper.populateFrom(date, from_me, from, message, delivery_status);
+			final String from;
+			if (!from_me) {
+				from = jid.equals(mJID) ? mScreenName : jid;
+			} else {
+				from = null;
+			}
+			wrapper.populateFrom(date, from, message, delivery_status);
 
 			return row;
 		}
@@ -378,135 +381,102 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	public class ChatItemWrapper {
-		private TextView mDateView = null;
-		private TextView mFromView = null;
-		private TextView mMessageView = null;
-		private TextView mUnreadableView = null;
-		private ImageView mIconView = null;
+		private final TextView dateView;
+		private final TextView fromView;
+		private final TextView messageView;
+		private final ImageView iconView;
+
+		private final int myColor;
+		private final int yourColor;
 
 		private final View mRowView;
-		private ChatWindow chatWindow;
+		private final TypedValue mValue;
 
-		ChatItemWrapper(View row, ChatWindow chatWindow) {
-			this.mRowView = row;
-			this.chatWindow = chatWindow;
+		ChatItemWrapper(View row) {
+			mRowView = row;
+
+			dateView = (TextView) mRowView.findViewById(R.id.chat_date);
+			fromView = (TextView) mRowView.findViewById(R.id.chat_from);
+			messageView = (TextView) mRowView.findViewById(R.id.chat_message);
+			iconView = (ImageView) mRowView.findViewById(R.id.iconView);
+
+			// Setup theme colors (since we just reuse them)
+			mValue = new TypedValue();
+			getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, mValue, true);
+			myColor = mValue.data;
+
+			getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, mValue, true);
+			yourColor = mValue.data;
 		}
 
-		void populateFrom(String date, boolean from_me, String from, String message,
-				int delivery_status) {
-//			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
-			getDateView().setText(date);
-			TypedValue tv = new TypedValue();
-			if (from_me) {
-				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
-				getDateView().setTextColor(tv.data);
-				getFromView().setText(getString(R.string.chat_from_me));
-				getFromView().setTextColor(tv.data);
+		void populateFrom(String date, String from, String message, int deliveryStatus) {
+			final boolean fromMe = from == null;
+
+			dateView.setText(date);
+			dateView.setTextColor(fromMe ? myColor : yourColor);
+
+			final String fromText = fromMe
+					? getString(R.string.chat_from_me)
+					: getString(R.string.chat_from_you, from);
+			fromView.setText(fromText);
+			fromView.setTextColor(fromMe ? myColor : yourColor);
+
+			if (message.startsWith("/me ")) {
+				message = "\u25CF " + message.replaceFirst("^/me ",
+						(fromMe ? getString(R.string.chat_action_from_me) : from) + " ");
+				messageView.setTypeface(null, android.graphics.Typeface.ITALIC);
 			} else {
-				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
-				getDateView().setTextColor(tv.data);
-				getFromView().setText(from + ":");
-				getFromView().setTextColor(tv.data);
+				messageView.setTypeface(null, 0);
 			}
-			switch (delivery_status) {
+			messageView.setText(message);
+
+			switch (deliveryStatus) {
 			case ChatConstants.DS_NEW:
 				ColorDrawable layers[] = new ColorDrawable[2];
-				getTheme().resolveAttribute(R.attr.ChatNewMessageColor, tv, true);
-				layers[0] = new ColorDrawable(tv.data);
-				if (from_me) {
+				getTheme().resolveAttribute(R.attr.ChatNewMessageColor, mValue, true);
+				layers[0] = new ColorDrawable(mValue.data);
+				if (fromMe) {
 					// message stored for later transmission
-					getTheme().resolveAttribute(R.attr.ChatStoredMessageColor, tv, true);
-					layers[1] = new ColorDrawable(tv.data);
+					getTheme().resolveAttribute(R.attr.ChatStoredMessageColor, mValue, true);
+					layers[1] = new ColorDrawable(mValue.data);
 				} else {
 					layers[1] = new ColorDrawable(0x00000000);
 				}
-				TransitionDrawable backgroundColorAnimation = new
-					TransitionDrawable(layers);
-				int l = mRowView.getPaddingLeft();
-				int t = mRowView.getPaddingTop();
-				int r = mRowView.getPaddingRight();
-				int b = mRowView.getPaddingBottom();
+				TransitionDrawable backgroundColorAnimation = new TransitionDrawable(layers);
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
-				mRowView.setPadding(l, t, r, b);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(DELAY_NEWMSG);
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
+				iconView.setImageResource(R.drawable.ic_chat_msg_status_queued);
 				break;
 			case ChatConstants.DS_SENT_OR_READ:
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_unread);
+				iconView.setImageResource(R.drawable.ic_chat_msg_status_unread);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
 			case ChatConstants.DS_ACKED:
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_ok);
+				iconView.setImageResource(R.drawable.ic_chat_msg_status_ok);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
 			case ChatConstants.DS_FAILED:
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_failed);
+				iconView.setImageResource(R.drawable.ic_chat_msg_status_failed);
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
+				break;
+			case ChatConstants.DS_OTR_START:
+				iconView.setImageResource(R.drawable.ic_chat_msg_status_ok);
+				mRowView.setBackgroundColor(0x00000000); // default is transparent
+				messageView.setText(getString(R.string.chat_attempt_otr_start, from));
+				messageView.setTypeface(null, android.graphics.Typeface.ITALIC);
+				break;
+			case ChatConstants.DS_OTR_UNKNOWN:
+				iconView.setImageResource(R.drawable.ic_chat_msg_status_failed);
+				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
+				messageView.setText(getString(R.string.chat_unreadable_message));
+				messageView.setTypeface(null, android.graphics.Typeface.ITALIC);
 				break;
 			}
 
-			boolean slash_me = message.startsWith("/me ");
-			if (slash_me)
-				message = String.format("\u25CF %s %s", from, message.substring(4));
-			getMessageView().setText(message.replaceFirst("^/me ", from));
-			getMessageView().setTypeface(null, slash_me ? android.graphics.Typeface.ITALIC : 0);
-
-			// FIXME: Implement better handling for OTR
-			if (message != null && looksLikeOtr(message)) {
-				getUnreadableView().setVisibility(View.VISIBLE);
-				getMessageView().setVisibility(View.INVISIBLE);
-			} else {
-				getUnreadableView().setVisibility(View.INVISIBLE);
-				getMessageView().setText(message);
-			}
-
-			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
-			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
-			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
-		}
-		
-		TextView getDateView() {
-			if (mDateView == null) {
-				mDateView = (TextView) mRowView.findViewById(R.id.chat_date);
-			}
-			return mDateView;
-		}
-
-		TextView getFromView() {
-			if (mFromView == null) {
-				mFromView = (TextView) mRowView.findViewById(R.id.chat_from);
-			}
-			return mFromView;
-		}
-
-		TextView getMessageView() {
-			if (mMessageView == null) {
-				mMessageView = (TextView) mRowView
-						.findViewById(R.id.chat_message);
-			}
-			return mMessageView;
-		}
-
-		TextView getUnreadableView() {
-			if (mUnreadableView == null) {
-				mUnreadableView = (TextView) mRowView
-						.findViewById(R.id.unreadable_message);
-			}
-			return mUnreadableView;
-		}
-
-		ImageView getIconView() {
-			if (mIconView == null) {
-				mIconView = (ImageView) mRowView
-						.findViewById(R.id.iconView);
-			}
-			return mIconView;
-		}
-
-		boolean looksLikeOtr(final String message) {
-			return message.startsWith("?OTR?") || message.startsWith("?OTRv")
-					|| (message.startsWith("?OTR:") && message.endsWith("."));
+			messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mChatFontSize);
+			dateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mChatFontSize * 2/3);
+			dateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mChatFontSize * 2/3);
 		}
 	}
 
