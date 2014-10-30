@@ -438,6 +438,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				getDateView().setTextColor(tv.data);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
+				from = YaximApplication.getConfig(ChatWindow.this).userName;
 			} else {
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 				getDateView().setTextColor(tv.data);
@@ -484,7 +485,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			boolean slash_me = message.startsWith("/me ");
 			if (slash_me)
 				message = String.format("\u25CF %s %s", from, message.substring(4));
-			getMessageView().setText(message.replaceFirst("^/me ", from));
+			getMessageView().setText(message);
 			getMessageView().setTypeface(null, slash_me ? android.graphics.Typeface.ITALIC : 0);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
