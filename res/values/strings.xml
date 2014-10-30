@@ -189,7 +189,8 @@
 	<string name="chat_from_me">Me:</string>
 	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_enterMsgHint">Enter message</string>
+    <string name="chat_unreadable_message">Unreadable Off-the-Record message</string>
 
 	<!-- Chat menu -->
 	<string name="chatmenu_resend">Resend</string>
