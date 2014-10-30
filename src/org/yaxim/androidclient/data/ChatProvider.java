@@ -23,8 +23,7 @@ public class ChatProvider extends ContentProvider {
 
 	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Chats";
 	public static final String TABLE_NAME = "chats";
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-			+ "/" + TABLE_NAME);
+	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);

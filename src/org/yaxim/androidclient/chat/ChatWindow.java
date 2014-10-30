@@ -2,7 +2,11 @@ package org.yaxim.androidclient.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
+import android.content.*;
+import android.os.Message;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
@@ -17,11 +21,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Window;
 
-import android.content.ComponentName;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -81,6 +80,8 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	private ServiceConnection mServiceConnection;
 	private XMPPChatServiceAdapter mServiceAdapter;
 	private int mChatFontSize;
+
+	private final List<Uri> mReadMessages = new LinkedList<Uri>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -165,6 +166,12 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		else
 			unbindXMPPService();
 		needs_to_bind_unbind = false;
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		markAsRead();
 	}
 
 	@Override
@@ -296,23 +303,19 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
-	private void markAsReadDelayed(final int id, final int delay) {
-		new Thread() {
-			@Override
-			public void run() {
-				try { Thread.sleep(delay); } catch (Exception e) {}
-				markAsRead(id);
-			}
-		}.start();
+	private void markAsRead(final int id) {
+		mReadMessages.add(Uri.parse("content://" + ChatProvider.AUTHORITY
+				+ "/" + ChatProvider.TABLE_NAME + "/" + id));
 	}
 	
-	private void markAsRead(int id) {
-		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
-			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
-		Log.d(TAG, "markAsRead: " + rowuri);
-		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
-		getContentResolver().update(rowuri, values, null, null);
+	private void markAsRead() {
+		if (mReadMessages.isEmpty()) {
+			return;
+		}
+
+		// Perform the actual update in the async handler
+		final ChatAsyncQueryHandler queryHandler = new ChatAsyncQueryHandler(getContentResolver());
+		queryHandler.markAsRead(mReadMessages);
 	}
 
 	class ChatWindowAdapter extends SimpleCursorAdapter {
@@ -359,7 +362,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 			}
 
 			if (!from_me && delivery_status == ChatConstants.DS_NEW) {
-				markAsReadDelayed(_id, DELAY_NEWMSG);
+				markAsRead(_id);
 			}
 
 			final String from;
@@ -562,6 +565,31 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		public void onChange(boolean selfChange) {
 			Log.d(TAG, "ContactObserver.onChange: " + selfChange);
 			updateContactStatus();
+		}
+	}
+
+	/**
+	 * Simple helper class for updating message "read" status in a background thread
+	 */
+	private class ChatAsyncQueryHandler extends AsyncQueryHandler {
+
+		public ChatAsyncQueryHandler(final ContentResolver cr) {
+			super(cr);
+		}
+
+		public void markAsRead(final List<Uri> messages) {
+			final ContentValues values = new ContentValues();
+			values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
+
+			int token = 0;
+			for (final Uri message : messages) {
+				startUpdate(token, this, message, values, null, null);
+			}
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
 		}
 	}
 }
