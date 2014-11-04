@@ -33,6 +33,7 @@
 		android:hint="@string/setStatusmsgHint"
 		android:inputType="textCapSentences"
 		android:singleLine="true"
+		style="@style/dialogEditText"
 	  />
 	  <Button
 	      android:id="@+id/statusview_message_button_clear"

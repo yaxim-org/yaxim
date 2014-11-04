@@ -3,4 +3,7 @@
     <style name="dialogBackground">
         <!-- empty -->
     </style>
+    <style name="dialogEditText">
+        <!-- empty -->
+    </style>
 </resources>

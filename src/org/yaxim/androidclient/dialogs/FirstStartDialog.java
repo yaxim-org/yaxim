@@ -129,6 +129,8 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	@Override
 	public void onCheckedChanged(CompoundButton btn,boolean isChecked) {
 		mRepeatPassword.setVisibility(isChecked? View.VISIBLE : View.GONE);
+		if (isChecked)
+			mRepeatPassword.requestFocus();
 		updateDialog();
 	}
 	public void afterTextChanged(Editable s) {

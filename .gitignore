@@ -8,3 +8,6 @@ local.properties
 build.properties
 res/values/version.xml
 lint.xml
+out/
+.idea/
+*.iml

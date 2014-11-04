@@ -1081,12 +1081,19 @@ public class SmackableImp implements Smackable {
 					}
 
 					// carbons are old. all others are new
-					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
+					int messageType = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
 					if (msg.getType() == Message.Type.error)
-						is_new = ChatConstants.DS_FAILED;
+						messageType = ChatConstants.DS_FAILED;
 
-					addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
-					if (direction == ChatConstants.INCOMING)
+					final int otrCode = looksLikeOtr(chatMessage);
+					if (otrCode != 0) {
+						messageType = otrCode;
+					}
+
+					addChatMessageToDB(direction, fromJID, chatMessage, messageType, ts, msg.getPacketID());
+
+					// Don't alert for outgoing OR unreadable messages (getting the user excited for nothing)
+					if (direction == ChatConstants.INCOMING && otrCode == 0)
 						mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null));
 				}
 				} catch (Exception e) {
@@ -1094,6 +1101,15 @@ public class SmackableImp implements Smackable {
 					Log.e(TAG, "failed to process packet:");
 					e.printStackTrace();
 				}
+			}
+
+			int looksLikeOtr(final String message) {
+				if (message.startsWith("?OTR?") || message.startsWith("?OTRv"))
+					return ChatConstants.DS_OTR_START;
+				else if (message.startsWith("?OTR:") && message.endsWith("."))
+					return ChatConstants.DS_OTR_UNKNOWN;
+				else
+					return 0;
 			}
 		};
 

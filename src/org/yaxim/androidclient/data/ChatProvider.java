@@ -23,8 +23,7 @@ public class ChatProvider extends ContentProvider {
 
 	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Chats";
 	public static final String TABLE_NAME = "chats";
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-			+ "/" + TABLE_NAME);
+	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -258,6 +257,8 @@ public class ChatProvider extends ContentProvider {
 		public static final int DS_SENT_OR_READ = 1; //< this message was sent but not yet acked, or it was received and read
 		public static final int DS_ACKED = 2; //< this message was XEP-0184 acknowledged
 		public static final int DS_FAILED = 3; //< this message was returned as failed
+		public static final int DS_OTR_START = 4;
+		public static final int DS_OTR_UNKNOWN = 5;
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
