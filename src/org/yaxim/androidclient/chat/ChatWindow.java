@@ -1,9 +1,7 @@
 package org.yaxim.androidclient.chat;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import android.content.*;
 import android.os.Message;
@@ -81,7 +79,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ListView mListView;
 	private ChatWindowAdapter mChatAdapter;
 
-	private final List<Uri> mReadMessages = new LinkedList<Uri>();
+	private final Set<Integer> mReadMessages = new HashSet<Integer>();
 	private boolean mShowOrHide = true;
 
 	@Override
@@ -351,9 +349,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
-	private void markAsRead(final int id) {
-		mReadMessages.add(Uri.parse("content://" + ChatProvider.AUTHORITY
-				+ "/" + ChatProvider.TABLE_NAME + "/" + id));
+	private boolean markAsRead(final int id) {
+		if (mReadMessages.contains(id)) {
+			return false;
+		}
+		mReadMessages.add(id);
+		return true;
 	}
 	
 	private void markAsRead() {
@@ -410,7 +411,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 
 			if (!from_me && delivery_status == ChatConstants.DS_NEW) {
-				markAsRead(_id);
+				if (!markAsRead(_id)) {
+					delivery_status = ChatConstants.DS_SENT_OR_READ;
+				}
 			}
 
 			final String from;
@@ -419,7 +422,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			} else {
 				from = null;
 			}
-			wrapper.populateFrom(date, from, message, delivery_status);
+			wrapper.populateFrom(_id, date, from, message, delivery_status);
 
 			return row;
 		}
@@ -443,6 +446,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		private final View mRowView;
 		private final TypedValue mValue;
 
+		private int mMessageId;
+		private boolean mIsAnimating = false;
+
 		ChatItemWrapper(View row) {
 			mRowView = row;
 
@@ -460,7 +466,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			yourColor = mValue.data;
 		}
 
-		void populateFrom(String date, String from, String message, int deliveryStatus) {
+		void populateFrom(int id, String date, String from, String message, int deliveryStatus) {
+			// If this is the same message just quit early.
+			if (messageView.getText() != null && id == mMessageId) {
+				return;
+			}
+			mMessageId = id;
+
 			final boolean fromMe = from == null;
 
 			dateView.setText(date);
@@ -641,12 +653,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			super(cr);
 		}
 
-		public void markAsRead(final List<Uri> messages) {
+		public void markAsRead(final Collection<Integer> messages) {
 			final ContentValues values = new ContentValues();
 			values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 
 			int token = 0;
-			for (final Uri message : messages) {
+			for (final int messageId : messages) {
+				final Uri message = Uri.parse("content://" + ChatProvider.AUTHORITY
+					+ "/" + ChatProvider.TABLE_NAME + "/" + messageId);
 				startUpdate(token, this, message, values, null, null);
 			}
 		}
