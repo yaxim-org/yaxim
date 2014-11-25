@@ -101,6 +101,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		setContactFromUri();
+
 		// Setup the actual chat view
 		mListView = (ListView) findViewById(android.R.id.list);
 		mChatAdapter = new ChatWindowAdapter(null, PROJECTION_FROM, PROJECTION_TO,
@@ -109,7 +111,6 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 		Log.d(TAG, "registrs for contextmenu...");
 		registerForContextMenu(mListView);
-		setContactFromUri();
 		registerXMPPService();
 		setSendButton();
 		setUserInput();
