@@ -301,6 +301,10 @@
     <string name="action_settings">Settings</string>
     <string name="muc_synchronizing">Synchronizing...</string>
     <string name="chat_muc_userlist">Chat Room Participants (%s)</string>
+    <string name="muc_kicked">Kicked: %s</string>
+    <string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+    <string name="muc_banned">Banned: %s</string>
+    <string name="muc_banned_by">Banned by %1$s: %2$s</string>
     
 
 </resources>

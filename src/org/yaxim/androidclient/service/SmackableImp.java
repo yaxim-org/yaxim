@@ -1231,6 +1231,21 @@ public class SmackableImp implements Smackable {
 		return true;	
 	}
 
+	private void handleKickedFromMUC(String room, boolean banned, String actor, String reason) {
+		multiUserChats.remove(room);
+		ContentValues cvR = new ContentValues();
+		String message;
+		if (actor != null && actor.length() > 0)
+			message = mService.getString(banned ? R.string.muc_banned_by : R.string.muc_kicked_by,
+					actor, reason);
+		else
+			message = mService.getString(banned ? R.string.muc_banned : R.string.muc_kicked,
+					reason);
+		cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, message);
+		cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+		upsertRoster(cvR, room);
+	}
+
 	private void registerPresenceListener() {
 		// do not register multiple packet listeners
 		if (mPresenceListener != null)
@@ -1423,8 +1438,20 @@ public class SmackableImp implements Smackable {
 				);
 	}
 	
-	private boolean joinRoom(String room, String nickname, String password) {
+	private boolean joinRoom(final String room, String nickname, String password) {
 		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
+		muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
+			@Override
+			public void kicked(String actor, String reason) {
+				debugLog("Kicked from " + room + " by " + actor + ": " + reason);
+				handleKickedFromMUC(room, false, actor, reason);
+			}
+			@Override
+			public void banned(String actor, String reason) {
+				debugLog("Banned from " + room + " by " + actor + ": " + reason);
+				handleKickedFromMUC(room, true, actor, reason);
+			}
+		});
 		
 		DiscussionHistory history = new DiscussionHistory();
 		final String[] projection = new String[] {
