@@ -478,7 +478,6 @@ public class SmackableImp implements Smackable {
 
 		// reference DeliveryReceiptManager, add listener
 		DeliveryReceiptManager dm = DeliveryReceiptManager.getInstanceFor(mXMPPConnection);
-		dm.enableAutoReceipts();
 		dm.addReceiptReceivedListener(new ReceiptReceivedListener() { // DOES NOT WORK IN CARBONS
 			public void onReceiptReceived(String fromJid, String toJid, String receiptId) {
 				Log.d(TAG, "got delivery receipt for " + receiptId);
@@ -789,11 +788,14 @@ public class SmackableImp implements Smackable {
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
-	public void sendReceipt(String toJID, String id) {
-		Log.d(TAG, "sending XEP-0184 ack to " + toJID + " id=" + id);
-		final Message ack = new Message(toJID, Message.Type.normal);
-		ack.addExtension(new DeliveryReceipt(id));
-		mXMPPConnection.sendPacket(ack);
+	public void sendReceiptIfRequested(Packet packet) {
+		DeliveryReceiptRequest drr = (DeliveryReceiptRequest)packet.getExtension(
+				DeliveryReceiptRequest.ELEMENT, DeliveryReceipt.NAMESPACE);
+		if (drr != null) {
+			Message ack = new Message(packet.getFrom(), Message.Type.normal);
+			ack.addExtension(new DeliveryReceipt(packet.getPacketID()));
+			mXMPPConnection.sendPacket(ack);
+		}
 	}
 
 	public void sendMessage(String toJID, String message) {
@@ -1112,6 +1114,7 @@ public class SmackableImp implements Smackable {
 					if(msg.getExtension("jabber:x:conference") != null) {
 						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
 						handleMucInvitation(msg);
+						sendReceiptIfRequested(packet);
 						return;
 					}
 
@@ -1194,6 +1197,7 @@ public class SmackableImp implements Smackable {
 						} else if (direction == ChatConstants.INCOMING && need_notify)
 							mServiceCallBack.notifyMessage(fromJID, chatMessage, (cc != null), msg.getType());
 					}
+					sendReceiptIfRequested(packet);
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
