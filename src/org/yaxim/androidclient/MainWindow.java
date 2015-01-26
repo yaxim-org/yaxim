@@ -279,7 +279,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return serviceAdapter != null && serviceAdapter.isAuthenticated();
 	}
 	private boolean isConnecting() {
-		return serviceAdapter != null && serviceAdapter.getConnectionState() == ConnectionState.CONNECTING;
+		return serviceAdapter != null &&
+			(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING ||
+			 serviceAdapter.getConnectionState() == ConnectionState.LOADING);
 	}
 
 	public void updateRoster() {
@@ -791,6 +793,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		boolean spinTheSpinner = false;
 		switch (cs) {
 		case CONNECTING:
+		case LOADING:
 		case DISCONNECTING:
 			spinTheSpinner = true;
 		case DISCONNECTED:

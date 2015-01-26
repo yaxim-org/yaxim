@@ -129,7 +129,7 @@ public class XMPPRosterServiceAdapter {
 	}
 
 	public boolean isAuthenticated() {
-		return getConnectionState() == ConnectionState.ONLINE;
+		return getConnectionState() == ConnectionState.ONLINE || getConnectionState() == ConnectionState.LOADING;
 	}
 
 	public void sendPresenceRequest(String user, String type) {
