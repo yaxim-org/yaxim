@@ -551,7 +551,7 @@ public class SmackableImp implements Smackable {
 		Log.e(TAG, "onDisconnected: " + reason);
 		reason.printStackTrace();
 		// iterate through to the deepest exception
-		while (reason.getCause() != null)
+		while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
 			reason = reason.getCause();
 		onDisconnected(reason.getLocalizedMessage());
 	}
