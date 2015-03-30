@@ -63,6 +63,7 @@ import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.R;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -424,8 +425,8 @@ public class SmackableImp implements Smackable {
 		PingManager.getInstanceFor(mXMPPConnection).setPingMinimumInterval(10*1000);
 
 		// set Version for replies
-		String app_name = mService.getString(org.yaxim.androidclient.R.string.app_name);
-		String build_revision = mService.getString(org.yaxim.androidclient.R.string.build_revision);
+		String app_name = mService.getString(R.string.app_name);
+		String build_revision = mService.getString(R.string.build_revision);
 		Version.Manager.getInstanceFor(mXMPPConnection).setVersion(
 				new Version(app_name, build_revision, "Android"));
 
