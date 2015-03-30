@@ -134,6 +134,8 @@
 	<string name="roster_contextmenu_contact_change_group">Change Group</string>
 	<string name="roster_contextmenu_contact_invite">Invite to Chat Room</string>
 	<string name="roster_contextmenu_muc_edit">Edit Chat Room</string>
+	<string name="roster_contextmenu_muc_leave">Leave Chat Room</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Login Information</string>

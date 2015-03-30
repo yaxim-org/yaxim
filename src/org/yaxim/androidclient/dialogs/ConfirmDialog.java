@@ -24,6 +24,18 @@ public class ConfirmDialog {
 			.create().show();
 	}
 
+	public static void showMucLeave(final Context context, final String jid) {
+		show(context, R.string.roster_contextmenu_muc_leave,
+				context.getString(R.string.muc_leave_question, jid), jid,
+				new ConfirmDialog.Ok() {
+					@Override
+					public void ok(final String jid) {
+						if (ChatRoomHelper.removeRoom(context, jid))
+							ChatRoomHelper.syncDbRooms(context);
+					}
+				});
+	}
+
 	public interface Ok {
 		public void ok(final String jid);
 	}
