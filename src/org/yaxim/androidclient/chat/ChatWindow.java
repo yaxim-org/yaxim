@@ -2,6 +2,7 @@ package org.yaxim.androidclient.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import org.yaxim.androidclient.MainWindow;
@@ -30,6 +31,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -86,6 +88,18 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ListView mListView;
 	private ChatWindowAdapter mChatAdapter;
 
+	private Runnable mMarkRunnable = new Runnable() {
+		@Override
+		public void run() {
+			Log.d(TAG, "mMarkRunnable: running...");
+			markReadMessagesInDb();
+			Log.d(TAG, "mMarkRunnable: done...");
+		}
+	};
+	private HandlerThread mMarkThread;
+	private Handler mMarkHandler;
+	private final HashSet<Integer> mReadMessages = new HashSet<Integer>();
+
 	private boolean mShowOrHide = true;
 
 	@Override
@@ -137,6 +151,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		// Loading progress
 		mLoadingProgress = (ProgressBar) findViewById(R.id.loading_progress);
 		mLoadingProgress.setVisibility(View.VISIBLE);
+
+		mMarkThread = new HandlerThread("MarkAsReadThread: " + mWithJabberID);
+		mMarkThread.start();
+		mMarkHandler = new Handler(mMarkThread.getLooper());
 	}
 
 	private void setCustomTitle(String title) {
@@ -217,6 +235,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		super.onDestroy();
 		if (hasWindowFocus()) unbindXMPPService();
 		getContentResolver().unregisterContentObserver(mContactObserver);
+		// XXX: quitSafely would be better, but needs API r18
+		mMarkThread.quit();
 	}
 
 	protected void registerXMPPService() {
@@ -356,23 +376,37 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
-	private void markAsReadDelayed(final int id, final int delay) {
-		new Thread() {
-			@Override
-			public void run() {
-				try { Thread.sleep(delay); } catch (Exception e) {}
-				markAsRead(id);
-			}
-		}.start();
+	private boolean markAsReadDelayed(final int id, final int delay) {
+		if (mReadMessages.contains(id)) {
+			return false;
+		}
+		mMarkHandler.removeCallbacks(mMarkRunnable);
+		mReadMessages.add(id);
+		mMarkHandler.postDelayed(mMarkRunnable, delay);
+		return true;
 	}
 	
-	private void markAsRead(int id) {
+	private void markReadMessagesInDb() {
+		if (mReadMessages.size() == 0)
+			return;
+		HashSet<Integer> hs = (HashSet)mReadMessages.clone();
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
-			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
-		Log.d(TAG, "markAsRead: " + rowuri);
+			+ "/" + ChatProvider.TABLE_NAME);
+		// create custom WHERE statement instead of relying on ContentResolvers whereArgs
+		StringBuilder where = new StringBuilder();
+		where.append("_id IN (");
+		for (int id : hs) {
+			where.append(id);
+			where.append(",");
+		}
+		// ',' --> ')'
+		where.setCharAt(where.length()-1, ')');
+		Log.d(TAG, "markAsRead: " + where);
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
-		getContentResolver().update(rowuri, values, null, null);
+		getContentResolver().update(rowuri, values, where.toString(), null);
+		// XXX: is this the right place?
+		mReadMessages.removeAll(hs);
 	}
 	
 	public String jid2nickname(String jid, String resource) {
@@ -431,7 +465,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 
 			if (!from_me && delivery_status == ChatConstants.DS_NEW) {
-				markAsReadDelayed(_id, DELAY_NEWMSG);
+				if (!markAsReadDelayed(_id, DELAY_NEWMSG))
+					delivery_status = ChatConstants.DS_SENT_OR_READ;
+
 			}
 
 			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status);
