@@ -110,7 +110,7 @@
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
-	<string name="Menu_muc">MUC Actions</string>
+	<string name="Menu_muc">Add Chat Room</string>
     <string name="Menu_userlist">Users</string>
 
 
