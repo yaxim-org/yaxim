@@ -930,7 +930,8 @@ public class SmackableImp implements Smackable {
 				String jabberID = getBareJID(presence.getFrom());
 				RosterEntry rosterEntry = mRoster.getEntry(jabberID);
 				if (rosterEntry != null)
-					updateRosterEntryInDB(rosterEntry);
+					upsertRoster(getContentValuesForRosterEntry(rosterEntry, presence),
+							rosterEntry.getUser());
 			}
 		};
 		mRoster.addRosterListener(mRosterListener);
@@ -1302,17 +1303,27 @@ public class SmackableImp implements Smackable {
 	}
 
 	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
+		Presence presence = mRoster.getPresence(entry.getUser());
+		return getContentValuesForRosterEntry(entry, presence);
+	}
+
+	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry, Presence presence) {
 		final ContentValues values = new ContentValues();
 
 		values.put(RosterConstants.JID, entry.getUser());
 		values.put(RosterConstants.ALIAS, getName(entry));
 
-		Presence presence = mRoster.getPresence(entry.getUser());
-		values.put(RosterConstants.STATUS_MODE, getStatusInt(presence));
 		if (presence.getType() == Presence.Type.error) {
-			values.put(RosterConstants.STATUS_MESSAGE, presence.getError().toString());
-		} else
+			String error = presence.getError().getMessage();
+			if (error == null || error.length() == 0)
+				error = presence.getError().toString();
+			values.put(RosterConstants.STATUS_MESSAGE, error);
+		} else {
+			// override normal presence from roster, using highest-prio entry
+			presence = mRoster.getPresence(entry.getUser());
 			values.put(RosterConstants.STATUS_MESSAGE, presence.getStatus());
+		}
+		values.put(RosterConstants.STATUS_MODE, getStatusInt(presence));
 		values.put(RosterConstants.GROUP, getGroup(entry.getGroups()));
 
 		return values;
