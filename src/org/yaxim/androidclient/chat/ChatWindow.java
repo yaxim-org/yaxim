@@ -476,7 +476,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 	private String getDateString(long milliSeconds) {
-		SimpleDateFormat dateFormater = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date(milliSeconds);
 		return dateFormater.format(date);
 	}
