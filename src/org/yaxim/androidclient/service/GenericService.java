@@ -199,10 +199,14 @@ public abstract class GenericService extends Service {
 
 	private void setLEDNotification() {
 		if (mConfig.isLEDNotify) {
-			mNotification.ledARGB = Color.MAGENTA;
+			android.content.res.TypedArray a =
+				getTheme().obtainStyledAttributes(mConfig.getTheme(),
+					new int[] { android.R.attr.windowBackground });
+			mNotification.ledARGB = a.getInt(0, Color.MAGENTA);
 			mNotification.ledOnMS = 300;
 			mNotification.ledOffMS = 1000;
 			mNotification.flags |= Notification.FLAG_SHOW_LIGHTS;
+			a.recycle();
 		}
 	}
 
