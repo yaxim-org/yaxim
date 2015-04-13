@@ -394,10 +394,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
-	void rosterAddRequestedDialog(final String jid, String message) {
+	void rosterAddRequestedDialog(final String jid, final String alias, String message) {
 		new AlertDialog.Builder(this)
 			.setTitle(R.string.subscriptionRequest_title)
-			.setMessage(getString(R.string.subscriptionRequest_text, jid, message))
+			.setMessage(getString(R.string.subscriptionRequest_text, alias,
+						message != null ? message : ""))
 			.setPositiveButton(android.R.string.yes,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
@@ -782,7 +783,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		} else {
 			StatusMode s = StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
 			if (s == StatusMode.subscribe)
-				rosterAddRequestedDialog(userJid,
+				rosterAddRequestedDialog(userJid, userName,
 					c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE)));
 			else
 				startChatActivity(userJid, userName, null);

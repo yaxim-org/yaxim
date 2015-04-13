@@ -715,14 +715,14 @@ public class SmackableImp implements Smackable {
 		final ContentValues values = new ContentValues();
 
 		values.put(RosterConstants.JID, request.getFrom());
-		values.put(RosterConstants.ALIAS, request.getFrom());
-		values.put(RosterConstants.GROUP, "");
-
 		values.put(RosterConstants.STATUS_MODE, getStatusInt(request));
 		values.put(RosterConstants.STATUS_MESSAGE, request.getStatus());
-		
-		Uri uri = mContentResolver.insert(RosterProvider.CONTENT_URI, values);
-		debugLog("handleIncomingSubscribe: faked " + uri);
+		if (!mRoster.contains(request.getFrom())) {
+			// reset alias and group for new entries
+			values.put(RosterConstants.ALIAS, request.getFrom());
+			values.put(RosterConstants.GROUP, "");
+		};
+		upsertRoster(values, request.getFrom());
 	}
 
 	public void setStatusFromConfig() {
