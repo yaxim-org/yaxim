@@ -403,7 +403,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							serviceAdapter.sendPresenceRequest(jid, "subscribed");
-							addToRosterDialog(jid);
+							// show dialog if not yet configured
+							if (alias.equals(jid))
+								addToRosterDialog(jid);
 						}
 					})
 			.setNegativeButton(android.R.string.no, 
