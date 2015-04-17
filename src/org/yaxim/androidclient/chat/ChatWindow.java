@@ -88,12 +88,15 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ListView mListView;
 	private ChatWindowAdapter mChatAdapter;
 
+	volatile boolean mMarkRunnableQuit = false;
 	private Runnable mMarkRunnable = new Runnable() {
 		@Override
 		public void run() {
 			Log.d(TAG, "mMarkRunnable: running...");
 			markReadMessagesInDb();
 			Log.d(TAG, "mMarkRunnable: done...");
+			if (mMarkRunnableQuit)
+				mMarkThread.quit();
 		}
 	};
 	private HandlerThread mMarkThread;
@@ -236,7 +239,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		if (hasWindowFocus()) unbindXMPPService();
 		getContentResolver().unregisterContentObserver(mContactObserver);
 		// XXX: quitSafely would be better, but needs API r18
-		mMarkThread.quit();
+		mMarkRunnableQuit = true;
+		mMarkHandler.post(mMarkRunnable);
 	}
 
 	protected void registerXMPPService() {
