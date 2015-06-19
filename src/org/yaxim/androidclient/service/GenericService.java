@@ -82,6 +82,11 @@ public abstract class GenericService extends Service {
 		boolean isMuc = (msgType==Message.Type.groupchat);
 		boolean is_error = (msgType==Message.Type.error);
 		boolean beNoisy=true;
+
+		if (message == null) {
+			clearNotification(fromJid);
+			return;
+		}
 		
 		if (!showNotification && beNoisy) {
 			if (is_error)
