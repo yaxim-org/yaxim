@@ -245,27 +245,57 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	public boolean openChatWithJid(String jid, String text) {
+		Log.d(TAG, "openChatWithJid: " + jid);
+
+		List<String[]> contacts = getRosterContacts();
+		for (String[] c : contacts) {
+			if (jid.equalsIgnoreCase(c[0])) {
+				// found it
+				startChatActivity(c[0], c[1], text);
+				finish();
+				return true;
+			}
+		}
+		// if we have a message, open chat to JID
+		if (text != null) {
+			startChatActivity(jid, jid, text);
+			finish();
+			return true;
+		}
+		return false;
+	}
+
 	public void handleJabberIntent() {
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		Uri data = intent.getData();
-		if ((action != null) && (action.equals(Intent.ACTION_SENDTO))
-				&& data != null && data.getHost().equals("jabber")) {
+		if (action == null || data == null)
+			return;
+		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
+			// 1. look for JID in roster; 2. attempt to add
 			String jid = data.getPathSegments().get(0);
-			Log.d(TAG, "handleJabberIntent: " + jid);
-
-			List<String[]> contacts = getRosterContacts();
-			for (String[] c : contacts) {
-				if (jid.equalsIgnoreCase(c[0])) {
-					// found it
-					startChatActivity(c[0], c[1], null);
-					finish();
-					return;
-				}
-			}
-			// did not find in roster, try to add
-			if (!addToRosterDialog(jid))
+			if (!openChatWithJid(jid, null) &&
+			    !addToRosterDialog(jid))
 				finish();
+		} else if (action.equals(Intent.ACTION_VIEW) && "xmpp".equals(data.getScheme())) {
+			if (data.isOpaque()) {
+				// cheat around android's unwillingness to parse opaque URIs
+				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
+			}
+			String jid = data.getAuthority();
+			String body = data.getQueryParameter("body");
+			if (data.getQueryParameter("roster") != null) {
+				// TODO: user name
+				addToRosterDialog(jid);
+			} else if (data.getQueryParameter("join") != null) {
+				// TODO: nickname
+				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
+					null, data.getQueryParameter("password")).show();
+			} else if (!openChatWithJid(jid, body) &&
+				   !addToRosterDialog(jid)) {
+				finish();
+			}
 		}
 	}
 
