@@ -189,7 +189,7 @@ public abstract class GenericService extends Service {
 		mNotificationIntent.setClass(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
 		mNotificationIntent.setData(userNameUri);
 		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
-		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
 		
 		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
