@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import org.yaxim.androidclient.R;
 
 public class EditMUCDialog extends AlertDialog implements
@@ -23,6 +24,7 @@ public class EditMUCDialog extends AlertDialog implements
 	private Activity mContext;
 
 	private Button okButton;
+	private TextView mInvitation;
 	private EditText mRoomJID;
 	private EditText mNickName;
 	private EditText mPassword;
@@ -31,13 +33,14 @@ public class EditMUCDialog extends AlertDialog implements
 		super(context);
 		mContext = context;
 
-		setTitle("Chat Room Configuration"); //TODO i18n
+		setTitle(R.string.roster_contextmenu_muc_edit);
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View group = inflater.inflate(R.layout.muc_new_dialog, null, false);
 		setView(group);
 
+		mInvitation = (TextView)group.findViewById(R.id.muc_invitation);
 		mRoomJID = (EditText)group.findViewById(R.id.muc_new_jid);
 		mNickName = (EditText)group.findViewById(R.id.muc_new_nick);
 		mPassword = (EditText)group.findViewById(R.id.muc_new_pw);
@@ -54,6 +57,23 @@ public class EditMUCDialog extends AlertDialog implements
 		mRoomJID.setEnabled(false);
 		mNickName.setText(ri.nickname);
 		mPassword.setText(ri.password);
+		mNickName.requestFocus();
+	}
+
+	public EditMUCDialog(Activity context, String roomJID, String invitation,
+			String nickname, String password) {
+		this(context);
+		setTitle(R.string.title_activity_muc_invite);
+
+		if (invitation != null) {
+			mInvitation.setText(invitation);
+			mInvitation.setVisibility(View.VISIBLE);
+		}
+		mRoomJID.setText(roomJID);
+		mRoomJID.setEnabled(false);
+		mNickName.setText(nickname);
+		mPassword.setText(password);
+		mNickName.requestFocus();
 	}
 
 	public void onCreate(Bundle icicle) {
