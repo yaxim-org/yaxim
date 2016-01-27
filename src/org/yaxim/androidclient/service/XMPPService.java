@@ -6,13 +6,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
-import org.yaxim.androidclient.MucInviteActivity;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
-import org.yaxim.androidclient.MucInviteActivity;
 
 import org.jivesoftware.smack.packet.Message.Type;
 
@@ -25,6 +23,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
@@ -534,23 +534,26 @@ public class XMPPService extends GenericService {
 			}
 
 			@Override
-			public void mucInvitationReceived(String room, String body) {
-				//TypedValue tv = new TypedValue();
-				//getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
-				Notification invNotify = new NotificationCompat.Builder(getApplicationContext()) // TODO: make translateable
-						 .setContentTitle("Chat Room "+room)
+			public void mucInvitationReceived(String room, String password, String body) {
+				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
+				intent.setAction("android.intent.action.VIEW");
+				String uri = "xmpp:" + room;
+				Builder b = new Builder();
+				b.appendQueryParameter("join", null);
+				if (password != null)
+					b.appendQueryParameter("password", password);
+				b.appendQueryParameter("body", body);
+				intent.setData(Uri.parse(uri + b.toString()));
+				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
+						intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+				// TODO: make translateable
+				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
+						 .setContentTitle(room)
 						 .setContentText(body)
 						 .setSmallIcon(R.drawable.ic_action_group_dark) // TODO: make themed		
 						 .setTicker(body)
+						 .setContentIntent(pi)
 						 .getNotification();
-				Intent invIntent = new Intent(getApplicationContext(), MucInviteActivity.class);
-				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_BODY, body);
-				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ROOM, room);
-				invIntent.putExtra(MucInviteActivity.INTENT_EXTRA_ID, lastNotificationId);
-				invIntent.setAction("android.intent.action.SEND");
-				PendingIntent invPending = PendingIntent.getActivity(getApplicationContext(), 0, 
-						invIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
-				invNotify.setLatestEventInfo(getApplicationContext(), body, body, invPending);
 				mNotificationMGR.notify(lastNotificationId, invNotify);
 				lastNotificationId += 1;
 			}

@@ -68,6 +68,7 @@ import org.jivesoftware.smackx.provider.MUCUserProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
+import org.jivesoftware.smackx.packet.MUCUser;
 import org.jivesoftware.smackx.packet.Version;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.ping.packet.*;
@@ -1450,8 +1451,10 @@ public class SmackableImp implements Smackable {
 	}
 	
 	protected void handleMucInvitation(Message msg) {
+		MUCUser mucuser = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
 		mServiceCallBack.mucInvitationReceived(
 				msg.getFrom(),
+				mucuser.getPassword(),
 				msg.getBody()
 				);
 	}
