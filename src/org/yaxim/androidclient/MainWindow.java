@@ -296,7 +296,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 				   !addToRosterDialog(jid)) {
 				finish();
 			}
-		}
+		} else return;
+		// clear the intent data to prevent re-triggering
+		getIntent().setData(null);
 	}
 
 	@Override
