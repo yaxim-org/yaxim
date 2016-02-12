@@ -48,8 +48,6 @@ public class XMPPService extends GenericService {
 	private PendingIntent mPAlarmIntent;
 	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
 
-	private ServiceNotification mServiceNotification = null;
-
 	private Smackable mSmackable;
 	private boolean create_account = false;
 	private IXMPPRosterService.Stub mService2RosterConnection;
@@ -118,8 +116,6 @@ public class XMPPService extends GenericService {
 			Intent xmppServiceIntent = new Intent(this, XMPPService.class);
 			startService(xmppServiceIntent);
 		}
-
-		mServiceNotification = ServiceNotification.getInstance();
 	}
 
 	@Override
@@ -383,7 +379,7 @@ public class XMPPService extends GenericService {
 			return;
 
 		if (cs == ConnectionState.OFFLINE) {
-			mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
+			stopForeground(true);
 			return;
 		}
 		Notification n = new Notification(R.drawable.ic_offline, null,
@@ -402,8 +398,7 @@ public class XMPPService extends GenericService {
 		String message = getStatusTitle(cs);
 		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
-		mServiceNotification.showNotification(this, SERVICE_NOTIFICATION,
-				n);
+		startForeground(SERVICE_NOTIFICATION, n);
 	}
 
 	private void doConnect() {
@@ -482,7 +477,7 @@ public class XMPPService extends GenericService {
 	private void connectionClosed() {
 		logInfo("connectionClosed.");
 		mReconnectInfo = "";
-		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
+		stopForeground(true);
 	}
 
 	public void manualDisconnect() {
