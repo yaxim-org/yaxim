@@ -23,6 +23,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.gsm.SmsMessage.MessageClass;
 import android.util.Log;
 import android.widget.Toast;
@@ -182,8 +183,14 @@ public abstract class GenericService extends Service {
 			ticker = title + ":\n" + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
-		mNotification = new Notification(R.drawable.sb_message, ticker,
-				System.currentTimeMillis());
+		mNotification = new NotificationCompat.Builder(this)
+			.setContentTitle(title)
+			.setContentText(message)
+			.setTicker(ticker)
+			.setSmallIcon(R.drawable.sb_message)
+			.setCategory(Notification.CATEGORY_MESSAGE)
+			.setAutoCancel(true)
+			.build();
 		mNotification.defaults = 0;
 		Uri userNameUri = Uri.parse(fromJid);
 		mNotificationIntent.setClass(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
@@ -198,7 +205,6 @@ public abstract class GenericService extends Service {
 		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
 		if (mNotificationCounter > 1)
 			mNotification.number = mNotificationCounter;
-		mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 	}
 
 	private void setLEDNotification(boolean isMuc) {

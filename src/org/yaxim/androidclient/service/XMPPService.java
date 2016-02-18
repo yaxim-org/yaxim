@@ -382,21 +382,22 @@ public class XMPPService extends GenericService {
 			stopForeground(true);
 			return;
 		}
-		Notification n = new Notification(R.drawable.ic_offline, null,
-				System.currentTimeMillis());
-		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR | Notification.FLAG_ONLY_ALERT_ONCE;
 
 		Intent notificationIntent = new Intent(this, MainWindow.class);
 		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		n.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		if (cs == ConnectionState.ONLINE)
-			n.icon = R.drawable.ic_online;
+		Notification n = new NotificationCompat.Builder(this)
+			.setSmallIcon((cs == ConnectionState.ONLINE) ? R.drawable.ic_online : R.drawable.ic_offline)
+			.setLargeIcon(android.graphics.BitmapFactory.decodeResource(getResources(), R.drawable.icon))
+			.setWhen(System.currentTimeMillis())
+			.setOngoing(true)
+			.setOnlyAlertOnce(true)
+			.setContentIntent(PendingIntent.getActivity(this, 0, notificationIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT))
+			.setContentTitle(getString(R.string.conn_title, mConfig.jabberID))
+			.setContentText(getStatusTitle(cs))
+			.build();
 
-		String title = getString(R.string.conn_title, mConfig.jabberID);
-		String message = getStatusTitle(cs);
-		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
 		startForeground(SERVICE_NOTIFICATION, n);
 	}
@@ -540,15 +541,15 @@ public class XMPPService extends GenericService {
 				b.appendQueryParameter("body", body);
 				intent.setData(Uri.parse(uri + b.toString()));
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
-						intent, Intent.FLAG_ACTIVITY_NEW_TASK);
-				// TODO: make translateable
+						intent, Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
 						 .setContentTitle(room)
 						 .setContentText(body)
-						 .setSmallIcon(R.drawable.ic_action_group_dark) // TODO: make themed		
+						 .setSmallIcon(R.drawable.ic_action_group_dark)
 						 .setTicker(body)
 						 .setContentIntent(pi)
-						 .getNotification();
+						 .setAutoCancel(true)
+						 .build();
 				mNotificationMGR.notify(lastNotificationId, invNotify);
 				lastNotificationId += 1;
 			}
