@@ -210,6 +210,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	protected void onResume() {
+		Log.d(TAG, "onResume");
 		super.onResume();
 		updateContactStatus();
 		needs_to_bind_unbind = true;
@@ -217,12 +218,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	protected void onPause() {
+		Log.d(TAG, "onPause");
 		super.onPause();
 		needs_to_bind_unbind = true;
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
+		Log.d(TAG, "onWindowFocusChanged: " + hasFocus);
 		super.onWindowFocusChanged(hasFocus);
 		if (!needs_to_bind_unbind)
 			return;
@@ -236,7 +239,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (hasWindowFocus()) unbindXMPPService();
+		if (needs_to_bind_unbind) unbindXMPPService();
 		getContentResolver().unregisterContentObserver(mContactObserver);
 		// XXX: quitSafely would be better, but needs API r18
 		mMarkRunnableQuit = true;
