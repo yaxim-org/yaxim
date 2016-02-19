@@ -291,7 +291,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			} else if (data.getQueryParameter("join") != null) {
 				// TODO: nickname
 				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
-					null, data.getQueryParameter("password")).show();
+					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
 			} else if (!openChatWithJid(jid, body) &&
 				   !addToRosterDialog(jid)) {
 				finish();
@@ -787,6 +787,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case R.id.menu_about:
 			aboutDialog();
 			return true;
+		case R.id.menu_muc:
+			new EditMUCDialog(this).withNick(mConfig.userName).show();
+			return true;
+
 		}
 
 		return false;
