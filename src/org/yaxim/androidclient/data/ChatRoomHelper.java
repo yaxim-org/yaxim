@@ -60,6 +60,34 @@ public class ChatRoomHelper {
 		ctx.bindService(serviceIntent, c, Context.BIND_AUTO_CREATE);
 	}
 
+	public static String guessMyNickname(Context ctx, String fallback) {
+		// obtain a sorted list of MUC nicknames; manually counting the
+		// occurences is a workaround for the missing "GROUP BY nickname"
+		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI,
+				new String[] { RosterConstants.NICKNAME },
+				null, null, RosterConstants.NICKNAME );
+		String best = fallback;
+		int best_count = 0;
+		String current = null;
+		int current_count = 0;
+		// count the occurences of every nickname in 'current', update 'best' with most-often used one
+		while (cursor.moveToNext()) {
+			android.util.Log.d("ChatRoomHelper", String.format("guessMyNickname: %s(%d) %s(%d) %s", best, best_count, current, current_count, cursor.getString(0)));
+			if (cursor.getString(0).equals(current))
+				current_count++;
+			else {
+				current = cursor.getString(0);
+				current_count = 1;
+			}
+			if (current_count > best_count) {
+				best = current;
+				best_count = current_count;
+			}
+		}
+		cursor.close();
+		return best;
+	}
+
 	public static RoomInfo getRoomInfo(Context ctx, String jid) {
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI,
 				new String[] { RosterConstants._ID, RosterConstants.JID,

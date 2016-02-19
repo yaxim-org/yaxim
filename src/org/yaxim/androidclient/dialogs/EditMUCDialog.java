@@ -33,7 +33,7 @@ public class EditMUCDialog extends AlertDialog implements
 		super(context);
 		mContext = context;
 
-		setTitle(R.string.roster_contextmenu_muc_edit);
+		setTitle(R.string.Menu_muc);
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,8 +50,12 @@ public class EditMUCDialog extends AlertDialog implements
 				(DialogInterface.OnClickListener)null);
 
 	}
+
+	// this constructor is called for actual editing of an existing MUC
 	public EditMUCDialog(Activity context, String roomJID) {
 		this(context);
+		setTitle(R.string.roster_contextmenu_muc_edit);
+
 		ChatRoomHelper.RoomInfo ri = ChatRoomHelper.getRoomInfo(mContext, roomJID);
 		mRoomJID.setText(roomJID);
 		mRoomJID.setEnabled(false);
@@ -74,6 +78,12 @@ public class EditMUCDialog extends AlertDialog implements
 		mNickName.setText(nickname);
 		mPassword.setText(password);
 		mNickName.requestFocus();
+	}
+
+	// chained function call to set the nickname
+	public EditMUCDialog withNick(String fallback) {
+		mNickName.setText(ChatRoomHelper.guessMyNickname(mContext, fallback));
+		return this;
 	}
 
 	public void onCreate(Bundle icicle) {
