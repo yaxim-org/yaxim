@@ -7,6 +7,7 @@ import java.util.List;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.ChatRoomHelper;
@@ -372,34 +373,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
 	}
 
-	void doMarkAllAsRead(final String JID) {
-		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
-
-		getContentResolver().update(ChatProvider.CONTENT_URI, values,
-				ChatProvider.ChatConstants.JID + " = ? AND "
-						+ ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
-						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW,
-				new String[]{JID});
-	}
-
 	void removeChatHistory(final String JID) {
 		getContentResolver().delete(ChatProvider.CONTENT_URI,
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { JID });
-	}
-
-	void removeChatHistoryDialog(final String JID, final String userName) {
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.deleteChatHistory_title)
-			.setMessage(getString(R.string.deleteChatHistory_text, userName, JID))
-			.setPositiveButton(android.R.string.yes,
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							removeChatHistory(JID);
-						}
-					})
-			.setNegativeButton(android.R.string.no, null)
-			.create().show();
 	}
 
 	void removeRosterItemDialog(final String JID, final String userName) {
@@ -541,12 +517,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 				startChatActivity(userJid, userName, null);
 				return true;
 
-			case R.id.roster_contextmenu_contact_mark_all_as_read:
-				doMarkAllAsRead(userJid);
+			case R.id.roster_contextmenu_contact_mark_as_read:
+				ChatHelper.markAsRead(this, userJid);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delmsg:
-				removeChatHistoryDialog(userJid, userName);
+				ChatHelper.removeChatHistoryDialog(this, userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
@@ -592,14 +568,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return false;
 	}
 
-	private void markAllAsRead() {
-		ContentValues cv = new ContentValues();
-		cv.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
-		getContentResolver().update(ChatProvider.CONTENT_URI, cv,
-						ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
-						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW, null);
-	}
-	
 	private boolean isChild(long packedPosition) {
 		int type = ExpandableListView.getPackedPositionType(packedPosition);
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
@@ -764,7 +732,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 			
 		case R.id.menu_markallread:
-			markAllAsRead();
+			ChatHelper.markAllAsRead(this);
 			return true;
 
 		case android.R.id.home:
