@@ -948,8 +948,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	// get the name of a roster group from the cursor
 	public String getGroupName(int groupId) {
-		return getPackedItemRow(ExpandableListView.getPackedPositionForGroup(groupId),
-				RosterConstants.GROUP);
+		// default group is "" and MUC group is "\uFFFF"
+		return java.net.URLEncoder.encode(getPackedItemRow(
+					ExpandableListView.getPackedPositionForGroup(groupId),
+						RosterConstants.GROUP));
 	}
 
 	public void restoreGroupsExpanded() {
