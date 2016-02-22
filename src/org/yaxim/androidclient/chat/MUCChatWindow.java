@@ -183,6 +183,8 @@ public class MUCChatWindow extends ChatWindow {
 
 	@Override
 	public void nick2Color(String nick, TypedValue tv) {
+		if (nick == null || nick.length() == 0) // no color for empty nickname
+			return;
 		Checksum nickCRC = new CRC32();
 		nickCRC.update(nick.getBytes(), 0, nick.length());
 		int nickInt = (int)nickCRC.getValue();
