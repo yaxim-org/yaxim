@@ -124,6 +124,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		} catch (YaximXMPPAdressMalformedException e) {
 			if (jid.length() > 0)
 				mEditJabberID.setError(mainWindow.getString(R.string.Global_JID_malformed));
+			is_ok = false;
 		}
 		if (mEditPassword.length() == 0)
 			is_ok = false;
