@@ -116,7 +116,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Optionen für %s</string>
 	<string name="roster_contextmenu_group_rename">Gruppe umbenennen</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Als gelesen markieren</string>
+	<string name="roster_contextmenu_contact_mark_all_as_read">Alle als gelesen markieren</string>
 	<string name="roster_contextmenu_contact_delete">Kontakt löschen</string>
 	<string name="roster_contextmenu_contact_delmsg">Chat-Verlauf löschen</string>
 	<string name="roster_contextmenu_contact_open_chat">Chat öffnen</string>

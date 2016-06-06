@@ -16,8 +16,8 @@
 			android:orderInCategory="1"
 			/>
 
-		<item   android:id="@+id/roster_contextmenu_contact_mark_all_as_read"
-			android:title="@string/roster_contextmenu_contact_mark_all_as_read"
+		<item   android:id="@+id/roster_contextmenu_contact_mark_as_read"
+			android:title="@string/roster_contextmenu_contact_mark_as_read"
 			android:orderInCategory="2"
 			/>
 

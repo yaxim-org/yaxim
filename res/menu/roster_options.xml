@@ -18,7 +18,7 @@
 		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
 		android:showAsAction="never"/>
 
-	<item android:id="@+id/menu_markallread" android:title="@string/roster_contextmenu_contact_mark_all_as_read"
+	<item android:id="@+id/menu_markallread" android:title="@string/Menu_mark_all_as_read"
 		android:alphabeticShortcut="m"/>
 		
 
