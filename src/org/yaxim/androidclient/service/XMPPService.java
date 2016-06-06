@@ -26,6 +26,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Handler;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
@@ -134,6 +135,7 @@ public class XMPPService extends GenericService {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		logInfo("onStartCommand(), mConnectionDemanded=" + mConnectionDemanded.get());
+		logInfo("    intent=" + intent);
 		if (intent != null) {
 			create_account = intent.getBooleanExtra("create_account", false);
 			
@@ -155,6 +157,21 @@ public class XMPPService extends GenericService {
 					return START_STICKY;
 				}
 				// if not authenticated, fall through to doConnect()
+			} else
+			if ("respond".equals(intent.getAction())) {
+				// clear notifications and send a message from Android Auto/Wear event
+				String jid = intent.getDataString();
+				Bundle reply = android.support.v4.app.RemoteInput.getResultsFromIntent(intent);
+				Log.d(TAG, "respond action: " + jid + " "  + reply);
+				String replystring = null;
+				if (reply != null) {
+					replystring = reply.getCharSequence("voicereply").toString();
+					Log.d(TAG, "got reply: " + replystring);
+					mSmackable.sendMessage(jid, replystring);
+				}
+				org.yaxim.androidclient.data.ChatHelper.markAsRead(this, jid);
+				clearNotification(jid);
+				return START_STICKY;
 			}
 		}
 		

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="19" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
+	android:versionCode="20" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
 
 	<uses-sdk android:targetSdkVersion="17" android:minSdkVersion="7"/>
 
@@ -85,6 +85,8 @@
 			<intent-filter>
 				<action android:name="android.intent.action.ACTION_SHUTDOWN" />
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_HEARD" />
+				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_REPLY" />
 			</intent-filter>
 		</receiver>
 
@@ -96,5 +98,8 @@
 			android:authorities="org.yaxim.androidclient.provider.Roster" />
 
 		<activity android:name="de.duenndns.ssl.MemorizingActivity" />
+
+		<meta-data android:name="com.google.android.gms.car.application"
+			android:resource="@xml/automotive_app_desc" />
 	</application>
 </manifest>

@@ -1,13 +1,16 @@
 package org.yaxim.androidclient.service;
 
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.util.PreferenceConstants;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
+import android.os.Bundle;
 import android.util.Log;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 
 
@@ -31,10 +34,11 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "onReceive " + intent);
+		// prepare intent
+		Intent xmppServiceIntent = new Intent(context, XMPPService.class);
 
 		if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 			Log.d(TAG, "System shutdown, stopping yaxim.");
-			Intent xmppServiceIntent = new Intent(context, XMPPService.class);
 			context.stopService(xmppServiceIntent);
 		} else
 		if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
@@ -52,9 +56,6 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 			    // ignore and hope for the best.
 			    Log.i(TAG, "DNS init failed: " + e);
 			}
-
-			// prepare intent
-			Intent xmppServiceIntent = new Intent(context, XMPPService.class);
 
 			// there are three possible situations here: disconnect, reconnect, connection change
 			ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -77,6 +78,27 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 				xmppServiceIntent.setAction("ping");
 			} else
 				return;
+			context.startService(xmppServiceIntent);
+		} else
+		if (intent.getAction().equals("org.yaxim.androidclient.ACTION_MESSAGE_HEARD")) {
+			String jid = intent.getStringExtra("jid");
+			Log.d(TAG, "heard " + intent);
+			xmppServiceIntent.setAction("respond");
+			xmppServiceIntent.setData(Uri.parse(jid));
+			context.startService(xmppServiceIntent);
+		} else
+		if (intent.getAction().equals("org.yaxim.androidclient.ACTION_MESSAGE_REPLY")) {
+			String jid = intent.getStringExtra("jid");
+			Log.d(TAG, "reply " + intent);
+			Bundle reply = android.support.v4.app.RemoteInput.getResultsFromIntent(intent);
+			String replystring = null;
+			if (reply != null) {
+				replystring = reply.getCharSequence("voicereply").toString();
+				Log.d(TAG, "got reply: " + replystring);
+			}
+			xmppServiceIntent.setAction("respond");
+			xmppServiceIntent.setData(Uri.parse(jid));
+			xmppServiceIntent.putExtra("message", replystring);
 			context.startService(xmppServiceIntent);
 		}
 	}

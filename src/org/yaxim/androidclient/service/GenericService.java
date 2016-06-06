@@ -10,7 +10,6 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -18,12 +17,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.CarExtender;
+import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.RemoteInput;
 import android.telephony.gsm.SmsMessage.MessageClass;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,7 +40,7 @@ public abstract class GenericService extends Service {
 	private static final String APP_NAME = "yaxim";
 	private static final int MAX_TICKER_MSG_LEN = 45;
 
-	protected NotificationManager mNotificationMGR;
+	protected NotificationManagerCompat mNotificationMGR;
 	private Notification mNotification;
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
@@ -73,7 +78,7 @@ public abstract class GenericService extends Service {
 	}
 
 	private void addNotificationMGR() {
-		mNotificationMGR = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		mNotificationMGR = NotificationManagerCompat.from(this);
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
@@ -183,26 +188,51 @@ public abstract class GenericService extends Service {
 			ticker = title + ":\n" + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
+
+		Intent msgHeardIntent = new Intent(this, XMPPService.class)
+			.setAction("respond")
+			.setData(Uri.parse(fromJid));
+
+		Intent msgResponseIntent = new Intent(this, XMPPService.class)
+			.setAction("respond")
+			.setData(Uri.parse(fromJid));
+
+		PendingIntent msgHeardPendingIntent = PendingIntent.getService(this, 0,
+					msgHeardIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent msgResponsePendingIntent = PendingIntent.getService(this, 0,
+					msgResponseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
+			.setLabel("Reply")
+			.build();
+		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
+			.setReadPendingIntent(msgHeardPendingIntent)
+			.setReplyAction(msgResponsePendingIntent, remoteInput);
+		ucb.addMessage(message).setLatestTimestamp(System.currentTimeMillis());
+
+		Uri userNameUri = Uri.parse(fromJid);
+		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
+		chatIntent.setData(userNameUri);
+		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
+		chatIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
+		PendingIntent pi = PendingIntent.getActivity(this, 0,
+				chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 		mNotification = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
 			.setTicker(ticker)
 			.setSmallIcon(R.drawable.sb_message)
 			.setCategory(Notification.CATEGORY_MESSAGE)
+			.setContentIntent(pi)
 			.setAutoCancel(true)
+			.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Mark Read", msgHeardPendingIntent)
+			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
+			.extend(new CarExtender().setUnreadConversation(ucb.build()))
 			.build();
 		mNotification.defaults = 0;
-		Uri userNameUri = Uri.parse(fromJid);
-		mNotificationIntent.setClass(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
-		mNotificationIntent.setData(userNameUri);
-		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
-		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-		
-		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				mNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
 		if (mNotificationCounter > 1)
 			mNotification.number = mNotificationCounter;
 	}
