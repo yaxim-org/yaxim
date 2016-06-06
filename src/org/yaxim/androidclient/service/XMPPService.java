@@ -525,8 +525,8 @@ public class XMPPService extends GenericService {
 				case ONLINE:
 					mReconnectTimeout = RECONNECT_AFTER;
 				default:
-					updateServiceNotification();
 				}
+				updateServiceNotification();
 			}
 
 			@Override
