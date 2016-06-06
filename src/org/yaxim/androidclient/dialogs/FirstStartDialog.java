@@ -68,6 +68,17 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		mOkButton = getButton(BUTTON_POSITIVE);
 		mOkButton.setEnabled(false);
+
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mainWindow);
+		mEditJabberID.setText(sharedPreferences.getString(PreferenceConstants.JID, ""));
+		mEditPassword.setText(sharedPreferences.getString(PreferenceConstants.PASSWORD, ""));
+		mRepeatPassword.setText(mEditPassword.getText());
+
+		// if create is set, simulate click on checkbox
+		if (sharedPreferences.getBoolean(PreferenceConstants.INITIAL_CREATE, false)) {
+			mCreateAccount.setChecked(true);
+		}
 	}
 
 
@@ -98,7 +109,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			mainWindow.getString(R.string.app_name),
 			new java.util.Random().nextInt());
 
-		savePreferences(jabberID, password, resource);
+		savePreferences(jabberID, password, resource, mCreateAccount.isChecked());
 		cancel();
 	}
 
@@ -153,7 +164,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 
-	private void savePreferences(String jabberID, String password, String resource) {
+	private void savePreferences(String jabberID, String password, String resource, boolean initial_create) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(mainWindow);
 		Editor editor = sharedPreferences.edit();
@@ -162,6 +173,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		editor.putString(PreferenceConstants.PASSWORD, password);
 		editor.putString(PreferenceConstants.RESSOURCE, resource);
 		editor.putString(PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT);
+		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
 		editor.commit();
 	}
 
