@@ -2,6 +2,7 @@ package org.yaxim.androidclient.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.security.SecureRandom;
 
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
@@ -63,5 +64,15 @@ public class XMPPHelper {
 			// SDK < 11
 			return ctx.getResources().getColor(android.R.color.primary_text_light);
 		}
+	}
+
+	private static final String PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456780+-/#$!?";
+	private static final int PASSWORD_LENGTH = 12;
+	public static String securePassword() {
+		SecureRandom r = new SecureRandom();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0 ; i < PASSWORD_LENGTH; i++)
+			sb.append(PASSWORD_CHARS.charAt(r.nextInt(PASSWORD_CHARS.length() - 1)));
+		return sb.toString();
 	}
 }

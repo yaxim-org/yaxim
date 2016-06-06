@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 
@@ -129,8 +130,16 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	@Override
 	public void onCheckedChanged(CompoundButton btn,boolean isChecked) {
 		mRepeatPassword.setVisibility(isChecked? View.VISIBLE : View.GONE);
-		if (isChecked)
-			mRepeatPassword.requestFocus();
+		if (isChecked) {
+			if (mEditPassword.length() == 0 && mRepeatPassword.length() == 0) {
+				// create secure random password
+				String pw = XMPPHelper.securePassword();
+				Toast.makeText(mainWindow, R.string.StartupDialog_created_password, Toast.LENGTH_SHORT).show();
+				mEditPassword.setText(pw);
+				mRepeatPassword.setText(pw);
+			} else
+				mRepeatPassword.requestFocus();
+		}
 		updateDialog();
 	}
 	public void afterTextChanged(Editable s) {
