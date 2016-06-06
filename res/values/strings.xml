@@ -31,6 +31,7 @@
 	<string name="StartupDialog_create_new">Register new account</string>
 	<string name="StartupDialog_error_password">Password does not match!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>

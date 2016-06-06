@@ -106,6 +106,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private Stub rosterCallback;
 	private RosterExpListAdapter rosterListAdapter;
 	private TextView mConnectingText;
+	private FirstStartDialog mFirstStartDialog;
 
 	private ContentObserver mRosterObserver = new RosterObserver();
 	private ContentObserver mChatObserver = new ChatObserver();
@@ -811,6 +812,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case RECONNECT_NETWORK:
 		case RECONNECT_DELAYED:
 		case OFFLINE:
+			if (cs == ConnectionState.DISCONNECTED && PreferenceManager.getDefaultSharedPreferences(this)
+									.contains(PreferenceConstants.INITIAL_CREATE)) {
+				// somehow, cs==OFFLINE is triggered twice, but cs==DISCONNECTED only once
+				String error = serviceAdapter.getConnectionStateString().replace("conflict(-1) ", "");
+				if (error.contains("\n")) // TODO: work around getConnectionStateString() returning two lines
+					error = error.split("\n")[1];
+				if (error.contains("SASL authentication failed")) // TODO: hack to circumvent old smack
+					error = getString(R.string.StartupDialog_auth_failed);
+				Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+				showFirstStartUpDialog();
+			} else
 			if (cs == ConnectionState.OFFLINE) // override with "Offline" string, no error message
 				mConnectingText.setText(R.string.conn_offline);
 			else
@@ -821,6 +833,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case ONLINE:
 			mConnectingText.setVisibility(View.GONE);
 			setSupportProgressBarIndeterminateVisibility(false);
+			PreferenceManager.getDefaultSharedPreferences(this).edit().
+				remove(PreferenceConstants.INITIAL_CREATE).commit();
 		}
 	}
 	
@@ -968,21 +982,26 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	private void showFirstStartUpDialog() {
+		if (mFirstStartDialog == null)
+			mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
+		mFirstStartDialog.show();
+	}
 	private void showFirstStartUpDialogIfPrefsEmpty() {
 		Log.i(TAG, "showFirstStartUpDialogIfPrefsEmpty, JID: "
 						+ mConfig.jabberID);
-		if (mConfig.jabberID.length() < 3) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (mConfig.jabberID.length() < 3 || prefs.contains(PreferenceConstants.INITIAL_CREATE)) {
 			// load preference defaults
 			PreferenceManager.setDefaultValues(this, R.layout.mainprefs, false);
 			PreferenceManager.setDefaultValues(this, R.layout.accountprefs, false);
 
 			// prevent a start-up with empty JID
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(this);
 			prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
 
 			// show welcome dialog
-			new FirstStartDialog(this, serviceAdapter).show();
+			showFirstStartUpDialog();
 		}
 	}
 
