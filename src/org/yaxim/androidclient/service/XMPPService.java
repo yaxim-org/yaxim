@@ -372,6 +372,7 @@ public class XMPPService extends GenericService {
 		getContentResolver().notifyChange(RosterProvider.GROUPS_URI, null);
 		// end-of-HACK
 
+		Log.d(TAG, "updateServiceNotification: " + cs);
 		broadcastConnectionState(cs);
 
 		// do not show notification if not a foreground service
@@ -479,6 +480,7 @@ public class XMPPService extends GenericService {
 		logInfo("connectionClosed.");
 		mReconnectInfo = "";
 		stopForeground(true);
+		mSmackable.requestConnectionState(ConnectionState.OFFLINE);
 	}
 
 	public void manualDisconnect() {
@@ -517,6 +519,7 @@ public class XMPPService extends GenericService {
 			public void connectionStateChanged() {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
+				updateServiceNotification();
 				switch (mSmackable.getConnectionState()) {
 				//case OFFLINE:
 				case DISCONNECTED:
@@ -526,7 +529,6 @@ public class XMPPService extends GenericService {
 					mReconnectTimeout = RECONNECT_AFTER;
 				default:
 				}
-				updateServiceNotification();
 			}
 
 			@Override

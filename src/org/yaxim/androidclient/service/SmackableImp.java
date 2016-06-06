@@ -334,6 +334,7 @@ public class SmackableImp implements Smackable {
 			case RECONNECT_DELAYED:
 				// TODO: cancel timer
 			case RECONNECT_NETWORK:
+			case DISCONNECTED:
 			case OFFLINE:
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.CONNECTING);
@@ -417,6 +418,7 @@ public class SmackableImp implements Smackable {
 				break;
 			case DISCONNECTING:
 				break;
+			case DISCONNECTED:
 			case RECONNECT_DELAYED:
 				// TODO: clear timer
 			case RECONNECT_NETWORK:
