@@ -1082,6 +1082,17 @@ public class SmackableImp implements Smackable {
 	private class PingAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 				sendServerPing();
+				// ping all MUCs. TODO: We ignore the result for now and hope we'll get kicked
+				for (MultiUserChat muc : multiUserChats.values()) {
+					Ping ping = new Ping();
+					ping.setType(Type.GET);
+					String jid = muc.getRoom() + "/" + muc.getNickname();
+					ping.setTo(jid);
+					mPingID = ping.getPacketID();
+					debugLog("Ping: sending ping to " + jid);
+					mXMPPConnection.sendPacket(ping);
+				}
+
 		}
 	}
 
