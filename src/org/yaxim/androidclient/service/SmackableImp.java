@@ -692,6 +692,9 @@ public class SmackableImp implements Smackable {
 			throws YaximXMPPException {
 		try {
 			mRoster.createEntry(user, alias, new String[] { group });
+			Presence pre_approval = new Presence(Presence.Type.subscribed);
+			pre_approval.setTo(user);
+			mXMPPConnection.sendPacket(pre_approval);
 		} catch (XMPPException e) {
 			throw new YaximXMPPException("tryToAddRosterEntry", e);
 		}
