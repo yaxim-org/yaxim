@@ -293,7 +293,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			}
 			String jid = data.getAuthority();
 			String body = data.getQueryParameter("body");
-			if (data.getQueryParameter("roster") != null) {
+			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
 				// TODO: user name
 				addToRosterDialog(jid);
 			} else if (data.getQueryParameter("join") != null) {
