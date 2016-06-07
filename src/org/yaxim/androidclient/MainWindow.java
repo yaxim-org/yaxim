@@ -268,8 +268,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return false;
 	}
 
+	public boolean isJabberIntentAction(String action) {
+		return Intent.ACTION_VIEW.equals(action) ||
+			android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action);
+	}
+
 	public void handleJabberIntent() {
 		Intent intent = getIntent();
+		Log.d(TAG, "handleJabberIntent: " + intent);
 		String action = intent.getAction();
 		Uri data = intent.getData();
 		if (action == null || data == null)
@@ -280,7 +286,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			if (!openChatWithJid(jid, null) &&
 			    !addToRosterDialog(jid))
 				finish();
-		} else if (action.equals(Intent.ACTION_VIEW) && "xmpp".equals(data.getScheme())) {
+		} else if (isJabberIntentAction(action) && "xmpp".equals(data.getScheme())) {
 			if (data.isOpaque()) {
 				// cheat around android's unwillingness to parse opaque URIs
 				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
