@@ -6,9 +6,13 @@ import java.security.SecureRandom;
 
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.util.TypedValue;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 
 import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
@@ -78,6 +82,18 @@ public class XMPPHelper {
 
 	public static String createInvitationLink(String jid) {
 		return "xmpp:" + jid + "?subscribe";
+	}
+
+	public static void setNFC(Activity act, String jid) {
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
+			if (na == null)
+				return;
+			NdefRecord nr = NdefRecord.createUri(createInvitationLink(jid));
+
+			NdefMessage nm = new NdefMessage(nr, NdefRecord.createApplicationRecord(act.getPackageName()));
+			na.setNdefPushMessage(nm, act);
+		}
 	}
 
 }

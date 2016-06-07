@@ -1015,7 +1015,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			// show welcome dialog
 			showFirstStartUpDialog();
-		}
+		} else
+			XMPPHelper.setNFC(this, mConfig.jabberID);
 	}
 
 	public static Intent createIntent(Context context) {
