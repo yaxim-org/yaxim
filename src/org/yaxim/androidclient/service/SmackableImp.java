@@ -475,7 +475,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		// reference PingManager, set ping flood protection to 10s
-		PingManager.getInstanceFor(mXMPPConnection).setPingMinimumInterval(10*1000);
+		PingManager.getInstanceFor(mXMPPConnection).disablePingFloodProtection();
 
 		// set Version for replies
 		String app_name = mService.getString(R.string.app_name);
