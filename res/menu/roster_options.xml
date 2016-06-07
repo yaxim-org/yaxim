@@ -14,10 +14,9 @@
 	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" 
 	    android:alphabeticShortcut="t" />
 	
-	<item android:id="@+id/menu_status" android:title="@string/Menu_Status"
-		android:alphabeticShortcut="s" android:icon="@android:drawable/ic_menu_myplaces"
-		android:showAsAction="never"/>
-
+	<item android:id="@+id/menu_send_invitation" android:title="@string/Menu_send_invitation" 
+	    android:alphabeticShortcut="s" />
+	
 	<item android:id="@+id/menu_markallread" android:title="@string/Menu_mark_all_as_read"
 		android:alphabeticShortcut="m"/>
 		

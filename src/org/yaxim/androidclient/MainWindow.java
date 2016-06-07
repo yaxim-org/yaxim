@@ -28,6 +28,7 @@ import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -743,7 +744,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case android.R.id.home:
-		case R.id.menu_status:
 			new ChangeStatusDialog(this, StatusMode.fromString(mConfig.statusMode),
 					mConfig.statusMessage, mConfig.statusMessageHistory).show();
 			return true;
@@ -764,6 +764,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 		case R.id.menu_muc:
 			new EditMUCDialog(this).withNick(mConfig.userName).show();
+			return true;
+		case R.id.menu_send_invitation:
+			startActivity(Intent.createChooser(new Intent(android.content.Intent.ACTION_SEND)
+						.setType("text/plain")
+						.putExtra(Intent.EXTRA_TEXT,
+							XMPPHelper.createInvitationLink(mConfig.jabberID)),
+						getString(R.string.Menu_send_invitation)));
 			return true;
 
 		}

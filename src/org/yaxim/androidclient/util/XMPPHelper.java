@@ -75,4 +75,9 @@ public class XMPPHelper {
 			sb.append(PASSWORD_CHARS.charAt(r.nextInt(PASSWORD_CHARS.length() - 1)));
 		return sb.toString();
 	}
+
+	public static String createInvitationLink(String jid) {
+		return "xmpp:" + jid + "?subscribe";
+	}
+
 }

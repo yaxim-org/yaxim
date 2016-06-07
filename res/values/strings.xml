@@ -114,6 +114,7 @@
 	<string name="Menu_about">About yaxim</string>
 	<string name="Menu_muc">Add Chat Room</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Send Invitation</string>
     <string name="Menu_userlist">Users</string>
 
 
