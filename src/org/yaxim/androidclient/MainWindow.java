@@ -1029,7 +1029,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private static final String OFFLINE_EXCLUSION =
-			RosterConstants.STATUS_MODE + " != " + StatusMode.offline.ordinal();
+			RosterConstants.STATUS_MODE + " > " + StatusMode.offline.ordinal();
 	private static final String countAvailableMembers =
 			"SELECT COUNT() FROM " + RosterProvider.TABLE_ROSTER + " inner_query" +
 					" WHERE inner_query." + RosterConstants.GROUP + " = " +

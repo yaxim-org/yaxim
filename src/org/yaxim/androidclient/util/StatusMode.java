@@ -3,6 +3,7 @@ package org.yaxim.androidclient.util;
 import org.yaxim.androidclient.R;
 
 public enum StatusMode {
+	unknown(0 /* not a status you can set */, R.drawable.ic_status_unknown),
 	offline(R.string.status_offline, R.drawable.ic_status_offline),
 	dnd(R.string.status_dnd, R.drawable.ic_status_dnd),
 	xa(R.string.status_xa, R.drawable.ic_status_xa),

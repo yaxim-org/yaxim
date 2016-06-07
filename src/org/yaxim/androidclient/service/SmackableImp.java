@@ -39,6 +39,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
+import org.jivesoftware.smack.packet.RosterPacket;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.StringUtils;
@@ -215,6 +216,7 @@ public class SmackableImp implements Smackable {
 	
 	private final HashSet<String> mucJIDs = new HashSet<String>();
 	private Map<String, MultiUserChat> multiUserChats;
+	private Map<String, Presence> subscriptionRequests = new HashMap<String, Presence>();
 
 
 	public SmackableImp(YaximConfiguration config,
@@ -494,12 +496,13 @@ public class SmackableImp implements Smackable {
 
 	public void addRosterItem(String user, String alias, String group)
 			throws YaximXMPPException {
+		subscriptionRequests.remove(user);
 		tryToAddRosterEntry(user, alias, group);
 	}
 
 	public void removeRosterItem(String user) throws YaximXMPPException {
 		debugLog("removeRosterItem(" + user + ")");
-
+		subscriptionRequests.remove(user);
 		tryToRemoveRosterEntry(user);
 	}
 
@@ -529,6 +532,7 @@ public class SmackableImp implements Smackable {
 
 	public void sendPresenceRequest(String user, String type) {
 		// HACK: remove the fake roster entry added by handleIncomingSubscribe()
+		subscriptionRequests.remove(user);
 		if ("unsubscribed".equals(type))
 			deleteRosterEntryFromDB(user);
 		Presence response = new Presence(Presence.Type.valueOf(type));
@@ -722,6 +726,7 @@ public class SmackableImp implements Smackable {
 
 	// HACK: add an incoming subscription request as a fake roster entry
 	private void handleIncomingSubscribe(Presence request) {
+		subscriptionRequests.put(request.getFrom(), request);
 		final ContentValues values = new ContentValues();
 
 		values.put(RosterConstants.JID, request.getFrom());
@@ -1293,7 +1298,10 @@ public class SmackableImp implements Smackable {
 					case subscribe:
 						handleIncomingSubscribe(p);
 						break;
+					case subscribed:
 					case unsubscribe:
+					case unsubscribed:
+						subscriptionRequests.remove(p.getFrom());
 						break;
 					}
 				} catch (Exception e) {
@@ -1347,15 +1355,30 @@ public class SmackableImp implements Smackable {
 		values.put(RosterConstants.JID, entry.getUser());
 		values.put(RosterConstants.ALIAS, getName(entry));
 
+		// handle subscription requests and errors with higher priority
+		Presence sub = subscriptionRequests.get(entry.getUser());
 		if (presence.getType() == Presence.Type.error) {
 			String error = presence.getError().getMessage();
 			if (error == null || error.length() == 0)
 				error = presence.getError().toString();
 			values.put(RosterConstants.STATUS_MESSAGE, error);
-		} else {
-			// override normal presence from roster, using highest-prio entry
+		} else if (sub != null) {
+			presence = sub;
+			values.put(RosterConstants.STATUS_MESSAGE, presence.getStatus());
+		} else switch (entry.getType()) {
+		case to:
+		case both:
+			// override received presence from roster, using highest-prio entry
 			presence = mRoster.getPresence(entry.getUser());
 			values.put(RosterConstants.STATUS_MESSAGE, presence.getStatus());
+			break;
+		case from:
+			values.put(RosterConstants.STATUS_MESSAGE, mService.getString(R.string.subscription_status_from));
+			presence = null;
+			break;
+		case none:
+			values.put(RosterConstants.STATUS_MESSAGE, "");
+			presence = null;
 		}
 		values.put(RosterConstants.STATUS_MODE, getStatusInt(presence));
 		values.put(RosterConstants.GROUP, getGroup(entry.getGroups()));
@@ -1400,6 +1423,8 @@ public class SmackableImp implements Smackable {
 	}
 
 	private StatusMode getStatus(Presence presence) {
+		if (presence == null)
+			return StatusMode.unknown;
 		if (presence.getType() == Presence.Type.subscribe)
 			return StatusMode.subscribe;
 		if (presence.getType() == Presence.Type.available) {

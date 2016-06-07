@@ -201,6 +201,7 @@
 	<string name="deleteChatHistory_title">Delete Chat History</string>
 	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Me:</string>
