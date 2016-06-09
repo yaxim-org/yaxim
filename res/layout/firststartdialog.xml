@@ -49,6 +49,13 @@
 			android:hint="@string/Global_JID_hint"
 			style="@style/dialogEditText"
 			android:contentDescription="@string/StartupDialog_Username_title"/>
+	<CheckBox
+			android:id="@+id/create_account"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/StartupDialog_create_new"
+			style="?attr/dialogTextColor"
+		/>
 	<TextView
 			android:id="@+id/StartupDialog_passwd_title"
 			android:layout_width="fill_parent"
@@ -71,14 +78,6 @@
 			android:contentDescription="@string/StartupDialog_passwd_title"
 			style="@style/dialogEditText"
 			/>
-	<CheckBox
-			android:id="@+id/create_account"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/StartupDialog_create_new"
-			android:focusableInTouchMode="true"
-			style="?attr/dialogTextColor"
-		/>
 	<EditText
 			android:id="@+id/startup_password_repeat"
 			android:layout_width="fill_parent"
