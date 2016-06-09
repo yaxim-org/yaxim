@@ -711,7 +711,6 @@ public class SmackableImp implements Smackable {
 		boolean first = true;
 		
 		for (RosterEntry rosterEntry : rosterEntries) {
-			updateRosterEntryInDB(rosterEntry);
 			if (first)
 				first = false;
 			else
