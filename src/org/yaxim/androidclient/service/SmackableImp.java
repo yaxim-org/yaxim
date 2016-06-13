@@ -86,6 +86,7 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.packet.PreAuth;
 import org.yaxim.androidclient.packet.Replace;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.LogConstants;
@@ -166,6 +167,9 @@ public class SmackableImp implements Smackable {
 
 		// XEP-0308 Last Message Correction
 		pm.addExtensionProvider("replace", Replace.NAMESPACE, new Replace.Provider());
+
+		// XEP-XXXX Pre-Authenticated Roster Subscription
+		pm.addExtensionProvider("preauth", PreAuth.NAMESPACE, new PreAuth.Provider());
 
 		//  MUC User
 		pm.addExtensionProvider("x","http://jabber.org/protocol/muc#user", new MUCUserProvider());
@@ -725,7 +729,33 @@ public class SmackableImp implements Smackable {
 
 	// HACK: add an incoming subscription request as a fake roster entry
 	private void handleIncomingSubscribe(Presence request) {
+		// perform Pre-Authenticated Roster Subscription, fallback to manual
+		try {
+			String jid = request.getFrom();
+			PreAuth preauth = (PreAuth)request.getExtension(PreAuth.ELEMENT, PreAuth.NAMESPACE);
+			String jid_or_token = jid;
+			if (preauth != null) {
+				jid_or_token = preauth.getToken();
+				Log.d(TAG, "PARS: found token " + jid_or_token);
+			}
+			if (mConfig.redeemInvitationCode(jid_or_token)) {
+				Log.d(TAG, "PARS: approving request from " + jid);
+				if (mRoster.getEntry(request.getFrom()) != null) {
+					// already in roster, only send approval
+					Presence response = new Presence(Presence.Type.subscribed);
+					response.setTo(jid);
+					mXMPPConnection.sendPacket(response);
+				} else {
+					tryToAddRosterEntry(jid, jid, "", null);
+				}
+				return;
+			}
+		} catch (YaximXMPPException e) {
+			Log.d(TAG, "PARS: failed to send response: " + e);
+		}
+
 		subscriptionRequests.put(request.getFrom(), request);
+
 		final ContentValues values = new ContentValues();
 
 		values.put(RosterConstants.JID, request.getFrom());
