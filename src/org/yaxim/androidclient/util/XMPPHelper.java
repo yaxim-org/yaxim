@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.security.SecureRandom;
 
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.util.TypedValue;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 
 import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
@@ -80,19 +82,40 @@ public class XMPPHelper {
 		return sb.toString();
 	}
 
-	public static String createInvitationLink(String jid) {
-		return "xmpp:" + jid + "?subscribe";
+	public static String createInvitationLink(String jid, String token) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("xmpp:").append(jid).append("?roster");
+		if (token != null && token.length() > 0)
+			sb.append(";preauth=").append(token);
+		return sb.toString();
 	}
 
-	public static void setNFC(Activity act, String jid) {
+	public static void setStaticNFC(Activity act, String uri) {
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
 			if (na == null)
 				return;
-			NdefRecord nr = NdefRecord.createUri(createInvitationLink(jid));
-
-			NdefMessage nm = new NdefMessage(nr, NdefRecord.createApplicationRecord(act.getPackageName()));
+			NdefMessage nm = new NdefMessage(NdefRecord.createUri(uri),
+					NdefRecord.createApplicationRecord(act.getPackageName()));
 			na.setNdefPushMessage(nm, act);
+		}
+	}
+
+	public static void setNFCInvitation(final Activity act, final YaximConfiguration config) {
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
+			if (na == null)
+				return;
+			na.setNdefPushMessageCallback(new NfcAdapter.CreateNdefMessageCallback() {
+				@Override
+				public NdefMessage createNdefMessage (NfcEvent event) {
+					// expire NFC codes after 30mins
+					String uri = createInvitationLink(config.jabberID,
+							config.createInvitationCode(30*60));
+					return new NdefMessage(NdefRecord.createUri(uri),
+							NdefRecord.createApplicationRecord(act.getPackageName()));
+				}
+			}, act);
 		}
 	}
 
