@@ -1198,6 +1198,10 @@ public class SmackableImp implements Smackable {
 					if (msg.getType() == Message.Type.error) {
 						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
 							mServiceCallBack.notifyMessage(fromJID, msg.getError().toString(), (cc != null), Message.Type.error);
+						else if (mucJIDs.contains(msg.getFrom())) {
+							handleKickedFromMUC(msg.getFrom(), false, null,
+									msg.getError().toString());
+						}
 						return; // we do not want to add errors as "incoming messages"
 					}
 
