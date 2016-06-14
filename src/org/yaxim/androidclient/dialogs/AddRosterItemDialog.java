@@ -27,6 +27,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 	private EditText userInputField;
 	private EditText aliasInputField;
 	private String generatedAlias = "";
+	private String mToken = null;
 	private GroupNameView mGroupNameView;
 
 	public AddRosterItemDialog(MainWindow mainWindow,
@@ -65,8 +66,20 @@ public class AddRosterItemDialog extends AlertDialog implements
 		okButton = getButton(BUTTON_POSITIVE);
 		afterTextChanged(userInputField.getText());
 
-		aliasInputField.setText(generatedAlias);
+		if (aliasInputField.getText().length() == 0)
+			aliasInputField.setText(generatedAlias);
 		userInputField.addTextChangedListener(this);
+	}
+
+	public AddRosterItemDialog setAlias(String alias) {
+		if (alias != null && alias.length() > 0)
+			aliasInputField.setText(alias);
+		return this;
+	}
+	public AddRosterItemDialog setToken(String token) {
+		if (token != null && token.length() > 0)
+			mToken = token;
+		return this;
 	}
 
 	public void onClick(DialogInterface dialog, int which) {
@@ -84,7 +97,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 				realJid,
 				alias,
 				mGroupNameView.getGroupName(),
-				null);
+				mToken);
 	}
 
 	public void afterTextChanged(Editable s) {

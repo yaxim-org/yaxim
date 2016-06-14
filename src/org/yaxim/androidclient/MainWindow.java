@@ -296,7 +296,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String body = data.getQueryParameter("body");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
 				// TODO: user name
-				addToRosterDialog(jid);
+				addToRosterDialog(jid, data.getQueryParameter("name"),
+						data.getQueryParameter("preauth"));
 			} else if (data.getQueryParameter("join") != null) {
 				// TODO: nickname
 				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
@@ -400,14 +401,20 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.create().show();
 	}
 
-	boolean addToRosterDialog(String jid) {
+	boolean addToRosterDialog(String jid, String alias, String token) {
 		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
-			new AddRosterItemDialog(this, serviceAdapter, jid).show();
+			new AddRosterItemDialog(this, serviceAdapter, jid)
+				.setAlias(alias)
+				.setToken(token)
+				.show();
 			return true;
 		} else {
 			showToastNotification(R.string.Global_authenticate_first);
 			return false;
 		}
+	}
+	boolean addToRosterDialog(String jid) {
+		return addToRosterDialog(jid, null, null);
 	}
 
 	void rosterAddRequestedDialog(final String jid, final String alias, String message) {
