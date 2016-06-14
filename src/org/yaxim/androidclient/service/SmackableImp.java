@@ -498,10 +498,11 @@ public class SmackableImp implements Smackable {
 			}});
 	}
 
-	public void addRosterItem(String user, String alias, String group)
+	public void addRosterItem(String user, String alias, String group, String token)
 			throws YaximXMPPException {
 		subscriptionRequests.remove(user);
-		tryToAddRosterEntry(user, alias, group);
+		mConfig.whitelistInvitationJID(user);
+		tryToAddRosterEntry(user, alias, group, token);
 	}
 
 	public void removeRosterItem(String user) throws YaximXMPPException {
@@ -696,13 +697,23 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private void tryToAddRosterEntry(String user, String alias, String group)
+	private void tryToAddRosterEntry(String user, String alias, String group, String token)
 			throws YaximXMPPException {
 		try {
+			// send a presence subscription request with token (must be before roster action!)
+			if (token != null && token.length() > 0) {
+				Presence preauth = new Presence(Presence.Type.subscribe);
+				preauth.setTo(user);
+				preauth.addExtension(new PreAuth(token));
+				mXMPPConnection.sendPacket(preauth);
+			}
+			// add to roster, triggers another sub request by Smack (sigh)
 			mRoster.createEntry(user, alias, new String[] { group });
+			// send a pre-approval
 			Presence pre_approval = new Presence(Presence.Type.subscribed);
 			pre_approval.setTo(user);
 			mXMPPConnection.sendPacket(pre_approval);
+			mConfig.whitelistInvitationJID(user);
 		} catch (XMPPException e) {
 			throw new YaximXMPPException("tryToAddRosterEntry", e);
 		}

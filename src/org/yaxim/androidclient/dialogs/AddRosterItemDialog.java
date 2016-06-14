@@ -83,7 +83,8 @@ public class AddRosterItemDialog extends AlertDialog implements
 		mServiceAdapter.addRosterItem(
 				realJid,
 				alias,
-				mGroupNameView.getGroupName());
+				mGroupNameView.getGroupName(),
+				null);
 	}
 
 	public void afterTextChanged(Editable s) {

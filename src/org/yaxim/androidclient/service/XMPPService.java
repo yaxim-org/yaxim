@@ -271,10 +271,10 @@ public class XMPPService extends GenericService {
 				}
 			}
 
-			public void addRosterItem(String user, String alias, String group)
+			public void addRosterItem(String user, String alias, String group, String token)
 					throws RemoteException {
 				try {
-					mSmackable.addRosterItem(user, alias, group);
+					mSmackable.addRosterItem(user, alias, group, token);
 				} catch (YaximXMPPException e) {
 					shortToastNotify(e);
 				}

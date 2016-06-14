@@ -25,9 +25,9 @@ public class XMPPRosterServiceAdapter {
 		}
 	}
 
-	public void addRosterItem(String user, String alias, String group) {
+	public void addRosterItem(String user, String alias, String group, String token) {
 		try {
-			xmppServiceStub.addRosterItem(user, alias, group);
+			xmppServiceStub.addRosterItem(user, alias, group, token);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

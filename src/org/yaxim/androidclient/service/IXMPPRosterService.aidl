@@ -16,7 +16,7 @@ interface IXMPPRosterService {
 	void setStatusFromConfig();
 	void disconnect();
 	void connect();
-	void addRosterItem(String user, String alias, String group);
+	void addRosterItem(String user, String alias, String group, String token);
 	void addRosterGroup(String group);
 	void renameRosterGroup(String group, String newGroup);
 	void removeRosterItem(String user);
