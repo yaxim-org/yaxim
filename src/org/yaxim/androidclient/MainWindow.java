@@ -806,7 +806,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			startActivity(Intent.createChooser(new Intent(android.content.Intent.ACTION_SEND)
 						.setType("text/plain")
 						.putExtra(Intent.EXTRA_TEXT,
-							XMPPHelper.createInvitationLink(mConfig.jabberID,
+							XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
 								mConfig.createInvitationCode())),
 						getString(R.string.Menu_send_invitation)));
 			return true;

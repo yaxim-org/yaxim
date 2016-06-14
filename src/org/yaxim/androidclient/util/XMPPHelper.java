@@ -90,6 +90,22 @@ public class XMPPHelper {
 		return sb.toString();
 	}
 
+	public static String createInvitationLinkHTTPS(String jid, String token) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("https://yax.im/i/").append(jid);
+		if (token != null && token.length() > 0)
+			sb.append("/").append(token);
+		return sb.toString();
+	}
+
+	public static String createRosterLinkHTTPS(String jid) {
+		return "https://yax.im/i/" + jid;
+	}
+
+	public static String createMucLinkHTTPS(String jid) {
+		return "https://yax.im/j/" + jid;
+	}
+
 	public static void setStaticNFC(Activity act, String uri) {
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
