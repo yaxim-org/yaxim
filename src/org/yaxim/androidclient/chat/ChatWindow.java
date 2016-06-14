@@ -14,6 +14,7 @@ import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Window;
@@ -113,7 +114,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
-		
+		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
+
 		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);

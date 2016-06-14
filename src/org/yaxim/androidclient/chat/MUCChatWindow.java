@@ -13,6 +13,7 @@ import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.ParcelablePresence;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -57,6 +58,7 @@ public class MUCChatWindow extends ChatWindow {
 				Cursor c = (Cursor)parent.getItemAtPosition(position);
 				addNicknameToInput(c.getString(c.getColumnIndex(ChatConstants.RESOURCE)));
 			}});
+		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?join");
 	}
 
 	@Override
