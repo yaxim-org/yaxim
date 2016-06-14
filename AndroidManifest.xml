@@ -47,6 +47,8 @@
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="https" android:host="yax.im" android:pathPrefix="/i/" />
 				<data android:scheme="https" android:host="yax.im" android:pathPrefix="/j/" />
+				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/i/" />
+				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/j/" />
 			</intent-filter>
 			<intent-filter>
 				<action android:name="android.nfc.action.NDEF_DISCOVERED"/>
