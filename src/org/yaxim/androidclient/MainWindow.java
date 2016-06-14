@@ -273,6 +273,39 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return Intent.ACTION_VIEW.equals(action) ||
 			android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action);
 	}
+	public boolean transmogrifyXmppUri(Intent intent) {
+		Uri data = intent.getData();
+		if ("xmpp".equalsIgnoreCase(data.getScheme())) {
+			if (data.isOpaque()) {
+				// cheat around android's unwillingness to parse opaque URIs
+				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
+			}
+		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
+			try {
+				List<String> segments = data.getPathSegments();
+				String code = segments.get(0);
+				String jid = segments.get(1);
+				String token = "";
+				if (!jid.contains("@")) {
+					jid = segments.get(1) + "@" + segments.remove(2);
+				}
+				if (segments.size() > 2)
+					token = "&preauth=" + segments.get(2);
+				if ("i".equalsIgnoreCase(code))
+					data = Uri.parse("xmpp://" + jid + "?roster" + token);
+				else if ("j".equalsIgnoreCase(code))
+					data = Uri.parse("xmpp://" + jid + "?join");
+				else return false;
+			} catch (Exception e) {
+				Log.d(TAG, "Failed to parse URI " + data);
+				return false;
+			}
+		} else
+			return false;
+		Log.d(TAG, "transmogrifyXmppUri: " + intent.getData() + " --> " + data);
+		intent.setData(data);
+		return true;
+	}
 
 	public void handleJabberIntent() {
 		Intent intent = getIntent();
@@ -287,11 +320,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			if (!openChatWithJid(jid, null) &&
 			    !addToRosterDialog(jid))
 				finish();
-		} else if (isJabberIntentAction(action) && "xmpp".equals(data.getScheme())) {
-			if (data.isOpaque()) {
-				// cheat around android's unwillingness to parse opaque URIs
-				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
-			}
+		} else if (isJabberIntentAction(action) && transmogrifyXmppUri(intent)) {
+			data = intent.getData();
 			String jid = data.getAuthority();
 			String body = data.getQueryParameter("body");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
