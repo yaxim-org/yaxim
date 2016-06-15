@@ -33,6 +33,7 @@
 		android:hint="@string/setStatusmsgHint"
 		android:inputType="textCapSentences"
 		android:singleLine="true"
+		android:imeOptions="actionDone"
 		style="@style/dialogEditText"
 	  />
 	  <Button
