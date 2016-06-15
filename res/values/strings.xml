@@ -9,6 +9,11 @@
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, ...)\n\n
+		- \"Add contact\" if you know the JID</string>
 	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
 	<string name="conn_disconnected">Connection closed</string>
 	<string name="conn_no_network">No network connection</string>
@@ -114,7 +119,7 @@
 	<string name="Menu_about">About yaxim</string>
 	<string name="Menu_muc">Add Chat Room</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
-	<string name="Menu_send_invitation">Send Invitation</string>
+	<string name="Menu_send_invitation">Create invitation</string>
     <string name="Menu_userlist">Users</string>
 
 
