@@ -757,7 +757,7 @@ public class SmackableImp implements Smackable {
 					response.setTo(jid);
 					mXMPPConnection.sendPacket(response);
 				} else {
-					tryToAddRosterEntry(jid, jid, "", null);
+					tryToAddRosterEntry(jid, null, "", null);
 				}
 				return;
 			}
@@ -1470,10 +1470,6 @@ public class SmackableImp implements Smackable {
 	private String getName(RosterEntry rosterEntry) {
 		String name = rosterEntry.getName();
 		if (name != null && name.length() > 0) {
-			return name;
-		}
-		name = StringUtils.parseName(rosterEntry.getUser());
-		if (name.length() > 0) {
 			return name;
 		}
 		return rosterEntry.getUser();

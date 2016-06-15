@@ -499,9 +499,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	void renameRosterItemDialog(final String JID, final String userName) {
+		String newUserName = userName;
+		if (JID.equals(userName))
+			newUserName = XMPPHelper.capitalizeString(JID.split("@")[0]);
 		editTextDialog(R.string.RenameEntry_title,
 				getString(R.string.RenameEntry_summ, userName, JID),
-				userName, new EditOk() {
+				newUserName, new EditOk() {
 					public void ok(String result) {
 						serviceAdapter.renameRosterItem(JID, result);
 					}
