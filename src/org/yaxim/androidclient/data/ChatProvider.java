@@ -31,10 +31,12 @@ public class ChatProvider extends ContentProvider {
 
 	private static final int MESSAGES = 1;
 	private static final int MESSAGE_ID = 2;
+	private static final int LASTLOG = 3;
 
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "chats", MESSAGES);
 		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
+		URI_MATCHER.addURI(AUTHORITY, "chats/*/#", LASTLOG);
 	}
 
 	private static final String TAG = "yaxim.ChatProvider";
@@ -130,6 +132,11 @@ public class ChatProvider extends ContentProvider {
 		case MESSAGES:
 			qBuilder.setTables(TABLE_NAME);
 			break;
+		case LASTLOG:
+			qBuilder.setTables("(SELECT * FROM " + TABLE_NAME + " WHERE jid='"
+					+ url.getPathSegments().get(1) + "' ORDER BY _id DESC LIMIT "
+					+ url.getPathSegments().get(2) + ")");
+			break;
 		case MESSAGE_ID:
 			qBuilder.setTables(TABLE_NAME);
 			qBuilder.appendWhere("_id=");
@@ -153,7 +160,7 @@ public class ChatProvider extends ContentProvider {
 		if (ret == null) {
 			infoLog("ChatProvider.query: failed");
 		} else {
-			ret.setNotificationUri(getContext().getContentResolver(), url);
+			ret.setNotificationUri(getContext().getContentResolver(), CONTENT_URI);
 		}
 
 		return ret;
