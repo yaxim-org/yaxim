@@ -54,7 +54,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 @SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
 public class ChatWindow extends SherlockFragmentActivity implements OnKeyListener,
-		TextWatcher, LoaderManager.LoaderCallbacks<Cursor> {
+		TextWatcher, LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
 
 	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
 	public static final String INTENT_EXTRA_MESSAGE = ChatWindow.class.getName() + ".message";
@@ -71,6 +71,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 	private static final int DELAY_NEWMSG = 2000;
 	private static final int CHAT_MSG_LOADER = 0;
+	private int lastlog_size = 200;
+	private int lastlog_index = -1;
 
 	private ContentObserver mContactObserver = new ContactObserver();
 	private ImageView mStatusMode;
@@ -135,6 +137,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		mChatAdapter = new ChatWindowAdapter(null, PROJECTION_FROM, PROJECTION_TO,
 				mWithJabberID, mUserScreenName);
 		mListView.setAdapter(mChatAdapter);
+		mListView.setOnScrollListener(this);
 
 		Log.d(TAG, "registrs for contextmenu...");
 		registerForContextMenu(mListView);
@@ -179,9 +182,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		// There's only one Loader, so ...
 		if (i == CHAT_MSG_LOADER) {
-			String selection = ChatConstants.JID + "='" + mWithJabberID + "'";
-			return new CursorLoader(this, ChatProvider.CONTENT_URI, PROJECTION_FROM,
-					selection, null, null);
+			String selection = null;
+			Uri lastlog = Uri.parse("content://" + ChatProvider.AUTHORITY + "/chats/" + 
+					mWithJabberID + "/" + lastlog_size);
+			return new CursorLoader(this, lastlog, PROJECTION_FROM,
+					selection, null, "date");
 		} else {
 			Log.w(TAG, "Unknown loader id returned in LoaderCallbacks.onCreateLoader: " + i);
 			return null;
@@ -200,6 +205,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 			mShowOrHide = false;
 		}
+
+		// correct position after loading more lastlog
+		if (lastlog_index >= 0) {
+			int delta = 1 + mChatAdapter.getCursor().getCount() - lastlog_index;
+			mListView.setSelection(delta);
+			lastlog_index = -1;
+		}
 	}
 
 	@Override
@@ -207,6 +219,29 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		// Make sure we don't leak the (memory of the) cursor
 		mChatAdapter.changeCursor(null);
 	}
+
+	public void increaseLastLog() {
+		// only trigger this if we already have a cursor and that was LIMITed by lastlog_size
+		if (mChatAdapter.getCursor() != null && mChatAdapter.getCursor().getCount() == lastlog_size) {
+			Log.d(TAG, "increaseLastLog: " + mChatAdapter.getCursor().getCount());
+			lastlog_size += 200;
+			lastlog_index = mChatAdapter.getCursor().getCount();
+			getSupportLoaderManager().restartLoader(CHAT_MSG_LOADER, null, this /*LoaderCallbacks<Cursor>*/);
+		}
+	}
+
+	/* AbsListView.OnScrollListener */
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// re-query the lastlog when reaching the first item
+		if (visibleItemCount > 0 && firstVisibleItem == 0)
+			increaseLastLog();
+	}
+	@Override
+	public void onScrollStateChanged (AbsListView view, int scrollState) {
+		// ignore, not needed for infinite scrolling
+	}
+
 
 	protected boolean needs_to_bind_unbind = false;
 
