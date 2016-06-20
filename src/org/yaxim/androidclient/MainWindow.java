@@ -452,7 +452,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.setTitle(R.string.subscriptionRequest_title)
 			.setMessage(getString(R.string.subscriptionRequest_text, alias,
 						message != null ? message : ""))
-			.setPositiveButton(android.R.string.yes,
+			.setPositiveButton(R.string.subscription_accept,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							serviceAdapter.sendPresenceRequest(jid, "subscribed");
@@ -461,7 +461,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 								addToRosterDialog(jid);
 						}
 					})
-			.setNegativeButton(android.R.string.no, 
+			.setNegativeButton(R.string.subscription_reject,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							serviceAdapter.sendPresenceRequest(jid, "unsubscribed");
