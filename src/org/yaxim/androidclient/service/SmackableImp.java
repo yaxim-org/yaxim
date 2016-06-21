@@ -1155,7 +1155,8 @@ public class SmackableImp implements Smackable {
 			public void processPacket(Packet packet) {
 				if (packet == null) return;
 
-				gotServerPong(packet.getPacketID());
+				if (mPingID != null && mPingID.equals(packet.getPacketID()))
+					gotServerPong(packet.getPacketID());
 			}
 
 		};
