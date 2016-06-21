@@ -1304,8 +1304,15 @@ public class SmackableImp implements Smackable {
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
-		if (timestamp == null)
+		if (timestamp == null) {
+			// HACK: remove last outgoing message instead of upserting
+			if (multiUserChats.get(muc).getNickname().equals(nick))
+				mContentResolver.delete(ChatProvider.CONTENT_URI,
+					"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
+					"_id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)",
+					new String[] { muc, packet_id, msg.getBody(), muc });
 			return true;
+		}
 
 		long ts = timestamp.getStamp().getTime();
 
