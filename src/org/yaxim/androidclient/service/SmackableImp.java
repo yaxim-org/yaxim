@@ -1636,6 +1636,9 @@ public class SmackableImp implements Smackable {
 		cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 		upsertRoster(cvR, room);
 		try {
+			Presence force_resync = new Presence(Presence.Type.unavailable);
+			force_resync.setTo(room + "/" + nickname);
+			mXMPPConnection.sendPacket(force_resync);
 			muc.join(nickname, password, history, 10*PACKET_TIMEOUT);
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
