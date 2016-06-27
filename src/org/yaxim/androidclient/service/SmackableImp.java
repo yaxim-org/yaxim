@@ -1580,7 +1580,7 @@ public class SmackableImp implements Smackable {
 	}
 	
 	private Map<String,Runnable> ongoingMucJoins = new java.util.concurrent.ConcurrentHashMap<String, Runnable>();
-	private void joinRoomAsync(final String room, final String nickname, final String password) {
+	private synchronized void joinRoomAsync(final String room, final String nickname, final String password) {
 		if (ongoingMucJoins.containsKey(room))
 			return;
 		Thread joiner = new Thread() {
@@ -1651,7 +1651,9 @@ public class SmackableImp implements Smackable {
 		}
 
 		if(muc.isJoined()) {
-			multiUserChats.put(room, muc);
+			synchronized(this) {
+				multiUserChats.put(room, muc);
+			}
 			String roomname = room.split("@")[0];
 			try {
 				RoomInfo ri = MultiUserChat.getRoomInfo(mXMPPConnection, room);
