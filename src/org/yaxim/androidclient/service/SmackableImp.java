@@ -812,13 +812,14 @@ public class SmackableImp implements Smackable {
 			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
 			final Message newMessage = new Message(toJID, Message.Type.chat);
-			if (mucJIDs.contains(toJID))
-				newMessage.setType(Message.Type.groupchat);
 			newMessage.setBody(message);
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
-			newMessage.addExtension(new DeliveryReceiptRequest());
+			if (mucJIDs.contains(toJID))
+				newMessage.setType(Message.Type.groupchat);
+			else
+				newMessage.addExtension(new DeliveryReceiptRequest());
 			if ((packetID != null) && (packetID.length() > 0)) {
 				newMessage.setPacketID(packetID);
 			} else {
