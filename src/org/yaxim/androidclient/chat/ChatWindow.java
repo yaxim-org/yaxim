@@ -546,12 +546,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			TypedValue tv = new TypedValue();
 			if (from_me) {
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
-				getDateView().setTextColor(tv.data);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
 			} else {
 				nick2Color(from, tv);
-				getDateView().setTextColor(tv.data);
 				getFromView().setText(from + ":");
 				getFromView().setTextColor(tv.data);
 			}
