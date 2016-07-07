@@ -270,6 +270,7 @@ public abstract class GenericService extends Service {
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
 		chatIntent.setData(userNameUri);
 		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
+		//XXX chatIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		// create back-stack (WTF were you smoking, Google!?)
 		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred

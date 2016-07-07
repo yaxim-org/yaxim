@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >
 	<group android:id="@+id/roster_contextmenu_item_menu" android:orderInCategory="1">
 		<item   android:id="@+id/app_bar_search"
-			android:actionViewClass="com.actionbarsherlock.widget.SearchView"
-			android:icon="@drawable/abs__ic_search"
+			app:actionViewClass="android.support.v7.widget.SearchView"
+			app:showAsAction="never|collapseActionView"
+			android:icon="@drawable/ic_search_black_24dp"
 			android:orderInCategory="2"
-			android:showAsAction="never|collapseActionView"
 			android:title="@android:string/search_go"/>
 		<item   android:id="@+id/roster_contextmenu_contact_mark_as_read"
 			android:title="@string/roster_contextmenu_contact_mark_as_read"
@@ -18,7 +19,7 @@
 		<item   android:id="@+id/roster_contextmenu_send"
 			android:title="@string/roster_contextmenu_send"
 			android:icon="?attr/ic_action_new_attachment"
-			android:showAsAction="always"
+			app:showAsAction="always"
 			android:orderInCategory="1"
 			android:visible="false"
 			>

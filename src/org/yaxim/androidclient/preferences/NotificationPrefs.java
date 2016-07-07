@@ -4,17 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.support.v7.app.ActionBar;
 import android.widget.BaseAdapter;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 
 import java.net.URLEncoder;
 
-public class NotificationPrefs extends SherlockPreferenceActivity {
+public class NotificationPrefs extends AppCompatPreferenceActivity {
 	private ActionBar actionBar;
 	private boolean isMuc = false;
 	private String jid = null;
@@ -60,7 +58,7 @@ public class NotificationPrefs extends SherlockPreferenceActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				finish();

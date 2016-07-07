@@ -6,7 +6,7 @@
     
 <!--     the unprefixed ones (without android:) are for the Sherlock implementation -->
 
-    <style name="YaximLightTheme" parent="Theme.Sherlock.Light">
+    <style name="YaximLightTheme" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/MyActionBarLight</item>
         <item name="actionBarStyle">@style/MyActionBarLight</item>
         
@@ -31,26 +31,25 @@
 	<item name="ic_action_add_person">@drawable/ic_action_add_person_light</item>
     </style>
 
-    <style name="IndeterminateProgress" parent="Widget.Sherlock.ProgressBar">
+    <style name="IndeterminateProgress" parent="Widget.AppCompat.ProgressBar">
         <item name="android:minWidth">32dip</item>
         <item name="android:maxWidth">32dip</item>
         <item name="android:minHeight">32dip</item>
         <item name="android:maxHeight">32dip</item>
     </style>
 
-    <style name="MyActionBarLight" parent="Widget.Sherlock.Light.ActionBar">
+    <style name="MyActionBarLight" parent="Widget.AppCompat.Light.ActionBar">
         <item name="android:background">#3000</item>
-        <item name="background">#3000</item>
         <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
         <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
     </style>
 
-    <style name="MyActionBarDark" parent="Widget.Sherlock.ActionBar">
+    <style name="MyActionBarDark" parent="Widget.AppCompat.ActionBar">
         <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
         <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
     </style>
 
-    <style name="YaximDarkTheme" parent="Theme.Sherlock">
+    <style name="YaximDarkTheme" parent="@style/Theme.AppCompat">
         <item name="android:actionBarStyle">@style/MyActionBarDark</item>
         <item name="actionBarStyle">@style/MyActionBarDark</item>
         <item name="MainGroup">@style/RosterGroupName.Dark</item>

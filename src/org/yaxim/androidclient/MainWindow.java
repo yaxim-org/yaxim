@@ -63,15 +63,16 @@ import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.service.IXMPPRosterService;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockExpandableListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.Window;
-import com.nullwire.trace.ExceptionHandler;
+import android.view.Menu;
+import android.view.Window;
+
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
-public class MainWindow extends SherlockExpandableListActivity {
+public class MainWindow extends AppCompatActivity implements ExpandableListView.OnChildClickListener {
 
 	private static final String TAG = "yaxim.MainWindow";
 
@@ -107,16 +108,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
+		actionBar.setDisplayShowHomeEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
-		registerCrashReporter();
 
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mRosterObserver);
 		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
 				true, mChatObserver);
 		registerXMPPService();
-		createUICallback();
 		setupContenView();
+		createUICallback();
 		registerListAdapter();
 
 		mHandledIntent = (getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0;
@@ -127,6 +128,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 		super.onDestroy();
 		getContentResolver().unregisterContentObserver(mRosterObserver);
 		getContentResolver().unregisterContentObserver(mChatObserver);
+	}
+
+	public ExpandableListView getExpandableListView() {
+		return (ExpandableListView)findViewById(android.R.id.list);
 	}
 
 	public int getStatusActionIcon() {
@@ -162,6 +167,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		registerForContextMenu(getExpandableListView());
 		getExpandableListView().requestFocus();
 
+		getExpandableListView().setOnChildClickListener(this);
 		getExpandableListView().setOnGroupClickListener(
 			new ExpandableListView.OnGroupClickListener() {
 				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
@@ -579,19 +585,19 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.roster_options, menu);
+		getMenuInflater().inflate(R.menu.roster_options, menu);
 		return true;
 	}
 
 	void setMenuItem(Menu menu, int itemId, int iconId, CharSequence title) {
-		com.actionbarsherlock.view.MenuItem item = menu.findItem(itemId);
+		MenuItem item = menu.findItem(itemId);
 		if (item == null)
 			return;
 		item.setIcon(iconId);
 		item.setTitle(title);
 	}
 	void setMenuItemFromClipboard(Menu menu, int itemId) {
-		com.actionbarsherlock.view.MenuItem item = menu.findItem(itemId);
+		MenuItem item = menu.findItem(itemId);
 		if (item == null)
 			return;
 		Uri link = xmppUriFromClipboard();
@@ -611,7 +617,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		return applyMainMenuChoice(item);
 	}
 
@@ -712,7 +718,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.create().show();
 	}
 
-	private boolean applyMainMenuChoice(com.actionbarsherlock.view.MenuItem item) {
+	private boolean applyMainMenuChoice(MenuItem item) {
 
 		int itemID = item.getItemId();
 
@@ -945,7 +951,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private void registerListAdapter() {
 
 		rosterListAdapter = new RosterExpListAdapter(this);
-		setListAdapter(rosterListAdapter);
+		getExpandableListView().setAdapter(rosterListAdapter);
 	}
 
 	private void createUICallback() {
@@ -988,7 +994,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public void restoreGroupsExpanded() {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		for (int count = 0; count < getExpandableListAdapter().getGroupCount(); count++) {
+		for (int count = 0; count < rosterListAdapter.getGroupCount(); count++) {
 			String name = getGroupName(count);
 			if (!mGroupsExpanded.containsKey(name))
 				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
@@ -1049,12 +1055,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	protected void showToastNotification(int message) {
 		Toast tmptoast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
 		tmptoast.show();
-	}
-
-	private void registerCrashReporter() {
-		if (mConfig.reportCrash) {
-			ExceptionHandler.register(this, "https://yaxim.org/crash/");
-		}
 	}
 
 	private static final String OFFLINE_EXCLUSION =
@@ -1209,7 +1209,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			Log.d(TAG, "RosterObserver.onChange: " + selfChange);
 			// work around race condition in ExpandableListView, which collapses
 			// groups rand-f**king-omly
-			if (getExpandableListAdapter() != null)
+			if (rosterListAdapter != null)
 				mainHandler.postDelayed(new Runnable() {
 					public void run() {
 						restoreGroupsExpanded();

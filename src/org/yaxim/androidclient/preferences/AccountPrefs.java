@@ -16,12 +16,13 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import android.view.MenuItem;
+import android.support.v7.app.ActionBar;
+
 
 import org.yaxim.androidclient.R;
 
-public class AccountPrefs extends SherlockPreferenceActivity {
+public class AccountPrefs extends AppCompatPreferenceActivity {
 
 	private SharedPreferences sharedPreference;
 
@@ -127,7 +128,7 @@ public class AccountPrefs extends SherlockPreferenceActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MainPrefs.class);

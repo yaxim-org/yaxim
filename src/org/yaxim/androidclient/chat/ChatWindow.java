@@ -12,11 +12,9 @@ import android.content.*;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.provider.MediaStore;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.widget.SearchView;
 
 import org.yaxim.androidclient.FileHttpUploadTask;
+
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
@@ -34,10 +32,15 @@ import org.yaxim.androidclient.util.XMPPHelper;
 
 import eu.siacs.conversations.utils.StylingHelper;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Window;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
 
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -66,8 +69,11 @@ import android.view.WindowManager;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 @SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
-public class ChatWindow extends SherlockFragmentActivity implements OnKeyListener,
+public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 		TextWatcher, LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
 
 	private static final int REQUEST_FILE = 1;
@@ -464,7 +470,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 	@Override
-	public boolean onContextItemSelected(android.view.MenuItem item) {
+	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.chat_contextmenu_copy_text:
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
@@ -494,13 +500,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			Log.d(TAG, "resend!");
 			return true;
 		default:
-			return super.onContextItemSelected((android.view.MenuItem) item);
+			return super.onContextItemSelected((MenuItem) item);
 		}
 	}
 
 	// specific for a roster/PM menu, overridden by MUC
-	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
 		if (isContact)
 			inflater.inflate(R.menu.contact_options, menu);
 		else {
@@ -511,12 +517,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 	// used by subclasses
-	public boolean inflateGenericContactOptions(com.actionbarsherlock.view.Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
+	public boolean inflateGenericContactOptions(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
 		//inflater.inflate(R.menu.contact_options, menu);
 		inflater.inflate(R.menu.roster_item_contextmenu, menu);
 
-		mSearchView = (SearchView)menu.findItem(R.id.app_bar_search).getActionView();
+		mSearchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.app_bar_search));
 		mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
@@ -537,7 +543,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d(TAG, "options item selected");
 		switch (item.getItemId()) {
 		case android.R.id.home:

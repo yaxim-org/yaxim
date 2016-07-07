@@ -39,7 +39,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.MenuInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class MUCChatWindow extends ChatWindow {
 	private static final String TAG = "yaxim.MUCChatWindow";
@@ -107,16 +109,16 @@ public class MUCChatWindow extends ChatWindow {
 
 
 	@Override
-	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {
 		Log.d(TAG, "creating options menu, we're a muc");
-		MenuInflater inflater = getSupportMenuInflater(); 
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.muc_options, menu);
 		inflateGenericContactOptions(menu);
 		return true;
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d(TAG, "options item selected");
 		switch (item.getItemId()) {
 		case R.id.chat_optionsmenu_userlist:

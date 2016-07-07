@@ -3,14 +3,14 @@ package org.yaxim.androidclient.preferences;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import android.view.MenuItem;
+import android.support.v7.app.ActionBar;
 
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 
-public class MainPrefs extends SherlockPreferenceActivity {
+public class MainPrefs extends AppCompatPreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(YaximApplication.getConfig().getTheme());
 		super.onCreate(savedInstanceState);
@@ -22,7 +22,7 @@ public class MainPrefs extends SherlockPreferenceActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MainWindow.class);
