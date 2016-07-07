@@ -192,7 +192,9 @@ public class SmackableImp implements Smackable {
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
 	private ConnectionState mState = ConnectionState.OFFLINE;
 	private String mLastError;
-	
+	private long mLastOnline = 0;	//< timestamp of last successful full login (XEP-0198 does not count)
+	private long mLastOffline = 0;	//< timestamp of the end of last successful login
+
 	private XMPPServiceCallback mServiceCallBack;
 	private Roster mRoster;
 	private RosterListener mRosterListener;
@@ -230,6 +232,8 @@ public class SmackableImp implements Smackable {
 		this.mContentResolver = contentResolver;
 		this.mService = service;
 		this.mAlarmManager = (AlarmManager)mService.getSystemService(Context.ALARM_SERVICE);
+
+		mLastOnline = mLastOffline = System.currentTimeMillis();
 	}
 		
 	// this code runs a DNS resolver, might be blocking
@@ -454,6 +458,11 @@ public class SmackableImp implements Smackable {
 		return mState;
 	}
 
+	@Override
+	public long getConnectionStateTimestamp() {
+		return (mState == ConnectionState.ONLINE) ? mLastOnline : mLastOffline;
+	}
+
 	// called at the end of a state transition
 	private synchronized void updateConnectionState(ConnectionState new_state) {
 		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.LOADING)
@@ -461,6 +470,8 @@ public class SmackableImp implements Smackable {
 		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state + " (" + mLastError + ")");
 		if (new_state == mState)
 			return;
+		if (mState == ConnectionState.ONLINE)
+			mLastOffline = System.currentTimeMillis();
 		mState = new_state;
 		if (mServiceCallBack != null)
 			mServiceCallBack.connectionStateChanged();
@@ -624,6 +635,7 @@ public class SmackableImp implements Smackable {
 				mStreamHandler.notifyInitialLogin();
 				cleanupMUCs();
 				setStatusFromConfig();
+				mLastOnline = System.currentTimeMillis();
 			}
 
 		} catch (Exception e) {

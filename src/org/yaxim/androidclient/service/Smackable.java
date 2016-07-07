@@ -12,6 +12,7 @@ public interface Smackable {
 	void requestConnectionState(ConnectionState new_state);
 	void requestConnectionState(ConnectionState new_state, boolean create_account);
 	ConnectionState getConnectionState();
+	long getConnectionStateTimestamp();
 	String getLastError();
 
 	void addRosterItem(String user, String alias, String group, String token) throws YaximXMPPException;

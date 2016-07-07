@@ -390,7 +390,7 @@ public class XMPPService extends GenericService {
 		Notification n = new NotificationCompat.Builder(this)
 			.setSmallIcon((cs == ConnectionState.ONLINE) ? R.drawable.ic_online : R.drawable.ic_offline)
 			.setLargeIcon(android.graphics.BitmapFactory.decodeResource(getResources(), R.drawable.icon))
-			.setWhen(System.currentTimeMillis())
+			.setWhen(mSmackable.getConnectionStateTimestamp())
 			.setOngoing(true)
 			.setOnlyAlertOnce(true)
 			.setContentIntent(PendingIntent.getActivity(this, 0, notificationIntent,
