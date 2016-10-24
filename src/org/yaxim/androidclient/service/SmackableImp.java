@@ -1268,6 +1268,7 @@ public class SmackableImp implements Smackable {
 							ContentValues cvR = new ContentValues();
 							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
 							cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
+							Log.d(TAG, "MUC subject for " + fromJID[0] + " set to: " + msg.getSubject());
 							upsertRoster(cvR, fromJID[0]);
 							return;
 						}
@@ -1672,6 +1673,7 @@ public class SmackableImp implements Smackable {
 				String rn = ri.getRoomName();
 				if (rn != null && rn.length() > 0)
 					roomname = rn;
+				Log.d(TAG, "MUC name after disco: " + roomname);
 			} catch (XMPPException e) {
 				// ignore a failed room info request
 				Log.d(TAG, "MUC room IQ failed: " + room);
@@ -1682,6 +1684,7 @@ public class SmackableImp implements Smackable {
 			cvR.put(RosterProvider.RosterConstants.ALIAS, roomname);
 			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, subject);
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
+			Log.d(TAG, "upserting MUC as online: " + roomname);
 			upsertRoster(cvR, room);
 			return true;
 		}
