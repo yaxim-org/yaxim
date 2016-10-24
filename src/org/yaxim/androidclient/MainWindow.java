@@ -115,6 +115,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private ActionBar actionBar;
 	private String mTheme;
+	private boolean mHandledIntent = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -140,6 +141,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		createUICallback();
 		setupContenView();
 		registerListAdapter();
+
+		mHandledIntent = (getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0;
 	}
 
 	@Override
@@ -207,6 +210,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	@Override
 	protected void onNewIntent(Intent i) {
 		setIntent(i);
+		mHandledIntent = false;
 	}
 
 	@Override
@@ -242,7 +246,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public void handleSendIntent() {
 		Intent intent = getIntent();
 		String action = intent.getAction();
-		if ((action != null) && (action.equals(Intent.ACTION_SEND))) {
+		if (!mHandledIntent && (action != null) && (action.equals(Intent.ACTION_SEND))) {
 			showToastNotification(R.string.chooseContact);
 			setTitle(R.string.chooseContact);
 		}
@@ -312,7 +316,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Log.d(TAG, "handleJabberIntent: " + intent);
 		String action = intent.getAction();
 		Uri data = intent.getData();
-		if (action == null || data == null)
+		if (action == null || data == null || mHandledIntent)
 			return;
 		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
 			// 1. look for JID in roster; 2. attempt to add
@@ -335,10 +339,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 			} else if (!openChatWithJid(jid, body) &&
 				   !addToRosterDialog(jid)) {
 				finish();
-			}
+			} else return;
 		} else return;
 		// clear the intent data to prevent re-triggering
 		getIntent().setData(null);
+		mHandledIntent = true;
 	}
 
 	@Override
@@ -837,7 +842,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		String userJid = c.getString(c.getColumnIndexOrThrow(RosterConstants.JID));
 		String userName = c.getString(c.getColumnIndexOrThrow(RosterConstants.ALIAS));
 		Intent i = getIntent();
-		if (i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
+		if (!mHandledIntent && i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
 			// delegate ACTION_SEND to child window and close self
 			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
 			finish();

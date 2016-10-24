@@ -391,6 +391,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			Intent intent = new Intent(this, MainWindow.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+			finish();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
