@@ -2,7 +2,9 @@ package org.yaxim.androidclient;
 
 import org.yaxim.androidclient.data.YaximConfiguration;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
@@ -31,11 +33,19 @@ public class YaximApplication extends Application {
 				.getDefaultSharedPreferences(this));
 	}
 
-	public static YaximApplication getApp(Context ctx) {
-		return (YaximApplication)ctx.getApplicationContext();
+	public static YaximApplication getApp(Activity ctx) {
+		android.util.Log.d("YaximApplication", "app = " + ctx.getApplication());
+		return (YaximApplication)ctx.getApplication();
+	}
+	public static YaximApplication getApp(Service ctx) {
+		android.util.Log.d("YaximApplication", "app = " + ctx.getApplication());
+		return (YaximApplication)ctx.getApplication();
 	}
 
-	public static YaximConfiguration getConfig(Context ctx) {
+	public static YaximConfiguration getConfig(Activity ctx) {
+		return getApp(ctx).mConfig;
+	}
+	public static YaximConfiguration getConfig(Service ctx) {
 		return getApp(ctx).mConfig;
 	}
 }
