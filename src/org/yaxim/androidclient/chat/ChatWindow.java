@@ -549,6 +549,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
+				from = YaximApplication.getConfig(ChatWindow.this).userName;
 			} else {
 				nick2Color(from, tv);
 				getFromView().setText(from + ":");
