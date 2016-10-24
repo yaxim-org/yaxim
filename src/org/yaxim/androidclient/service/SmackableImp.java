@@ -1205,14 +1205,6 @@ public class SmackableImp implements Smackable {
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
 
-					// check for jabber MUC invitation
-					if(msg.getExtension("jabber:x:conference") != null) {
-						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
-						handleMucInvitation(msg);
-						sendReceiptIfRequested(packet);
-						return;
-					}
-
 					// extract timestamp
 					long ts;
 					DelayInfo timestamp = (DelayInfo)msg.getExtension("delay", "urn:xmpp:delay");
@@ -1245,6 +1237,14 @@ public class SmackableImp implements Smackable {
 								changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 							}
 						}
+					}
+
+					// check for jabber MUC invitation
+					if(direction == ChatConstants.INCOMING && msg.getExtension("jabber:x:conference") != null) {
+						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
+						handleMucInvitation(msg);
+						sendReceiptIfRequested(packet);
+						return;
 					}
 
 					String chatMessage = msg.getBody();
