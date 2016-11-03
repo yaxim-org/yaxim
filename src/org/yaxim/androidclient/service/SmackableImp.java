@@ -81,6 +81,7 @@ import org.jivesoftware.smackx.receipts.ReceiptReceivedListener;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -1263,7 +1264,7 @@ public class SmackableImp implements Smackable {
 					// ignore empty messages
 					if (chatMessage == null) {
 						if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
-								&& multiUserChats.containsKey(fromJID[0])) {
+								&& mucJIDs.contains(fromJID[0])) {
 							// this is a MUC subject, update our DB
 							ContentValues cvR = new ContentValues();
 							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
@@ -1287,12 +1288,12 @@ public class SmackableImp implements Smackable {
 
 					boolean is_muc = (msg.getType() == Message.Type.groupchat);
 					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
-						(is_muc && multiUserChats.get(fromJID[0]).getNickname().equals(fromJID[1]));
+						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id);
 						// only notify on private messages or when MUC notification requested
-						boolean need_notify = !is_muc || mConfig.needMucNotification(multiUserChats.get(fromJID[0]).getNickname(), chatMessage);
+						boolean need_notify = !is_muc || mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
 						if (is_from_me) {
 							mServiceCallBack.notifyMessage(fromJID, null, true, msg.getType());
@@ -1362,6 +1363,18 @@ public class SmackableImp implements Smackable {
 		cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, message);
 		cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 		upsertRoster(cvR, room);
+	}
+
+	private String getMyMucNick(String jid) {
+		MultiUserChat muc = multiUserChats.get(jid);
+		if (muc != null && muc.getNickname() != null)
+			return muc.getNickname();
+		if (mucJIDs.contains(jid)) {
+			ChatRoomHelper.RoomInfo ri = ChatRoomHelper.getRoomInfo(mService, jid);
+			if (ri != null)
+				return ri.nickname;
+		}
+		return null;
 	}
 
 	private void registerPresenceListener() {
