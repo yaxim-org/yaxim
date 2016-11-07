@@ -1349,13 +1349,12 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 
-
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
 		if (timestamp == null) {
 			// HACK: remove last outgoing message instead of upserting
-			if (multiUserChats.get(muc).getNickname().equals(nick))
+			if (nick.equals(getMyMucNick(muc)))
 				mContentResolver.delete(ChatProvider.CONTENT_URI,
 					"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
 					"_id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)",
@@ -1605,7 +1604,7 @@ public class SmackableImp implements Smackable {
 			String nickname = cursor.getString(NICKNAME_ID);
 			mucJIDs.add(jid);
 			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
-			if(!joinedRooms.contains(jid)) {
+			if(!joinedRooms.contains(jid) || !multiUserChats.get(jid).isJoined()) {
 				debugLog("room " + jid + " isn't joined yet, i wanna join...");
 				joinRoomAsync(jid, nickname, password); // TODO: make historyLen configurable
 			} else {
@@ -1658,19 +1657,22 @@ public class SmackableImp implements Smackable {
 	}
 
 	private boolean joinRoom(final String room, String nickname, String password) {
-		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
-		muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
-			@Override
-			public void kicked(String actor, String reason) {
-				debugLog("Kicked from " + room + " by " + actor + ": " + reason);
-				handleKickedFromMUC(room, false, actor, reason);
-			}
-			@Override
-			public void banned(String actor, String reason) {
-				debugLog("Banned from " + room + " by " + actor + ": " + reason);
-				handleKickedFromMUC(room, true, actor, reason);
-			}
-		});
+		MultiUserChat muc = multiUserChats.get(room);
+		if (muc == null) {
+			muc = new MultiUserChat(mXMPPConnection, room);
+			muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
+				@Override
+				public void kicked(String actor, String reason) {
+					debugLog("Kicked from " + room + " by " + actor + ": " + reason);
+					handleKickedFromMUC(room, false, actor, reason);
+				}
+				@Override
+				public void banned(String actor, String reason) {
+					debugLog("Banned from " + room + " by " + actor + ": " + reason);
+					handleKickedFromMUC(room, true, actor, reason);
+				}
+			});
+		}
 		
 		DiscussionHistory history = new DiscussionHistory();
 		final String[] projection = new String[] {
