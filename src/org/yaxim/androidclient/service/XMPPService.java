@@ -562,7 +562,7 @@ public class XMPPService extends GenericService {
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
 						intent, Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
-						 .setContentTitle(room)
+						 .setContentTitle(getString(R.string.muc_invitation_to, room))
 						 .setContentText(body)
 						 .setSmallIcon(R.drawable.ic_action_group_dark)
 						 .setTicker(body)
