@@ -1384,7 +1384,6 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void handleKickedFromMUC(String room, boolean banned, String actor, String reason) {
-		multiUserChats.remove(room);
 		mucLastPong.remove(room);
 		ContentValues cvR = new ContentValues();
 		String message;
