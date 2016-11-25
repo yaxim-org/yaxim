@@ -132,7 +132,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		actionBar.setHomeButtonEnabled(true);
 		registerCrashReporter();
 
-		showFirstStartUpDialogIfPrefsEmpty();
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mRosterObserver);
 		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
@@ -234,6 +233,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			startActivity(restartIntent);
 			finish();
 		}
+
+		showFirstStartUpDialogIfPrefsEmpty();
+
 		displayOwnStatus();
 		bindXMPPService();
 
