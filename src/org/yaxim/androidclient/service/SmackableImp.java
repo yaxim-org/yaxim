@@ -1676,22 +1676,21 @@ public class SmackableImp implements Smackable {
 	}
 
 	private boolean joinRoom(final String room, String nickname, String password) {
-		MultiUserChat muc = multiUserChats.get(room);
-		if (muc == null) {
-			muc = new MultiUserChat(mXMPPConnection, room);
-			muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
-				@Override
-				public void kicked(String actor, String reason) {
-					debugLog("Kicked from " + room + " by " + actor + ": " + reason);
-					handleKickedFromMUC(room, false, actor, reason);
-				}
-				@Override
-				public void banned(String actor, String reason) {
-					debugLog("Banned from " + room + " by " + actor + ": " + reason);
-					handleKickedFromMUC(room, true, actor, reason);
-				}
-			});
-		}
+		// work around smack3 bug: can't rejoin with "used" MultiUserChat instance
+		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
+		Log.d(TAG, "created new MUC instance: " + room + " " + muc);
+		muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
+			@Override
+			public void kicked(String actor, String reason) {
+				debugLog("Kicked from " + room + " by " + actor + ": " + reason);
+				handleKickedFromMUC(room, false, actor, reason);
+			}
+			@Override
+			public void banned(String actor, String reason) {
+				debugLog("Banned from " + room + " by " + actor + ": " + reason);
+				handleKickedFromMUC(room, true, actor, reason);
+			}
+		});
 		
 		DiscussionHistory history = new DiscussionHistory();
 		final String[] projection = new String[] {
@@ -1718,6 +1717,7 @@ public class SmackableImp implements Smackable {
 		cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.dnd.ordinal());
 		cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 		upsertRoster(cvR, room);
+		cvR.clear();
 		try {
 			Presence force_resync = new Presence(Presence.Type.unavailable);
 			force_resync.setTo(room + "/" + nickname);
@@ -1795,6 +1795,7 @@ public class SmackableImp implements Smackable {
 		if (muc == null) {
 			return null;
 		}
+		Log.d(TAG, "MUC instance: " + jid + " " + muc);
 		Iterator<String> occIter = muc.getOccupants();
 		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
 		while(occIter.hasNext())
@@ -1805,6 +1806,7 @@ public class SmackableImp implements Smackable {
 				return java.text.Collator.getInstance().compare(lhs.resource, rhs.resource);
 			}
 		});
+		Log.d(TAG, "getUserList(" + jid + "): " + tmpList.size());
 		return tmpList;
 	}
 }
