@@ -1573,9 +1573,29 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
-	private void cleanupMUCs() {
+	private synchronized void cleanupMUCs() {
+		// get a fresh MUC list
+		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
+				new String[] { RosterProvider.RosterConstants.JID },
+				null, null, null);
+		mucJIDs.clear();
+		while(cursor.moveToNext()) {
+			mucJIDs.add(cursor.getString(0));
+		}
+		cursor.close();
+
+		// delete removed MUCs
+		StringBuilder exclusion = new StringBuilder(RosterProvider.RosterConstants.GROUP + " = ? AND "
+				+ RosterConstants.JID + " NOT IN ('");
+		exclusion.append(android.text.TextUtils.join("', '", mucJIDs));
+		exclusion.append("');");
 		mContentResolver.delete(RosterProvider.CONTENT_URI,
-				RosterProvider.RosterConstants.GROUP + " = ?",
+				exclusion.toString(),
+				new String[] { RosterProvider.RosterConstants.MUCS });
+		// update all other MUCs as offline
+		ContentValues values = new ContentValues();
+		values.put(RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+		mContentResolver.update(RosterProvider.CONTENT_URI, values, RosterProvider.RosterConstants.GROUP + " = ?",
 				new String[] { RosterProvider.RosterConstants.MUCS });
 	}
 
