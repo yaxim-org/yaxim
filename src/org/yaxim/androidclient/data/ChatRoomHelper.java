@@ -2,6 +2,7 @@ package org.yaxim.androidclient.data;
 
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.service.IXMPPMucService;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -66,7 +67,7 @@ public class ChatRoomHelper {
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI,
 				new String[] { RosterConstants.NICKNAME },
 				null, null, RosterConstants.NICKNAME );
-		String best = fallback;
+		String best = XMPPHelper.capitalizeString(fallback);
 		int best_count = 0;
 		String current = null;
 		int current_count = 0;
