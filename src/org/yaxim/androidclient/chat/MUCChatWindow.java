@@ -37,6 +37,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuInflater;
 
@@ -147,8 +148,10 @@ public class MUCChatWindow extends ChatWindow {
 
 	private void showUserList() {
 		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
-		if (users == null)
+		if (users == null) {
+			Toast.makeText(this, R.string.Global_authenticate_first, Toast.LENGTH_SHORT).show();
 			return;
+		}
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MUCChatWindow.this)
 		.setTitle(getString(R.string.chat_muc_userlist, mWithJabberID))
 		.setNegativeButton(android.R.string.cancel, null);
