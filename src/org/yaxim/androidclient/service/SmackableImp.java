@@ -843,8 +843,8 @@ public class SmackableImp implements Smackable {
 				newMessage.setPacketID(packetID);
 			} else {
 				packetID = newMessage.getPacketID();
-				mark_sent.put(ChatConstants.PACKET_ID, packetID);
 			}
+			mark_sent.put(ChatConstants.PACKET_ID, packetID);
 			Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 				+ "/" + ChatProvider.TABLE_NAME + "/" + _id);
 			mContentResolver.update(rowuri, mark_sent,
@@ -861,6 +861,7 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.MESSAGE, message);
 		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_NEW);
 		values.put(ChatConstants.DATE, System.currentTimeMillis());
+		values.put(ChatConstants.PACKET_ID, Packet.nextID());
 
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
@@ -1352,15 +1353,17 @@ public class SmackableImp implements Smackable {
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
-		if (timestamp == null) {
-			// HACK: remove last outgoing message instead of upserting
-			if (nick.equals(getMyMucNick(muc)))
-				mContentResolver.delete(ChatProvider.CONTENT_URI,
-					"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
-					"_id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)",
-					new String[] { muc, packet_id, msg.getBody(), muc });
+
+		// HACK: remove last outgoing message instead of upserting
+		if (nick.equals(getMyMucNick(muc)))
+			mContentResolver.delete(ChatProvider.CONTENT_URI,
+				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
+				"_id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)",
+				new String[] { muc, packet_id, msg.getBody(), muc });
+
+		// messages with no timestamp are always new
+		if (timestamp == null)
 			return true;
-		}
 
 		long ts = timestamp.getStamp().getTime();
 
