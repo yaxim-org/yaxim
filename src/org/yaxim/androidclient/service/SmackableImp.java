@@ -1697,20 +1697,18 @@ public class SmackableImp implements Smackable {
 		
 		DiscussionHistory history = new DiscussionHistory();
 		final String[] projection = new String[] {
-				ChatConstants._ID, ChatConstants.DATE,
-				ChatConstants.JID, ChatConstants.MESSAGE,
-				ChatConstants.PACKET_ID
+				ChatConstants._ID, ChatConstants.DATE
 		};
-		final String selection = String.format("%s = '%s'", projection[2], room);
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, 
-				selection, null, "date DESC LIMIT 1");
+				ChatConstants.JID + " = ? AND " +
+				ChatConstants.DELIVERY_STATUS + " = " +
+				ChatConstants.DS_SENT_OR_READ, new String[] { room }, "_id DESC LIMIT 1");
 		if(cursor.getCount()>0) {
 			cursor.moveToFirst();
-			long lastDate = cursor.getLong( cursor.getColumnIndexOrThrow(projection[1]) );
-			String msg =  cursor.getString( cursor.getColumnIndexOrThrow(projection[3]) );
-			Log.d(TAG, String.format("joining room %s i found %d rows of last date %d with msg %s, setting since to %s", room, cursor.getCount(), lastDate, msg, (new Date(lastDate)).toString()) );
-			history.setSince( new Date(lastDate) );
-		} else Log.d(TAG, "found no old DB messages");
+			Date lastDate = new Date(cursor.getLong(1));
+			Log.d(TAG, "Getting room history for " + room + " starting at " + lastDate);
+			history.setSince(lastDate);
+		} else Log.d(TAG, "No last message for " + room);
 		cursor.close();
 		
 		ContentValues cvR = new ContentValues();
