@@ -46,6 +46,47 @@
 			android:summary="@string/ticker_summ"
 			android:defaultValue="true"
 		/>
+	</PreferenceCategory>	
+	<PreferenceCategory android:title="@string/preftitle_notify_muc">
+		<CheckBoxPreference
+			android:id="@+id/muc_highlight"
+			android:key="muc_highlight"
+			android:title="@string/muc_highlight_title"
+			android:summary="@string/muc_highlight_sum"
+			android:defaultValue="false"
+		/>
+		<CheckBoxPreference
+			android:id="@+id/muc_led"
+			android:key="muc_led"
+			android:title="@string/led_title"
+			android:summary="@string/led_summ"
+			android:defaultValue="true"
+		/>
+		<ListPreference
+			android:id="@+id/muc_vibration"
+			android:title="@string/vibr_title"
+			android:summary="@string/vibr_summ"
+			android:key="muc_vibration_list"
+			android:defaultValue="SYSTEM"
+			android:entries="@array/vibr_values_displayed"
+			android:entryValues="@array/vibr_values"
+		/>
+		<RingtonePreference
+			android:id="@+id/muc_ringtone"
+			android:key="muc_ringtone"
+			android:title="@string/ringtone_title"
+			android:ringtoneType="notification"
+			android:showDefault="true"
+			android:showSilent="true"
+			android:summary="@string/ringtone_summ"
+		/>
+		<CheckBoxPreference
+			android:id="@+id/muc_ticker"
+			android:key="muc_ticker"
+			android:title="@string/ticker_title"
+			android:summary="@string/ticker_summ"
+			android:defaultValue="true"
+		/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/preftitle_boot">
 		<CheckBoxPreference

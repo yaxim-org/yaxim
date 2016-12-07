@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/chat_optionsmenu_userlist"
+		android:title="@string/Menu_userlist"
+		android:icon="?attr/ic_action_group"
+		android:showAsAction="ifRoom" />
+	<item   android:id="@+id/roster_contextmenu_muc_edit"
+		android:title="@string/roster_contextmenu_muc_edit"
+		android:icon="@android:drawable/ic_menu_preferences"
+		/>
+	<item   android:id="@+id/roster_contextmenu_muc_leave"
+		android:title="@string/roster_contextmenu_muc_leave"
+		android:icon="@android:drawable/ic_menu_close_clear_cancel"
+		/>
+</menu>

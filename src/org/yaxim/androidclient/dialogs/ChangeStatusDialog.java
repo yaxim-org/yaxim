@@ -46,6 +46,7 @@ public class ChangeStatusDialog extends AlertDialog {
 		List<StatusMode> modes = new ArrayList<StatusMode>(
 				Arrays.asList(StatusMode.values()));
 		// the user can not set statusmode "subscribe", it is only for incoming presences
+		modes.remove(StatusMode.unknown);
 		modes.remove(StatusMode.subscribe);
 
 		Collections.sort(modes, new Comparator<StatusMode>() {

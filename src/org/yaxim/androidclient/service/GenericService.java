@@ -3,12 +3,13 @@ package org.yaxim.androidclient.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jivesoftware.smack.packet.Message;
 import org.yaxim.androidclient.chat.ChatWindow;
+import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -16,11 +17,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.CarExtender;
+import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.RemoteInput;
+import android.telephony.gsm.SmsMessage.MessageClass;
 import android.util.Log;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
@@ -29,9 +38,9 @@ public abstract class GenericService extends Service {
 
 	private static final String TAG = "yaxim.Service";
 	private static final String APP_NAME = "yaxim";
-	private static final int MAX_TICKER_MSG_LEN = 50;
+	private static final int MAX_TICKER_MSG_LEN = 45;
 
-	private NotificationManager mNotificationMGR;
+	protected NotificationManagerCompat mNotificationMGR;
 	private Notification mNotification;
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
@@ -41,27 +50,9 @@ public abstract class GenericService extends Service {
 	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
 	private Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
 	protected static int SERVICE_NOTIFICATION = 1;
-	private int lastNotificationId = 2;
+	protected int lastNotificationId = 2;
 
 	protected YaximConfiguration mConfig;
-
-	@Override
-	public IBinder onBind(Intent arg0) {
-		Log.i(TAG, "called onBind()");
-		return null;
-	}
-
-	@Override
-	public boolean onUnbind(Intent intent) {
-		Log.i(TAG, "called onUnbind()");
-		return super.onUnbind(intent);
-	}
-
-	@Override
-	public void onRebind(Intent intent) {
-		Log.i(TAG, "called onRebind()");
-		super.onRebind(intent);
-	}
 
 	@Override
 	public void onCreate() {
@@ -87,19 +78,30 @@ public abstract class GenericService extends Service {
 	}
 
 	private void addNotificationMGR() {
-		mNotificationMGR = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		mNotificationMGR = NotificationManagerCompat.from(this);
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
-	protected void notifyClient(String fromJid, String fromUserName, String message,
-			boolean showNotification, boolean silent_notification, boolean is_error) {
-		if (!showNotification) {
+	protected void notifyClient(String[] jid, String fromUserName, String message,
+			boolean showNotification, boolean silent_notification, Message.Type msgType) {
+		String fromJid = jid[0];
+		boolean isMuc = (msgType==Message.Type.groupchat);
+		boolean is_error = (msgType==Message.Type.error);
+		boolean beNoisy=true;
+
+		if (message == null) {
+			clearNotification(fromJid);
+			return;
+		}
+		
+		if (!showNotification && beNoisy) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
 			try {
-				if (!silent_notification && !Uri.EMPTY.equals(mConfig.notifySound))
-					RingtoneManager.getRingtone(getApplicationContext(), mConfig.notifySound).play();
+				Uri sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+				if (!silent_notification && !Uri.EMPTY.equals(sound))
+					RingtoneManager.getRingtone(getApplicationContext(), sound).play();
 			} catch (NullPointerException e) {
 				// ignore NPE when ringtone was not found
 			}
@@ -117,10 +119,10 @@ public abstract class GenericService extends Service {
 			silent_notification = false;		
 		}
 
-		setNotification(fromJid, fromUserName, message, is_error);
-		setLEDNotification();
-		if (!silent_notification)
-			mNotification.sound = mConfig.notifySound;
+		setNotification(fromJid, jid[1], fromUserName, message, is_error, isMuc);
+		setLEDNotification(isMuc);
+		mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+		
 		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
@@ -131,21 +133,29 @@ public abstract class GenericService extends Service {
 			notificationId.put(fromJid, Integer.valueOf(notifyId));
 		}
 
-		// If vibration is set to "system default", add the vibration flag to the 
-		// notification and let the system decide.
-		if(!silent_notification && "SYSTEM".equals(mConfig.vibraNotify)) {
-			mNotification.defaults |= Notification.DEFAULT_VIBRATE;
-		}
-		mNotificationMGR.notify(notifyId, mNotification);
 		
-		// If vibration is forced, vibrate now.
-		if(!silent_notification && "ALWAYS".equals(mConfig.vibraNotify)) {
-			mVibrator.vibrate(400);
+		if(beNoisy) {
+			setLEDNotification(isMuc);
+			mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+			// If vibration is set to "system default", add the vibration flag to the 
+			// notification and let the system decide.
+			if((!isMuc && "SYSTEM".equals(mConfig.vibraNotify)) 
+					|| (isMuc && "SYSTEM".equals(mConfig.vibraNotifyMuc))) {
+				mNotification.defaults |= Notification.DEFAULT_VIBRATE;
+			}
+			mNotificationMGR.notify(notifyId, mNotification);
+			
+			// If vibration is forced, vibrate now.
+			if((!isMuc && "ALWAYS".equals(mConfig.vibraNotify))
+					|| (isMuc && "ALWAYS".equals(mConfig.vibraNotifyMuc))) {
+				mVibrator.vibrate(400);
+			}
 		}
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error) {
+	private void setNotification(String fromJid, String fromResource, String fromUserId, String message, boolean is_error,
+			boolean isMuc) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -159,14 +169,13 @@ public abstract class GenericService extends Service {
 		} else {
 			author = fromUserId;
 		}
-		String title = getString(R.string.notification_message, author);
+		String title;
+		if (isMuc)
+			title = getString(R.string.notification_muc_message, fromResource, author/* = name of chatroom */);
+		else
+			title = getString(R.string.notification_message, author);
 		String ticker;
-		if (is_error) {
-			title = getString(R.string.notification_error);
-			ticker = title;
-			message = author + ": " + message;
-		} else
-		if (mConfig.ticker) {
+		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
 			int newline = message.indexOf('\n');
 			int limit = 0;
 			String messageSummary = message;
@@ -179,26 +188,57 @@ public abstract class GenericService extends Service {
 			ticker = title + ":\n" + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
-		mNotification = new Notification(R.drawable.sb_message, ticker,
-				System.currentTimeMillis());
-		mNotification.defaults = 0;
+
+		Intent msgHeardIntent = new Intent(this, XMPPService.class)
+			.setAction("respond")
+			.setData(Uri.parse(fromJid));
+
+		Intent msgResponseIntent = new Intent(this, XMPPService.class)
+			.setAction("respond")
+			.setData(Uri.parse(fromJid));
+
+		PendingIntent msgHeardPendingIntent = PendingIntent.getService(this, 0,
+					msgHeardIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent msgResponsePendingIntent = PendingIntent.getService(this, 0,
+					msgResponseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
+			.setLabel("Reply")
+			.build();
+		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
+			.setReadPendingIntent(msgHeardPendingIntent)
+			.setReplyAction(msgResponsePendingIntent, remoteInput);
+		ucb.addMessage(message).setLatestTimestamp(System.currentTimeMillis());
+
 		Uri userNameUri = Uri.parse(fromJid);
-		mNotificationIntent.setData(userNameUri);
-		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
-		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
+		chatIntent.setData(userNameUri);
+		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
+		chatIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 		
 		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				mNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pi = PendingIntent.getActivity(this, 0,
+				chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		mNotification.setLatestEventInfo(this, title, message, pendingIntent);
+		mNotification = new NotificationCompat.Builder(this)
+			.setContentTitle(title)
+			.setContentText(message)
+			.setTicker(ticker)
+			.setSmallIcon(R.drawable.sb_message)
+			.setCategory(Notification.CATEGORY_MESSAGE)
+			.setContentIntent(pi)
+			.setAutoCancel(true)
+			.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Mark Read", msgHeardPendingIntent)
+			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
+			.extend(new CarExtender().setUnreadConversation(ucb.build()))
+			.build();
+		mNotification.defaults = 0;
+
 		if (mNotificationCounter > 1)
 			mNotification.number = mNotificationCounter;
-		mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 	}
 
-	private void setLEDNotification() {
-		if (mConfig.isLEDNotify) {
+	private void setLEDNotification(boolean isMuc) {
+		if ((!isMuc && mConfig.isLEDNotify) || (isMuc && mConfig.isLEDNotifyMuc)) {
 			android.content.res.TypedArray a =
 				getTheme().obtainStyledAttributes(mConfig.getTheme(),
 					new int[] { android.R.attr.windowBackground });

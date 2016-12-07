@@ -4,27 +4,43 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.yaxim.androidclient.chat.MUCChatWindow;
+import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
+import org.yaxim.androidclient.dialogs.ConfirmDialog;
+import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
+import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.ComponentName;
+import android.content.DialogInterface.OnClickListener;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -36,6 +52,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,9 +66,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
 import org.yaxim.androidclient.util.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +108,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private Stub rosterCallback;
 	private RosterExpListAdapter rosterListAdapter;
 	private TextView mConnectingText;
+	private FirstStartDialog mFirstStartDialog;
 
 	private ContentObserver mRosterObserver = new RosterObserver();
 	private ContentObserver mChatObserver = new ChatObserver();
@@ -90,6 +117,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private ActionBar actionBar;
 	private String mTheme;
 	private Typeface mRosterTypeface;
+	private boolean mHandledIntent = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +136,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		actionBar.setHomeButtonEnabled(true);
 		registerCrashReporter();
 
-		showFirstStartUpDialogIfPrefsEmpty();
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mRosterObserver);
 		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
@@ -117,6 +144,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		createUICallback();
 		setupContenView();
 		registerListAdapter();
+
+		mHandledIntent = (getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0;
 	}
 
 	@Override
@@ -182,6 +211,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	@Override
+	protected void onNewIntent(Intent i) {
+		setIntent(i);
+		mHandledIntent = false;
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 		if (serviceAdapter != null)
@@ -202,6 +237,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			startActivity(restartIntent);
 			finish();
 		}
+
+		showFirstStartUpDialogIfPrefsEmpty();
+
 		displayOwnStatus();
 		bindXMPPService();
 
@@ -214,34 +252,104 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public void handleSendIntent() {
 		Intent intent = getIntent();
 		String action = intent.getAction();
-		if ((action != null) && (action.equals(Intent.ACTION_SEND))) {
+		if (!mHandledIntent && (action != null) && (action.equals(Intent.ACTION_SEND))) {
 			showToastNotification(R.string.chooseContact);
 			setTitle(R.string.chooseContact);
 		}
 	}
 
+	public boolean openChatWithJid(String jid, String text) {
+		Log.d(TAG, "openChatWithJid: " + jid);
+
+		List<String[]> contacts = getRosterContacts();
+		for (String[] c : contacts) {
+			if (jid.equalsIgnoreCase(c[0])) {
+				// found it
+				startChatActivity(c[0], c[1], text);
+				finish();
+				return true;
+			}
+		}
+		// if we have a message, open chat to JID
+		if (text != null) {
+			startChatActivity(jid, jid, text);
+			finish();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isJabberIntentAction(String action) {
+		return Intent.ACTION_VIEW.equals(action) ||
+			android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action);
+	}
+	public boolean transmogrifyXmppUri(Intent intent) {
+		Uri data = intent.getData();
+		if ("xmpp".equalsIgnoreCase(data.getScheme())) {
+			if (data.isOpaque()) {
+				// cheat around android's unwillingness to parse opaque URIs
+				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
+			}
+		} else if ("yax.im".equalsIgnoreCase(data.getHost()) || "conversations.im".equalsIgnoreCase(data.getHost())) {
+			try {
+				List<String> segments = data.getPathSegments();
+				String code = segments.get(0);
+				String jid = segments.get(1);
+				String token = "";
+				if (!jid.contains("@")) {
+					jid = segments.get(1) + "@" + segments.remove(2);
+				}
+				if (segments.size() > 2)
+					token = "&preauth=" + segments.get(2);
+				if ("i".equalsIgnoreCase(code))
+					data = Uri.parse("xmpp://" + jid + "?roster" + token);
+				else if ("j".equalsIgnoreCase(code))
+					data = Uri.parse("xmpp://" + jid + "?join");
+				else return false;
+			} catch (Exception e) {
+				Log.d(TAG, "Failed to parse URI " + data);
+				return false;
+			}
+		} else
+			return false;
+		Log.d(TAG, "transmogrifyXmppUri: " + intent.getData() + " --> " + data);
+		intent.setData(data);
+		return true;
+	}
+
 	public void handleJabberIntent() {
 		Intent intent = getIntent();
+		Log.d(TAG, "handleJabberIntent: " + intent);
 		String action = intent.getAction();
 		Uri data = intent.getData();
-		if ((action != null) && (action.equals(Intent.ACTION_SENDTO))
-				&& data != null && data.getHost().equals("jabber")) {
+		if (action == null || data == null || mHandledIntent)
+			return;
+		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
+			// 1. look for JID in roster; 2. attempt to add
 			String jid = data.getPathSegments().get(0);
-			Log.d(TAG, "handleJabberIntent: " + jid);
-
-			List<String[]> contacts = getRosterContacts();
-			for (String[] c : contacts) {
-				if (jid.equalsIgnoreCase(c[0])) {
-					// found it
-					startChatActivity(c[0], c[1], null);
-					finish();
-					return;
-				}
-			}
-			// did not find in roster, try to add
-			if (!addToRosterDialog(jid))
+			if (!openChatWithJid(jid, null) &&
+			    !addToRosterDialog(jid))
 				finish();
-		}
+		} else if (isJabberIntentAction(action) && transmogrifyXmppUri(intent)) {
+			data = intent.getData();
+			String jid = data.getAuthority();
+			String body = data.getQueryParameter("body");
+			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
+				// TODO: user name
+				addToRosterDialog(jid, data.getQueryParameter("name"),
+						data.getQueryParameter("preauth"));
+			} else if (data.getQueryParameter("join") != null) {
+				// TODO: nickname
+				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
+					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
+			} else if (!openChatWithJid(jid, body) &&
+				   !addToRosterDialog(jid)) {
+				finish();
+			} else return;
+		} else return;
+		// clear the intent data to prevent re-triggering
+		getIntent().setData(null);
+		mHandledIntent = true;
 	}
 
 	@Override
@@ -255,7 +363,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return serviceAdapter != null && serviceAdapter.isAuthenticated();
 	}
 	private boolean isConnecting() {
-		return serviceAdapter != null && serviceAdapter.getConnectionState() == ConnectionState.CONNECTING;
+		return serviceAdapter != null &&
+			(serviceAdapter.getConnectionState() == ConnectionState.CONNECTING ||
+			 serviceAdapter.getConnectionState() == ConnectionState.LOADING);
 	}
 
 	public void updateRoster() {
@@ -287,49 +397,35 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		// get the entry name for the item
 		String menuName;
+		boolean isMuc=false;
 		if (isChild) {
 			getMenuInflater().inflate(R.menu.roster_item_contextmenu, menu);
 			menuName = String.format("%s (%s)",
 				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
 				getPackedItemRow(packedPosition, RosterConstants.JID));
+			isMuc = ChatRoomHelper.isRoom(this, getPackedItemRow(packedPosition, RosterConstants.JID));
 		} else {
 			menuName = getPackedItemRow(packedPosition, RosterConstants.GROUP);
-			if (menuName.equals(""))
+			if (menuName.equals("") || menuName.equals(RosterConstants.MUCS))
 				return; // no options for default menu
 			getMenuInflater().inflate(R.menu.roster_group_contextmenu, menu);
 		}
 
+		// display contact menu for contacts
+		menu.setGroupVisible(R.id.roster_contextmenu_item_menu, isChild);
+		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild && !isMuc);
+		// display group menu for non-standard groups
+		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
+				(menuName.length() > 0));
+		// display stripped down menu for MUCs
+		menu.setGroupVisible(R.id.roster_contextmenu_muc_menu, isChild && isMuc);
+
 		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
-	}
-
-	void doMarkAllAsRead(final String JID) {
-		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
-
-		getContentResolver().update(ChatProvider.CONTENT_URI, values,
-				ChatProvider.ChatConstants.JID + " = ? AND "
-						+ ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
-						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW,
-				new String[]{JID});
 	}
 
 	void removeChatHistory(final String JID) {
 		getContentResolver().delete(ChatProvider.CONTENT_URI,
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { JID });
-	}
-
-	void removeChatHistoryDialog(final String JID, final String userName) {
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.deleteChatHistory_title)
-			.setMessage(getString(R.string.deleteChatHistory_text, userName, JID))
-			.setPositiveButton(android.R.string.yes,
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							removeChatHistory(JID);
-						}
-					})
-			.setNegativeButton(android.R.string.no, null)
-			.create().show();
 	}
 
 	void removeRosterItemDialog(final String JID, final String userName) {
@@ -346,28 +442,37 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.create().show();
 	}
 
-	boolean addToRosterDialog(String jid) {
+	boolean addToRosterDialog(String jid, String alias, String token) {
 		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
-			new AddRosterItemDialog(this, serviceAdapter, jid).show();
+			new AddRosterItemDialog(this, serviceAdapter, jid)
+				.setAlias(alias)
+				.setToken(token)
+				.show();
 			return true;
 		} else {
 			showToastNotification(R.string.Global_authenticate_first);
 			return false;
 		}
 	}
+	boolean addToRosterDialog(String jid) {
+		return addToRosterDialog(jid, null, null);
+	}
 
-	void rosterAddRequestedDialog(final String jid, String message) {
+	void rosterAddRequestedDialog(final String jid, final String alias, String message) {
 		new AlertDialog.Builder(this)
 			.setTitle(R.string.subscriptionRequest_title)
-			.setMessage(getString(R.string.subscriptionRequest_text, jid, message))
-			.setPositiveButton(android.R.string.yes,
+			.setMessage(getString(R.string.subscriptionRequest_text, alias,
+						message != null ? message : ""))
+			.setPositiveButton(R.string.subscription_accept,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							serviceAdapter.sendPresenceRequest(jid, "subscribed");
-							addToRosterDialog(jid);
+							// show dialog if not yet configured
+							if (alias.equals(jid))
+								addToRosterDialog(jid);
 						}
 					})
-			.setNegativeButton(android.R.string.no, 
+			.setNegativeButton(R.string.subscription_reject,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							serviceAdapter.sendPresenceRequest(jid, "unsubscribed");
@@ -405,9 +510,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	void renameRosterItemDialog(final String JID, final String userName) {
+		String newUserName = userName;
+		if (JID.equals(userName))
+			newUserName = XMPPHelper.capitalizeString(JID.split("@")[0]);
 		editTextDialog(R.string.RenameEntry_title,
 				getString(R.string.RenameEntry_summ, userName, JID),
-				userName, new EditOk() {
+				newUserName, new EditOk() {
 					public void ok(String result) {
 						serviceAdapter.renameRosterItem(JID, result);
 					}
@@ -468,12 +576,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 				startChatActivity(userJid, userName, null);
 				return true;
 
-			case R.id.roster_contextmenu_contact_mark_all_as_read:
-				doMarkAllAsRead(userJid);
+			case R.id.roster_contextmenu_contact_mark_as_read:
+				ChatHelper.markAsRead(this, userJid);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delmsg:
-				removeChatHistoryDialog(userJid, userName);
+				ChatHelper.removeChatHistoryDialog(this, userJid, userName);
 				return true;
 
 			case R.id.roster_contextmenu_contact_delete:
@@ -494,6 +602,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 			case R.id.roster_contextmenu_contact_change_group:
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
+				return true;
+			case R.id.roster_contextmenu_muc_edit:
+				new EditMUCDialog(this, userJid).show();
+				return true;
+			case R.id.roster_contextmenu_muc_leave:
+				ConfirmDialog.showMucLeave(this, userJid);
 				return true;
 			}
 		} else {
@@ -521,6 +635,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private void startChatActivity(String user, String userName, String message) {
 		Intent chatIntent = new Intent(this,
 				org.yaxim.androidclient.chat.ChatWindow.class);
+		if (ChatRoomHelper.isRoom(this, user))
+			chatIntent.setClass(this, MUCChatWindow.class);
 		Uri userNameUri = Uri.parse(user);
 		chatIntent.setData(userNameUri);
 		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);
@@ -673,9 +789,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 			setOfflinceContactsVisibility(!mConfig.showOffline);
 			updateRoster();
 			return true;
+			
+		case R.id.menu_markallread:
+			ChatHelper.markAllAsRead(this);
+			return true;
 
 		case android.R.id.home:
-		case R.id.menu_status:
 			new ChangeStatusDialog(this, StatusMode.fromString(mConfig.statusMode),
 					mConfig.statusMessage, mConfig.statusMessageHistory).show();
 			return true;
@@ -693,6 +812,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 		case R.id.menu_about:
 			aboutDialog();
+			return true;
+		case R.id.menu_muc:
+			new EditMUCDialog(this).withNick(mConfig.userName).show();
+			return true;
+		case R.id.menu_send_invitation:
+			startActivity(Intent.createChooser(new Intent(android.content.Intent.ACTION_SEND)
+						.setType("text/plain")
+						.putExtra(Intent.EXTRA_TEXT,
+							XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
+								mConfig.createInvitationCode())),
+						getString(R.string.Menu_send_invitation)));
 			return true;
 
 		}
@@ -718,14 +848,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		String userJid = c.getString(c.getColumnIndexOrThrow(RosterConstants.JID));
 		String userName = c.getString(c.getColumnIndexOrThrow(RosterConstants.ALIAS));
 		Intent i = getIntent();
-		if (i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
+		if (!mHandledIntent && i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
 			// delegate ACTION_SEND to child window and close self
 			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
 			finish();
 		} else {
 			StatusMode s = StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
 			if (s == StatusMode.subscribe)
-				rosterAddRequestedDialog(userJid,
+				rosterAddRequestedDialog(userJid, userName,
 					c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE)));
 			else
 				startChatActivity(userJid, userName, null);
@@ -740,12 +870,24 @@ public class MainWindow extends SherlockExpandableListActivity {
 		boolean spinTheSpinner = false;
 		switch (cs) {
 		case CONNECTING:
+		case LOADING:
 		case DISCONNECTING:
 			spinTheSpinner = true;
 		case DISCONNECTED:
 		case RECONNECT_NETWORK:
 		case RECONNECT_DELAYED:
 		case OFFLINE:
+			if (cs == ConnectionState.DISCONNECTED && PreferenceManager.getDefaultSharedPreferences(this)
+									.contains(PreferenceConstants.INITIAL_CREATE)) {
+				// somehow, cs==OFFLINE is triggered twice, but cs==DISCONNECTED only once
+				String error = serviceAdapter.getConnectionStateString().replace("conflict(-1) ", "");
+				if (error.contains("\n")) // TODO: work around getConnectionStateString() returning two lines
+					error = error.split("\n")[1];
+				if (error.contains("SASL authentication failed")) // TODO: hack to circumvent old smack
+					error = getString(R.string.StartupDialog_auth_failed);
+				Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+				showFirstStartUpDialog();
+			} else
 			if (cs == ConnectionState.OFFLINE) // override with "Offline" string, no error message
 				mConnectingText.setText(R.string.conn_offline);
 			else
@@ -756,6 +898,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case ONLINE:
 			mConnectingText.setVisibility(View.GONE);
 			setSupportProgressBarIndeterminateVisibility(false);
+			PreferenceManager.getDefaultSharedPreferences(this).edit().
+				remove(PreferenceConstants.INITIAL_CREATE).commit();
 		}
 	}
 	
@@ -883,8 +1027,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	// get the name of a roster group from the cursor
 	public String getGroupName(int groupId) {
-		return getPackedItemRow(ExpandableListView.getPackedPositionForGroup(groupId),
-				RosterConstants.GROUP);
+		// default group is "" and MUC group is "\uFFFF"
+		return java.net.URLEncoder.encode(getPackedItemRow(
+					ExpandableListView.getPackedPositionForGroup(groupId),
+						RosterConstants.GROUP));
 	}
 
 	public void restoreGroupsExpanded() {
@@ -894,7 +1040,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String name = getGroupName(count);
 			if (!mGroupsExpanded.containsKey(name))
 				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
-			Log.d(TAG, "restoreGroupsExpanded: " + name + ": " + mGroupsExpanded.get(name));
 			if (mGroupsExpanded.get(name))
 				getExpandableListView().expandGroup(count);
 			else
@@ -902,22 +1047,28 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	private void showFirstStartUpDialog() {
+		if (mFirstStartDialog == null)
+			mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
+		mFirstStartDialog.show();
+	}
 	private void showFirstStartUpDialogIfPrefsEmpty() {
 		Log.i(TAG, "showFirstStartUpDialogIfPrefsEmpty, JID: "
 						+ mConfig.jabberID);
-		if (mConfig.jabberID.length() < 3) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (mConfig.jabberID.length() < 3 || prefs.contains(PreferenceConstants.INITIAL_CREATE)) {
 			// load preference defaults
 			PreferenceManager.setDefaultValues(this, R.layout.mainprefs, false);
 			PreferenceManager.setDefaultValues(this, R.layout.accountprefs, false);
 
 			// prevent a start-up with empty JID
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(this);
 			prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
 
 			// show welcome dialog
-			new FirstStartDialog(this, serviceAdapter).show();
-		}
+			showFirstStartUpDialog();
+		} else
+			XMPPHelper.setNFCInvitation(this, mConfig);
 	}
 
 	public static Intent createIntent(Context context) {
@@ -938,7 +1089,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private static final String OFFLINE_EXCLUSION =
-			RosterConstants.STATUS_MODE + " != " + StatusMode.offline.ordinal();
+			RosterConstants.STATUS_MODE + " > " + StatusMode.offline.ordinal();
 	private static final String countAvailableMembers =
 			"SELECT COUNT() FROM " + RosterProvider.TABLE_ROSTER + " inner_query" +
 					" WHERE inner_query." + RosterConstants.GROUP + " = " +
@@ -997,6 +1148,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		list.remove(RosterProvider.RosterConstants.MUCS);
 		return list;
 	}
 
@@ -1079,6 +1231,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			TextView groupname = (TextView)view.findViewById(R.id.groupname);
 			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).length() == 0) {
 				groupname.setText(mConfig.enableGroups ? R.string.default_group : R.string.all_contacts_group);
+			} else
+			if (cursor.getString(cursor.getColumnIndexOrThrow(RosterConstants.GROUP)).equals(RosterProvider.RosterConstants.MUCS)) {
+				((TextView)view.findViewById(R.id.groupname)).setText(R.string.muc_group);
 			}
 			groupname.setTypeface(mRosterTypeface);
 		}
@@ -1155,4 +1310,5 @@ public class MainWindow extends SherlockExpandableListActivity {
 			updateRoster();
 		}
 	}
+	
 }

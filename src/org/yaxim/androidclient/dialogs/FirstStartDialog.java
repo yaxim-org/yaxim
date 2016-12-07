@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 
@@ -67,6 +68,17 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		mOkButton = getButton(BUTTON_POSITIVE);
 		mOkButton.setEnabled(false);
+
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mainWindow);
+		mEditJabberID.setText(sharedPreferences.getString(PreferenceConstants.JID, ""));
+		mEditPassword.setText(sharedPreferences.getString(PreferenceConstants.PASSWORD, ""));
+		mRepeatPassword.setText(mEditPassword.getText());
+
+		// if create is set, simulate click on checkbox
+		if (sharedPreferences.getBoolean(PreferenceConstants.INITIAL_CREATE, false)) {
+			mCreateAccount.setChecked(true);
+		}
 	}
 
 
@@ -97,7 +109,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			mainWindow.getString(R.string.app_name),
 			new java.util.Random().nextInt());
 
-		savePreferences(jabberID, password, resource);
+		savePreferences(jabberID, password, resource, mCreateAccount.isChecked());
 		cancel();
 	}
 
@@ -112,6 +124,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		} catch (YaximXMPPAdressMalformedException e) {
 			if (jid.length() > 0)
 				mEditJabberID.setError(mainWindow.getString(R.string.Global_JID_malformed));
+			is_ok = false;
 		}
 		if (mEditPassword.length() == 0)
 			is_ok = false;
@@ -129,6 +142,16 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	@Override
 	public void onCheckedChanged(CompoundButton btn,boolean isChecked) {
 		mRepeatPassword.setVisibility(isChecked? View.VISIBLE : View.GONE);
+		if (isChecked) {
+			if (mEditPassword.length() == 0 && mRepeatPassword.length() == 0) {
+				// create secure random password
+				String pw = XMPPHelper.securePassword();
+				Toast.makeText(mainWindow, R.string.StartupDialog_created_password, Toast.LENGTH_SHORT).show();
+				mEditPassword.setText(pw);
+				mRepeatPassword.setText(pw);
+			} else
+				mRepeatPassword.requestFocus();
+		}
 		updateDialog();
 	}
 	public void afterTextChanged(Editable s) {
@@ -142,7 +165,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 
-	private void savePreferences(String jabberID, String password, String resource) {
+	private void savePreferences(String jabberID, String password, String resource, boolean initial_create) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(mainWindow);
 		Editor editor = sharedPreferences.edit();
@@ -151,6 +174,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		editor.putString(PreferenceConstants.PASSWORD, password);
 		editor.putString(PreferenceConstants.RESSOURCE, resource);
 		editor.putString(PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT);
+		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
 		editor.commit();
 	}
 

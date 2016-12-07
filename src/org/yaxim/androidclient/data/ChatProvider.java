@@ -31,10 +31,12 @@ public class ChatProvider extends ContentProvider {
 
 	private static final int MESSAGES = 1;
 	private static final int MESSAGE_ID = 2;
+	private static final int LASTLOG = 3;
 
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "chats", MESSAGES);
 		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
+		URI_MATCHER.addURI(AUTHORITY, "chats/*/#", LASTLOG);
 	}
 
 	private static final String TAG = "yaxim.ChatProvider";
@@ -130,6 +132,11 @@ public class ChatProvider extends ContentProvider {
 		case MESSAGES:
 			qBuilder.setTables(TABLE_NAME);
 			break;
+		case LASTLOG:
+			qBuilder.setTables("(SELECT * FROM " + TABLE_NAME + " WHERE jid='"
+					+ url.getPathSegments().get(1) + "' ORDER BY _id DESC LIMIT "
+					+ url.getPathSegments().get(2) + ")");
+			break;
 		case MESSAGE_ID:
 			qBuilder.setTables(TABLE_NAME);
 			qBuilder.appendWhere("_id=");
@@ -153,7 +160,7 @@ public class ChatProvider extends ContentProvider {
 		if (ret == null) {
 			infoLog("ChatProvider.query: failed");
 		} else {
-			ret.setNotificationUri(getContext().getContentResolver(), url);
+			ret.setNotificationUri(getContext().getContentResolver(), CONTENT_URI);
 		}
 
 		return ret;
@@ -196,7 +203,7 @@ public class ChatProvider extends ContentProvider {
 	private static class ChatDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 5;
+		private static final int DATABASE_VERSION = 6;
 
 		public ChatDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -208,14 +215,15 @@ public class ChatProvider extends ContentProvider {
 				infoLog("creating new chat table");
 			}
 
-			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + ChatConstants._ID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" 
+					+ ChatConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ ChatConstants.DATE + " INTEGER,"
 					+ ChatConstants.DIRECTION + " INTEGER,"
 					+ ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
 					+ ChatConstants.DELIVERY_STATUS + " INTEGER,"
-					+ ChatConstants.PACKET_ID + " TEXT);");
+					+ ChatConstants.PACKET_ID + " TEXT,"
+					+ ChatConstants.RESOURCE + " TEXT DEFAULT NULL);");
 		}
 
 		@Override
@@ -226,6 +234,8 @@ public class ChatProvider extends ContentProvider {
 				db.execSQL("UPDATE " + TABLE_NAME + " SET READ=1");
 			case 4:
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.PACKET_ID + " TEXT");
+			case 5:
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.RESOURCE + " TEXT DEFAULT NULL");
 				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -250,6 +260,7 @@ public class ChatProvider extends ContentProvider {
 		public static final String MESSAGE = "message";
 		public static final String DELIVERY_STATUS = "read"; // SQLite can not rename columns, reuse old name
 		public static final String PACKET_ID = "pid";
+		public static final String RESOURCE = "resource"; // to identify senders in MUCs (among others)
 
 		// boolean mappings
 		public static final int INCOMING = 0;

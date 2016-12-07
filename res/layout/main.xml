@@ -28,5 +28,5 @@
 		android:layout_height="fill_parent"
 		android:gravity="center"
 		android:textSize="18sp"
-		android:text="@string/conn_empty_roster"/>
+		android:text="@string/conn_empty_roster_hints"/>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.IXMPPRosterCallback;
@@ -11,6 +12,8 @@ import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
 
+import org.jivesoftware.smack.packet.Message.Type;
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -20,13 +23,22 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Handler;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.Toast;
 
 public class XMPPService extends GenericService {
 
+	private static final String TAG="yaxim.XMPPService";
+	
 	private AtomicBoolean mConnectionDemanded = new AtomicBoolean(false); // should we try to reconnect?
 	private static final int RECONNECT_AFTER = 5;
 	private static final int RECONNECT_MAXIMUM = 10*60;
@@ -37,12 +49,11 @@ public class XMPPService extends GenericService {
 	private PendingIntent mPAlarmIntent;
 	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
 
-	private ServiceNotification mServiceNotification = null;
-
 	private Smackable mSmackable;
 	private boolean create_account = false;
 	private IXMPPRosterService.Stub mService2RosterConnection;
 	private IXMPPChatService.Stub mServiceChatConnection;
+	private IXMPPMucService.Stub mServiceMucConnection;
 
 	private RemoteCallbackList<IXMPPRosterCallback> mRosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
 	private HashSet<String> mIsBoundTo = new HashSet<String>();
@@ -50,20 +61,22 @@ public class XMPPService extends GenericService {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		super.onBind(intent);
+		userStartedWatching();
+
 		String chatPartner = intent.getDataString();
-		if ((chatPartner != null)) {
+		if(chatPartner != null && chatPartner.endsWith("?chat")) {
+			return mServiceMucConnection;
+		} else if (chatPartner != null) {
 			resetNotificationCounter(chatPartner);
 			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
 		}
-
 		return mService2RosterConnection;
 	}
 
 	@Override
 	public void onRebind(Intent intent) {
-		super.onRebind(intent);
+		userStartedWatching();
 		String chatPartner = intent.getDataString();
 		if ((chatPartner != null)) {
 			mIsBoundTo.add(chatPartner);
@@ -77,6 +90,8 @@ public class XMPPService extends GenericService {
 		if ((chatPartner != null)) {
 			mIsBoundTo.remove(chatPartner);
 		}
+		userStoppedWatching();
+
 		return true;
 	}
 
@@ -86,6 +101,7 @@ public class XMPPService extends GenericService {
 
 		createServiceRosterStub();
 		createServiceChatStub();
+		createServiceMucStub();
 
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
@@ -101,8 +117,6 @@ public class XMPPService extends GenericService {
 			Intent xmppServiceIntent = new Intent(this, XMPPService.class);
 			startService(xmppServiceIntent);
 		}
-
-		mServiceNotification = ServiceNotification.getInstance();
 	}
 
 	@Override
@@ -121,6 +135,7 @@ public class XMPPService extends GenericService {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		logInfo("onStartCommand(), mConnectionDemanded=" + mConnectionDemanded.get());
+		logInfo("    intent=" + intent);
 		if (intent != null) {
 			create_account = intent.getBooleanExtra("create_account", false);
 			
@@ -137,11 +152,26 @@ public class XMPPService extends GenericService {
 				return START_STICKY;
 			} else
 			if ("ping".equals(intent.getAction())) {
-				if (mSmackable != null) {
+				if (mSmackable != null && mSmackable.isAuthenticated()) {
 					mSmackable.sendServerPing();
 					return START_STICKY;
 				}
-				// if not yet connected, fall through to doConnect()
+				// if not authenticated, fall through to doConnect()
+			} else
+			if ("respond".equals(intent.getAction())) {
+				// clear notifications and send a message from Android Auto/Wear event
+				String jid = intent.getDataString();
+				Bundle reply = android.support.v4.app.RemoteInput.getResultsFromIntent(intent);
+				Log.d(TAG, "respond action: " + jid + " "  + reply);
+				String replystring = null;
+				if (reply != null) {
+					replystring = reply.getCharSequence("voicereply").toString();
+					Log.d(TAG, "got reply: " + replystring);
+					mSmackable.sendMessage(jid, replystring);
+				}
+				org.yaxim.androidclient.data.ChatHelper.markAsRead(this, jid);
+				clearNotification(jid);
+				return START_STICKY;
 			}
 		}
 		
@@ -172,6 +202,52 @@ public class XMPPService extends GenericService {
 			
 			public void clearNotifications(String Jid) throws RemoteException {
 				clearNotification(Jid);
+			}
+		};
+	}
+	
+	private void createServiceMucStub() {
+		mServiceMucConnection = new IXMPPMucService.Stub() {
+			private void fail(String error) {
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						error, Toast.LENGTH_LONG);
+				toast.show();
+			}
+			@Override
+			public void sendMessage(String room, String message)
+					throws RemoteException {
+				if(mSmackable!=null)
+					mSmackable.sendMucMessage(room, message);
+				else
+					shortToastNotify(getString(R.string.Global_authenticate_first));
+			}
+			@Override
+			public void syncDbRooms() throws RemoteException {
+				if(mSmackable!=null)
+					new Thread() {
+						@Override
+						public void run() {
+							mSmackable.syncDbRooms();
+						}
+					}.start();
+			}
+			@Override
+			public boolean inviteToRoom(String contactJid, String roomJid) {
+				if(mSmackable!=null)
+					return mSmackable.inviteToRoom(contactJid, roomJid);
+				else {
+					shortToastNotify(getString(R.string.Global_authenticate_first));
+					return false;
+				}
+			}
+			@Override
+			public List<ParcelablePresence> getUserList(String jid) throws RemoteException {
+				if(mSmackable!=null)
+					return mSmackable.getUserList(jid);
+				else {
+					shortToastNotify(getString(R.string.Global_authenticate_first));
+					return null;
+				}
 			}
 		};
 	}
@@ -212,10 +288,10 @@ public class XMPPService extends GenericService {
 				}
 			}
 
-			public void addRosterItem(String user, String alias, String group)
+			public void addRosterItem(String user, String alias, String group, String token)
 					throws RemoteException {
 				try {
-					mSmackable.addRosterItem(user, alias, group);
+					mSmackable.addRosterItem(user, alias, group, token);
 				} catch (YaximXMPPException e) {
 					shortToastNotify(e);
 				}
@@ -313,6 +389,7 @@ public class XMPPService extends GenericService {
 		getContentResolver().notifyChange(RosterProvider.GROUPS_URI, null);
 		// end-of-HACK
 
+		Log.d(TAG, "updateServiceNotification: " + cs);
 		broadcastConnectionState(cs);
 
 		// do not show notification if not a foreground service
@@ -320,27 +397,27 @@ public class XMPPService extends GenericService {
 			return;
 
 		if (cs == ConnectionState.OFFLINE) {
-			mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
+			stopForeground(true);
 			return;
 		}
-		Notification n = new Notification(R.drawable.ic_status_offline, null,
-				System.currentTimeMillis());
-		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR | Notification.FLAG_ONLY_ALERT_ONCE;
 
 		Intent notificationIntent = new Intent(this, MainWindow.class);
 		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		n.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		if (cs == ConnectionState.ONLINE)
-			n.icon = R.drawable.ic_online;
+		Notification n = new NotificationCompat.Builder(this)
+			.setSmallIcon((cs == ConnectionState.ONLINE) ? R.drawable.ic_online : R.drawable.ic_offline)
+			.setLargeIcon(android.graphics.BitmapFactory.decodeResource(getResources(), R.drawable.icon))
+			.setWhen(mSmackable.getConnectionStateTimestamp())
+			.setOngoing(true)
+			.setOnlyAlertOnce(true)
+			.setContentIntent(PendingIntent.getActivity(this, 0, notificationIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT))
+			.setContentTitle(getString(R.string.conn_title, mConfig.jabberID))
+			.setContentText(getStatusTitle(cs))
+			.build();
 
-		String title = getString(R.string.conn_title, mConfig.jabberID);
-		String message = getStatusTitle(cs);
-		n.setLatestEventInfo(this, title, message, n.contentIntent);
 
-		mServiceNotification.showNotification(this, SERVICE_NOTIFICATION,
-				n);
+		startForeground(SERVICE_NOTIFICATION, n);
 	}
 
 	private void doConnect() {
@@ -419,7 +496,8 @@ public class XMPPService extends GenericService {
 	private void connectionClosed() {
 		logInfo("connectionClosed.");
 		mReconnectInfo = "";
-		mServiceNotification.hideNotification(this, SERVICE_NOTIFICATION);
+		stopForeground(true);
+		mSmackable.requestConnectionState(ConnectionState.OFFLINE);
 	}
 
 	public void manualDisconnect() {
@@ -444,27 +522,21 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
-			public void newMessage(String from, String message, boolean silent_notification) {
-				logInfo("notification: " + from);
-				notifyClient(from, mSmackable.getNameForJID(from), message, !mIsBoundTo.contains(from), silent_notification, false);
-			}
-
-			public void messageError(final String from, final String error, final boolean silent_notification) {
-				logInfo("error notification: " + from);
+			public void notifyMessage(final String[] from, final String message,
+					final boolean silent_notification, final Type msgType) {
+				logInfo("notification: " + from +" with type: "+msgType.name());
 				mMainHandler.post(new Runnable() {
 					public void run() {
 						// work around Toast fallback for errors
-						notifyClient(from, mSmackable.getNameForJID(from), error,
-							!mIsBoundTo.contains(from), silent_notification, true);
+						notifyClient(from, mSmackable.getNameForJID(from[0]), message,
+							!mIsBoundTo.contains(from[0]), silent_notification, msgType);
 					}});
 				}
-
-			public void rosterChanged() {
-			}
 
 			public void connectionStateChanged() {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
+				updateServiceNotification();
 				switch (mSmackable.getConnectionState()) {
 				//case OFFLINE:
 				case DISCONNECTED:
@@ -473,8 +545,32 @@ public class XMPPService extends GenericService {
 				case ONLINE:
 					mReconnectTimeout = RECONNECT_AFTER;
 				default:
-					updateServiceNotification();
 				}
+			}
+
+			@Override
+			public void mucInvitationReceived(String room, String password, String body) {
+				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
+				intent.setAction("android.intent.action.VIEW");
+				String uri = "xmpp:" + room;
+				Builder b = new Builder();
+				b.appendQueryParameter("join", null);
+				if (password != null)
+					b.appendQueryParameter("password", password);
+				b.appendQueryParameter("body", body);
+				intent.setData(Uri.parse(uri + b.toString()));
+				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
+						intent, Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
+						 .setContentTitle(getString(R.string.muc_invitation_to, room))
+						 .setContentText(body)
+						 .setSmallIcon(R.drawable.ic_action_group_dark)
+						 .setTicker(body)
+						 .setContentIntent(pi)
+						 .setAutoCancel(true)
+						 .build();
+				mNotificationMGR.notify(lastNotificationId, invNotify);
+				lastNotificationId += 1;
 			}
 		});
 	}
@@ -491,5 +587,24 @@ public class XMPPService extends GenericService {
 			}
 			doConnect();
 		}
+	}
+
+	private int number_of_eyes = 0;
+	private void userStartedWatching() {
+		number_of_eyes += 1;
+		logInfo("userStartedWatching: " + number_of_eyes);
+		if (mSmackable != null)
+			mSmackable.setUserWatching(true);
+	}
+
+	private void userStoppedWatching() {
+		number_of_eyes -= 1;
+		logInfo("userStoppedWatching: " + number_of_eyes);
+		// delay deactivation by 3s, in case we happen to be immediately re-bound
+		mMainHandler.postDelayed(new Runnable() {
+			public void run() {
+				if (mSmackable != null && number_of_eyes == 0)
+					mSmackable.setUserWatching(false);
+			}}, 3000);
 	}
 }

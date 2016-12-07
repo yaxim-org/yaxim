@@ -25,9 +25,9 @@ public class XMPPRosterServiceAdapter {
 		}
 	}
 
-	public void addRosterItem(String user, String alias, String group) {
+	public void addRosterItem(String user, String alias, String group, String token) {
 		try {
-			xmppServiceStub.addRosterItem(user, alias, group);
+			xmppServiceStub.addRosterItem(user, alias, group, token);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -129,7 +129,7 @@ public class XMPPRosterServiceAdapter {
 	}
 
 	public boolean isAuthenticated() {
-		return getConnectionState() == ConnectionState.ONLINE;
+		return getConnectionState() == ConnectionState.ONLINE || getConnectionState() == ConnectionState.LOADING;
 	}
 
 	public void sendPresenceRequest(String user, String type) {
