@@ -1133,7 +1133,7 @@ public class SmackableImp implements Smackable {
 	private class PongTimeoutAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 			debugLog("Ping: timeout for " + mPingID);
-			onDisconnected("Ping timeout");
+			onDisconnected(mService.getString(R.string.conn_ping_timeout));
 		}
 	}
 
@@ -1147,7 +1147,7 @@ public class SmackableImp implements Smackable {
 				Iterator<MultiUserChat> muc_it = multiUserChats.values().iterator();
 				long ts = System.currentTimeMillis();
 				ContentValues cvR = new ContentValues();
-				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, "Ping timeout");
+				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_ping_timeout));
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 				cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 				while (muc_it.hasNext()) {
@@ -1727,7 +1727,7 @@ public class SmackableImp implements Smackable {
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
-			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, "Error: " + e.getLocalizedMessage());
+			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, e.getLocalizedMessage()));
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 			upsertRoster(cvR, room);
 			return false;
