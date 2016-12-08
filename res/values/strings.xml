@@ -309,17 +309,22 @@
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>
+	<string name="action_settings">Settings</string>
+
+	<!-- MUC strings -->
 	<string name="muc_add">Add Room</string>
 	<string name="muc_remove">Remove Room</string>
-    <string name="title_activity_muc_invite">Chat Room Invitation</string>
-    <string name="action_settings">Settings</string>
-    <string name="muc_invitation_to">Invitation to %s</string>
-    <string name="muc_synchronizing">Synchronizing...</string>
-    <string name="chat_muc_userlist">Chat Room Participants (%s)</string>
-    <string name="muc_kicked">Kicked: %s</string>
-    <string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
-    <string name="muc_banned">Banned: %s</string>
-    <string name="muc_banned_by">Banned by %1$s: %2$s</string>
-    
+	<string name="muc_jid_hint">Chat room JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Chat room password (optional)</string>
+	<string name="title_activity_muc_invite">Chat Room Invitation</string>
+	<string name="muc_invitation_to">Invitation to %s</string>
+	<string name="muc_synchronizing">Synchronizing...</string>
+	<string name="chat_muc_userlist">Chat Room Participants (%s)</string>
+	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
 
 </resources>
