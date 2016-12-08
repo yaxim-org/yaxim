@@ -428,6 +428,7 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.requestConnectionState(ConnectionState.ONLINE, create_account);
+		create_account = false;
 	}
 
 	private void broadcastConnectionState(ConnectionState cs) {
