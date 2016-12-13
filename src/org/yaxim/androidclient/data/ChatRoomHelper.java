@@ -89,6 +89,17 @@ public class ChatRoomHelper {
 		return best;
 	}
 
+	public static String getRoomName(Context ctx, String jid) {
+		// query the DB as we do not have the room name in memory
+		Cursor c = ctx.getContentResolver().query(RosterProvider.CONTENT_URI, new String[] { RosterConstants.ALIAS },
+				RosterConstants.JID + " = ?", new String[] { jid }, null);
+		String result = jid;
+		if (c.moveToFirst())
+			result = c.getString(0);
+		c.close();
+		return result;
+	}
+
 	public static RoomInfo getRoomInfo(Context ctx, String jid) {
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI,
 				new String[] { RosterConstants._ID, RosterConstants.JID,

@@ -937,14 +937,7 @@ public class SmackableImp implements Smackable {
 		if (null != re && null != re.getName() && re.getName().length() > 0) {
 			return re.getName();
 		} else if (mucJIDs.contains(jid)) {
-			// query the DB as we do not have the room name in memory
-			Cursor c = mContentResolver.query(RosterProvider.CONTENT_URI, new String[] { RosterConstants.ALIAS },
-					RosterConstants.JID + " = ?", new String[] { jid }, null);
-			String result = jid;
-			if (c.moveToFirst())
-				result = c.getString(0);
-			c.close();
-			return result;
+			return ChatRoomHelper.getRoomName(mService, jid);
 		} else {
 			return jid;
 		}			
