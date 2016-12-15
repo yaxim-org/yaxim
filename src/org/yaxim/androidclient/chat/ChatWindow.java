@@ -338,7 +338,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	private void setContactFromUri() {
 		Intent i = getIntent();
-		mWithJabberID = i.getDataString().toLowerCase();
+		mWithJabberID = i.getDataString(); // TODO: lowercase bare-JID, stringprep-normalize
 		Log.d(TAG, "setting contact from URI: "+mWithJabberID);
 		if (i.hasExtra(INTENT_EXTRA_USERNAME)) {
 			mUserScreenName = i.getExtras().getString(INTENT_EXTRA_USERNAME);
