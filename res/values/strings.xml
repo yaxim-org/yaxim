@@ -45,6 +45,12 @@
 	<string name="notification_anonymous_message">Message received</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Error while sending message!</string>
