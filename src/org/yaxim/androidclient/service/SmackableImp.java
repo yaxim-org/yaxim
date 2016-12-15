@@ -933,18 +933,16 @@ public class SmackableImp implements Smackable {
 	}
 	
 	public String getNameForJID(String jid) {
+		if (jid.contains("/")) { // MUC-PM
+			String[] jid_parts = jid.split("/", 2);
+			return String.format("%s (%s)", jid_parts[1],
+					ChatRoomHelper.getRoomName(mService, jid_parts[0]));
+		}
 		RosterEntry re = mRoster.getEntry(jid);
 		if (null != re && null != re.getName() && re.getName().length() > 0) {
 			return re.getName();
 		} else if (mucJIDs.contains(jid)) {
-			// query the DB as we do not have the room name in memory
-			Cursor c = mContentResolver.query(RosterProvider.CONTENT_URI, new String[] { RosterConstants.ALIAS },
-					RosterConstants.JID + " = ?", new String[] { jid }, null);
-			String result = jid;
-			if (c.moveToFirst())
-				result = c.getString(0);
-			c.close();
-			return result;
+			return ChatRoomHelper.getRoomName(mService, jid);
 		} else {
 			return jid;
 		}			
@@ -1028,13 +1026,13 @@ public class SmackableImp implements Smackable {
 	}
 
 	private String getBareJID(String from) {
-		String[] res = from.split("/");
+		String[] res = from.split("/", 2);
 		return res[0].toLowerCase();
 	}
 
 	private String[] getJabberID(String from) {
 		if(from.contains("/")) {
-			String[] res = from.split("/");
+			String[] res = from.split("/", 2);
 			return new String[] { res[0], res[1] };
 		} else {
 			return new String[] {from, ""};
@@ -1133,7 +1131,7 @@ public class SmackableImp implements Smackable {
 	private class PongTimeoutAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 			debugLog("Ping: timeout for " + mPingID);
-			onDisconnected("Ping timeout");
+			onDisconnected(mService.getString(R.string.conn_ping_timeout));
 		}
 	}
 
@@ -1147,7 +1145,7 @@ public class SmackableImp implements Smackable {
 				Iterator<MultiUserChat> muc_it = multiUserChats.values().iterator();
 				long ts = System.currentTimeMillis();
 				ContentValues cvR = new ContentValues();
-				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, "Ping timeout");
+				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_ping_timeout));
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 				cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 				while (muc_it.hasNext()) {
@@ -1324,6 +1322,14 @@ public class SmackableImp implements Smackable {
 					boolean is_muc = (msg.getType() == Message.Type.groupchat);
 					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
 						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
+
+					// handle MUC-PMs
+					if (!is_muc && mucJIDs.contains(fromJID[0])) {
+						is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
+						fromJID[0] = fromJID[0] + "/" + fromJID[1];
+						fromJID[1] = null;
+						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
+					}
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id);
@@ -1727,7 +1733,7 @@ public class SmackableImp implements Smackable {
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
-			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, "Error: " + e.getLocalizedMessage());
+			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, e.getLocalizedMessage()));
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 			upsertRoster(cvR, room);
 			return false;

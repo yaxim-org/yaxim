@@ -202,7 +202,7 @@ public abstract class GenericService extends Service {
 		PendingIntent msgResponsePendingIntent = PendingIntent.getService(this, 0,
 					msgResponseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
-			.setLabel("Reply")
+			.setLabel(getString(R.string.notification_reply))
 			.build();
 		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
 			.setReadPendingIntent(msgHeardPendingIntent)
@@ -222,12 +222,14 @@ public abstract class GenericService extends Service {
 		mNotification = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
+			.setStyle(new NotificationCompat.BigTextStyle().bigText(message))
 			.setTicker(ticker)
 			.setSmallIcon(R.drawable.sb_message)
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)
 			.setAutoCancel(true)
-			.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Mark Read", msgHeardPendingIntent)
+			.addAction(android.R.drawable.ic_menu_close_clear_cancel,
+					getString(R.string.notification_mark_read), msgHeardPendingIntent)
 			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
 			.extend(new CarExtender().setUnreadConversation(ucb.build()))
 			.build();

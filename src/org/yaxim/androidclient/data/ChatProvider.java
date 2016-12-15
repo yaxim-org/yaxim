@@ -32,11 +32,13 @@ public class ChatProvider extends ContentProvider {
 	private static final int MESSAGES = 1;
 	private static final int MESSAGE_ID = 2;
 	private static final int LASTLOG = 3;
+	private static final int LASTLOG_MUCPM = 4;
 
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "chats", MESSAGES);
 		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
 		URI_MATCHER.addURI(AUTHORITY, "chats/*/#", LASTLOG);
+		URI_MATCHER.addURI(AUTHORITY, "chats/*/*/#", LASTLOG_MUCPM);
 	}
 
 	private static final String TAG = "yaxim.ChatProvider";
@@ -136,6 +138,11 @@ public class ChatProvider extends ContentProvider {
 			qBuilder.setTables("(SELECT * FROM " + TABLE_NAME + " WHERE jid='"
 					+ url.getPathSegments().get(1) + "' ORDER BY _id DESC LIMIT "
 					+ url.getPathSegments().get(2) + ")");
+			break;
+		case LASTLOG_MUCPM:
+			qBuilder.setTables("(SELECT * FROM " + TABLE_NAME + " WHERE jid='"
+					+ url.getPathSegments().get(1) + "/" + url.getPathSegments().get(2) + "' ORDER BY _id DESC LIMIT "
+					+ url.getPathSegments().get(3) + ")");
 			break;
 		case MESSAGE_ID:
 			qBuilder.setTables(TABLE_NAME);

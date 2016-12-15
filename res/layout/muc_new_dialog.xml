@@ -17,14 +17,16 @@
 	android:visibility="gone"
 	/>
     <EditText
-        android:id="@+id/muc_new_jid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+	android:id="@+id/muc_new_jid"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
 	android:layout_marginBottom="15dp"
-        android:hint="Room-JID"
-        android:inputType="textEmailAddress" >
+	android:singleLine="true"
+	android:hint="@string/muc_jid_hint"
+	android:contentDescription="@string/muc_jid_hint"
+	android:inputType="textEmailAddress" >
 
-        <requestFocus />
+	<requestFocus />
     </EditText>
 
     <TextView
@@ -35,17 +37,21 @@
 	android:visibility="gone"
 	/>
     <EditText
-        android:id="@+id/muc_new_nick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+	android:id="@+id/muc_new_nick"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
 	android:layout_marginBottom="15dp"
-        android:hint="Nickname" />
+	android:singleLine="true"
+	android:contentDescription="@string/muc_nickname_hint"
+	android:hint="@string/muc_nickname_hint" />
 
     <EditText
-        android:id="@+id/muc_new_pw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword" />
+	android:id="@+id/muc_new_pw"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:singleLine="true"
+	android:contentDescription="@string/muc_password_hint"
+	android:hint="@string/muc_password_hint"
+	android:inputType="textPassword" />
 
 </LinearLayout>

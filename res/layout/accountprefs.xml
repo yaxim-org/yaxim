@@ -19,7 +19,16 @@
 			android:summary="@string/account_jabberPW_sum" 
 		 />
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/account_settings_title">
+	<PreferenceCategory android:title="@string/account_options_title">
+		<CheckBoxPreference
+			android:id="@+id/carbons"
+			android:key="carbons"
+			android:defaultValue="true"
+			android:title="@string/carbons_title"
+			android:summary="@string/carbons_summ"
+		/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/account_options_advanced">
 		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_resource"
 			android:key="account_resource"
@@ -38,17 +47,6 @@
 			android:singleLine="true"
 			android:numeric="integer|signed"
 		/>	
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/account_options_title">
-		<CheckBoxPreference
-			android:id="@+id/carbons"
-			android:key="carbons"
-			android:defaultValue="true"
-			android:title="@string/carbons_title"
-			android:summary="@string/carbons_summ"
-		/>
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/account_options_advanced">
 		<org.yaxim.androidclient.preferences.EditTextPreferenceWithValue
 			android:id="@+id/account_customserver"
 			android:key="account_customserver"
