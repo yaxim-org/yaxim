@@ -89,7 +89,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private int mChatFontSize;
 	private ActionBar actionBar;
 	private ListView mListView;
-	private ChatWindowAdapter mChatAdapter;
+	protected ChatWindowAdapter mChatAdapter;
 
 	volatile boolean mMarkRunnableQuit = false;
 	private Runnable mMarkRunnable = new Runnable() {
@@ -135,7 +135,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		// Setup the actual chat view
 		mListView = (ListView) findViewById(android.R.id.list);
 		mChatAdapter = new ChatWindowAdapter(null, PROJECTION_FROM, PROJECTION_TO,
-				mWithJabberID, mUserScreenName);
+				mWithJabberID, null);
 		mListView.setAdapter(mChatAdapter);
 		mListView.setOnScrollListener(this);
 
@@ -515,7 +515,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 			}
 
-			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status);
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status, mScreenName);
 			return row;
 		}
 	}
@@ -542,7 +542,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 
 		void populateFrom(String date, boolean from_me, String from, String message,
-				int delivery_status) {
+				int delivery_status, String highlight_text) {
 			getDateView().setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
@@ -592,11 +592,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
+			int style = 0;
 			boolean slash_me = message.startsWith("/me ");
-			if (slash_me)
+			if (slash_me) {
 				message = String.format("\u25CF %s %s", from, message.substring(4));
+				style |= android.graphics.Typeface.ITALIC;
+			}
+			if (highlight_text != null && message.toLowerCase().contains(highlight_text.toLowerCase()))
+				style |=  android.graphics.Typeface.BOLD;
 			getMessageView().setText(message.replaceFirst("^/me ", from));
-			getMessageView().setTypeface(null, slash_me ? android.graphics.Typeface.ITALIC : 0);
+			getMessageView().setTypeface(null, style);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
