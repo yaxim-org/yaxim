@@ -30,6 +30,14 @@ public class XMPPMucServiceAdapter {
 		}.start();
 	}
 	
+	public String getMyMucNick() {
+		try {
+			return xmppServiceStub.getMyMucNick(this.jabberID);
+		} catch (RemoteException e) {
+			return null;
+		}
+	}
+
 	public List<ParcelablePresence> getUserList() {
 		try {
 			return xmppServiceStub.getUserList(this.jabberID);

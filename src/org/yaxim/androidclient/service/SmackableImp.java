@@ -1407,7 +1407,8 @@ public class SmackableImp implements Smackable {
 		upsertRoster(cvR, room);
 	}
 
-	private String getMyMucNick(String jid) {
+	@Override
+	public String getMyMucNick(String jid) {
 		MultiUserChat muc = multiUserChats.get(jid);
 		if (muc != null && muc.getNickname() != null)
 			return muc.getNickname();
