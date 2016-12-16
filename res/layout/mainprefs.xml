@@ -88,7 +88,14 @@
 			android:defaultValue="true"
 		/>
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/preftitle_boot">
+	<PreferenceCategory android:title="@string/preftitle_general">
+		<CheckBoxPreference
+			android:id="@+id/dndInSilent"
+			android:key="status_dndsilent"
+			android:title="@string/pref_dnd_when_silent"
+			android:summary="@string/pref_dnd_when_silent_summ"
+			android:defaultValue="true"
+		/>
 		<CheckBoxPreference
 			android:id="@+id/showOffline"
 			android:key="showOffline"

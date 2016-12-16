@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -30,6 +31,8 @@ import android.widget.TextView;
 import android.widget.AutoCompleteTextView;
 
 public class ChangeStatusDialog extends AlertDialog {
+
+	private final CheckBox mDndSilent;
 
 	private final Spinner mStatus;
 
@@ -50,7 +53,7 @@ public class ChangeStatusDialog extends AlertDialog {
 
 		View group = inflater.inflate(R.layout.statusview, null, false);
 
-		List<StatusMode> modes = new ArrayList<StatusMode>(
+		final List<StatusMode> modes = new ArrayList<StatusMode>(
 				Arrays.asList(StatusMode.values()));
 		// the user can not set statusmode "subscribe", it is only for incoming presences
 		modes.remove(StatusMode.unknown);
@@ -62,16 +65,25 @@ public class ChangeStatusDialog extends AlertDialog {
 			}
 		});
 
+		mDndSilent = (CheckBox) group.findViewById(R.id.statusview_dnd_when_silent);
+		mDndSilent.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				mStatus.setEnabled(true);
+				setSpinnerSelection(modes, StatusMode.fromString(mConfig.statusMode));
+				mDndSilent.setVisibility(View.GONE);
+			}
+		});
 		mStatus = (Spinner) group.findViewById(R.id.statusview_spinner);
 		StatusModeAdapter mStatusAdapter;
 		mStatusAdapter = new StatusModeAdapter(context, R.layout.status_spinner_item, modes);
 		mStatus.setAdapter(mStatusAdapter);
 
-		StatusMode status_mode = StatusMode.fromString(mConfig.statusMode);
-		for (int i = 0; i < modes.size(); i++) {
-			if (modes.get(i).equals(status_mode)) {
-				mStatus.setSelection(i);
-			}
+		setSpinnerSelection(modes, mConfig.getPresenceMode());
+
+		if (mConfig.smartAwayMode != null) {
+			mStatus.setEnabled(false);
+			mDndSilent.setVisibility(View.VISIBLE);
+			mDndSilent.setChecked(true);
 		}
 
 		mMessage = (AutoCompleteTextView) group.findViewById(R.id.statusview_message);
@@ -97,6 +109,14 @@ public class ChangeStatusDialog extends AlertDialog {
 				(OnClickListener) null);
 	}
 
+	private void setSpinnerSelection(List<StatusMode> modes, StatusMode status_mode) {
+		for (int i = 0; i < modes.size(); i++) {
+			if (modes.get(i).equals(status_mode)) {
+				mStatus.setSelection(i);
+			}
+		}
+	}
+
 	private void setAndSaveStatus() {
 		StatusMode statusMode = (StatusMode) mStatus.getSelectedItem();
 		String message = mMessage.getText().toString();
@@ -104,8 +124,8 @@ public class ChangeStatusDialog extends AlertDialog {
 		// save update into prefs
 		SharedPreferences.Editor prefedit = PreferenceManager
 				.getDefaultSharedPreferences(mContext).edit();
-		// do not save "offline" to prefs, or else!
-		if (statusMode != StatusMode.offline)
+		// do not save "offline" to prefs, do not save when DND-silent is enabled
+		if (statusMode != StatusMode.offline && !mDndSilent.isChecked())
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		if (!message.equals(mConfig.statusMessage)) {
 			List<String> smh = new ArrayList<String>(java.util.Arrays.asList(mConfig.statusMessageHistory));
@@ -115,9 +135,12 @@ public class ChangeStatusDialog extends AlertDialog {
 			prefedit.putString(PreferenceConstants.STATUS_MESSAGE_HISTORY, smh_joined);
 		}
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
+		// check if DND-silent was disabled by the user
+		if (!mDndSilent.isChecked() && mConfig.smartAwayMode != null) {
+			prefedit.putBoolean(PreferenceConstants.STATUS_DNDSILENT, false);
+			mConfig.smartAwayMode = null;
+		}
 		prefedit.commit();
-		// on a manual status update, reset auto-away
-		mConfig.smartAwayMode = null;
 
 		mContext.updateStatus(statusMode);
 	}
