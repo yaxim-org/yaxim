@@ -16,7 +16,7 @@
 	android:layout_marginBottom="15dp"
 	android:visibility="gone"
 	/>
-    <EditText
+    <org.yaxim.androidclient.widget.AutoCompleteJidEdit
 	android:id="@+id/muc_new_jid"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -24,10 +24,8 @@
 	android:singleLine="true"
 	android:hint="@string/muc_jid_hint"
 	android:contentDescription="@string/muc_jid_hint"
-	android:inputType="textEmailAddress" >
-
-	<requestFocus />
-    </EditText>
+	android:inputType="textEmailAddress"
+	/>
 
     <TextView
 	android:id="@+id/muc_status"
