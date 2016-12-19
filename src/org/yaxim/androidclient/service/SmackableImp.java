@@ -1271,6 +1271,12 @@ public class SmackableImp implements Smackable {
 								changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 							}
 						}
+
+						// ignore carbon copies of OTR messages sent by broken clients
+						if (msg.getBody() != null && msg.getBody().startsWith("?OTR")) {
+							Log.i(TAG, "Ignoring OTR carbon from " + msg.getFrom() + " to " + msg.getTo());
+							return;
+						}
 					}
 
 					// check for jabber MUC invitation
