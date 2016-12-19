@@ -640,7 +640,7 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
 			if (need_bind) {
 				mStreamHandler.notifyInitialLogin();
-				cleanupMUCs();
+				cleanupMUCs(true);
 				setStatusFromConfig();
 				mLastOnline = System.currentTimeMillis();
 			}
@@ -1588,7 +1588,7 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
-	private synchronized void cleanupMUCs() {
+	private synchronized void cleanupMUCs(boolean set_offline) {
 		// get a fresh MUC list
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
 				new String[] { RosterProvider.RosterConstants.JID },
@@ -1607,11 +1607,13 @@ public class SmackableImp implements Smackable {
 		mContentResolver.delete(RosterProvider.CONTENT_URI,
 				exclusion.toString(),
 				new String[] { RosterProvider.RosterConstants.MUCS });
-		// update all other MUCs as offline
-		ContentValues values = new ContentValues();
-		values.put(RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
-		mContentResolver.update(RosterProvider.CONTENT_URI, values, RosterProvider.RosterConstants.GROUP + " = ?",
-				new String[] { RosterProvider.RosterConstants.MUCS });
+		if (set_offline) {
+			// update all other MUCs as offline
+			ContentValues values = new ContentValues();
+			values.put(RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+			mContentResolver.update(RosterProvider.CONTENT_URI, values, RosterProvider.RosterConstants.GROUP + " = ?",
+					new String[] { RosterProvider.RosterConstants.MUCS });
+		}
 	}
 
 	public synchronized void syncDbRooms() {
@@ -1663,6 +1665,7 @@ public class SmackableImp implements Smackable {
 				quitRoom(room);
 			}
 		}
+		cleanupMUCs(false);
 	}
 	
 	protected void handleMucInvitation(Message msg) {
