@@ -257,7 +257,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public boolean openChatWithJid(String jid, String text) {
 		Log.d(TAG, "openChatWithJid: " + jid);
 
-		List<String[]> contacts = getRosterContacts();
+		List<String[]> contacts = ChatHelper.getRosterContacts(this, ChatHelper.ROSTER_FILTER_ALL);
 		for (String[] c : contacts) {
 			if (jid.equalsIgnoreCase(c[0])) {
 				// found it
@@ -1129,25 +1129,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 		cursor.close();
 		list.remove(RosterProvider.RosterConstants.MUCS);
-		return list;
-	}
-
-	public List<String[]> getRosterContacts() {
-		// we want all, online and offline
-		List<String[]> list = new ArrayList<String[]>();
-		Cursor cursor = getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
-					null, null, RosterConstants.ALIAS);
-		int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);
-		int aliasIdx = cursor.getColumnIndex(RosterConstants.ALIAS);
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			String jid = cursor.getString(JIDIdx);
-			String alias = cursor.getString(aliasIdx);
-			if ((alias == null) || (alias.length() == 0)) alias = jid;
-			list.add(new String[] { jid, alias });
-			cursor.moveToNext();
-		}
-		cursor.close();
 		return list;
 	}
 
