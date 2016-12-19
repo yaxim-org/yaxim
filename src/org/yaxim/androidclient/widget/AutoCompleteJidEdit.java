@@ -2,7 +2,10 @@ package org.yaxim.androidclient.widget;
 
 import org.yaxim.androidclient.R;
 
+import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeSet;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,7 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 public class AutoCompleteJidEdit extends AutoCompleteTextView {
-	private String[] servers;
+	private String server_main;
+	private TreeSet<String> servers;
 	private String userpart = null;
 	private ArrayAdapter<String> mServerAdapter;
 	ForegroundColorSpan span;
@@ -22,13 +26,26 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 
 	public AutoCompleteJidEdit(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
-		servers = getResources().getStringArray(R.array.xmpp_servers); // XXX hard-coded array reference
 		mServerAdapter = new ArrayAdapter<String>(ctx,
 				android.R.layout.simple_dropdown_item_1line,
-				new ArrayList<String>(servers.length));
+				new ArrayList<String>());
 		setAdapter(mServerAdapter);
 		span = new ForegroundColorSpan(getCurrentHintTextColor());
 		setThreshold(3);
+	}
+
+	public void setServerList(int static_elents_id) {
+		String[] static_list = getResources().getStringArray(static_elents_id);
+		servers = new TreeSet<String>(Arrays.asList(static_list));
+		server_main = static_list[0];
+	}
+
+	public void setServerList(String first, Collection<String> dyn_elements, int static_elents_id) {
+		setServerList(static_elents_id);
+		if (dyn_elements != null)
+			servers.addAll(dyn_elements);
+		if (first != null)
+			server_main = first;
 	}
 
 	protected void onAttachedToWindow() {
@@ -80,7 +97,7 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 				auto_appended = true;
 				ignore_selection_change = true;
 				// append first server from our list
-				e.append("@" + servers[0]);
+				e.append("@" + server_main);
 				atpos = len;
 				AutoCompleteJidEdit.this.setSelection(atpos);
 			}
