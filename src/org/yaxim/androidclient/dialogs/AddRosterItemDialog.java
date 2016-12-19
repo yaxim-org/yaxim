@@ -1,9 +1,12 @@
 package org.yaxim.androidclient.dialogs;
 
 import org.yaxim.androidclient.XMPPRosterServiceAdapter;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.XMPPHelper;
+import org.yaxim.androidclient.widget.AutoCompleteJidEdit;
 import org.yaxim.androidclient.MainWindow;
+import org.yaxim.androidclient.YaximApplication;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,7 +27,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 	private XMPPRosterServiceAdapter mServiceAdapter;
 
 	private Button okButton;
-	private EditText userInputField;
+	private AutoCompleteJidEdit userInputField;
 	private EditText aliasInputField;
 	private String generatedAlias = "";
 	private String mToken = null;
@@ -43,7 +46,9 @@ public class AddRosterItemDialog extends AlertDialog implements
 		View group = inflater.inflate(R.layout.addrosteritemdialog, null, false);
 		setView(group);
 
-		userInputField = (EditText)group.findViewById(R.id.AddContact_EditTextField);
+		userInputField = (AutoCompleteJidEdit)group.findViewById(R.id.AddContact_EditTextField);
+		userInputField.setServerList(YaximApplication.getConfig(mMainWindow).server,
+				ChatHelper.getXMPPDomains(mainWindow, ChatHelper.ROSTER_FILTER_CONTACTS), R.array.xmpp_servers);
 		aliasInputField = (EditText)group.findViewById(R.id.AddContactAlias_EditTextField);
 
 		mGroupNameView = (GroupNameView)group.findViewById(R.id.AddRosterItem_GroupName);
