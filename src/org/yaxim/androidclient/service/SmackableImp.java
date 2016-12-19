@@ -1785,11 +1785,12 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void quitRoom(String room) {
+		Log.d(TAG, "Leaving MUC " + room);
 		MultiUserChat muc = multiUserChats.get(room); 
 		muc.leave();
 		multiUserChats.remove(room);
 		mucLastPong.remove(room);
-		mContentResolver.delete(RosterProvider.CONTENT_URI, "jid LIKE ?", new String[] {room});
+		mContentResolver.delete(RosterProvider.CONTENT_URI, "jid = ?", new String[] {room});
 	}
 
 	@Override

@@ -26,8 +26,8 @@ public class ChatRoomHelper {
 	}
 	
 	public static boolean removeRoom(Context ctx, String jid) {
-		int deleted = ctx.getContentResolver().delete(RosterProvider.MUCS_URI, 
-				RosterProvider.RosterConstants.JID+" LIKE ?", 
+		int deleted = ctx.getContentResolver().delete(RosterProvider.MUCS_URI,
+				RosterProvider.RosterConstants.JID+" = ?",
 				new String[] {jid.toLowerCase()});
 		return (deleted > 0);
 	}
