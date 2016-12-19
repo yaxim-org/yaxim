@@ -5,6 +5,7 @@ import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.XMPPHelper;
+import org.yaxim.androidclient.widget.AutoCompleteJidEdit;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,7 +33,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 	private MainWindow mainWindow;
 	private Button mOkButton;
-	private EditText mEditJabberID;
+	private AutoCompleteJidEdit mEditJabberID;
 	private EditText mEditPassword;
 	private EditText mRepeatPassword;
 	private CheckBox mCreateAccount;
@@ -52,11 +53,12 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		setButton(BUTTON_POSITIVE, mainWindow.getString(android.R.string.ok), this);
 		setButton(BUTTON_NEUTRAL, mainWindow.getString(R.string.StartupDialog_advanced), this);
 
-		mEditJabberID = (EditText) group.findViewById(R.id.StartupDialog_JID_EditTextField);
+		mEditJabberID = (AutoCompleteJidEdit) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
 		mRepeatPassword = (EditText) group.findViewById(R.id.startup_password_repeat);
 		mCreateAccount = (CheckBox) group.findViewById(R.id.create_account);
 
+		mEditJabberID.setServerList(R.array.xmpp_servers);
 		mEditJabberID.addTextChangedListener(this);
 		mEditPassword.addTextChangedListener(this);
 		mRepeatPassword.addTextChangedListener(this);
