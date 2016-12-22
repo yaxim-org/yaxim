@@ -593,13 +593,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				break;
 			}
 			int style = 0;
+			if (highlight_text != null && message.toLowerCase().contains(highlight_text.toLowerCase()))
+				style |=  android.graphics.Typeface.BOLD;
 			boolean slash_me = message.startsWith("/me ");
 			if (slash_me) {
 				message = String.format("\u25CF %s %s", from, message.substring(4));
 				style |= android.graphics.Typeface.ITALIC;
 			}
-			if (highlight_text != null && message.toLowerCase().contains(highlight_text.toLowerCase()))
-				style |=  android.graphics.Typeface.BOLD;
 			getMessageView().setText(message.replaceFirst("^/me ", from));
 			getMessageView().setTypeface(null, style);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
