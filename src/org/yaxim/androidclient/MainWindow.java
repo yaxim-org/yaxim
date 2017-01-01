@@ -334,16 +334,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 			data = intent.getData();
 			String jid = data.getAuthority();
 			String body = data.getQueryParameter("body");
+			String name = data.getQueryParameter("name");
+			String preauth = data.getQueryParameter("preauth");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
-				// TODO: user name
-				addToRosterDialog(jid, data.getQueryParameter("name"),
-						data.getQueryParameter("preauth"));
+				addToRosterDialog(jid, name, preauth);
 			} else if (data.getQueryParameter("join") != null) {
 				// TODO: nickname
 				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
 					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
 			} else if (!openChatWithJid(jid, body) &&
-				   !addToRosterDialog(jid)) {
+				   !addToRosterDialog(jid, name, preauth)) {
 				finish();
 			} else return;
 		} else return;
