@@ -1330,7 +1330,7 @@ public class SmackableImp implements Smackable {
 						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
 
 					// handle MUC-PMs
-					if (!is_muc && mucJIDs.contains(fromJID[0])) {
+					if (!is_muc && mucJIDs.contains(fromJID[0]) && !fromJID[1].isEmpty()) {
 						is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
 						fromJID[0] = fromJID[0] + "/" + fromJID[1];
 						fromJID[1] = null;
