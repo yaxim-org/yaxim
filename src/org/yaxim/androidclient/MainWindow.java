@@ -286,7 +286,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 				// cheat around android's unwillingness to parse opaque URIs
 				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
 			}
-		} else if ("yax.im".equalsIgnoreCase(data.getHost()) || "conversations.im".equalsIgnoreCase(data.getHost())) {
+		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
+			// convert URI fragment (after # sign) into xmpp URI
+			String jid = data.getFragment();
+			data = Uri.parse("xmpp://" + jid);
+		} else if ("conversations.im".equalsIgnoreCase(data.getHost())) {
 			try {
 				List<String> segments = data.getPathSegments();
 				String code = segments.get(0);
