@@ -3,6 +3,7 @@ package org.yaxim.androidclient.data;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
+import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private static final HashSet<String> PRESENCE_PREFS = new HashSet<String>(Arrays.asList(
 				PreferenceConstants.MESSAGE_CARBONS,
 				PreferenceConstants.PRIORITY,
+				PreferenceConstants.STATUS_DNDSILENT,
 				PreferenceConstants.STATUS_MODE,
 				PreferenceConstants.STATUS_MESSAGE
 			));
@@ -57,6 +59,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean require_ssl;
 
 	public String statusMode;
+	public boolean statusDndSilent;
+	public StatusMode smartAwayMode;
 	public String statusMessage;
 	public String[] statusMessageHistory;
 
@@ -177,6 +181,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.require_ssl = prefs.getBoolean(PreferenceConstants.REQUIRE_SSL,
 				false);
 		this.statusMode = prefs.getString(PreferenceConstants.STATUS_MODE, "available");
+		this.statusDndSilent = prefs.getBoolean(PreferenceConstants.STATUS_DNDSILENT, true);
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 		this.statusMessageHistory = prefs.getString(PreferenceConstants.STATUS_MESSAGE_HISTORY, statusMessage).split("\036");
 		this.theme = prefs.getString(PreferenceConstants.THEME, "dark");
@@ -281,5 +286,12 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public void whitelistInvitationJID(String jid) {
 		invitationCodes.put(jid, System.currentTimeMillis()/1000 + DEFAULT_INVITATION_TIME);
 		storeInvitationCodes();
+	}
+
+	public StatusMode getPresenceMode() {
+		StatusMode sm = StatusMode.fromString(statusMode);
+		if (!statusDndSilent || smartAwayMode == null)
+			return sm;
+		return (smartAwayMode.compareTo(sm) < 0) ? smartAwayMode : sm;
 	}
 }

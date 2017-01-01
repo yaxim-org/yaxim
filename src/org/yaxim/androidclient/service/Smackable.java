@@ -37,6 +37,7 @@ public interface Smackable {
 	boolean inviteToRoom(String contactJid, String roomJid);
 	
 	String getNameForJID(String jid);
+	String getMyMucNick(String jid);
 	List<ParcelablePresence> getUserList(String jid);
 
 }

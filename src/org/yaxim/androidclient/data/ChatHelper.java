@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.data;
 
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.R;
 
@@ -12,8 +13,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.os.IBinder;
 import android.os.RemoteException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 public class ChatHelper {
 
@@ -95,4 +102,45 @@ public class ChatHelper {
 			.create().show();
 	}
 
+
+	private static final String[] ROSTER_QUERY = new String[] {
+		RosterConstants.JID,
+		RosterConstants.ALIAS,
+	};
+	public static final int ROSTER_FILTER_ALL = 0;
+	public static final int ROSTER_FILTER_CONTACTS = 1;
+	public static final int ROSTER_FILTER_MUCS = 2;
+	public static List<String[]> getRosterContacts(Context ctx, int filter) {
+		// we want all, online and offline
+		List<String[]> list = new ArrayList<String[]>();
+		String selection = null;
+		if (filter == ROSTER_FILTER_CONTACTS)
+			selection = "roster_group != '" + RosterConstants.MUCS + "'";
+		else if (filter == ROSTER_FILTER_MUCS)
+			selection = "roster_group == '" + RosterConstants.MUCS + "'";
+		Cursor cursor = ctx.getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
+					selection, null, RosterConstants.ALIAS);
+		int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);
+		int aliasIdx = cursor.getColumnIndex(RosterConstants.ALIAS);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			String jid = cursor.getString(JIDIdx);
+			String alias = cursor.getString(aliasIdx);
+			if ((alias == null) || (alias.length() == 0)) alias = jid;
+			list.add(new String[] { jid, alias });
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return list;
+	}
+
+	public static Collection<String> getXMPPDomains(Context ctx, int filter) {
+		HashSet<String> servers = new HashSet<String>();
+		for (String[] c : getRosterContacts(ctx, filter)) {
+			String[] jid_split = c[0].split("@", 2);
+			if (jid_split.length > 1)
+				servers.add(jid_split[1]);
+		}
+		return servers;
+	}
 }

@@ -30,6 +30,7 @@ public class PreferenceConstants {
 	public final static String SMACKDEBUG = "smackdebug";
 	public final static String REPORT_CRASH = "reportcrash";
 	public final static String REQUIRE_SSL = "require_ssl";
+	public static final String STATUS_DNDSILENT = "status_dndsilent";
 	public final static String STATUS_MODE = "status_mode";
 	public final static String STATUS_MESSAGE = "status_message";
 	public static final String STATUS_MESSAGE_HISTORY = "status_message_history";

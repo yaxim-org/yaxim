@@ -92,18 +92,18 @@ public class XMPPHelper {
 
 	public static String createInvitationLinkHTTPS(String jid, String token) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("https://yax.im/i/").append(jid);
+		sb.append("https://yax.im/i/#").append(jid);
 		if (token != null && token.length() > 0)
-			sb.append("/").append(token);
+			sb.append("?preauth=").append(token);
 		return sb.toString();
 	}
 
 	public static String createRosterLinkHTTPS(String jid) {
-		return "https://yax.im/i/" + jid;
+		return "https://yax.im/i/#" + jid;
 	}
 
 	public static String createMucLinkHTTPS(String jid) {
-		return "https://yax.im/j/" + jid;
+		return "https://yax.im/i/#" + jid + "?join";
 	}
 
 	public static void setStaticNFC(Activity act, String uri) {

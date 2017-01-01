@@ -59,15 +59,23 @@
 		</activity>
 
 		<activity android:name=".chat.ChatWindow" android:label="@string/app_name"
+			android:parentActivityName=".MainWindow"
 			android:theme="@style/PinkTheme"
 			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:windowSoftInputMode="stateHidden">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainWindow"/>
 		</activity>
 
 		<activity android:name=".chat.MUCChatWindow" android:label="@string/app_name"
+			android:parentActivityName=".MainWindow"
 			android:theme="@style/PinkTheme"
 			android:configChanges="orientation|keyboardHidden|screenSize"
 			android:windowSoftInputMode="stateHidden">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainWindow"/>
 		</activity>
 
 		<activity android:name=".preferences.MainPrefs"

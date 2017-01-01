@@ -47,6 +47,7 @@ public class MUCChatWindow extends ChatWindow {
 	private Intent mMucServiceIntent;
 	private ServiceConnection mMucServiceConnection;
 	private XMPPMucServiceAdapter mMucServiceAdapter;
+	private String myNick;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,8 @@ public class MUCChatWindow extends ChatWindow {
 				mMucServiceAdapter = new XMPPMucServiceAdapter(
 						IXMPPMucService.Stub.asInterface(service), 
 						mWithJabberID);
+				myNick = mMucServiceAdapter.getMyMucNick();
+				mChatAdapter.mScreenName = myNick;
 				supportInvalidateOptionsMenu();
 				getListView().invalidateViews();
 			}
@@ -141,6 +144,8 @@ public class MUCChatWindow extends ChatWindow {
 	}
 	
 	private void addNicknameToInput(String nickname) {
+		if (nickname.equalsIgnoreCase(myNick))
+			return;
 		int cursor_position = mChatInput.getSelectionStart();
 		String postfix = (cursor_position == 0) ? ", " : " ";
 		mChatInput.getText().insert(cursor_position, nickname + postfix);

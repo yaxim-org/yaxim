@@ -29,6 +29,7 @@ import android.support.v4.app.NotificationCompat.CarExtender;
 import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
+import android.support.v4.app.TaskStackBuilder;
 import android.telephony.gsm.SmsMessage.MessageClass;
 import android.util.Log;
 import android.widget.Toast;
@@ -213,11 +214,12 @@ public abstract class GenericService extends Service {
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
 		chatIntent.setData(userNameUri);
 		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
-		chatIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-		
+
+		// create back-stack (WTF were you smoking, Google!?)
 		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
-		PendingIntent pi = PendingIntent.getActivity(this, 0,
-				chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pi = TaskStackBuilder.create(this)
+			.addNextIntentWithParentStack(chatIntent)
+			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		mNotification = new NotificationCompat.Builder(this)
 			.setContentTitle(title)

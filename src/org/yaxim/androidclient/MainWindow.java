@@ -261,7 +261,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public boolean openChatWithJid(String jid, String text) {
 		Log.d(TAG, "openChatWithJid: " + jid);
 
-		List<String[]> contacts = getRosterContacts();
+		List<String[]> contacts = ChatHelper.getRosterContacts(this, ChatHelper.ROSTER_FILTER_ALL);
 		for (String[] c : contacts) {
 			if (jid.equalsIgnoreCase(c[0])) {
 				// found it
@@ -290,7 +290,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 				// cheat around android's unwillingness to parse opaque URIs
 				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
 			}
-		} else if ("yax.im".equalsIgnoreCase(data.getHost()) || "conversations.im".equalsIgnoreCase(data.getHost())) {
+		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
+			// convert URI fragment (after # sign) into xmpp URI
+			String jid = data.getFragment();
+			data = Uri.parse("xmpp://" + jid);
+		} else if ("conversations.im".equalsIgnoreCase(data.getHost())) {
 			try {
 				List<String> segments = data.getPathSegments();
 				String code = segments.get(0);
@@ -690,25 +694,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public StatusMode getStatusMode() {
-		return StatusMode.fromString(mConfig.statusMode);
+		return mConfig.getPresenceMode();
 	}
 
-	public void setAndSaveStatus(StatusMode statusMode, String message) {
-		SharedPreferences.Editor prefedit = PreferenceManager
-				.getDefaultSharedPreferences(this).edit();
-		// do not save "offline" to prefs, or else!
-		if (statusMode != StatusMode.offline)
-			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
-		if (!message.equals(mConfig.statusMessage)) {
-			List<String> smh = new ArrayList<String>(java.util.Arrays.asList(mConfig.statusMessageHistory));
-			if (!smh.contains(message))
-				smh.add(message);
-			String smh_joined = android.text.TextUtils.join("\036", smh);
-			prefedit.putString(PreferenceConstants.STATUS_MESSAGE_HISTORY, smh_joined);
-		}
-		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
-		prefedit.commit();
-
+	public void updateStatus(StatusMode statusMode) {
 		displayOwnStatus();
 
 		// check if we are connected and want to go offline
@@ -795,8 +784,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case android.R.id.home:
-			new ChangeStatusDialog(this, StatusMode.fromString(mConfig.statusMode),
-					mConfig.statusMessage, mConfig.statusMessageHistory).show();
+			new ChangeStatusDialog(this, mConfig).show();
 			return true;
 
 		case R.id.menu_exit:
@@ -1149,25 +1137,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 		cursor.close();
 		list.remove(RosterProvider.RosterConstants.MUCS);
-		return list;
-	}
-
-	public List<String[]> getRosterContacts() {
-		// we want all, online and offline
-		List<String[]> list = new ArrayList<String[]>();
-		Cursor cursor = getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
-					null, null, RosterConstants.ALIAS);
-		int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);
-		int aliasIdx = cursor.getColumnIndex(RosterConstants.ALIAS);
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			String jid = cursor.getString(JIDIdx);
-			String alias = cursor.getString(aliasIdx);
-			if ((alias == null) || (alias.length() == 0)) alias = jid;
-			list.add(new String[] { jid, alias });
-			cursor.moveToNext();
-		}
-		cursor.close();
 		return list;
 	}
 

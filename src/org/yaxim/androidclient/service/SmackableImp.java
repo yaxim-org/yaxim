@@ -640,7 +640,7 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
 			if (need_bind) {
 				mStreamHandler.notifyInitialLogin();
-				cleanupMUCs();
+				cleanupMUCs(true);
 				setStatusFromConfig();
 				mLastOnline = System.currentTimeMillis();
 			}
@@ -804,7 +804,7 @@ public class SmackableImp implements Smackable {
 		CarbonManager.getInstanceFor(mXMPPConnection).sendCarbonsEnabled(mConfig.messageCarbons);
 
 		Presence presence = new Presence(Presence.Type.available);
-		Mode mode = Mode.valueOf(mConfig.statusMode);
+		Mode mode = Mode.valueOf(mConfig.getPresenceMode().toString());
 		presence.setMode(mode);
 		presence.setStatus(mConfig.statusMessage);
 		presence.setPriority(mConfig.priority);
@@ -1271,6 +1271,12 @@ public class SmackableImp implements Smackable {
 								changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 							}
 						}
+
+						// ignore carbon copies of OTR messages sent by broken clients
+						if (msg.getBody() != null && msg.getBody().startsWith("?OTR")) {
+							Log.i(TAG, "Ignoring OTR carbon from " + msg.getFrom() + " to " + msg.getTo());
+							return;
+						}
 					}
 
 					// check for jabber MUC invitation
@@ -1324,7 +1330,7 @@ public class SmackableImp implements Smackable {
 						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
 
 					// handle MUC-PMs
-					if (!is_muc && mucJIDs.contains(fromJID[0])) {
+					if (!is_muc && mucJIDs.contains(fromJID[0]) && !fromJID[1].isEmpty()) {
 						is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
 						fromJID[0] = fromJID[0] + "/" + fromJID[1];
 						fromJID[1] = null;
@@ -1407,7 +1413,8 @@ public class SmackableImp implements Smackable {
 		upsertRoster(cvR, room);
 	}
 
-	private String getMyMucNick(String jid) {
+	@Override
+	public String getMyMucNick(String jid) {
 		MultiUserChat muc = multiUserChats.get(jid);
 		if (muc != null && muc.getNickname() != null)
 			return muc.getNickname();
@@ -1581,7 +1588,7 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
-	private synchronized void cleanupMUCs() {
+	private synchronized void cleanupMUCs(boolean set_offline) {
 		// get a fresh MUC list
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
 				new String[] { RosterProvider.RosterConstants.JID },
@@ -1600,11 +1607,13 @@ public class SmackableImp implements Smackable {
 		mContentResolver.delete(RosterProvider.CONTENT_URI,
 				exclusion.toString(),
 				new String[] { RosterProvider.RosterConstants.MUCS });
-		// update all other MUCs as offline
-		ContentValues values = new ContentValues();
-		values.put(RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
-		mContentResolver.update(RosterProvider.CONTENT_URI, values, RosterProvider.RosterConstants.GROUP + " = ?",
-				new String[] { RosterProvider.RosterConstants.MUCS });
+		if (set_offline) {
+			// update all other MUCs as offline
+			ContentValues values = new ContentValues();
+			values.put(RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+			mContentResolver.update(RosterProvider.CONTENT_URI, values, RosterProvider.RosterConstants.GROUP + " = ?",
+					new String[] { RosterProvider.RosterConstants.MUCS });
+		}
 	}
 
 	public synchronized void syncDbRooms() {
@@ -1656,6 +1665,7 @@ public class SmackableImp implements Smackable {
 				quitRoom(room);
 			}
 		}
+		cleanupMUCs(false);
 	}
 	
 	protected void handleMucInvitation(Message msg) {
@@ -1778,11 +1788,12 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void quitRoom(String room) {
+		Log.d(TAG, "Leaving MUC " + room);
 		MultiUserChat muc = multiUserChats.get(room); 
 		muc.leave();
 		multiUserChats.remove(room);
 		mucLastPong.remove(room);
-		mContentResolver.delete(RosterProvider.CONTENT_URI, "jid LIKE ?", new String[] {room});
+		mContentResolver.delete(RosterProvider.CONTENT_URI, "jid = ?", new String[] {room});
 	}
 
 	@Override

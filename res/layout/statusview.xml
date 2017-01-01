@@ -15,6 +15,14 @@
 		android:paddingTop="10dp"
 		>
 
+	<CheckBox
+		android:id="@+id/statusview_dnd_when_silent"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/pref_dnd_when_silent"
+		android:visibility="gone"
+		style="?attr/dialogTextColor"
+		/>
 	<Spinner android:id="@+id/statusview_spinner"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"

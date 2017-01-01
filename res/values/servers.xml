@@ -121,4 +121,7 @@
 		<item>zsim.de</item>
 		<!-- snap -->
 	</string-array>
+	<string-array name="muc_services">
+		<item>chat.yax.im</item>
+	</string-array>
 </resources>
