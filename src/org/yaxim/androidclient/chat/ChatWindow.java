@@ -331,6 +331,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		Intent i = getIntent();
 		mChatInput = (EditText) findViewById(R.id.Chat_UserInput);
 		mChatInput.addTextChangedListener(this);
+		mChatInput.setOnKeyListener(this);
 		if (i.hasExtra(INTENT_EXTRA_MESSAGE)) {
 			mChatInput.setText(i.getExtras().getString(INTENT_EXTRA_MESSAGE));
 		}
@@ -639,6 +640,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	}
 
+	// OnKeyListener
+	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		if (event.getAction() == KeyEvent.ACTION_DOWN
 				&& keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -649,21 +652,19 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	}
 
+	// TextWatcher
+	@Override
 	public void afterTextChanged(Editable s) {
-		if (mChatInput.getText().length() >= 1) {
-			mChatInput.setOnKeyListener(this);
-			mSendButton.setEnabled(true);
-		}
+		mSendButton.setEnabled(mChatInput.getText().length() >= 1);
 	}
 
+	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
-		// TODO Auto-generated method stub
-
 	}
 
+	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-
 	}
 
 	private void showToastNotification(int message) {
