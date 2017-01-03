@@ -603,6 +603,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
+			case R.id.roster_contextmenu_contact_share:
+				XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
+						XMPPHelper.createRosterLinkHTTPS(userJid));
+				return true;
+			case R.id.roster_contextmenu_muc_share:
+				XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
+						XMPPHelper.createMucLinkHTTPS(userJid));
+				return true;
+
 			case R.id.roster_contextmenu_muc_edit:
 				new EditMUCDialog(this, userJid).show();
 				return true;
@@ -801,12 +810,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			new EditMUCDialog(this).withNick(mConfig.userName).show();
 			return true;
 		case R.id.menu_send_invitation:
-			startActivity(Intent.createChooser(new Intent(android.content.Intent.ACTION_SEND)
-						.setType("text/plain")
-						.putExtra(Intent.EXTRA_TEXT,
-							XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
-								mConfig.createInvitationCode())),
-						getString(R.string.Menu_send_invitation)));
+			XMPPHelper.shareLink(this, R.string.Menu_send_invitation,
+					XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
+						mConfig.createInvitationCode()));
 			return true;
 
 		}

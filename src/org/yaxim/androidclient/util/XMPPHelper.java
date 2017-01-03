@@ -9,6 +9,7 @@ import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.util.TypedValue;
 import android.nfc.NdefMessage;
@@ -135,4 +136,11 @@ public class XMPPHelper {
 		}
 	}
 
+	public static void shareLink(Activity act, int title_id, String link) {
+		act.startActivity(Intent.createChooser(new Intent(android.content.Intent.ACTION_SEND)
+					.setType("text/plain")
+					.putExtra(Intent.EXTRA_TEXT,
+						link),
+				    act.getString(title_id)));
+	}
 }
