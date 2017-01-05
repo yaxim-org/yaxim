@@ -123,5 +123,58 @@
 	</string-array>
 	<string-array name="muc_services">
 		<item>chat.yax.im</item>
+		<!-- Top50 domains manually extracted from http://search.wensley.org.uk/chat/ -->
+		<!-- snip -->
+		<item>chat.jabberfr.org</item>
+		<item>conference.1big.ru</item>
+		<item>conference.allegro.pl</item>
+		<item>conference.boese-ban.de</item>
+		<item>conference.chat.bytemark.co.uk</item>
+		<item>conference.chatme.im</item>
+		<item>conference.codingteam.net</item>
+		<item>conference.draugr.de</item>
+		<item>conference.dukgo.com</item>
+		<item>conference.fnal.gov</item>
+		<item>conference.freize.org</item>
+		<item>conference.gentoo.ru</item>
+		<item>conference.ik.nu</item>
+		<item>conference.i-pobox.net</item>
+		<item>conference.jabber.bol.ru</item>
+		<item>conference.jabber.ccc.de</item>
+		<item>conference.jabber.dn.ua</item>
+		<item>conference.jabber.hot-chilli.net</item>
+		<item>conference.jabber.kiev.ua</item>
+		<item>conference.jabber.linuxlovers.at</item>
+		<item>conference.jabber.minihub.org</item>
+		<item>conference.jabber.od.ua</item>
+		<item>conference.jabberon.ru</item>
+		<item>conference.jabber.org</item>
+		<item>conference.jabber.ru</item>
+		<item>conference.jabber.ufanet.ru</item>
+		<item>conference.jabber.upenn.edu</item>
+		<item>conference.jabberzac.org</item>
+		<item>conference.jabber.zone</item>
+		<item>conference.jabme.de</item>
+		<item>conference.jivesoftware.com</item>
+		<item>conference.kanet.ru</item>
+		<item>conference.kdetalk.net</item>
+		<item>conference.lightwitch.org</item>
+		<item>conference.linuxoid.in</item>
+		<item>conference.mit.edu</item>
+		<item>conference.neko.im</item>
+		<item>conference.qip.ru</item>
+		<item>conference.ripe.net</item>
+		<item>conference.riseup.net</item>
+		<item>conference.swissjabber.ch</item>
+		<item>conference.ubuntu-jabber.de</item>
+		<item>conference.xmpp.jp</item>
+		<item>conference.xmpp.ru</item>
+		<item>conf.jabberes.org</item>
+		<item>jabber.ietf.org</item>
+		<item>muc.creep.im</item>
+		<item>muc.xmpp.org</item>
+		<item>salas.mijabber.es</item>
+		<item>salas.suchat.org</item>
+		<!-- snap -->
 	</string-array>
 </resources>
