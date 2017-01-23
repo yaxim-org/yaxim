@@ -282,6 +282,7 @@ public abstract class GenericService extends Service {
 		if (notificationId.containsKey(Jid)) {
 			notifyId = notificationId.get(Jid);
 			mNotificationMGR.cancel(notifyId);
+			resetNotificationCounter(Jid);
 		}
 	}
 
