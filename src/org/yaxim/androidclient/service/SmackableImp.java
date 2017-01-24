@@ -48,6 +48,7 @@ import org.jivesoftware.smackx.entitycaps.EntityCapsManager;
 import org.jivesoftware.smackx.entitycaps.cache.SimpleDirectoryPersistentCache;
 import org.jivesoftware.smackx.Form;
 import org.jivesoftware.smackx.FormField;
+import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.InvitationListener;
@@ -174,6 +175,8 @@ public class SmackableImp implements Smackable {
 
 		//  MUC User
 		pm.addExtensionProvider("x","http://jabber.org/protocol/muc#user", new MUCUserProvider());
+		// MUC direct invitation
+		pm.addExtensionProvider("x","jabber:x:conference", new GroupChatInvitation.Provider());
 		//  MUC Admin
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#admin", new MUCAdminProvider());
 		//  MUC Owner
@@ -1280,9 +1283,7 @@ public class SmackableImp implements Smackable {
 					}
 
 					// check for jabber MUC invitation
-					if(direction == ChatConstants.INCOMING && msg.getExtension("jabber:x:conference") != null) {
-						Log.d(TAG, "handling MUC invitation and aborting futher packet processing...");
-						handleMucInvitation(msg);
+					if(direction == ChatConstants.INCOMING && handleMucInvitation(msg)) {
 						sendReceiptIfRequested(packet);
 						return;
 					}
@@ -1668,13 +1669,72 @@ public class SmackableImp implements Smackable {
 		cleanupMUCs(false);
 	}
 	
-	protected void handleMucInvitation(Message msg) {
+	protected boolean handleMucInvitation(Message msg) {
+		String room;
+		String inviter = null;
+		String reason = null;
+		String password = null;
+		
 		MUCUser mucuser = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
+		GroupChatInvitation direct = (GroupChatInvitation)msg.getExtension(GroupChatInvitation.ELEMENT_NAME, GroupChatInvitation.NAMESPACE);
+		if (mucuser != null && mucuser.getInvite() != null) {
+			// first try official XEP-0045 mediated invitation
+			MUCUser.Invite invite = mucuser.getInvite();
+			room = msg.getFrom();
+			inviter = invite.getFrom();
+			reason = invite.getReason();
+			password = mucuser.getPassword();
+		} else if (direct != null) {
+			// fall back to XEP-0249 direct invitation
+			room = direct.getRoomAddress();
+			inviter = msg.getFrom();
+			// TODO: get reason from direct invitation, not supported in smack3
+		} else return false; // not a MUC invitation
+
+		if (mucJIDs.contains(room)) {
+			Log.i(TAG, "Ignoring invitation to known MUC " + room);
+			return true;
+		}
+		Log.d(TAG, "MUC invitation from " + inviter + " to " + room);
+
+		String roomname = room;
+		if (getBareJID(inviter).equalsIgnoreCase(room)) {
+			// from == participant JID, display as "user (MUC)"
+			inviter = getNameForJID(inviter);
+		} else {
+			// from == user bare or full JID
+			inviter = getNameForJID(getBareJID(inviter));
+		}
+		String description = null;
+		String inv_from = mService.getString(R.string.muc_invitation_from,
+				inviter);
+
+		// query room for info
+		try {
+			Log.d(TAG, "Requesting disco#info from " + room);
+			RoomInfo ri = MultiUserChat.getRoomInfo(mXMPPConnection, room);
+			String rn = ri.getRoomName();
+			if (rn != null && rn.length() > 0)
+				roomname = String.format("%s (%s)", rn, roomname);
+			description = ri.getSubject();
+			if (description == null || description.isEmpty())
+				description = ri.getDescription();
+			description = mService.getString(R.string.muc_invitation_occupants,
+					description, ri.getOccupantsCount());
+			Log.d(TAG, "MUC name after disco: " + roomname);
+		} catch (XMPPException e) {
+			// ignore a failed room info request
+			Log.d(TAG, "MUC room IQ failed: " + room);
+			e.printStackTrace();
+		}
+
 		mServiceCallBack.mucInvitationReceived(
-				msg.getFrom(),
-				mucuser.getPassword(),
-				msg.getBody()
-				);
+				roomname,
+				room,
+				password,
+				inv_from,
+				description);
+		return true;
 	}
 	
 	private Map<String,Runnable> ongoingMucJoins = new java.util.concurrent.ConcurrentHashMap<String, Runnable>();

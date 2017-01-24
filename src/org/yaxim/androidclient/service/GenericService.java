@@ -48,8 +48,8 @@ public abstract class GenericService extends Service {
 	protected WakeLock mWakeLock;
 	//private int mNotificationCounter = 0;
 	
-	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
-	private Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
+	protected Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
+	protected Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
 

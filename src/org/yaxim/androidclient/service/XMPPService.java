@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -562,7 +563,8 @@ public class XMPPService extends GenericService {
 			}
 
 			@Override
-			public void mucInvitationReceived(String room, String password, String body) {
+			public void mucInvitationReceived(String roomname, String room, String password, String invite_from, String roomdescription) {
+				String body = invite_from + ": " + roomname + "\n" + roomdescription;
 				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
 				intent.setAction("android.intent.action.VIEW");
 				String uri = "xmpp:" + room;
@@ -575,15 +577,26 @@ public class XMPPService extends GenericService {
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
 						intent, Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
-						 .setContentTitle(getString(R.string.muc_invitation_to, room))
+						 .setContentTitle(roomname)
 						 .setContentText(body)
 						 .setSmallIcon(R.drawable.ic_action_group_dark)
-						 .setTicker(body)
+						 .setTicker(invite_from + ": " + roomname)
+						 .setStyle(new NotificationCompat.BigTextStyle()
+								 .bigText(roomdescription)
+								 .setSummaryText(invite_from)
+								 .setBigContentTitle(roomname))
 						 .setContentIntent(pi)
 						 .setAutoCancel(true)
 						 .build();
-				mNotificationMGR.notify(lastNotificationId, invNotify);
-				lastNotificationId += 1;
+				int notifyId;
+				if (notificationId.containsKey(room)) {
+					notifyId = notificationId.get(room);
+				} else {
+					lastNotificationId++;
+					notifyId = lastNotificationId;
+					notificationId.put(room, Integer.valueOf(notifyId));
+				}
+				mNotificationMGR.notify(notifyId, invNotify);
 			}
 		});
 	}
