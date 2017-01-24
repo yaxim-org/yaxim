@@ -599,7 +599,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				message = String.format("\u25CF %s %s", from, message.substring(4));
 				style |= android.graphics.Typeface.ITALIC;
 			}
-			getMessageView().setText(message.replaceFirst("^/me ", from));
+			getMessageView().setText(message);
 			getMessageView().setTypeface(null, style);
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
