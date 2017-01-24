@@ -459,8 +459,6 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		String from = jid;
 		if (jid.equals(mWithJabberID))
 			from = mUserScreenName;
-		if (resource != null && resource.length() > 0)
-			from=from+"/"+resource;
 		return from;
 	}
 
