@@ -48,8 +48,9 @@ public abstract class GenericService extends Service {
 	protected WakeLock mWakeLock;
 	//private int mNotificationCounter = 0;
 	
-	private Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
-	private Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
+	protected Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
+	protected Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
+	protected Map<String, StringBuilder> notificationBigText = new HashMap<String, StringBuilder>(2);
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
 
@@ -120,11 +121,6 @@ public abstract class GenericService extends Service {
 			silent_notification = false;		
 		}
 
-		setNotification(fromJid, jid[1], fromUserName, message, is_error, isMuc);
-		setLEDNotification(isMuc);
-		mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
-		
-		
 		int notifyId = 0;
 		if (notificationId.containsKey(fromJid)) {
 			notifyId = notificationId.get(fromJid);
@@ -134,6 +130,26 @@ public abstract class GenericService extends Service {
 			notificationId.put(fromJid, Integer.valueOf(notifyId));
 		}
 
+		// /me processing
+		boolean slash_me = message.startsWith("/me ");
+		if (slash_me) {
+			message = String.format("\u25CF %s %s", isMuc ? jid[1] : fromUserName, message.substring(4));
+		}
+
+		StringBuilder msg_long = notificationBigText.get(fromJid);
+		if (msg_long == null) {
+			msg_long = new StringBuilder();
+			notificationBigText.put(fromJid, msg_long);
+		} else
+			msg_long.append("\n");
+		if (isMuc && !slash_me)
+			msg_long.append(jid[1]).append(": ");
+		msg_long.append(message);
+
+		setNotification(fromJid, jid[1], fromUserName, message, msg_long.toString(), is_error, isMuc);
+		setLEDNotification(isMuc);
+		mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+		
 		
 		if(beNoisy) {
 			setLEDNotification(isMuc);
@@ -155,8 +171,8 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromResource, String fromUserId, String message, boolean is_error,
-			boolean isMuc) {
+	private void setNotification(String fromJid, String fromResource, String fromUserId, String message, String msg_long,
+			boolean is_error, boolean isMuc) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -208,7 +224,7 @@ public abstract class GenericService extends Service {
 		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
 			.setReadPendingIntent(msgHeardPendingIntent)
 			.setReplyAction(msgResponsePendingIntent, remoteInput);
-		ucb.addMessage(message).setLatestTimestamp(System.currentTimeMillis());
+		ucb.addMessage(msg_long).setLatestTimestamp(System.currentTimeMillis());
 
 		Uri userNameUri = Uri.parse(fromJid);
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
@@ -224,7 +240,9 @@ public abstract class GenericService extends Service {
 		mNotification = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
-			.setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+			.setStyle(new NotificationCompat.BigTextStyle()
+					 .setBigContentTitle(author)
+					.bigText(msg_long))
 			.setTicker(ticker)
 			.setSmallIcon(R.drawable.sb_message)
 			.setCategory(Notification.CATEGORY_MESSAGE)
@@ -267,6 +285,7 @@ public abstract class GenericService extends Service {
 
 	public void resetNotificationCounter(String userJid) {
 		notificationCount.remove(userJid);
+		notificationBigText.remove(userJid);
 	}
 
 	protected void logError(String data) {
@@ -286,6 +305,7 @@ public abstract class GenericService extends Service {
 		if (notificationId.containsKey(Jid)) {
 			notifyId = notificationId.get(Jid);
 			mNotificationMGR.cancel(notifyId);
+			resetNotificationCounter(Jid);
 		}
 	}
 

@@ -338,16 +338,16 @@ public class MainWindow extends SherlockExpandableListActivity {
 			data = intent.getData();
 			String jid = data.getAuthority();
 			String body = data.getQueryParameter("body");
+			String name = data.getQueryParameter("name");
+			String preauth = data.getQueryParameter("preauth");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
-				// TODO: user name
-				addToRosterDialog(jid, data.getQueryParameter("name"),
-						data.getQueryParameter("preauth"));
+				addToRosterDialog(jid, name, preauth);
 			} else if (data.getQueryParameter("join") != null) {
 				// TODO: nickname
 				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
 					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
 			} else if (!openChatWithJid(jid, body) &&
-				   !addToRosterDialog(jid)) {
+				   !addToRosterDialog(jid, name, preauth)) {
 				finish();
 			} else return;
 		} else return;
@@ -607,6 +607,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
+			case R.id.roster_contextmenu_contact_share:
+				XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
+						XMPPHelper.createRosterLinkHTTPS(userJid));
+				return true;
+			case R.id.roster_contextmenu_muc_share:
+				XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
+						XMPPHelper.createMucLinkHTTPS(userJid));
+				return true;
+
 			case R.id.roster_contextmenu_muc_edit:
 				new EditMUCDialog(this, userJid).show();
 				return true;
@@ -805,12 +814,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			new EditMUCDialog(this).withNick(mConfig.userName).show();
 			return true;
 		case R.id.menu_send_invitation:
-			startActivity(Intent.createChooser(new Intent(android.content.Intent.ACTION_SEND)
-						.setType("text/plain")
-						.putExtra(Intent.EXTRA_TEXT,
-							XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
-								mConfig.createInvitationCode())),
-						getString(R.string.Menu_send_invitation)));
+			XMPPHelper.shareLink(this, R.string.Menu_send_invitation,
+					XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
+						mConfig.createInvitationCode()));
 			return true;
 
 		}
@@ -1105,7 +1111,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	final String[] GROUPS_QUERY_CONTACTS_DISABLED = new String[] {
 			RosterConstants._ID,
 			"'' AS " + RosterConstants.GROUP,
-			"(" + countAvailableMembersTotals + ") || '/' || (" + countMembersTotals + ") AS members"
+			"(" + countAvailableMembersTotals + ") || '/' || (" + countMembersTotals + ") AS members",
+			"MIN(" + RosterConstants._ID + ")" // cheat: aggregate function to only return a single entry
 	};
 
 	private static final String[] GROUPS_FROM = new String[] {
@@ -1163,11 +1170,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 			if (!mConfig.showOffline)
 				selectWhere = OFFLINE_EXCLUSION;
 
+			Uri query_uri = RosterProvider.GROUPS_URI;
 			String[] query = GROUPS_QUERY_COUNTED;
 			if(!mConfig.enableGroups) {
 				query = GROUPS_QUERY_CONTACTS_DISABLED;
+				query_uri = RosterProvider.CONTENT_URI;
 			}
-			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI,
+			Cursor cursor = getContentResolver().query(query_uri,
 					query, selectWhere, null, RosterConstants.GROUP);
 			Cursor oldCursor = getCursor();
 			changeCursor(cursor);

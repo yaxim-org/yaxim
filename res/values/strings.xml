@@ -153,6 +153,7 @@
 	<string name="roster_contextmenu_contact_rename">Rename</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change group</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
 	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
 	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
 	<string name="muc_leave_question">Really leave %s?</string>
@@ -322,7 +323,9 @@
 	<string name="muc_nickname_hint">Nickname</string>
 	<string name="muc_password_hint">Password (optional)</string>
 	<string name="title_activity_muc_invite">Group Chat Invitation</string>
-	<string name="muc_invitation_to">Invitation to %s</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
 	<string name="muc_synchronizing">Synchronizing…</string>
 	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
 	<string name="muc_kicked">Kicked: %s</string>
