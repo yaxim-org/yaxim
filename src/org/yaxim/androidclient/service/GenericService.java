@@ -206,18 +206,26 @@ public abstract class GenericService extends Service {
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
 
-		Intent msgHeardIntent = new Intent(this, XMPPService.class)
-			.setAction("respond")
-			.setData(Uri.parse(fromJid));
+		Intent msgHeardIntent = new Intent()
+			.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+			.setAction("org.yaxim.androidclient.ACTION_MESSAGE_HEARD")
+			.putExtra("jid", fromJid);
 
-		Intent msgResponseIntent = new Intent(this, XMPPService.class)
-			.setAction("respond")
-			.setData(Uri.parse(fromJid));
+		Intent msgResponseIntent = new Intent()
+			.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+			.setAction("org.yaxim.androidclient.ACTION_MESSAGE_REPLY")
+			.putExtra("jid", fromJid);
 
-		PendingIntent msgHeardPendingIntent = PendingIntent.getService(this, 0,
-					msgHeardIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		PendingIntent msgResponsePendingIntent = PendingIntent.getService(this, 0,
-					msgResponseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent msgHeardPendingIntent = PendingIntent.getBroadcast(
+					getApplicationContext(),
+					notificationId.get(fromJid),
+					msgHeardIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent msgResponsePendingIntent = PendingIntent.getBroadcast(
+					getApplicationContext(),
+					notificationId.get(fromJid),
+					msgResponseIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
 			.setLabel(getString(R.string.notification_reply))
 			.build();

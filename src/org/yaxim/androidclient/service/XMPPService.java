@@ -167,11 +167,8 @@ public class XMPPService extends GenericService {
 			if ("respond".equals(intent.getAction())) {
 				// clear notifications and send a message from Android Auto/Wear event
 				String jid = intent.getDataString();
-				Bundle reply = android.support.v4.app.RemoteInput.getResultsFromIntent(intent);
-				Log.d(TAG, "respond action: " + jid + " "  + reply);
-				String replystring = null;
-				if (reply != null) {
-					replystring = reply.getCharSequence("voicereply").toString();
+				String replystring = intent.getStringExtra("message");
+				if (replystring != null) {
 					Log.d(TAG, "got reply: " + replystring);
 					mSmackable.sendMessage(jid, replystring);
 				}

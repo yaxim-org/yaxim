@@ -81,14 +81,14 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 			context.startService(xmppServiceIntent);
 		} else
 		if (intent.getAction().equals("org.yaxim.androidclient.ACTION_MESSAGE_HEARD")) {
-			String jid = intent.getStringExtra("jid");
 			Log.d(TAG, "heard " + intent);
 			xmppServiceIntent.setAction("respond");
+			String jid = intent.getStringExtra("jid");
+			if (jid == null) return;
 			xmppServiceIntent.setData(Uri.parse(jid));
 			context.startService(xmppServiceIntent);
 		} else
 		if (intent.getAction().equals("org.yaxim.androidclient.ACTION_MESSAGE_REPLY")) {
-			String jid = intent.getStringExtra("jid");
 			Log.d(TAG, "reply " + intent);
 			Bundle reply = android.support.v4.app.RemoteInput.getResultsFromIntent(intent);
 			String replystring = null;
@@ -97,6 +97,8 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 				Log.d(TAG, "got reply: " + replystring);
 			}
 			xmppServiceIntent.setAction("respond");
+			String jid = intent.getStringExtra("jid");
+			if (jid == null) return;
 			xmppServiceIntent.setData(Uri.parse(jid));
 			xmppServiceIntent.putExtra("message", replystring);
 			context.startService(xmppServiceIntent);
