@@ -1107,7 +1107,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 	final String[] GROUPS_QUERY_CONTACTS_DISABLED = new String[] {
 			RosterConstants._ID,
 			"'' AS " + RosterConstants.GROUP,
-			"(" + countAvailableMembersTotals + ") || '/' || (" + countMembersTotals + ") AS members"
+			"(" + countAvailableMembersTotals + ") || '/' || (" + countMembersTotals + ") AS members",
+			"MIN(" + RosterConstants._ID + ")" // cheat: aggregate function to only return a single entry
 	};
 
 	private static final String[] GROUPS_FROM = new String[] {
@@ -1165,11 +1166,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 			if (!mConfig.showOffline)
 				selectWhere = OFFLINE_EXCLUSION;
 
+			Uri query_uri = RosterProvider.GROUPS_URI;
 			String[] query = GROUPS_QUERY_COUNTED;
 			if(!mConfig.enableGroups) {
 				query = GROUPS_QUERY_CONTACTS_DISABLED;
+				query_uri = RosterProvider.CONTENT_URI;
 			}
-			Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI,
+			Cursor cursor = getContentResolver().query(query_uri,
 					query, selectWhere, null, RosterConstants.GROUP);
 			Cursor oldCursor = getCursor();
 			changeCursor(cursor);
