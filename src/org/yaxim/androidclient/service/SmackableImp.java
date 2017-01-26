@@ -1330,9 +1330,14 @@ public class SmackableImp implements Smackable {
 					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
 						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
 
-					// handle MUC-PMs
-					if (!is_muc && mucJIDs.contains(fromJID[0]) && !fromJID[1].isEmpty()) {
-						is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
+					// handle MUC-PMs: messages from a nick from a known MUC or with
+					// an <x> element
+					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
+					boolean is_muc_pm = !is_muc  && !fromJID[1].isEmpty() &&
+							(muc_x != null || mucJIDs.contains(fromJID[0]));
+					if (is_muc_pm) {
+						// store MUC-PMs under the participant's full JID, not bare
+						//is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
 						fromJID[0] = fromJID[0] + "/" + fromJID[1];
 						fromJID[1] = null;
 						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
