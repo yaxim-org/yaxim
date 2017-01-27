@@ -1335,6 +1335,14 @@ public class SmackableImp implements Smackable {
 					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
 					boolean is_muc_pm = !is_muc  && !fromJID[1].isEmpty() &&
 							(muc_x != null || mucJIDs.contains(fromJID[0]));
+
+					// TODO: ignoring 'received' MUC-PM carbons, until XSF sorts out shit:
+					// - if yaxim is in the MUC, it will receive a non-carbonated copy of
+					//   incoming messages, but not of outgoing ones
+					// - if yaxim isn't in the MUC, it can't respond anyway
+					if (is_muc_pm && !is_from_me && cc != null)
+						return;
+
 					if (is_muc_pm) {
 						// store MUC-PMs under the participant's full JID, not bare
 						//is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
