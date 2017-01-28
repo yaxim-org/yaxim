@@ -1352,6 +1352,9 @@ public class SmackableImp implements Smackable {
 						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
 					}
 
+					// Carbons and MUC history are 'silent' by default
+					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
+
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id);
 						// only notify on private messages or when MUC notification requested
@@ -1362,7 +1365,7 @@ public class SmackableImp implements Smackable {
 							// TODO: MUC PMs
 							ChatHelper.markAsRead(mService, fromJID[0]);
 						} else if (direction == ChatConstants.INCOMING && need_notify)
-							mServiceCallBack.notifyMessage(fromJID, chatMessage, (cc != null), msg.getType());
+							mServiceCallBack.notifyMessage(fromJID, chatMessage, is_silent, msg.getType());
 					}
 					sendReceiptIfRequested(packet);
 				}
