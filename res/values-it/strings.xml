@@ -4,42 +4,62 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Connessione in corso…</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
+	<string name="conn_connecting">Connessione al server in corso…</string>
+	<string name="conn_disconnecting">Disconnessione in corso…</string>
 	<string name="conn_online">Connesso</string>
 	<string name="conn_offline">Non connesso</string>
-	<string name="conn_empty_roster">Nessun contatto presente!</string>
-	<string name="conn_reconnect">Riconnessione tra %d secondi.</string>
+	<string name="conn_empty_roster">Nessun contatto da mostrare!</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">Nuovo tentativo di connessione tra %d secondi.</string>
 	<string name="conn_disconnected">Connessione chiusa</string>
-	<string name="conn_no_network">No network connection</string>
+	<string name="conn_no_network">Nessuna connessione di rete</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Esci</string>
 	<string name="Global_authenticate_first">Prima è necessario connettersi</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">Controlla il formato dell\'indirizzo!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Benvenuto in yaxim!</string>
 	<string name="StartupDialog_Summary">È necessario configurare yaxim prima di poterlo usare. Inserisci il tuo ID Jabber e la tua password.</string>
 	<string name="StartupDialog_pwHint">Inserisci la password</string>
-	<string name="StartupDialog_pwrHint">Repeat password</string>
+	<string name="StartupDialog_pwrHint">Ripeti la password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Password:</string>
 	<string name="StartupDialog_advanced">Avanzate…</string>
 	<string name="StartupDialog_create_new">Registra un nuovo account</string>
-	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_error_password">Le password non coincidono!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Messaggio da %s</string>
 	<string name="notification_anonymous_message">Messaggio ricevuto</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Error while sending message!</string>
+	<string name="notification_error">Errore durante l\'invio del messaggio!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notifica messaggi</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">Lampeggia LED</string>
 	<string name="led_summ">LED lampeggiante per i messaggi in arrivo</string>
 	<string name="vibr_title">Vibrazione</string>
@@ -55,12 +75,14 @@
 	<string name="ticker_summ">Visualizza il mittente e il messaggio nella barra di stato</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Opzioni di avvio</string>
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Imposta il tuo stato</string>
 	<string name="showOffline_summ">Mostra sempre tutti i contatti nella lista</string>
 	<string name="showOffline_title">Mostra contatti offline</string>
-	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
-	<string name="enableGroups_title">Show contact groups</string>
+	<string name="enableGroups_summ">Ordina i tuoi contatti secondo i loro gruppi</string>
+	<string name="enableGroups_title">Mostra i gruppi dei contatti</string>
 	<string name="foregroundService_summ">Mantieni yaxim in memoria per garantire una connessione sempre attiva (servizio in background)</string>
 	<string name="foregroundService_title">Icona barra di stato</string>
 
@@ -92,19 +114,24 @@
 		<item>piccolo</item>
 		<item>normale</item>
 		<item>grande</item>
-		<item>huge</item>
+		<item>enorme</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Aggiungi contatto</string>
-	<string name="Menu_ShowOff">Mostra contatti offline</string>
-	<string name="Menu_HideOff">Nascondi contatti offline</string>
-	<string name="Menu_AccSettings">Modifica account</string>
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
 	<string name="Menu_Settings">Impostazioni</string>
 	<string name="Menu_Status">Stato</string>
 	<string name="Menu_connect">Connetti</string>
 	<string name="Menu_disconnect">Disconnetti</string>
 	<string name="Menu_about">Informazioni su yaxim</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Aggiungi un contatto</string>
@@ -116,22 +143,23 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Opzioni per %s</string>
 	<string name="roster_contextmenu_group_rename">Rinomina gruppo</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Elimina contatto</string>
-	<string name="roster_contextmenu_contact_delmsg">Cancella la cronologia della chat</string>
-	<string name="roster_contextmenu_contact_open_chat">Apri chat</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Segna come già letto</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Rinomina</string>
-	<string name="roster_contextmenu_contact_request_auth">Richiedi autorizzazione</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Cambia gruppo</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Informazioni utente</string>
 	<string name="account_settings_title">Impostazioni account</string>
 	<string name="account_options_title">Opzioni di connessione</string>
 	<string name="account_options_advanced">Opzioni avanzate</string>
-	<string name="connstartup_title">Connettersi all\'avvio</string>
-	<string name="connstartup_summOn">Connettersi quando yaxim viene aperto</string>
-	<string name="connstartup_summOff">Non connettersi automaticamente</string>
 	<string name="carbons_title">Messagggio Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Richiedi copie di messaggi da tuoi altri accreditamenti</string>
 	<string name="account_jabberID_title">ID Jabber</string>
@@ -139,13 +167,13 @@
 	<string name="account_jabberID_dialog_title">Inserisci il tuo ID Jabber:</string>
 	<string name="account_jabberPW_title">Password dell\'account</string>
 	<string name="account_jabberPW_sum">La password del tuo account Jabber</string>
-	<string name="account_jabberPW_change_on_server">Change password on server</string>
-	<string name="account_jabberPW_password_old">Old Password:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
-	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password…</string>
-	<string name="account_jabberPW_finished">Password successfully changed.</string>
-	<string name="account_jabberPW_error">Error changing password: %s</string>
+	<string name="account_jabberPW_change_on_server">Cambia la password sul server</string>
+	<string name="account_jabberPW_password_old">Vecchia password:</string>
+	<string name="account_jabberPW_password_new">Nuova password:</string>
+	<string name="account_jabberPW_warning">ATTENZIONE! Perché l\'accesso avvenga con successo, devi anche impostare la stessa password sul server!</string>
+	<string name="account_jabberPW_progress">Aspetta, per piacere. Cambio della password in corso...</string>
+	<string name="account_jabberPW_finished">Password cambiata con successo.</string>
+	<string name="account_jabberPW_error">Errore durante il cambio della password: %s</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Risorsa del client</string>
@@ -154,7 +182,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorità del client</string>
 	<string name="account_prio_summ">Default: 0 (ammessi: -128 .. 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
+	<string name="account_prio_error">Valori permessi: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Inserisci la priorità:</string>
 	<string name="account_port_title">Porta del server</string>
 	<string name="account_port_sum">Predefinita: 5222</string>
@@ -181,12 +209,14 @@
 	<string name="deleteRosterItem_title">Elimina contatto</string>
 	<string name="deleteChatHistory_text">Rimuovere definitivamente tutti i messaggi con %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Cancella la cronologia della chat</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscriptionRequest_text">%1$s vuole aggiungerti come contatto: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Richiesta di abbonamento</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Io:</string>
-	<string name="toast_connectfail_message">Connessione chiusa!</string>
 	<string name="toast_stored_offline">Il messaggio sarà trasmesso più tardi</string>
 	<string name="chat_enterMsgHint">Inserisci il messaggio</string> 
 
@@ -219,14 +249,35 @@
   Ema987 https://launchpad.net/~ema987
   Georg Lukas https://launchpad.net/~ge0rg
   Gianfranco Frisani https://launchpad.net/~gfrisani
+  Guybrush88 https://launchpad.net/~guybrush
   Lorenzo J. Lucchini https://launchpad.net/~ljl
   Pietro Pecchi https://launchpad.net/~pietro-pecchi
   SILVIO BARLETTA https://launchpad.net/~ik1bqd</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Generale</string>
-	<string name="all_contacts_group">All contacts</string>
+	<string name="all_contacts_group">Tutti i contatti</string>
+	<string name="muc_group">Group Chats</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Scegli il contatto</string>
+	<string name="action_settings">Impostazioni</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
 </resources>

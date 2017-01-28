@@ -9,9 +9,16 @@
 	<string name="conn_online">Συνδεδεμένος</string>
 	<string name="conn_offline">Εκτός Σύνδεσης</string>
 	<string name="conn_empty_roster">Δεν υπάρχουν επαφές για εμφάνιση</string>
-	<string name="conn_reconnect">Επανασύνδεση σε %d δευτερόλεπτα</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
 	<string name="conn_disconnected">Connection closed</string>
 	<string name="conn_no_network">No network connection</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Έξοδος</string>
@@ -30,16 +37,29 @@
 	<string name="StartupDialog_advanced">Advanced…</string>
 	<string name="StartupDialog_create_new">Register new account</string>
 	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>
 	<string name="notification_anonymous_message">Message received</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Ειδοποίηση μηνύματος</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">Ειδοποίηση μέσου LED</string>
 	<string name="led_summ">Blink phone LED on incoming messages</string>
 	<string name="vibr_title">Δόνηση</string>
@@ -55,7 +75,9 @@
 	<string name="ticker_summ">Show sender and message in status bar</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Επιλογές εκκίνησης</string>
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Καθορισμός της κατάστασή σας</string>
 	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Εμφάνιση επαφών εκτός σύνδεσης</string>
@@ -96,15 +118,20 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Προσθήκη επαφής</string>
-	<string name="Menu_ShowOff">Εμφάνιση αποσυνδεδεμένων</string>
-	<string name="Menu_HideOff">Απόκρυψη αποσυνδεδεμένων</string>
-	<string name="Menu_AccSettings">Επεξεργασία λογαριασμού</string>
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
 	<string name="Menu_Settings">Ρυθμίσεις</string>
 	<string name="Menu_Status">Κατάσταση</string>
 	<string name="Menu_connect">Σύνδεση</string>
 	<string name="Menu_disconnect">Αποσύνδεση</string>
 	<string name="Menu_about">περί yaxim</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Προσθήκη μιας Επαφής</string>
@@ -116,22 +143,23 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Επιλογές για %s</string>
 	<string name="roster_contextmenu_group_rename">Μετονομασία ομάδας</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Διαγραφή επαφής</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
-	<string name="roster_contextmenu_contact_open_chat">Άνοιγμα συζήτησης</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Μετονομασία</string>
-	<string name="roster_contextmenu_contact_request_auth">Αίτηση έγκρισης</string>
-	<string name="roster_contextmenu_contact_change_group">Αλλαγή Ομάδας</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_change_group">Αλλαγή της ομάδας</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Πληροφορίες Σύνδεσης</string>
 	<string name="account_settings_title">Ρυθμίσεις λογαριασμού</string>
 	<string name="account_options_title">Επιλογές σύνδεσης</string>
 	<string name="account_options_advanced">Προχωρημένες Επιλογές</string>
-	<string name="connstartup_title">Αυτόματη σύνδεση</string>
-	<string name="connstartup_summOn">Κατά την έναρξη του yaxim να γίνετε σύνδεση</string>
-	<string name="connstartup_summOff">Όχι αυτόματη σύνδεση</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
@@ -183,10 +211,12 @@
 	<string name="deleteChatHistory_title">Delete Chat History</string>
 	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Εγώ:</string>
-	<string name="toast_connectfail_message">Η σύνδεση έκλεισε!</string>
 	<string name="toast_stored_offline">Το μήνυμα έχει αποθηκευτεί για την μετάδοση.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
 
@@ -222,7 +252,27 @@
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>
 	<string name="all_contacts_group">All contacts</string>
+	<string name="muc_group">Group Chats</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>
+	<string name="action_settings">Ρυθμίσεις</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
 </resources>

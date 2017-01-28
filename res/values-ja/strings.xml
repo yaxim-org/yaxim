@@ -6,8 +6,8 @@
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Connecting to server…</string>
 	<string name="conn_disconnecting">Disconnecting…</string>
-	<string name="conn_online">Online</string>
-	<string name="conn_offline">Offline</string>
+	<string name="conn_online">オンライン</string>
+	<string name="conn_offline">オフライン</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
 		- Android Beam™: touch a friend\'s phone\n\n
@@ -15,25 +15,25 @@
 		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
 		- \"Add contact\" if you know the JID</string>
 	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
-	<string name="conn_disconnected">Veza je prekinuta</string>
+	<string name="conn_disconnected">Connection closed</string>
 	<string name="conn_no_network">No network connection</string>
 	<string name="conn_ping_timeout">Ping timeout</string>
 	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Exit">Exit</string>
+	<string name="Global_Exit">出口</string>
 	<string name="Global_authenticate_first">Please connect first</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
 	<string name="Global_JID_malformed">Check address format!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Welcome to yaxim!</string>
+	<string name="StartupDialog_Title">yaximへようこそ！</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
 	<string name="StartupDialog_pwHint">Enter password</string>
 	<string name="StartupDialog_pwrHint">Repeat password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
-	<string name="StartupDialog_passwd_title">Password:</string>
+	<string name="StartupDialog_passwd_title">パスワード：</string>
 	<string name="StartupDialog_advanced">Advanced…</string>
 	<string name="StartupDialog_create_new">Register new account</string>
 	<string name="StartupDialog_error_password">Password does not match!</string>
@@ -41,7 +41,7 @@
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s</string>
+	<string name="notification_message">%s さんからのメッセージ</string>
 	<string name="notification_anonymous_message">Message received</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
 	<string name="notification_muc_message">%1$s in %2$s</string>
@@ -298,16 +298,15 @@
 		SOFTWARE.
     </string>
 
-	<string name="status_available">Online</string>
+	<string name="status_available">オンライン</string>
 	<string name="status_away">Away</string>
 	<string name="status_chat">Free for chat</string>
 	<string name="status_dnd">Do not disturb</string>
 	<string name="status_xa">Not available</string>
-	<string name="status_offline">Offline</string>
+	<string name="status_offline">オフライン</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Georg Lukas https://launchpad.net/~ge0rg
-  freedomrun https://launchpad.net/~freedomrun</string>
+  R. Martins https://launchpad.net/~nbkhope</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>

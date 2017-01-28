@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Підключення до сервера...</string>
+	<string name="conn_disconnecting">Відключення...</string>
+	<string name="conn_online">На зв’язку</string>
+	<string name="conn_offline">Відключено</string>
+	<string name="conn_empty_roster">Не має контактів для відображення!</string>
+	<string name="conn_empty_roster_hints">Можете додати контакти декількома способами:\n\n - Android Beam™: прикладіть пристрої один до одного\n\n - Сканувати QR код\n\n - \"Створити запрошення\" та поділіться ним (e-mail, SMS, QR code, …)\n\n - \"Додати контакт\" якщо відомий JID</string>
+	<string name="conn_reconnect">Наступна спроба підключення через %d секунд.</string>
+	<string name="conn_disconnected">З’єднання закрито</string>
+	<string name="conn_no_network">Не має підключення до мережі</string>
+	<string name="conn_ping_timeout">Таймаут пінгу</string>
+	<string name="conn_error">Помилка: %s</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Вийти</string>
+	<string name="Global_authenticate_first">Будь ласка, спочатку під’єднайтесь</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Перевірте формат!</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Вітаємо в yaxim</string>
+	<string name="StartupDialog_Summary">Для початку користування вам необхідно налаштувати програму. Будь ласка, введіть ваш Jabber ID та пароль.</string>
+	<string name="StartupDialog_pwHint">Введіть пароль</string>
+	<string name="StartupDialog_pwrHint">Повторіть пароль</string>
+	<string name="StartupDialog_Username_title">Jabber ID</string>
+	<string name="StartupDialog_passwd_title">Пароль</string>
+	<string name="StartupDialog_advanced">Додатково...</string>
+	<string name="StartupDialog_create_new">Створити новий обліковий запис</string>
+	<string name="StartupDialog_error_password">Паролі не співпадають!</string>
+	<string name="StartupDialog_created_password">Створено надійний пароль</string>
+	<string name="StartupDialog_auth_failed">Перевірте облікові дані і пароль!</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Повідомлення від %s</string>
+	<string name="notification_anonymous_message">Отримано повідомлення</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s в %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Відповісти</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Відмітити як прочитане</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Помилка при відправленні повідомлення!</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Сповіщення про повідомлення</string>
+	<string name="preftitle_notify_muc">Повідомлення конференції</string>
+	<string name="muc_highlight_title">Тільки повідомити про згадку</string>
+	<string name="muc_highlight_sum">Повідомляти при згадці вашого ника в конференції</string>
+	<string name="led_title">Сповіщення LED</string>
+	<string name="led_summ">Сповіщати про повідомлення морганням</string>
+	<string name="vibr_title">Режим вібрації</string>
+	<string name="vibr_summ">Сповіщати про повідомлення вібрацією</string>
+	<string-array name="vibr_values_displayed">
+		<item>Ніколи</item>
+		<item>Системні налаштунки</item>
+		<item>Завжди</item>
+	</string-array>
+	<string name="ringtone_title">Звук повідомлення</string>
+	<string name="ringtone_summ">Програвати звук для вхідних повідомлень</string>
+	<string name="ticker_title">Попередній перегляд повідомлення</string>
+	<string name="ticker_summ">Відображати відправника та повідомлення у статусному рядку</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_general">Загальні налаштування</string>
+	<string name="pref_dnd_when_silent">\"Не турбувати\" в беззвучному режимі</string>
+	<string name="pref_dnd_when_silent_summ">Встановити статус \"Не турбувати\" якщо телефон в беззвучному режимі</string>
+	<string name="statuspopup_name">Вкажіть ваш статус</string>
+	<string name="showOffline_summ">Завжди показувати всі контакти у ростері</string>
+	<string name="showOffline_title">Показувати співрозмовників, що відключені</string>
+	<string name="enableGroups_summ">Впорядкувати контакти по групам</string>
+	<string name="enableGroups_title">Показувати групи контактів</string>
+	<string name="foregroundService_summ">Запустити yaxim в режимі сервісу</string>
+	<string name="foregroundService_title">Іконка в статусному рідку</string>
+
+	<string name="preftitle_debug">Діагностика</string>
+	<string name="smackdebug_summ">Пакетна і діагностична інформація через logcat (може містити персональні дані)</string>
+	<string name="smackdebug_title">Діагностика за допомогою SMACK</string>
+
+	<string name="reportcrash_title">Відправляти звіти про падіння</string>
+	<string name="reportcrash_summ">Відправляти анонімні звіти про падіння розробнику</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Зовнішній вигляд</string>
+	<string name="FontChat_title">Розмір шрифту в чаті</string>
+	<string name="FontChat_summ">Встановити розмір шрифту в чаті</string>
+	<string name="FontChat_dialog">Розмір шрифту в чаті</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">Тема</string>
+	<string-array name="pref_theme_entries">
+		<item>Темна</item>
+		<item>Світла</item>
+	</string-array>
+	<string name="preftitle_ui">Зовнішній вигляд</string>
+	<string-array name="fontSizesChat">
+		<item>малий</item>
+		<item>звичайний</item>
+		<item>великий</item>
+		<item>величезний</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Додати контакт</string>
+	<string name="Menu_ShowOff">Показати відключених</string>
+	<string name="Menu_HideOff">Приховати відключених</string>
+	<string name="Menu_AccSettings">Правка облікового запису</string>
+	<string name="Menu_Settings">Налаштування</string>
+	<string name="Menu_Status">Статус</string>
+	<string name="Menu_connect">З’єднатися</string>
+	<string name="Menu_disconnect">Від’єднатися</string>
+	<string name="Menu_about">Про yaxim</string>
+	<string name="Menu_muc">Додати конференцію</string>
+	<string name="Menu_mark_all_as_read">Позначити всі як прочитані</string>
+	<string name="Menu_send_invitation">Створити запрошення</string>
+    <string name="Menu_userlist">Учасники</string>
+
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Додати контакт</string>
+	<string name="addFriend_Summ">Будь ласка, введіть Jabber ID співрозмовника, бажаний псевдонім для відображення та оберіть групу!</string>
+	<string name="addFriend_aliasHint">Ім\'я для відображення</string>
+	<string name="addrosteritemaddgroupchoice">Додати в нову групу</string>
+	<string name="NewGroup_EditTextField_Hint">Назва нової групи</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Налаштування для %s</string>
+	<string name="roster_contextmenu_group_rename">Перейменувати групу</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Позначити як прочитане</string>
+	<string name="roster_contextmenu_contact_delete">Видалити контакт</string>
+	<string name="roster_contextmenu_contact_delmsg">Видалити історію переписки</string>
+	<string name="roster_contextmenu_contact_open_chat">Відкрити чат</string>
+	<string name="roster_contextmenu_contact_rename">Перейменувати</string>
+	<string name="roster_contextmenu_contact_request_auth">Запит авторизації</string>
+	<string name="roster_contextmenu_contact_change_group">Змінити групу</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Перезайти в конференцію</string>
+	<string name="roster_contextmenu_muc_leave">Покинути конференцію</string>
+	<string name="muc_leave_question">Дійсно покинути %s?</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Реєстраційні відомості</string>
+	<string name="account_settings_title">Налаштування облікового запису</string>
+	<string name="account_options_title">Налаштування підключення</string>
+	<string name="account_options_advanced">Додаткові параметри</string>
+	<string name="carbons_title">Копіювання повідомлень (XEP-0280)</string>
+	<string name="carbons_summ">Запитувати копії повідомлень від інших ваших клієнтів</string>
+	<string name="account_jabberID_title">Jabber ID:</string>
+	<string name="account_jabberID_sum">наприклад: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">введіть ваш Jabber ID:</string>
+	<string name="account_jabberPW_title">Пароль облікового запису</string>
+	<string name="account_jabberPW_sum">Пароль вашого облікового запису Jabber</string>
+	<string name="account_jabberPW_change_on_server">Змінити пароль на сервері</string>
+	<string name="account_jabberPW_password_old">Старий пароль:</string>
+	<string name="account_jabberPW_password_new">Новий Пароль:</string>
+	<string name="account_jabberPW_warning">УВАГА! Для успішної реєстрації необхідно також встановити один і той же пароль на сервері!</string>
+	<string name="account_jabberPW_progress">Будь ласка, зачекайте, пароль змінюється...</string>
+	<string name="account_jabberPW_finished">Пароль успішно змінено.</string>
+	<string name="account_jabberPW_error">Помилка зміни пароля: %s</string>
+	
+	<!-- accountprefs -->
+	<string name="account_resource_title">Ресурс</string>
+	<string name="account_resource_summ">За замовчування: yaxim</string>
+	<string name="account_resource_dialog_title">Введіть ваш ресурс:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Приоритет</string>
+	<string name="account_prio_summ">За замовчуванням: 0 (дозволено: -128 .. 127)</string>
+	<string name="account_prio_error">Допустимі значення: -128 .. 127</string>
+	<string name="account_prio_dialog_title">Введіть пріоритет:</string>
+	<string name="account_port_title">Порт сервера</string>
+	<string name="account_port_sum">За замовчування: 5222</string>
+	<string name="account_port_dialog_title">Введіть порт сервера:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Опційний сервер</string>
+	<string name="account_customserver_summ">Альтернативна адреса сервера (опційно)</string>
+	<string name="account_customserver_dialog_title">Введіть адресу сервера:</string>
+	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">Вимагати SSL/TLS</string>
+	<string name="require_ssl_summ">Завжди вимагати шифрування з’єднання</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Змінити групу</string>
+	<string name="setStatusmsgHint">Ваш статус</string>
+	<string name="setStatusTitle">Вкажіть ваш статус</string>
+	<string name="RenameGroup_summ">Перейменувати групу %s у:</string>
+	<string name="RenameGroup_title">Перейменувати групу</string>
+	<string name="RenameEntry_summ">Перейменувати %1$s (%2$s) у:</string>
+	<string name="RenameEntry_title">Прейменувати контакт</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Виберіть групу зі списку нижче</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Змінити групу</string>
+	<string name="deleteRosterItem_text">Дійсно видалити %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">Видалити контакт</string>
+	<string name="deleteChatHistory_text">Дійсно видалити всю історію повідомлень з %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Очистити історію чату</string>
+	<string name="subscriptionRequest_text">%1$s хоче додати вас в контакти: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Запит на підписку</string>
+	<string name="subscription_accept">Прийняти</string>
+	<string name="subscription_reject">Відхилити</string>
+	<string name="subscription_status_from">може бачити ваш статус</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Я:</string>
+	<string name="toast_stored_offline">Повідомлення було збережено для відправлення.</string>
+	<string name="chat_enterMsgHint">Введіть повідомлення</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Надіслати ще раз</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">Про yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">Розробники</string>
+	<string name="AboutDialog_DevelopersText">Зв\'яжіться з розробниками через http://yaxim.org або в IRC-каналі #yaxim на freenode</string>
+	<string name="AboutDialog_LicenceTitle">Ліцензія</string>
+	<string name="AboutDialog_Vote">Залишити відгук</string>
+	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+
+	<string name="status_available">На зв’язку</string>
+	<string name="status_away">Немає на місці</string>
+	<string name="status_chat">Готовий спілкуватись</string>
+	<string name="status_dnd">Не турбувати</string>
+	<string name="status_xa">Недоступний</string>
+	<string name="status_offline">Відключено</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  baytuch https://launchpad.net/~baytuch</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">Загальна</string>
+	<string name="all_contacts_group">Всі контакти</string>
+	<string name="muc_group">Конференції</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Змінити контакт</string>
+	<string name="action_settings">Налаштування</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">JID конференції</string>
+	<string name="muc_nickname_hint">Нікнейм</string>
+	<string name="muc_password_hint">Пароль (опціонально)</string>
+	<string name="title_activity_muc_invite">Запрошення в конференцію</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Синхронізація...</string>
+	<string name="chat_muc_userlist">Учасники конференції (%s)</string>
+	<string name="muc_kicked">Виключено: %s</string>
+	<string name="muc_kicked_by">Виключено з %1$s: %2$s</string>
+	<string name="muc_banned">Заблоковано: %s</string>
+	<string name="muc_banned_by">Заблоковано з %1$s: %2$s</string>
+
+
+</resources>

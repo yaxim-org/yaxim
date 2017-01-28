@@ -9,9 +9,16 @@
 	<string name="conn_online">Tersambung</string>
 	<string name="conn_offline">Terputus</string>
 	<string name="conn_empty_roster">Tidak ada daftar alamat</string>
-	<string name="conn_reconnect">Mencoba lagi dalam %d detik</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
 	<string name="conn_disconnected">Koneksi terputus</string>
 	<string name="conn_no_network">No network connection</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Keluar</string>
@@ -30,16 +37,29 @@
 	<string name="StartupDialog_advanced">Lanjutan...</string>
 	<string name="StartupDialog_create_new">Daftar akun baru</string>
 	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Pesan dari %s</string>
 	<string name="notification_anonymous_message">Pesan diterima</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Pemberitahuan Pesan</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">LED berkedip</string>
 	<string name="led_summ">LED berkedip ketika ada pesan baru</string>
 	<string name="vibr_title">Getar</string>
@@ -55,7 +75,9 @@
 	<string name="ticker_summ">Tampilkan pengirim dan pesan di status</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Startup Options</string>
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Atur status</string>
 	<string name="showOffline_summ">Always show all contacts in the roster</string>
 	<string name="showOffline_title">Show offline contacts</string>
@@ -96,15 +118,20 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Tambah Kontak</string>
-	<string name="Menu_ShowOff">Show Offline</string>
-	<string name="Menu_HideOff">Hide Offline</string>
-	<string name="Menu_AccSettings">Sunting Akun</string>
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
 	<string name="Menu_Settings">Pengaturan</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Sambung</string>
 	<string name="Menu_disconnect">Putus</string>
 	<string name="Menu_about">Tentang Yaxim</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Tambah kontak</string>
@@ -117,22 +144,23 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Options for %s</string>
 	<string name="roster_contextmenu_group_rename">Rename group</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
-	<string name="roster_contextmenu_contact_open_chat">Open Chat</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Rename</string>
-	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
-	<string name="roster_contextmenu_contact_change_group">Change Group</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_change_group">Change group</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Login Information</string>
 	<string name="account_settings_title">Account Settings</string>
 	<string name="account_options_title">Connecting Options</string>
 	<string name="account_options_advanced">Advanced Options</string>
-	<string name="connstartup_title">Connect at Startup</string>
-	<string name="connstartup_summOn">Go online when yaxim is opened</string>
-	<string name="connstartup_summOff">Do not automatically connect</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
@@ -184,10 +212,12 @@
 	<string name="deleteChatHistory_title">Delete Chat History</string>
 	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Me:</string>
-	<string name="toast_connectfail_message">Connection closed!</string>
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
 
@@ -281,7 +311,27 @@
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>
 	<string name="all_contacts_group">All contacts</string>
+	<string name="muc_group">Group Chats</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choose contact</string>
+	<string name="action_settings">Pengaturan</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
 </resources>

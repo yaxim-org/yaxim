@@ -5,13 +5,16 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Bezig met verbinden...</string>
-	<string name="conn_disconnecting">Bezig met afsluiten ...</string>
+	<string name="conn_disconnecting">Verbinding verbreken…</string>
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Er zijn geen contacten beschikbaar!</string>
-	<string name="conn_reconnect">Probeert te verbinden in %d seconden.</string>
-	<string name="conn_disconnected">Verbinding gesloten</string>
+	<string name="conn_empty_roster_hints">Je kunt op verschillende manieren contacten toevoegen aan je lijst: \n\n - Android Beam™: raak de telefoon van een vriend aan\n - Scan een QR-code\n\n - \"Uitnodiging maken\" en deel het (via e-mail, SMS, QR code, …)\n\n - \"Contact toevoegen\" als je de gebruikersnaam al kent.</string>
+	<string name="conn_reconnect">Volgende poging in %d seconden</string>
+	<string name="conn_disconnected">Verbinding verbroken</string>
 	<string name="conn_no_network">Geen netwerkverbinding</string>
+	<string name="conn_ping_timeout">Ping Verlopen</string>
+	<string name="conn_error">Fout: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Sluiten</string>
@@ -22,45 +25,60 @@
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Welkom bij yaxim!</string>
-	<string name="StartupDialog_Summary">U moet yaxim instellen voordat u het kunt gebruiken. Voer a.u.b. een Jabber ID en wachtwoord in.</string>
+	<string name="StartupDialog_Summary">Je moet eerst wat dingen instellen voordat je yaxim kunt gebruiken. Voer a.u.b. een gebruikersnaam en wachtwoord in.</string>
 	<string name="StartupDialog_pwHint">Wachtwoord invoeren</string>
-	<string name="StartupDialog_pwrHint">Repeat password</string>
+	<string name="StartupDialog_pwrHint">Herhaal wachtwoord</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Wachtwoord:</string>
 	<string name="StartupDialog_advanced">Geavanceerd…</string>
-	<string name="StartupDialog_create_new">Registreer nieuw account</string>
-	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_create_new">Registreer nieuw account op server</string>
+	<string name="StartupDialog_error_password">Wachtwoorden komen niet overeen!</string>
+	<string name="StartupDialog_created_password">Veilig wachtwoord aangemaakt</string>
+	<string name="StartupDialog_auth_failed">Loop je gebruikersnaam en wachtwoord na!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Bericht van %s</string>
 	<string name="notification_anonymous_message">Bericht ontvangen</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Reageren</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Markeer als gelezen</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Fout het verzenden van het bericht!</string>
+	<string name="notification_error">Fout bij het verzenden van bericht!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Bericht-attendering</string>
+	<string name="preftitle_notify">Meldingen voor bericht</string>
+	<string name="preftitle_notify_muc">Meldingen voor groepsgesprek</string>
+	<string name="muc_highlight_title">Alleen bij vermelding</string>
+	<string name="muc_highlight_sum">Attenderen wanneer je gebruikersnaam in een groepsgesprek wordt genoemd</string>
 	<string name="led_title">Knipper LED</string>
 	<string name="led_summ">Laat telefoon LED knipperen bij binnenkomende berichten.</string>
-	<string name="vibr_title">Trilling</string>
-	<string name="vibr_summ">Tril bij binnenkomende berichten</string>
+	<string name="vibr_title">Vibratie</string>
+	<string name="vibr_summ">Tril bij inkomende berichten</string>
 	<string-array name="vibr_values_displayed">
 		<item>Nooit</item>
-		<item>Systeem voorkeuren</item>
+		<item>Systeemvoorkeuren</item>
 		<item>Altijd</item>
 	</string-array>
 	<string name="ringtone_title">Beltoon</string>
 	<string name="ringtone_summ">Geluid voor inkomende berichten</string>
-	<string name="ticker_title">Bericht voorbeeld</string>
-	<string name="ticker_summ">Toon afzender en bericht in de status balk</string>
+	<string name="ticker_title">Voorvertoning bericht</string>
+	<string name="ticker_summ">Toon afzender en bericht in de statusbalk</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Opstart-opties</string>
-	<string name="statuspopup_name">Stel uw status in</string>
+	<string name="preftitle_general">Algemene instellingen</string>
+	<string name="pref_dnd_when_silent">\"Niet storen\" in stille modus</string>
+	<string name="pref_dnd_when_silent_summ">Stel je aanwezigheid in als \"niet storen\" wanneer je telefoon op stille modus staat</string>
+	<string name="statuspopup_name">Stel je status in</string>
 	<string name="showOffline_summ">Toon altijd alle contacten in de lijst</string>
-	<string name="showOffline_title">Offline contactpersonen weergeven.</string>
-	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
-	<string name="enableGroups_title">Show contact groups</string>
+	<string name="showOffline_title">Offline contacten tonen</string>
+	<string name="enableGroups_summ">Contacten naar groep sorteren</string>
+	<string name="enableGroups_title">Contactengroepen tonen</string>
 	<string name="foregroundService_summ">Houdt yaxim in het geheugen om zeker te weten dat de verbinding actief blijft (Voorgrond service)</string>
 	<string name="foregroundService_title">Statusbalk icoon</string>
 
@@ -73,9 +91,9 @@
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Weergave</string>
-	<string name="FontChat_title">Chat text grootte</string>
-	<string name="FontChat_summ">Stel chat text grootte in</string>
-	<string name="FontChat_dialog">Chat text grootte</string>
+	<string name="FontChat_title">Lettertypegrootte</string>
+	<string name="FontChat_summ">Stel de lettertypegrootte in van gesprekken</string>
+	<string name="FontChat_dialog">Lettertypegrootte</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
@@ -89,26 +107,31 @@
 	</string-array>
 	<string name="preftitle_ui">Weergave</string>
 	<string-array name="fontSizesChat">
-		<item>Klein</item>
-		<item>Normaal</item>
-		<item>Groot</item>
-		<item>huge</item>
+		<item>klein</item>
+		<item>normaal</item>
+		<item>groot</item>
+		<item>extra groot</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Contactpersoon toevoegen</string>
-	<string name="Menu_ShowOff">Verschijn offline</string>
-	<string name="Menu_HideOff">Verberg offline</string>
+	<string name="Menu_addFriend">Contact toevoegen</string>
+	<string name="Menu_ShowOff">Offline tonen</string>
+	<string name="Menu_HideOff">Offline verbergen</string>
 	<string name="Menu_AccSettings">Account bewerken</string>
 	<string name="Menu_Settings">Instellingen</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Verbinding maken</string>
-	<string name="Menu_disconnect">Verbreken</string>
+	<string name="Menu_disconnect">Verbinding verbreken</string>
 	<string name="Menu_about">Over yaxim</string>
+	<string name="Menu_muc">Groepsgesprek toevoegen</string>
+	<string name="Menu_mark_all_as_read">Markeer alles als gelezen</string>
+	<string name="Menu_send_invitation">Uitnodiging maken</string>
+    <string name="Menu_userlist">Deelnemers</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Contactpersoon toevoegen</string>
-	<string name="addFriend_Summ">Voer a.u.b. het Jabber ID van je vriend in, de naam waarmee je hem of haar wil weergeven en kies een groep om ze aan toe te wijzen!</string>
+	<string name="addFriend_Summ">Voer de Jabber ID van een vriend in, zijn/haar schermnaam en kies een groep om  hem/haar aan toe te voegen!</string>
 	<string name="addFriend_aliasHint">Schermnaam</string>
 	<string name="addrosteritemaddgroupchoice">Toevoegen aan een nieuwe groep</string>
 	<string name="NewGroup_EditTextField_Hint">Naam voor de nieuwe groep</string>
@@ -116,49 +139,50 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Opties voor %s</string>
 	<string name="roster_contextmenu_group_rename">Groep hernoemen</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Contactpersoon verwijderen</string>
-	<string name="roster_contextmenu_contact_delmsg">Bericht geschiedenis verwijderen</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Markeren als gelezen</string>
+	<string name="roster_contextmenu_contact_delete">Contact verwijderen</string>
+	<string name="roster_contextmenu_contact_delmsg">Chatgeschiedenis wissen</string>
 	<string name="roster_contextmenu_contact_open_chat">Chat openen</string>
 	<string name="roster_contextmenu_contact_rename">Naam wijzigen</string>
-	<string name="roster_contextmenu_contact_request_auth">Toestemming vragen</string>
+	<string name="roster_contextmenu_contact_request_auth">Vraag om authorisering</string>
 	<string name="roster_contextmenu_contact_change_group">Groep wijzigen</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Groepsgesprek bewerken</string>
+	<string name="roster_contextmenu_muc_leave">Groepsgesprek verlaten</string>
+	<string name="muc_leave_question">Weet je zeker dat je %s wilt verlaten?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Inloggegevens</string>
-	<string name="account_settings_title">Account-instellingen</string>
-	<string name="account_options_title">Verbindings opties</string>
+	<string name="account_settings_title">Accountinstellingen</string>
+	<string name="account_options_title">Verbindingsopties</string>
 	<string name="account_options_advanced">Geavanceerde Opties</string>
-	<string name="connstartup_title">Verbinding maken bij opstarten</string>
-	<string name="connstartup_summOn">Ga online wanneer yaxim wordt geopend</string>
-	<string name="connstartup_summOff">Maak niet automatisch verbinding</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Verzoek kopieën van uw berichten van de ontvanger(s)</string>
+	<string name="carbons_summ">Synchroniseer berichten met je andere apparaten</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">Voorbeeld: ik@jabber.voorbeeld.com</string>
 	<string name="account_jabberID_dialog_title">Voer uw Jabber ID in:</string>
 	<string name="account_jabberPW_title">Account wachtwoord</string>
 	<string name="account_jabberPW_sum">Uw Jabber account wachtwoord</string>
-	<string name="account_jabberPW_change_on_server">Change password on server</string>
-	<string name="account_jabberPW_password_old">Old Password:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
-	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password…</string>
-	<string name="account_jabberPW_finished">Password successfully changed.</string>
-	<string name="account_jabberPW_error">Error changing password: %s</string>
+	<string name="account_jabberPW_change_on_server">Wachtwoord op server veranderen</string>
+	<string name="account_jabberPW_password_old">Oud wachtwoord:</string>
+	<string name="account_jabberPW_password_new">Nieuw wachtwoord:</string>
+	<string name="account_jabberPW_warning">LET OP! Om je te kunnen aanmelden moet je het zelfde wachtwoord op de server instellen!</string>
+	<string name="account_jabberPW_progress">Wachtwoord veranderen, even geduld a.u.b.</string>
+	<string name="account_jabberPW_finished">Wachtwoord succesvol gewijzigd.</string>
+	<string name="account_jabberPW_error">Fout bij wijzigen wachtwoord: %s</string>
 	
 	<!-- accountprefs -->
-	<string name="account_resource_title">Client Bron</string>
+	<string name="account_resource_title">Naam apparaat</string>
 	<string name="account_resource_summ">Standaard: yaxim</string>
-	<string name="account_resource_dialog_title">Vul bron in:</string>
+	<string name="account_resource_dialog_title">Vul nieuwe naam apparaat in</string>
 	<string name="account_resource_hint">yaxim</string>
-	<string name="account_prio_title">Client prioriteit</string>
+	<string name="account_prio_title">Apparaat prioriteit</string>
 	<string name="account_prio_summ">Standaard: 0</string>
-	<string name="account_prio_error">Toegelaten waarden: -128 .. 127</string>
+	<string name="account_prio_error">Toegestane waarden: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Voer uw prioriteit in:</string>
-	<string name="account_port_title">Server Poort</string>
+	<string name="account_port_title">Serverpoort</string>
 	<string name="account_port_sum">Standaard: 5222</string>
-	<string name="account_port_dialog_title">Voer de server poort in:</string>
+	<string name="account_port_dialog_title">Voer de serverpoort in:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Aangepaste Server</string>
 	<string name="account_customserver_summ">(Optioneel) alternatief domein</string>
@@ -169,8 +193,8 @@
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Groep kiezen</string>
-	<string name="setStatusmsgHint">Uw status bericht</string>
-	<string name="setStatusTitle">Stel uw status in</string>
+	<string name="setStatusmsgHint">Nieuwe status instellen</string>
+	<string name="setStatusTitle">Stel je status in</string>
 	<string name="RenameGroup_summ">Groep %s hernoemen naar:</string>
 	<string name="RenameGroup_title">Groep hernoemen</string>
 	<string name="RenameEntry_summ">Hernoem  %1$s (%2$s) naar:</string>
@@ -180,18 +204,20 @@
 	<string name="deleteRosterItem_text">Weet u zeker dat u %1$s (%2$s) wilt verwijderen?</string>
 	<string name="deleteRosterItem_title">Contactpersoon verwijderen</string>
 	<string name="deleteChatHistory_text">Weet u zeker dat u alle berichten met %1$s (%2$s) wilt verwijderen?</string>
-	<string name="deleteChatHistory_title">Bericht geschiedenis verwijderen</string>
+	<string name="deleteChatHistory_title">Berichtgeschiedenis verwijderen</string>
 	<string name="subscriptionRequest_text">%1$s wil je toevogen als een contact:  \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Inschrijvingsverzoek</string>
+	<string name="subscription_accept">Accepteren</string>
+	<string name="subscription_reject">Weigeren</string>
+	<string name="subscription_status_from">Kan je status zien</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ik:</string>
-	<string name="toast_connectfail_message">Connectie verbroken!</string>
 	<string name="toast_stored_offline">Het bericht is opgeslagen voor verzenden.</string>
-	<string name="chat_enterMsgHint">Bericht invoeren</string> 
+	<string name="chat_enterMsgHint">Typ een bericht</string> 
 
 	<!-- Chat menu -->
-	<string name="chatmenu_resend">Opnieuw verzenden</string>
+	<string name="chatmenu_resend">Opnieuw versturen</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -206,66 +232,9 @@
 	<string name="AboutDialog_DevelopersText">Contacteer de ontwikkelaars op http://yaxim.org of op freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licentie</string>
 	<string name="AboutDialog_Vote">Geef Feedback</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_LicenceText">Dit Programma is vrije software; U kan het verspreiden en/of wijzigen onder de bepalingen van de GNU Algemene Publieke Licentie v 2, zoals uitgegeven door de Free Software Foundation. Zie http://www.gnu.org/licenses/gpl-2.0.html\n \n Delen van deze software zijn uitgegeven onder de MIT licentie:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n OMDAT HET PROGRAMMA ZONDER KOSTEN IN LICENTIE GEGEVEN WORDT, IS ER GEEN GARANTIE VOOR HET PROGRAMMA, VOOR ZOVER MOGELIJK BINNEN DE GELDENDE WETGEVING. UITGEZONDERD WANNEER HET EXPLICIET GESCHREVEN STAAT LEVEREN DE
+AUTEURSRECHTHOUDERS HET PROGRAMMA "ZOALS HET IS", ZONDER EENDER WELKE GARANTIE, EXPLICIET UITGEDRUKT OF IMPLICIET BEDOELD, ZOALS, MAAR NIET GELIMITEERD TOT, DE IMPLICIETE GARANTIES VAN VERKOOPBAARHEID EN GESCHIKTHEID VOOR EEN BEPAALD DOEL. HET VOLLEDIGE RISICO BETREFFENDE DE KWALITEIT EN DE PRESTATIES VAN HET
+PROGRAMMA LIGT BIJ U. MOCHT HET PROGRAMMA DEFECT BLIJKEN DAN DRAAGT U DE KOSTEN VAN ALLE BENODIGDE DIENSTEN, REPARATIES OF CORRECTIES.</string>
 
 	<string name="status_available">Online</string>
 	<string name="status_away">Afwezig</string>
@@ -280,12 +249,33 @@
   Georg Lukas https://launchpad.net/~ge0rg
   Jeroen Tietema https://launchpad.net/~jtietema
   NightWhistler https://launchpad.net/~0k53dmx9cig8-alex-f830mk0e7z07
+  Roel RA https://launchpad.net/~roelra
   sinezi https://launchpad.net/~degeneloy</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Algemeen</string>
-	<string name="all_contacts_group">All contacts</string>
+	<string name="all_contacts_group">Alle contacten</string>
+	<string name="muc_group">Groepsgesprekken</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Kies contact</string>
+	<string name="action_settings">Instellingen</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Schermnaam in groepsgesprek</string>
+	<string name="muc_nickname_hint">Schermnaam</string>
+	<string name="muc_password_hint">Wachtwoord (optioneel)</string>
+	<string name="title_activity_muc_invite">Uitnodiging voor groepsgesprek</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Bijwerken...</string>
+	<string name="chat_muc_userlist">Deelnemers groepsgesprek (%s)</string>
+	<string name="muc_kicked">Verwijderd: %s</string>
+	<string name="muc_kicked_by">Verwijderd door %1$s: %2$s</string>
+	<string name="muc_banned">Verbannen: %s</string>
+	<string name="muc_banned_by">Verbannen door %1$s: %2$s</string>
+
+
 </resources>

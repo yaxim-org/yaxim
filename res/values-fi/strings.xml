@@ -9,9 +9,16 @@
 	<string name="conn_online">Verkossa</string>
 	<string name="conn_offline">Poissa verkosta</string>
 	<string name="conn_empty_roster">Ei kontakteja!</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
 	<string name="conn_reconnect">Seuraava yhteydenmuodostus %d sekunnin kuluttua.</string>
 	<string name="conn_disconnected">Yhteys suljettiin</string>
 	<string name="conn_no_network">Ei verkkoyhteyttä</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Poistu</string>
@@ -30,16 +37,29 @@
 	<string name="StartupDialog_advanced">Lisäominaisuudet...</string>
 	<string name="StartupDialog_create_new">Luo uusi tunnus</string>
 	<string name="StartupDialog_error_password">Salasanassa on kirjoitusvirhe!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Viesti käyttäjältä %s</string>
 	<string name="notification_anonymous_message">Viesti vastaanotettu</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (short string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (short string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Virhe lähetettäessä viestiä!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Viesti-ilmoitus</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">Vilkkuva LED</string>
 	<string name="led_summ">Vilkauta puhelimen LEDiä viestin saapuessa</string>
 	<string name="vibr_title">Värinä</string>
@@ -55,7 +75,9 @@
 	<string name="ticker_summ">Näytä lähettäjä sekä viesti tilapalkissa</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Käynnistysasetukset</string>
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Aseta tilasi</string>
 	<string name="showOffline_summ">Näytä aina kaikki kontaktit listalla</string>
 	<string name="showOffline_title">Näytä poissaolevat kontaktit</string>
@@ -96,15 +118,20 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Lisää kontakti</string>
-	<string name="Menu_ShowOff">Näytä poissaolevat kontaktit</string>
-	<string name="Menu_HideOff">Piilota poissaolevat kontaktit</string>
-	<string name="Menu_AccSettings">Muokkaa tiliä</string>
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
 	<string name="Menu_Settings">Asetukset</string>
 	<string name="Menu_Status">Tila</string>
 	<string name="Menu_connect">Yhdistä</string>
 	<string name="Menu_disconnect">Katkaise yhteys</string>
 	<string name="Menu_about">Tietoja yaximista</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Lisää kontakti</string>
@@ -116,22 +143,23 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Valinnat kohteelle %s</string>
 	<string name="roster_contextmenu_group_rename">Nimeä ryhmä uudelleen</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Merkitse luetuksi</string>
-	<string name="roster_contextmenu_contact_delete">Poista kontakti</string>
-	<string name="roster_contextmenu_contact_delmsg">Pyyhi viestihistoria</string>
-	<string name="roster_contextmenu_contact_open_chat">Avaa keskustelu</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Merkitse luetuksi</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Nimeä uudelleen</string>
-	<string name="roster_contextmenu_contact_request_auth">Pyydä valtuutusta</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Vaihda ryhmää</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Kirjautumistiedot</string>
 	<string name="account_settings_title">Tiliasetukset</string>
 	<string name="account_options_title">Yhteysasetukset</string>
 	<string name="account_options_advanced">Lisäasetukset</string>
-	<string name="connstartup_title">Yhdistä käynnistettäessä</string>
-	<string name="connstartup_summOn">Siirry linjoille kun yaxim avataan</string>
-	<string name="connstartup_summOff">Älä yhdistä automaattisesti</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Pyydä viestikopiot muilta asiakasohjelmiltasi</string>
 	<string name="account_jabberID_title">Jabber-tunnus</string>
@@ -183,10 +211,12 @@
 	<string name="deleteChatHistory_title">Pyyhi viestihistoria</string>
 	<string name="subscriptionRequest_text">%1$s haluaa lisätä sinut kontakteihinsa: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Hyväksyntäpyyntö</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Minä:</string>
-	<string name="toast_connectfail_message">Yhteys suljettu!</string>
 	<string name="toast_stored_offline">Viesti on tallennettu lähetystä varten.</string>
 	<string name="chat_enterMsgHint">Syötä viesti</string> 
 
@@ -281,7 +311,27 @@
 	<!-- default roster group with no name -->
 	<string name="default_group">Yleiset</string>
 	<string name="all_contacts_group">Kaikki yhteystiedot</string>
+	<string name="muc_group">Group Chats</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Valitse kontakti</string>
+	<string name="action_settings">Asetukset</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
 </resources>
