@@ -109,6 +109,7 @@ import android.database.Cursor;
 
 import android.net.Uri;
 import android.telephony.gsm.SmsMessage.MessageClass;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class SmackableImp implements Smackable {
@@ -1333,7 +1334,7 @@ public class SmackableImp implements Smackable {
 					// handle MUC-PMs: messages from a nick from a known MUC or with
 					// an <x> element
 					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
-					boolean is_muc_pm = !is_muc  && !fromJID[1].isEmpty() &&
+					boolean is_muc_pm = !is_muc  && !TextUtils.isEmpty(fromJID[1]) &&
 							(muc_x != null || mucJIDs.contains(fromJID[0]));
 
 					// TODO: ignoring 'received' MUC-PM carbons, until XSF sorts out shit:
@@ -1616,7 +1617,7 @@ public class SmackableImp implements Smackable {
 		// delete removed MUCs
 		StringBuilder exclusion = new StringBuilder(RosterProvider.RosterConstants.GROUP + " = ? AND "
 				+ RosterConstants.JID + " NOT IN ('");
-		exclusion.append(android.text.TextUtils.join("', '", mucJIDs));
+		exclusion.append(TextUtils.join("', '", mucJIDs));
 		exclusion.append("');");
 		mContentResolver.delete(RosterProvider.CONTENT_URI,
 				exclusion.toString(),
@@ -1730,7 +1731,7 @@ public class SmackableImp implements Smackable {
 			if (rn != null && rn.length() > 0)
 				roomname = String.format("%s (%s)", rn, roomname);
 			description = ri.getSubject();
-			if (description == null || description.isEmpty())
+			if (!TextUtils.isEmpty(description))
 				description = ri.getDescription();
 			description = mService.getString(R.string.muc_invitation_occupants,
 					description, ri.getOccupantsCount());
