@@ -3,6 +3,7 @@ package org.yaxim.androidclient.chat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
@@ -43,6 +44,7 @@ import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -627,6 +629,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			// these calls must be in the exact right order.
+			Linkify.addLinks(getMessageView(), Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
+			// Android's default phone linkifuckation makes 13:37 two phone numbers
+			Linkify.addLinks(getMessageView(), XMPPHelper.PHONE, "tel:");
+			// Android's default email linkifuckation breaks xmpp: URIs
+			Linkify.addLinks(getMessageView(), XMPPHelper.XMPP_PATTERN, "xmpp");
+			Linkify.addLinks(getMessageView(), XMPPHelper.EMAIL_ADDRESS, "mailto:");
 		}
 		
 		TextView getDateView() {

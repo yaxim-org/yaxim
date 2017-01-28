@@ -24,6 +24,27 @@ import gnu.inet.encoding.StringprepException;
 
 public class XMPPHelper {
 
+	// shameless copy from android/platform_frameworks_base/blob/master/core/java/android/util/Patterns.java
+	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF";
+	public static final Pattern PHONE = Pattern.compile(	// sdd = space, dot, or dash
+			"(\\+[0-9]+[\\- \\.]*)?"        // +<digits><sdd>*
+			+ "(\\([0-9]+\\)[\\- \\.]*)?"   // (<digits>)<sdd>*
+			+ "([0-9][0-9\\- \\.]+[0-9])"); // <digit><digit|sdd>+<digit>
+	public static final Pattern EMAIL_ADDRESS = Pattern.compile(
+			"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+			"\\@" +
+			"[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+			"(" +
+			"\\." +
+			"[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+			")+");
+
+	// shameless copy from conversations/src/main/java/eu/siacs/conversations/ui/adapter/MessageAdapter.java
+	public static final Pattern XMPP_PATTERN = Pattern.compile("xmpp\\:(?:(?:["
+						+ GOOD_IRI_CHAR
+						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
+						+ "|(?:\\%[a-fA-F0-9]{2}))+");
+
 	public static String verifyJabberID(String jid)
 			throws YaximXMPPAdressMalformedException {
 		try {
