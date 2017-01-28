@@ -245,6 +245,13 @@ public abstract class GenericService extends Service {
 			.addNextIntentWithParentStack(chatIntent)
 			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+		NotificationCompat.Action actMarkRead = new NotificationCompat.Action.Builder(
+				android.R.drawable.ic_menu_close_clear_cancel,
+				getString(R.string.notification_mark_read), msgHeardPendingIntent).build();
+		NotificationCompat.Action actReply = new NotificationCompat.Action.Builder(
+				android.R.drawable.ic_menu_edit,
+				getString(R.string.notification_reply), msgResponsePendingIntent)
+			.addRemoteInput(remoteInput).build();
 		mNotification = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
@@ -256,10 +263,13 @@ public abstract class GenericService extends Service {
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)
 			.setAutoCancel(true)
-			.addAction(android.R.drawable.ic_menu_close_clear_cancel,
-					getString(R.string.notification_mark_read), msgHeardPendingIntent)
+			//.addAction(actReply) // TODO: use Android7 in-notification reply, fall back to Activity
+			.addAction(actMarkRead)
 			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
 			.extend(new CarExtender().setUnreadConversation(ucb.build()))
+			.extend(new NotificationCompat.WearableExtender()
+					.addAction(actReply)
+					.addAction(actMarkRead))
 			.build();
 		mNotification.defaults = 0;
 
