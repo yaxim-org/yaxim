@@ -143,7 +143,7 @@ public abstract class GenericService extends Service {
 		} else
 			msg_long.append("\n");
 		if (isMuc && !slash_me)
-			msg_long.append(jid[1]).append(": ");
+			msg_long.append("«").append(jid[1]).append("» ");
 		msg_long.append(message);
 
 		setNotification(fromJid, jid[1], fromUserName, message, msg_long.toString(), is_error, isMuc);
@@ -190,7 +190,7 @@ public abstract class GenericService extends Service {
 		if (isMuc)
 			title = getString(R.string.notification_muc_message, fromResource, author/* = name of chatroom */);
 		else
-			title = getString(R.string.notification_message, author);
+			title = author; // removed "Message from" prefix for brevity
 		String ticker;
 		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
 			int newline = message.indexOf('\n');
@@ -202,7 +202,7 @@ public abstract class GenericService extends Service {
 				limit = MAX_TICKER_MSG_LEN;
 			if (limit > 0)
 				messageSummary = message.substring(0, limit) + " [...]";
-			ticker = title + ":\n" + messageSummary;
+			ticker = title + ": " + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
 
