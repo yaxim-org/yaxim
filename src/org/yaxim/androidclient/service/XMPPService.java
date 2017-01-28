@@ -562,6 +562,7 @@ public class XMPPService extends GenericService {
 			@Override
 			public void mucInvitationReceived(String roomname, String room, String password, String invite_from, String roomdescription) {
 				String body = invite_from + ": " + roomname + "\n" + roomdescription;
+				Log.d(TAG, "Notifying MUC invitation for " + room + ". " + body);
 				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
 				intent.setAction("android.intent.action.VIEW");
 				String uri = "xmpp:" + room;

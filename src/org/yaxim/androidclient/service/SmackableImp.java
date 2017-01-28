@@ -1710,18 +1710,32 @@ public class SmackableImp implements Smackable {
 			return true;
 		}
 		Log.d(TAG, "MUC invitation from " + inviter + " to " + room);
+		asyncProcessMucInvitation(room, inviter, reason, password);
+		return true;
+	}
 
+	protected void asyncProcessMucInvitation(final String room, final String inviter,
+			final String reason, final String password) {
+		new Thread() {
+			public void run() {
+				processMucInvitation(room, inviter, reason, password);
+			}
+		}.start();
+	}
+	protected void processMucInvitation(final String room, final String inviter,
+			final String reason, final String password) {
 		String roomname = room;
+		String inviter_name = null;
 		if (getBareJID(inviter).equalsIgnoreCase(room)) {
 			// from == participant JID, display as "user (MUC)"
-			inviter = getNameForJID(inviter);
+			inviter_name = getNameForJID(inviter);
 		} else {
 			// from == user bare or full JID
-			inviter = getNameForJID(getBareJID(inviter));
+			inviter_name = getNameForJID(getBareJID(inviter));
 		}
 		String description = null;
 		String inv_from = mService.getString(R.string.muc_invitation_from,
-				inviter);
+				inviter_name);
 
 		// query room for info
 		try {
@@ -1748,7 +1762,6 @@ public class SmackableImp implements Smackable {
 				password,
 				inv_from,
 				description);
-		return true;
 	}
 	
 	private Map<String,Runnable> ongoingMucJoins = new java.util.concurrent.ConcurrentHashMap<String, Runnable>();
