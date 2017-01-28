@@ -139,7 +139,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.isLEDNotifyMuc = prefs.getBoolean(PreferenceConstants.LEDNOTIFYMUC,
 				false);
 		this.vibraNotifyMuc = prefs.getString(
-				PreferenceConstants.VIBRATIONNOTIFYMUC, "SYSTEM");
+				PreferenceConstants.VIBRATIONNOTIFYMUC, "OFF");
 		this.notifySoundMuc = Uri.parse(prefs.getString(
 				PreferenceConstants.RINGTONENOTIFYMUC, ""));
 		this.tickerMuc = prefs.getBoolean(PreferenceConstants.TICKERMUC,
