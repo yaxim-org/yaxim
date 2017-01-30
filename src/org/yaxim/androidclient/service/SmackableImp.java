@@ -1242,6 +1242,10 @@ public class SmackableImp implements Smackable {
 					
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
+					if (cc != null && !msg.getFrom().equalsIgnoreCase(mConfig.jabberID)) {
+						Log.w(TAG, "Received illegal carbon from " + msg.getFrom() + ": " + cc.toXML());
+						cc = null;
+					}
 
 					// extract timestamp
 					long ts;
