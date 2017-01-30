@@ -67,7 +67,7 @@
 			android:title="@string/vibr_title"
 			android:summary="@string/vibr_summ"
 			android:key="muc_vibration_list"
-			android:defaultValue="SYSTEM"
+			android:defaultValue="OFF"
 			android:entries="@array/vibr_values_displayed"
 			android:entryValues="@array/vibr_values"
 		/>

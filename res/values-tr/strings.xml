@@ -5,196 +5,225 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Sunucuya bağlanılıyor…</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
+	<string name="conn_disconnecting">Bağlantı kesiliyor…</string>
 	<string name="conn_online">Çevirimiçi</string>
 	<string name="conn_offline">Çevrimdışı</string>
-	<string name="conn_empty_roster">No contacts to show!</string>
-	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_no_network">No network connection</string>
+	<string name="conn_empty_roster">Görüntülenecek kişi yok!</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">%d saniye sonra yeni bağlantı teşebbüsü.</string>
+	<string name="conn_disconnected">Bağlantı kesildi</string>
+	<string name="conn_no_network">Ağ bağlantısı yok</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Çıkış</string>
-	<string name="Global_authenticate_first">Please connect first</string>
-	<string name="Global_JID_hint">user@yax.im</string>
+	<string name="Global_authenticate_first">Lütfen önce bağlanınız</string>
+	<string name="Global_JID_hint">kullanıcı@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">Adres biçimini kontrol ediniz!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Welcome to yaxim!</string>
-	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
+	<string name="StartupDialog_Title">Yaxim\'e hoş geldiniz!</string>
+	<string name="StartupDialog_Summary">Kullanabilmek için yaxim\'i yapılandırmanız lazımdır. Jabber kimliğinizi ve parolanızı giriniz.</string>
 	<string name="StartupDialog_pwHint">Parola girin</string>
-	<string name="StartupDialog_pwrHint">Repeat password</string>
-	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_pwrHint">Parolayı tekrarlayın</string>
+	<string name="StartupDialog_Username_title">Jabber kimliği:</string>
 	<string name="StartupDialog_passwd_title">Parola:</string>
-	<string name="StartupDialog_advanced">Advanced…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
-	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_advanced">Gelişmiş:</string>
+	<string name="StartupDialog_create_new">Yeni hesap kaydet</string>
+	<string name="StartupDialog_error_password">Parola eşleşmiyor!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
-	<string name="notification_message">Message from %s</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_message">%s mesajı</string>
+	<string name="notification_anonymous_message">Mesaj alındı</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Error while sending message!</string>
+	<string name="notification_error">Mesajın gönderilmesinde hata!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Mesaj Uyarısı</string>
-	<string name="led_title">Blinking LED</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
+	<string name="led_title">Yanıp sönen LED</string>
+	<string name="led_summ">Gelen mesajlar için telefonun LED\'ini yanıp söndür</string>
 	<string name="vibr_title">Titreşim</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="vibr_summ">Gelen mesaj olduğunda titre</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
-		<item>System preference</item>
-		<item>Always</item>
+		<item>Asla</item>
+		<item>Sistem tercihi</item>
+		<item>Daima</item>
 	</string-array>
 	<string name="ringtone_title">Melodi</string>
-	<string name="ringtone_summ">Tone for incoming messages</string>
-	<string name="ticker_title">Message preview</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ringtone_summ">Gelen mesajlar için ses</string>
+	<string name="ticker_title">Mesaj önizlemesi</string>
+	<string name="ticker_summ">Göndereni ve mesajı durum çubuğunda göster</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Startup Options</string>
-	<string name="statuspopup_name">Set your status</string>
-	<string name="showOffline_summ">Always show all contacts in the roster</string>
-	<string name="showOffline_title">Show offline contacts</string>
-	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
-	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
+	<string name="statuspopup_name">Durumunuzu ayarlayın</string>
+	<string name="showOffline_summ">Listede daima tüm kişileri göster</string>
+	<string name="showOffline_title">Çevrimdışı kişileri göster</string>
+	<string name="enableGroups_summ">Kişileri gruplara göre sıralandır</string>
+	<string name="enableGroups_title">Kişi gruplarını göster</string>
+	<string name="foregroundService_summ">Bağlantıyı daima açık tutmak için yaxim\'i hafızada tut (ön planda servis)</string>
+	<string name="foregroundService_title">Durum çubuğu ikonu</string>
 
-	<string name="preftitle_debug">Debugging</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
-	<string name="smackdebug_title">SMACK debugging</string>
+	<string name="preftitle_debug">Hata ayıklama</string>
+	<string name="smackdebug_summ">Logcat aracılığıyla paket ve hata ayıklama çıktısı (kişisel bilgiler içerebilir)</string>
+	<string name="smackdebug_title">SMACK hata ayıklama</string>
 
-	<string name="reportcrash_title">Send crash reports</string>
-	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
+	<string name="reportcrash_title">Çökme raporları gönder</string>
+	<string name="reportcrash_summ">Geliştiriciye anonim çökme raporları gönder</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="preftitle_app">Görünüm</string>
+	<string name="FontChat_title">Sohbet yazıtipi boyutu</string>
+	<string name="FontChat_summ">Yazı tipi boyutunu ayarla</string>
+	<string name="FontChat_dialog">Sohbet yazıtipi boyutu</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">Tema</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>Koyu</item>
+		<item>Açık</item>
 		<item>Pine</item>
 		<item>Ice</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Görünüm</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
+		<item>küçük</item>
 		<item>normal</item>
-		<item>large</item>
-		<item>huge</item>
+		<item>büyük</item>
+		<item>çok büyük</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add Contact</string>
-	<string name="Menu_ShowOff">Show Offline</string>
-	<string name="Menu_HideOff">Hide Offline</string>
-	<string name="Menu_AccSettings">Edit Account</string>
-	<string name="Menu_Settings">Settings</string>
-	<string name="Menu_Status">Status</string>
-	<string name="Menu_connect">Connect</string>
-	<string name="Menu_disconnect">Disconnect</string>
-	<string name="Menu_about">About yaxim</string>
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_Settings">Ayarlar</string>
+	<string name="Menu_Status">Durum</string>
+	<string name="Menu_connect">Bağlan</string>
+	<string name="Menu_disconnect">Bağlantıyı kes</string>
+	<string name="Menu_about">Yaxim hakkında</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
-	<string name="addFriend_Title">Add a Contact</string>
-	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
-		desired screen name and choose their contact group!</string>
-	<string name="addFriend_aliasHint">Screen name</string>
-	<string name="addrosteritemaddgroupchoice">Add to a new group</string>
-	<string name="NewGroup_EditTextField_Hint">Name for the new group</string>
+	<string name="addFriend_Title">Kişi ekle</string>
+	<string name="addFriend_Summ">Arkadaşınızın Jabber kimliğini ve istediğiniz rumuzu girip kişi grubunu seçiniz!</string>
+	<string name="addFriend_aliasHint">Rumuz</string>
+	<string name="addrosteritemaddgroupchoice">Yeni gruba ekle</string>
+	<string name="NewGroup_EditTextField_Hint">Yeni grup için isim</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Options for %s</string>
-	<string name="roster_contextmenu_group_rename">Rename group</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Delete Contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete Chat History</string>
-	<string name="roster_contextmenu_contact_open_chat">Open Chat</string>
-	<string name="roster_contextmenu_contact_rename">Rename</string>
-	<string name="roster_contextmenu_contact_request_auth">Request Authorization</string>
-	<string name="roster_contextmenu_contact_change_group">Change Group</string>
+	<string name="roster_contextmenu_title">%s için seçenekler</string>
+	<string name="roster_contextmenu_group_rename">Grubu yeniden adlandır</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Okunmuş olarak işaretle</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
+	<string name="roster_contextmenu_contact_rename">Yeniden adlandır</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_change_group">Grup değiştir</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
-	<string name="account_settings_login">Login Information</string>
-	<string name="account_settings_title">Account Settings</string>
-	<string name="account_options_title">Connecting Options</string>
-	<string name="account_options_advanced">Advanced Options</string>
-	<string name="connstartup_title">Connect at Startup</string>
-	<string name="connstartup_summOn">Go online when yaxim is opened</string>
-	<string name="connstartup_summOff">Do not automatically connect</string>
-	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
-	<string name="account_jabberID_title">Jabber ID</string>
-	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
-	<string name="account_jabberID_dialog_title">Enter your Jabber ID:</string>
-	<string name="account_jabberPW_title">Account Password</string>
-	<string name="account_jabberPW_sum">Your Jabber account password</string>
-	<string name="account_jabberPW_change_on_server">Change password on server</string>
-	<string name="account_jabberPW_password_old">Old Password:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
-	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password…</string>
-	<string name="account_jabberPW_finished">Password successfully changed.</string>
-	<string name="account_jabberPW_error">Error changing password: %s</string>
+	<string name="account_settings_login">Giriş Verileri</string>
+	<string name="account_settings_title">Hesap Ayarları</string>
+	<string name="account_options_title">Bağlantı Seçenekleri</string>
+	<string name="account_options_advanced">Gelişmiş Seçenekler</string>
+	<string name="carbons_title">Mesajların Karbon Kopyaları (XEP-0280)</string>
+	<string name="carbons_summ">Diğer istemcilerden mesaj kopyaları talep et</string>
+	<string name="account_jabberID_title">Jabber Kimliği</string>
+	<string name="account_jabberID_sum">örnek: ben@jabber.misal.com</string>
+	<string name="account_jabberID_dialog_title">Jabber kimliğinizi girin:</string>
+	<string name="account_jabberPW_title">Hesap Parolası</string>
+	<string name="account_jabberPW_sum">Jabber hesabınızın parolası</string>
+	<string name="account_jabberPW_change_on_server">Parolayı sunucuda değiştir</string>
+	<string name="account_jabberPW_password_old">Eski Parola:</string>
+	<string name="account_jabberPW_password_new">Yeni Parola:</string>
+	<string name="account_jabberPW_warning">İKAZ! Başarılı giriş için aynı parolayı sunucuda da ayarlamanız lazımdır!</string>
+	<string name="account_jabberPW_progress">Bekleyiniz, parola değiştiriliyor…</string>
+	<string name="account_jabberPW_finished">Parola başarıyla değiştirildi.</string>
+	<string name="account_jabberPW_error">Parolanın değiştirilmesinde hata: %s</string>
 	
 	<!-- accountprefs -->
-	<string name="account_resource_title">Client Resource</string>
-	<string name="account_resource_summ">Default: yaxim</string>
-	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_title">İstemci Kaynağı</string>
+	<string name="account_resource_summ">Varsayılan: yaxim</string>
+	<string name="account_resource_dialog_title">Kaynağınızı giriniz:</string>
 	<string name="account_resource_hint">yaxim</string>
-	<string name="account_prio_title">Client Priority</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
-	<string name="account_prio_dialog_title">Enter your priority:</string>
-	<string name="account_port_title">Server Port</string>
-	<string name="account_port_sum">Default: 5222</string>
-	<string name="account_port_dialog_title">Enter the server port:</string>
+	<string name="account_prio_title">İstemci Önceliği</string>
+	<string name="account_prio_summ">Varsayılan: 0 (izin verilen: -128 ilâ 127)</string>
+	<string name="account_prio_error">İzin verilen değerler: -128 ilâ 127</string>
+	<string name="account_prio_dialog_title">Önceliğinizi girin:</string>
+	<string name="account_port_title">Sunucu Portu</string>
+	<string name="account_port_sum">Varsayılan: 5222</string>
+	<string name="account_port_dialog_title">Sunucu portunu girin:</string>
 	<string name="account_port_hint">5222</string>
-	<string name="account_customserver_title">Custom Server</string>
-	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
-	<string name="account_customserver_dialog_title">Enter server hostname:</string>
-	<string name="account_customserver_hint">host.example.com</string>
-	<string name="require_ssl_title">Require SSL/TLS</string>
-	<string name="require_ssl_summ">Always encrypt server connection</string>
+	<string name="account_customserver_title">Özel Sunucu</string>
+	<string name="account_customserver_summ">(Seçime dayalı) alternatif sunucu makine ismi</string>
+	<string name="account_customserver_dialog_title">Sunucu makine ismini girin:</string>
+	<string name="account_customserver_hint">host.misal.com</string>
+	<string name="require_ssl_title">SSL/TLS iste</string>
+	<string name="require_ssl_summ">Sunucu bağlantısını daima şifrele</string>
 
 	<!--StatusPopUp-->
-	<string name="AddContact_SpinnerPrompt">Choose Group</string>
-	<string name="setStatusmsgHint">Your status message</string>
-	<string name="setStatusTitle">Set your status</string>
-	<string name="RenameGroup_summ">Rename group %s to:</string>
-	<string name="RenameGroup_title">Rename group</string>
-	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
-	<string name="RenameEntry_title">Rename contact</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
-	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
-	<string name="deleteRosterItem_text">Really remove %1$s (%2$s)?</string>
-	<string name="deleteRosterItem_title">Delete Contact</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Delete Chat History</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="AddContact_SpinnerPrompt">Grup Seç</string>
+	<string name="setStatusmsgHint">Durum mesajınız</string>
+	<string name="setStatusTitle">Durumunuzu ayarlayın</string>
+	<string name="RenameGroup_summ">%s grubunu şöyle adlandır:</string>
+	<string name="RenameGroup_title">Grubu yeniden adlandır</string>
+	<string name="RenameEntry_summ">%1$s (%2$s) şöyle adlandırılsın:</string>
+	<string name="RenameEntry_title">Kişiyi yeniden adlandır</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Aşağıdan bir grup seçin</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Grup değiştir</string>
+	<string name="deleteRosterItem_text">%1$s (%2$s) gerçekten kaldırılsın mı?</string>
+	<string name="deleteRosterItem_title">Kişiyi Sil</string>
+	<string name="deleteChatHistory_text">%1$s (%2$s) ile tüm mesajlar silinsin mi?</string>
+	<string name="deleteChatHistory_title">Sohbet Tarihçesini Sil</string>
+	<string name="subscriptionRequest_text">%1$s sizi kişi olarak eklemek istiyor: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Abone olma talebi</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_from_me">Me:</string>
-	<string name="toast_connectfail_message">Connection closed!</string>
-	<string name="toast_stored_offline">The message has been stored for transmission.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_from_me">Ben:</string>
+	<string name="toast_stored_offline">Mesaj gönderilmek için kaydedilmiştir.</string>
+	<string name="chat_enterMsgHint">Mesaj girin</string> 
 
 	<!-- Chat menu -->
-	<string name="chatmenu_resend">Resend</string>
+	<string name="chatmenu_resend">Tekrar yolla</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -204,87 +233,56 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">About yaxim</string>
-	<string name="AboutDialog_DevelopersTitle">Developers</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_title">Yaxim hakkında</string>
+	<string name="AboutDialog_DevelopersTitle">Geliştiriciler</string>
+	<string name="AboutDialog_DevelopersText">Geliştiricilerle http://yaxim.org sitesinde veya Freenode\'da #yaxim kanalında irtibata geçebilirsiniz</string>
+	<string name="AboutDialog_LicenceTitle">Lisans</string>
+	<string name="AboutDialog_Vote">Geribildirim gönder</string>
+	<string name="AboutDialog_LicenceText">Bu program özgür yazılımdır; onu Özgür Yazılım Vakfının yayınladığı GNU Genel Kamu Lisansının 2. sürümü kapsamında dağıtabilir ve/veya değiştirebilirsiniz. Bağlantı: http://www.gnu.org/licenses/gpl-2.0.html\n \n Bu yazılımın bazı parçaları MIT lisansı kapsamındadır:\n \n Telif hakkı © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Çevirimiçi</string>
-	<string name="status_away">Away</string>
-	<string name="status_chat">Free for chat</string>
-	<string name="status_dnd">Do not disturb</string>
-	<string name="status_xa">Not available</string>
+	<string name="status_away">Uzakta</string>
+	<string name="status_chat">Sohbete açık</string>
+	<string name="status_dnd">Rahatsız etmeyin</string>
+	<string name="status_xa">Meşgul</string>
 	<string name="status_offline">Çevrimdışı</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Georg Lukas https://launchpad.net/~ge0rg
+  zapman https://launchpad.net/~zapman
   zeugma https://launchpad.net/~sunder67</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
-	<string name="all_contacts_group">All contacts</string>
+	<string name="default_group">Genel</string>
+	<string name="all_contacts_group">Tüm kişiler</string>
+	<string name="muc_group">Group Chats</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Kİşi seç</string>
+	<string name="action_settings">Ayarlar</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Kicked: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Banned: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
 </resources>

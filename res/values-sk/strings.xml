@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Pripájanie k serveru...</string>
+	<string name="conn_disconnecting">Odpájanie...</string>
+	<string name="conn_online">Pripojené</string>
+	<string name="conn_offline">Odpojené</string>
+	<string name="conn_empty_roster">Žiadne kontakty na zobrazenie!</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">Pokus o ďalšie pripojenie o %d sekúnd.</string>
+	<string name="conn_disconnected">Spojenie ukončené</string>
+	<string name="conn_no_network">Bez sieťového pripojenia</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Ukončiť</string>
+	<string name="Global_authenticate_first">Prosím, najprv sa pripojte</string>
+	<string name="Global_JID_hint">user@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Overte formát adresy!</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Vitajte v yaxim!</string>
+	<string name="StartupDialog_Summary">Pred používaním musíte yaxim nastaviť. Prosím, zadajte vaše Jabber ID a heslo.</string>
+	<string name="StartupDialog_pwHint">Zadajte heslo</string>
+	<string name="StartupDialog_pwrHint">Znovu zadajte heslo</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_passwd_title">Heslo:</string>
+	<string name="StartupDialog_advanced">Pokročilé...</string>
+	<string name="StartupDialog_create_new">Zaregistrovať nový účet</string>
+	<string name="StartupDialog_error_password">Heslo nie je správne!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Správa od %s</string>
+	<string name="notification_anonymous_message">Prijatá správa</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Mark Read</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Chyba počas odosielania správy!</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Upozornenie na správu</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
+	<string name="led_title">Blikanie LED</string>
+	<string name="led_summ">Blikanie LED pri prijatí správy</string>
+	<string name="vibr_title">Vibrovanie</string>
+	<string name="vibr_summ">Vibrovať pri prijatí správy</string>
+	<string-array name="vibr_values_displayed">
+		<item>Nikdy</item>
+		<item>Systémové nastavenia</item>
+		<item>Vždy</item>
+	</string-array>
+	<string name="ringtone_title">Zvonenie</string>
+	<string name="ringtone_summ">Zvuk pre prichádzajúce správy</string>
+	<string name="ticker_title">Zobrazenie správy</string>
+	<string name="ticker_summ">Zobraziť odosielateľa a správu v stavovom riadku</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
+	<string name="statuspopup_name">Nastavenie statusu</string>
+	<string name="showOffline_summ">Vždy zobraziť všetky kontakty v zozname</string>
+	<string name="showOffline_title">Zobraziť odpojené kontakty</string>
+	<string name="enableGroups_summ">Usporiadanie kontaktov do skupín</string>
+	<string name="enableGroups_title">Zobraziť skupiny kontaktov</string>
+	<string name="foregroundService_summ">Ponechať yaxim v pamäti - na zabezpečenie stáleho pripojenia</string>
+	<string name="foregroundService_title">Ikona v stavovom riadku</string>
+
+	<string name="preftitle_debug">Ladenie</string>
+	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
+	<string name="smackdebug_title">SMACK debugging</string>
+
+	<string name="reportcrash_title">Odoslať správu o zlyhaní</string>
+	<string name="reportcrash_summ">Odoslať anonymnú správu o zlyhaní vývojárom</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Vzhľad</string>
+	<string name="FontChat_title">Veľkosť písma chatu</string>
+	<string name="FontChat_summ">Nastaviť veľkosť písma chatu</string>
+	<string name="FontChat_dialog">Veľkosť písma chatu</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">Téma vzhľadu</string>
+	<string-array name="pref_theme_entries">
+		<item>Tmavá</item>
+		<item>Svetlá</item>
+		<item>Pine</item>
+		<item>Ice</item>
+	</string-array>
+	<string name="preftitle_ui">Vzhľad</string>
+	<string-array name="fontSizesChat">
+		<item>malé</item>
+		<item>normálne</item>
+		<item>veľké</item>
+		<item>obrovské</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_Settings">Nastavenia</string>
+	<string name="Menu_Status">Status</string>
+	<string name="Menu_connect">Pripojiť</string>
+	<string name="Menu_disconnect">Odpojiť</string>
+	<string name="Menu_about">O aplikácii yaxim</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Pridať kontakt</string>
+	<string name="addFriend_Summ">Prosím, zadajte Jabber ID vášho priateľa, jeho meno a vyberte skupinu kontaktov</string>
+	<string name="addFriend_aliasHint">Zobrazené meno</string>
+	<string name="addrosteritemaddgroupchoice">Pridať do novej skupiny</string>
+	<string name="NewGroup_EditTextField_Hint">Názov novej skupiny</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_title">Nastavenia pre %s</string>
+	<string name="roster_contextmenu_group_rename">Premenovať skupinu</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Označiť ako prečítané</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
+	<string name="roster_contextmenu_contact_rename">Premenovať</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_change_group">Zmeniť skupinu</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Prihlasovacie informácie</string>
+	<string name="account_settings_title">Nastavenia účtu</string>
+	<string name="account_options_title">Nastavenie pripojenia</string>
+	<string name="account_options_advanced">Rozšírené nastavenia</string>
+	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">príklad: ja@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Zadajte vaše Jabber ID</string>
+	<string name="account_jabberPW_title">Heslo</string>
+	<string name="account_jabberPW_sum">Vaše heslo k Jabber účtu</string>
+	<string name="account_jabberPW_change_on_server">Zmeniť heslo na serveri</string>
+	<string name="account_jabberPW_password_old">Staré heslo:</string>
+	<string name="account_jabberPW_password_new">Nové heslo:</string>
+	<string name="account_jabberPW_warning">Varovanie! Pre úspešné prihlásenie musíte zadať rovnaké heslo na serveri kde máte Jabber účet!</string>
+	<string name="account_jabberPW_progress">Prosím čakajte, mení sa heslo...</string>
+	<string name="account_jabberPW_finished">Heslo bolo úspešne zmenené.</string>
+	<string name="account_jabberPW_error">Chyba pri zmene hesla: %s</string>
+	
+	<!-- accountprefs -->
+	<string name="account_resource_title">Client Resource</string>
+	<string name="account_resource_summ">Štandardné: yaxim</string>
+	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Client Priority</string>
+	<string name="account_prio_summ">Základné: 0 (allowed: -128 .. 127)</string>
+	<string name="account_prio_error">Povolené hodnoty: -128 .. 127</string>
+	<string name="account_prio_dialog_title">Enter your priority:</string>
+	<string name="account_port_title">Port servera</string>
+	<string name="account_port_sum">Štandardný: 5222</string>
+	<string name="account_port_dialog_title">Zadajte port servera:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Iný server</string>
+	<string name="account_customserver_summ">(Voliteľné) alternatívny server hostname</string>
+	<string name="account_customserver_dialog_title">Zadajte hostname</string>
+	<string name="account_customserver_hint">host.example.com</string>
+	<string name="require_ssl_title">Vyžadovať SSL/TLS</string>
+	<string name="require_ssl_summ">Vždy šifrovať pripojenie na server</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Vybrať skupinu</string>
+	<string name="setStatusmsgHint">Váš status</string>
+	<string name="setStatusTitle">Nastavenie statusu</string>
+	<string name="RenameGroup_summ">Premenovať skupinu %s na:</string>
+	<string name="RenameGroup_title">Premenovať skupinu</string>
+	<string name="RenameEntry_summ">Premenovať %1$s (%2$s) na:</string>
+	<string name="RenameEntry_title">Premenovať kontakt</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Vyberte skupinu z nižšie uvedených</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Zmeniť skupinu</string>
+	<string name="deleteRosterItem_text">Naozaj odstrániť %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">Vymazať kontakt</string>
+	<string name="deleteChatHistory_text">Naozaj odstrániť všetky správy s %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Vymazať históriu chatu</string>
+	<string name="subscriptionRequest_text">%1$s si vás chce pridať ako kontakt: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Požiadavka o zapísanie</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Ja:</string>
+	<string name="toast_stored_offline">Správa bola uložená na odoslanie</string>
+	<string name="chat_enterMsgHint">Napíšte správu</string> 
+
+	<!-- Chat menu -->
+	<string name="chatmenu_resend">Poslať znovu</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">O aplikácii yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">Vývojári</string>
+	<string name="AboutDialog_DevelopersText">Kontaktujte vývojárov na: http://yaxim.org alebo na freenode IRC: #yaxim</string>
+	<string name="AboutDialog_LicenceTitle">Licencia</string>
+	<string name="AboutDialog_Vote">Pošlite spätnú väzbu</string>
+	<string name="AboutDialog_LicenceText">
+		This program is free software; you can redistribute
+		it and/or
+		modify it under the terms of the GNU General Public License
+		version 2
+		as published by the Free Software Foundation.
+		Link:
+		http://www.gnu.org/licenses/gpl-2.0.html\n
+		\n
+		Parts of this software are
+		provided under the MIT License:\n
+		\n
+		Copyright © 2009 Mads
+		Kristiansen, Nullwire ApS\n
+		\n
+		Permission is hereby granted, free of
+		charge, to any person obtaining
+		a copy
+		of this software and associated
+		documentation files (the
+		"Software"), to deal
+		in the Software without
+		restriction, including
+		without limitation the rights
+		to use, copy,
+		modify, merge, publish,
+		distribute, sublicense, and/or sell
+		copies of
+		the Software, and to
+		permit persons to whom the Software is
+		furnished to
+		do so, subject to
+		the following conditions:
+		\n
+		The above copyright notice
+		and this permission notice shall be
+		included in all
+		copies or
+		substantial portions of the Software.
+		\n
+		THE SOFTWARE IS PROVIDED "AS
+		IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT
+		LIMITED TO THE WARRANTIES OF
+		MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR
+		PURPOSE AND NONINFRINGEMENT.
+		IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY
+		CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN
+		AN ACTION OF CONTRACT,
+		TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN
+		CONNECTION WITH THE
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+    </string>
+
+	<string name="status_available">Pripojené</string>
+	<string name="status_away">Preč</string>
+	<string name="status_chat">Pripravený na chat</string>
+	<string name="status_dnd">Nerušiť</string>
+	<string name="status_xa">Nedostupný</string>
+	<string name="status_offline">Odpojené</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Linuxfan https://launchpad.net/~linuxfan-timo</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">Všeobecné</string>
+	<string name="all_contacts_group">Všetky kontakty</string>
+	<string name="muc_group">Group Chats</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Vybrať kontakt</string>
+	<string name="action_settings">Nastavenia</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Kicked: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Banned: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
+</resources>

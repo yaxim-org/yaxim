@@ -89,14 +89,13 @@ public abstract class GenericService extends Service {
 		String fromJid = jid[0];
 		boolean isMuc = (msgType==Message.Type.groupchat);
 		boolean is_error = (msgType==Message.Type.error);
-		boolean beNoisy=true;
 
 		if (message == null) {
 			clearNotification(fromJid);
 			return;
 		}
 		
-		if (!showNotification && beNoisy) {
+		if (!showNotification) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
@@ -143,31 +142,25 @@ public abstract class GenericService extends Service {
 		} else
 			msg_long.append("\n");
 		if (isMuc && !slash_me)
-			msg_long.append(jid[1]).append(": ");
+			msg_long.append(jid[1]).append("▶ ");
 		msg_long.append(message);
 
 		setNotification(fromJid, jid[1], fromUserName, message, msg_long.toString(), is_error, isMuc);
 		setLEDNotification(isMuc);
-		mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
 		
 		
-		if(beNoisy) {
-			setLEDNotification(isMuc);
+		if(!silent_notification) {
 			mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
 			// If vibration is set to "system default", add the vibration flag to the 
 			// notification and let the system decide.
-			if((!isMuc && "SYSTEM".equals(mConfig.vibraNotify)) 
-					|| (isMuc && "SYSTEM".equals(mConfig.vibraNotifyMuc))) {
+			String vibration = isMuc ? mConfig.vibraNotifyMuc : mConfig.vibraNotify;
+			if ("SYSTEM".equals(vibration)) {
 				mNotification.defaults |= Notification.DEFAULT_VIBRATE;
-			}
-			mNotificationMGR.notify(notifyId, mNotification);
-			
-			// If vibration is forced, vibrate now.
-			if((!isMuc && "ALWAYS".equals(mConfig.vibraNotify))
-					|| (isMuc && "ALWAYS".equals(mConfig.vibraNotifyMuc))) {
+			} else if ("ALWAYS".equals(vibration)) {
 				mVibrator.vibrate(400);
 			}
 		}
+		mNotificationMGR.notify(notifyId, mNotification);
 		mWakeLock.release();
 	}
 	
@@ -190,7 +183,7 @@ public abstract class GenericService extends Service {
 		if (isMuc)
 			title = getString(R.string.notification_muc_message, fromResource, author/* = name of chatroom */);
 		else
-			title = getString(R.string.notification_message, author);
+			title = author; // removed "Message from" prefix for brevity
 		String ticker;
 		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
 			int newline = message.indexOf('\n');
@@ -202,29 +195,37 @@ public abstract class GenericService extends Service {
 				limit = MAX_TICKER_MSG_LEN;
 			if (limit > 0)
 				messageSummary = message.substring(0, limit) + " [...]";
-			ticker = title + ":\n" + messageSummary;
+			ticker = title + ": " + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
 
-		Intent msgHeardIntent = new Intent(this, XMPPService.class)
-			.setAction("respond")
-			.setData(Uri.parse(fromJid));
+		Intent msgHeardIntent = new Intent()
+			.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+			.setAction("org.yaxim.androidclient.ACTION_MESSAGE_HEARD")
+			.putExtra("jid", fromJid);
 
-		Intent msgResponseIntent = new Intent(this, XMPPService.class)
-			.setAction("respond")
-			.setData(Uri.parse(fromJid));
+		Intent msgResponseIntent = new Intent()
+			.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+			.setAction("org.yaxim.androidclient.ACTION_MESSAGE_REPLY")
+			.putExtra("jid", fromJid);
 
-		PendingIntent msgHeardPendingIntent = PendingIntent.getService(this, 0,
-					msgHeardIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		PendingIntent msgResponsePendingIntent = PendingIntent.getService(this, 0,
-					msgResponseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent msgHeardPendingIntent = PendingIntent.getBroadcast(
+					getApplicationContext(),
+					notificationId.get(fromJid),
+					msgHeardIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent msgResponsePendingIntent = PendingIntent.getBroadcast(
+					getApplicationContext(),
+					notificationId.get(fromJid),
+					msgResponseIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
 			.setLabel(getString(R.string.notification_reply))
 			.build();
 		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
 			.setReadPendingIntent(msgHeardPendingIntent)
 			.setReplyAction(msgResponsePendingIntent, remoteInput);
-		ucb.addMessage(msg_long).setLatestTimestamp(System.currentTimeMillis());
+		ucb.addMessage(msg_long.replace("▶ ", ": ")).setLatestTimestamp(System.currentTimeMillis());
 
 		Uri userNameUri = Uri.parse(fromJid);
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
@@ -237,6 +238,13 @@ public abstract class GenericService extends Service {
 			.addNextIntentWithParentStack(chatIntent)
 			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+		NotificationCompat.Action actMarkRead = new NotificationCompat.Action.Builder(
+				android.R.drawable.ic_menu_close_clear_cancel,
+				getString(R.string.notification_mark_read), msgHeardPendingIntent).build();
+		NotificationCompat.Action actReply = new NotificationCompat.Action.Builder(
+				android.R.drawable.ic_menu_edit,
+				getString(R.string.notification_reply), msgResponsePendingIntent)
+			.addRemoteInput(remoteInput).build();
 		mNotification = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
@@ -248,10 +256,13 @@ public abstract class GenericService extends Service {
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)
 			.setAutoCancel(true)
-			.addAction(android.R.drawable.ic_menu_close_clear_cancel,
-					getString(R.string.notification_mark_read), msgHeardPendingIntent)
+			//.addAction(actReply) // TODO: use Android7 in-notification reply, fall back to Activity
+			.addAction(actMarkRead)
 			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
 			.extend(new CarExtender().setUnreadConversation(ucb.build()))
+			.extend(new NotificationCompat.WearableExtender()
+					.addAction(actReply)
+					.addAction(actMarkRead))
 			.build();
 		mNotification.defaults = 0;
 

@@ -65,9 +65,9 @@
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Vibrate on incoming messages</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
+		<item>Hech qachon</item>
 		<item>System preference</item>
-		<item>Always</item>
+		<item>Hamisha</item>
 	</string-array>
 	<string name="ringtone_title">Ringtone</string>
 	<string name="ringtone_summ">Tone for incoming messages</string>
@@ -94,7 +94,7 @@
 	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
+	<string name="preftitle_app">Tashqi koʻrinishi</string>
 	<string name="FontChat_title">Chat font size</string>
 	<string name="FontChat_summ">Set chat font size</string>
 	<string name="FontChat_dialog">Chat font size</string>
@@ -111,7 +111,7 @@
 		<item>Pine</item>
 		<item>Ice</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">Tashqi koʻrinishi</string>
 	<string-array name="fontSizesChat">
 		<item>small</item>
 		<item>normal</item>
@@ -174,7 +174,7 @@
 	<string name="account_jabberPW_password_old">Old Password:</string>
 	<string name="account_jabberPW_password_new">New Password:</string>
 	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password&#8230;</string>
+	<string name="account_jabberPW_progress">Please wait, changing password…</string>
 	<string name="account_jabberPW_finished">Password successfully changed.</string>
 	<string name="account_jabberPW_error">Error changing password: %s</string>
 	
@@ -239,66 +239,7 @@
 	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_Vote">Give Feedback</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_LicenceText">TATU talabasi</string>
 
 	<string name="status_available">Online</string>
 	<string name="status_away">Away</string>
@@ -307,7 +248,8 @@
 	<string name="status_xa">Not available</string>
 	<string name="status_offline">Offline</string>
 
-	<string name="translator_credits">translator-credits</string>
+	<string name="translator_credits">Launchpad Contributions:
+  bekzod https://launchpad.net/~buranov-bekzod</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>

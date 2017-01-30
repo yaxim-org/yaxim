@@ -9,9 +9,12 @@
 	<string name="conn_online">En ligne</string>
 	<string name="conn_offline">Hors ligne</string>
 	<string name="conn_empty_roster">Aucun contact à afficher !</string>
-	<string name="conn_reconnect">Reconnexion dans %d secondes.</string>
+	<string name="conn_empty_roster_hints">Il existe de nombreuses façons d\'ajouter des contacts :\n\n - Android Beam™ : touchez le téléphone d\'un ami\n\n - Scannez un QR code\n\n - \"Créez une invitation\" et partagez-la (e-mail, SMS, QR code, …)\n\n - \"Ajouter un contact\" si vous connaissez le JID</string>
+	<string name="conn_reconnect">Prochaine tentative de connexion dans %d secondes.</string>
 	<string name="conn_disconnected">Connexion fermée</string>
 	<string name="conn_no_network">Aucune connexion réseau</string>
+	<string name="conn_ping_timeout">Délai de réponse au ping dépassé</string>
+	<string name="conn_error">Erreur : %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Quitter</string>
@@ -30,16 +33,29 @@
 	<string name="StartupDialog_advanced">Avancée…</string>
 	<string name="StartupDialog_create_new">Enregistrer un nouveau compte</string>
 	<string name="StartupDialog_error_password">Le mot de passe ne correspond pas !</string>
+	<string name="StartupDialog_created_password">Mot passe sûr créé</string>
+	<string name="StartupDialog_auth_failed">Vérifiez votre nom d\'utilisateur de mot de passe !</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message de %s</string>
 	<string name="notification_anonymous_message">Message reçu</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s dans %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Répondre</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Marquer comme lu</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Erreur lors de l\'envoi du message !</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Notification de message</string>
+	<string name="preftitle_notify_muc">Notification de salon</string>
+	<string name="muc_highlight_title">Ne notifier que les mentions</string>
+	<string name="muc_highlight_sum">Ne notifier que quand votre nom est mentionné dans un salon</string>
 	<string name="led_title">LED clignotante</string>
 	<string name="led_summ">LED clignotante lors de la réception d\'un nouveau message</string>
 	<string name="vibr_title">Vibration</string>
@@ -55,7 +71,9 @@
 	<string name="ticker_summ">Affiché l\'expéditeur et le messsage dans la barre d\'état</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Options de démarrage</string>
+	<string name="preftitle_general">Paramètres généraux</string>
+	<string name="pref_dnd_when_silent">\"Ne pas déranger\" en mode silence</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Définissez votre état</string>
 	<string name="showOffline_summ">Toujours afficher l\'ensemble des contacts dans la liste</string>
 	<string name="showOffline_title">Afficher les contacts hors ligne</string>
@@ -86,8 +104,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Sombre</item>
 		<item>Clair</item>
-		<item>Pin</item>
-		<item>Glace</item>
+		<item>Pine</item>
+		<item>Ice</item>
 	</string-array>
 	<string name="preftitle_ui">Apparence</string>
 	<string-array name="fontSizesChat">
@@ -99,14 +117,19 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Ajouter un contact</string>
-	<string name="Menu_ShowOff">Afficher les contacts déconnectés</string>
-	<string name="Menu_HideOff">Cacher les contacts déconnectés</string>
+	<string name="Menu_ShowOff">Montrer les hors ligne</string>
+	<string name="Menu_HideOff">Cacher les hors ligne</string>
 	<string name="Menu_AccSettings">Modifier le compte</string>
 	<string name="Menu_Settings">Préférences</string>
 	<string name="Menu_Status">État</string>
 	<string name="Menu_connect">Se connecter</string>
 	<string name="Menu_disconnect">Se déconnecter</string>
 	<string name="Menu_about">À propos de yaxim</string>
+	<string name="Menu_muc">Ajouter un salon</string>
+	<string name="Menu_mark_all_as_read">Tout marquer comme lu</string>
+	<string name="Menu_send_invitation">Créer une invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Ajouter un contact</string>
@@ -118,22 +141,23 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Options pour %s</string>
 	<string name="roster_contextmenu_group_rename">Renommer le groupe</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Marquer comme lu</string>
-	<string name="roster_contextmenu_contact_delete">Effacer le contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Effacer l\'historique du chat</string>
-	<string name="roster_contextmenu_contact_open_chat">Discussion ouverte</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Marquer comme lu</string>
+	<string name="roster_contextmenu_contact_delete">Supprimer le contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Effacer l\'historique de conversations</string>
+	<string name="roster_contextmenu_contact_open_chat">Ouvrir la conversation</string>
 	<string name="roster_contextmenu_contact_rename">Renommer</string>
-	<string name="roster_contextmenu_contact_request_auth">Demande d\'autorisation</string>
+	<string name="roster_contextmenu_contact_request_auth">Demander l\'autorisation</string>
 	<string name="roster_contextmenu_contact_change_group">Changer de groupe</string>
+	<string name="roster_contextmenu_contact_share">Partager l\'adresse</string>
+	<string name="roster_contextmenu_muc_edit">Éditer le salon</string>
+	<string name="roster_contextmenu_muc_leave">Quitter le salon</string>
+	<string name="muc_leave_question">Vraiment quitter %s ?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Information de connexion</string>
 	<string name="account_settings_title">Paramètres du compte</string>
 	<string name="account_options_title">Options de connexion</string>
 	<string name="account_options_advanced">Options avancées</string>
-	<string name="connstartup_title">Connexion au démarrage</string>
-	<string name="connstartup_summOn">Être en-ligne quand yaxim démarre</string>
-	<string name="connstartup_summOff">Ne pas se connecter automatiquement</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Demander des copies de message de vos autres clients</string>
 	<string name="account_jabberID_title">Identifiant Jabber</string>
@@ -185,10 +209,12 @@
 	<string name="deleteChatHistory_title">Effacer l\'historique du chat</string>
 	<string name="subscriptionRequest_text">%1$s voudrait vous ajouter en tant que contact : \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Demande d\'inscription</string>
+	<string name="subscription_accept">Accepter</string>
+	<string name="subscription_reject">Rejeter</string>
+	<string name="subscription_status_from">peut voir votre statut</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Moi :</string>
-	<string name="toast_connectfail_message">Connexion fermée !</string>
 	<string name="toast_stored_offline">Le message a été sauvegardé pour transmission.</string>
 	<string name="chat_enterMsgHint">Entrer un message</string> 
 
@@ -224,6 +250,7 @@
   Mathias Hablützel https://launchpad.net/~mathias-habluetzel
   Matthieu Baerts https://launchpad.net/~matttbe
   Michael Scherer https://launchpad.net/~misc-zarb
+  Nÿco https://launchpad.net/~nicolas-verite
   Valentin Lorentz https://launchpad.net/~progval
   louiz’ https://launchpad.net/~louizatakk
   sebseb01 https://launchpad.net/~sebseb01</string>
@@ -231,7 +258,34 @@
 	<!-- default roster group with no name -->
 	<string name="default_group">Général</string>
 	<string name="all_contacts_group">Tous les contacts</string>
+	<string name="muc_group">Salons de discussion</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Choisissez le contact</string>
+	<string name="action_settings">Préférences</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Identifiant Jabber du salon de discussion</string>
+	<string name="muc_nickname_hint">Pseudo</string>
+	<string name="muc_password_hint">Mot de passe (facultatif)</string>
+	<string name="title_activity_muc_invite">Invitation au salon de discussion</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Invitation de %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronisation en cours…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Participants au salon de discussion (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Éjecté : %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Éjecté par %1$s : %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Bannis : %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Bannis par %1$s : %2$s</string>
+
+
 </resources>

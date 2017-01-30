@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="20" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
+	android:versionCode="28" android:versionName="@string/build_revision" package="org.yaxim.androidclient">
 
 	<uses-sdk android:targetSdkVersion="17" android:minSdkVersion="7"/>
 
@@ -30,19 +30,19 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 				<data android:mimeType="text/*"></data>
 			</intent-filter>
-			<intent-filter android:icon="@drawable/icon" android:label="@string/app_name">
+			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
 				<action android:name="android.intent.action.SENDTO" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:host="jabber" android:scheme="imto" />
 			</intent-filter>
-			<intent-filter android:icon="@drawable/icon" android:label="@string/app_name">
+			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="xmpp" />
 			</intent-filter>
-			<intent-filter android:icon="@drawable/icon" android:label="@string/app_name">
+			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
@@ -51,7 +51,7 @@
 				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/i/" />
 				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/j/" />
 			</intent-filter>
-			<intent-filter>
+			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
 				<action android:name="android.nfc.action.NDEF_DISCOVERED"/>
 				<category android:name="android.intent.category.DEFAULT"/>
 				<data android:scheme="xmpp"/>
@@ -92,10 +92,12 @@
 			</intent-filter>
 		</service>
 
-		<receiver android:name=".service.YaximBroadcastReceiver">
+		<receiver android:name=".service.YaximBroadcastReceiver" android:exported="false">
 			<intent-filter>
 				<action android:name="android.intent.action.ACTION_SHUTDOWN" />
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+			</intent-filter>
+			<intent-filter>
 				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_HEARD" />
 				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_REPLY" />
 			</intent-filter>

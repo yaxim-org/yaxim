@@ -109,6 +109,7 @@ import android.database.Cursor;
 
 import android.net.Uri;
 import android.telephony.gsm.SmsMessage.MessageClass;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class SmackableImp implements Smackable {
@@ -1241,6 +1242,10 @@ public class SmackableImp implements Smackable {
 					
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
+					if (cc != null && !msg.getFrom().equalsIgnoreCase(mConfig.jabberID)) {
+						Log.w(TAG, "Received illegal carbon from " + msg.getFrom() + ": " + cc.toXML());
+						cc = null;
+					}
 
 					// extract timestamp
 					long ts;
@@ -1330,13 +1335,29 @@ public class SmackableImp implements Smackable {
 					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
 						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
 
-					// handle MUC-PMs
-					if (!is_muc && mucJIDs.contains(fromJID[0]) && !fromJID[1].isEmpty()) {
-						is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
+					// handle MUC-PMs: messages from a nick from a known MUC or with
+					// an <x> element
+					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
+					boolean is_muc_pm = !is_muc  && !TextUtils.isEmpty(fromJID[1]) &&
+							(muc_x != null || mucJIDs.contains(fromJID[0]));
+
+					// TODO: ignoring 'received' MUC-PM carbons, until XSF sorts out shit:
+					// - if yaxim is in the MUC, it will receive a non-carbonated copy of
+					//   incoming messages, but not of outgoing ones
+					// - if yaxim isn't in the MUC, it can't respond anyway
+					if (is_muc_pm && !is_from_me && cc != null)
+						return;
+
+					if (is_muc_pm) {
+						// store MUC-PMs under the participant's full JID, not bare
+						//is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
 						fromJID[0] = fromJID[0] + "/" + fromJID[1];
 						fromJID[1] = null;
 						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
 					}
+
+					// Carbons and MUC history are 'silent' by default
+					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id);
@@ -1348,7 +1369,7 @@ public class SmackableImp implements Smackable {
 							// TODO: MUC PMs
 							ChatHelper.markAsRead(mService, fromJID[0]);
 						} else if (direction == ChatConstants.INCOMING && need_notify)
-							mServiceCallBack.notifyMessage(fromJID, chatMessage, (cc != null), msg.getType());
+							mServiceCallBack.notifyMessage(fromJID, chatMessage, is_silent, msg.getType());
 					}
 					sendReceiptIfRequested(packet);
 				}
@@ -1603,7 +1624,7 @@ public class SmackableImp implements Smackable {
 		// delete removed MUCs
 		StringBuilder exclusion = new StringBuilder(RosterProvider.RosterConstants.GROUP + " = ? AND "
 				+ RosterConstants.JID + " NOT IN ('");
-		exclusion.append(android.text.TextUtils.join("', '", mucJIDs));
+		exclusion.append(TextUtils.join("', '", mucJIDs));
 		exclusion.append("');");
 		mContentResolver.delete(RosterProvider.CONTENT_URI,
 				exclusion.toString(),
@@ -1696,18 +1717,32 @@ public class SmackableImp implements Smackable {
 			return true;
 		}
 		Log.d(TAG, "MUC invitation from " + inviter + " to " + room);
+		asyncProcessMucInvitation(room, inviter, reason, password);
+		return true;
+	}
 
+	protected void asyncProcessMucInvitation(final String room, final String inviter,
+			final String reason, final String password) {
+		new Thread() {
+			public void run() {
+				processMucInvitation(room, inviter, reason, password);
+			}
+		}.start();
+	}
+	protected void processMucInvitation(final String room, final String inviter,
+			final String reason, final String password) {
 		String roomname = room;
+		String inviter_name = null;
 		if (getBareJID(inviter).equalsIgnoreCase(room)) {
 			// from == participant JID, display as "user (MUC)"
-			inviter = getNameForJID(inviter);
+			inviter_name = getNameForJID(inviter);
 		} else {
 			// from == user bare or full JID
-			inviter = getNameForJID(getBareJID(inviter));
+			inviter_name = getNameForJID(getBareJID(inviter));
 		}
 		String description = null;
 		String inv_from = mService.getString(R.string.muc_invitation_from,
-				inviter);
+				inviter_name);
 
 		// query room for info
 		try {
@@ -1717,7 +1752,7 @@ public class SmackableImp implements Smackable {
 			if (rn != null && rn.length() > 0)
 				roomname = String.format("%s (%s)", rn, roomname);
 			description = ri.getSubject();
-			if (description == null || description.isEmpty())
+			if (!TextUtils.isEmpty(description))
 				description = ri.getDescription();
 			description = mService.getString(R.string.muc_invitation_occupants,
 					description, ri.getOccupantsCount());
@@ -1734,7 +1769,6 @@ public class SmackableImp implements Smackable {
 				password,
 				inv_from,
 				description);
-		return true;
 	}
 	
 	private Map<String,Runnable> ongoingMucJoins = new java.util.concurrent.ConcurrentHashMap<String, Runnable>();

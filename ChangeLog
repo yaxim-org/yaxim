@@ -1,3 +1,15 @@
+0.9.0:
+ * New artwork: yaxim is now "yak's IM" ;-)
+ * Mobile Optimization: Support google:queue (almost XEP-0352)
+ * Roster: proper display of errors and subscription status
+ * Group Chats: finally implement XEP-0045 (huge rework)
+ * Notifications: many improvements, support Android Auto and Wear
+ * Easy XMPP: Easier account creation
+ * Easy XMPP: "Create Invitation" function (XEP-0379)
+ * Easy XMPP: Share contacts via NFC (Android Beam) and via other apps
+ * Security: fix for CVE-2017-5589 vulnerability
+ * Smarter Away: Set "DND" in silent mode
+
 0.8.8:
  * Security: fix for CVE-2014-5075 Smack vulnerability
  * Preferences: new password change dialog

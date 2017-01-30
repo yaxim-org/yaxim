@@ -5,13 +5,16 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Verbinde mit Server…</string>
-	<string name="conn_disconnecting">Trenne…</string>
+	<string name="conn_disconnecting">Verbindung wird getrennt…</string>
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Keine Kontakte zum Anzeigen!</string>
+	<string name="conn_empty_roster_hints">Es gibt viele Wege, Kontakte hinzuzufügen:\n\n - Android Beam™: das Telefon eines Freundes berühren\n\n - QR-Code scannen\n\n - \"Einladung erzeugen\" und weitergeben (E-Mail, SMS, QR-Code, …)\n\n - \"Kontakt hinzufügen\" wenn die JID bekannt ist</string>
 	<string name="conn_reconnect">Nächster Versuch in %d Sekunden.</string>
 	<string name="conn_disconnected">Verbindung getrennt</string>
 	<string name="conn_no_network">Keine Netzwerkverbindung</string>
+	<string name="conn_ping_timeout">Ping-Zeitüberschreitung</string>
+	<string name="conn_error">Fehler: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Beenden</string>
@@ -21,8 +24,8 @@
 	<string name="Global_JID_malformed">Adressformat überprüfen!</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Willkommen zu yaxim!</string>
-	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte geben Sie Ihre Jabber-ID und Ihr Passwort ein.</string>
+	<string name="StartupDialog_Title">Willkommen bei yaxim!</string>
+	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte Ihre Jabber-ID und Ihr Passwort eingeben.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
 	<string name="StartupDialog_pwrHint">Passwort wiederholen</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
@@ -30,16 +33,29 @@
 	<string name="StartupDialog_advanced">Erweitert…</string>
 	<string name="StartupDialog_create_new">Neues Konto anlegen</string>
 	<string name="StartupDialog_error_password">Passwort stimmt nicht überein!</string>
+	<string name="StartupDialog_created_password">Sicheres Passwort erzeugt</string>
+	<string name="StartupDialog_auth_failed">Bitte Benutzername und Passwort prüfen!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
 	<string name="notification_anonymous_message">Mitteilung empfangen</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Antworten</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Gelesen</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Fehler beim Nachrichtenversand!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Benachrichtigung</string>
+	<string name="preftitle_notify_muc">Gruppenchat-Benachrichtigung</string>
+	<string name="muc_highlight_title">Nur bei Erwähnung benachrichtigen</string>
+	<string name="muc_highlight_sum">Benachrichtigen, wenn der eigene Nickname erwähnt wird</string>
 	<string name="led_title">LED-Blinken</string>
 	<string name="led_summ">Neue Nachrichten durch LED-Blinken anzeigen</string>
 	<string name="vibr_title">Vibration</string>
@@ -52,30 +68,32 @@
 	<string name="ringtone_title">Klingelton</string>
 	<string name="ringtone_summ">Ton für neue Nachrichten</string>
 	<string name="ticker_title">Vorschau auf Nachricht</string>
-	<string name="ticker_summ">Zeige Absender und Nachricht in Statuszeile</string>
+	<string name="ticker_summ">Absender und Nachricht in Statusleiste anzeigen</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Programmstart-Einstellungen</string>
-	<string name="statuspopup_name">Status setzen</string>
+	<string name="preftitle_general">Allgemeine Einstellungen</string>
+	<string name="pref_dnd_when_silent">\"Nicht stören\" bei Stummschaltung</string>
+	<string name="pref_dnd_when_silent_summ">Setzt Ihren Online-Status auf \"Bitte nicht stören\" when das Telefon stummgeschaltet ist</string>
+	<string name="statuspopup_name">Status einstellen</string>
 	<string name="showOffline_summ">Alle Kontakte immer in der Liste anzeigen</string>
-	<string name="showOffline_title">Offline-Kontakte anzeigen</string>
+	<string name="showOffline_title">Abgemeldete Kontakte anzeigen</string>
 	<string name="enableGroups_summ">Kontakte anhand ihrer Gruppenzugehörigkeit anordnen</string>
 	<string name="enableGroups_title">Kontaktgruppen anzeigen</string>
-	<string name="foregroundService_summ">Yaxim im Speicher halten um immer verbunden zu bleiben (Vordergrund-Dienst)</string>
+	<string name="foregroundService_summ">Yaxim im Speicher halten, um immer verbunden zu bleiben (Vordergrunddienst)</string>
 	<string name="foregroundService_title">Symbol in der Statusleiste</string>
 
-	<string name="preftitle_debug">Debugging</string>
-	<string name="smackdebug_summ">Paket- und Debuggingausgabe im Logcat (kann persönliche Informationen enthalten)</string>
-	<string name="smackdebug_title">SMACK-Debugging</string>
+	<string name="preftitle_debug">Fehlerdiagnose</string>
+	<string name="smackdebug_summ">Paket- und Fehlerdiagnoseausgabe in »logcat« (kann persönliche Informationen enthalten)</string>
+	<string name="smackdebug_title">SMACK-Fehlerdiagnose</string>
 
 	<string name="reportcrash_title">Fehlerberichte senden</string>
 	<string name="reportcrash_summ">Anonymen Absturzbericht an die Entwickler senden</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Darstellung</string>
-	<string name="FontChat_title">Chat-Schriftgröße</string>
-	<string name="FontChat_summ">Schriftgröße für Chat setzen</string>
-	<string name="FontChat_dialog">Chat-Schriftgröße</string>
+	<string name="FontChat_title">Unterhaltungsschriftgröße</string>
+	<string name="FontChat_summ">Schriftgröße für Unterhaltung einstellen</string>
+	<string name="FontChat_dialog">Unterhaltungsschriftgröße</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
@@ -98,19 +116,24 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Neuer Kontakt</string>
-	<string name="Menu_ShowOff">Abgemeldete anzeigen</string>
-	<string name="Menu_HideOff">Abgemeldete verstecken</string>
+	<string name="Menu_addFriend">Kontakt hinzufügen</string>
+	<string name="Menu_ShowOff">Abwesende anzeigen</string>
+	<string name="Menu_HideOff">Abwesende verstecken</string>
 	<string name="Menu_AccSettings">Konto bearbeiten</string>
 	<string name="Menu_Settings">Einstellungen</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Verbinden</string>
 	<string name="Menu_disconnect">Trennen</string>
 	<string name="Menu_about">Über yaxim</string>
+	<string name="Menu_muc">Gruppenchat hinzufügen</string>
+	<string name="Menu_mark_all_as_read">Alle als gelesen markieren</string>
+	<string name="Menu_send_invitation">Einladung erzeugen</string>
+    <string name="Menu_userlist">Teilnehmer</string>
+
 
 	<!-- AddFriend -->
-	<string name="addFriend_Title">Neuer Kontakt</string>
-	<string name="addFriend_Summ">Bitte geben Sie die Jabber-ID und den Anzeigenamen für Ihren Kontakt ein und ordnen Sie diesen in eine Kontakgruppe!</string>
+	<string name="addFriend_Title">Kontakt hinzufügen</string>
+	<string name="addFriend_Summ">Bitte die Jabber-ID Ihres Freundes eingeben, einen Anzeigenamen festlegen und eine Kontaktgruppe zuordnen!</string>
 	<string name="addFriend_aliasHint">Anzeigename</string>
 	<string name="addrosteritemaddgroupchoice">Zu neuer Gruppe hinzufügen</string>
 	<string name="NewGroup_EditTextField_Hint">Name der neuen Gruppe</string>
@@ -118,61 +141,62 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Optionen für %s</string>
 	<string name="roster_contextmenu_group_rename">Gruppe umbenennen</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Alle als gelesen markieren</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Als gelesen markieren</string>
 	<string name="roster_contextmenu_contact_delete">Kontakt löschen</string>
-	<string name="roster_contextmenu_contact_delmsg">Chat-Verlauf löschen</string>
+	<string name="roster_contextmenu_contact_delmsg">Chatverlauf löschen</string>
 	<string name="roster_contextmenu_contact_open_chat">Chat öffnen</string>
 	<string name="roster_contextmenu_contact_rename">Umbenennen</string>
-	<string name="roster_contextmenu_contact_request_auth">Autorisierung anfordern</string>
-	<string name="roster_contextmenu_contact_change_group">Gruppe wechseln</string>
+	<string name="roster_contextmenu_contact_request_auth">Genehmigung anfragen</string>
+	<string name="roster_contextmenu_contact_change_group">Gruppe ändern</string>
+	<string name="roster_contextmenu_contact_share">Adresse teilen</string>
+	<string name="roster_contextmenu_muc_edit">Gruppenchat bearbeiten</string>
+	<string name="roster_contextmenu_muc_leave">Gruppenchat verlassen</string>
+	<string name="muc_leave_question">%s wirklich verlassen?</string>
 
 	<!-- Accountprefs -->
-	<string name="account_settings_login">Login-Informationen</string>
-	<string name="account_settings_title">Konto-Einstellungen</string>
+	<string name="account_settings_login">Anmeldedaten</string>
+	<string name="account_settings_title">Kontoeinstellungen</string>
 	<string name="account_options_title">Verbindungseinstellungen</string>
 	<string name="account_options_advanced">Erweiterte Einstellungen</string>
-	<string name="connstartup_title">Automatisch verbinden</string>
-	<string name="connstartup_summOn">Beim Start von yaxim verbinden</string>
-	<string name="connstartup_summOff">Nicht automatisch verbinden</string>
 	<string name="carbons_title">Nachrichtenkopien (XEP-0280)</string>
-	<string name="carbons_summ">Gesprächsverlauf über mehrere Chat-Anwendungen abgleichen</string>
+	<string name="carbons_summ">Gesprächsverlauf von anderen Anwendungen anfragen</string>
 	<string name="account_jabberID_title">Jabber-ID</string>
 	<string name="account_jabberID_sum">Beispiel: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Jabber-ID eingeben:</string>
-	<string name="account_jabberPW_title">Konto-Passwort</string>
-	<string name="account_jabberPW_sum">Ihr Jabber-Account-Passwort</string>
+	<string name="account_jabberPW_title">Kontopasswort</string>
+	<string name="account_jabberPW_sum">Ihr Passwort des Jabber-Kontos</string>
 	<string name="account_jabberPW_change_on_server">Passwort auf Server ändern</string>
 	<string name="account_jabberPW_password_old">Altes Passwort:</string>
 	<string name="account_jabberPW_password_new">Neues Passwort:</string>
 	<string name="account_jabberPW_warning">ACHTUNG! Sie müssen auf dem Server das selbe Passwort einstellen, um sich anmelden zu können!</string>
-	<string name="account_jabberPW_progress">Bitte warten, Passwort wird geändert...</string>
+	<string name="account_jabberPW_progress">Bitte warten, Passwort wird geändert…</string>
 	<string name="account_jabberPW_finished">Das Passwort wurde erfolgreich geändert.</string>
-	<string name="account_jabberPW_error">Fehler beim Passwort ändern: %s</string>
+	<string name="account_jabberPW_error">Fehler beim ändern des Passwortes: %s</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client-Ressource</string>
-	<string name="account_resource_summ">Standard: yaxim</string>
-	<string name="account_resource_dialog_title">Ressource eingeben:</string>
+	<string name="account_resource_summ">Vorgabe: yaxim</string>
+	<string name="account_resource_dialog_title">Quelle eingeben:</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Client-Priorität</string>
-	<string name="account_prio_summ">Standard: 0 (erlaubt: -128 .. 127)</string>
+	<string name="account_prio_summ">Vorgabe: 0 (erlaubt: -128 .. 127)</string>
 	<string name="account_prio_error">Erlaubte Werte: -128 .. 127</string>
 	<string name="account_prio_dialog_title">Priorität eingeben:</string>
 	<string name="account_port_title">Server-Port</string>
-	<string name="account_port_sum">Standard: 5222</string>
-	<string name="account_port_dialog_title">Server-Port eingeben:</string>
+	<string name="account_port_sum">Vorgabe: 5222</string>
+	<string name="account_port_dialog_title">Serveranschluss eingeben:</string>
 	<string name="account_port_hint">5222</string>
-	<string name="account_customserver_title">Abweichender Server</string>
-	<string name="account_customserver_summ">(Optional) Server-Hostname zum verbinden</string>
-	<string name="account_customserver_dialog_title">Server-Hostnamen eingeben:</string>
+	<string name="account_customserver_title">Benutzerdefinierter Server</string>
+	<string name="account_customserver_summ">(Optional) alternativer Serverrechnername</string>
+	<string name="account_customserver_dialog_title">Serverrechnername eingeben:</string>
 	<string name="account_customserver_hint">host.example.com</string>
-	<string name="require_ssl_title">SSL/TLS erfordern</string>
+	<string name="require_ssl_title">SSL/TLS erzwingen</string>
 	<string name="require_ssl_summ">Serverkommunikation immer verschlüsseln</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Gruppe auswählen</string>
-	<string name="setStatusmsgHint">Ihre Status-Nachricht</string>
-	<string name="setStatusTitle">Status setzen</string>
+	<string name="setStatusmsgHint">Ihre Statusnachricht</string>
+	<string name="setStatusTitle">Status einstellen</string>
 	<string name="RenameGroup_summ">Gruppe %s umbenennen in:</string>
 	<string name="RenameGroup_title">Gruppe umbenennen</string>
 	<string name="RenameEntry_summ">%1$s (%2$s) umbenennen in:</string>
@@ -182,13 +206,15 @@
 	<string name="deleteRosterItem_text">%1$s (%2$s) wirklich entfernen?</string>
 	<string name="deleteRosterItem_title">Kontakt löschen</string>
 	<string name="deleteChatHistory_text">Wirklich alle Nachrichten mit %1$s (%2$s) löschen?</string>
-	<string name="deleteChatHistory_title">Chat-Verlauf löschen</string>
-	<string name="subscriptionRequest_text">%1$s möchte Sie als Kontakt hinzufügen: \"%2$s\"</string>
+	<string name="deleteChatHistory_title">Unterhaltungsverlauf löschen</string>
+	<string name="subscriptionRequest_text">%1$s möchte Sie als Kontakt hinzufügen: »%2$s«</string>
 	<string name="subscriptionRequest_title">Abonnementanfrage</string>
+	<string name="subscription_accept">Annehmen</string>
+	<string name="subscription_reject">Ablehnen</string>
+	<string name="subscription_status_from">kann Ihren Status sehen</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ich:</string>
-	<string name="toast_connectfail_message">Verbindung getrennt!</string>
 	<string name="toast_stored_offline">Nachricht zum Versand gespeichert.</string>
 	<string name="chat_enterMsgHint">Mitteilung eingeben</string> 
 
@@ -207,12 +233,12 @@
 	<string name="AboutDialog_DevelopersTitle">Entwickler</string>
 	<string name="AboutDialog_DevelopersText">Kontakt mit den Entwicklern auf http://yaxim.org oder im freenode IRC: #yaxim</string>
 	<string name="AboutDialog_LicenceTitle">Lizenzierung</string>
-	<string name="AboutDialog_Vote">Feedback geben</string>
+	<string name="AboutDialog_Vote">Rückmeldung geben</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Online</string>
 	<string name="status_away">Abwesend</string>
-	<string name="status_chat">Frei zum Chatten</string>
+	<string name="status_chat">Frei zum Unterhalten</string>
 	<string name="status_dnd">Bitte nicht stören</string>
 	<string name="status_xa">Nicht verfügbar</string>
 	<string name="status_offline">Offline</string>
@@ -224,12 +250,40 @@
   Johannes Boost https://launchpad.net/~jjjb
   Markus Unterwaditzer https://launchpad.net/~untitaker
   Michael Kanis https://launchpad.net/~mkanis
-  René Moser https://launchpad.net/~resmo</string>
+  René Moser https://launchpad.net/~resmo
+  Tobias Bannert https://launchpad.net/~toba</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Allgemein</string>
 	<string name="all_contacts_group">Alle Kontakte</string>
+	<string name="muc_group">Gruppenchats</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Kontakt auswählen</string>
+	<string name="action_settings">Einstellungen</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Gruppenchat-JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Passwort (optional)</string>
+	<string name="title_activity_muc_invite">Gruppenchat-Einladung</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Einladung von %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d Teilnehmer)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Beitreten als %s</string>
+	<string name="muc_synchronizing">Synchronisiere…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Gruppenchat-Teilnehmer (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Gekickt: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Gekickt von %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Gebannt: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Gebannt von %1$s: %2$s</string>
+
+
 </resources>

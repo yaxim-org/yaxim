@@ -167,11 +167,8 @@ public class XMPPService extends GenericService {
 			if ("respond".equals(intent.getAction())) {
 				// clear notifications and send a message from Android Auto/Wear event
 				String jid = intent.getDataString();
-				Bundle reply = android.support.v4.app.RemoteInput.getResultsFromIntent(intent);
-				Log.d(TAG, "respond action: " + jid + " "  + reply);
-				String replystring = null;
-				if (reply != null) {
-					replystring = reply.getCharSequence("voicereply").toString();
+				String replystring = intent.getStringExtra("message");
+				if (replystring != null) {
 					Log.d(TAG, "got reply: " + replystring);
 					mSmackable.sendMessage(jid, replystring);
 				}
@@ -565,6 +562,7 @@ public class XMPPService extends GenericService {
 			@Override
 			public void mucInvitationReceived(String roomname, String room, String password, String invite_from, String roomdescription) {
 				String body = invite_from + ": " + roomname + "\n" + roomdescription;
+				Log.d(TAG, "Notifying MUC invitation for " + room + ". " + body);
 				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
 				intent.setAction("android.intent.action.VIEW");
 				String uri = "xmpp:" + room;

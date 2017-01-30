@@ -9,9 +9,16 @@
 	<string name="conn_online">Połączony</string>
 	<string name="conn_offline">Rozłączony</string>
 	<string name="conn_empty_roster">Brak kontaktów</string>
-	<string name="conn_reconnect">Ponowne połączenie w ciągu %d sekund.</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
 	<string name="conn_disconnected">Połączenie zostało zakończone</string>
 	<string name="conn_no_network">No network connection</string>
+	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Wyjdź</string>
@@ -30,16 +37,29 @@
 	<string name="StartupDialog_advanced">Zaawansowane…</string>
 	<string name="StartupDialog_create_new">Zarejestruj nowe konto</string>
 	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_created_password">Created secure password</string>
+	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Wiadomość od %s</string>
 	<string name="notification_anonymous_message">Otrzymano wiadomość</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Reply</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Mark Read</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
 	<string name="preftitle_notify">Powiadamianie o wiadomościach</string>
+	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">Powiadomienie diodą LED</string>
 	<string name="led_summ">Migaj diodą LED przy nowej wiadomości</string>
 	<string name="vibr_title">Wibracja</string>
@@ -55,7 +75,9 @@
 	<string name="ticker_summ">Pokazuj wiadomość i nadawcę na pasku statusu</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_boot">Opcje uruchamiania</string>
+	<string name="preftitle_general">General Settings</string>
+	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
+	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Ustaw swój status</string>
 	<string name="showOffline_summ">Zawsze pokazuj wszystkie kontakty na liście</string>
 	<string name="showOffline_title">Wyświetlanie rozłączonych kontaktów</string>
@@ -86,8 +108,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Ciemny</item>
 		<item>Jasny</item>
-		<item>Sosna</item>
-		<item>Lód</item>
+		<item>Pine</item>
+		<item>Ice</item>
 	</string-array>
 	<string name="preftitle_ui">Wygląd</string>
 	<string-array name="fontSizesChat">
@@ -98,15 +120,20 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Dodaj kontakt</string>
-	<string name="Menu_ShowOff">Pokaż rozłączonych</string>
-	<string name="Menu_HideOff">Ukryj rozłączonych</string>
-	<string name="Menu_AccSettings">Edytuj konto</string>
+	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_HideOff">Hide offline</string>
+	<string name="Menu_AccSettings">Edit account</string>
 	<string name="Menu_Settings">Ustawienia</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Połącz</string>
 	<string name="Menu_disconnect">Rozłącz</string>
 	<string name="Menu_about">O programie</string>
+	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_send_invitation">Create invitation</string>
+    <string name="Menu_userlist">Participants</string>
+
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Dodaj kontakt</string>
@@ -118,22 +145,23 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_title">Ustawienia %s</string>
 	<string name="roster_contextmenu_group_rename">Zmień nazwę grupy</string>
-	<string name="roster_contextmenu_contact_mark_all_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Usuń kontakt</string>
-	<string name="roster_contextmenu_contact_delmsg">Usuń historię czatu</string>
-	<string name="roster_contextmenu_contact_open_chat">Otwórz chat</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
+	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Zmień nazwę</string>
-	<string name="roster_contextmenu_contact_request_auth">Poproś o autoryzację</string>
+	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Zmień grupę</string>
+	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
+	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
+	<string name="muc_leave_question">Really leave %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Informacje o logowaniu</string>
 	<string name="account_settings_title">Ustawienia konta</string>
 	<string name="account_options_title">Ustawienia połączenia</string>
 	<string name="account_options_advanced">Zaawansowane ustawienia</string>
-	<string name="connstartup_title">Połącz przy starcie</string>
-	<string name="connstartup_summOn">Połącz automatycznie po uruchomieniu programu</string>
-	<string name="connstartup_summOff">Nie łącz automatycznie po uruchomieniu programu</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
 	<string name="carbons_summ">Request message copies from your other client(s)</string>
 	<string name="account_jabberID_title">Jabber ID</string>
@@ -185,10 +213,12 @@
 	<string name="deleteChatHistory_title">Usuń historię czatu</string>
 	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Subscription Request</string>
+	<string name="subscription_accept">Accept</string>
+	<string name="subscription_reject">Reject</string>
+	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ja:</string>
-	<string name="toast_connectfail_message">Połączenie zakończone</string>
 	<string name="toast_stored_offline">Wiadomość została zapisana do wysłania.</string>
 	<string name="chat_enterMsgHint">Wpisz wpiadomość</string> 
 
@@ -225,7 +255,34 @@
 	<!-- default roster group with no name -->
 	<string name="default_group">Grupa domyślna</string>
 	<string name="all_contacts_group">All contacts</string>
+	<string name="muc_group">Group Chats</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Wybierz kontakt</string>
+	<string name="action_settings">Ustawienia</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_password_hint">Password (optional)</string>
+	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Invitation from %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_synchronizing">Synchronizing…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Kicked: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Banned: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+
+
 </resources>

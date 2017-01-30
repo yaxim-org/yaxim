@@ -62,12 +62,13 @@ public class EditMUCDialog extends AlertDialog implements
 
 		ChatRoomHelper.RoomInfo ri = ChatRoomHelper.getRoomInfo(mContext, roomJID);
 		mRoomJID.setText(roomJID);
-		mRoomJID.setEnabled(false);
+		mRoomJID.setInputType(android.text.InputType.TYPE_NULL);
 		mNickName.setText(ri.nickname);
 		mPassword.setText(ri.password);
 		mNickName.requestFocus();
 	}
 
+	// this is called when following an invitation
 	public EditMUCDialog(Activity context, String roomJID, String invitation,
 			String nickname, String password) {
 		this(context);
@@ -78,7 +79,7 @@ public class EditMUCDialog extends AlertDialog implements
 			mInvitation.setVisibility(View.VISIBLE);
 		}
 		mRoomJID.setText(roomJID);
-		mRoomJID.setEnabled(false);
+		mRoomJID.setInputType(android.text.InputType.TYPE_NULL);
 		mNickName.setText(nickname);
 		mPassword.setText(password);
 		mNickName.requestFocus();
