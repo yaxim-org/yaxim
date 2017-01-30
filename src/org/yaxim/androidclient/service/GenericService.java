@@ -143,7 +143,7 @@ public abstract class GenericService extends Service {
 		} else
 			msg_long.append("\n");
 		if (isMuc && !slash_me)
-			msg_long.append("«").append(jid[1]).append("» ");
+			msg_long.append(jid[1]).append("▶ ");
 		msg_long.append(message);
 
 		setNotification(fromJid, jid[1], fromUserName, message, msg_long.toString(), is_error, isMuc);
@@ -232,7 +232,7 @@ public abstract class GenericService extends Service {
 		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
 			.setReadPendingIntent(msgHeardPendingIntent)
 			.setReplyAction(msgResponsePendingIntent, remoteInput);
-		ucb.addMessage(msg_long).setLatestTimestamp(System.currentTimeMillis());
+		ucb.addMessage(msg_long.replace("▶ ", ": ")).setLatestTimestamp(System.currentTimeMillis());
 
 		Uri userNameUri = Uri.parse(fromJid);
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
