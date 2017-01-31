@@ -43,9 +43,9 @@
 	<string name="notification_muc_message">%1$s in %2$s</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
-	<!-- notification button: direct reply (short string) -->
+	<!-- notification button: direct reply (make SHORT string) -->
 	<string name="notification_reply">Antworten</string>
-	<!-- notification button: mark as read (short string) -->
+	<!-- notification button: mark as read (make SHORT string) -->
 	<string name="notification_mark_read">Gelesen</string>
 
 	<!-- Notifications -->
@@ -265,15 +265,22 @@
 	<string name="muc_nickname_hint">Nickname</string>
 	<string name="muc_password_hint">Passwort (optional)</string>
 	<string name="title_activity_muc_invite">Gruppenchat-Einladung</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
 	<string name="muc_invitation_from">Einladung von %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
 	<string name="muc_invitation_occupants">%1$s (%2$d Teilnehmer)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
 	<string name="muc_invitation_join">Beitreten als %s</string>
 	<string name="muc_synchronizing">Synchronisiere…</string>
+	<!-- Title of user list, contains JID -->
 	<string name="chat_muc_userlist">Gruppenchat-Teilnehmer (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
 	<string name="muc_kicked">Gekickt: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
 	<string name="muc_kicked_by">Gekickt von %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
 	<string name="muc_banned">Gebannt: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Gebannt von %1$s: %2$s</string>
 
 
