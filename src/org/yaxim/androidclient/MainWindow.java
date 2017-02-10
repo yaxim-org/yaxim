@@ -374,6 +374,21 @@ public class MainWindow extends SherlockExpandableListActivity {
 		restoreGroupsExpanded();
 	}
 
+	private StatusMode getContactStatusMode(Cursor c) {
+		try {
+			return StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
+		} catch (Exception e) {
+			Log.e(TAG, "Invalid status for contact " + e.getMessage());
+			return StatusMode.unknown;
+		}
+	}
+
+	private StatusMode getItemStatusMode(long packedPosition) {
+		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
+		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
+		return getContactStatusMode(c);
+	}
+
 	private String getPackedItemRow(long packedPosition, String rowName) {
 		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
 		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
@@ -399,6 +414,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		String menuName;
 		boolean isMuc=false;
 		if (isChild) {
+			// do not show context menu before a contact has been added
+			if (getItemStatusMode(packedPosition) == StatusMode.subscribe)
+				return;
 			getMenuInflater().inflate(R.menu.roster_item_contextmenu, menu);
 			menuName = String.format("%s (%s)",
 				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
@@ -843,7 +861,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
 			finish();
 		} else {
-			StatusMode s = StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
+			StatusMode s = getContactStatusMode(c);
 			if (s == StatusMode.subscribe)
 				rosterAddRequestedDialog(userJid, userName,
 					c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE)));
