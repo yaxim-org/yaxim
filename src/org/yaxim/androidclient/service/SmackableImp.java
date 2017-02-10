@@ -1829,6 +1829,7 @@ public class SmackableImp implements Smackable {
 		cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 		upsertRoster(cvR, room);
 		cvR.clear();
+		cvR.put(RosterProvider.RosterConstants.JID, room);
 		try {
 			Presence force_resync = new Presence(Presence.Type.unavailable);
 			force_resync.setTo(room + "/" + nickname);
