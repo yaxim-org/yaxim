@@ -288,8 +288,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			}
 		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
 			// convert URI fragment (after # sign) into xmpp URI
-			String jid = data.getFragment();
-			data = Uri.parse("xmpp://" + jid);
+			String jid = data.getFragment().replace(';', '&');
+			data = Uri.parse("xmpp://" + XMPPHelper.jid2url(jid));
 		} else if ("conversations.im".equalsIgnoreCase(data.getHost())) {
 			try {
 				List<String> segments = data.getPathSegments();

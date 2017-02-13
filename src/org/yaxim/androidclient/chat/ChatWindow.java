@@ -183,8 +183,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		// There's only one Loader, so ...
 		if (i == CHAT_MSG_LOADER) {
 			String selection = null;
-			Uri lastlog = Uri.parse("content://" + ChatProvider.AUTHORITY + "/chats/" + 
-					mWithJabberID + "/" + lastlog_size);
+			Uri lastlog = new Uri.Builder().scheme("content").authority(ChatProvider.AUTHORITY)
+				.appendPath("chats")
+				.appendPath(mWithJabberID).appendPath(String.valueOf(lastlog_size))
+				.build();
 			return new CursorLoader(this, lastlog, PROJECTION_FROM,
 					selection, null, "date");
 		} else {
