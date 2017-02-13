@@ -338,8 +338,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String preauth = data.getQueryParameter("preauth");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
 				addToRosterDialog(jid, name, preauth);
-			} else if (data.getQueryParameter("join") != null) {
-				// TODO: nickname
+			} else if (data.getQueryParameter("join") != null && !openChatWithJid(jid, null)) {
 				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
 					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
 			} else if (!openChatWithJid(jid, body) &&
