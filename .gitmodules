@@ -3,4 +3,4 @@
 	url = git://github.com/ge0rg/MemorizingTrustManager.git
 [submodule "ActionBarSherlock"]
 	path = ActionBarSherlock
-	url = git://github.com/JakeWharton/ActionBarSherlock.git
+	url = git://github.com/ge0rg/ActionBarSherlock.git
