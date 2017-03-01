@@ -83,9 +83,17 @@ public class XMPPHelper {
 		return sb.toString();
 	}
 
+	// WARNING: This is not secure! This method is supposed to create a nice-
+	// looking URL parameter for JIDs, not to encode all special characters.
+	// This is especially important for i18n bare-JIDs which would get
+	// mangled into URL-encoded WTF-8
+	public static String jid2url(String jid) {
+		return jid.replace("%", "%25").replace("#", "%23");
+	}
+
 	public static String createInvitationLink(String jid, String token) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("xmpp:").append(jid).append("?roster");
+		sb.append("xmpp:").append(jid2url(jid)).append("?roster");
 		if (token != null && token.length() > 0)
 			sb.append(";preauth=").append(token);
 		return sb.toString();
@@ -93,18 +101,18 @@ public class XMPPHelper {
 
 	public static String createInvitationLinkHTTPS(String jid, String token) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("https://yax.im/i/#").append(jid);
+		sb.append("https://yax.im/i/#").append(jid2url(jid));
 		if (token != null && token.length() > 0)
 			sb.append("?preauth=").append(token);
 		return sb.toString();
 	}
 
 	public static String createRosterLinkHTTPS(String jid) {
-		return "https://yax.im/i/#" + jid;
+		return "https://yax.im/i/#" + jid2url(jid);
 	}
 
 	public static String createMucLinkHTTPS(String jid) {
-		return "https://yax.im/i/#" + jid + "?join";
+		return "https://yax.im/i/#" + jid2url(jid) + "?join";
 	}
 
 	public static void setStaticNFC(Activity act, String uri) {

@@ -1,5 +1,7 @@
 package org.yaxim.androidclient.data;
 
+import org.yaxim.androidclient.chat.ChatWindow;
+import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.service.IXMPPChatService;
@@ -14,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -86,6 +89,19 @@ public class ChatHelper {
 		// TODO: MUC PM history
 		ctx.getContentResolver().delete(ChatProvider.CONTENT_URI,
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { jid });
+	}
+
+	public static void startChatActivity(Context ctx, String user, String userName, String message) {
+		Intent chatIntent = new Intent(ctx, ChatWindow.class);
+		if (ChatRoomHelper.isRoom(ctx, user))
+			chatIntent.setClass(ctx, MUCChatWindow.class);
+		Uri userNameUri = Uri.parse(user);
+		chatIntent.setData(userNameUri);
+		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, userName);
+		if (message != null) {
+			chatIntent.putExtra(ChatWindow.INTENT_EXTRA_MESSAGE, message);
+		}
+		ctx.startActivity(chatIntent);
 	}
 
 	public static void removeChatHistoryDialog(final Context ctx, final String jid, final String userName) {

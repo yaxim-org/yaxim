@@ -265,14 +265,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		for (String[] c : contacts) {
 			if (jid.equalsIgnoreCase(c[0])) {
 				// found it
-				startChatActivity(c[0], c[1], text);
+				ChatHelper.startChatActivity(this, c[0], c[1], text);
 				finish();
 				return true;
 			}
 		}
 		// if we have a message, open chat to JID
 		if (text != null) {
-			startChatActivity(jid, jid, text);
+			ChatHelper.startChatActivity(this, jid, jid, text);
 			finish();
 			return true;
 		}
@@ -292,8 +292,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			}
 		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
 			// convert URI fragment (after # sign) into xmpp URI
-			String jid = data.getFragment();
-			data = Uri.parse("xmpp://" + jid);
+			String jid = data.getFragment().replace(';', '&');
+			data = Uri.parse("xmpp://" + XMPPHelper.jid2url(jid));
 		} else if ("conversations.im".equalsIgnoreCase(data.getHost())) {
 			try {
 				List<String> segments = data.getPathSegments();
@@ -342,8 +342,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String preauth = data.getQueryParameter("preauth");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
 				addToRosterDialog(jid, name, preauth);
-			} else if (data.getQueryParameter("join") != null) {
-				// TODO: nickname
+			} else if (data.getQueryParameter("join") != null && !openChatWithJid(jid, null)) {
 				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
 					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
 			} else if (!openChatWithJid(jid, body) &&
@@ -378,6 +377,21 @@ public class MainWindow extends SherlockExpandableListActivity {
 		restoreGroupsExpanded();
 	}
 
+	private StatusMode getContactStatusMode(Cursor c) {
+		try {
+			return StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
+		} catch (Exception e) {
+			Log.e(TAG, "Invalid status for contact " + e.getMessage());
+			return StatusMode.unknown;
+		}
+	}
+
+	private StatusMode getItemStatusMode(long packedPosition) {
+		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
+		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
+		return getContactStatusMode(c);
+	}
+
 	private String getPackedItemRow(long packedPosition, String rowName) {
 		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
 		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
@@ -403,6 +417,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		String menuName;
 		boolean isMuc=false;
 		if (isChild) {
+			// do not show context menu before a contact has been added
+			if (getItemStatusMode(packedPosition) == StatusMode.subscribe)
+				return;
 			getMenuInflater().inflate(R.menu.roster_item_contextmenu, menu);
 			menuName = String.format("%s (%s)",
 				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
@@ -577,7 +594,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_contact_open_chat:
-				startChatActivity(userJid, userName, null);
+				ChatHelper.startChatActivity(this, userJid, userName, null);
 				return true;
 
 			case R.id.roster_contextmenu_contact_mark_as_read:
@@ -617,7 +634,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_muc_edit:
-				new EditMUCDialog(this, userJid).show();
+				new EditMUCDialog(this, userJid).dontOpen().show();
 				return true;
 			case R.id.roster_contextmenu_muc_leave:
 				ConfirmDialog.showMucLeave(this, userJid);
@@ -643,20 +660,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private boolean isChild(long packedPosition) {
 		int type = ExpandableListView.getPackedPositionType(packedPosition);
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
-	}
-
-	private void startChatActivity(String user, String userName, String message) {
-		Intent chatIntent = new Intent(this,
-				org.yaxim.androidclient.chat.ChatWindow.class);
-		if (ChatRoomHelper.isRoom(this, user))
-			chatIntent.setClass(this, MUCChatWindow.class);
-		Uri userNameUri = Uri.parse(user);
-		chatIntent.setData(userNameUri);
-		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);
-		if (message != null) {
-			chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_MESSAGE, message);
-		}
-		startActivity(chatIntent);
 	}
 
 	@Override
@@ -844,15 +847,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Intent i = getIntent();
 		if (!mHandledIntent && i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
 			// delegate ACTION_SEND to child window and close self
-			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
+			ChatHelper.startChatActivity(this, userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
 			finish();
 		} else {
-			StatusMode s = StatusMode.values()[c.getInt(c.getColumnIndexOrThrow(RosterConstants.STATUS_MODE))];
+			StatusMode s = getContactStatusMode(c);
 			if (s == StatusMode.subscribe)
 				rosterAddRequestedDialog(userJid, userName,
 					c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE)));
 			else
-				startChatActivity(userJid, userName, null);
+				ChatHelper.startChatActivity(this, userJid, userName, null);
 		}
 
 		return true;

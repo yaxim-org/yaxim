@@ -646,6 +646,7 @@ public class SmackableImp implements Smackable {
 				mStreamHandler.notifyInitialLogin();
 				cleanupMUCs(true);
 				setStatusFromConfig();
+				discoverMUCDomainAsync();
 				mLastOnline = System.currentTimeMillis();
 			}
 
@@ -1610,6 +1611,26 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
+	private void discoverMUCDomain() {
+		Log.d(TAG, "discoverMUCDomain started");
+		try {
+			Collection<String> mucDomains = MultiUserChat.getServiceNames(mXMPPConnection);
+			if (mucDomains.size() >= 1)
+				mConfig.mucDomain = mucDomains.iterator().next();
+			Log.d(TAG, "discoverMUCDomain finished: " + mucDomains.size() + " entries, using " + mConfig.mucDomain);
+		} catch (Exception e) {
+			Log.d(TAG, "discoverMUCDomain failed: " + e.getMessage());
+		}
+	}
+
+	private void discoverMUCDomainAsync() {
+		new Thread() {
+			public void run() {
+				discoverMUCDomain();
+			}
+		}.start();
+	}
+
 	private synchronized void cleanupMUCs(boolean set_offline) {
 		// get a fresh MUC list
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
@@ -1829,6 +1850,7 @@ public class SmackableImp implements Smackable {
 		cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 		upsertRoster(cvR, room);
 		cvR.clear();
+		cvR.put(RosterProvider.RosterConstants.JID, room);
 		try {
 			Presence force_resync = new Presence(Presence.Type.unavailable);
 			force_resync.setTo(room + "/" + nickname);

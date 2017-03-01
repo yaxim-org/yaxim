@@ -122,7 +122,7 @@ public class MUCChatWindow extends ChatWindow {
 			showUserList();
 			return true;
 		case R.id.roster_contextmenu_muc_edit:
-			new EditMUCDialog(this, mWithJabberID).show();
+			new EditMUCDialog(this, mWithJabberID).dontOpen().show();
 			return true;
 		case R.id.roster_contextmenu_muc_leave:
 			ConfirmDialog.show(this, R.string.roster_contextmenu_muc_leave,

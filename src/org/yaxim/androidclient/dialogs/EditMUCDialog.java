@@ -5,6 +5,7 @@ import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.widget.AutoCompleteJidEdit;
+import org.yaxim.androidclient.YaximApplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +31,7 @@ public class EditMUCDialog extends AlertDialog implements
 	private AutoCompleteJidEdit mRoomJID;
 	private EditText mNickName;
 	private EditText mPassword;
+	private boolean openChat = true;
 
 	public EditMUCDialog(Activity context) {
 		super(context);
@@ -44,7 +46,8 @@ public class EditMUCDialog extends AlertDialog implements
 
 		mInvitation = (TextView)group.findViewById(R.id.muc_invitation);
 		mRoomJID = (AutoCompleteJidEdit)group.findViewById(R.id.muc_new_jid);
-		mRoomJID.setServerList(null, ChatHelper.getXMPPDomains(context, ChatHelper.ROSTER_FILTER_MUCS),
+		String mucDomain = YaximApplication.getConfig(mContext).mucDomain;
+		mRoomJID.setServerList(mucDomain, ChatHelper.getXMPPDomains(context, ChatHelper.ROSTER_FILTER_MUCS),
 				R.array.muc_services);
 		mNickName = (EditText)group.findViewById(R.id.muc_new_nick);
 		mPassword = (EditText)group.findViewById(R.id.muc_new_pw);
@@ -91,6 +94,12 @@ public class EditMUCDialog extends AlertDialog implements
 		return this;
 	}
 
+	// chained function to prevent opening
+	public EditMUCDialog dontOpen() {
+		openChat = false;
+		return this;
+	}
+
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
@@ -101,12 +110,17 @@ public class EditMUCDialog extends AlertDialog implements
 		mNickName.addTextChangedListener(this);
 	}
 
+	public void addAndOpen(String jid, String password, String nickname) {
+		ChatRoomHelper.addRoom(mContext, jid, password, nickname);
+		if (openChat)
+			ChatHelper.startChatActivity(mContext, jid, jid, null);
+		ChatRoomHelper.syncDbRooms(mContext);
+	}
+
 	public void onClick(DialogInterface dialog, int which) {
-		ChatRoomHelper.addRoom(mContext,
-				mRoomJID.getText().toString(),
+		addAndOpen(mRoomJID.getText().toString(),
 				mPassword.getText().toString(),
 				mNickName.getText().toString());
-		ChatRoomHelper.syncDbRooms(mContext);
 	}
 
 	public void afterTextChanged(Editable s) {

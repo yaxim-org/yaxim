@@ -74,6 +74,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String vibraNotifyMuc;
 	public Uri notifySoundMuc;
 	public boolean tickerMuc;
+	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
 
 	public boolean smackdebug;
     public String theme;
