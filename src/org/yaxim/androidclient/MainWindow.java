@@ -261,14 +261,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		for (String[] c : contacts) {
 			if (jid.equalsIgnoreCase(c[0])) {
 				// found it
-				startChatActivity(c[0], c[1], text);
+				ChatHelper.startChatActivity(this, c[0], c[1], text);
 				finish();
 				return true;
 			}
 		}
 		// if we have a message, open chat to JID
 		if (text != null) {
-			startChatActivity(jid, jid, text);
+			ChatHelper.startChatActivity(this, jid, jid, text);
 			finish();
 			return true;
 		}
@@ -590,7 +590,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			switch (itemID) {
 			case R.id.roster_contextmenu_contact_open_chat:
-				startChatActivity(userJid, userName, null);
+				ChatHelper.startChatActivity(this, userJid, userName, null);
 				return true;
 
 			case R.id.roster_contextmenu_contact_mark_as_read:
@@ -656,20 +656,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 	private boolean isChild(long packedPosition) {
 		int type = ExpandableListView.getPackedPositionType(packedPosition);
 		return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD);
-	}
-
-	private void startChatActivity(String user, String userName, String message) {
-		Intent chatIntent = new Intent(this,
-				org.yaxim.androidclient.chat.ChatWindow.class);
-		if (ChatRoomHelper.isRoom(this, user))
-			chatIntent.setClass(this, MUCChatWindow.class);
-		Uri userNameUri = Uri.parse(user);
-		chatIntent.setData(userNameUri);
-		chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_USERNAME, userName);
-		if (message != null) {
-			chatIntent.putExtra(org.yaxim.androidclient.chat.ChatWindow.INTENT_EXTRA_MESSAGE, message);
-		}
-		startActivity(chatIntent);
 	}
 
 	@Override
@@ -857,7 +843,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Intent i = getIntent();
 		if (!mHandledIntent && i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
 			// delegate ACTION_SEND to child window and close self
-			startChatActivity(userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
+			ChatHelper.startChatActivity(this, userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
 			finish();
 		} else {
 			StatusMode s = getContactStatusMode(c);
@@ -865,7 +851,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				rosterAddRequestedDialog(userJid, userName,
 					c.getString(c.getColumnIndexOrThrow(RosterConstants.STATUS_MESSAGE)));
 			else
-				startChatActivity(userJid, userName, null);
+				ChatHelper.startChatActivity(this, userJid, userName, null);
 		}
 
 		return true;
