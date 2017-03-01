@@ -5,6 +5,7 @@ import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.widget.AutoCompleteJidEdit;
+import org.yaxim.androidclient.YaximApplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,7 +45,8 @@ public class EditMUCDialog extends AlertDialog implements
 
 		mInvitation = (TextView)group.findViewById(R.id.muc_invitation);
 		mRoomJID = (AutoCompleteJidEdit)group.findViewById(R.id.muc_new_jid);
-		mRoomJID.setServerList(null, ChatHelper.getXMPPDomains(context, ChatHelper.ROSTER_FILTER_MUCS),
+		String mucDomain = YaximApplication.getConfig(mContext).mucDomain;
+		mRoomJID.setServerList(mucDomain, ChatHelper.getXMPPDomains(context, ChatHelper.ROSTER_FILTER_MUCS),
 				R.array.muc_services);
 		mNickName = (EditText)group.findViewById(R.id.muc_new_nick);
 		mPassword = (EditText)group.findViewById(R.id.muc_new_pw);

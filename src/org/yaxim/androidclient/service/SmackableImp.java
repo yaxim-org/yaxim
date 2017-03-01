@@ -646,6 +646,7 @@ public class SmackableImp implements Smackable {
 				mStreamHandler.notifyInitialLogin();
 				cleanupMUCs(true);
 				setStatusFromConfig();
+				discoverMUCDomainAsync();
 				mLastOnline = System.currentTimeMillis();
 			}
 
@@ -1608,6 +1609,26 @@ public class SmackableImp implements Smackable {
 	@Override
 	public String getLastError() {
 		return mLastError;
+	}
+
+	private void discoverMUCDomain() {
+		Log.d(TAG, "discoverMUCDomain started");
+		try {
+			Collection<String> mucDomains = MultiUserChat.getServiceNames(mXMPPConnection);
+			if (mucDomains.size() >= 1)
+				mConfig.mucDomain = mucDomains.iterator().next();
+			Log.d(TAG, "discoverMUCDomain finished: " + mucDomains.size() + " entries, using " + mConfig.mucDomain);
+		} catch (Exception e) {
+			Log.d(TAG, "discoverMUCDomain failed: " + e.getMessage());
+		}
+	}
+
+	private void discoverMUCDomainAsync() {
+		new Thread() {
+			public void run() {
+				discoverMUCDomain();
+			}
+		}.start();
 	}
 
 	private synchronized void cleanupMUCs(boolean set_offline) {
