@@ -630,7 +630,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				return true;
 
 			case R.id.roster_contextmenu_muc_edit:
-				new EditMUCDialog(this, userJid).show();
+				new EditMUCDialog(this, userJid).dontOpen().show();
 				return true;
 			case R.id.roster_contextmenu_muc_leave:
 				ConfirmDialog.showMucLeave(this, userJid);
