@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.HashSet;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuInflater;
+
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
@@ -386,6 +389,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 	
 
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		//inflater.inflate(R.menu.contact_options, menu);
+		inflater.inflate(R.menu.roster_item_contextmenu, menu);
+		return true;
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		Log.d(TAG, "options item selected");
@@ -397,7 +407,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			finish();
 			return true;
 		default:
-			return super.onOptionsItemSelected(item);
+			return ChatHelper.handleJidOptions(this, item.getItemId(), mWithJabberID, mUserScreenName);
 		}
 	}
 	

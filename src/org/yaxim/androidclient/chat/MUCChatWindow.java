@@ -111,6 +111,7 @@ public class MUCChatWindow extends ChatWindow {
 		Log.d(TAG, "creating options menu, we're a muc");
 		MenuInflater inflater = getSupportMenuInflater(); 
 		inflater.inflate(R.menu.muc_options, menu);
+		inflater.inflate(R.menu.roster_item_contextmenu, menu);
 		return true;
 	}
 	

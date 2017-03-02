@@ -584,14 +584,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			int itemID = item.getItemId();
 
 			switch (itemID) {
-			case R.id.roster_contextmenu_contact_mark_as_read:
-				ChatHelper.markAsRead(this, userJid);
-				return true;
-
-			case R.id.roster_contextmenu_contact_delmsg:
-				ChatHelper.removeChatHistoryDialog(this, userJid, userName);
-				return true;
-
 			case R.id.roster_contextmenu_contact_delete:
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				removeRosterItemDialog(userJid, userName);
@@ -611,21 +603,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				moveRosterItemToGroupDialog(userJid);
 				return true;
-			case R.id.roster_contextmenu_contact_share:
-				XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
-						XMPPHelper.createRosterLinkHTTPS(userJid));
-				return true;
-			case R.id.roster_contextmenu_muc_share:
-				XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
-						XMPPHelper.createMucLinkHTTPS(userJid));
-				return true;
 
-			case R.id.roster_contextmenu_muc_edit:
-				new EditMUCDialog(this, userJid).dontOpen().show();
-				return true;
-			case R.id.roster_contextmenu_muc_leave:
-				ConfirmDialog.showMucLeave(this, userJid);
-				return true;
+			default:
+				return ChatHelper.handleJidOptions(this, itemID, userJid, userName);
 			}
 		} else {
 
