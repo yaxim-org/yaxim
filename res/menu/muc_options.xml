@@ -7,9 +7,17 @@
 	<item   android:id="@+id/roster_contextmenu_muc_edit"
 		android:title="@string/roster_contextmenu_muc_edit"
 		android:icon="@android:drawable/ic_menu_preferences"
+		android:orderInCategory="4"
 		/>
+	<item   android:id="@+id/roster_contextmenu_muc_share"
+		android:title="@string/roster_contextmenu_contact_share"
+		android:icon="@android:drawable/ic_menu_share"
+		android:orderInCategory="9"
+		/>
+
 	<item   android:id="@+id/roster_contextmenu_muc_leave"
 		android:title="@string/roster_contextmenu_muc_leave"
 		android:icon="@android:drawable/ic_menu_close_clear_cancel"
+		android:orderInCategory="10"
 		/>
 </menu>

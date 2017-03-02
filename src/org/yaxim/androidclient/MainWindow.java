@@ -421,23 +421,18 @@ public class MainWindow extends SherlockExpandableListActivity {
 				getPackedItemRow(packedPosition, RosterConstants.ALIAS),
 				getPackedItemRow(packedPosition, RosterConstants.JID));
 			isMuc = ChatRoomHelper.isRoom(this, getPackedItemRow(packedPosition, RosterConstants.JID));
+			if (isMuc) {
+				getMenuInflater().inflate(R.menu.muc_options, menu);
+				menu.findItem(R.id.chat_optionsmenu_userlist).setVisible(false);
+			} else
+				getMenuInflater().inflate(R.menu.contact_options, menu);
 		} else {
 			menuName = getPackedItemRow(packedPosition, RosterConstants.GROUP);
 			if (menuName.equals("") || menuName.equals(RosterConstants.MUCS))
 				return; // no options for default menu
 			getMenuInflater().inflate(R.menu.roster_group_contextmenu, menu);
 		}
-
-		// display contact menu for contacts
-		menu.setGroupVisible(R.id.roster_contextmenu_item_menu, isChild);
-		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild && !isMuc);
-		// display group menu for non-standard groups
-		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
-				(menuName.length() > 0));
-		// display stripped down menu for MUCs
-		menu.setGroupVisible(R.id.roster_contextmenu_muc_menu, isChild && isMuc);
-
-		menu.setHeaderTitle(getString(R.string.roster_contextmenu_title, menuName));
+		menu.setHeaderTitle(menuName);
 	}
 
 	void removeChatHistory(final String JID) {
@@ -589,10 +584,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			int itemID = item.getItemId();
 
 			switch (itemID) {
-			case R.id.roster_contextmenu_contact_open_chat:
-				ChatHelper.startChatActivity(this, userJid, userName, null);
-				return true;
-
 			case R.id.roster_contextmenu_contact_mark_as_read:
 				ChatHelper.markAsRead(this, userJid);
 				return true;
