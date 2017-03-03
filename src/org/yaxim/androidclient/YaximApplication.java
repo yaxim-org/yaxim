@@ -28,6 +28,7 @@ public class YaximApplication extends Application {
 
 	@Override
 	public void onCreate() {
+		super.onCreate();
 		mMTM = new MemorizingTrustManager(this);
 		mConfig = new YaximConfiguration(PreferenceManager
 				.getDefaultSharedPreferences(this));
