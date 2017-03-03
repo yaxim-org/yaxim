@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
+import android.os.Build;
 
 import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
@@ -115,8 +117,9 @@ public class XMPPHelper {
 		return "https://yax.im/i/#" + jid2url(jid) + "?join";
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setStaticNFC(Activity act, String uri) {
-		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
 			if (na == null)
 				return;
@@ -126,8 +129,9 @@ public class XMPPHelper {
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setNFCInvitation(final Activity act, final YaximConfiguration config) {
-		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
 			if (na == null)
 				return;
