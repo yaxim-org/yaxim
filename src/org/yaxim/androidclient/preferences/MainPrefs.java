@@ -14,7 +14,7 @@ public class MainPrefs extends SherlockPreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(YaximApplication.getConfig(this).getTheme());
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.mainprefs);
+		addPreferencesFromResource(R.xml.mainprefs);
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);

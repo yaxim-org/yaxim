@@ -1023,8 +1023,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 				.getDefaultSharedPreferences(this);
 		if (mConfig.jabberID.length() < 3 || prefs.contains(PreferenceConstants.INITIAL_CREATE)) {
 			// load preference defaults
-			PreferenceManager.setDefaultValues(this, R.layout.mainprefs, false);
-			PreferenceManager.setDefaultValues(this, R.layout.accountprefs, false);
+			PreferenceManager.setDefaultValues(this, R.xml.mainprefs, false);
+			PreferenceManager.setDefaultValues(this, R.xml.accountprefs, false);
 
 			// prevent a start-up with empty JID
 			prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
