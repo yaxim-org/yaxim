@@ -141,12 +141,10 @@
 	<string name="NewGroup_EditTextField_Hint">新的分组名字</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">%s 选项</string>
 	<string name="roster_contextmenu_group_rename">重命名分组</string>
 	<string name="roster_contextmenu_contact_mark_as_read">标记为已读</string>
 	<string name="roster_contextmenu_contact_delete">Delete contact</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
-	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">重命名</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">改变分组</string>

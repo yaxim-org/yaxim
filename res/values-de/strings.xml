@@ -73,7 +73,7 @@
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_general">Allgemeine Einstellungen</string>
 	<string name="pref_dnd_when_silent">\"Nicht stören\" bei Stummschaltung</string>
-	<string name="pref_dnd_when_silent_summ">Setzt Ihren Online-Status auf \"Bitte nicht stören\" when das Telefon stummgeschaltet ist</string>
+	<string name="pref_dnd_when_silent_summ">Setzt Ihren Online-Status auf \"Bitte nicht stören\" wenn das Telefon stummgeschaltet ist</string>
 	<string name="statuspopup_name">Status einstellen</string>
 	<string name="showOffline_summ">Alle Kontakte immer in der Liste anzeigen</string>
 	<string name="showOffline_title">Abgemeldete Kontakte anzeigen</string>
@@ -137,12 +137,10 @@
 	<string name="NewGroup_EditTextField_Hint">Name der neuen Gruppe</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Optionen für %s</string>
 	<string name="roster_contextmenu_group_rename">Gruppe umbenennen</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Als gelesen markieren</string>
 	<string name="roster_contextmenu_contact_delete">Kontakt löschen</string>
 	<string name="roster_contextmenu_contact_delmsg">Chatverlauf löschen</string>
-	<string name="roster_contextmenu_contact_open_chat">Chat öffnen</string>
 	<string name="roster_contextmenu_contact_rename">Umbenennen</string>
 	<string name="roster_contextmenu_contact_request_auth">Genehmigung anfragen</string>
 	<string name="roster_contextmenu_contact_change_group">Gruppe ändern</string>

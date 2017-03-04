@@ -141,12 +141,10 @@
 	<string name="NewGroup_EditTextField_Hint">Názov novej skupiny</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Nastavenia pre %s</string>
 	<string name="roster_contextmenu_group_rename">Premenovať skupinu</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Označiť ako prečítané</string>
 	<string name="roster_contextmenu_contact_delete">Delete contact</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
-	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Premenovať</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Zmeniť skupinu</string>

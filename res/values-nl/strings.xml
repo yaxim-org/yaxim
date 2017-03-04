@@ -137,12 +137,10 @@
 	<string name="NewGroup_EditTextField_Hint">Naam voor de nieuwe groep</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Opties voor %s</string>
 	<string name="roster_contextmenu_group_rename">Groep hernoemen</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Markeren als gelezen</string>
 	<string name="roster_contextmenu_contact_delete">Contact verwijderen</string>
 	<string name="roster_contextmenu_contact_delmsg">Chatgeschiedenis wissen</string>
-	<string name="roster_contextmenu_contact_open_chat">Chat openen</string>
 	<string name="roster_contextmenu_contact_rename">Naam wijzigen</string>
 	<string name="roster_contextmenu_contact_request_auth">Vraag om authorisering</string>
 	<string name="roster_contextmenu_contact_change_group">Groep wijzigen</string>

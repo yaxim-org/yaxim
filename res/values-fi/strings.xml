@@ -145,12 +145,10 @@
 	<string name="NewGroup_EditTextField_Hint">Nimi uudelle ryhmälle</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Valinnat kohteelle %s</string>
 	<string name="roster_contextmenu_group_rename">Nimeä ryhmä uudelleen</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Merkitse luetuksi</string>
 	<string name="roster_contextmenu_contact_delete">Poista yhteystieto</string>
 	<string name="roster_contextmenu_contact_delmsg">Poista keskusteluhistoria</string>
-	<string name="roster_contextmenu_contact_open_chat">Avaa keskustelu</string>
 	<string name="roster_contextmenu_contact_rename">Nimeä uudelleen</string>
 	<string name="roster_contextmenu_contact_request_auth">Pyydä hyväksyntää</string>
 	<string name="roster_contextmenu_contact_change_group">Vaihda ryhmää</string>

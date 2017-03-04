@@ -137,16 +137,14 @@
 	<string name="NewGroup_EditTextField_Hint">Назва нової групи</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Налаштування для %s</string>
 	<string name="roster_contextmenu_group_rename">Перейменувати групу</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Позначити як прочитане</string>
 	<string name="roster_contextmenu_contact_delete">Видалити контакт</string>
 	<string name="roster_contextmenu_contact_delmsg">Видалити історію переписки</string>
-	<string name="roster_contextmenu_contact_open_chat">Відкрити чат</string>
 	<string name="roster_contextmenu_contact_rename">Перейменувати</string>
 	<string name="roster_contextmenu_contact_request_auth">Запит авторизації</string>
 	<string name="roster_contextmenu_contact_change_group">Змінити групу</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_share">Поділитись адресою</string>
 	<string name="roster_contextmenu_muc_edit">Перезайти в конференцію</string>
 	<string name="roster_contextmenu_muc_leave">Покинути конференцію</string>
 	<string name="muc_leave_question">Дійсно покинути %s?</string>
@@ -259,11 +257,11 @@
 	<string name="muc_password_hint">Пароль (опціонально)</string>
 	<string name="title_activity_muc_invite">Запрошення в конференцію</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">Запрошення від %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d учасники)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_invitation_join">Реєстрація в якості %s</string>
 	<string name="muc_synchronizing">Синхронізація...</string>
 	<!-- Title of user list, contains JID -->
 	<string name="chat_muc_userlist">Учасники конференції (%s)</string>
