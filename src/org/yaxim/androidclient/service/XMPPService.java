@@ -564,6 +564,7 @@ public class XMPPService extends GenericService {
 				String body = invite_from + ": " + roomname + "\n" + roomdescription;
 				Log.d(TAG, "Notifying MUC invitation for " + room + ". " + body);
 				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.setAction("android.intent.action.VIEW");
 				String uri = "xmpp:" + room;
 				Builder b = new Builder();
@@ -573,7 +574,7 @@ public class XMPPService extends GenericService {
 				b.appendQueryParameter("body", body);
 				intent.setData(Uri.parse(uri + b.toString()));
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
-						intent, Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent, 0);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
 						 .setContentTitle(roomname)
 						 .setContentText(body)
