@@ -144,7 +144,7 @@
 	<string name="roster_contextmenu_contact_rename">Naam wijzigen</string>
 	<string name="roster_contextmenu_contact_request_auth">Vraag om authorisering</string>
 	<string name="roster_contextmenu_contact_change_group">Groep wijzigen</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_share">Adres delen</string>
 	<string name="roster_contextmenu_muc_edit">Groepsgesprek bewerken</string>
 	<string name="roster_contextmenu_muc_leave">Groepsgesprek verlaten</string>
 	<string name="muc_leave_question">Weet je zeker dat je %s wilt verlaten?</string>
@@ -265,11 +265,11 @@ PROGRAMMA LIGT BIJ U. MOCHT HET PROGRAMMA DEFECT BLIJKEN DAN DRAAGT U DE KOSTEN 
 	<string name="muc_password_hint">Wachtwoord (optioneel)</string>
 	<string name="title_activity_muc_invite">Uitnodiging voor groepsgesprek</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">Uitnodiging van %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d deelnemers)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_invitation_join">Deelnemen als %s</string>
 	<string name="muc_synchronizing">Bijwerken...</string>
 	<!-- Title of user list, contains JID -->
 	<string name="chat_muc_userlist">Deelnemers groepsgesprek (%s)</string>
