@@ -596,6 +596,8 @@ public class SmackableImp implements Smackable {
 					// we need to check for non-resumability and work around
 					// here:
 					if (!mStreamHandler.isResumePossible()) {
+						for (MultiUserChat muc : multiUserChats.values())
+							muc.cleanup();
 						multiUserChats.clear();
 						mucLastPong.clear();
 						mucLastPing = 0;
@@ -605,6 +607,8 @@ public class SmackableImp implements Smackable {
 				public void connectionClosed() {
 					// TODO: fix reconnect when we got kicked by the server or SM failed!
 					//onDisconnected(null);
+					for (MultiUserChat muc : multiUserChats.values())
+						muc.cleanup();
 					multiUserChats.clear();
 					mucLastPong.clear();
 					mucLastPing = 0;
@@ -1796,8 +1800,13 @@ public class SmackableImp implements Smackable {
 	}
 
 	private boolean joinRoom(final String room, String nickname, String password) {
-		// work around smack3 bug: can't rejoin with "used" MultiUserChat instance
-		MultiUserChat muc = new MultiUserChat(mXMPPConnection, room);
+		// work around smack3 bug: can't rejoin with "used" MultiUserChat instance; need to manually
+		// flush old MUC instance and create a new.
+		MultiUserChat muc = multiUserChats.get(room);
+		if (muc != null)
+			muc.cleanup();
+		muc = new MultiUserChat(mXMPPConnection, room);
+
 		Log.d(TAG, "created new MUC instance: " + room + " " + muc);
 		muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
 			@Override
