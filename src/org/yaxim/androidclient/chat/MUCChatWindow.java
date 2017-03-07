@@ -157,6 +157,8 @@ public class MUCChatWindow extends ChatWindow {
 	}
 
 	private void showUserList() {
+		if (mMucServiceAdapter == null)
+			return;
 		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
 		if (users == null) {
 			Toast.makeText(this, R.string.Global_authenticate_first, Toast.LENGTH_SHORT).show();
