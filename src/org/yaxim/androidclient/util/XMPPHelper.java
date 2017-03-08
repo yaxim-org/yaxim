@@ -63,6 +63,35 @@ public class XMPPHelper {
 			original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 
+	public static boolean isEmojiOnlyMessage(String message, int length_threshold) {
+		int offset = 0, len = message.length();
+		int count = 0;
+		while (offset < len) {
+			int cp = message.codePointAt(offset);
+			switch (Character.getType(cp)) {
+				// if Android doesn't know them yet:
+				case Character.UNASSIGNED:
+				// all smileys should be in here:
+				case Character.OTHER_SYMBOL:
+					count++;
+					break;
+				// ignore spacing and combining characters:
+				case Character.SPACE_SEPARATOR:
+				case Character.FORMAT:
+				case Character.NON_SPACING_MARK:
+					if (cp == 0x200d && count > 0) count--; // ZWJ = discount one emoji for length purposes
+					break;
+				default:
+					return false;
+			}
+			offset += Character.charCount(cp);
+			// we do not want to have too long messages
+			if (length_threshold > 0 && count > length_threshold)
+				return false;
+		}
+		return (count > 0);
+	}
+
 	public static int getEditTextColor(Context ctx) {
 		TypedValue tv = new TypedValue();
 		boolean found = ctx.getTheme().resolveAttribute(android.R.attr.editTextColor, tv, true);
