@@ -1857,6 +1857,7 @@ public class SmackableImp implements Smackable {
 			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, e.getLocalizedMessage()));
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 			upsertRoster(cvR, room);
+			muc.cleanup();
 			return false;
 		}
 
@@ -1886,6 +1887,7 @@ public class SmackableImp implements Smackable {
 			return true;
 		}
 		
+		muc.cleanup();
 		return false;
 	}
 
