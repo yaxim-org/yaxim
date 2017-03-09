@@ -63,7 +63,7 @@ public class XMPPHelper {
 			original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 
-	public static boolean isEmojiOnlyMessage(String message, int length_threshold) {
+	public static float getEmojiScalingFactor(String message, int length_threshold) {
 		int offset = 0, len = message.length();
 		int count = 0;
 		while (offset < len) {
@@ -82,14 +82,14 @@ public class XMPPHelper {
 					if (cp == 0x200d && count > 0) count--; // ZWJ = discount one emoji for length purposes
 					break;
 				default:
-					return false;
+					return 1.f;
 			}
 			offset += Character.charCount(cp);
 			// we do not want to have too long messages
 			if (length_threshold > 0 && count > length_threshold)
-				return false;
+				return 1.f;
 		}
-		return (count > 0);
+		return 12f/(1+count);
 	}
 
 	public static int getEditTextColor(Context ctx) {
