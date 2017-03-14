@@ -14,6 +14,7 @@ import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
@@ -250,40 +251,47 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 
-	protected boolean needs_to_bind_unbind = false;
+	// onPause/onResume are not called on older Androids when the lockscreen is
+	// right in front of a chat window. onWindowFocusChanged is toggled
+	// when the MUC contacts are shown.
+	// We need to count both events to reliably bind/unbind our service. Sigh.
+	// We bind if at least one of them happens, and unbind when both are
+	// reversed.
+	protected int needs_to_bind_unbind = 0;
+
+	protected void changeBoundness(int direction) {
+		if (needs_to_bind_unbind == 0)
+			bindXMPPService();
+		needs_to_bind_unbind += direction;
+		if (needs_to_bind_unbind == 0)
+			unbindXMPPService();
+	}
 
 	@Override
 	protected void onResume() {
 		Log.d(TAG, "onResume");
 		super.onResume();
 		updateContactStatus();
-		needs_to_bind_unbind = true;
+		changeBoundness(+1);
 	}
 
 	@Override
 	protected void onPause() {
 		Log.d(TAG, "onPause");
 		super.onPause();
-		needs_to_bind_unbind = true;
+		changeBoundness(-1);
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		Log.d(TAG, "onWindowFocusChanged: " + hasFocus);
 		super.onWindowFocusChanged(hasFocus);
-		if (!needs_to_bind_unbind)
-			return;
-		if (hasFocus)
-			bindXMPPService();
-		else
-			unbindXMPPService();
-		needs_to_bind_unbind = false;
+		changeBoundness(hasFocus ? +1 : -1);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (needs_to_bind_unbind) unbindXMPPService();
 		getContentResolver().unregisterContentObserver(mContactObserver);
 		// XXX: quitSafely would be better, but needs API r18
 		mMarkRunnableQuit = true;
