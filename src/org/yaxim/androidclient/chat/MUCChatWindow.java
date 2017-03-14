@@ -187,7 +187,7 @@ public class MUCChatWindow extends ChatWindow {
 			}});
 		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
 		if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			boolean is_dark = (YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme);
+			boolean is_dark = (mConfig.getTheme() == R.style.YaximDarkTheme);
 			dialog.getListView().setBackgroundColor(is_dark ? Color.BLACK : Color.WHITE);
 		}
 		dialog.show();
@@ -205,7 +205,7 @@ public class MUCChatWindow extends ChatWindow {
 		Checksum nickCRC = new CRC32();
 		nickCRC.update(nick.getBytes(), 0, nick.length());
 		int nickInt = (int)nickCRC.getValue();
-		int theme = YaximApplication.getConfig(this).getTheme();
+		int theme = mConfig.getTheme();
 		// default HSV is for dark theme, bright and light
 		float h = Math.abs(nickInt % 360), s = 0.5f, v= 0.9f;
 

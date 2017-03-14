@@ -77,6 +77,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
 
+	protected YaximConfiguration mConfig;
 	private ContentObserver mContactObserver = new ContactObserver();
 	private ImageView mStatusMode;
 	private TextView mTitle;
@@ -113,15 +114,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		mConfig = YaximApplication.getConfig(this);
 		setContactFromUri();
 		Log.d(TAG, "onCreate, registering XMPP service");
 		registerXMPPService();
 
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
 		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
 
-		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
+		mChatFontSize = Integer.valueOf(mConfig.chatFontSize);
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
@@ -560,7 +562,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
-				from = YaximApplication.getConfig(ChatWindow.this).userName;
+				from = mConfig.userName;
 			} else {
 				nick2Color(from, tv);
 				getFromView().setText(from + ":");
