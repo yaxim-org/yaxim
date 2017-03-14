@@ -89,7 +89,7 @@ public class XMPPHelper {
 			if (length_threshold > 0 && count > length_threshold)
 				return 1.f;
 		}
-		return 12f/(1+count);
+		return 18f/(2+count);
 	}
 
 	public static int getEditTextColor(Context ctx) {
