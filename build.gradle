@@ -40,6 +40,9 @@ task buildVersion (type: Copy) {
 			build_version: build_version)
 	}
 	into("res/values")
+	outputs.upToDateWhen {
+		false
+	}
 }
 
 android {
