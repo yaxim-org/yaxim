@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
+import android.os.Build;
 
 import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
@@ -59,6 +61,37 @@ public class XMPPHelper {
 	public static String capitalizeString(String original) {
 		return (original.length() == 0) ? original :
 			original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
+
+	public static float getEmojiScalingFactor(String message, int length_threshold) {
+		int offset = 0, len = message.length();
+		int count = 0;
+		while (offset < len) {
+			int cp = message.codePointAt(offset);
+			switch (Character.getType(cp)) {
+				// if Android doesn't know them yet:
+				case Character.UNASSIGNED:
+				// all smileys should be in here:
+				case Character.OTHER_SYMBOL:
+					count++;
+					break;
+				// ignore spacing and combining characters:
+				case Character.SPACE_SEPARATOR:
+				case Character.FORMAT:
+				case Character.NON_SPACING_MARK:
+					if (cp == 0x200d && count > 0) count--; // ZWJ = discount one emoji for length purposes
+					break;
+				default:
+					return 1.f;
+			}
+			offset += Character.charCount(cp);
+			// we do not want to have too long messages
+			if (length_threshold > 0 && count > length_threshold)
+				return 1.f;
+		}
+		if (count <= 0) // only whitespace encountered
+			return 1.f;
+		return 18f/(2+count);
 	}
 
 	public static int getEditTextColor(Context ctx) {
@@ -115,8 +148,9 @@ public class XMPPHelper {
 		return "https://yax.im/i/#" + jid2url(jid) + "?join";
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setStaticNFC(Activity act, String uri) {
-		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
 			if (na == null)
 				return;
@@ -126,8 +160,9 @@ public class XMPPHelper {
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setNFCInvitation(final Activity act, final YaximConfiguration config) {
-		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
 			if (na == null)
 				return;

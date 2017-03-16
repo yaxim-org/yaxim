@@ -33,7 +33,7 @@ public class AccountPrefs extends SherlockPreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(YaximApplication.getConfig(this).getPrefTheme());
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.accountprefs);
+		addPreferencesFromResource(R.xml.accountprefs);
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);

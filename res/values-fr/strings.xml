@@ -139,12 +139,10 @@
 	<string name="NewGroup_EditTextField_Hint">Nom du nouveau group</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Options pour %s</string>
 	<string name="roster_contextmenu_group_rename">Renommer le groupe</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Marquer comme lu</string>
 	<string name="roster_contextmenu_contact_delete">Supprimer le contact</string>
 	<string name="roster_contextmenu_contact_delmsg">Effacer l\'historique de conversations</string>
-	<string name="roster_contextmenu_contact_open_chat">Ouvrir la conversation</string>
 	<string name="roster_contextmenu_contact_rename">Renommer</string>
 	<string name="roster_contextmenu_contact_request_auth">Demander l\'autorisation</string>
 	<string name="roster_contextmenu_contact_change_group">Changer de groupe</string>

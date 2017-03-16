@@ -1,3 +1,10 @@
+0.9.1:
+ * Chat: Smiley Hugification™
+ * Chat: fix notification after user pressed <Home>
+ * Chat Rooms: repair participant list, fix crashes
+ * Icons: toned down status icon contrast
+ * Network: Android 7 improvements
+ * Build: switch from ant to gradle. finally!
 0.9.0:
  * New artwork: yaxim is now "yak's IM" ;-)
  * Mobile Optimization: Support google:queue (almost XEP-0352)

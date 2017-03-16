@@ -1,6 +1,5 @@
 package org.yaxim.androidclient.service;
 
-import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.util.PreferenceConstants;
 
 import android.content.Context;

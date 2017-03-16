@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -28,13 +27,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Handler;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.Toast;
 
 public class XMPPService extends GenericService {
@@ -564,6 +561,7 @@ public class XMPPService extends GenericService {
 				String body = invite_from + ": " + roomname + "\n" + roomdescription;
 				Log.d(TAG, "Notifying MUC invitation for " + room + ". " + body);
 				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.setAction("android.intent.action.VIEW");
 				String uri = "xmpp:" + room;
 				Builder b = new Builder();
@@ -573,7 +571,7 @@ public class XMPPService extends GenericService {
 				b.appendQueryParameter("body", body);
 				intent.setData(Uri.parse(uri + b.toString()));
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
-						intent, Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent, 0);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
 						 .setContentTitle(roomname)
 						 .setContentText(body)

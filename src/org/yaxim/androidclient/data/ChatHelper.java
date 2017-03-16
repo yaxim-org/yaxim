@@ -4,9 +4,13 @@ import org.yaxim.androidclient.chat.ChatWindow;
 import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
+import org.yaxim.androidclient.dialogs.ConfirmDialog;
+import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.R;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -118,6 +122,37 @@ public class ChatHelper {
 			.create().show();
 	}
 
+	public static boolean handleJidOptions(Activity act, int menu_id, String jid, String userName) {
+		switch (menu_id) {
+		// generic options (roster_item_contextmenu.xml)
+		case R.id.roster_contextmenu_contact_mark_as_read:
+			markAsRead(act, jid);
+			return true;
+		case R.id.roster_contextmenu_contact_delmsg:
+			removeChatHistoryDialog(act, jid, userName);
+			return true;
+
+		// contact specific options (contact_options.xml)
+		case R.id.roster_contextmenu_contact_share:
+			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
+					XMPPHelper.createRosterLinkHTTPS(jid));
+			return true;
+
+		// MUC specific options (muc_options.xml)
+		case R.id.roster_contextmenu_muc_edit:
+			new EditMUCDialog(act, jid).dontOpen().show();
+			return true;
+		case R.id.roster_contextmenu_muc_leave:
+			ConfirmDialog.showMucLeave(act, jid);
+			return true;
+		case R.id.roster_contextmenu_muc_share:
+			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
+					XMPPHelper.createMucLinkHTTPS(jid));
+			return true;
+		default:
+			return false;
+		}
+	}
 
 	private static final String[] ROSTER_QUERY = new String[] {
 		RosterConstants.JID,

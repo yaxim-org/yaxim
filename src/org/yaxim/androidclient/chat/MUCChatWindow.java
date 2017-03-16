@@ -7,6 +7,7 @@ import java.util.zip.Checksum;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
@@ -111,6 +112,7 @@ public class MUCChatWindow extends ChatWindow {
 		Log.d(TAG, "creating options menu, we're a muc");
 		MenuInflater inflater = getSupportMenuInflater(); 
 		inflater.inflate(R.menu.muc_options, menu);
+		inflater.inflate(R.menu.roster_item_contextmenu, menu);
 		return true;
 	}
 	
@@ -123,6 +125,10 @@ public class MUCChatWindow extends ChatWindow {
 			return true;
 		case R.id.roster_contextmenu_muc_edit:
 			new EditMUCDialog(this, mWithJabberID).dontOpen().show();
+			return true;
+		case R.id.roster_contextmenu_muc_share:
+			XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
+					XMPPHelper.createMucLinkHTTPS(mWithJabberID));
 			return true;
 		case R.id.roster_contextmenu_muc_leave:
 			ConfirmDialog.show(this, R.string.roster_contextmenu_muc_leave,
@@ -152,6 +158,8 @@ public class MUCChatWindow extends ChatWindow {
 	}
 
 	private void showUserList() {
+		if (mMucServiceAdapter == null)
+			return;
 		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
 		if (users == null) {
 			Toast.makeText(this, R.string.Global_authenticate_first, Toast.LENGTH_SHORT).show();
@@ -175,12 +183,14 @@ public class MUCChatWindow extends ChatWindow {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent,
 					View view, int position, long id) {
-				Log.d(TAG, "long clicked: " + position + ": " + users.get(position).resource);
+				String nickname = users.get(position).resource;
+				ChatHelper.startChatActivity(MUCChatWindow.this, mWithJabberID+"/"+nickname,
+						String.format("%s (%s)", nickname, mUserScreenName), null);
 				return true;
 			}});
 		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
 		if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			boolean is_dark = (YaximApplication.getConfig(this).getTheme() == R.style.YaximDarkTheme);
+			boolean is_dark = (mConfig.getTheme() == R.style.YaximDarkTheme);
 			dialog.getListView().setBackgroundColor(is_dark ? Color.BLACK : Color.WHITE);
 		}
 		dialog.show();
@@ -198,7 +208,7 @@ public class MUCChatWindow extends ChatWindow {
 		Checksum nickCRC = new CRC32();
 		nickCRC.update(nick.getBytes(), 0, nick.length());
 		int nickInt = (int)nickCRC.getValue();
-		int theme = YaximApplication.getConfig(this).getTheme();
+		int theme = mConfig.getTheme();
 		// default HSV is for dark theme, bright and light
 		float h = Math.abs(nickInt % 360), s = 0.5f, v= 0.9f;
 

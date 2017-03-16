@@ -49,6 +49,7 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 	}
 
 	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
 		if (jtw == null) {
 			jtw = new JidTextWatcher();
 			addTextChangedListener(jtw);

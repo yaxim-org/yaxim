@@ -3,7 +3,7 @@
 	<string name="app_name">yaxim</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">Status sambungan</string>
+	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_connecting">Menghubungi erver</string>
 	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">Tersambung</string>
@@ -144,12 +144,10 @@
 	<string name="NewGroup_EditTextField_Hint">Name for the new group</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Options for %s</string>
 	<string name="roster_contextmenu_group_rename">Rename group</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
 	<string name="roster_contextmenu_contact_delete">Delete contact</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
-	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Rename</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change group</string>
@@ -308,6 +306,7 @@
 	<string name="status_offline">Terputus</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Georg Lukas https://launchpad.net/~ge0rg
   Wiha Sjah https://launchpad.net/~wihasjah</string>
 
 	<!-- default roster group with no name -->

@@ -5,12 +5,16 @@ import java.util.Date;
 import java.util.HashSet;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuInflater;
+
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
@@ -75,6 +79,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
 
+	protected YaximConfiguration mConfig;
 	private ContentObserver mContactObserver = new ContactObserver();
 	private ImageView mStatusMode;
 	private TextView mTitle;
@@ -83,7 +88,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ProgressBar mLoadingProgress;
 	protected EditText mChatInput = null;
 	protected String mWithJabberID = null;
-	private String mUserScreenName = null;
+	protected String mUserScreenName = null;
 	private Intent mChatServiceIntent;
 	private ServiceConnection mChatServiceConnection;
 	private XMPPChatServiceAdapter mChatServiceAdapter;
@@ -112,15 +117,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		mConfig = YaximApplication.getConfig(this);
 		setContactFromUri();
 		Log.d(TAG, "onCreate, registering XMPP service");
 		registerXMPPService();
 
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
 		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
 
-		mChatFontSize = Integer.valueOf(YaximApplication.getConfig(this).chatFontSize);
+		mChatFontSize = Integer.valueOf(mConfig.chatFontSize);
 		mRosterTypeface = Typeface.createFromAsset(getAssets(),"fonts/brunofont.ttf");
 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
@@ -249,40 +255,47 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 
-	protected boolean needs_to_bind_unbind = false;
+	// onPause/onResume are not called on older Androids when the lockscreen is
+	// right in front of a chat window. onWindowFocusChanged is toggled
+	// when the MUC contacts are shown.
+	// We need to count both events to reliably bind/unbind our service. Sigh.
+	// We bind if at least one of them happens, and unbind when both are
+	// reversed.
+	protected int needs_to_bind_unbind = 0;
+
+	protected void changeBoundness(int direction) {
+		if (needs_to_bind_unbind == 0)
+			bindXMPPService();
+		needs_to_bind_unbind += direction;
+		if (needs_to_bind_unbind == 0)
+			unbindXMPPService();
+	}
 
 	@Override
 	protected void onResume() {
 		Log.d(TAG, "onResume");
 		super.onResume();
 		updateContactStatus();
-		needs_to_bind_unbind = true;
+		changeBoundness(+1);
 	}
 
 	@Override
 	protected void onPause() {
 		Log.d(TAG, "onPause");
 		super.onPause();
-		needs_to_bind_unbind = true;
+		changeBoundness(-1);
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		Log.d(TAG, "onWindowFocusChanged: " + hasFocus);
 		super.onWindowFocusChanged(hasFocus);
-		if (!needs_to_bind_unbind)
-			return;
-		if (hasFocus)
-			bindXMPPService();
-		else
-			unbindXMPPService();
-		needs_to_bind_unbind = false;
+		changeBoundness(hasFocus ? +1 : -1);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (needs_to_bind_unbind) unbindXMPPService();
 		getContentResolver().unregisterContentObserver(mContactObserver);
 		// XXX: quitSafely would be better, but needs API r18
 		mMarkRunnableQuit = true;
@@ -390,6 +403,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 	
 
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		//inflater.inflate(R.menu.contact_options, menu);
+		inflater.inflate(R.menu.roster_item_contextmenu, menu);
+		return true;
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		Log.d(TAG, "options item selected");
@@ -401,7 +421,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			finish();
 			return true;
 		default:
-			return super.onOptionsItemSelected(item);
+			return ChatHelper.handleJidOptions(this, item.getItemId(), mWithJabberID, mUserScreenName);
 		}
 	}
 	
@@ -554,7 +574,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
 				getFromView().setText(getString(R.string.chat_from_me));
 				getFromView().setTextColor(tv.data);
-				from = YaximApplication.getConfig(ChatWindow.this).userName;
+				from = mConfig.userName;
 			} else {
 				nick2Color(from, tv);
 				getFromView().setText(from + ":");
@@ -607,7 +627,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 			getMessageView().setText(message);
 			getMessageView().setTypeface(null, style);
-			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
+			int fontsize = (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactor(message, 12));
+			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
 			getMessageView().setTypeface(mRosterTypeface);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);

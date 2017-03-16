@@ -143,12 +143,10 @@
 	<string name="NewGroup_EditTextField_Hint">Όνομα της νέας ομάδας</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_title">Επιλογές για %s</string>
 	<string name="roster_contextmenu_group_rename">Μετονομασία ομάδας</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
 	<string name="roster_contextmenu_contact_delete">Delete contact</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
-	<string name="roster_contextmenu_contact_open_chat">Open chat</string>
 	<string name="roster_contextmenu_contact_rename">Μετονομασία</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Αλλαγή της ομάδας</string>
