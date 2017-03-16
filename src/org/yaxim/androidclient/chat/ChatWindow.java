@@ -391,8 +391,17 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 			cm.setText(getMessageFromContextMenu(item));
 			return true;
+		case R.id.chat_contextmenu_quote:
+			// insert quote into the current cursor position
+			String quote = XMPPHelper.quoteString(getMessageFromContextMenu(item));
+			int position = Math.max(mChatInput.getSelectionStart(), 0);
+			mChatInput.getText().insert(position, quote);
+			position += quote.length();
+			mChatInput.setSelection(position, position);
+			Log.d(TAG, "quote!");
+			return true;
 		case R.id.chat_contextmenu_resend:
-			sendMessage(getMessageFromContextMenu(item).toString());
+			sendMessage(getMessageFromContextMenu(item));
 			Log.d(TAG, "resend!");
 			return true;
 		default:

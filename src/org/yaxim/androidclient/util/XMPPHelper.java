@@ -79,6 +79,11 @@ public class XMPPHelper {
 		return ret;
 	}
 
+	/* Convert a (single- or multi-line) message into a quote */
+	public static String quoteString(String original) {
+		return "> " + original.replace("\n", "\n> ") + "\n";
+	}
+
 	public static String capitalizeString(String original) {
 		return (original.length() == 0) ? original :
 			original.substring(0, 1).toUpperCase() + original.substring(1);

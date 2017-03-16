@@ -3,5 +3,6 @@
 	<item android:id="@+id/chat_contextmenu_copy_text"
 		android:title="@android:string/copy">
 	</item>
+	<item android:id="@+id/chat_contextmenu_quote" android:title="@string/chatmenu_quote" />
 	<item android:id="@+id/chat_contextmenu_resend" android:title="@string/chatmenu_resend"></item>
 </menu>

@@ -220,6 +220,7 @@
 	<string name="chat_enterMsgHint">Enter message</string> 
 
 	<!-- Chat menu -->
+	<string name="chatmenu_quote">Quote</string>
 	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
