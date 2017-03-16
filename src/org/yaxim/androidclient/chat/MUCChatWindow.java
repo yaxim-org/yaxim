@@ -7,6 +7,7 @@ import java.util.zip.Checksum;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
+import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
@@ -182,7 +183,9 @@ public class MUCChatWindow extends ChatWindow {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent,
 					View view, int position, long id) {
-				Log.d(TAG, "long clicked: " + position + ": " + users.get(position).resource);
+				String nickname = users.get(position).resource;
+				ChatHelper.startChatActivity(MUCChatWindow.this, mWithJabberID+"/"+nickname,
+						String.format("%s (%s)", nickname, mUserScreenName), null);
 				return true;
 			}});
 		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!

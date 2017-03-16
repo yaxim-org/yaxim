@@ -87,7 +87,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ProgressBar mLoadingProgress;
 	protected EditText mChatInput = null;
 	protected String mWithJabberID = null;
-	private String mUserScreenName = null;
+	protected String mUserScreenName = null;
 	private Intent mChatServiceIntent;
 	private ServiceConnection mChatServiceConnection;
 	private XMPPChatServiceAdapter mChatServiceAdapter;
