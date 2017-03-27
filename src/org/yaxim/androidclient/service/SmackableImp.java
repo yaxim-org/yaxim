@@ -1151,6 +1151,7 @@ public class SmackableImp implements Smackable {
 	 */
 	private class PingAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
+			try {
 				sendServerPing();
 				// ping all MUCs. if no ping was received since last attempt, /cycle
 				Iterator<MultiUserChat> muc_it = multiUserChats.values().iterator();
@@ -1180,7 +1181,11 @@ public class SmackableImp implements Smackable {
 				}
 				syncDbRooms();
 				mucLastPing = ts;
-
+			} catch (NullPointerException npe) {
+				/* ignore disconnect race condition */
+			} catch (IllegalStateException ise) {
+				/* ignore disconnect race condition */
+			}
 		}
 	}
 
