@@ -22,9 +22,10 @@ The following is already supported:
 
 ## Links
 
+ * [Google Play](https://play.google.com/store/apps/details?id=org.yaxim.androidclient)
+ * [F-Droid](https://f-droid.org/repository/browse/?fdid=org.yaxim.androidclient)
  * [Download APK](http://yax.im/apk)
  * [Screenshots](https://yaxim.org/screenshots/)
- * [Google Play](https://play.google.com/store/apps/details?id=org.yaxim.androidclient)
  * [Project Home](https://yaxim.org/)
  * [Source on GitHub](https://github.com/pfleidi/yaxim)
  * [Translation](https://translations.launchpad.net/yaxim/master/+pots/yaxim/)
