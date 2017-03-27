@@ -18,13 +18,14 @@ The following is already supported:
  * Chat with your buddies (all messages are stored)
  * Delivery receipts (XEP-0184)
  * Message carbons (XEP-0280)
-
+ 
 
 ## Links
 
+ * [Google Play](https://play.google.com/store/apps/details?id=org.yaxim.androidclient) (recommended, with auto-updates)
+ * [F-Droid](https://f-droid.org/repository/browse/?fdid=org.yaxim.androidclient) (this version uses a different signing key, not interchangeable with official yaxim binaries!)
  * [Download APK](http://yax.im/apk)
  * [Screenshots](https://yaxim.org/screenshots/)
- * [Google Play](https://play.google.com/store/apps/details?id=org.yaxim.androidclient)
  * [Project Home](https://yaxim.org/)
  * [Source on GitHub](https://github.com/pfleidi/yaxim)
  * [Translation](https://translations.launchpad.net/yaxim/master/+pots/yaxim/)
