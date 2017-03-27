@@ -34,6 +34,8 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
+import org.jivesoftware.smack.parsing.ParsingExceptionCallback;
+import org.jivesoftware.smack.parsing.UnparsablePacket;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
@@ -258,6 +260,20 @@ public class SmackableImp implements Smackable {
 		}
 
 		this.mXMPPConnection = new XmppStreamHandler.ExtXMPPConnection(mXMPPConfig);
+		mXMPPConnection.setParsingExceptionCallback(new ParsingExceptionCallback() {
+			@Override
+			public void handleUnparsablePacket(UnparsablePacket up) throws Exception {
+				Exception e = up.getParsingException();
+				// work around Smack throwing up on mod_mam_archive bug
+				if (e.getMessage().equals("variable cannot be null")) {
+					debugLog("Ignoring invalid disco#info caused by https://prosody.im/issues/issue/870");
+					e.printStackTrace();
+					return;
+				}
+				throw e;
+			}
+		});
+
 		this.mStreamHandler = new XmppStreamHandler(mXMPPConnection, mConfig.smackdebug);
 		mStreamHandler.addAckReceivedListener(new XmppStreamHandler.AckReceivedListener() {
 			public void ackReceived(long handled, long total) {
