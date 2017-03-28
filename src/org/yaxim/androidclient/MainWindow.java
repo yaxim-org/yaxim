@@ -682,6 +682,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	public void updateStatus(StatusMode statusMode) {
 		displayOwnStatus();
+		if (serviceAdapter == null)
+			return; // we can't do anything, let's pray service will update from config
 
 		// check if we are connected and want to go offline
 		boolean needToDisconnect = (statusMode == StatusMode.offline) && isConnected();

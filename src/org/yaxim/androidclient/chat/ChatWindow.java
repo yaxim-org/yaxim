@@ -380,10 +380,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		}
 	}
 
-	private CharSequence getMessageFromContextMenu(android.view.MenuItem item) {
-		View target = ((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
-		TextView message = (TextView)target.findViewById(R.id.chat_message);
-		return message.getText();
+	private String getMessageFromContextMenu(android.view.MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
+		return c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
 	}
 
 	@Override
