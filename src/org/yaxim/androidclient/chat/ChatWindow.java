@@ -384,6 +384,22 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		return c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
 	}
 
+	private String getQuotedMessageFromContextMenu(android.view.MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
+		boolean from_me = (c.getInt(c.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
+				ChatConstants.OUTGOING);
+		String message = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		if (!from_me) {
+			String jid = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.JID));
+			String resource = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.RESOURCE));
+			long timestamp = c.getLong(c.getColumnIndex(ChatProvider.ChatConstants.DATE));
+			String ts = new SimpleDateFormat("HH:mm").format(new Date(timestamp));
+			return String.format("%s [%s]:\n%s", jid2nickname(jid, resource), ts, XMPPHelper.quoteString(message));
+		}
+		return XMPPHelper.quoteString(message);
+	}
+
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		switch (item.getItemId()) {
@@ -393,7 +409,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			return true;
 		case R.id.chat_contextmenu_quote:
 			// insert quote into the current cursor position
-			String quote = XMPPHelper.quoteString(getMessageFromContextMenu(item));
+			String quote = getQuotedMessageFromContextMenu(item);
 			int position = Math.max(mChatInput.getSelectionStart(), 0);
 			mChatInput.getText().insert(position, quote);
 			position += quote.length();
