@@ -43,7 +43,8 @@ public class XMPPHelper {
 	public static final Pattern XMPP_PATTERN = Pattern.compile("xmpp\\:(?:(?:["
 						+ GOOD_IRI_CHAR
 						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
-						+ "|(?:\\%[a-fA-F0-9]{2}))+");
+						+ "|(?:\\%[a-fA-F0-9]{2}))+"
+						+ "(\\?[\\p{Alnum}=;&]+)?");
 
 	public static String verifyJabberID(String jid)
 			throws YaximXMPPAdressMalformedException {
