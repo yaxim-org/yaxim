@@ -28,8 +28,8 @@ public class XMPPHelper {
 	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF";
 	public static final Pattern PHONE = Pattern.compile(	// sdd = space, dot, or dash
 			"(\\+[0-9]+[\\- \\.]*)?"        // +<digits><sdd>*
-			+ "(\\([0-9]+\\)[\\- \\.]*)?"   // (<digits>)<sdd>*
-			+ "([0-9][0-9\\- \\.]+[0-9])"); // <digit><digit|sdd>+<digit>
+			+ "(\\([0-9]+\\)[\\- \\.]*|[0-9]{3,} ?/[\\- \\.]*)?"   // (<digits>)<sdd>*|<digits>/<sdd>*
+			+ "([0-9][0-9\\- \\.]+[0-9]{2})"); // <digit><digit|sdd>+<digit>
 	public static final Pattern EMAIL_ADDRESS = Pattern.compile(
 			"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
 			"\\@" +
