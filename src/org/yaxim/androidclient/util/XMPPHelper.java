@@ -90,6 +90,23 @@ public class XMPPHelper {
 			original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 
+	// a line consisting only of: Emoji (So: Symbol Other), Emoji unknown to Android (Cn: not assigned), ZWJ, whitespace
+	static final Pattern LINE_OF_EMOJI = Pattern.compile("[\\p{So}\\p{Cn}\u200D\\s]+");
+	static final Pattern ONE_EMOJI = Pattern.compile("[\\p{Cn}\\p{So}](\u200D[\\p{Cn}\\p{So}])*");
+
+	public static float getEmojiScalingFactorRE(String message, int length_threshold) {
+		if (!LINE_OF_EMOJI.matcher(message).matches())
+			return 1.f;
+		int count = 0;
+		Matcher m = ONE_EMOJI.matcher(message);
+		while (m.find()) {
+			count++;
+			if (length_threshold > 0 && count > length_threshold)
+				return 1.f;
+		}
+		return (count > 0) ? 18.f/(2+count) : 1.f;
+	}
+
 	public static float getEmojiScalingFactor(String message, int length_threshold) {
 		int offset = 0, len = message.length();
 		int count = 0;
@@ -108,6 +125,9 @@ public class XMPPHelper {
 				case Character.NON_SPACING_MARK:
 					if (cp == 0x200d && count > 0) count--; // ZWJ = discount one emoji for length purposes
 					break;
+				// new lines and others
+				case Character.CONTROL:
+					if (cp == 0x10 || cp == 0x13) break; // ignore newlines, fall through for others
 				default:
 					return 1.f;
 			}
