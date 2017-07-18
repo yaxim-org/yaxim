@@ -1408,8 +1408,13 @@ public class SmackableImp implements Smackable {
 					// Carbons and MUC history are 'silent' by default
 					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
 
+					// perform a message-replace on self-sent message
+					long upsert_id = -1;
+					if (is_muc)
+						upsert_id = getOutgoingMUCreplace(msg, fromJID);
+
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
-						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id);
+						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id, upsert_id);
 						// only notify on private messages or when MUC notification requested
 						boolean need_notify = !is_muc || mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
@@ -1433,16 +1438,28 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 
-	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
+	private long getOutgoingMUCreplace(Message msg, String[] fromJid) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
 
-		// HACK: remove last outgoing message instead of upserting
-		if (nick.equals(getMyMucNick(muc)))
-			mContentResolver.delete(ChatProvider.CONTENT_URI,
+		if (!nick.equals(getMyMucNick(muc)))
+			return -1;
+		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
 				"_id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)",
-				new String[] { muc, packet_id, msg.getBody(), muc });
+				new String[] { muc, msg.getPacketID(), msg.getBody(), muc }, null);
+		long result = -1;
+		if (c.moveToFirst()) {
+			result = c.getLong(0);
+		}
+		c.close();
+		Log.d(TAG, "message from " + nick + " matched id " + result + ". Replacing.");
+		return result;
+	}
+
+	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
+		String muc = fromJid[0];
+		String nick = fromJid[1];
 
 		// messages with no timestamp are always new
 		if (timestamp == null)
@@ -1528,7 +1545,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addChatMessageToDB(int direction, String[] tJID,
-			String message, int delivery_status, long ts, String packetID, String replaceID) {
+			String message, int delivery_status, long ts, String packetID, String replace_id, long upsert_id) {
 		ContentValues values = new ContentValues();
 
 		values.put(ChatConstants.DIRECTION, direction);
@@ -1539,21 +1556,22 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.DATE, ts);
 		values.put(ChatConstants.PACKET_ID, packetID);
 
-		if (replaceID != null) {
+		if (replace_id != null) {
 			// obtain row id for last message with that full JID, or -1
-			long _id = getRowIdForMessage(tJID[0], tJID[1], direction, replaceID);
-			Log.d(TAG, "Replacing last message from " + tJID[0] + "/" + tJID[1] + ": " + replaceID + " -> " + packetID);
-			Uri row = Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + _id);
-			if (_id >= 0 && mContentResolver.update(row, values, null, null) == 1)
-				return;
+			upsert_id = getRowIdForMessage(tJID[0], tJID[1], direction, replace_id);
+			Log.d(TAG, "Replacing last message from " + tJID[0] + "/" + tJID[1] + ": " + replace_id + " -> " + packetID);
 		}
+		if (upsert_id >= 0 &&
+		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
+				values, null, null) == 1)
+			return;
 		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 	}
 
 	private void addChatMessageToDB(int direction, String JID,
 			String message, int delivery_status, long ts, String packetID) {
 		String[] tJID = {JID, ""};
-		addChatMessageToDB(direction, tJID, message, delivery_status, ts, packetID, null);
+		addChatMessageToDB(direction, tJID, message, delivery_status, ts, packetID, null, -1);
 	}
 
 	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
