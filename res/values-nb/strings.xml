@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Kobler til tjener…</string>
+	<string name="conn_disconnecting">Kobler fra…</string>
+	<string name="conn_online">Tilkoblet</string>
+	<string name="conn_offline">Frakoblet</string>
+	<string name="conn_empty_roster">Ingen kontakter å vise.</string>
+	<string name="conn_empty_roster_hints">Det er mange måter å legge til kontakter på:\n\n - Android Beam™: Berør en venns telefon\n\n - Skann en QR-kode\n\n - \"Opprett invitasjon\" og del den (e-post, SMS, QR-kode, …)\n\n - \"Legg til kontakt\" hvis du kjenner JID-en</string>
+	<string name="conn_reconnect">Neste tilkoblingsforsøk om %d sekunder.</string>
+	<string name="conn_disconnected">Tilkobling lukket</string>
+	<string name="conn_no_network">Ingen nettverkstilknytning</string>
+	<string name="conn_ping_timeout">Tidsavbrudd for ping</string>
+	<string name="conn_error">Feil: %s</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Avslutt</string>
+	<string name="Global_authenticate_first">Koble til først</string>
+	<string name="Global_JID_hint">bruker@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Se over adresseformatet.</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Velkommen til yaxim!</string>
+	<string name="StartupDialog_Summary">Du må sette opp yaxim før du bruker det. Skriv inn din Jabber-ID og passordet ditt.</string>
+	<string name="StartupDialog_pwHint">Skriv inn passord</string>
+	<string name="StartupDialog_pwrHint">Gjenta passord</string>
+	<string name="StartupDialog_Username_title">Jabber-ID:</string>
+	<string name="StartupDialog_passwd_title">Passord:</string>
+	<string name="StartupDialog_advanced">Avansert…</string>
+	<string name="StartupDialog_create_new">Registrer ny konto</string>
+	<string name="StartupDialog_error_password">Passordene stemmer ikke overens!</string>
+	<string name="StartupDialog_created_password">Opprettet sikkert passord</string>
+	<string name="StartupDialog_auth_failed">Se over brukernavnet og passordet ditt!</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Melding fra %s</string>
+	<string name="notification_anonymous_message">Melding mottatt</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s i %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Svar</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Merk som lest</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Feil ved forsendelse av melding!</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Meldingsmerknad</string>
+	<string name="preftitle_notify_muc">Gruppesluddermerknad</string>
+	<string name="muc_highlight_title">Kun merknad når nevnt</string>
+	<string name="muc_highlight_sum">Merknad når kallenavnet ditt blir nevnt i et rom</string>
+	<string name="led_title">Blinkende LED</string>
+	<string name="led_summ">Blink telefon-LED ved innkommende meldinger</string>
+	<string name="vibr_title">Vibrasjon</string>
+	<string name="vibr_summ">Vibrer ved innkommende meldinger</string>
+	<string-array name="vibr_values_displayed">
+		<item>Aldri</item>
+		<item>Systemforvalg</item>
+		<item>Alltid</item>
+	</string-array>
+	<string name="ringtone_title">Ringetone</string>
+	<string name="ringtone_summ">Tone for mottatte meldinger</string>
+	<string name="ticker_title">Meldingsforhåndsvisning</string>
+	<string name="ticker_summ">Vis sender og melding i statusfelt</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_general">Hovedinnstillinger</string>
+	<string name="pref_dnd_when_silent">\"Ikke forstyrr\" i stille-modus</string>
+	<string name="pref_dnd_when_silent_summ">Sett din påkoblede status til \"Ikke forstyrr\" når din telefon er i stille-modus</string>
+	<string name="statuspopup_name">Sett din status</string>
+	<string name="showOffline_summ">Alltid vis alle kontakter på kontaktlisten</string>
+	<string name="showOffline_title">Vis frakoblede kontakter</string>
+	<string name="enableGroups_summ">Arranger kontakter etter gruppetilhørighet</string>
+	<string name="enableGroups_title">Vis kontaktgrupper</string>
+	<string name="foregroundService_summ">Behold yaxim i minnet for å besørge alltid-på tilkobling (forgrunnstjeneste)</string>
+	<string name="foregroundService_title">Statusfeltikon</string>
+
+	<string name="preftitle_debug">Feilsøking</string>
+	<string name="smackdebug_summ">Pakke og feilrettingsutdata via logcat (kan inneholde personlig informasjon)</string>
+	<string name="smackdebug_title">SMACK-feilretting</string>
+
+	<string name="reportcrash_title">Send kræsjrapporter</string>
+	<string name="reportcrash_summ">Send anonyme kræsjrapporter til utvikleren</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Utseende</string>
+	<string name="FontChat_title">Skriftstørrelse for sludring</string>
+	<string name="FontChat_summ">Sett skriftstørrelse for sludring</string>
+	<string name="FontChat_dialog">Skriftstørrelse for sludring</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">Drakt</string>
+	<string-array name="pref_theme_entries">
+		<item>Mørk</item>
+		<item>Lys</item>
+	</string-array>
+	<string name="preftitle_ui">Utseende</string>
+	<string-array name="fontSizesChat">
+		<item>liten</item>
+		<item>normal</item>
+		<item>stor</item>
+		<item>kjempestor</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Legg til kontakt</string>
+	<string name="Menu_ShowOff">Vis frakoblede</string>
+	<string name="Menu_HideOff">Skjul frakoblede</string>
+	<string name="Menu_AccSettings">Rediger konto</string>
+	<string name="Menu_Settings">Innstillinger</string>
+	<string name="Menu_Status">Status</string>
+	<string name="Menu_connect">Koble til</string>
+	<string name="Menu_disconnect">Koble fra</string>
+	<string name="Menu_about">Om yaxim</string>
+	<string name="Menu_muc">Legg til gruppesludring</string>
+	<string name="Menu_mark_all_as_read">Merk alt som lest</string>
+	<string name="Menu_send_invitation">Opprett invitasjon</string>
+    <string name="Menu_userlist">Deltagere</string>
+
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Legg til kontakt</string>
+	<string name="addFriend_Summ">Skriv inn Jabber-ID-en tilhørende din venn, ønsket skjermnavn og velg deres kontaktgruppe.</string>
+	<string name="addFriend_aliasHint">Skjermnavn</string>
+	<string name="addrosteritemaddgroupchoice">Legg til i ny gruppe</string>
+	<string name="NewGroup_EditTextField_Hint">Gi ny gruppe navn</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_group_rename">Gi gruppe nytt navn</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Merk som lest</string>
+	<string name="roster_contextmenu_contact_delete">Slett kontakt</string>
+	<string name="roster_contextmenu_contact_delmsg">Slett sludrehistorikk</string>
+	<string name="roster_contextmenu_contact_rename">Gi nytt navn</string>
+	<string name="roster_contextmenu_contact_request_auth">Forespør godkjenning</string>
+	<string name="roster_contextmenu_contact_change_group">Endre gruppe</string>
+	<string name="roster_contextmenu_contact_share">Del adresse</string>
+	<string name="roster_contextmenu_muc_edit">Endre gruppesludring</string>
+	<string name="roster_contextmenu_muc_leave">Forlat gruppesludring</string>
+	<string name="muc_leave_question">Forlat %s?</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Innloggingsinformasjon</string>
+	<string name="account_settings_title">Kontoinnstillinger</string>
+	<string name="account_options_title">Tilkoblingsvalg</string>
+	<string name="account_options_advanced">Avanserte valg</string>
+	<string name="carbons_title">Meldingskopier (XEP-0280)</string>
+	<string name="carbons_summ">Forespør meldingskopier fra dine andre klient(er)</string>
+	<string name="account_jabberID_title">Jabber-ID</string>
+	<string name="account_jabberID_sum">eksempel: meg@jabber.eksempel.no</string>
+	<string name="account_jabberID_dialog_title">Skriv inn din Jabber-ID:</string>
+	<string name="account_jabberPW_title">Kontopassord</string>
+	<string name="account_jabberPW_sum">Ditt Jabber-kontopassord</string>
+	<string name="account_jabberPW_change_on_server">Endre passordet på tjeneren</string>
+	<string name="account_jabberPW_password_old">Gammelt passord:</string>
+	<string name="account_jabberPW_password_new">Nytt passord:</string>
+	<string name="account_jabberPW_warning">ADVARSEL! For å kunne logge inn må du også sette samme passord på tjeneren!</string>
+	<string name="account_jabberPW_progress">Vent, endrer passord…</string>
+	<string name="account_jabberPW_finished">Bytte av passord fullført.</string>
+	<string name="account_jabberPW_error">Feil ved bytting av passord: %s</string>
+	
+	<!-- accountprefs -->
+	<string name="account_resource_title">Klientressurs</string>
+	<string name="account_resource_summ">Forvalg: yaxim</string>
+	<string name="account_resource_dialog_title">Skriv inn din ressurs:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Klientprioritet</string>
+	<string name="account_prio_summ">Forvalg: 0 (tillatt: -128 .. 127)</string>
+	<string name="account_prio_error">Tillatte verdier: -128 .. 127</string>
+	<string name="account_prio_dialog_title">Skriv inn din prioritet:</string>
+	<string name="account_port_title">Tjenerport</string>
+	<string name="account_port_sum">Forvalg: 5222</string>
+	<string name="account_port_dialog_title">Skriv inn tjenerporten:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Egendefinert tjener</string>
+	<string name="account_customserver_summ">(Valgfritt) alternativt tjener-vertsnavn</string>
+	<string name="account_customserver_dialog_title">Skriv inn tjener-vertsnavn:</string>
+	<string name="account_customserver_hint">vert.eksempel.no</string>
+	<string name="require_ssl_title">Krev SSL/TLS</string>
+	<string name="require_ssl_summ">Alltid krypter tjenertilkobling</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Velg gruppe</string>
+	<string name="setStatusmsgHint">Din meldingsstatus</string>
+	<string name="setStatusTitle">Sett din status</string>
+	<string name="RenameGroup_summ">Gi gruppen %s nytt navn:</string>
+	<string name="RenameGroup_title">Gi gruppe nytt navn</string>
+	<string name="RenameEntry_summ">Endre navn på %1$s (%2$s) til:</string>
+	<string name="RenameEntry_title">Gi kontakt nytt navn</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Velg en gruppe fra tallvelgeren nedenfor</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Endre gruppe</string>
+	<string name="deleteRosterItem_text">Bekreft fjerning av %1$s (%2$s).</string>
+	<string name="deleteRosterItem_title">Slett kontakt</string>
+	<string name="deleteChatHistory_text">Fjern alle meldinger med %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Slett sludrehistorikk</string>
+	<string name="subscriptionRequest_text">%1$s ønsker å legge deg til som kontakt: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Abonnementsforespørsel</string>
+	<string name="subscription_accept">Godta</string>
+	<string name="subscription_reject">Avvis</string>
+	<string name="subscription_status_from">kan se din status</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Meg:</string>
+	<string name="toast_stored_offline">Meldingen har blitt lagret i påvente av forsendelse:</string>
+	<string name="chat_enterMsgHint">Skriv inn melding</string> 
+
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
+	<string name="chatmenu_resend">Send på nytt</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">Om yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">Utviklere</string>
+	<string name="AboutDialog_DevelopersText">Kontakt utviklerne på http://yaxim.org eller på freenode IRC: #yaxim</string>
+	<string name="AboutDialog_LicenceTitle">Lisens</string>
+	<string name="AboutDialog_Vote">Send tilbakemeldinger</string>
+	<string name="AboutDialog_LicenceText">Dette programmet er fri programvare; du kan dele det og/eller endre det i henhold til kravene i GNU General Public License versjon 2 publisert av Free Software Foundation. Lenke: http://www.gnu.org/licenses/gpl-2.0.html\n \n Deler av programvaren er tilbudt under MIT-lisens :\n \n Kopirett © 2009 Mads Kristiansen, Nullwire ApS\n \n Tilgang gis herved, gratis, til enhver person som måtte få en kopi av dette programmet og tilknyttede dokumentasjonsfiler ("Programvaren"), til å bruke den uten hindring, inkludert og uten rettigheter til å bruke, kopiere, modifisere, flette, offentliggjøre, distribuere, viderelisensiere, og/eller selge kopier av programvaren, og å gi personer som programvaren kan brukes av, underlagt følgende forhold: \n Kopirettsmerknaden og tilgangsmerknaden skal inkluderes i alle kopier og bestanddeler av viktighet av Programvaren. \n PROGRAMVAREN ER TILBUDT "SOM DEN ER", UTEN NOEN FORM FOR GARANTI AV NOEN ART, UTTRYKT ELLER IMPLISERT, INKLUDERT MEN IKKE BEGRENSET TIL GARANTI FOR SALGBARHET, EGNETHET FOR ET TILTENKT FORMÅL OG IKKE-KOPIRETTSBRUDD. UNDER INGEN OMSTENDIGHETER SKAL UTVIKLERNE ELLER OPPHAVSMENNENE HOLDES ANSVARLIG FOR NOE KRAV, ERSTATNINGSANSVAR ELLER ANNEN ERSTATNING, HVORVIDT I EN HANDLING AV KONTRAKTEN, ERSTATNINGSRETT ELLER ANNET, SOM SKRIVER SEG FRA ELLER HAR TILKNYTNING TIL PROGRAMVAREN ELLER BRUKEN ELLER ANNEN OMGANG MED PROGRAMVAREN.</string>
+
+	<string name="status_available">Tilkoblet</string>
+	<string name="status_away">Borte</string>
+	<string name="status_chat">Ledig for samtale</string>
+	<string name="status_dnd">Ikke forstyrr</string>
+	<string name="status_xa">Ikke tilgjengelig</string>
+	<string name="status_offline">Frakoblet</string>
+
+	<string name="translator_credits">Launchpad Contributions:
+  Allan Nordhøy https://launchpad.net/~comradekingu</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">Gruppe</string>
+	<string name="all_contacts_group">Alle kontakter</string>
+	<string name="muc_group">Gruppesamtaler</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Velg kontakt</string>
+	<string name="action_settings">Innstillinger</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">Gruppesludrings-JID</string>
+	<string name="muc_nickname_hint">Kallenavn</string>
+	<string name="muc_password_hint">Passord (valgfritt)</string>
+	<string name="title_activity_muc_invite">Gruppesludringsinvitasjon</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Invitasjon fra %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d deltagere)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Ta del som %s</string>
+	<string name="muc_synchronizing">Synkroniserer…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Gruppesludringsdeltagere (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Kastet ut: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Kastet ut %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Bannlyst: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Bannlyst av %1$s: %2$s</string>
+
+
+</resources>

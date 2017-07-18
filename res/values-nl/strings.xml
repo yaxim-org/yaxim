@@ -214,7 +214,9 @@
 	<string name="toast_stored_offline">Het bericht is opgeslagen voor verzenden.</string>
 	<string name="chat_enterMsgHint">Typ een bericht</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Opnieuw versturen</string>
 
 	<!-- GPS settings -->

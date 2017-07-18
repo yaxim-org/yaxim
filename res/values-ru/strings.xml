@@ -214,7 +214,9 @@
 	<string name="toast_stored_offline">Сообщение было сохранено для отправки.</string>
 	<string name="chat_enterMsgHint">Введите сообщение</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Отправить повторно</string>
 
 	<!-- GPS settings -->
@@ -230,66 +232,7 @@
 	<string name="AboutDialog_DevelopersText">Свяжитесь с разработчиками через https://yaxim.org или в IRC-канале #yaxim на freenode</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
 	<string name="AboutDialog_Vote">Оставить отзыв</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_LicenceText">Эта программа является свободным программным обеспечением; вы можете распространять и/или изменять его в соответствии с условиями лицензии GNU General Public версии 2, опубликованной Фондом свободного программного обеспечения. Ссылка: https://www.gnu.org/licenses/old-licenses/gpl-2.0.ru.html\n \n Отдельные части этого программного обеспечения предоставляются в соответствии с лицензией MIT:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Настоящим предоставляется разрешение, бесплатно, любому лицу, получившему копию этого программного обеспечения и связанных файлов документации, («Программное обеспечение»), работать с Программным обеспечением без ограничений, включая, без ограничений, права на использование, копирование, изменение, объединение, публикацию, распространение, сублицензию и/или продажу копий Программного обеспечения и разрешать лицам, которым предоставляется Программное обеспечение, делать это, при соблюдении следующих условий: \n Вышеупомянутое уведомление об авторских правах и это уведомление о разрешении должны быть включены во все копии или существенные части Программного обеспечения. \n ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ГАРАНТИЯМИ КОММЕРЧЕСКОЙ ЦЕННОСТИ, ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ И НЕНАРУШЕНИЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОРЫ ИЛИ АВТОРСКИЕ ПАРТНЕРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЕТЕНЗИИ, УБЫТКИ ИЛИ ДРУГИЕ ОТВЕТСТВЕННОСТИ, КАКИЕ-ЛИБО ДЕЙСТВИЯ КОНТРАКТА, ОТЛИЧНЫЕ ИЛИ ДРУГИЕ, ВОЗНИКАЮЩИЕ ИЗ, ВНЕ ИЛИ В СВЯЗИ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ ИЛИ ИСПОЛЬЗОВАНИЕМ ИЛИ ДРУГИМИ РАБОТАМИ В ПРОГРАММНОМ ОБЕСПЕЧЕНИИ.</string>
 
 	<string name="status_available">В сети</string>
 	<string name="status_away">Отсутствую</string>
@@ -304,7 +247,8 @@
   Ilya https://launchpad.net/~me-detected
   Xiong Sung https://launchpad.net/~xiongsung
   snm https://launchpad.net/~zastava-boty
-  Кощеев https://launchpad.net/~zowenko</string>
+  Кощеев https://launchpad.net/~zowenko
+  Кощеев Юрий Андреевич https://launchpad.net/~kashcheyeu</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Общие</string>

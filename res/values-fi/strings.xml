@@ -222,7 +222,9 @@
 	<string name="toast_stored_offline">Viesti on tallennettu lähetystä varten.</string>
 	<string name="chat_enterMsgHint">Syötä viesti</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Lähetä uudelleen</string>
 
 	<!-- GPS settings -->

@@ -214,7 +214,9 @@
 	<string name="toast_stored_offline">Le message a été sauvegardé pour transmission.</string>
 	<string name="chat_enterMsgHint">Entrer un message</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Ré-envoyer</string>
 
 	<!-- GPS settings -->

@@ -214,7 +214,9 @@
 	<string name="toast_stored_offline">Повідомлення було збережено для відправлення.</string>
 	<string name="chat_enterMsgHint">Введіть повідомлення</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Надіслати ще раз</string>
 
 	<!-- GPS settings -->

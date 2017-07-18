@@ -218,7 +218,9 @@
 	<string name="toast_stored_offline">Meddelandet har lagrats för att kunna skickas senare.</string>
 	<string name="chat_enterMsgHint">Skriv meddelande</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Skicka igen</string>
 
 	<!-- GPS settings -->

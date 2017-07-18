@@ -218,7 +218,9 @@
 	<string name="toast_stored_offline">消息已经保存随后发送。</string>
 	<string name="chat_enterMsgHint">输入消息</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">重新发送</string>
 
 	<!-- GPS settings -->
