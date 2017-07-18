@@ -634,7 +634,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 			getMessageView().setText(message);
 			getMessageView().setTypeface(null, style);
-			int fontsize = (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactor(message, 12));
+			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
