@@ -1912,9 +1912,12 @@ public class SmackableImp implements Smackable {
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
-			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, e.getLocalizedMessage()));
-			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
-			upsertRoster(cvR, room);
+			// work around race condition when MUC was removed while joining
+			if(mucJIDs.contains(room)) {
+				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, e.getLocalizedMessage()));
+				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+				upsertRoster(cvR, room);
+			}
 			muc.cleanup();
 			return false;
 		}
