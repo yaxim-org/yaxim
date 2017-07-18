@@ -1441,7 +1441,7 @@ public class SmackableImp implements Smackable {
 		if (nick.equals(getMyMucNick(muc)))
 			mContentResolver.delete(ChatProvider.CONTENT_URI,
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
-				"_id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)",
+				"_id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)",
 				new String[] { muc, packet_id, msg.getBody(), muc });
 
 		// messages with no timestamp are always new
@@ -1457,7 +1457,7 @@ public class SmackableImp implements Smackable {
 		};
 
 		if (packet_id == null) packet_id = "";
-		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)";
+		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)";
 		final String[] selectionArgs = new String[] { nick, packet_id, ""+ts, msg.getBody(), muc };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
