@@ -1370,6 +1370,11 @@ public class SmackableImp implements Smackable {
 					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
 					String replace_id = (replace != null) ? replace.getId() : null;
 
+					if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
+						// Self-Message, no need to display it twice --> replace old one
+						replace_id = msg.getPacketID();
+					}
+
 					// carbons are old. all others are new
 					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
 					if (msg.getType() == Message.Type.error)
