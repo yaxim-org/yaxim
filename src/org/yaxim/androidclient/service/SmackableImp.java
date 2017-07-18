@@ -1041,12 +1041,19 @@ public class SmackableImp implements Smackable {
 		return res[0].toLowerCase();
 	}
 
-	private String[] getJabberID(String from) {
+	/* sanitize a jabber ID obtained from a packet:
+	 *  - split into bare JID and resource
+	 *  - lowercase the bare JID only
+	 *  - fallback to correct default value if empty/null (default is dependent on context/session, therefore must be supplied)
+	 */
+	private String[] getJabberID(String from, String fallback) {
+		if (from == null || from.length() == 0)
+			from = fallback;
 		if(from.contains("/")) {
 			String[] res = from.split("/", 2);
-			return new String[] { res[0], res[1] };
+			return new String[] { res[0].toLowerCase(), res[1] };
 		} else {
-			return new String[] {from, ""};
+			return new String[] {from.toLowerCase(), ""};
 		}
 	}
 
@@ -1250,7 +1257,7 @@ public class SmackableImp implements Smackable {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 
-					String[] fromJID = getJabberID(msg.getFrom());
+					String[] fromJID = getJabberID(msg.getFrom(), mConfig.server);
 					
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
@@ -1278,10 +1285,10 @@ public class SmackableImp implements Smackable {
 
 						// outgoing carbon: fromJID is actually chat peer's JID
 						if (cc.getDirection() == Carbon.Direction.sent) {
-							fromJID = getJabberID(msg.getTo());
+							fromJID = getJabberID(msg.getTo(), mConfig.jabberID);
 							direction = ChatConstants.OUTGOING;
 						} else {
-							fromJID = getJabberID(msg.getFrom());
+							fromJID = getJabberID(msg.getFrom(), mConfig.server);
 
 							// hook off carbonated delivery receipts
 							DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension(
