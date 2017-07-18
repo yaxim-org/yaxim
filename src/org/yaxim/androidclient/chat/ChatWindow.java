@@ -75,7 +75,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
 	
-	private static final int DELAY_NEWMSG = 2000;
+	private static final int DELAY_NEWMSG = 3000;
 	private static final int CHAT_MSG_LOADER = 0;
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
