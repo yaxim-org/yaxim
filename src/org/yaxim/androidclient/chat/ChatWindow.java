@@ -3,6 +3,7 @@ package org.yaxim.androidclient.chat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
@@ -44,6 +45,7 @@ import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -74,7 +76,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
 	
-	private static final int DELAY_NEWMSG = 2000;
+	private static final int DELAY_NEWMSG = 3000;
 	private static final int CHAT_MSG_LOADER = 0;
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
@@ -386,6 +388,22 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		return c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
 	}
 
+	private String getQuotedMessageFromContextMenu(android.view.MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
+		boolean from_me = (c.getInt(c.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
+				ChatConstants.OUTGOING);
+		String message = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		if (!from_me) {
+			String jid = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.JID));
+			String resource = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.RESOURCE));
+			long timestamp = c.getLong(c.getColumnIndex(ChatProvider.ChatConstants.DATE));
+			String ts = new SimpleDateFormat("HH:mm").format(new Date(timestamp));
+			return String.format("%s [%s]:\n%s", jid2nickname(jid, resource), ts, XMPPHelper.quoteString(message));
+		}
+		return XMPPHelper.quoteString(message);
+	}
+
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		switch (item.getItemId()) {
@@ -393,8 +411,17 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 			cm.setText(getMessageFromContextMenu(item));
 			return true;
+		case R.id.chat_contextmenu_quote:
+			// insert quote into the current cursor position
+			String quote = getQuotedMessageFromContextMenu(item);
+			int position = Math.max(mChatInput.getSelectionStart(), 0);
+			mChatInput.getText().insert(position, quote);
+			position += quote.length();
+			mChatInput.setSelection(position, position);
+			Log.d(TAG, "quote!");
+			return true;
 		case R.id.chat_contextmenu_resend:
-			sendMessage(getMessageFromContextMenu(item).toString());
+			sendMessage(getMessageFromContextMenu(item));
 			Log.d(TAG, "resend!");
 			return true;
 		default:
@@ -627,11 +654,18 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 			getMessageView().setText(message);
 			getMessageView().setTypeface(null, style);
-			int fontsize = (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactor(message, 12));
+			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
 			getMessageView().setTypeface(mRosterTypeface);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			// these calls must be in the exact right order.
+			Linkify.addLinks(getMessageView(), Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
+			// Android's default phone linkifuckation makes 13:37 two phone numbers
+			Linkify.addLinks(getMessageView(), XMPPHelper.PHONE, "tel:");
+			// Android's default email linkifuckation breaks xmpp: URIs
+			Linkify.addLinks(getMessageView(), XMPPHelper.XMPP_PATTERN, "xmpp");
+			Linkify.addLinks(getMessageView(), XMPPHelper.EMAIL_ADDRESS, "mailto:");
 		}
 		
 		TextView getDateView() {

@@ -123,6 +123,20 @@ public class ChatProvider extends ContentProvider {
 		return true;
 	}
 
+	private void appendWhereJidCount(SQLiteQueryBuilder qBuilder, String jid, String count) {
+		// optimized query to get last N entries:
+		//    SELECT * FROM chats
+		//    WHERE jid="?"
+		//    AND _id > IFNULL((SELECT _id FROM chats WHERE jid="?" ORDER BY _id DESC LIMIT 1 OFFSET 200), 0)
+		qBuilder.appendWhere("jid=");
+		qBuilder.appendWhereEscapeString(jid);
+		qBuilder.appendWhere("AND _id > IFNULL((SELECT _id FROM chats WHERE jid=");
+		qBuilder.appendWhereEscapeString(jid);
+		qBuilder.appendWhere("ORDER BY _id DESC LIMIT 1 OFFSET ");
+		qBuilder.appendWhereEscapeString(count);
+		qBuilder.appendWhere("), 0)");
+	}
+
 	@Override
 	public Cursor query(Uri url, String[] projectionIn, String selection,
 			String[] selectionArgs, String sortOrder) {
@@ -135,14 +149,12 @@ public class ChatProvider extends ContentProvider {
 			qBuilder.setTables(TABLE_NAME);
 			break;
 		case LASTLOG:
-			qBuilder.setTables("(SELECT * FROM " + TABLE_NAME + " WHERE jid='"
-					+ url.getPathSegments().get(1) + "' ORDER BY _id DESC LIMIT "
-					+ url.getPathSegments().get(2) + ")");
+			qBuilder.setTables(TABLE_NAME);
+			appendWhereJidCount(qBuilder, url.getPathSegments().get(1), url.getPathSegments().get(2));
 			break;
 		case LASTLOG_MUCPM:
-			qBuilder.setTables("(SELECT * FROM " + TABLE_NAME + " WHERE jid='"
-					+ url.getPathSegments().get(1) + "/" + url.getPathSegments().get(2) + "' ORDER BY _id DESC LIMIT "
-					+ url.getPathSegments().get(3) + ")");
+			appendWhereJidCount(qBuilder, url.getPathSegments().get(1) + "/" + url.getPathSegments().get(2),
+					url.getPathSegments().get(3));
 			break;
 		case MESSAGE_ID:
 			qBuilder.setTables(TABLE_NAME);
@@ -210,7 +222,7 @@ public class ChatProvider extends ContentProvider {
 	private static class ChatDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 6;
+		private static final int DATABASE_VERSION = 7;
 
 		public ChatDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -243,6 +255,10 @@ public class ChatProvider extends ContentProvider {
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.PACKET_ID + " TEXT");
 			case 5:
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.RESOURCE + " TEXT DEFAULT NULL");
+			case 6:
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_pid on chats (pid)");
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_date on chats (jid, date)");
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_from_read on chats (jid, from_me, read)");
 				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

@@ -24,6 +24,28 @@ import gnu.inet.encoding.StringprepException;
 
 public class XMPPHelper {
 
+	// shameless copy from android/platform_frameworks_base/blob/master/core/java/android/util/Patterns.java
+	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF";
+	public static final Pattern PHONE = Pattern.compile(	// sdd = space, dot, or dash
+			"(\\+[0-9]+[\\- \\.]*)?"        // +<digits><sdd>*
+			+ "(\\([0-9]+\\)[\\- \\.]*|[0-9]{3,} ?/[\\- \\.]*)?"   // (<digits>)<sdd>*|<digits>/<sdd>*
+			+ "([0-9][0-9\\- \\.]+[0-9]{2})"); // <digit><digit|sdd>+<digit>
+	public static final Pattern EMAIL_ADDRESS = Pattern.compile(
+			"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+			"\\@" +
+			"[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+			"(" +
+			"\\." +
+			"[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+			")+");
+
+	// shameless copy from conversations/src/main/java/eu/siacs/conversations/ui/adapter/MessageAdapter.java
+	public static final Pattern XMPP_PATTERN = Pattern.compile("xmpp\\:(?:(?:["
+						+ GOOD_IRI_CHAR
+						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\,\\_])"
+						+ "|(?:\\%[a-fA-F0-9]{2}))+"
+						+ "(\\?[\\p{Alnum}=;&]+)?");
+
 	public static String verifyJabberID(String jid)
 			throws YaximXMPPAdressMalformedException {
 		try {
@@ -58,9 +80,31 @@ public class XMPPHelper {
 		return ret;
 	}
 
+	/* Convert a (single- or multi-line) message into a quote */
+	public static String quoteString(String original) {
+		return "> " + original.replace("\n", "\n> ") + "\n";
+	}
+
 	public static String capitalizeString(String original) {
 		return (original.length() == 0) ? original :
 			original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
+
+	// a line consisting only of: Emoji (So: Symbol Other), Emoji unknown to Android (Cn: not assigned), ZWJ, whitespace
+	static final Pattern LINE_OF_EMOJI = Pattern.compile("[\\p{So}\\p{Cn}\u200D\\s]+");
+	static final Pattern ONE_EMOJI = Pattern.compile("[\\p{Cn}\\p{So}](\u200D[\\p{Cn}\\p{So}])*");
+
+	public static float getEmojiScalingFactorRE(String message, int length_threshold) {
+		if (!LINE_OF_EMOJI.matcher(message).matches())
+			return 1.f;
+		int count = 0;
+		Matcher m = ONE_EMOJI.matcher(message);
+		while (m.find()) {
+			count++;
+			if (length_threshold > 0 && count > length_threshold)
+				return 1.f;
+		}
+		return (count > 0) ? 18.f/(2+count) : 1.f;
 	}
 
 	public static float getEmojiScalingFactor(String message, int length_threshold) {
@@ -81,6 +125,9 @@ public class XMPPHelper {
 				case Character.NON_SPACING_MARK:
 					if (cp == 0x200d && count > 0) count--; // ZWJ = discount one emoji for length purposes
 					break;
+				// new lines and others
+				case Character.CONTROL:
+					if (cp == 0x10 || cp == 0x13) break; // ignore newlines, fall through for others
 				default:
 					return 1.f;
 			}

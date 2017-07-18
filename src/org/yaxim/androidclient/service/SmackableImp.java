@@ -34,6 +34,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
+import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ParsingExceptionCallback;
 import org.jivesoftware.smack.parsing.UnparsablePacket;
 import org.jivesoftware.smack.provider.ProviderManager;
@@ -1041,12 +1042,19 @@ public class SmackableImp implements Smackable {
 		return res[0].toLowerCase();
 	}
 
-	private String[] getJabberID(String from) {
+	/* sanitize a jabber ID obtained from a packet:
+	 *  - split into bare JID and resource
+	 *  - lowercase the bare JID only
+	 *  - fallback to correct default value if empty/null (default is dependent on context/session, therefore must be supplied)
+	 */
+	private String[] getJabberID(String from, String fallback) {
+		if (from == null || from.length() == 0)
+			from = fallback;
 		if(from.contains("/")) {
 			String[] res = from.split("/", 2);
-			return new String[] { res[0], res[1] };
+			return new String[] { res[0].toLowerCase(), res[1] };
 		} else {
-			return new String[] {from, ""};
+			return new String[] {from.toLowerCase(), ""};
 		}
 	}
 
@@ -1174,7 +1182,6 @@ public class SmackableImp implements Smackable {
 						ping.setType(Type.GET);
 						String jid = muc.getRoom() + "/" + muc.getNickname();
 						ping.setTo(jid);
-						mPingID = ping.getPacketID();
 						debugLog("Ping: sending ping to " + jid);
 						mXMPPConnection.sendPacket(ping);
 					}
@@ -1187,6 +1194,22 @@ public class SmackableImp implements Smackable {
 				/* ignore disconnect race condition */
 			}
 		}
+	}
+
+	private boolean isValidPingResponse(IQ response) {
+		// a 'result' response means, the other party supports ping and responded appropriately
+		if (response.getType() == Type.RESULT)
+			return true;
+		// 'error' can be caused by s2s issues, non-existing destination, solar flares or one of these two:
+		//  * 'service-unavailable': official not-supported response as of RFC6120 (§8.4) and XEP-0199 (§4.1)
+		//  * 'feature-not-implemented': inoffcial not-supported response from many clients
+		if (response.getType() == Type.ERROR) {
+			XMPPError e = response.getError();
+			return (e.getType() == XMPPError.Type.CANCEL) &&
+				("service-unavailable".equals(e.getCondition()) ||
+				 "feature-not-implemented".equals(e.getCondition()));
+		}
+		return false;
 	}
 
 	/**
@@ -1209,12 +1232,21 @@ public class SmackableImp implements Smackable {
 				if (packet == null) return;
 
 				if (packet instanceof IQ && packet.getFrom() != null) {
-					IQ ping = (IQ)packet;
-					String from_bare = getBareJID(ping.getFrom());
-					// check for ping error or RESULT
-					if (ping.getType() == Type.RESULT && mucJIDs.contains(from_bare)) {
-						Log.d(TAG, "Ping: got response from MUC " + from_bare);
-						mucLastPong.put(from_bare, System.currentTimeMillis());
+					IQ pong = (IQ)packet;
+					String[] from = getJabberID(pong.getFrom(), null);
+					// check for MUC self-ping response
+					if (mucJIDs.contains(from[0]) && from[1].equals(getMyMucNick(from[0]))) {
+						if (isValidPingResponse(pong)) {
+							Log.d(TAG, "Ping: got response from MUC " + from[0]);
+							mucLastPong.put(from[0], System.currentTimeMillis());
+						} else if (pong.getError() != null) {
+							Log.d(TAG, "Ping: got error from MUC " + from[0] + ": " + pong.getError());
+							MultiUserChat muc = multiUserChats.get(from[0]);
+							if (muc != null && muc.isJoined()) {
+								muc.leave();
+								syncDbRooms();
+							}
+						}
 					}
 				}
 				if (mPingID != null && mPingID.equals(packet.getPacketID()))
@@ -1250,7 +1282,7 @@ public class SmackableImp implements Smackable {
 				if (packet instanceof Message) {
 					Message msg = (Message) packet;
 
-					String[] fromJID = getJabberID(msg.getFrom());
+					String[] fromJID = getJabberID(msg.getFrom(), mConfig.server);
 					
 					int direction = ChatConstants.INCOMING;
 					Carbon cc = CarbonManager.getCarbon(msg);
@@ -1278,10 +1310,10 @@ public class SmackableImp implements Smackable {
 
 						// outgoing carbon: fromJID is actually chat peer's JID
 						if (cc.getDirection() == Carbon.Direction.sent) {
-							fromJID = getJabberID(msg.getTo());
+							fromJID = getJabberID(msg.getTo(), mConfig.jabberID);
 							direction = ChatConstants.OUTGOING;
 						} else {
-							fromJID = getJabberID(msg.getFrom());
+							fromJID = getJabberID(msg.getFrom(), mConfig.server);
 
 							// hook off carbonated delivery receipts
 							DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension(
@@ -1337,6 +1369,11 @@ public class SmackableImp implements Smackable {
 					// obtain Last Message Correction, if present
 					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
 					String replace_id = (replace != null) ? replace.getId() : null;
+
+					if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
+						// Self-Message, no need to display it twice --> replace old one
+						replace_id = msg.getPacketID();
+					}
 
 					// carbons are old. all others are new
 					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
@@ -1404,7 +1441,7 @@ public class SmackableImp implements Smackable {
 		if (nick.equals(getMyMucNick(muc)))
 			mContentResolver.delete(ChatProvider.CONTENT_URI,
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
-				"_id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)",
+				"_id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)",
 				new String[] { muc, packet_id, msg.getBody(), muc });
 
 		// messages with no timestamp are always new
@@ -1420,7 +1457,7 @@ public class SmackableImp implements Smackable {
 		};
 
 		if (packet_id == null) packet_id = "";
-		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)";
+		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)";
 		final String[] selectionArgs = new String[] { nick, packet_id, ""+ts, msg.getBody(), muc };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
