@@ -1366,14 +1366,6 @@ public class SmackableImp implements Smackable {
 						return;
 					}
 
-					// obtain Last Message Correction, if present
-					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
-					String replace_id = (replace != null) ? replace.getId() : null;
-
-					if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
-						// Self-Message, no need to display it twice --> replace old one
-						replace_id = msg.getPacketID();
-					}
 
 					// carbons are old. all others are new
 					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
@@ -1408,13 +1400,25 @@ public class SmackableImp implements Smackable {
 					// Carbons and MUC history are 'silent' by default
 					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
 
-					// perform a message-replace on self-sent message
-					long upsert_id = -1;
-					if (is_muc)
-						upsert_id = getOutgoingMUCreplace(msg, fromJID);
+					// perform a message-replace on self-sent MUC message
+					long upsert_id = is_muc ? getOutgoingMUCreplace(msg, fromJID) : -1;
+
+					// obtain Last Message Correction, if present
+					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
+					String replace_id = (replace != null) ? replace.getId() : null;
+
+					if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
+						// Self-Message, no need to display it twice --> replace old one
+						replace_id = msg.getPacketID();
+					}
+					if (replace_id != null && upsert_id == -1) {
+						// obtain row id for last message with that full JID, or -1
+						upsert_id = getRowIdForMessage(fromJID[0], fromJID[1], direction, replace_id);
+						Log.d(TAG, "Replacing last message from " + fromJID[0] + "/" + fromJID[1] + ": " + replace_id + " -> " + msg.getPacketID());
+					}
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
-						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), replace_id, upsert_id);
+						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), upsert_id);
 						// only notify on private messages or when MUC notification requested
 						boolean need_notify = !is_muc || mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
@@ -1441,13 +1445,16 @@ public class SmackableImp implements Smackable {
 	private long getOutgoingMUCreplace(Message msg, String[] fromJid) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
+		String packet_id = msg.getPacketID();
+		if (packet_id == null)
+			packet_id = "";
 
 		if (!nick.equals(getMyMucNick(muc)))
 			return -1;
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
 				"_id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)",
-				new String[] { muc, msg.getPacketID(), msg.getBody(), muc }, null);
+				new String[] { muc, packet_id, msg.getBody(), muc }, null);
 		long result = -1;
 		if (c.moveToFirst()) {
 			result = c.getLong(0);
@@ -1545,7 +1552,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void addChatMessageToDB(int direction, String[] tJID,
-			String message, int delivery_status, long ts, String packetID, String replace_id, long upsert_id) {
+			String message, int delivery_status, long ts, String packetID, long upsert_id) {
 		ContentValues values = new ContentValues();
 
 		values.put(ChatConstants.DIRECTION, direction);
@@ -1556,11 +1563,6 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.DATE, ts);
 		values.put(ChatConstants.PACKET_ID, packetID);
 
-		if (replace_id != null) {
-			// obtain row id for last message with that full JID, or -1
-			upsert_id = getRowIdForMessage(tJID[0], tJID[1], direction, replace_id);
-			Log.d(TAG, "Replacing last message from " + tJID[0] + "/" + tJID[1] + ": " + replace_id + " -> " + packetID);
-		}
 		if (upsert_id >= 0 &&
 		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
 				values, null, null) == 1)
@@ -1571,7 +1573,7 @@ public class SmackableImp implements Smackable {
 	private void addChatMessageToDB(int direction, String JID,
 			String message, int delivery_status, long ts, String packetID) {
 		String[] tJID = {JID, ""};
-		addChatMessageToDB(direction, tJID, message, delivery_status, ts, packetID, null, -1);
+		addChatMessageToDB(direction, tJID, message, delivery_status, ts, packetID, -1);
 	}
 
 	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
