@@ -504,6 +504,9 @@ public class SmackableImp implements Smackable {
 		// reference PingManager, set ping flood protection to 10s
 		PingManager.getInstanceFor(mXMPPConnection).disablePingFloodProtection();
 
+		// manually add LMC feature (XEP-0308) because it lacks a Manager
+		sdm.addFeature(Replace.NAMESPACE);
+
 		// set Version for replies
 		String app_name = mService.getString(R.string.app_name);
 		String build_revision = mService.getString(R.string.build_revision);
