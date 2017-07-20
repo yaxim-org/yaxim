@@ -61,7 +61,7 @@ public class MUCChatWindow extends ChatWindow {
 				Cursor c = (Cursor)parent.getItemAtPosition(position);
 				addNicknameToInput(c.getString(c.getColumnIndex(ChatConstants.RESOURCE)));
 			}});
-		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?join");
+		XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?join");
 	}
 
 	@Override

@@ -124,7 +124,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
-		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
+		XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
 
 		mChatFontSize = Integer.valueOf(mConfig.chatFontSize);
 
