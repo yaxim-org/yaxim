@@ -1456,7 +1456,7 @@ public class SmackableImp implements Smackable {
 			return -1;
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
-				"_id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)",
+				"_id >= IFNULL((SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50), 0)",
 				new String[] { muc, packet_id, msg.getBody(), muc }, null);
 		long result = -1;
 		if (c.moveToFirst()) {
@@ -1484,7 +1484,7 @@ public class SmackableImp implements Smackable {
 		};
 
 		if (packet_id == null) packet_id = "";
-		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50)";
+		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= IFNULL((SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50), 0)";
 		final String[] selectionArgs = new String[] { nick, packet_id, ""+ts, msg.getBody(), muc };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
