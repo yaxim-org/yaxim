@@ -42,7 +42,7 @@ public class XMPPHelper {
 	// shameless copy from conversations/src/main/java/eu/siacs/conversations/ui/adapter/MessageAdapter.java
 	public static final Pattern XMPP_PATTERN = Pattern.compile("xmpp\\:(?:(?:["
 						+ GOOD_IRI_CHAR
-						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\,\\_])"
+						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\,\\_%])"
 						+ "|(?:\\%[a-fA-F0-9]{2}))+"
 						+ "(\\?[\\p{Alnum}=;&]+)?");
 
