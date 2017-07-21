@@ -230,6 +230,10 @@ public class SmackableImp implements Smackable {
 		this.mAlarmManager = (AlarmManager)mService.getSystemService(Context.ALARM_SERVICE);
 
 		mLastOnline = mLastOffline = System.currentTimeMillis();
+		mPingAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPingAlarmIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 		
 	// this code runs a DNS resolver, might be blocking
@@ -1260,10 +1264,6 @@ public class SmackableImp implements Smackable {
 		};
 
 		mXMPPConnection.addPacketListener(mPongListener, new PacketTypeFilter(IQ.class));
-		mPingAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPingAlarmIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
-		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
 		mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 
 				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
 	}
