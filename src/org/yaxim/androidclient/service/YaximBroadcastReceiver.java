@@ -46,15 +46,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 			if (!connstartup) // ignore event, we are not running
 				return;
 
-			// refresh DNS servers from android prefs
-			try {
-				org.xbill.DNS.ResolverConfig.refresh();
-				org.xbill.DNS.Lookup.refreshDefault();
-			} catch (Exception e) {
-			    // sometimes refreshDefault() will cause a NetworkOnMainThreadException;
-			    // ignore and hope for the best.
-			    Log.i(TAG, "DNS init failed: " + e);
-			}
+			asyncRefreshDNS();
 
 			// there are three possible situations here: disconnect, reconnect, connection change
 			ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -104,5 +96,21 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 		}
 	}
 
+	private void asyncRefreshDNS() {
+		new Thread() {
+			@Override
+			public void run() {
+				// refresh DNS servers from android prefs
+				try {
+					org.xbill.DNS.ResolverConfig.refresh();
+					org.xbill.DNS.Lookup.refreshDefault();
+				} catch (Exception e) {
+				    // sometimes refreshDefault() will cause a NetworkOnMainThreadException;
+				    // ignore and hope for the best.
+				    Log.i(TAG, "DNS init failed: " + e);
+				}
+			}
+		}.start();
+	}
 }
 
