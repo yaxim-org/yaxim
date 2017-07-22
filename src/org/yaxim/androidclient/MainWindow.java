@@ -1050,7 +1050,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private void registerCrashReporter() {
 		if (mConfig.reportCrash) {
-			ExceptionHandler.register(this, "http://duenndns.de/yaxim-crash/");
+			ExceptionHandler.register(this, "https://yaxim.org/crash/");
 		}
 	}
 
