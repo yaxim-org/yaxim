@@ -90,9 +90,9 @@ public class XMPPHelper {
 			original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 
-	// a line consisting only of: Emoji (So: Symbol Other), Emoji unknown to Android (Cn: not assigned), ZWJ, whitespace
-	static final Pattern LINE_OF_EMOJI = Pattern.compile("[\\p{So}\\p{Cn}\u200D\\s]+");
-	static final Pattern ONE_EMOJI = Pattern.compile("[\\p{Cn}\\p{So}](\u200D[\\p{Cn}\\p{So}])*");
+	// a line consisting only of: Emoji (So: Symbol Other), Emoji unknown to Android (Cn: not assigned), ZWJ, Variant-Selectors, whitespace
+	static final Pattern LINE_OF_EMOJI = Pattern.compile("[\\p{So}\\p{Cn}\u200D\uFE00-\uFE0F\\s]+");
+	static final Pattern ONE_EMOJI = Pattern.compile("[\\p{Cn}\\p{So}](\u200D[\\p{Cn}\\p{So}])*[\uFE00-\uFE0F]?");
 
 	public static float getEmojiScalingFactorRE(String message, int length_threshold) {
 		if (!LINE_OF_EMOJI.matcher(message).matches())
