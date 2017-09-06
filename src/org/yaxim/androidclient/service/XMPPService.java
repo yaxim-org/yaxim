@@ -437,7 +437,7 @@ public class XMPPService extends GenericService {
 		create_account = false;
 	}
 
-	private void broadcastConnectionState(ConnectionState cs) {
+	private synchronized void broadcastConnectionState(ConnectionState cs) {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 
 		for (int i = 0; i < broadCastItems; i++) {
