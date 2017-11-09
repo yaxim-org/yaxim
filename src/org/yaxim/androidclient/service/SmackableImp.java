@@ -1908,14 +1908,14 @@ public class SmackableImp implements Smackable {
 		};
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, 
 				ChatConstants.JID + " = ? AND " +
-				ChatConstants.DELIVERY_STATUS + " = " +
-				ChatConstants.DS_SENT_OR_READ, new String[] { room }, "_id DESC LIMIT 1");
+				ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING,
+				new String[] { room }, "_id DESC LIMIT 1");
 		if(cursor.getCount()>0) {
 			cursor.moveToFirst();
 			Date lastDate = new Date(cursor.getLong(1));
 			Log.d(TAG, "Getting room history for " + room + " starting at " + lastDate);
 			history.setSince(lastDate);
-		} else Log.d(TAG, "No last message for " + room);
+		} else Log.d(TAG, "Getting room history for " + room + " (full history)");
 		cursor.close();
 		
 		ContentValues cvR = new ContentValues();
