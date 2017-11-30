@@ -14,6 +14,7 @@ import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.ParcelablePresence;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.XEP0392Helper;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.app.AlertDialog;
@@ -205,22 +206,13 @@ public class MUCChatWindow extends ChatWindow {
 	public void nick2Color(String nick, TypedValue tv) {
 		if (nick == null || nick.length() == 0) // no color for empty nickname
 			return;
-		Checksum nickCRC = new CRC32();
-		nickCRC.update(nick.getBytes(), 0, nick.length());
-		int nickInt = (int)nickCRC.getValue();
-		int theme = mConfig.getTheme();
-		// default HSV is for dark theme, bright and light
-		float h = Math.abs(nickInt % 360), s = 0.5f, v= 0.9f;
-
-		if (theme == R.style.YaximDarkTheme) {
-			// make blue nicks a bit lighter on dark
-			if(h<=255.0f && h>=225.0f)
-				s=0.4f;
-		} else { // light theme: strong and darker nick color
-			s=0.85f;
-			v=0.6f;
+		// obtain theme's background color - https://stackoverflow.com/a/14468034/539443
+		getTheme().resolveAttribute(android.R.attr.windowBackground, tv, true);
+		if (tv.type < TypedValue.TYPE_FIRST_COLOR_INT || tv.type > TypedValue.TYPE_LAST_COLOR_INT) {
+			// fall back to black or white, depending on theme
+			tv.data = (mConfig.getTheme() == R.style.YaximLightTheme) ? 0xffffff : 0x000000;
 		}
-		tv.data = Color.HSVToColor(0xFF, new float[]{h, s, v});
+		tv.data = XEP0392Helper.mixColors(XEP0392Helper.rgbFromNick(nick), tv.data, 100/*==0.4*/);
 	}
 	
 
