@@ -215,7 +215,7 @@
 	<string name="chat_enterMsgHint">Введите сообщение</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Цитировать</string>
 	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Отправить повторно</string>
 
@@ -267,20 +267,20 @@
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
 	<string name="muc_invitation_from">Приглашение от %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d участников)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
 	<string name="muc_invitation_join">Присоединиться как %s</string>
 	<string name="muc_synchronizing">Синхронизация…</string>
 	<!-- Title of user list, contains JID -->
 	<string name="chat_muc_userlist">Участники конференции (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked">Выгнан: %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_kicked_by">Выгнан %1$s: %2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">Забанен: %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+	<string name="muc_banned_by">Забанен %1$s: %2$s</string>
 
 
 </resources>
