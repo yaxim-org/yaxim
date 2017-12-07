@@ -21,6 +21,9 @@ import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import eu.siacs.conversations.utils.ImStyleParser;
+import eu.siacs.conversations.utils.StylingHelper;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Window;
 
@@ -43,6 +46,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -349,6 +354,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		mChatInput = (EditText) findViewById(R.id.Chat_UserInput);
 		mChatInput.addTextChangedListener(this);
 		mChatInput.setOnKeyListener(this);
+		mChatInput.addTextChangedListener(new StylingHelper.MessageEditorStyler(mChatInput));
 		if (i.hasExtra(INTENT_EXTRA_MESSAGE)) {
 			mChatInput.setText(i.getExtras().getString(INTENT_EXTRA_MESSAGE));
 		}
@@ -648,7 +654,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				message = String.format("\u25CF %s %s", from, message.substring(4));
 				style |= android.graphics.Typeface.ITALIC;
 			}
-			getMessageView().setText(message);
+			// format string
+			SpannableStringBuilder body = new SpannableStringBuilder(message);
+			eu.siacs.conversations.utils.StylingHelper.format(body, getMessageView().getCurrentTextColor());
+
+			getMessageView().setText(body);
 			getMessageView().setTypeface(null, style);
 			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
