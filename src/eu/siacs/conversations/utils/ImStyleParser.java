@@ -72,7 +72,7 @@ public class ImStyleParser {
 	}
 
 	private static boolean isCharRepeatedTwoTimes(CharSequence text, char c, int index, int end) {
-		return index + 1 <= end && text.charAt(index) == c && text.charAt(index) == c;
+		return index + 1 <= end && text.charAt(index) == c && text.charAt(index+1) == c;
 	}
 
 	private static boolean precededByWhiteSpace(CharSequence text, int index, int start) {
