@@ -58,6 +58,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -334,6 +335,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 			data = intent.getData();
 			String jid = data.getAuthority();
 			String body = data.getQueryParameter("body");
+			if (TextUtils.isEmpty(jid)) {
+				if (!TextUtils.isEmpty(body)) {
+					// this is a body-less `xmpp:?message;body=TEXT` - convert to ACTION_SEND
+					intent.setAction(Intent.ACTION_SEND)
+						.setData(null)
+						.putExtra(Intent.EXTRA_TEXT, body);
+					handleSendIntent();
+				}
+				// stop processing if JID is empty
+				return;
+			}
 			String name = data.getQueryParameter("name");
 			String preauth = data.getQueryParameter("preauth");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
