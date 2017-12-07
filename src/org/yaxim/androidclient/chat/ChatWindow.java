@@ -656,6 +656,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			}
 			// format string
 			SpannableStringBuilder body = new SpannableStringBuilder(message);
+			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
 			eu.siacs.conversations.utils.StylingHelper.format(body, getMessageView().getCurrentTextColor());
 
 			getMessageView().setText(body);

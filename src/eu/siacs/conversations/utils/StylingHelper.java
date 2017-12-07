@@ -34,6 +34,7 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.text.Editable;
 import android.text.ParcelableSpan;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -41,11 +42,13 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.util.DisplayMetrics;
 import android.widget.EditText;
 
 import java.util.Arrays;
 import java.util.List;
 
+import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 
 public class StylingHelper {
@@ -141,8 +144,7 @@ public class StylingHelper {
 		}
 	}
 
-	/*
-	public static boolean handleTextQuotes(SpannableStringBuilder body, int color) {
+	public static boolean handleTextQuotes(SpannableStringBuilder body, int color, DisplayMetrics dm) {
 		boolean startsWithQuote = false;
 		char previous = '\n';
 		int lineStart = -1;
@@ -150,16 +152,17 @@ public class StylingHelper {
 		int quoteStart = -1;
 		for (int i = 0; i <= body.length(); i++) {
 			char current = body.length() > i ? body.charAt(i) : '\n';
+			char next = body.length() > (i+1) ? body.charAt(i+1) : ' ';
 			if (lineStart == -1) {
 				if (previous == '\n') {
-					if (current == '>') {
+					if (current == '>' && next == ' ') {
 						// Line start with quote
 						lineStart = i;
 						if (quoteStart == -1) quoteStart = i;
 						if (i == 0) startsWithQuote = true;
 					} else if (quoteStart >= 0) {
 						// Line start without quote, apply spans there
-						applyQuoteSpan(body, quoteStart, i - 1, color);
+						applyQuoteSpan(body, quoteStart, i - 1, color, dm);
 						quoteStart = -1;
 					}
 				}
@@ -184,12 +187,12 @@ public class StylingHelper {
 		}
 		if (quoteStart >= 0) {
 			// Apply spans to finishing open quote
-			applyQuoteSpan(body, quoteStart, body.length(), color);
+			applyQuoteSpan(body, quoteStart, body.length(), color, dm);
 		}
 		return startsWithQuote;
 	}
 
-	private static int applyQuoteSpan(SpannableStringBuilder body, int start, int end, int color) {
+	private static int applyQuoteSpan(SpannableStringBuilder body, int start, int end, int color, DisplayMetrics dm) {
 		if (start > 1 && !"\n\n".equals(body.subSequence(start - 2, start).toString())) {
 			body.insert(start++, "\n");
 			body.setSpan(new DividerSpan(false), start - 2, start, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -199,10 +202,8 @@ public class StylingHelper {
 			body.insert(end, "\n");
 			body.setSpan(new DividerSpan(false), end, end + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
-		DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-		body.setSpan(new QuoteSpan(color, metrics), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		body.setSpan(new QuoteSpan(color, dm), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		return 0;
 	}
 
-	*/
 }
