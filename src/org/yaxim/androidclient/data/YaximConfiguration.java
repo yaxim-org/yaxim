@@ -159,8 +159,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.ressource = prefs
 				.getString(PreferenceConstants.RESSOURCE, "yaxim");
 		this.port = XMPPHelper.tryToParseInt(prefs.getString(
-				PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT),
-				PreferenceConstants.DEFAULT_PORT_INT);
+				PreferenceConstants.PORT, ""),
+				-1);
 
 		this.priority = validatePriority(XMPPHelper.tryToParseInt(prefs
 				.getString(PreferenceConstants.PRIORITY, "0"), 0));
@@ -208,6 +208,11 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 		try {
 			splitAndSetJabberID(XMPPHelper.verifyJabberID(jabberID));
+			// fix up custom server / port if only one of them is set
+			if (customServer.length() > 0 && port == -1)
+				port = PreferenceConstants.DEFAULT_PORT_INT;
+			else if (customServer.length() == 0 && port != -1)
+				customServer = server;
 			this.jid_configured = true;
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);

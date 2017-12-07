@@ -177,7 +177,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		editor.putString(PreferenceConstants.JID, jabberID);
 		editor.putString(PreferenceConstants.PASSWORD, password);
 		editor.putString(PreferenceConstants.RESSOURCE, resource);
-		editor.putString(PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT);
 		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
 		editor.commit();
 	}
