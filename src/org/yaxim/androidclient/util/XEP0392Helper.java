@@ -7,9 +7,9 @@ import java.security.NoSuchAlgorithmException;
 import android.graphics.Color;
 
 public class XEP0392Helper {
-	static final double KR = 0.299;
+	static final double KR=0.2627;
 	static final double KG = 0.587;
-	static final double KB = 0.114;
+	static final double KB=0.0593;
 	static final double y = 0.5;
 
 	public static double cbCrFromNick(String nickname) {
