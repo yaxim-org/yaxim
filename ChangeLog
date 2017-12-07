@@ -1,3 +1,20 @@
+0.9.3:
+ * File Upload: support sharing of pictures and files, and inline display (thanks Igor; XEP-0363)
+ * Chat: support *bold*, _emphasis_, ~strikethrough~ and `code` (thanks Conversations!; XEP-0393)
+ * Chat: new "Quote" menu option, fix copy on more incoming messages
+ * Easy XMPP: integrate (display of) QR codes in yaxim
+ * Chat Rooms: new nickname colors (XEP-0392)
+ * Notifications: custom ringtones
+ * Chat: improve clickable link support
+ * Roster: support adding contacts from clipboard
+ * About: add "Rate" and "Contact" buttons
+ * Optimization: faster loading of long histories
+ * Message Sync: fix duplicate messages bug
+ * Server: better discovery of MUC and File Upload
+ * Server: create new resurce string on resource conflict
+ * Offline: fix delivery of offline MUC messages
+ * Chat Rooms: use nickname from VCard
+
 0.9.2:
  * Fixes: Crash and connection problems fixed (among others: chatme.im)
 
