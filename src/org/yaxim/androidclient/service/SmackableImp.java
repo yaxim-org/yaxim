@@ -215,7 +215,7 @@ public class SmackableImp implements Smackable {
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
 	
 	private final HashSet<String> mucJIDs = new HashSet<String>();	//< all configured MUCs, joined or not
-	private Map<String, MultiUserChat> multiUserChats;
+	private Map<String, MUCController> multiUserChats;
 	private long mucLastPing = 0;
 	private Map<String, Long> mucLastPong = new HashMap<String, Long>();	//< per-MUC timestamp of last incoming ping result
 	private Map<String, Presence> subscriptionRequests = new HashMap<String, Presence>();
@@ -287,7 +287,7 @@ public class SmackableImp implements Smackable {
 		});
 		mConfig.reconnect_required = false;
 
-		multiUserChats = new HashMap<String, MultiUserChat>();
+		multiUserChats = new HashMap<String, MUCController>();
 		initServiceDiscovery();
 	}
 
@@ -620,7 +620,7 @@ public class SmackableImp implements Smackable {
 					// we need to check for non-resumability and work around
 					// here:
 					if (!mStreamHandler.isResumePossible()) {
-						for (MultiUserChat muc : multiUserChats.values())
+						for (MUCController muc : multiUserChats.values())
 							muc.cleanup();
 						multiUserChats.clear();
 						mucLastPong.clear();
@@ -631,7 +631,7 @@ public class SmackableImp implements Smackable {
 				public void connectionClosed() {
 					// TODO: fix reconnect when we got kicked by the server or SM failed!
 					//onDisconnected(null);
-					for (MultiUserChat muc : multiUserChats.values())
+					for (MUCController muc : multiUserChats.values())
 						muc.cleanup();
 					multiUserChats.clear();
 					mucLastPong.clear();
@@ -1169,14 +1169,14 @@ public class SmackableImp implements Smackable {
 			try {
 				sendServerPing();
 				// ping all MUCs. if no ping was received since last attempt, /cycle
-				Iterator<MultiUserChat> muc_it = multiUserChats.values().iterator();
+				Iterator<MUCController> muc_it = multiUserChats.values().iterator();
 				long ts = System.currentTimeMillis();
 				ContentValues cvR = new ContentValues();
 				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_ping_timeout));
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 				cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 				while (muc_it.hasNext()) {
-					MultiUserChat muc = muc_it.next();
+					MultiUserChat muc = muc_it.next().muc;
 					if (!muc.isJoined())
 						continue;
 					Long lastPong = mucLastPong.get(muc.getRoom());
@@ -1248,9 +1248,9 @@ public class SmackableImp implements Smackable {
 							mucLastPong.put(from[0], System.currentTimeMillis());
 						} else if (pong.getError() != null) {
 							Log.d(TAG, "Ping: got error from MUC " + from[0] + ": " + pong.getError());
-							MultiUserChat muc = multiUserChats.get(from[0]);
-							if (muc != null && muc.isJoined()) {
-								muc.leave();
+							MUCController muc = multiUserChats.get(from[0]);
+							if (muc != null && muc.muc.isJoined()) {
+								muc.muc.leave();
 								syncDbRooms();
 							}
 						}
@@ -1452,12 +1452,12 @@ public class SmackableImp implements Smackable {
 		if (packet_id == null)
 			packet_id = "";
 
+		MUCController mucc = multiUserChats.get(muc);
 		if (!nick.equals(getMyMucNick(muc)))
 			return -1;
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
-				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND " +
-				"_id >= IFNULL((SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50), 0)",
-				new String[] { muc, packet_id, msg.getBody(), muc }, null);
+				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND _id >= ?",
+				new String[] { muc, packet_id, msg.getBody(), "" + mucc.getFirstPacketID() }, null);
 		long result = -1;
 		if (c.moveToFirst()) {
 			result = c.getLong(0);
@@ -1474,6 +1474,10 @@ public class SmackableImp implements Smackable {
 		// messages with no timestamp are always new
 		if (timestamp == null)
 			return true;
+		MUCController mucc = multiUserChats.get(muc);
+		// messages after we have joined are always new
+		if (mucc.muc.isJoined())
+			return true;
 
 		long ts = timestamp.getStamp().getTime();
 
@@ -1484,8 +1488,8 @@ public class SmackableImp implements Smackable {
 		};
 
 		if (packet_id == null) packet_id = "";
-		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= IFNULL((SELECT _id FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 1 OFFSET 50), 0)";
-		final String[] selectionArgs = new String[] { nick, packet_id, ""+ts, msg.getBody(), muc };
+		final String selection = "jid = ? AND resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= ?";
+		final String[] selectionArgs = new String[] { muc, nick, packet_id, ""+ts, msg.getBody(), "" + mucc.getFirstPacketID() };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
 			Log.d(TAG, "message from " + nick + " matched " + cursor.getCount() + " items.");
@@ -1513,9 +1517,9 @@ public class SmackableImp implements Smackable {
 
 	@Override
 	public String getMyMucNick(String jid) {
-		MultiUserChat muc = multiUserChats.get(jid);
-		if (muc != null && muc.getNickname() != null)
-			return muc.getNickname();
+		MUCController muc = multiUserChats.get(jid);
+		if (muc != null && muc.muc.getNickname() != null)
+			return muc.muc.getNickname();
 		if (mucJIDs.contains(jid)) {
 			ChatRoomHelper.RoomInfo ri = ChatRoomHelper.getRoomInfo(mService, jid);
 			if (ri != null)
@@ -1570,7 +1574,10 @@ public class SmackableImp implements Smackable {
 		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
 				values, null, null) == 1)
 			return;
-		mContentResolver.insert(ChatProvider.CONTENT_URI, values);
+		Uri res = mContentResolver.insert(ChatProvider.CONTENT_URI, values);
+		MUCController mucc = multiUserChats.get(tJID[0]);
+		if (mucc != null)
+			mucc.addPacketID(res);
 	}
 
 	private void addChatMessageToDB(int direction, String JID,
@@ -1755,11 +1762,11 @@ public class SmackableImp implements Smackable {
 			String nickname = cursor.getString(NICKNAME_ID);
 			mucJIDs.add(jid);
 			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
-			if(!joinedRooms.contains(jid) || !multiUserChats.get(jid).isJoined()) {
+			if(!joinedRooms.contains(jid) || !multiUserChats.get(jid).muc.isJoined()) {
 				debugLog("room " + jid + " isn't joined yet, i wanna join...");
 				joinRoomAsync(jid, nickname, password); // TODO: make historyLen configurable
 			} else {
-				MultiUserChat muc = multiUserChats.get(jid);
+				MultiUserChat muc = multiUserChats.get(jid).muc;
 				if (!muc.getNickname().equals(nickname)) {
 					debugLog("room " + jid + ": changing nickname to " + nickname);
 					try {
@@ -1883,10 +1890,12 @@ public class SmackableImp implements Smackable {
 	private boolean joinRoom(final String room, String nickname, String password) {
 		// work around smack3 bug: can't rejoin with "used" MultiUserChat instance; need to manually
 		// flush old MUC instance and create a new.
-		MultiUserChat muc = multiUserChats.get(room);
-		if (muc != null)
-			muc.cleanup();
-		muc = new MultiUserChat(mXMPPConnection, room);
+		MUCController mucc = multiUserChats.get(room);
+		if (mucc != null)
+			mucc.cleanup();
+		mucc = new MUCController(mXMPPConnection, room);
+		MultiUserChat muc = mucc.muc;
+		mucc.loadPacketIDs(mContentResolver);
 
 		Log.d(TAG, "created new MUC instance: " + room + " " + muc);
 		muc.addUserStatusListener(new org.jivesoftware.smackx.muc.DefaultUserStatusListener() {
@@ -1947,7 +1956,7 @@ public class SmackableImp implements Smackable {
 
 		if(muc.isJoined()) {
 			synchronized(this) {
-				multiUserChats.put(room, muc);
+				multiUserChats.put(room, mucc);
 			}
 			String roomname = room.split("@")[0];
 			try {
@@ -1986,7 +1995,7 @@ public class SmackableImp implements Smackable {
 
 	private void quitRoom(String room) {
 		Log.d(TAG, "Leaving MUC " + room);
-		MultiUserChat muc = multiUserChats.get(room); 
+		MultiUserChat muc = multiUserChats.get(room).muc;
 		muc.leave();
 		multiUserChats.remove(room);
 		mucLastPong.remove(room);
@@ -1995,7 +2004,7 @@ public class SmackableImp implements Smackable {
 
 	@Override
 	public boolean inviteToRoom(String contactJid, String roomJid) {
-		MultiUserChat muc = multiUserChats.get(roomJid);
+		MultiUserChat muc = multiUserChats.get(roomJid).muc;
 		if(contactJid.contains("/")) {
 			contactJid = contactJid.split("/")[0];
 		}
@@ -2006,10 +2015,11 @@ public class SmackableImp implements Smackable {
 
 	@Override
 	public List<ParcelablePresence> getUserList(String jid) {
-		MultiUserChat muc = multiUserChats.get(jid);
-		if (muc == null) {
+		MUCController mucc = multiUserChats.get(jid);
+		if (mucc == null) {
 			return null;
 		}
+		MultiUserChat muc = mucc.muc;
 		Log.d(TAG, "MUC instance: " + jid + " " + muc);
 		Iterator<String> occIter = muc.getOccupants();
 		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
