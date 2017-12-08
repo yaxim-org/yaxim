@@ -325,6 +325,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Uri data = intent.getData();
 		if (action == null || data == null || mHandledIntent)
 			return;
+		// ignore event if no account registered; TODO: handle xmpp://account@server?register
+		if (mConfig.jabberID.length() < 3 || PreferenceManager.getDefaultSharedPreferences(this).contains(PreferenceConstants.INITIAL_CREATE))
+			return;
 		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
 			// 1. look for JID in roster; 2. attempt to add
 			String jid = data.getPathSegments().get(0);
@@ -878,6 +881,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			setSupportProgressBarIndeterminateVisibility(false);
 			PreferenceManager.getDefaultSharedPreferences(this).edit().
 				remove(PreferenceConstants.INITIAL_CREATE).commit();
+			// in case we just registered, re-fire the Intent
+			handleJabberIntent();
 		}
 	}
 	
