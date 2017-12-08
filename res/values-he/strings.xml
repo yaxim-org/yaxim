@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">ברוך בואך אל yaxim!</string>
 	<string name="StartupDialog_Summary">עליך להגדיר את yaxim טרם תעמוד לך האפשרות להפיק ממנה תועלת. אנא הזן מזהה Jabber וסיסמה.</string>
 	<string name="StartupDialog_pwHint">הזן סיסמה</string>
-	<string name="StartupDialog_pwrHint">חזור על סיסמה</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">מזהה Jabber:</string>
 	<string name="StartupDialog_passwd_title">סיסמה:</string>
 	<string name="StartupDialog_advanced">מתקדם…</string>
 	<string name="StartupDialog_create_new">צור חשבון חדש</string>
-	<string name="StartupDialog_error_password">סיסמאות לא תואמות!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 

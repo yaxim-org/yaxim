@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Yaxim\'e hoş geldiniz!</string>
 	<string name="StartupDialog_Summary">Kullanabilmek için yaxim\'i yapılandırmanız lazımdır. Jabber kimliğinizi ve parolanızı giriniz.</string>
 	<string name="StartupDialog_pwHint">Parola girin</string>
-	<string name="StartupDialog_pwrHint">Parolayı tekrarlayın</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber kimliği:</string>
 	<string name="StartupDialog_passwd_title">Parola:</string>
 	<string name="StartupDialog_advanced">Gelişmiş:</string>
 	<string name="StartupDialog_create_new">Yeni hesap kaydet</string>
-	<string name="StartupDialog_error_password">Parola eşleşmiyor!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 

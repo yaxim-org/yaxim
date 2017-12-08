@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">Bienvenue dans yaxim !</string>
 	<string name="StartupDialog_Summary">Vous devez configurer yaxim avant de pouvoir l\'utiliser. Merci d\'entrer votre identifiant Jabber et son mot de passe.</string>
 	<string name="StartupDialog_pwHint">Saisir un mot de passe</string>
-	<string name="StartupDialog_pwrHint">Ressaisir le mot de passe</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Identifiant Jabber :</string>
 	<string name="StartupDialog_passwd_title">Mot de passe :</string>
 	<string name="StartupDialog_advanced">Avancée…</string>
 	<string name="StartupDialog_create_new">Enregistrer un nouveau compte</string>
-	<string name="StartupDialog_error_password">Le mot de passe ne correspond pas !</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Mot passe sûr créé</string>
 	<string name="StartupDialog_auth_failed">Vérifiez votre nom d\'utilisateur de mot de passe !</string>
 

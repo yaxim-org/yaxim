@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">yaximへようこそ！</string>
 	<string name="StartupDialog_Summary">yaxim を使用する前に、yaxim を設定する必要があります。 あなたの Jabber ID とパスワードを入力してください。</string>
 	<string name="StartupDialog_pwHint">パスワードを入力</string>
-	<string name="StartupDialog_pwrHint">パスワード（確認）</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">パスワード：</string>
 	<string name="StartupDialog_advanced">詳細…</string>
 	<string name="StartupDialog_create_new">新しいアカウントを登録</string>
-	<string name="StartupDialog_error_password">パスワードが一致しません!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">安全なパスワードを作成しました</string>
 	<string name="StartupDialog_auth_failed">ユーザー名とパスワードを確認してください!</string>
 

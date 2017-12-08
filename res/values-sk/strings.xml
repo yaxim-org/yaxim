@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Vitajte v yaxim!</string>
 	<string name="StartupDialog_Summary">Pred používaním musíte yaxim nastaviť. Prosím, zadajte vaše Jabber ID a heslo.</string>
 	<string name="StartupDialog_pwHint">Zadajte heslo</string>
-	<string name="StartupDialog_pwrHint">Znovu zadajte heslo</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Heslo:</string>
 	<string name="StartupDialog_advanced">Pokročilé...</string>
 	<string name="StartupDialog_create_new">Zaregistrovať nový účet</string>
-	<string name="StartupDialog_error_password">Heslo nie je správne!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 

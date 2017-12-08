@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">Вітаємо в yaxim</string>
 	<string name="StartupDialog_Summary">Для початку користування вам необхідно налаштувати програму. Будь ласка, введіть ваш Jabber ID та пароль.</string>
 	<string name="StartupDialog_pwHint">Введіть пароль</string>
-	<string name="StartupDialog_pwrHint">Повторіть пароль</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID</string>
 	<string name="StartupDialog_passwd_title">Пароль</string>
 	<string name="StartupDialog_advanced">Додатково...</string>
 	<string name="StartupDialog_create_new">Створити новий обліковий запис</string>
-	<string name="StartupDialog_error_password">Паролі не співпадають!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Створено надійний пароль</string>
 	<string name="StartupDialog_auth_failed">Перевірте облікові дані і пароль!</string>
 

@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
 	<string name="StartupDialog_pwHint">पासवर्ड डालें</string>
-	<string name="StartupDialog_pwrHint">पासवर्ड दोहराएं</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">जैबर आईडीः</string>
 	<string name="StartupDialog_passwd_title">पासवर्ड:</string>
 	<string name="StartupDialog_advanced">Advanced…</string>
 	<string name="StartupDialog_create_new">Register new account</string>
-	<string name="StartupDialog_error_password">पासवर्ड मैच नहीं कर रहा है!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">सुरक्षित पासवर्ड बनाये</string>
 	<string name="StartupDialog_auth_failed">अपने यूज़रनेम और पासवर्ड की जांच करें!</string>
 

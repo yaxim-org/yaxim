@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Bem vindo ao yaxim!</string>
 	<string name="StartupDialog_Summary">Você precisa configurar o yaxim antes de poder usá-lo. Por favor coloque seu usuário XMPP e senha.</string>
 	<string name="StartupDialog_pwHint">Digite a senha</string>
-	<string name="StartupDialog_pwrHint">Repita a senha</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">ID do Jabber:</string>
 	<string name="StartupDialog_passwd_title">Senha:</string>
 	<string name="StartupDialog_advanced">Avançado...</string>
 	<string name="StartupDialog_create_new">Registrar nova conta</string>
-	<string name="StartupDialog_error_password">A senha não confere!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 

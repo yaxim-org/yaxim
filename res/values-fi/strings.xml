@@ -35,12 +35,12 @@
 	<string name="StartupDialog_Title">Tervetuloa yaxim-viestimeen!</string>
 	<string name="StartupDialog_Summary">Yaximin asetukset on määriteltävä ennen käyttöä. Ole hyvä ja anna Jabber-käyttäjätunnuksesi sekä salasanasi.</string>
 	<string name="StartupDialog_pwHint">Syötä salasana</string>
-	<string name="StartupDialog_pwrHint">Toista salasana</string>
+	<string name="StartupDialog_pwshowHint">Näytä salasana</string>
 	<string name="StartupDialog_Username_title">Jabber-tunnus:</string>
 	<string name="StartupDialog_passwd_title">Salasana:</string>
 	<string name="StartupDialog_advanced">Lisäominaisuudet...</string>
 	<string name="StartupDialog_create_new">Luo uusi tunnus</string>
-	<string name="StartupDialog_error_password">Salasanassa on kirjoitusvirhe!</string>
+	<string name="StartupDialog_error_password">Salasana on liian lyhyt!</string>
 	<string name="StartupDialog_created_password">Turvallinen salasana luotu</string>
 	<string name="StartupDialog_auth_failed">Ole hyvä ja tarkasta käyttäjätunnuksesi ja salasanasi!</string>
 
@@ -223,7 +223,7 @@
 	<string name="chat_enterMsgHint">Syötä viesti</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Lainaa</string>
 	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Lähetä uudelleen</string>
 
@@ -309,6 +309,7 @@
 	<string name="status_offline">Poissa verkosta</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Georg Lukas https://launchpad.net/~ge0rg
   Heikki Hannikainen https://launchpad.net/~hessu
   Jussi Karttunen https://launchpad.net/~jkarttunen</string>
 

@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">Willkommen bei yaxim!</string>
 	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte Ihre Jabber-ID und Ihr Passwort eingeben.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
-	<string name="StartupDialog_pwrHint">Passwort wiederholen</string>
+	<string name="StartupDialog_pwshowHint">Passwort anzeigen</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passwort:</string>
 	<string name="StartupDialog_advanced">Erweitert…</string>
 	<string name="StartupDialog_create_new">Neues Konto anlegen</string>
-	<string name="StartupDialog_error_password">Passwort stimmt nicht überein!</string>
+	<string name="StartupDialog_error_password">Passwort ist zu kurz!</string>
 	<string name="StartupDialog_created_password">Sicheres Passwort erzeugt</string>
 	<string name="StartupDialog_auth_failed">Bitte Benutzername und Passwort prüfen!</string>
 
@@ -180,7 +180,7 @@
 	<string name="account_prio_dialog_title">Priorität eingeben:</string>
 	<string name="account_port_title">Server-Port</string>
 	<string name="account_port_sum">Vorgabe: 5222</string>
-	<string name="account_port_dialog_title">Serveranschluss eingeben:</string>
+	<string name="account_port_dialog_title">Server-Port eingeben:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Benutzerdefinierter Server</string>
 	<string name="account_customserver_summ">(Optional) alternativer Serverrechnername</string>

@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
 	<string name="StartupDialog_Summary">你需要先配置yaxim才能使用。请输入你的Jabber标识和密码。</string>
 	<string name="StartupDialog_pwHint">输入密码</string>
-	<string name="StartupDialog_pwrHint">再输入一遍密码</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID</string>
 	<string name="StartupDialog_passwd_title">密码：</string>
 	<string name="StartupDialog_advanced">高级…</string>
 	<string name="StartupDialog_create_new">注册新账户</string>
-	<string name="StartupDialog_error_password">密码不匹配</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 

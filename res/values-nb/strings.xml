@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">Velkommen til yaxim!</string>
 	<string name="StartupDialog_Summary">Du må sette opp yaxim før du bruker det. Skriv inn din Jabber-ID og passordet ditt.</string>
 	<string name="StartupDialog_pwHint">Skriv inn passord</string>
-	<string name="StartupDialog_pwrHint">Gjenta passord</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passord:</string>
 	<string name="StartupDialog_advanced">Avansert…</string>
 	<string name="StartupDialog_create_new">Registrer ny konto</string>
-	<string name="StartupDialog_error_password">Passordene stemmer ikke overens!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Opprettet sikkert passord</string>
 	<string name="StartupDialog_auth_failed">Se over brukernavnet og passordet ditt!</string>
 
