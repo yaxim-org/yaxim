@@ -1,11 +1,11 @@
 package org.yaxim.androidclient.service;
 
-import java.util.ArrayDeque;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
+
+import android.support.v4.util.CircularArray;
 
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smackx.muc.MultiUserChat;
@@ -25,7 +25,7 @@ public class MUCController {
 	public MultiUserChat muc;
 
 	static final int LOOKUP_SIZE = 50;
-	private ArrayDeque lastIDs = new ArrayDeque<Long>(LOOKUP_SIZE);
+	private CircularArray lastIDs = new CircularArray<Long>(LOOKUP_SIZE);
 	long lastPong = -1;
 
 	MUCController(XMPPConnection c, String jid) {
@@ -35,7 +35,7 @@ public class MUCController {
 
 	public synchronized void addPacketID(long id) {
 		while (lastIDs.size() >= LOOKUP_SIZE)
-			lastIDs.poll();
+			lastIDs.popFirst();
 		android.util.Log.d("MUCController", jid + " -> " + id);
 		lastIDs.addLast(id);
 		lastPong = System.currentTimeMillis();
@@ -45,9 +45,11 @@ public class MUCController {
 	}
 
 	public synchronized long getFirstPacketID() {
-		Long id = (Long)lastIDs.peek();
+		if (lastIDs.isEmpty())
+			return 0;
+		long id = (Long)lastIDs.getFirst();
 		android.util.Log.d("MUCController", jid + " <- " + id);
-		return (id != null) ? id : 0;
+		return id;
 	}
 
 	public synchronized void loadPacketIDs(ContentResolver cr) {
