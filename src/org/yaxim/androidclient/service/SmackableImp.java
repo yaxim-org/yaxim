@@ -1471,12 +1471,14 @@ public class SmackableImp implements Smackable {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
 
-		// messages with no timestamp are always new
-		if (timestamp == null)
-			return true;
 		MUCController mucc = multiUserChats.get(muc);
-		// messages after we have joined are always new
-		if (mucc.muc.isJoined())
+		// messages with no timestamp are always new, and always come after join is completed
+		if (timestamp == null) {
+			mucc.isSynchronized = true;
+			return true;
+		}
+		// messages after we have joined and synchronized the MUC are always new
+		if (mucc.isSynchronized)
 			return true;
 
 		long ts = timestamp.getStamp().getTime();

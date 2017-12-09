@@ -23,6 +23,8 @@ import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 public class MUCController {
 	final String jid;
 	public MultiUserChat muc;
+	boolean isSynchronized = false;
+
 
 	static final int LOOKUP_SIZE = 50;
 	private CircularArray lastIDs = new CircularArray<Long>(LOOKUP_SIZE);
