@@ -52,4 +52,12 @@
 	android:hint="@string/muc_password_hint"
 	android:inputType="textPassword" />
 
+	<CheckBox
+		android:id="@+id/password_show"
+		style="?attr/dialogTextColor"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/StartupDialog_pwshowHint"
+		/>
+
 </LinearLayout>
