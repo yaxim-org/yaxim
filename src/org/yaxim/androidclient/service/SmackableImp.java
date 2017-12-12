@@ -40,6 +40,9 @@ import org.jivesoftware.smack.parsing.UnparsablePacket;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
+import org.jivesoftware.smackx.PrivateDataManager;
+import org.jivesoftware.smackx.bookmark.BookmarkManager;
+import org.jivesoftware.smackx.bookmark.BookmarkedConference;
 import org.jivesoftware.smackx.entitycaps.EntityCapsManager;
 import org.jivesoftware.smackx.entitycaps.cache.SimpleDirectoryPersistentCache;
 import org.jivesoftware.smackx.GroupChatInvitation;
@@ -171,6 +174,8 @@ public class SmackableImp implements Smackable {
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#admin", new MUCAdminProvider());
 		//  MUC Owner
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
+		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
+		pm.addIQProvider("query","jabber:iq:private", new PrivateDataManager.PrivateDataIQProvider());
 
 		XmppStreamHandler.addExtensionProviders();
 	}
@@ -1702,11 +1707,37 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "discoverMUCDomain failed: " + e.getMessage());
 		}
 	}
+	private void loadMUCBookmarks() {
+		try {
+			Iterator<BookmarkedConference> it = BookmarkManager.getBookmarkManager(mXMPPConnection).getBookmarkedConferences().iterator();
+			ArrayList<String> bookmarked_jids = new ArrayList<String>();
+			boolean added = false;
+			while (it.hasNext()) {
+				BookmarkedConference bookmark = it.next();
+				bookmarked_jids.add(bookmark.getJid());
+				if (!ChatRoomHelper.isRoom(mService, bookmark.getJid())) {
+					String jid = bookmark.getJid();
+					String nickname = bookmark.getNickname();
+					if (TextUtils.isEmpty(nickname))
+						nickname = ChatRoomHelper.guessMyNickname(mService, mConfig.userName);
+					Log.d(TAG, "Adding MUC: " + jid + "/" + nickname + " join=" + bookmark.isAutoJoin());
+					ChatRoomHelper.addRoom(mService, jid, bookmark.getPassword(), nickname, bookmark.isAutoJoin());
+					added = true;
+				}
+			}
+			ChatRoomHelper.cleanupUnimportantRooms(mService, bookmarked_jids);
+			if (added)
+				syncDbRooms();
+		} catch (XMPPException e) {
+			Log.d(TAG, "getBookmarks failed: " + e.getMessage());
+		}
+	}
 
 	private void discoverMUCDomainAsync() {
 		new Thread() {
 			public void run() {
 				discoverMUCDomain();
+				loadMUCBookmarks(); // XXX: hack
 			}
 		}.start();
 	}
@@ -1715,7 +1746,7 @@ public class SmackableImp implements Smackable {
 		// get a fresh MUC list
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
 				new String[] { RosterProvider.RosterConstants.JID },
-				null, null, null);
+				"autojoin=1", null, null);
 		mucJIDs.clear();
 		while(cursor.moveToNext()) {
 			mucJIDs.add(cursor.getString(0));
@@ -1750,7 +1781,7 @@ public class SmackableImp implements Smackable {
 					RosterProvider.RosterConstants.JID, 
 					RosterProvider.RosterConstants.PASSWORD, 
 					RosterProvider.RosterConstants.NICKNAME}, 
-				null, null, null);
+				"autojoin=1", null, null);
 		final int ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants._ID);
 		final int JID_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.JID);
 		final int PASSWORD_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.PASSWORD);

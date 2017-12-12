@@ -13,25 +13,40 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
+
+import java.util.Collection;
+import java.util.List;
 
 public class ChatRoomHelper {
 
-	public static boolean addRoom(Context ctx, String jid, String password, String nickname) {
+	public static boolean addRoom(Context ctx, String jid, String password, String nickname, boolean autojoin) {
 		ContentValues cv = new ContentValues();
 		cv.put(RosterProvider.RosterConstants.JID, jid.toLowerCase());
 		cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
 		cv.put(RosterProvider.RosterConstants.PASSWORD, password);
+		cv.put(RosterProvider.RosterConstants.AUTOJOIN, autojoin);
 		Uri ret = ctx.getContentResolver().insert(RosterProvider.MUCS_URI, cv);
 		return (ret != null);
 	}
 	
-	public static boolean removeRoom(Context ctx, String jid) {
-		int deleted = ctx.getContentResolver().delete(RosterProvider.MUCS_URI,
-				RosterProvider.RosterConstants.JID+" = ?",
-				new String[] {jid.toLowerCase()});
-		return (deleted > 0);
+	public static boolean leaveRoom(Context ctx, String jid) {
+		ContentValues cv = new ContentValues();
+		cv.put(RosterProvider.RosterConstants.AUTOJOIN, 0);
+		int updated = ctx.getContentResolver().update(RosterProvider.MUCS_URI,
+				cv, RosterConstants.JID+" = ?", new String[] {jid.toLowerCase()});
+		return (updated > 0);
 	}
-	
+
+	public static void cleanupUnimportantRooms(Context ctx, Collection<String> jids) {
+		StringBuilder exclusion = new StringBuilder("autojoin = 0 AND "
+				+ RosterConstants.JID + " NOT IN ('");
+		exclusion.append(TextUtils.join("', '", jids));
+		exclusion.append("');");
+		ctx.getContentResolver().delete(RosterProvider.MUCS_URI,
+				exclusion.toString(), null);
+	}
+
 	public static boolean isRoom(Context ctx, String jid) {
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI, 
 				new String[] {RosterProvider.RosterConstants._ID,

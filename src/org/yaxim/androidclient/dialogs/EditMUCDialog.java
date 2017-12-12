@@ -122,7 +122,7 @@ public class EditMUCDialog extends AlertDialog implements
 	}
 
 	public void addAndOpen(String jid, String password, String nickname) {
-		ChatRoomHelper.addRoom(mContext, jid, password, nickname);
+		ChatRoomHelper.addRoom(mContext, jid, password, nickname, true);
 		if (openChat)
 			ChatHelper.startChatActivity(mContext, jid, jid, null);
 		ChatRoomHelper.syncDbRooms(mContext);

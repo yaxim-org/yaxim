@@ -134,7 +134,7 @@ public class MUCChatWindow extends ChatWindow {
 					new ConfirmDialog.Ok() {
 						@Override
 						public void ok(final String jid) {
-							if (ChatRoomHelper.removeRoom(MUCChatWindow.this, jid))
+							if (ChatRoomHelper.leaveRoom(MUCChatWindow.this, jid))
 								ChatRoomHelper.syncDbRooms(MUCChatWindow.this);
 							// XXX: if we do not unbind here, we will leak the service
 							unbindXMPPService();
