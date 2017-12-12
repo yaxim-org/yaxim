@@ -1,11 +1,8 @@
 package org.yaxim.androidclient.chat;
 
 import java.util.List;
-import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
 import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatRoomHelper;
