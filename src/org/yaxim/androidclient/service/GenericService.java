@@ -190,7 +190,7 @@ public abstract class GenericService extends Service {
 			if (limit > MAX_TICKER_MSG_LEN || message.length() > MAX_TICKER_MSG_LEN)
 				limit = MAX_TICKER_MSG_LEN;
 			if (limit > 0)
-				messageSummary = message.substring(0, limit) + " [...]";
+				messageSummary = message.substring(0, limit) + "…";
 			ticker = title + ": " + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
