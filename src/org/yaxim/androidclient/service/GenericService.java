@@ -15,6 +15,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -27,6 +28,9 @@ import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
@@ -46,7 +50,7 @@ public abstract class GenericService extends Service {
 	
 	protected Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
 	protected Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
-	protected Map<String, StringBuilder> notificationBigText = new HashMap<String, StringBuilder>(2);
+	protected Map<String, SpannableStringBuilder> notificationBigText = new HashMap<String, SpannableStringBuilder>(2);
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
 
@@ -131,14 +135,18 @@ public abstract class GenericService extends Service {
 			message = String.format("\u25CF %s %s", isMuc ? jid[1] : fromUserName, message.substring(4));
 		}
 
-		StringBuilder msg_long = notificationBigText.get(fromJid);
+		SpannableStringBuilder msg_long = notificationBigText.get(fromJid);
 		if (msg_long == null) {
-			msg_long = new StringBuilder();
+			msg_long = new SpannableStringBuilder();
 			notificationBigText.put(fromJid, msg_long);
 		} else
 			msg_long.append("\n");
-		if (isMuc && !slash_me)
-			msg_long.append(jid[1]).append("▶ ");
+		if (isMuc && !slash_me) {
+			if (Build.VERSION.SDK_INT >= 21)
+				msg_long.append(jid[1], new StyleSpan(Typeface.BOLD), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE).append(" ");
+			else
+				msg_long.append(jid[1]).append("▶ ");
+		}
 		msg_long.append(message);
 
 		setNotification(fromJid, jid[1], fromUserName, message, msg_long.toString(), is_error, isMuc);
@@ -160,7 +168,7 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromResource, String fromUserId, String message, String msg_long,
+	private void setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, String msg_long,
 			boolean is_error, boolean isMuc) {
 		
 		int mNotificationCounter = 0;
@@ -182,15 +190,16 @@ public abstract class GenericService extends Service {
 			title = author; // removed "Message from" prefix for brevity
 		String ticker;
 		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
-			int newline = message.indexOf('\n');
+			String msg_string = message.toString();
+			int newline = msg_string.indexOf('\n');
 			int limit = 0;
-			String messageSummary = message;
+			String messageSummary = msg_string;
 			if (newline >= 0)
 				limit = newline;
 			if (limit > MAX_TICKER_MSG_LEN || message.length() > MAX_TICKER_MSG_LEN)
 				limit = MAX_TICKER_MSG_LEN;
 			if (limit > 0)
-				messageSummary = message.substring(0, limit) + "…";
+				messageSummary = msg_string.substring(0, limit) + "…";
 			ticker = title + ": " + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
