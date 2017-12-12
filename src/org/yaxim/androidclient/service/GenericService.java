@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
@@ -240,7 +241,7 @@ public abstract class GenericService extends Service {
 				android.R.drawable.ic_menu_edit,
 				getString(R.string.notification_reply), msgResponsePendingIntent)
 			.addRemoteInput(remoteInput).build();
-		mNotification = new NotificationCompat.Builder(this)
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
 			.setStyle(new NotificationCompat.BigTextStyle()
@@ -250,8 +251,10 @@ public abstract class GenericService extends Service {
 			.setSmallIcon(R.drawable.sb_message)
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)
-			.setAutoCancel(true)
-			//.addAction(actReply) // TODO: use Android7 in-notification reply, fall back to Activity
+			.setAutoCancel(true);
+		if (Build.VERSION.SDK_INT >= 25) // use Android7 in-notification reply, fall back to Activity
+			notificationBuilder.addAction(actReply);
+		mNotification = notificationBuilder
 			.addAction(actMarkRead)
 			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
 			.extend(new CarExtender().setUnreadConversation(ucb.build()))
