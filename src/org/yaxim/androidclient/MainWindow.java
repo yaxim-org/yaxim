@@ -741,6 +741,18 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.setTitle(versionTitle)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setView(about)
+			.setNegativeButton(R.string.AboutDialog_DevelopersText, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+					if (mConfig.jabberID.length() < 3 || TextUtils.isEmpty(mConfig.userName)) {
+						showToastNotification(R.string.Global_authenticate_first);
+						return;
+					}
+					String jid = getString(R.string.yaxim_muc);
+					if (!openChatWithJid(jid, null)) {
+						new EditMUCDialog(MainWindow.this, jid, null,
+								null, null).withNick(mConfig.userName).show();
+					}
+				}})
 			.setPositiveButton(android.R.string.ok, null)
 			.setNeutralButton(R.string.AboutDialog_Vote, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int item) {
