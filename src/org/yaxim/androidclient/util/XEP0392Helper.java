@@ -4,7 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.TypedValue;
+
+import org.yaxim.androidclient.R;
 
 public class XEP0392Helper {
 	static final double KR=0.2627;
@@ -59,5 +63,15 @@ public class XEP0392Helper {
 		int g = mixValues(Color.green(fg), Color.green(bg), factor);
 		int b = mixValues(Color.blue(fg), Color.blue(bg), factor);
 		return Color.rgb(r, g, b);
+	}
+	public static int mixNickWithBackground(String nick, Resources.Theme theme, int yaxim_theme) {
+		// obtain theme's background color - https://stackoverflow.com/a/14468034/539443
+		TypedValue tv = new TypedValue();
+		theme.resolveAttribute(android.R.attr.windowBackground, tv, true);
+		if (tv.type < TypedValue.TYPE_FIRST_COLOR_INT || tv.type > TypedValue.TYPE_LAST_COLOR_INT) {
+			// fall back to black or white, depending on theme
+			tv.data = (yaxim_theme == R.style.YaximLightTheme) ? 0xffffff : 0x000000;
+		}
+		return mixColors(rgbFromNick(nick), tv.data, 100 /*0.4*/);
 	}
 }

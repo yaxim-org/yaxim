@@ -203,13 +203,7 @@ public class MUCChatWindow extends ChatWindow {
 	public void nick2Color(String nick, TypedValue tv) {
 		if (nick == null || nick.length() == 0) // no color for empty nickname
 			return;
-		// obtain theme's background color - https://stackoverflow.com/a/14468034/539443
-		getTheme().resolveAttribute(android.R.attr.windowBackground, tv, true);
-		if (tv.type < TypedValue.TYPE_FIRST_COLOR_INT || tv.type > TypedValue.TYPE_LAST_COLOR_INT) {
-			// fall back to black or white, depending on theme
-			tv.data = (mConfig.getTheme() == R.style.YaximLightTheme) ? 0xffffff : 0x000000;
-		}
-		tv.data = XEP0392Helper.mixColors(XEP0392Helper.rgbFromNick(nick), tv.data, 100/*==0.4*/);
+		tv.data = XEP0392Helper.mixNickWithBackground(nick, getTheme(), mConfig.getTheme());
 	}
 	
 
