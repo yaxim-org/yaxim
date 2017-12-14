@@ -18,10 +18,10 @@ import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.MessageStylingHelper;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
-import eu.siacs.conversations.utils.ImStyleParser;
 import eu.siacs.conversations.utils.StylingHelper;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -48,7 +49,9 @@ import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
@@ -646,21 +649,21 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
-			int style = 0;
-			if (highlight_text != null && message.toLowerCase().contains(highlight_text.toLowerCase()))
-				style |=  android.graphics.Typeface.BOLD;
 			boolean slash_me = message.startsWith("/me ");
 			if (slash_me) {
 				message = String.format("\u25CF %s %s", from, message.substring(4));
-				style |= android.graphics.Typeface.ITALIC;
+				//style |= android.graphics.Typeface.ITALIC;
 			}
 			// format string
 			SpannableStringBuilder body = new SpannableStringBuilder(message);
+			if (slash_me)
+				body.setSpan(new StyleSpan(Typeface.ITALIC), 2, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if (MessageStylingHelper.applyNicknameHighlight(body, highlight_text, getTheme(), mConfig.getTheme()))
+				body.setSpan(new StyleSpan(Typeface.BOLD), 0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
 			eu.siacs.conversations.utils.StylingHelper.format(body, getMessageView().getCurrentTextColor());
 
 			getMessageView().setText(body);
-			getMessageView().setTypeface(null, style);
 			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
