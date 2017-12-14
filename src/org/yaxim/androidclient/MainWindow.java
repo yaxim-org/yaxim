@@ -52,6 +52,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.opengl.Visibility;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -383,9 +384,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public void updateRoster() {
-		loadUnreadCounters();
 		rosterListAdapter.requery();
 		restoreGroupsExpanded();
+		new LoadUnreadTask().execute();
 	}
 
 	private StatusMode getContactStatusMode(Cursor c) {
@@ -1250,20 +1251,31 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private HashMap<String, Integer> mUnreadCounters = new HashMap<String, Integer>();
-	private void loadUnreadCounters() {
-		final String[] PROJECTION = new String[] { ChatConstants.JID, "count(*)" };
-		final String SELECTION = ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
-			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW +
-			") GROUP BY (" + ChatConstants.JID; // hack!
+	private class LoadUnreadTask extends AsyncTask<Void, Void, HashMap<String, Integer>> {
+		@Override
+		protected HashMap<String, Integer> doInBackground(Void...voids) {
+			final String[] PROJECTION = new String[] { ChatConstants.JID, "count(*)" };
+			final String SELECTION = ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
+					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW +
+					") GROUP BY (" + ChatConstants.JID; // hack!
 
-		Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
-				PROJECTION, SELECTION, null, null);
-		mUnreadCounters.clear();
-		if(c!=null){
-			while (c.moveToNext())
-				mUnreadCounters.put(c.getString(0), c.getInt(1));
-			c.close();
+			Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
+					PROJECTION, SELECTION, null, null);
+			HashMap<String, Integer> result = new HashMap<String, Integer>();
+			if(c!=null){
+				while (c.moveToNext())
+					result.put(c.getString(0), c.getInt(1));
+				c.close();
+			}
+			return result;
 		}
+
+		@Override
+		protected void onPostExecute(HashMap<String, Integer> result) {
+			mUnreadCounters = result;
+			getExpandableListView().invalidateViews();
+		}
+
 	}
 
 	private class ChatObserver extends ContentObserver {
