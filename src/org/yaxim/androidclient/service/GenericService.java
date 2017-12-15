@@ -28,12 +28,15 @@ import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.util.MessageStylingHelper;
 
 public abstract class GenericService extends Service {
 
@@ -131,9 +134,7 @@ public abstract class GenericService extends Service {
 
 		// /me processing
 		boolean slash_me = message.startsWith("/me ");
-		if (slash_me) {
-			message = String.format("\u25CF %s %s", isMuc ? jid[1] : fromUserName, message.substring(4));
-		}
+		String from_nickname = isMuc ? jid[1] : fromUserName;
 
 		SpannableStringBuilder msg_long = notificationBigText.get(fromJid);
 		if (msg_long == null) {
@@ -142,14 +143,21 @@ public abstract class GenericService extends Service {
 		} else
 			msg_long.append("\n");
 		if (isMuc && !slash_me) {
-			if (Build.VERSION.SDK_INT >= 21)
-				msg_long.append(jid[1], new StyleSpan(Typeface.BOLD), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE).append(" ");
-			else
-				msg_long.append(jid[1]).append("▶ ");
+			// work around .append(stylable) only available in SDK 21+
+			int start = msg_long.length();
+			msg_long.append(jid[1]).append(":");
+			msg_long.setSpan(new StyleSpan(Typeface.BOLD),
+					start, msg_long.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			msg_long.append(" ");
 		}
-		msg_long.append(message);
+		// TODO: get real Notification color; using #808080 for now as Styling fallback
+		SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
+				from_nickname, null, 0xff808080);
+		msg_long.append(body);
 
-		setNotification(fromJid, jid[1], fromUserName, message, msg_long.toString(), is_error, isMuc);
+		setNotification(fromJid, jid[1], fromUserName,
+				body, msg_long,
+				is_error, isMuc);
 		setLEDNotification(isMuc);
 		
 		
@@ -168,7 +176,7 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, String msg_long,
+	private void setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, SpannableStringBuilder msg_long,
 			boolean is_error, boolean isMuc) {
 		
 		int mNotificationCounter = 0;
@@ -230,7 +238,7 @@ public abstract class GenericService extends Service {
 		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
 			.setReadPendingIntent(msgHeardPendingIntent)
 			.setReplyAction(msgResponsePendingIntent, remoteInput);
-		ucb.addMessage(msg_long.replace("▶ ", ": ")).setLatestTimestamp(System.currentTimeMillis());
+		ucb.addMessage(msg_long.toString()).setLatestTimestamp(System.currentTimeMillis());
 
 		Uri userNameUri = Uri.parse(fromJid);
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);

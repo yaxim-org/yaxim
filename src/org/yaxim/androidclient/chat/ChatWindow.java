@@ -649,21 +649,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
-			boolean slash_me = message.startsWith("/me ");
-			if (slash_me) {
-				message = String.format("\u25CF %s %s", from, message.substring(4));
-				//style |= android.graphics.Typeface.ITALIC;
-			}
-			// format string
-			SpannableStringBuilder body = new SpannableStringBuilder(message);
-			if (slash_me)
-				body.setSpan(new StyleSpan(Typeface.ITALIC), 2, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			if (MessageStylingHelper.applyNicknameHighlight(body, highlight_text, getTheme(), mConfig.getTheme()))
-				body.setSpan(new StyleSpan(Typeface.BOLD), 0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
-			eu.siacs.conversations.utils.StylingHelper.format(body, getMessageView().getCurrentTextColor());
 
+			SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
+					from, highlight_text, getMessageView().getCurrentTextColor());
+			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
 			getMessageView().setText(body);
+
 			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
