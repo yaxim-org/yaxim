@@ -136,7 +136,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	private void loadPrefs(SharedPreferences prefs) {
 		this.jid_configured = false;
 
-		this.highlightNickMuc = prefs.getBoolean(PreferenceConstants.HIGHLIGHTMUC, false);
+		this.highlightNickMuc = prefs.getBoolean(PreferenceConstants.HIGHLIGHTMUC, true);
 		this.isLEDNotifyMuc = prefs.getBoolean(PreferenceConstants.LEDNOTIFYMUC,
 				false);
 		this.vibraNotifyMuc = prefs.getString(
