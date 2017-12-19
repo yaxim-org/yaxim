@@ -1278,11 +1278,14 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void registerMessageListener() {
-		// do not register multiple packet listeners
-		if (mPacketListener != null)
-			mXMPPConnection.removePacketListener(mPacketListener);
-
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
+
+		// do not register multiple packet listeners
+		if (mPacketListener != null) {
+			mXMPPConnection.removePacketListener(mPacketListener);
+			mXMPPConnection.addPacketListener(mPacketListener, filter);
+			return;
+		}
 
 		mPacketListener = new PacketListener() {
 			public void processPacket(Packet packet) {
