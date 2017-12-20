@@ -233,9 +233,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">O aplikácii yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Vývojári</string>
-	<string name="AboutDialog_DevelopersText">Kontaktujte vývojárov na: http://yaxim.org alebo na freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
-	<string name="AboutDialog_Vote">Pošlite spätnú väzbu</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or

@@ -229,9 +229,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Over yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Ontwikkelaars</string>
-	<string name="AboutDialog_DevelopersText">Contacteer de ontwikkelaars op http://yaxim.org of op freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licentie</string>
-	<string name="AboutDialog_Vote">Geef Feedback</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">Dit Programma is vrije software; U kan het verspreiden en/of wijzigen onder de bepalingen van de GNU Algemene Publieke Licentie v 2, zoals uitgegeven door de Free Software Foundation. Zie http://www.gnu.org/licenses/gpl-2.0.html\n \n Delen van deze software zijn uitgegeven onder de MIT licentie:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n OMDAT HET PROGRAMMA ZONDER KOSTEN IN LICENTIE GEGEVEN WORDT, IS ER GEEN GARANTIE VOOR HET PROGRAMMA, VOOR ZOVER MOGELIJK BINNEN DE GELDENDE WETGEVING. UITGEZONDERD WANNEER HET EXPLICIET GESCHREVEN STAAT LEVEREN DE
 AUTEURSRECHTHOUDERS HET PROGRAMMA "ZOALS HET IS", ZONDER EENDER WELKE GARANTIE, EXPLICIET UITGEDRUKT OF IMPLICIET BEDOELD, ZOALS, MAAR NIET GELIMITEERD TOT, DE IMPLICIETE GARANTIES VAN VERKOOPBAARHEID EN GESCHIKTHEID VOOR EEN BEPAALD DOEL. HET VOLLEDIGE RISICO BETREFFENDE DE KWALITEIT EN DE PRESTATIES VAN HET
 PROGRAMMA LIGT BIJ U. MOCHT HET PROGRAMMA DEFECT BLIJKEN DAN DRAAGT U DE KOSTEN VAN ALLE BENODIGDE DIENSTEN, REPARATIES OF CORRECTIES.</string>

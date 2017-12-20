@@ -233,9 +233,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Sobre yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Desenvolvedores</string>
-	<string name="AboutDialog_DevelopersText">Contate os desenvolvedores em http://yaxim.org ou no IRC freenode: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licença</string>
-	<string name="AboutDialog_Vote">Transmitir Opinião</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">Este programa é software livre, você pode redistribuí-lo e / ou modificá-lo sob os termos da Licença Pública Geral GNU versão 2 conforme publicada pela Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html \ n \ n Partes deste software são fornecidos sob a licença MIT: \ n \ n Copyright © 2009 Mads Kristiansen, Nullwire ApS \ n \ n a permissão é concedida, a título gratuito, para qualquer pessoa que obtenha uma cópia deste software e arquivos de documentação associados (o "software"), para lidar com o Software sem restrição, incluindo, sem limitação, os direitos de usar, copiar, modificar, mesclar , publicar, distribuir, sublicenciar e / ou vender cópias do Software, e para permitir que pessoas a quem o Software é fornecido façam isso, sujeitas às seguintes condições: \ n o aviso de copyright acima e este aviso de permissão devem ser incluídos no todas as cópias ou partes substanciais do Software. \ n O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA E LEGALIDADE. EM NENHUM CASO OS AUTORES OU TITULARES DE DIREITOS AUTORAIS SERÁ RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU RESPONSABILIDADE, SEJA EM UMA AÇÃO DO CONTRATO, OU DE OUTRA FORMA, DECORRENTES DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTROS NO SOFTWARE.</string>
 
 	<string name="status_available">Ligado</string>

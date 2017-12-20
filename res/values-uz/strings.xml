@@ -234,9 +234,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">About yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">TATU talabasi</string>
 
 	<string name="status_available">Online</string>

@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">Добро пожаловать в yaxim!</string>
 	<string name="StartupDialog_Summary">Необходимо настроить yaxim перед использованием. Пожалуйста, введите Jabber ID и пароль.</string>
 	<string name="StartupDialog_pwHint">Введите пароль</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Показать пароль</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
 	<string name="StartupDialog_advanced">Дополнительно...</string>
 	<string name="StartupDialog_create_new">Зарегистрировать новую учётную запись</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
+	<string name="StartupDialog_error_password">Пароль слишком короткий!</string>
 	<string name="StartupDialog_created_password">Создан надёжный пароль</string>
 	<string name="StartupDialog_auth_failed">Проверьте учётные данные и пароль!</string>
 
@@ -229,9 +229,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">О yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Разработчики</string>
-	<string name="AboutDialog_DevelopersText">Свяжитесь с разработчиками через https://yaxim.org или в IRC-канале #yaxim на freenode</string>
+	<string name="AboutDialog_DevelopersText">Контакт</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
-	<string name="AboutDialog_Vote">Оставить отзыв</string>
+	<string name="AboutDialog_Vote">Оцените приложение</string>
 	<string name="AboutDialog_LicenceText">Эта программа является свободным программным обеспечением; вы можете распространять и/или изменять его в соответствии с условиями лицензии GNU General Public версии 2, опубликованной Фондом свободного программного обеспечения. Ссылка: https://www.gnu.org/licenses/old-licenses/gpl-2.0.ru.html\n \n Отдельные части этого программного обеспечения предоставляются в соответствии с лицензией MIT:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Настоящим предоставляется разрешение, бесплатно, любому лицу, получившему копию этого программного обеспечения и связанных файлов документации, («Программное обеспечение»), работать с Программным обеспечением без ограничений, включая, без ограничений, права на использование, копирование, изменение, объединение, публикацию, распространение, сублицензию и/или продажу копий Программного обеспечения и разрешать лицам, которым предоставляется Программное обеспечение, делать это, при соблюдении следующих условий: \n Вышеупомянутое уведомление об авторских правах и это уведомление о разрешении должны быть включены во все копии или существенные части Программного обеспечения. \n ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ ГАРАНТИЯМИ КОММЕРЧЕСКОЙ ЦЕННОСТИ, ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ И НЕНАРУШЕНИЯ. НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОРЫ ИЛИ АВТОРСКИЕ ПАРТНЕРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЕТЕНЗИИ, УБЫТКИ ИЛИ ДРУГИЕ ОТВЕТСТВЕННОСТИ, КАКИЕ-ЛИБО ДЕЙСТВИЯ КОНТРАКТА, ОТЛИЧНЫЕ ИЛИ ДРУГИЕ, ВОЗНИКАЮЩИЕ ИЗ, ВНЕ ИЛИ В СВЯЗИ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ ИЛИ ИСПОЛЬЗОВАНИЕМ ИЛИ ДРУГИМИ РАБОТАМИ В ПРОГРАММНОМ ОБЕСПЕЧЕНИИ.</string>
 
 	<string name="status_available">В сети</string>

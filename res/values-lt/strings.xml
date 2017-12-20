@@ -233,9 +233,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Apie yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Plėtotojai</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licencija</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or

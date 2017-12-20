@@ -233,9 +233,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">אודות yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">מפתחים</string>
-	<string name="AboutDialog_DevelopersText">צרו קשר עם המפתח באתר http://yaxim.org או ברשת IRC של freenode: ‏yaxim#</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">רישוי</string>
-	<string name="AboutDialog_Vote">הענק משוב</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">תוכנית זו הינה תכנה חופשית; זכותכם להפיצה ו/או לשנותה בכפוף לתנאי הרשיון GNU General Public License גרסא 2 כפי שזה פורסם על ידי Free Software Foundation. קישור: http://www.gnu.org/licenses/gpl-2.0.html\n \n חלקים של תוכנה זו מסופקים תחת הרשיון MIT:\n \n זכויות יוצרים © 2009 Mads Kristiansen, Nullwire ApS\n \n רשות מוענקת בזאת, חינם אין כסף, לכל אדם אשר משיג עותק של תכנה זו וגם קבצי תיעוד מסונפים ("התכנה"), להתעסק בתכנה ללא הגבלה, לרבות ללא הגבלת הזכויות להשתמש, להעתיק, לשנות, למזג, לפרסם, להפיץ, להעניק רשיונות נגזרים, ו/או למכור עותקים של התכנה, וגם להתיר לאנשים אשר להם התוכנה מסופקת לעשות כן, כפופים ומוכנעים לתנאים שלהלן: \n הודעת זכויות יוצרים לעיל וכן הודעת היתר זו יוכללו בכל העותקים או בחלקים מהותיים של התכנה. \n התכנה הינה מסופקת "AS IS" (כמות שהיא), ללא כתב אחריות מכל סוג שהוא, בין אם באופן מפורש או בין אם באופן מרומז, כולל אך לא מוגבלת לחבויות של סחירות, התאמה לתכלית מסוימת ובלתי מפרה. בשום מקרה המחברים או המחזיקים בזכויות יוצרים לא יישאו באחריות עבור כל תובענה, נזקים או חבות אחרת, בין אם בתוך פעולה של הסכם, עוולה או אחרת, אשר עולה מן, מתוך או בנוגע לתכנה או לשימוש או דין ודברים אחרים בתכנה.</string>
 
 	<string name="status_available">מקוון</string>

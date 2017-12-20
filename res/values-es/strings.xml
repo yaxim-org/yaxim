@@ -17,7 +17,7 @@
 	<string name="conn_reconnect">Próximo intento de conexión en %d segundos.</string>
 	<string name="conn_disconnected">Conexión cerrada</string>
 	<string name="conn_no_network">Sin conexión de red</string>
-	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_ping_timeout">Tiempo de espera excedido para ping</string>
 	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
@@ -31,7 +31,7 @@
 	<string name="StartupDialog_Title">¡Bienvenido/a a yaxim!</string>
 	<string name="StartupDialog_Summary">Necesita configurar yaxim antes de usarlo. Por favor escriba su identidad de Jabber y su contaseña.</string>
 	<string name="StartupDialog_pwHint">Escribe la contraseña</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Contraseña</string>
 	<string name="StartupDialog_Username_title">Identidad Jabber:</string>
 	<string name="StartupDialog_passwd_title">Contraseña:</string>
 	<string name="StartupDialog_advanced">Avanzada…</string>
@@ -44,13 +44,13 @@
 	<string name="notification_message">Mensaje de %s</string>
 	<string name="notification_anonymous_message">Mensaje recibido</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
-	<string name="notification_muc_message">%1$s in %2$s</string>
+	<string name="notification_muc_message">%1$s en %2$s</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Reply</string>
+	<string name="notification_reply">Responder</string>
 	<!-- notification button: mark as read (make SHORT string) -->
-	<string name="notification_mark_read">Mark Read</string>
+	<string name="notification_mark_read">Marcar como leído</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Errores al enviar el mensaje!</string>
@@ -75,7 +75,7 @@
 	<string name="ticker_summ">Mostrar remitente y mensaje en la barra de estado</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_general">General Settings</string>
+	<string name="preftitle_general">Configuración general</string>
 	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
 	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
 	<string name="statuspopup_name">Ponga su estado</string>
@@ -118,19 +118,19 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_addFriend">Añadir contacto</string>
 	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_HideOff">Ocultar desconectados</string>
+	<string name="Menu_AccSettings">Editar cuenta</string>
 	<string name="Menu_Settings">Opciones</string>
 	<string name="Menu_Status">Estado</string>
 	<string name="Menu_connect">Conectar</string>
 	<string name="Menu_disconnect">Desconectar</string>
 	<string name="Menu_about">Acerca de yaxim</string>
 	<string name="Menu_muc">Add group chat</string>
-	<string name="Menu_mark_all_as_read">Mark all as read</string>
+	<string name="Menu_mark_all_as_read">Marcar todos como leídos</string>
 	<string name="Menu_send_invitation">Create invitation</string>
-    <string name="Menu_userlist">Participants</string>
+    <string name="Menu_userlist">Participantes</string>
 
 
 	<!-- AddFriend -->
@@ -143,7 +143,7 @@
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_group_rename">Renombrar grupo</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Marcar como leído</string>
-	<string name="roster_contextmenu_contact_delete">Delete contact</string>
+	<string name="roster_contextmenu_contact_delete">Eliminar contacto</string>
 	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
 	<string name="roster_contextmenu_contact_rename">Renombrar</string>
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
@@ -209,8 +209,8 @@
 	<string name="deleteChatHistory_title">Eliminar historial de charla</string>
 	<string name="subscriptionRequest_text">%1$s quiere agregarte como contacto: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Pedido de suscripción</string>
-	<string name="subscription_accept">Accept</string>
-	<string name="subscription_reject">Reject</string>
+	<string name="subscription_accept">Aceptar</string>
+	<string name="subscription_reject">Rechazar</string>
 	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
@@ -219,7 +219,7 @@
 	<string name="chat_enterMsgHint">Introduzca el mensaje</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Cita</string>
 	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Enviar de nuevo</string>
 
@@ -233,9 +233,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Acerca de yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Desarrolladores</string>
-	<string name="AboutDialog_DevelopersText">Contacte a los desarrolladores en http://yaxim.org o en IRC freenode: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contacto</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
-	<string name="AboutDialog_Vote">Escribe tu evaluación</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">Este programa es software libre: usted puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU versión 2 publicada por la Fundación para el Software Libre. Enlace: http://www.gnu.org/licenses/gpl-2.0.html\n \n Partes de este software son ofrecidas bajo la licencia MIT: \n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Se autoriza, de forma gratuita, a cualquier persona que ha obtenido una copia de este software y archivos de documentación asociados (el "Software"), para tratar en el Software sin restricción, incluyendo sin ninguna limitación en lo que concierne a los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias de este Software, y para permitir a las personas que usan el Software a hacerlo, con sujeción a las siguientes condiciones: \n El aviso de copyright anterior y este aviso de permiso se incluirá en todas las copias o partes sustanciales de este Software. \n EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUIDAS PERO NO LIMITADAS A LAS GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y DE NO INFRACCIÓN. EN NINGÚN  CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE ALGÚN RECLAMO, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU UTILIZACIÓN U OTRAS OPERACIONES EN EL SOFTWARE.</string>
 
 	<string name="status_available">En línea</string>
@@ -249,6 +249,7 @@
   Adolfo Jayme https://launchpad.net/~fitojb
   Argafål https://launchpad.net/~argafal
   Georg Lukas https://launchpad.net/~ge0rg
+  Henry Mata https://launchpad.net/~matahr
   Javier Henderson https://launchpad.net/~javier-3
   Jorge Merlino https://launchpad.net/~jorge-merlino
   Leonardo Gastón De Luca https://launchpad.net/~leorockway
@@ -260,7 +261,7 @@
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>
 	<string name="all_contacts_group">Todos los contactos</string>
-	<string name="muc_group">Group Chats</string>
+	<string name="muc_group">Grupos de charla</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Elegir contacto</string>
@@ -268,7 +269,7 @@
 
 	<!-- MUC strings -->
 	<string name="muc_jid_hint">Group chat JID</string>
-	<string name="muc_nickname_hint">Nickname</string>
+	<string name="muc_nickname_hint">Alias</string>
 	<string name="muc_password_hint">Password (optional)</string>
 	<string name="title_activity_muc_invite">Group Chat Invitation</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
