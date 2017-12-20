@@ -653,10 +653,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
 					from, highlight_text, getMessageView().getCurrentTextColor());
 			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
+			MessageStylingHelper.applyEmojiScaling(body, 5.0f); /* >5.0 will exceed Emoji rendering limit of 150px */
 			getMessageView().setText(body);
 
-			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
-			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
+			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			// these calls must be in the exact right order.

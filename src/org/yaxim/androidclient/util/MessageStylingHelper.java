@@ -1,11 +1,11 @@
 package org.yaxim.androidclient.util;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 
 public class MessageStylingHelper {
@@ -41,5 +41,20 @@ public class MessageStylingHelper {
 			body.setSpan(new StyleSpan(Typeface.BOLD), 0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		eu.siacs.conversations.utils.StylingHelper.format(body, text_color);
 		return body;
+	}
+
+	public static void applyEmojiScaling(SpannableStringBuilder message, float max_scale) {
+		String msg_string = message.toString();
+		int start = 0;
+		while (start < msg_string.length()) {
+			int end = msg_string.indexOf('\n', start);
+			if (end == -1)
+				end = msg_string.length();
+			float line_factor = XMPPHelper.getEmojiScalingFactorRE(msg_string.substring(start, end), max_scale);
+			if (line_factor > 1.0f) {
+				message.setSpan(new RelativeSizeSpan(line_factor), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			start = end+1;
+		}
 	}
 }
