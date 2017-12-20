@@ -93,7 +93,7 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 				auto_appended = false;
 				e.removeSpan(span);
 				e.delete(0, len);
-			} else if (!auto_appended && atpos == -1 && len > 0) {
+			} else if (atpos == -1 && len > 0) {
 				// if there is a string, but no @, begin auto_append
 				auto_appended = true;
 				ignore_selection_change = true;
@@ -105,7 +105,7 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 			len = e.length();
 			if (auto_appended)
 				e.setSpan(span, atpos, len, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			else if (len > 1) {
+			else if (len > 1 && atpos > 0) {
 				// populate drop-down list with userpart@domain for all known domains
 				String u = jid.split("@")[0];
 				if (!u.equals(userpart)) {

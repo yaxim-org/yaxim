@@ -42,7 +42,7 @@ public class XMPPHelper {
 	// shameless copy from conversations/src/main/java/eu/siacs/conversations/ui/adapter/MessageAdapter.java
 	public static final Pattern XMPP_PATTERN = Pattern.compile("xmpp\\:(?:(?:["
 						+ GOOD_IRI_CHAR
-						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\,\\_])"
+						+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\,\\_%])"
 						+ "|(?:\\%[a-fA-F0-9]{2}))+"
 						+ "(\\?[\\p{Alnum}=;&]+)?");
 
@@ -90,55 +90,23 @@ public class XMPPHelper {
 			original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 
-	// a line consisting only of: Emoji (So: Symbol Other), Emoji unknown to Android (Cn: not assigned), ZWJ, whitespace
-	static final Pattern LINE_OF_EMOJI = Pattern.compile("[\\p{So}\\p{Cn}\u200D\\s]+");
-	static final Pattern ONE_EMOJI = Pattern.compile("[\\p{Cn}\\p{So}](\u200D[\\p{Cn}\\p{So}])*");
+	// a line consisting only of: Emoji (So: Symbol Other), Emoji unknown to Android (Cn: not assigned), ZWJ, Variant-Selectors, whitespace
+	static final Pattern LINE_OF_EMOJI = Pattern.compile("[\\p{So}\\p{Cn}\u200D\uFE00-\uFE0F\\s]+");
+	static final Pattern ONE_EMOJI = Pattern.compile("[\\p{Cn}\\p{So}](\u200D[\\p{Cn}\\p{So}])*[\uFE00-\uFE0F]?");
+	// how many Emoji do we need before falling back to normal
+	static final int LENGTH_THRESHOLD = 12;
 
-	public static float getEmojiScalingFactorRE(String message, int length_threshold) {
+	public static float getEmojiScalingFactorRE(String message, float max_scale) {
 		if (!LINE_OF_EMOJI.matcher(message).matches())
 			return 1.f;
 		int count = 0;
 		Matcher m = ONE_EMOJI.matcher(message);
 		while (m.find()) {
 			count++;
-			if (length_threshold > 0 && count > length_threshold)
+			if (count > LENGTH_THRESHOLD)
 				return 1.f;
 		}
-		return (count > 0) ? 18.f/(2+count) : 1.f;
-	}
-
-	public static float getEmojiScalingFactor(String message, int length_threshold) {
-		int offset = 0, len = message.length();
-		int count = 0;
-		while (offset < len) {
-			int cp = message.codePointAt(offset);
-			switch (Character.getType(cp)) {
-				// if Android doesn't know them yet:
-				case Character.UNASSIGNED:
-				// all smileys should be in here:
-				case Character.OTHER_SYMBOL:
-					count++;
-					break;
-				// ignore spacing and combining characters:
-				case Character.SPACE_SEPARATOR:
-				case Character.FORMAT:
-				case Character.NON_SPACING_MARK:
-					if (cp == 0x200d && count > 0) count--; // ZWJ = discount one emoji for length purposes
-					break;
-				// new lines and others
-				case Character.CONTROL:
-					if (cp == 0x10 || cp == 0x13) break; // ignore newlines, fall through for others
-				default:
-					return 1.f;
-			}
-			offset += Character.charCount(cp);
-			// we do not want to have too long messages
-			if (length_threshold > 0 && count > length_threshold)
-				return 1.f;
-		}
-		if (count <= 0) // only whitespace encountered
-			return 1.f;
-		return 18f/(2+count);
+		return (count > 0) ? max_scale*3.f/(2+count) : 1.f;
 	}
 
 	public static int getEditTextColor(Context ctx) {

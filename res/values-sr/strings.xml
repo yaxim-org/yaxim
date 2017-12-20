@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Welcome to yaxim!</string>
 	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
 	<string name="StartupDialog_pwHint">Упишите лозинку</string>
-	<string name="StartupDialog_pwrHint">Repeat password</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Џабер ИД:</string>
 	<string name="StartupDialog_passwd_title">Лозинка:</string>
 	<string name="StartupDialog_advanced">Advanced…</string>
 	<string name="StartupDialog_create_new">Register new account</string>
-	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
@@ -221,7 +221,9 @@
 	<string name="toast_stored_offline">The message has been stored for transmission.</string>
 	<string name="chat_enterMsgHint">Enter message</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Resend</string>
 
 	<!-- GPS settings -->
@@ -234,9 +236,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">About yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or

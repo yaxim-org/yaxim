@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Bem vindo ao yaxim!</string>
 	<string name="StartupDialog_Summary">Você precisa configurar o yaxim antes de usá-lo. Por favor, entre seu ID de Jabber e senha.</string>
 	<string name="StartupDialog_pwHint">Introduza a senha</string>
-	<string name="StartupDialog_pwrHint">Repeat password</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">ID de Jabber:</string>
 	<string name="StartupDialog_passwd_title">Senha:</string>
 	<string name="StartupDialog_advanced">Avançado...</string>
 	<string name="StartupDialog_create_new">Registar nova conta</string>
-	<string name="StartupDialog_error_password">Password does not match!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
@@ -220,7 +220,9 @@
 	<string name="toast_stored_offline">A mensagem foi armazenada para transmissão.</string>
 	<string name="chat_enterMsgHint">Escreva sua mensagem</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Reenviar</string>
 
 	<!-- GPS settings -->
@@ -233,9 +235,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Sobre yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Desenvolvedores</string>
-	<string name="AboutDialog_DevelopersText">Contate os desenvolvedores em http://yaxim.org ou no IRC freenode: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licença</string>
-	<string name="AboutDialog_Vote">Transmitir Opinião</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">Este programa é software livre, você pode redistribuí-lo e / ou modificá-lo sob os termos da Licença Pública Geral GNU versão 2 conforme publicada pela Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html \ n \ n Partes deste software são fornecidos sob a licença MIT: \ n \ n Copyright © 2009 Mads Kristiansen, Nullwire ApS \ n \ n a permissão é concedida, a título gratuito, para qualquer pessoa que obtenha uma cópia deste software e arquivos de documentação associados (o "software"), para lidar com o Software sem restrição, incluindo, sem limitação, os direitos de usar, copiar, modificar, mesclar , publicar, distribuir, sublicenciar e / ou vender cópias do Software, e para permitir que pessoas a quem o Software é fornecido façam isso, sujeitas às seguintes condições: \ n o aviso de copyright acima e este aviso de permissão devem ser incluídos no todas as cópias ou partes substanciais do Software. \ n O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA E LEGALIDADE. EM NENHUM CASO OS AUTORES OU TITULARES DE DIREITOS AUTORAIS SERÁ RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU RESPONSABILIDADE, SEJA EM UMA AÇÃO DO CONTRATO, OU DE OUTRA FORMA, DECORRENTES DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTROS NO SOFTWARE.</string>
 
 	<string name="status_available">Ligado</string>

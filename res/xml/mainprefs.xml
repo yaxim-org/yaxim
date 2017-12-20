@@ -53,7 +53,7 @@
 			android:key="muc_highlight"
 			android:title="@string/muc_highlight_title"
 			android:summary="@string/muc_highlight_sum"
-			android:defaultValue="false"
+			android:defaultValue="true"
 		/>
 		<CheckBoxPreference
 			android:id="@+id/muc_led"

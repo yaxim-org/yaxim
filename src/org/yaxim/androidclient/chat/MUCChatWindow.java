@@ -1,11 +1,8 @@
 package org.yaxim.androidclient.chat;
 
 import java.util.List;
-import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
 import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatRoomHelper;
@@ -14,6 +11,7 @@ import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.ParcelablePresence;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.XEP0392Helper;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.app.AlertDialog;
@@ -61,7 +59,7 @@ public class MUCChatWindow extends ChatWindow {
 				Cursor c = (Cursor)parent.getItemAtPosition(position);
 				addNicknameToInput(c.getString(c.getColumnIndex(ChatConstants.RESOURCE)));
 			}});
-		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?join");
+		XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?join");
 	}
 
 	@Override
@@ -136,7 +134,7 @@ public class MUCChatWindow extends ChatWindow {
 					new ConfirmDialog.Ok() {
 						@Override
 						public void ok(final String jid) {
-							if (ChatRoomHelper.removeRoom(MUCChatWindow.this, jid))
+							if (ChatRoomHelper.leaveRoom(MUCChatWindow.this, jid))
 								ChatRoomHelper.syncDbRooms(MUCChatWindow.this);
 							// XXX: if we do not unbind here, we will leak the service
 							unbindXMPPService();
@@ -205,22 +203,7 @@ public class MUCChatWindow extends ChatWindow {
 	public void nick2Color(String nick, TypedValue tv) {
 		if (nick == null || nick.length() == 0) // no color for empty nickname
 			return;
-		Checksum nickCRC = new CRC32();
-		nickCRC.update(nick.getBytes(), 0, nick.length());
-		int nickInt = (int)nickCRC.getValue();
-		int theme = mConfig.getTheme();
-		// default HSV is for dark theme, bright and light
-		float h = Math.abs(nickInt % 360), s = 0.5f, v= 0.9f;
-
-		if (theme == R.style.YaximDarkTheme) {
-			// make blue nicks a bit lighter on dark
-			if(h<=255.0f && h>=225.0f)
-				s=0.4f;
-		} else { // light theme: strong and darker nick color
-			s=0.85f;
-			v=0.6f;
-		}
-		tv.data = Color.HSVToColor(0xFF, new float[]{h, s, v});
+		tv.data = XEP0392Helper.mixNickWithBackground(nick, getTheme(), mConfig.getTheme());
 	}
 	
 

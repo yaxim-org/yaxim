@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Yaxim\'e hoş geldiniz!</string>
 	<string name="StartupDialog_Summary">Kullanabilmek için yaxim\'i yapılandırmanız lazımdır. Jabber kimliğinizi ve parolanızı giriniz.</string>
 	<string name="StartupDialog_pwHint">Parola girin</string>
-	<string name="StartupDialog_pwrHint">Parolayı tekrarlayın</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber kimliği:</string>
 	<string name="StartupDialog_passwd_title">Parola:</string>
 	<string name="StartupDialog_advanced">Gelişmiş:</string>
 	<string name="StartupDialog_create_new">Yeni hesap kaydet</string>
-	<string name="StartupDialog_error_password">Parola eşleşmiyor!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
@@ -220,7 +220,9 @@
 	<string name="toast_stored_offline">Mesaj gönderilmek için kaydedilmiştir.</string>
 	<string name="chat_enterMsgHint">Mesaj girin</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Tekrar yolla</string>
 
 	<!-- GPS settings -->
@@ -233,9 +235,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Yaxim hakkında</string>
 	<string name="AboutDialog_DevelopersTitle">Geliştiriciler</string>
-	<string name="AboutDialog_DevelopersText">Geliştiricilerle http://yaxim.org sitesinde veya Freenode\'da #yaxim kanalında irtibata geçebilirsiniz</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Lisans</string>
-	<string name="AboutDialog_Vote">Geribildirim gönder</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">Bu program özgür yazılımdır; onu Özgür Yazılım Vakfının yayınladığı GNU Genel Kamu Lisansının 2. sürümü kapsamında dağıtabilir ve/veya değiştirebilirsiniz. Bağlantı: http://www.gnu.org/licenses/gpl-2.0.html\n \n Bu yazılımın bazı parçaları MIT lisansı kapsamındadır:\n \n Telif hakkı © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Çevirimiçi</string>

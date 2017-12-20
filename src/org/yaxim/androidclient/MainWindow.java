@@ -53,12 +53,14 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.opengl.Visibility;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -328,6 +330,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Uri data = intent.getData();
 		if (action == null || data == null || mHandledIntent)
 			return;
+		// ignore event if no account registered; TODO: handle xmpp://account@server?register
+		if (mConfig.jabberID.length() < 3 || PreferenceManager.getDefaultSharedPreferences(this).contains(PreferenceConstants.INITIAL_CREATE))
+			return;
 		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
 			// 1. look for JID in roster; 2. attempt to add
 			String jid = data.getPathSegments().get(0);
@@ -338,6 +343,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 			data = intent.getData();
 			String jid = data.getAuthority();
 			String body = data.getQueryParameter("body");
+			if (TextUtils.isEmpty(jid)) {
+				if (!TextUtils.isEmpty(body)) {
+					// this is a body-less `xmpp:?message;body=TEXT` - convert to ACTION_SEND
+					intent.setAction(Intent.ACTION_SEND)
+						.setData(null)
+						.putExtra(Intent.EXTRA_TEXT, body);
+					handleSendIntent();
+				}
+				// stop processing if JID is empty
+				return;
+			}
 			String name = data.getQueryParameter("name");
 			String preauth = data.getQueryParameter("preauth");
 			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
@@ -372,9 +388,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	public void updateRoster() {
-		loadUnreadCounters();
 		rosterListAdapter.requery();
 		restoreGroupsExpanded();
+		new LoadUnreadTask().execute();
 	}
 
 	private StatusMode getContactStatusMode(Cursor c) {
@@ -729,6 +745,18 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.setTitle(versionTitle)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setView(about)
+			.setNegativeButton(R.string.AboutDialog_DevelopersText, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+					if (mConfig.jabberID.length() < 3 || TextUtils.isEmpty(mConfig.userName)) {
+						showToastNotification(R.string.Global_authenticate_first);
+						return;
+					}
+					String jid = getString(R.string.yaxim_muc);
+					if (!openChatWithJid(jid, null)) {
+						new EditMUCDialog(MainWindow.this, jid, null,
+								null, null).withNick(mConfig.userName).show();
+					}
+				}})
 			.setPositiveButton(android.R.string.ok, null)
 			.setNeutralButton(R.string.AboutDialog_Vote, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int item) {
@@ -870,6 +898,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			setSupportProgressBarIndeterminateVisibility(false);
 			PreferenceManager.getDefaultSharedPreferences(this).edit().
 				remove(PreferenceConstants.INITIAL_CREATE).commit();
+			// in case we just registered, re-fire the Intent
+			handleJabberIntent();
 		}
 	}
 	
@@ -1054,7 +1084,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private void registerCrashReporter() {
 		if (mConfig.reportCrash) {
-			ExceptionHandler.register(this, "http://duenndns.de/yaxim-crash/");
+			ExceptionHandler.register(this, "https://yaxim.org/crash/");
 		}
 	}
 
@@ -1240,20 +1270,31 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private HashMap<String, Integer> mUnreadCounters = new HashMap<String, Integer>();
-	private void loadUnreadCounters() {
-		final String[] PROJECTION = new String[] { ChatConstants.JID, "count(*)" };
-		final String SELECTION = ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
-			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW +
-			") GROUP BY (" + ChatConstants.JID; // hack!
+	private class LoadUnreadTask extends AsyncTask<Void, Void, HashMap<String, Integer>> {
+		@Override
+		protected HashMap<String, Integer> doInBackground(Void...voids) {
+			final String[] PROJECTION = new String[] { ChatConstants.JID, "count(*)" };
+			final String SELECTION = ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND " +
+					ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW +
+					") GROUP BY (" + ChatConstants.JID; // hack!
 
-		Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
-				PROJECTION, SELECTION, null, null);
-		mUnreadCounters.clear();
-		if(c!=null){
-			while (c.moveToNext())
-				mUnreadCounters.put(c.getString(0), c.getInt(1));
-			c.close();
+			Cursor c = getContentResolver().query(ChatProvider.CONTENT_URI,
+					PROJECTION, SELECTION, null, null);
+			HashMap<String, Integer> result = new HashMap<String, Integer>();
+			if(c!=null){
+				while (c.moveToNext())
+					result.put(c.getString(0), c.getInt(1));
+				c.close();
+			}
+			return result;
 		}
+
+		@Override
+		protected void onPostExecute(HashMap<String, Integer> result) {
+			mUnreadCounters = result;
+			getExpandableListView().invalidateViews();
+		}
+
 	}
 
 	private class ChatObserver extends ContentObserver {

@@ -30,7 +30,7 @@ public class ConfirmDialog {
 				new ConfirmDialog.Ok() {
 					@Override
 					public void ok(final String jid) {
-						ChatRoomHelper.removeRoom(context, jid);
+						ChatRoomHelper.leaveRoom(context, jid);
 						ChatRoomHelper.syncDbRooms(context);
 					}
 				});

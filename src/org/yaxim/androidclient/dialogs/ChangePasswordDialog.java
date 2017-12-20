@@ -42,7 +42,7 @@ public class ChangePasswordDialog extends AlertDialog implements
 	private CheckBox mChangeOnServer;
 	private EditText mOldPassword;
 	private EditText mEditPassword;
-	private EditText mRepeatPassword;
+	private CheckBox mShowPassword;
 	private View mPasswordWarning;
 	private Button mOkButton;
 	
@@ -68,7 +68,14 @@ public class ChangePasswordDialog extends AlertDialog implements
 			});
 		mOldPassword = (EditText) group.findViewById(R.id.password_old);
 		mEditPassword = (EditText) group.findViewById(R.id.password_new);
-		mRepeatPassword = (EditText) group.findViewById(R.id.password_new_repeat);
+		mShowPassword = (CheckBox) group.findViewById(R.id.password_show);
+		mShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+					mEditPassword.setTransformationMethod(isChecked ? null :
+							new android.text.method.PasswordTransformationMethod());
+				}
+			});
 		mPasswordWarning = group.findViewById(R.id.password_warning);
 
 		setButton(BUTTON_POSITIVE, context.getString(android.R.string.ok), this);
@@ -84,7 +91,6 @@ public class ChangePasswordDialog extends AlertDialog implements
 
 		mOldPassword.addTextChangedListener(this);
 		mEditPassword.addTextChangedListener(this);
-		mRepeatPassword.addTextChangedListener(this);
 
 		mChangeOnServer.setEnabled(false);
 		mOkButton.setEnabled(false);
@@ -136,15 +142,9 @@ public class ChangePasswordDialog extends AlertDialog implements
 
 		mPasswordWarning.setVisibility(mChangeOnServer.isChecked() ? View.GONE : View.VISIBLE);
 
-		boolean is_ok = true;
+		boolean is_ok = (mEditPassword.length() >= 6);
 		// TODO: check old password length and match
-		if (mEditPassword.length() == 0)
-			is_ok = false;
-
-		boolean passwords_match = mEditPassword.getText().toString().equals(
-				mRepeatPassword.getText().toString());
-		is_ok = is_ok && passwords_match;
-		mRepeatPassword.setError((passwords_match || mRepeatPassword.length() == 0) ?
+		mEditPassword.setError((is_ok || mEditPassword.length() == 0) ?
 				null : mContext.getString(R.string.StartupDialog_error_password));
 
 		mOkButton.setEnabled(is_ok);

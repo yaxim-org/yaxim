@@ -78,21 +78,12 @@
 			android:contentDescription="@string/StartupDialog_passwd_title"
 			style="@style/dialogEditText"
 			/>
-	<EditText
-			android:id="@+id/startup_password_repeat"
+	<CheckBox
+			android:id="@+id/password_show"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:visibility="gone"
-			android:password="true"
-			android:padding="10sp"
-			android:gravity="left"
-			android:singleLine="true"
-			android:textSize="18sp"
-			android:maxWidth="200sp"
-			android:hint="@string/StartupDialog_pwrHint"
-			android:contentDescription="@string/StartupDialog_passwd_title"
-			style="@style/dialogEditText"
+			android:text="@string/StartupDialog_pwshowHint"
+			style="?attr/dialogTextColor"
 			/>
-
     </LinearLayout>
 </ScrollView>

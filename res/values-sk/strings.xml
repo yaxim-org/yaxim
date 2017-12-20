@@ -31,12 +31,12 @@
 	<string name="StartupDialog_Title">Vitajte v yaxim!</string>
 	<string name="StartupDialog_Summary">Pred používaním musíte yaxim nastaviť. Prosím, zadajte vaše Jabber ID a heslo.</string>
 	<string name="StartupDialog_pwHint">Zadajte heslo</string>
-	<string name="StartupDialog_pwrHint">Znovu zadajte heslo</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Heslo:</string>
 	<string name="StartupDialog_advanced">Pokročilé...</string>
 	<string name="StartupDialog_create_new">Zaregistrovať nový účet</string>
-	<string name="StartupDialog_error_password">Heslo nie je správne!</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
@@ -220,7 +220,9 @@
 	<string name="toast_stored_offline">Správa bola uložená na odoslanie</string>
 	<string name="chat_enterMsgHint">Napíšte správu</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Quote</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Poslať znovu</string>
 
 	<!-- GPS settings -->
@@ -233,9 +235,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">O aplikácii yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Vývojári</string>
-	<string name="AboutDialog_DevelopersText">Kontaktujte vývojárov na: http://yaxim.org alebo na freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
-	<string name="AboutDialog_Vote">Pošlite spätnú väzbu</string>
+	<string name="AboutDialog_Vote">Rate app</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or

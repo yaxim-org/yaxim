@@ -18,8 +18,11 @@ import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.MessageStylingHelper;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
+
+import eu.siacs.conversations.utils.StylingHelper;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Window;
@@ -44,7 +47,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
@@ -126,7 +133,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
-		XMPPHelper.setStaticNFC(this, "xmpp:" + mWithJabberID + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
+		XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
 
 		mChatFontSize = Integer.valueOf(mConfig.chatFontSize);
 		mRosterTypeface = Typeface.createFromAsset(getAssets(),"fonts/brunofont.ttf");
@@ -353,6 +360,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		mChatInput = (EditText) findViewById(R.id.Chat_UserInput);
 		mChatInput.addTextChangedListener(this);
 		mChatInput.setOnKeyListener(this);
+		mChatInput.addTextChangedListener(new StylingHelper.MessageEditorStyler(mChatInput));
 		if (i.hasExtra(INTENT_EXTRA_MESSAGE)) {
 			mChatInput.setText(i.getExtras().getString(INTENT_EXTRA_MESSAGE));
 		}
@@ -644,18 +652,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
-			int style = 0;
-			if (highlight_text != null && message.toLowerCase().contains(highlight_text.toLowerCase()))
-				style |=  android.graphics.Typeface.BOLD;
-			boolean slash_me = message.startsWith("/me ");
-			if (slash_me) {
-				message = String.format("\u25CF %s %s", from, message.substring(4));
-				style |= android.graphics.Typeface.ITALIC;
-			}
-			getMessageView().setText(message);
-			getMessageView().setTypeface(null, style);
-			int fontsize = Math.min(150, (int)(chatWindow.mChatFontSize * XMPPHelper.getEmojiScalingFactorRE(message, 12)));
-			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, fontsize);
+
+			SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
+					from, highlight_text, getMessageView().getCurrentTextColor());
+			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
+			MessageStylingHelper.applyEmojiScaling(body, 5.0f); /* >5.0 will exceed Emoji rendering limit of 150px */
+			getMessageView().setText(body);
+
+			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getMessageView().setTypeface(mRosterTypeface);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);

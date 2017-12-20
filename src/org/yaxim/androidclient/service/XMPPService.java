@@ -437,7 +437,7 @@ public class XMPPService extends GenericService {
 		create_account = false;
 	}
 
-	private void broadcastConnectionState(ConnectionState cs) {
+	private synchronized void broadcastConnectionState(ConnectionState cs) {
 		final int broadCastItems = mRosterCallbacks.beginBroadcast();
 
 		for (int i = 0; i < broadCastItems; i++) {
@@ -563,7 +563,7 @@ public class XMPPService extends GenericService {
 				Intent intent = new Intent(getApplicationContext(), MainWindow.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.setAction("android.intent.action.VIEW");
-				String uri = "xmpp:" + room;
+				String uri = "xmpp:" + java.net.URLEncoder.encode(room);
 				Builder b = new Builder();
 				b.appendQueryParameter("join", null);
 				if (password != null)

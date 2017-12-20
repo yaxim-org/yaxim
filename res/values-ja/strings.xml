@@ -4,225 +4,222 @@
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_connecting">Connecting to server…</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
+	<string name="conn_connecting">サーバーに接続しています…</string>
+	<string name="conn_disconnecting">切断しています…</string>
 	<string name="conn_online">オンライン</string>
 	<string name="conn_offline">オフライン</string>
-	<string name="conn_empty_roster">No contacts to show!</string>
-	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
-		- Scan a QR code\n\n
-		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
-		- \"Add contact\" if you know the JID</string>
-	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
-	<string name="conn_disconnected">Connection closed</string>
-	<string name="conn_no_network">No network connection</string>
-	<string name="conn_ping_timeout">Ping timeout</string>
-	<string name="conn_error">Error: %s</string>
+	<string name="conn_empty_roster">連絡先はありません!</string>
+	<string name="conn_empty_roster_hints">連絡先を追加する方法はたくさんあります:\n\n - Android ビーム™: 友達の電話にタッチ\n\n - QR コードをスキャン\n\n - \"招待を作成" して共有します (メール、SMS、QR コード …)\n\n - JID が分かっている場合は \"連絡先を追加\"</string>
+	<string name="conn_reconnect">%d 秒後に接続します</string>
+	<string name="conn_disconnected">接続が閉じられました</string>
+	<string name="conn_no_network">ネットワークに接続されていません</string>
+	<string name="conn_ping_timeout">Ping タイムアウト</string>
+	<string name="conn_error">エラー: %s</string>
 
 	<!-- Global Strings -->
-	<string name="Global_Exit">出口</string>
-	<string name="Global_authenticate_first">Please connect first</string>
+	<string name="Global_Exit">終了</string>
+	<string name="Global_authenticate_first">先に接続してください</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">アドレスの形式を確認してください!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">yaximへようこそ！</string>
-	<string name="StartupDialog_Summary">You need to configure yaxim before you can use it. Please enter your Jabber ID and password.</string>
-	<string name="StartupDialog_pwHint">Enter password</string>
-	<string name="StartupDialog_pwrHint">Repeat password</string>
+	<string name="StartupDialog_Summary">yaxim を使用する前に、yaxim を設定する必要があります。 あなたの Jabber ID とパスワードを入力してください。</string>
+	<string name="StartupDialog_pwHint">パスワードを入力</string>
+	<string name="StartupDialog_pwshowHint">Show password</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">パスワード：</string>
-	<string name="StartupDialog_advanced">Advanced…</string>
-	<string name="StartupDialog_create_new">Register new account</string>
-	<string name="StartupDialog_error_password">Password does not match!</string>
-	<string name="StartupDialog_created_password">Created secure password</string>
-	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+	<string name="StartupDialog_advanced">詳細…</string>
+	<string name="StartupDialog_create_new">新しいアカウントを登録</string>
+	<string name="StartupDialog_error_password">Password is too short!</string>
+	<string name="StartupDialog_created_password">安全なパスワードを作成しました</string>
+	<string name="StartupDialog_auth_failed">ユーザー名とパスワードを確認してください!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">%s さんからのメッセージ</string>
-	<string name="notification_anonymous_message">Message received</string>
+	<string name="notification_anonymous_message">メッセージを受信しました</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
-	<string name="notification_muc_message">%1$s in %2$s</string>
+	<string name="notification_muc_message">%2$s の %1$s</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Reply</string>
+	<string name="notification_reply">返信</string>
 	<!-- notification button: mark as read (make SHORT string) -->
-	<string name="notification_mark_read">Mark Read</string>
+	<string name="notification_mark_read">既読にする</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Error while sending message!</string>
+	<string name="notification_error">メッセージの送信中にエラーが発生しました!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Message Notification</string>
-	<string name="preftitle_notify_muc">Group Chat Notification</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
-	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
-	<string name="led_title">Blinking LED</string>
-	<string name="led_summ">Blink phone LED on incoming messages</string>
-	<string name="vibr_title">Vibration</string>
-	<string name="vibr_summ">Vibrate on incoming messages</string>
+	<string name="preftitle_notify">メッセージの通知</string>
+	<string name="preftitle_notify_muc">グループチャｔット通知</string>
+	<string name="muc_highlight_title">メンション時のみ通知</string>
+	<string name="muc_highlight_sum">ルームであなたのニックネームがメンションされた時に通知します</string>
+	<string name="led_title">LED点滅</string>
+	<string name="led_summ">メッセージの受信時に LED を点滅します</string>
+	<string name="vibr_title">振動</string>
+	<string name="vibr_summ">メッセージ受信時に振動します</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
-		<item>System preference</item>
-		<item>Always</item>
+		<item>しない</item>
+		<item>システム設定</item>
+		<item>常に</item>
 	</string-array>
-	<string name="ringtone_title">Ringtone</string>
-	<string name="ringtone_summ">Tone for incoming messages</string>
-	<string name="ticker_title">Message preview</string>
-	<string name="ticker_summ">Show sender and message in status bar</string>
+	<string name="ringtone_title">着信音</string>
+	<string name="ringtone_summ">メッセージ受信時の着信音を選択</string>
+	<string name="ticker_title">メッセージプレビュー</string>
+	<string name="ticker_summ">ステータスバーに送信者とメッセージを表示する</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_general">General Settings</string>
-	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
-	<string name="statuspopup_name">Set your status</string>
-	<string name="showOffline_summ">Always show all contacts in the roster</string>
-	<string name="showOffline_title">Show offline contacts</string>
-	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
-	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
-	<string name="foregroundService_title">Statusbar icon</string>
+	<string name="preftitle_general">全般設定</string>
+	<string name="pref_dnd_when_silent">サイレントモード時 \"取り込み中\"</string>
+	<string name="pref_dnd_when_silent_summ">お使いの電話がサイレントモードの時に、オンラインステータスを \"取り込み中\" に設定します</string>
+	<string name="statuspopup_name">ステータスを設定</string>
+	<string name="showOffline_summ">常にすべての連絡先を名簿に表示する</string>
+	<string name="showOffline_title">オフラインの連絡先を表示する</string>
+	<string name="enableGroups_summ">連絡先をグループ別に整理する</string>
+	<string name="enableGroups_title">連絡先グループを表示する</string>
+	<string name="foregroundService_summ">yaxim を常時接続 (フォアグラウンドサービス) するために、メモリに保存する</string>
+	<string name="foregroundService_title">ステータスバーアイコン</string>
 
-	<string name="preftitle_debug">Debugging</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (may contain personal information)</string>
-	<string name="smackdebug_title">SMACK debugging</string>
+	<string name="preftitle_debug">デバッグ</string>
+	<string name="smackdebug_summ">logcat によるパケットとデバッグ出力 (個人情報を含む場合があります)</string>
+	<string name="smackdebug_title">SMACK デバッグ</string>
 
-	<string name="reportcrash_title">Send crash reports</string>
-	<string name="reportcrash_summ">Send anonymous crash reports to developer</string>
+	<string name="reportcrash_title">クラッシュレポートを送信</string>
+	<string name="reportcrash_summ">開発者に匿名のクラッシュレポートを送信します</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">Appearance</string>
-	<string name="FontChat_title">Chat font size</string>
-	<string name="FontChat_summ">Set chat font size</string>
-	<string name="FontChat_dialog">Chat font size</string>
+	<string name="preftitle_app">外観</string>
+	<string name="FontChat_title">チャットのフォントサイズ</string>
+	<string name="FontChat_summ">チャットのフォントサイズを設定します</string>
+	<string name="FontChat_dialog">チャットのフォントサイズ</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
 	<string name="FontRost_dialog">Roster font fize</string>
 	<string name="setFontRoster">Set roster font size</string>
 	-->
-	<string name="pref_theme">Theme</string>
+	<string name="pref_theme">テーマ</string>
 	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
+		<item>ダーク</item>
+		<item>ライト</item>
 		<item>Pine</item>
 		<item>Ice</item>
 	</string-array>
-	<string name="preftitle_ui">Appearance</string>
+	<string name="preftitle_ui">外観</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
-		<item>normal</item>
-		<item>large</item>
-		<item>huge</item>
+		<item>小</item>
+		<item>標準</item>
+		<item>大</item>
+		<item>最大</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add contact</string>
-	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit account</string>
-	<string name="Menu_Settings">Settings</string>
-	<string name="Menu_Status">Status</string>
-	<string name="Menu_connect">Connect</string>
-	<string name="Menu_disconnect">Disconnect</string>
-	<string name="Menu_about">About yaxim</string>
-	<string name="Menu_muc">Add group chat</string>
-	<string name="Menu_mark_all_as_read">Mark all as read</string>
-	<string name="Menu_send_invitation">Create invitation</string>
-    <string name="Menu_userlist">Participants</string>
+	<string name="Menu_addFriend">連絡先を追加</string>
+	<string name="Menu_ShowOff">オフラインを表示する</string>
+	<string name="Menu_HideOff">オフラインを非表示</string>
+	<string name="Menu_AccSettings">アカウントを編集</string>
+	<string name="Menu_Settings">設定</string>
+	<string name="Menu_Status">ステータス</string>
+	<string name="Menu_connect">接続</string>
+	<string name="Menu_disconnect">切断</string>
+	<string name="Menu_about">yaxim について</string>
+	<string name="Menu_muc">グループチャットを追加</string>
+	<string name="Menu_mark_all_as_read">すべて既読にする</string>
+	<string name="Menu_send_invitation">招待状を作成</string>
+    <string name="Menu_userlist">参加者</string>
 
 
 	<!-- AddFriend -->
-	<string name="addFriend_Title">Add a Contact</string>
-	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
-		desired screen name and choose their contact group!</string>
-	<string name="addFriend_aliasHint">Screen name</string>
-	<string name="addrosteritemaddgroupchoice">Add to a new group</string>
-	<string name="NewGroup_EditTextField_Hint">Name for the new group</string>
+	<string name="addFriend_Title">連絡先を追加</string>
+	<string name="addFriend_Summ">友達の Jabber ID と希望の画面名を入力して、連絡先グループを選択してください!</string>
+	<string name="addFriend_aliasHint">画面名</string>
+	<string name="addrosteritemaddgroupchoice">新しいグループに追加</string>
+	<string name="NewGroup_EditTextField_Hint">新しいグループの名前</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_group_rename">Rename group</string>
-	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Delete contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
-	<string name="roster_contextmenu_contact_rename">Rename</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
-	<string name="roster_contextmenu_contact_change_group">Change group</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
-	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
-	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
-	<string name="muc_leave_question">Really leave %s?</string>
+	<string name="roster_contextmenu_group_rename">グループ名を変更</string>
+	<string name="roster_contextmenu_contact_mark_as_read">既読にする</string>
+	<string name="roster_contextmenu_contact_delete">連絡先を削除</string>
+	<string name="roster_contextmenu_contact_delmsg">チャット履歴を削除</string>
+	<string name="roster_contextmenu_contact_rename">名前を変更</string>
+	<string name="roster_contextmenu_contact_request_auth">認証のリクエスト</string>
+	<string name="roster_contextmenu_contact_change_group">グループを変更</string>
+	<string name="roster_contextmenu_contact_share">アドレスを共有</string>
+	<string name="roster_contextmenu_muc_edit">グループチャットを編集</string>
+	<string name="roster_contextmenu_muc_leave">グループチャットを離れる</string>
+	<string name="muc_leave_question">%s を離れてもよろしいですか?</string>
 
 	<!-- Accountprefs -->
-	<string name="account_settings_login">Login Information</string>
-	<string name="account_settings_title">Account Settings</string>
-	<string name="account_options_title">Connecting Options</string>
-	<string name="account_options_advanced">Advanced Options</string>
-	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="account_settings_login">ログイン情報</string>
+	<string name="account_settings_title">アカウント設定</string>
+	<string name="account_options_title">接続オプション</string>
+	<string name="account_options_advanced">詳細オプション</string>
+	<string name="carbons_title">メッセージカーボン (XEP-0280)</string>
+	<string name="carbons_summ">他のクライアントからメッセージのコピーをリクエストします</string>
 	<string name="account_jabberID_title">Jabber ID</string>
-	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
-	<string name="account_jabberID_dialog_title">Enter your Jabber ID:</string>
-	<string name="account_jabberPW_title">Account Password</string>
-	<string name="account_jabberPW_sum">Your Jabber account password</string>
-	<string name="account_jabberPW_change_on_server">Change password on server</string>
-	<string name="account_jabberPW_password_old">Old Password:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
-	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password…</string>
-	<string name="account_jabberPW_finished">Password successfully changed.</string>
-	<string name="account_jabberPW_error">Error changing password: %s</string>
+	<string name="account_jabberID_sum">例: me@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Jabber ID を入力:</string>
+	<string name="account_jabberPW_title">アカウントのパスワード</string>
+	<string name="account_jabberPW_sum">Jabber アカウントのパスワード</string>
+	<string name="account_jabberPW_change_on_server">サーバーのパスワードを変更</string>
+	<string name="account_jabberPW_password_old">前のパスワード:</string>
+	<string name="account_jabberPW_password_new">新しいパスワード:</string>
+	<string name="account_jabberPW_warning">警告! 正常に ログインするには、サーバー上と同じパスワードを設定する必要があります。</string>
+	<string name="account_jabberPW_progress">お待ちください。パスワードを変更しています…</string>
+	<string name="account_jabberPW_finished">パスワードを変更しました。</string>
+	<string name="account_jabberPW_error">パスワードの変更時にエラーが発生しました: %s</string>
 	
 	<!-- accountprefs -->
-	<string name="account_resource_title">Client Resource</string>
-	<string name="account_resource_summ">Default: yaxim</string>
-	<string name="account_resource_dialog_title">Enter your resource:</string>
+	<string name="account_resource_title">クライアント リソース</string>
+	<string name="account_resource_summ">デフォルト: yaxim</string>
+	<string name="account_resource_dialog_title">リソースを入力してください:</string>
 	<string name="account_resource_hint">yaxim</string>
-	<string name="account_prio_title">Client Priority</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
-	<string name="account_prio_dialog_title">Enter your priority:</string>
-	<string name="account_port_title">Server Port</string>
-	<string name="account_port_sum">Default: 5222</string>
-	<string name="account_port_dialog_title">Enter the server port:</string>
+	<string name="account_prio_title">クライアントの優先度</string>
+	<string name="account_prio_summ">デフォルト: 0 (可能な範囲: -128 .. 127)</string>
+	<string name="account_prio_error">可能な範囲は: -128 .. 127</string>
+	<string name="account_prio_dialog_title">優先度を入力してください:</string>
+	<string name="account_port_title">サーバー ポート</string>
+	<string name="account_port_sum">デフォルト: 5222</string>
+	<string name="account_port_dialog_title">サーバーのポートを入力してください:</string>
 	<string name="account_port_hint">5222</string>
-	<string name="account_customserver_title">Custom Server</string>
-	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
-	<string name="account_customserver_dialog_title">Enter server hostname:</string>
+	<string name="account_customserver_title">カスタムサーバー</string>
+	<string name="account_customserver_summ">(オプション) 代替のサーバーホスト名</string>
+	<string name="account_customserver_dialog_title">サーバーのホスト名を入力してください:</string>
 	<string name="account_customserver_hint">host.example.com</string>
-	<string name="require_ssl_title">Require SSL/TLS</string>
-	<string name="require_ssl_summ">Always encrypt server connection</string>
+	<string name="require_ssl_title">SSL/TLS が必要</string>
+	<string name="require_ssl_summ">常にサーバー接続を暗号化する</string>
 
 	<!--StatusPopUp-->
-	<string name="AddContact_SpinnerPrompt">Choose Group</string>
-	<string name="setStatusmsgHint">Your status message</string>
-	<string name="setStatusTitle">Set your status</string>
-	<string name="RenameGroup_summ">Rename group %s to:</string>
-	<string name="RenameGroup_title">Rename group</string>
-	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
-	<string name="RenameEntry_title">Rename contact</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
-	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
-	<string name="deleteRosterItem_text">Really remove %1$s (%2$s)?</string>
-	<string name="deleteRosterItem_title">Delete Contact</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Delete Chat History</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
-	<string name="subscription_accept">Accept</string>
-	<string name="subscription_reject">Reject</string>
-	<string name="subscription_status_from">can see your status</string>
+	<string name="AddContact_SpinnerPrompt">グループを選択</string>
+	<string name="setStatusmsgHint">ステータスメッセージ</string>
+	<string name="setStatusTitle">ステータスを設定</string>
+	<string name="RenameGroup_summ">グループ %s の名前を変更:</string>
+	<string name="RenameGroup_title">グループ名を変更</string>
+	<string name="RenameEntry_summ">%1$s (%2$s) の名前を変更:</string>
+	<string name="RenameEntry_title">連絡先の名前を変更</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">下のスピナーからグループを選択</string>
+	<string name="MoveRosterEntryToGroupDialog_title">グループを変更</string>
+	<string name="deleteRosterItem_text">%1$s (%2$s) を削除してもよろしいですか?</string>
+	<string name="deleteRosterItem_title">連絡先を削除</string>
+	<string name="deleteChatHistory_text">%1$s (%2$s) のメッセージをすべて削除してもよろしいですか?</string>
+	<string name="deleteChatHistory_title">チャット履歴を削除</string>
+	<string name="subscriptionRequest_text">%1$s さんがあなたを連絡先に追加したいと言っています: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">登録のリクエスト</string>
+	<string name="subscription_accept">承認</string>
+	<string name="subscription_reject">拒否</string>
+	<string name="subscription_status_from">あなたのステータスを参照可能</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_from_me">Me:</string>
-	<string name="toast_stored_offline">The message has been stored for transmission.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_from_me">わたし:</string>
+	<string name="toast_stored_offline">メッセージが送信用に保存されています。</string>
+	<string name="chat_enterMsgHint">メッセージを入力</string> 
 
-	<!-- Chat menu -->
-	<string name="chatmenu_resend">Resend</string>
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">引用</string>
+	<!-- Message context menu: repeat the same message -->
+	<string name="chatmenu_resend">再送信</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -232,113 +229,55 @@
 	-->
 
 	<!-- About Dialog -->
-	<string name="AboutDialog_title">About yaxim</string>
-	<string name="AboutDialog_DevelopersTitle">Developers</string>
-	<string name="AboutDialog_DevelopersText">Contact the developers at http://yaxim.org or on freenode IRC: #yaxim</string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Give Feedback</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_title">yaxim について</string>
+	<string name="AboutDialog_DevelopersTitle">開発者</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
+	<string name="AboutDialog_LicenceTitle">ライセンス</string>
+	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_LicenceText">このプログラムはフリーソフトウェアです。 フリーソフトウェア財団が公開する GNU General Public License バージョン 2 の規約の下で再配布したり、変更することができます。 リンク: http://www.gnu.org/licenses/gpl-2.0.html\n \n このソフトウェアの一部は、MIT ライセンスの下で提供されています:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">オンライン</string>
-	<string name="status_away">Away</string>
-	<string name="status_chat">Free for chat</string>
-	<string name="status_dnd">Do not disturb</string>
-	<string name="status_xa">Not available</string>
+	<string name="status_away">離席中</string>
+	<string name="status_chat">チャットできます</string>
+	<string name="status_dnd">取り込み中</string>
+	<string name="status_xa">使用不可</string>
 	<string name="status_offline">オフライン</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Naofumi Fukue https://launchpad.net/~naofum
   R. Martins https://launchpad.net/~nbkhope</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
-	<string name="all_contacts_group">All contacts</string>
-	<string name="muc_group">Group Chats</string>
+	<string name="default_group">一般</string>
+	<string name="all_contacts_group">すべての連絡先</string>
+	<string name="muc_group">グループチャット</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
-	<string name="action_settings">Settings</string>
+	<string name="chooseContact">連絡先を選択</string>
+	<string name="action_settings">設定</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Group chat JID</string>
-	<string name="muc_nickname_hint">Nickname</string>
-	<string name="muc_password_hint">Password (optional)</string>
-	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_jid_hint">グループチャット JID</string>
+	<string name="muc_nickname_hint">ニックネーム</string>
+	<string name="muc_password_hint">パスワード (オプション)</string>
+	<string name="title_activity_muc_invite">グループチャットの招待</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">%s からの招待</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d 参加者)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
-	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="muc_invitation_join">%s として参加</string>
+	<string name="muc_synchronizing">同期しています…</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="chat_muc_userlist">グループチャット参加者 (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked">キックしました: %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_kicked_by">%1$s からキックされました: %2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">禁止しました: %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+	<string name="muc_banned_by">%1$s から禁止されました: %2$s</string>
 
 
 </resources>

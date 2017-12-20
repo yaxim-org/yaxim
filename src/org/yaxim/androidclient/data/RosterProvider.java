@@ -283,7 +283,7 @@ public class RosterProvider extends ContentProvider {
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "roster.db";
-		private static final int DATABASE_VERSION = 6;
+		private static final int DATABASE_VERSION = 7;
 
 		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -314,7 +314,8 @@ public class RosterProvider extends ContentProvider {
 					+ RosterConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ RosterConstants.JID + " TEXT UNIQUE ON CONFLICT REPLACE, "
 					+ RosterConstants.NICKNAME + " TEXT, "
-					+ RosterConstants.PASSWORD + " TEXT"
+					+ RosterConstants.PASSWORD + " TEXT, "
+					+ RosterConstants.AUTOJOIN + " INTEGER"
 					+ ");");
 			
 		}
@@ -331,6 +332,9 @@ public class RosterProvider extends ContentProvider {
 						+ RosterConstants.NICKNAME + " TEXT, "
 						+ RosterConstants.PASSWORD + " TEXT"
 						+ ");");
+			case 6:
+				db.execSQL("ALTER TABLE " + TABLE_MUCS + " ADD COLUMN "
+						+ RosterConstants.AUTOJOIN + " INTEGER DEFAULT 1");
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUPS);
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROSTER);
@@ -357,6 +361,7 @@ public class RosterProvider extends ContentProvider {
 		
 		public static final String PASSWORD = "password";
 		public static final String NICKNAME = "nickname";
+		public static final String AUTOJOIN = "autojoin";
 
 		public static final String DEFAULT_SORT_ORDER = STATUS_MODE + " DESC, " + ALIAS + " COLLATE NOCASE";
 

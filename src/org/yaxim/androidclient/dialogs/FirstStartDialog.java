@@ -35,7 +35,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private Button mOkButton;
 	private AutoCompleteJidEdit mEditJabberID;
 	private EditText mEditPassword;
-	private EditText mRepeatPassword;
+	private CheckBox mShowPassword;
 	private CheckBox mCreateAccount;
 
 	public FirstStartDialog(MainWindow mainWindow,
@@ -55,14 +55,20 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		mEditJabberID = (AutoCompleteJidEdit) group.findViewById(R.id.StartupDialog_JID_EditTextField);
 		mEditPassword = (EditText) group.findViewById(R.id.StartupDialog_PASSWD_EditTextField);
-		mRepeatPassword = (EditText) group.findViewById(R.id.startup_password_repeat);
 		mCreateAccount = (CheckBox) group.findViewById(R.id.create_account);
+		mShowPassword = (CheckBox) group.findViewById(R.id.password_show);
 
 		mEditJabberID.setServerList(R.array.xmpp_servers);
 		mEditJabberID.addTextChangedListener(this);
 		mEditPassword.addTextChangedListener(this);
-		mRepeatPassword.addTextChangedListener(this);
 		mCreateAccount.setOnCheckedChangeListener(this);
+		mShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+					mEditPassword.setTransformationMethod(isChecked ? null :
+							new android.text.method.PasswordTransformationMethod());
+				}
+			});
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +81,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 				.getDefaultSharedPreferences(mainWindow);
 		mEditJabberID.setText(sharedPreferences.getString(PreferenceConstants.JID, ""));
 		mEditPassword.setText(sharedPreferences.getString(PreferenceConstants.PASSWORD, ""));
-		mRepeatPassword.setText(mEditPassword.getText());
 
 		// if create is set, simulate click on checkbox
 		if (sharedPreferences.getBoolean(PreferenceConstants.INITIAL_CREATE, false)) {
@@ -131,10 +136,9 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		if (mEditPassword.length() == 0)
 			is_ok = false;
 		if (mCreateAccount.isChecked()) {
-			boolean passwords_match = mEditPassword.getText().toString().equals(
-					mRepeatPassword.getText().toString());
-			is_ok = is_ok && passwords_match;
-			mRepeatPassword.setError((passwords_match || mRepeatPassword.length() == 0) ?
+			boolean good_password = (mEditPassword.length() >= 6);
+			is_ok = is_ok && good_password;
+			mEditPassword.setError((good_password || mEditPassword.length() == 0) ?
 					null : mainWindow.getString(R.string.StartupDialog_error_password));
 		}
 		mOkButton.setEnabled(is_ok);
@@ -143,16 +147,14 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	/* CompoundButton.OnCheckedChangeListener for mCreateAccount */
 	@Override
 	public void onCheckedChanged(CompoundButton btn,boolean isChecked) {
-		mRepeatPassword.setVisibility(isChecked? View.VISIBLE : View.GONE);
 		if (isChecked) {
-			if (mEditPassword.length() == 0 && mRepeatPassword.length() == 0) {
+			if (mEditPassword.length() == 0) {
 				// create secure random password
 				String pw = XMPPHelper.securePassword();
 				Toast.makeText(mainWindow, R.string.StartupDialog_created_password, Toast.LENGTH_SHORT).show();
 				mEditPassword.setText(pw);
-				mRepeatPassword.setText(pw);
 			} else
-				mRepeatPassword.requestFocus();
+				mEditPassword.requestFocus();
 		}
 		updateDialog();
 	}
@@ -175,7 +177,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		editor.putString(PreferenceConstants.JID, jabberID);
 		editor.putString(PreferenceConstants.PASSWORD, password);
 		editor.putString(PreferenceConstants.RESSOURCE, resource);
-		editor.putString(PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT);
 		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
 		editor.commit();
 	}

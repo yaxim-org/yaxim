@@ -27,12 +27,12 @@
 	<string name="StartupDialog_Title">Willkommen bei yaxim!</string>
 	<string name="StartupDialog_Summary">Sie müssen yaxim zuerst konfigurieren. Bitte Ihre Jabber-ID und Ihr Passwort eingeben.</string>
 	<string name="StartupDialog_pwHint">Passwort eingeben</string>
-	<string name="StartupDialog_pwrHint">Passwort wiederholen</string>
+	<string name="StartupDialog_pwshowHint">Passwort anzeigen</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Passwort:</string>
 	<string name="StartupDialog_advanced">Erweitert…</string>
 	<string name="StartupDialog_create_new">Neues Konto anlegen</string>
-	<string name="StartupDialog_error_password">Passwort stimmt nicht überein!</string>
+	<string name="StartupDialog_error_password">Passwort ist zu kurz!</string>
 	<string name="StartupDialog_created_password">Sicheres Passwort erzeugt</string>
 	<string name="StartupDialog_auth_failed">Bitte Benutzername und Passwort prüfen!</string>
 
@@ -104,8 +104,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Dunkel</item>
 		<item>Hell</item>
-		<item>Pinie</item>
-		<item>Eis</item>
+		<item>Pine</item>
+		<item>Ice</item>
 	</string-array>
 	<string name="preftitle_ui">Darstellung</string>
 	<string-array name="fontSizesChat">
@@ -182,7 +182,7 @@
 	<string name="account_prio_dialog_title">Priorität eingeben:</string>
 	<string name="account_port_title">Server-Port</string>
 	<string name="account_port_sum">Vorgabe: 5222</string>
-	<string name="account_port_dialog_title">Serveranschluss eingeben:</string>
+	<string name="account_port_dialog_title">Server-Port eingeben:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Benutzerdefinierter Server</string>
 	<string name="account_customserver_summ">(Optional) alternativer Serverrechnername</string>
@@ -216,7 +216,9 @@
 	<string name="toast_stored_offline">Nachricht zum Versand gespeichert.</string>
 	<string name="chat_enterMsgHint">Mitteilung eingeben</string> 
 
-	<!-- Chat menu -->
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Zitieren</string>
+	<!-- Message context menu: repeat the same message -->
 	<string name="chatmenu_resend">Erneut senden</string>
 
 	<!-- GPS settings -->
@@ -229,9 +231,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Über yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Entwickler</string>
-	<string name="AboutDialog_DevelopersText">Kontakt mit den Entwicklern auf http://yaxim.org oder im freenode IRC: #yaxim</string>
+	<string name="AboutDialog_DevelopersText">Kontakt</string>
 	<string name="AboutDialog_LicenceTitle">Lizenzierung</string>
-	<string name="AboutDialog_Vote">Rückmeldung geben</string>
+	<string name="AboutDialog_Vote">App bewerten</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Online</string>

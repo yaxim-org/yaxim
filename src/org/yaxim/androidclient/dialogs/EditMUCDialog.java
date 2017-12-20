@@ -17,6 +17,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import org.yaxim.androidclient.R;
@@ -31,6 +33,7 @@ public class EditMUCDialog extends AlertDialog implements
 	private AutoCompleteJidEdit mRoomJID;
 	private EditText mNickName;
 	private EditText mPassword;
+	private CheckBox mShowPassword;
 	private boolean openChat = true;
 
 	public EditMUCDialog(Activity context) {
@@ -51,6 +54,14 @@ public class EditMUCDialog extends AlertDialog implements
 				R.array.muc_services);
 		mNickName = (EditText)group.findViewById(R.id.muc_new_nick);
 		mPassword = (EditText)group.findViewById(R.id.muc_new_pw);
+		mShowPassword = (CheckBox) group.findViewById(R.id.password_show);
+		mShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				mPassword.setTransformationMethod(isChecked ? null :
+						new android.text.method.PasswordTransformationMethod());
+			}
+		});
 
 		setButton(BUTTON_POSITIVE, context.getString(android.R.string.ok), this);
 		setButton(BUTTON_NEGATIVE, context.getString(android.R.string.cancel),
@@ -111,7 +122,7 @@ public class EditMUCDialog extends AlertDialog implements
 	}
 
 	public void addAndOpen(String jid, String password, String nickname) {
-		ChatRoomHelper.addRoom(mContext, jid, password, nickname);
+		ChatRoomHelper.addRoom(mContext, jid, password, nickname, true);
 		if (openChat)
 			ChatHelper.startChatActivity(mContext, jid, jid, null);
 		ChatRoomHelper.syncDbRooms(mContext);
