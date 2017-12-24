@@ -1,9 +1,12 @@
 package org.yaxim.androidclient.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jivesoftware.smack.XMPPConnection;
+import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
@@ -203,6 +206,11 @@ public class XMPPService extends GenericService {
 			public void clearNotifications(String Jid) throws RemoteException {
 				clearNotification(Jid);
 			}
+
+			public void sendFile(String path, String user, String message) throws RemoteException {
+				if (mSmackable != null)
+					new FileHttpUploadTask(mSmackable, path, user, message, false).execute();
+			}
 		};
 	}
 	
@@ -254,6 +262,11 @@ public class XMPPService extends GenericService {
 					shortToastNotify(getString(R.string.Global_authenticate_first));
 					return null;
 				}
+			}
+			@Override
+			public void sendFile(String path, String user, String message) throws RemoteException {
+				if (mSmackable != null)
+					new FileHttpUploadTask(mSmackable, path, user, message, true).execute();
 			}
 		};
 	}

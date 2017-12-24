@@ -46,4 +46,12 @@ public class XMPPMucServiceAdapter {
 		}
 	}
 
+	public void sendFile(String path, String user, String message) {
+		try {
+			xmppServiceStub.sendFile(path, user, message);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

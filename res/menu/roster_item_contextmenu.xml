@@ -9,5 +9,9 @@
 			android:title="@string/roster_contextmenu_contact_delmsg"
 			android:orderInCategory="2"
 			/>
+		<item   android:id="@+id/roster_contextmenu_send_file"
+			android:title="@string/roster_contextmenu_send_file"
+			android:orderInCategory="11"
+			/>
 	</group>
 </menu>

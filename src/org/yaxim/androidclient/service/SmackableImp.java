@@ -17,16 +17,7 @@ import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
-import org.jivesoftware.smack.AccountManager;
-import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.ConnectionListener;
-import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.RosterEntry;
-import org.jivesoftware.smack.RosterGroup;
-import org.jivesoftware.smack.RosterListener;
-import org.jivesoftware.smack.SmackConfiguration;
-import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.IQ.Type;
@@ -84,6 +75,7 @@ import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.packet.PreAuth;
 import org.yaxim.androidclient.packet.Replace;
+import org.yaxim.androidclient.packet.httpupload.Slot;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
@@ -176,6 +168,8 @@ public class SmackableImp implements Smackable {
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
 		pm.addIQProvider("query","jabber:iq:private", new PrivateDataManager.PrivateDataIQProvider());
+
+		pm.addIQProvider(Slot.NAME, Slot.XMLNS, new Slot.Provider());
 
 		XmppStreamHandler.addExtensionProviders();
 	}
@@ -2070,4 +2064,10 @@ public class SmackableImp implements Smackable {
 		Log.d(TAG, "getUserList(" + jid + "): " + tmpList.size());
 		return tmpList;
 	}
+
+	@Override
+	public XMPPConnection getConnection() {
+		return mXMPPConnection;
+	}
+
 }

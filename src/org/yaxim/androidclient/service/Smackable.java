@@ -2,6 +2,7 @@ package org.yaxim.androidclient.service;
 
 import java.util.List;
 
+import org.jivesoftware.smack.XMPPConnection;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
 
@@ -39,5 +40,7 @@ public interface Smackable {
 	String getNameForJID(String jid);
 	String getMyMucNick(String jid);
 	List<ParcelablePresence> getUserList(String jid);
+
+	XMPPConnection getConnection();
 
 }
