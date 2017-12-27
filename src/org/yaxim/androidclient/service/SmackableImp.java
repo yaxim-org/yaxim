@@ -31,6 +31,7 @@ import org.jivesoftware.smack.parsing.UnparsablePacket;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
+import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.bookmark.BookmarkManager;
 import org.jivesoftware.smackx.bookmark.BookmarkedConference;
@@ -45,6 +46,8 @@ import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
+import org.jivesoftware.smackx.packet.DataForm;
+import org.jivesoftware.smackx.packet.DiscoverItems;
 import org.jivesoftware.smackx.provider.DataFormProvider;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
@@ -659,7 +662,7 @@ public class SmackableImp implements Smackable {
 				mStreamHandler.notifyInitialLogin();
 				cleanupMUCs(true);
 				setStatusFromConfig();
-				discoverMUCDomainAsync();
+				discoverServicesAsync();
 				mLastOnline = System.currentTimeMillis();
 			}
 
@@ -1730,14 +1733,56 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private void discoverMUCDomainAsync() {
+	private void discoverServicesAsync() {
 		new Thread() {
 			public void run() {
+				discoverFileUpload();
 				discoverMUCDomain();
 				loadMUCBookmarks(); // XXX: hack
 			}
 		}.start();
 	}
+
+	private void discoverFileUpload() {
+		try {
+			ServiceDiscoveryManager serviceDiscoveryManager = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
+			DiscoverItems items = serviceDiscoveryManager.discoverItems(mConfig.server);
+
+			Iterator<DiscoverItems.Item> it = items.getItems();
+			while (it.hasNext() && mConfig.fileUploadDomain == null) {
+				DiscoverItems.Item item = it.next();
+				String jid = item.getEntityID();
+				DiscoverInfo info = serviceDiscoveryManager.discoverInfo(jid);
+				Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
+				while (identities.hasNext()) {
+					DiscoverInfo.Identity identity = identities.next();
+					if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
+						mConfig.fileUploadDomain = jid;
+					}
+				}
+				if (mConfig.fileUploadDomain != null) {
+					DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
+					if (dataForm != null) {
+						Iterator<FormField> fields = dataForm.getFields();
+						while (fields.hasNext()) {
+							FormField field = fields.next();
+							if (field.getVariable().equals("max-file-size")) {
+								try {
+									mConfig.fileUploadSizeLimit = Long.parseLong(field.getValues().next());
+								} catch (NumberFormatException nfe) {
+									mConfig.fileUploadSizeLimit = 0;
+								}
+							}
+						}
+					}
+					Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
+				}
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Error discovering HTTP Upload: " + e.getLocalizedMessage());
+		}
+	}
+
 
 	private synchronized void cleanupMUCs(boolean set_offline) {
 		// get a fresh MUC list

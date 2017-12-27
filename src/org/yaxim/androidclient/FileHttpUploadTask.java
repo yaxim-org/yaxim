@@ -15,9 +15,11 @@ import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.DataForm;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
 import org.jivesoftware.smackx.packet.DiscoverItems;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.packet.httpupload.Request;
 import org.yaxim.androidclient.packet.httpupload.Slot;
 import org.yaxim.androidclient.service.Smackable;
+import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.FileHelper;
 
 import java.io.*;
@@ -29,21 +31,23 @@ import java.util.Iterator;
 public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
     private static final String TAG = "yaxim.FileHttpUpload";
 
+    private YaximConfiguration config;
     private Smackable smackable;
     private Uri path;
     private File file;
     private String user;
     private String text;
     private boolean ismuc;
-    private int maxSize = 0;
 
-    public FileHttpUploadTask(Context ctx, Smackable smackable, Uri path, String user, String text, boolean ismuc) {
+    public FileHttpUploadTask(XMPPService ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, String text, boolean ismuc) {
+        this.config = config;
         this.smackable = smackable;
         this.path = path;
         this.user = user;
         this.text = text;
         this.ismuc = ismuc;
         this.file = new File(FileHelper.getPath(ctx, path));
+
     }
 
     @Override
@@ -53,56 +57,15 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
             return null;
         }
 
-        String service = null;
-
         if (file.exists()) {
             XMPPConnection connection = smackable.getConnection();
-            try {
-                ServiceDiscoveryManager serviceDiscoveryManager = ServiceDiscoveryManager.getInstanceFor(connection);
-                DiscoverItems items = serviceDiscoveryManager.discoverItems(StringUtils.parseServer(StringUtils.parseServer(connection.getUser())));
 
-                Iterator<DiscoverItems.Item> it = items.getItems();
-                if (it.hasNext()) {
-                    while (it.hasNext() && service == null) {
-                        DiscoverItems.Item item = it.next();
-                        String jid = item.getEntityID();
-                        DiscoverInfo info = serviceDiscoveryManager.discoverInfo(jid);
-                        Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
-                        while(identities.hasNext()) {
-                            DiscoverInfo.Identity identity = identities.next();
-                            if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
-                                service = jid;
-                            }
-                        }
-                        if (service != null) {
-                            DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
-                            if (dataForm != null) {
-                                Iterator<FormField> fields = dataForm.getFields();
-                                while(fields.hasNext()) {
-                                    FormField field = fields.next();
-                                    if (field.getVariable().equals("max-file-size")) {
-                                        try {
-                                            maxSize = Integer.parseInt(field.getValues().next());
-                                        } catch (NumberFormatException nfe) {
-                                            maxSize = 0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                log("Error discovering service: " + e.getLocalizedMessage());
-                return null;
-            }
-
-            if (service == null) {
+            if (config.fileUploadDomain == null) {
                 log("Server no support http upload.");
                 return null;
             }
 
-            if (maxSize > 0 && file.length() > maxSize) {
+            if (config.fileUploadSizeLimit > 0 && file.length() > config.fileUploadSizeLimit) {
                 log("Large file");
                 return null;
             }
@@ -112,7 +75,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
 
             Request request = new Request(file.getName(), String.valueOf(file.length()), mimeType);
             request.setPacketID(id);
-            request.setTo(service);
+            request.setTo(config.fileUploadDomain);
             request.setType(IQ.Type.GET);
 
             PacketCollector collector = connection.createPacketCollector(new PacketIDFilter(id));
