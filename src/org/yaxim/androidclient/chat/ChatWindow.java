@@ -341,6 +341,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				
 				mChatServiceAdapter.clearNotifications(mWithJabberID);
 				updateContactStatus();
+				handleSendIntent();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -377,6 +378,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		mChatInput.addTextChangedListener(new StylingHelper.MessageEditorStyler(mChatInput));
 		if (i.hasExtra(INTENT_EXTRA_MESSAGE)) {
 			mChatInput.setText(i.getExtras().getString(INTENT_EXTRA_MESSAGE));
+			i.removeExtra(INTENT_EXTRA_MESSAGE);
+		}
+	}
+	private void handleSendIntent() {
+		Intent i = getIntent();
+		if (i.hasExtra(Intent.EXTRA_STREAM)) {
+			Uri stream = (Uri)i.getParcelableExtra(Intent.EXTRA_STREAM);
+			mChatServiceAdapter.sendFile(stream, mWithJabberID, mChatInput.getText().toString(), FileHttpUploadTask.F_RESIZE);
+			mChatInput.setText("");
+			i.removeExtra(Intent.EXTRA_STREAM);
 		}
 	}
 

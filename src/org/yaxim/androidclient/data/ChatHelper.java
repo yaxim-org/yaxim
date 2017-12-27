@@ -95,7 +95,7 @@ public class ChatHelper {
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { jid });
 	}
 
-	public static void startChatActivity(Context ctx, String user, String userName, String message) {
+	public static void startChatActivity(Context ctx, String user, String userName, String message, Uri image) {
 		Intent chatIntent = new Intent(ctx, ChatWindow.class);
 		if (ChatRoomHelper.isRoom(ctx, user))
 			chatIntent.setClass(ctx, MUCChatWindow.class);
@@ -105,7 +105,14 @@ public class ChatHelper {
 		if (message != null) {
 			chatIntent.putExtra(ChatWindow.INTENT_EXTRA_MESSAGE, message);
 		}
+		if (image != null) {
+			chatIntent.putExtra(Intent.EXTRA_STREAM, image);
+			chatIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		}
 		ctx.startActivity(chatIntent);
+	}
+	public static void startChatActivity(Context ctx, String user, String userName, String message) {
+		startChatActivity(ctx, user, userName, message, null);
 	}
 
 	public static void removeChatHistoryDialog(final Context ctx, final String jid, final String userName) {

@@ -844,7 +844,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		Intent i = getIntent();
 		if (!mHandledIntent && i.getAction() != null && i.getAction().equals(Intent.ACTION_SEND)) {
 			// delegate ACTION_SEND to child window and close self
-			ChatHelper.startChatActivity(this, userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT));
+			Uri stream = (Uri)i.getParcelableExtra(Intent.EXTRA_STREAM);
+			ChatHelper.startChatActivity(this, userJid, userName, i.getStringExtra(Intent.EXTRA_TEXT), stream);
 			finish();
 		} else {
 			StatusMode s = getContactStatusMode(c);
