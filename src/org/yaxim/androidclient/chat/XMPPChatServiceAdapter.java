@@ -44,9 +44,9 @@ public class XMPPChatServiceAdapter {
 		}
 	}
 
-	public void sendFile(Uri path, String user, String message) {
+	public void sendFile(Uri path, String user, String message, int flags) {
 		try {
-			xmppServiceStub.sendFile(path, user, message);
+			xmppServiceStub.sendFile(path, user, message, flags);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

@@ -32,22 +32,24 @@ import java.util.Iterator;
 public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask.UploadResponse> {
     private static final String TAG = "yaxim.FileHttpUpload";
 
+    public static final int F_RESIZE = 1;
+
     private Context ctx;
     private YaximConfiguration config;
     private Smackable smackable;
     private Uri path;
     private String user;
     private String text;
-    private boolean ismuc;
+    private int flags;
 
-    public FileHttpUploadTask(Context ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, String text, boolean ismuc) {
+    public FileHttpUploadTask(Context ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, String text, int flags) {
         this.ctx = ctx;
         this.config = config;
         this.smackable = smackable;
         this.path = path;
         this.user = user;
         this.text = text;
-        this.ismuc = ismuc;
+        this.flags = flags;
     }
 
     @Override
@@ -143,8 +145,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
             String message = response.response;
             if (text != null && !text.equals("")) message = text + "\n" + message;
 
-            if (!ismuc) smackable.sendMessage(user, message);
-            else smackable.sendMucMessage(user, message);
+            smackable.sendMessage(user, message);
         } else {
             Toast.makeText(ctx, response.toString(), Toast.LENGTH_LONG).show();
         }

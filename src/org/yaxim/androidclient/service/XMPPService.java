@@ -207,9 +207,9 @@ public class XMPPService extends GenericService {
 				clearNotification(Jid);
 			}
 
-			public void sendFile(Uri path, String user, String message) throws RemoteException {
+			public void sendFile(Uri path, String user, String message, int flags) throws RemoteException {
 				if (mSmackable != null)
-					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, message, false).execute();
+					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, message, flags).execute();
 			}
 		};
 	}
@@ -262,11 +262,6 @@ public class XMPPService extends GenericService {
 					shortToastNotify(getString(R.string.Global_authenticate_first));
 					return null;
 				}
-			}
-			@Override
-			public void sendFile(Uri path, String user, String message) throws RemoteException {
-				if (mSmackable != null)
-					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, message, true).execute();
 			}
 		};
 	}

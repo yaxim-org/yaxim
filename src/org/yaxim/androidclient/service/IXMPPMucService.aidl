@@ -8,8 +8,7 @@ interface IXMPPMucService {
 	boolean inviteToRoom(String contactJid, String roomJid);
 	String getMyMucNick(String jid);
 	List<ParcelablePresence> getUserList(String jid);
-	void sendFile(in Uri path, String user, String message);
-	
+
 	// TODO: private chat in a room
 	//RoomInfo getRoomInfo(String room); TODO: make RoomInfo "parcelable"??
 	// TODO: manage roles
