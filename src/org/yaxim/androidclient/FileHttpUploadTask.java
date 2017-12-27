@@ -1,5 +1,7 @@
 package org.yaxim.androidclient;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,6 +18,7 @@ import org.jivesoftware.smackx.packet.DiscoverItems;
 import org.yaxim.androidclient.packet.httpupload.Request;
 import org.yaxim.androidclient.packet.httpupload.Slot;
 import org.yaxim.androidclient.service.Smackable;
+import org.yaxim.androidclient.util.FileHelper;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -27,18 +30,20 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
     private static final String TAG = "yaxim.FileHttpUpload";
 
     private Smackable smackable;
-    private String path;
+    private Uri path;
+    private File file;
     private String user;
     private String text;
     private boolean ismuc;
     private int maxSize = 0;
 
-    public FileHttpUploadTask(Smackable smackable, String path, String user, String text, boolean ismuc) {
+    public FileHttpUploadTask(Context ctx, Smackable smackable, Uri path, String user, String text, boolean ismuc) {
         this.smackable = smackable;
         this.path = path;
         this.user = user;
         this.text = text;
         this.ismuc = ismuc;
+        this.file = new File(FileHelper.getPath(ctx, path));
     }
 
     @Override
@@ -50,7 +55,6 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
 
         String service = null;
 
-        final File file = new File(path);
         if (file.exists()) {
             XMPPConnection connection = smackable.getConnection();
             try {

@@ -2,6 +2,7 @@ package org.yaxim.androidclient.chat;
 
 import java.util.List;
 
+import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
 import org.yaxim.androidclient.service.IXMPPMucService;
@@ -46,7 +47,7 @@ public class XMPPMucServiceAdapter {
 		}
 	}
 
-	public void sendFile(String path, String user, String message) {
+	public void sendFile(Uri path, String user, String message) {
 		try {
 			xmppServiceStub.sendFile(path, user, message);
 		} catch (RemoteException e) {

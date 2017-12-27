@@ -282,9 +282,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		if (resultCode == RESULT_OK && requestCode == REQUEST_FILE) {
 			Uri uri = data.getData();
 			if (uri != null) {
-				String path = FileHelper.getPath(this, uri);
-				if (path == null) path = uri.toString();
-				mChatServiceAdapter.sendFile(path, mWithJabberID, mChatInput.getText().toString());
+				mChatServiceAdapter.sendFile(uri, mWithJabberID, mChatInput.getText().toString());
 				mChatInput.setText("");
 			}
 		}
