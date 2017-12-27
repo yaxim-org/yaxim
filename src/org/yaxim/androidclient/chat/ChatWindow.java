@@ -464,9 +464,17 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		return inflateGenericContactOptions(menu);
+	}
+
+	public boolean inflateGenericContactOptions(com.actionbarsherlock.view.Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		//inflater.inflate(R.menu.contact_options, menu);
 		inflater.inflate(R.menu.roster_item_contextmenu, menu);
+		if (mConfig.fileUploadDomain != null) {
+			menu.findItem(R.id.roster_contextmenu_send_file).setVisible(true);
+			menu.findItem(R.id.roster_contextmenu_send_image).setVisible(true);
+		}
 		return true;
 	}
 	

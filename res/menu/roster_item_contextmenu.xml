@@ -14,11 +14,13 @@
 			android:icon="@android:drawable/ic_menu_camera"
 			android:orderInCategory="10"
 			android:showAsAction="ifRoom"
-			android:title="@string/roster_contextmenu_send_image"/>
+			android:title="@string/roster_contextmenu_send_image"
+			android:visible="false"/>
 		<item
 			android:id="@+id/roster_contextmenu_send_file"
 			android:icon="@android:drawable/ic_menu_upload"
 			android:orderInCategory="11"
-			android:title="@string/roster_contextmenu_send_file"/>
+			android:title="@string/roster_contextmenu_send_file"
+			android:visible="false"/>
 	</group>
 </menu>
