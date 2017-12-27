@@ -5,20 +5,34 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
+import org.yaxim.androidclient.FileHttpUploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by georg on 12/27/17.
  */
 
 public class FileHelper {
+	private static final int IMAGE_SIZE = 1920;
+	private static final int IMAGE_QUALITY = 75;
+
 	/**
 	 * Get a file path from a Uri. This will get the the path for Storage Access
 	 * Framework Documents, as well as the _data field for the MediaStore and
@@ -156,6 +170,50 @@ public class FileHelper {
 	 */
 	public static boolean isGooglePhotosUri(Uri uri) {
 		return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+	}
+
+	public static File createImageFile(Context ctx) {
+		// Create an image file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = timeStamp + "_";
+		File storageDir = ctx.getCacheDir();
+		try {
+			File image = File.createTempFile(
+					imageFileName,  /* prefix */
+					".jpg",         /* suffix */
+					storageDir      /* directory */
+			);
+			return image;
+		} catch (Exception e) {
+			Log.d("FileHelper", e.getLocalizedMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static byte[] shrinkPicture(Context ctx, Uri path) {
+		try {
+			InputStream is = ctx.getContentResolver().openInputStream(path);
+			BitmapFactory.Options opts = new BitmapFactory.Options();
+			opts.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(is, null, opts);
+			if (!opts.outMimeType.contains("jpeg") || opts.outHeight < 0 || opts.outWidth < 0)
+				return null;
+			int current_size = (opts.outWidth > opts.outHeight)? opts.outWidth : opts.outHeight;
+			int factor = (int)Math.ceil((double)current_size/ IMAGE_SIZE);
+			Log.d("FileHelper", "Shrinking image from " + opts.outWidth + "*" + opts.outHeight + " by factor " + factor + "...");
+			opts.inSampleSize = factor;
+			opts.inJustDecodeBounds = false;
+			is.close();
+			is = ctx.getContentResolver().openInputStream(path);
+			Bitmap result = BitmapFactory.decodeStream(is, null, opts);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			result.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, baos);
+			is.close();
+			return baos.toByteArray();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public static FileInfo getFileInfo(Context ctx, Uri path) {

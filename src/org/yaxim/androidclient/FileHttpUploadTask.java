@@ -10,24 +10,15 @@ import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.*;
 import org.jivesoftware.smack.packet.IQ;
-import org.jivesoftware.smack.util.StringUtils;
-import org.jivesoftware.smackx.FormField;
-import org.jivesoftware.smackx.ServiceDiscoveryManager;
-import org.jivesoftware.smackx.packet.DataForm;
-import org.jivesoftware.smackx.packet.DiscoverInfo;
-import org.jivesoftware.smackx.packet.DiscoverItems;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.packet.httpupload.Request;
 import org.yaxim.androidclient.packet.httpupload.Slot;
 import org.yaxim.androidclient.service.Smackable;
-import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.FileHelper;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Iterator;
 
 public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask.UploadResponse> {
     private static final String TAG = "yaxim.FileHttpUpload";
@@ -94,22 +85,22 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
                     HttpURLConnection conn = null;
 
                     try {
+                        byte[] bytes = null;
+                        if ((flags & F_RESIZE) != 0)
+                            bytes = FileHelper.shrinkPicture(ctx, path);
+                        if (bytes == null)
+							bytes = readFile(path, fi.size);
+
                         conn = (HttpURLConnection) new URL(putUrl).openConnection();
                         conn.setDoOutput(true);
                         conn.setDoInput(true);
                         conn.setUseCaches(false);
                         conn.setRequestMethod("PUT");
 
-                        try {
-                            DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-                            byte[] bytes = readFile(path, fi.size);
-                            out.write(bytes, 0, bytes.length);
-                            out.flush();
-                            out.close();
-                        } catch (Exception e) {
-                            log("Error sending file");
-                            return failResponse("Error uploading", e);
-                        }
+						DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+						out.write(bytes, 0, bytes.length);
+						out.flush();
+						out.close();
 
                         int responseCode = conn.getResponseCode();
                         if (responseCode != 200 && responseCode != 201) {

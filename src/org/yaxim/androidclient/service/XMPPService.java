@@ -1,11 +1,9 @@
 package org.yaxim.androidclient.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.jivesoftware.smack.XMPPConnection;
 import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
