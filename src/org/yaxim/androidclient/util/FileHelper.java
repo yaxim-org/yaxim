@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.util;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +10,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+
+import java.io.File;
 
 /**
  * Created by georg on 12/27/17.
@@ -152,5 +156,34 @@ public class FileHelper {
 	 */
 	public static boolean isGooglePhotosUri(Uri uri) {
 		return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+	}
+
+	public static FileInfo getFileInfo(Context ctx, Uri path) {
+		FileInfo fi = null;
+		ContentResolver cr = ctx.getContentResolver();
+		Cursor c = cr.query(path, null, null, null, null);
+		/*
+		 * Get the column indexes of the data in the Cursor,
+		 * move to the first row in the Cursor, get the data,
+		 * and display it.
+		 */
+		int nameIndex = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+		int sizeIndex = c.getColumnIndex(OpenableColumns.SIZE);
+		if (c.moveToFirst())
+			fi = new FileInfo(cr.getType(path), c.getString(nameIndex), c.getLong(sizeIndex));
+		c.close();
+		return fi;
+	}
+
+	public static class FileInfo {
+		public String mimeType;
+		public String displayName;
+		public long size;
+
+		public FileInfo(String mimeType, String displayName, long size) {
+			this.mimeType = mimeType;
+			this.displayName = displayName;
+			this.size = size;
+		}
 	}
 }

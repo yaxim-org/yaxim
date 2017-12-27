@@ -56,9 +56,9 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
             if (path == null) {
                 return failResponse("path is null", null);
             }
-            File file = new File(FileHelper.getPath(ctx, path));
+            FileHelper.FileInfo fi = FileHelper.getFileInfo(ctx, path);
 
-            if (!file.exists())
+            if (fi == null)
                 return failResponse("File not found", null);
 
             XMPPConnection connection = smackable.getConnection();
@@ -67,13 +67,11 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
                 return failResponse("No server support", null);
             }
 
-            if (config.fileUploadSizeLimit > 0 && file.length() > config.fileUploadSizeLimit) {
+            if (config.fileUploadSizeLimit > 0 && fi.size > config.fileUploadSizeLimit) {
                 return failResponse("File too large", null);
             }
 
-            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-
-            Request request = new Request(file.getName(), String.valueOf(file.length()), mimeType);
+            Request request = new Request(fi.displayName, String.valueOf(fi.size), fi.mimeType);
             request.setTo(config.fileUploadDomain);
             request.setType(IQ.Type.GET);
 
@@ -102,7 +100,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
 
                         try {
                             DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-                            byte[] bytes = readFile(file);
+                            byte[] bytes = readFile(path, fi.size);
                             out.write(bytes, 0, bytes.length);
                             out.flush();
                             out.close();
@@ -152,21 +150,20 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
         }
     }
 
-    private byte[] readFile(File file) throws IOException {
-        // Open file
-        RandomAccessFile f = new RandomAccessFile(file, "r");
+    private byte[] readFile(Uri path, long size) throws IOException {
+        int length = (int) size;
+        if (length != size)
+            throw new IOException("File size >= 2 GB");
+        InputStream is = ctx.getContentResolver().openInputStream(path);
         try {
-            // Get and check length
-            long longlength = f.length();
-            int length = (int) longlength;
-            if (length != longlength)
-                throw new IOException("File size >= 2 GB");
             // Read file and return data
             byte[] data = new byte[length];
-            f.readFully(data);
+            int offset = 0;
+            while (offset < length)
+				offset += is.read(data, offset, length-offset);
             return data;
         } finally {
-            f.close();
+            is.close();
         }
     }
 
