@@ -341,6 +341,7 @@
 
 	<!-- File upload -->
 	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="roster_contextmenu_send_image">Send image</string>
 	<string name="select_file">Select file</string>
 
 </resources>

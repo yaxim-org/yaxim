@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
 
+import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
@@ -69,6 +70,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		TextWatcher, LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
 
 	private static final int REQUEST_FILE = 1;
+	private static final int REQUEST_IMAGE = 2;
 
 	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
 	public static final String INTENT_EXTRA_MESSAGE = ChatWindow.class.getName() + ".message";
@@ -279,10 +281,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK && requestCode == REQUEST_FILE) {
+		if (data != null && resultCode == RESULT_OK &&
+				(requestCode == REQUEST_FILE || requestCode == REQUEST_IMAGE)) {
 			Uri uri = data.getData();
 			if (uri != null) {
-				mChatServiceAdapter.sendFile(uri, mWithJabberID, mChatInput.getText().toString());
+				int flags = 0;
+				if (requestCode == REQUEST_IMAGE)
+					flags |= FileHttpUploadTask.F_RESIZE;
+				mChatServiceAdapter.sendFile(uri, mWithJabberID, mChatInput.getText().toString(), flags);
 				mChatInput.setText("");
 			}
 		}
@@ -462,6 +468,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			finish();
+			return true;
+		case R.id.roster_contextmenu_send_image:
+			//intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			//intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(FileHelper.createImageFile(this)));
+			//startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)), REQUEST_IMAGE);
+			//return true;
+			intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)), REQUEST_IMAGE);
 			return true;
 		case R.id.roster_contextmenu_send_file:
 			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
