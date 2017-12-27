@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.XMPPConnection;
@@ -28,57 +29,55 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
 
-public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
+public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask.UploadResponse> {
     private static final String TAG = "yaxim.FileHttpUpload";
 
+    private Context ctx;
     private YaximConfiguration config;
     private Smackable smackable;
     private Uri path;
-    private File file;
     private String user;
     private String text;
     private boolean ismuc;
 
-    public FileHttpUploadTask(XMPPService ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, String text, boolean ismuc) {
+    public FileHttpUploadTask(Context ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, String text, boolean ismuc) {
+        this.ctx = ctx;
         this.config = config;
         this.smackable = smackable;
         this.path = path;
         this.user = user;
         this.text = text;
         this.ismuc = ismuc;
-        this.file = new File(FileHelper.getPath(ctx, path));
-
     }
 
     @Override
-    protected String doInBackground(Void... params) {
-        if (path == null) {
-            log("Error: path is null");
-            return null;
-        }
+    protected UploadResponse doInBackground(Void... params) {
+        try {
+            if (path == null) {
+                return failResponse("path is null", null);
+            }
+            File file = new File(FileHelper.getPath(ctx, path));
 
-        if (file.exists()) {
+            if (!file.exists())
+                return failResponse("File not found", null);
+
             XMPPConnection connection = smackable.getConnection();
 
             if (config.fileUploadDomain == null) {
-                log("Server no support http upload.");
-                return null;
+                return failResponse("No server support", null);
             }
 
             if (config.fileUploadSizeLimit > 0 && file.length() > config.fileUploadSizeLimit) {
-                log("Large file");
-                return null;
+                return failResponse("File too large", null);
             }
 
-            String id = "HFU_SLOT" + System.currentTimeMillis();
             String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 
             Request request = new Request(file.getName(), String.valueOf(file.length()), mimeType);
-            request.setPacketID(id);
             request.setTo(config.fileUploadDomain);
             request.setType(IQ.Type.GET);
 
-            PacketCollector collector = connection.createPacketCollector(new PacketIDFilter(id));
+            PacketCollector collector = connection.createPacketCollector(new PacketIDFilter(request.getPacketID()));
 
             connection.sendPacket(request);
 
@@ -86,7 +85,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
             if (iq != null) {
                 if (iq.getType() == IQ.Type.ERROR) {
                     log(iq.toXML());
-                    return null;
+                    return failResponse(iq.getError().getMessage(), null);
                 } else {
                     Slot slot = (Slot) iq;
                     String putUrl = slot.getPutUrl();
@@ -109,17 +108,18 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
                             out.close();
                         } catch (Exception e) {
                             log("Error sending file");
-                            return null;
+                            return failResponse("Error uploading", e);
                         }
 
                         int responseCode = conn.getResponseCode();
                         if (responseCode != 200 && responseCode != 201) {
-                            log("Error uploading file");
+                            return failResponse("Error uploading", new Throwable("HTTP Status Code " + responseCode));
                         } else {
-                            return getUrl;
+                            return new UploadResponse(true, getUrl, null);
                         }
                     } catch (Exception e) {
                         log(e.getLocalizedMessage());
+                        return failResponse("Error uploading", e);
                     } finally {
                         if (conn != null) {
                             conn.disconnect();
@@ -130,25 +130,26 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
                 log("SLOT is NULL");
             }
             collector.cancel();
-            return null;
-        } else {
-            log("File not found");
-            return null;
-        }
+            return failResponse("Timeout uploading", null);
+        } catch (Exception e) {
+			return failResponse("Error uploading", e);
+		}
     }
 
     @Override
     protected void onPreExecute() { }
 
     @Override
-    protected void onPostExecute(String result) {
-        if (result == null || result.equals("")) return;
+    protected void onPostExecute(UploadResponse response) {
+        if (response.success) {
+            String message = response.response;
+            if (text != null && !text.equals("")) message = text + "\n" + message;
 
-        String message = result;
-        if (text != null && !text.equals("")) message = text + "\n" + message;
-
-        if (!ismuc) smackable.sendMessage(user, message);
-        else smackable.sendMucMessage(user, message);
+            if (!ismuc) smackable.sendMessage(user, message);
+            else smackable.sendMucMessage(user, message);
+        } else {
+            Toast.makeText(ctx, response.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private byte[] readFile(File file) throws IOException {
@@ -173,4 +174,31 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, String> {
         Log.e(TAG, message);
     }
 
+    private UploadResponse failResponse(String reason, Throwable exception) {
+        return new UploadResponse(false, reason, exception);
+    }
+    private UploadResponse failResponse(int reason_id, Throwable exception) {
+        return new UploadResponse(false, ctx.getString(reason_id), exception);
+    }
+
+
+    public class UploadResponse {
+        boolean success;
+        String response;
+        Throwable exception;
+
+        public UploadResponse(boolean success, String response, Throwable exception) {
+            this.success = success;
+            this.response = response;
+            this.exception = exception;
+            if (!success)
+                Log.e("yaxim.HttpUpload", this.toString());
+        }
+
+        public String toString() {
+            if (success || exception == null)
+                return response;
+            else return String.format("%s: %s", response, exception.getLocalizedMessage());
+        }
+    }
 }
