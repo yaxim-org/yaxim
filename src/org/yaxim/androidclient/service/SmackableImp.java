@@ -1752,30 +1752,34 @@ public class SmackableImp implements Smackable {
 			while (it.hasNext() && mConfig.fileUploadDomain == null) {
 				DiscoverItems.Item item = it.next();
 				String jid = item.getEntityID();
-				DiscoverInfo info = serviceDiscoveryManager.discoverInfo(jid);
-				Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
-				while (identities.hasNext()) {
-					DiscoverInfo.Identity identity = identities.next();
-					if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
-						mConfig.fileUploadDomain = jid;
+				try {
+					DiscoverInfo info = serviceDiscoveryManager.discoverInfo(jid);
+					Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
+					while (identities.hasNext()) {
+						DiscoverInfo.Identity identity = identities.next();
+						if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
+							mConfig.fileUploadDomain = jid;
+						}
 					}
-				}
-				if (mConfig.fileUploadDomain != null) {
-					DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
-					if (dataForm != null) {
-						Iterator<FormField> fields = dataForm.getFields();
-						while (fields.hasNext()) {
-							FormField field = fields.next();
-							if (field.getVariable().equals("max-file-size")) {
-								try {
-									mConfig.fileUploadSizeLimit = Long.parseLong(field.getValues().next());
-								} catch (NumberFormatException nfe) {
-									mConfig.fileUploadSizeLimit = 0;
+					if (mConfig.fileUploadDomain != null) {
+						DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
+						if (dataForm != null) {
+							Iterator<FormField> fields = dataForm.getFields();
+							while (fields.hasNext()) {
+								FormField field = fields.next();
+								if (field.getVariable().equals("max-file-size")) {
+									try {
+										mConfig.fileUploadSizeLimit = Long.parseLong(field.getValues().next());
+									} catch (NumberFormatException nfe) {
+										mConfig.fileUploadSizeLimit = 0;
+									}
 								}
 							}
 						}
+						Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
 					}
-					Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
+				} catch (Exception e) {
+					Log.e(TAG, "Error response from " + jid + ": " + e.getLocalizedMessage());
 				}
 			}
 		} catch (Exception e) {
