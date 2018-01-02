@@ -60,7 +60,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
                 return failResponse("No server support", null);
             }
 
-            if (config.fileUploadSizeLimit > 0 && fi.size > config.fileUploadSizeLimit) {
+            if (((flags & F_RESIZE)==0) && config.fileUploadSizeLimit > 0 && fi.size > config.fileUploadSizeLimit) {
                 return failResponse("File too large", null);
             }
 
@@ -87,9 +87,12 @@ public class FileHttpUploadTask extends AsyncTask<Void, Void, FileHttpUploadTask
                     try {
                         byte[] bytes = null;
                         if ((flags & F_RESIZE) != 0)
-                            bytes = FileHelper.shrinkPicture(ctx, path);
+                            bytes = FileHelper.shrinkPicture(ctx, path, config.fileUploadSizeLimit);
                         if (bytes == null)
 							bytes = readFile(path, fi.size);
+                        if (config.fileUploadSizeLimit > 0 && bytes.length > config.fileUploadSizeLimit) {
+                            return failResponse("File too large", null);
+                        }
 
                         conn = (HttpURLConnection) new URL(putUrl).openConnection();
                         conn.setDoOutput(true);

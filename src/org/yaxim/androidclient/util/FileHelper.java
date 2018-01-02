@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -191,7 +192,7 @@ public class FileHelper {
 		}
 	}
 
-	public static byte[] shrinkPicture(Context ctx, Uri path) {
+	public static byte[] shrinkPicture(Context ctx, Uri path, long size_limit) {
 		try {
 			InputStream is = ctx.getContentResolver().openInputStream(path);
 			BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -201,15 +202,19 @@ public class FileHelper {
 				return null;
 			int current_size = (opts.outWidth > opts.outHeight)? opts.outWidth : opts.outHeight;
 			int factor = (int)Math.ceil((double)current_size/ IMAGE_SIZE);
-			Log.d("FileHelper", "Shrinking image from " + opts.outWidth + "*" + opts.outHeight + " by factor " + factor + "...");
-			opts.inSampleSize = factor;
-			opts.inJustDecodeBounds = false;
 			is.close();
-			is = ctx.getContentResolver().openInputStream(path);
-			Bitmap result = BitmapFactory.decodeStream(is, null, opts);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			result.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, baos);
-			is.close();
+			ByteArrayOutputStream baos;
+			do {
+				Log.d("FileHelper", "Shrinking image from " + opts.outWidth + "*" + opts.outHeight + " by factor " + factor + "...");
+				opts.inSampleSize = factor;
+				opts.inJustDecodeBounds = false;
+				is = ctx.getContentResolver().openInputStream(path);
+				Bitmap result = BitmapFactory.decodeStream(is, null, opts);
+				is.close();
+				baos = new ByteArrayOutputStream();
+				result.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, baos);
+				factor++;
+			} while (size_limit > 0 && baos.size() > size_limit);
 			return baos.toByteArray();
 		} catch (Exception e) {
 			return null;
