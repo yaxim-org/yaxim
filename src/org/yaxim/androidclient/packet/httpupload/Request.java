@@ -2,6 +2,7 @@ package org.yaxim.androidclient.packet.httpupload;
 
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.provider.IQProvider;
+import org.jivesoftware.smack.util.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 
 public class Request extends IQ {
@@ -26,9 +27,9 @@ public class Request extends IQ {
     @Override
     public String getChildElementXML() {
         String xml = "<request xmlns=\"" + XMLNS + "\">";
-        xml += "<filename>" + this.filename + "</filename>";
+        xml += "<filename>" + StringUtils.escapeForXML(this.filename) + "</filename>";
         xml += "<size>" + this.size + "</size>";
-        if (contentType != null && !contentType.equals("")) xml += "<content-type>" + contentType + "</content-type>";
+        if (contentType != null && !contentType.equals("")) xml += "<content-type>" + StringUtils.escapeForXML(contentType) + "</content-type>";
         xml += "</request>";
         return xml;
     }

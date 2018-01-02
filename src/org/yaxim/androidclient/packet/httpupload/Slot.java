@@ -2,6 +2,7 @@ package org.yaxim.androidclient.packet.httpupload;
 
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.provider.IQProvider;
+import org.jivesoftware.smack.util.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 
 public class Slot extends IQ {
@@ -24,10 +25,10 @@ public class Slot extends IQ {
     public String getChildElementXML() {
         String xml = "<"+ NAME + " xmlns=\"" + XMLNS + "\">";
         if (putUrl != null && !putUrl.equals("")) {
-            xml += "<put>" + putUrl + "</put>";
+            xml += "<put>" + StringUtils.escapeForXML(putUrl) + "</put>";
         }
         if (getUrl != null && !getUrl.equals("")) {
-            xml += "<get>" + getUrl + "</get>";
+            xml += "<get>" + StringUtils.escapeForXML(getUrl) + "</get>";
         }
         xml += "</" + NAME + ">";
         return xml;
