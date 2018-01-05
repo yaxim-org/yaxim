@@ -344,5 +344,8 @@
 	<string name="roster_contextmenu_take_image">Take picture</string>
 	<string name="roster_contextmenu_send_image">Choose picture</string>
 	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="upload_compress">Compressing picture&#8230;</string>
+	<string name="upload_uploading">Uploading&#8230;</string>
+	<string name="upload_too_large">file too large!</string>
 
 </resources>
