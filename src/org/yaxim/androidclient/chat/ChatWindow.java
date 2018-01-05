@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.chat;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -71,6 +72,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	private static final int REQUEST_FILE = 1;
 	private static final int REQUEST_IMAGE = 2;
+	private static final int REQUEST_CAMERA = 3;
 
 	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
 	public static final String INTENT_EXTRA_MESSAGE = ChatWindow.class.getName() + ".message";
@@ -89,6 +91,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private static final int CHAT_MSG_LOADER = 0;
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
+	private Uri cameraPictureUri = null;
 
 	protected YaximConfiguration mConfig;
 	private ContentObserver mContactObserver = new ContactObserver();
@@ -279,18 +282,25 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			unbindXMPPService();
 	}
 
+	public void sendFile(Uri path, int flags) {
+		mChatServiceAdapter.sendFile(path, mWithJabberID, mChatInput.getText().toString(), flags);
+		mChatInput.setText("");
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data != null && resultCode == RESULT_OK &&
-				(requestCode == REQUEST_FILE || requestCode == REQUEST_IMAGE)) {
+		if (resultCode != RESULT_OK)
+			return;
+		if (requestCode == REQUEST_FILE || requestCode == REQUEST_IMAGE) {
 			Uri uri = data.getData();
 			if (uri != null) {
 				int flags = 0;
 				if (requestCode == REQUEST_IMAGE)
 					flags |= FileHttpUploadTask.F_RESIZE;
-				mChatServiceAdapter.sendFile(uri, mWithJabberID, mChatInput.getText().toString(), flags);
-				mChatInput.setText("");
+				sendFile(uri, flags);
 			}
+		} else if (requestCode == REQUEST_CAMERA && cameraPictureUri != null) {
+			sendFile(cameraPictureUri, FileHttpUploadTask.F_RESIZE);
 		}
 	}
 
@@ -385,8 +395,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		Intent i = getIntent();
 		if (i.hasExtra(Intent.EXTRA_STREAM)) {
 			Uri stream = (Uri)i.getParcelableExtra(Intent.EXTRA_STREAM);
-			mChatServiceAdapter.sendFile(stream, mWithJabberID, mChatInput.getText().toString(), FileHttpUploadTask.F_RESIZE);
-			mChatInput.setText("");
+			sendFile(stream, FileHttpUploadTask.F_RESIZE);
 			i.removeExtra(Intent.EXTRA_STREAM);
 		}
 	}
@@ -472,8 +481,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		//inflater.inflate(R.menu.contact_options, menu);
 		inflater.inflate(R.menu.roster_item_contextmenu, menu);
 		if (mConfig.fileUploadDomain != null) {
-			menu.findItem(R.id.roster_contextmenu_send_file).setVisible(true);
-			menu.findItem(R.id.roster_contextmenu_send_image).setVisible(true);
+			menu.findItem(R.id.roster_contextmenu_send).setVisible(true);
 		}
 		return true;
 	}
@@ -488,21 +496,29 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			startActivity(intent);
 			finish();
 			return true;
+		case R.id.roster_contextmenu_take_image:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			File tempFile = FileHelper.createImageFile(this);
+			if (tempFile == null) {
+				Toast.makeText(this, "Error creating file!", Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			cameraPictureUri = Uri.fromFile(tempFile);
+			// TODO: wrap file Uri into a FileProvider to target Android M+
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUri);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
+			return true;
 		case R.id.roster_contextmenu_send_image:
-			//intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			//intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(FileHelper.createImageFile(this)));
-			//startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)), REQUEST_IMAGE);
-			//return true;
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
 			intent.setType("image/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
-			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)), REQUEST_IMAGE);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_send_image)), REQUEST_IMAGE);
 			return true;
 		case R.id.roster_contextmenu_send_file:
 			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			fileIntent.setType("*/*");
 			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
-			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.select_file)), REQUEST_FILE);
+			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.roster_contextmenu_send_file)), REQUEST_FILE);
 			return true;
 		default:
 			return ChatHelper.handleJidOptions(this, item.getItemId(), mWithJabberID, mUserScreenName);

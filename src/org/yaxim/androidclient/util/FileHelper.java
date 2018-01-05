@@ -177,7 +177,12 @@ public class FileHelper {
 		// Create an image file name
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 		String imageFileName = timeStamp + "_";
-		File storageDir = ctx.getCacheDir();
+		File storageDir = null;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+			storageDir = ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		}
+		if (storageDir == null)
+			storageDir = new File(Environment.getExternalStorageDirectory() + "/DCIM/");
 		try {
 			File image = File.createTempFile(
 					imageFileName,  /* prefix */
@@ -223,6 +228,11 @@ public class FileHelper {
 
 	public static FileInfo getFileInfo(Context ctx, Uri path) {
 		FileInfo fi = null;
+		if (path.getScheme().equals("file")) {
+			File f = new File(path.getPath());
+			return new FileInfo(URLConnection.guessContentTypeFromName(path.toString()),
+					path.getLastPathSegment(), f.length());
+		}
 		ContentResolver cr = ctx.getContentResolver();
 		Cursor c = cr.query(path, null, null, null, null);
 		/*

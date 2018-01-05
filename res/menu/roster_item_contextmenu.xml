@@ -9,18 +9,30 @@
 			android:title="@string/roster_contextmenu_contact_delmsg"
 			android:orderInCategory="2"
 			/>
-		<item
-			android:id="@+id/roster_contextmenu_send_image"
-			android:icon="@android:drawable/ic_menu_camera"
-			android:orderInCategory="10"
-			android:showAsAction="ifRoom"
-			android:title="@string/roster_contextmenu_send_image"
-			android:visible="false"/>
-		<item
-			android:id="@+id/roster_contextmenu_send_file"
+		<item   android:id="@+id/roster_contextmenu_send"
+			android:title="@string/roster_contextmenu_send"
 			android:icon="@android:drawable/ic_menu_upload"
-			android:orderInCategory="11"
-			android:title="@string/roster_contextmenu_send_file"
-			android:visible="false"/>
+			android:showAsAction="always"
+			android:orderInCategory="1"
+			android:visible="false"
+			>
+			<menu>
+				<item
+					android:id="@+id/roster_contextmenu_take_image"
+					android:icon="@android:drawable/ic_menu_camera"
+					android:title="@string/roster_contextmenu_take_image"
+					/>
+				<item
+					android:id="@+id/roster_contextmenu_send_image"
+					android:icon="@android:drawable/ic_menu_camera"
+					android:title="@string/roster_contextmenu_send_image"
+					/>
+				<item
+					android:id="@+id/roster_contextmenu_send_file"
+					android:icon="@android:drawable/ic_menu_upload"
+					android:title="@string/roster_contextmenu_send_file"
+					/>
+			</menu>
+		</item>
 	</group>
 </menu>

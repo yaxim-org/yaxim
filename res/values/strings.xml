@@ -340,8 +340,9 @@
 	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
 
 	<!-- File upload -->
+	<string name="roster_contextmenu_send">Send&#8230;</string>
+	<string name="roster_contextmenu_take_image">Take picture</string>
+	<string name="roster_contextmenu_send_image">Choose picture</string>
 	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="roster_contextmenu_send_image">Send image</string>
-	<string name="select_file">Select file</string>
 
 </resources>
