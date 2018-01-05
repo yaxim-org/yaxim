@@ -13,10 +13,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import org.yaxim.androidclient.FileHttpUploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,7 +30,7 @@ import java.util.Date;
 
 public class FileHelper {
 	private static final int IMAGE_SIZE = 1920;
-	private static final int IMAGE_QUALITY = 75;
+	private static final int IMAGE_QUALITY = 80;
 
 	/**
 	 * Get a file path from a Uri. This will get the the path for Storage Access
