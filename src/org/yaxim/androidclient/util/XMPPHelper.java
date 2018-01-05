@@ -151,7 +151,7 @@ public class XMPPHelper {
 		StringBuilder sb = new StringBuilder();
 		sb.append("https://yax.im/i/#").append(jid2url(jid));
 		if (token != null && token.length() > 0)
-			sb.append("?preauth=").append(token);
+			sb.append("?;preauth=").append(token);
 		return sb.toString();
 	}
 
