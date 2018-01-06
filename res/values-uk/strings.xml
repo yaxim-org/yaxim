@@ -276,5 +276,13 @@
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Заблоковано з %1$s: %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Send…</string>
+	<string name="roster_contextmenu_take_image">Take picture</string>
+	<string name="roster_contextmenu_send_image">Choose picture</string>
+	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="upload_compress">Compressing picture…</string>
+	<string name="upload_uploading">Uploading…</string>
+	<string name="upload_too_large">file too large!</string>
 
 </resources>

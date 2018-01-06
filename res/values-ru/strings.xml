@@ -242,6 +242,7 @@
 	<string name="status_offline">Отключён</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Alexandr https://launchpad.net/~k.a.a.
   Drow_Ranger https://launchpad.net/~d3jow9y5j
   Georg Lukas https://launchpad.net/~ge0rg
   Ilya https://launchpad.net/~me-detected
@@ -282,5 +283,13 @@
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Забанен %1$s: %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Отправка...</string>
+	<string name="roster_contextmenu_take_image">Камера</string>
+	<string name="roster_contextmenu_send_image">Выбрать фото</string>
+	<string name="roster_contextmenu_send_file">Отправить файл</string>
+	<string name="upload_compress">Сжатие...</string>
+	<string name="upload_uploading">Загрузка...</string>
+	<string name="upload_too_large">Слишком большой файл!</string>
 
 </resources>
