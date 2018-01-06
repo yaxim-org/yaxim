@@ -76,6 +76,7 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.packet.Oob;
 import org.yaxim.androidclient.packet.PreAuth;
 import org.yaxim.androidclient.packet.Replace;
 import org.yaxim.androidclient.packet.httpupload.Slot;
@@ -172,7 +173,9 @@ public class SmackableImp implements Smackable {
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
 		pm.addIQProvider("query","jabber:iq:private", new PrivateDataManager.PrivateDataIQProvider());
 
+		// HTTP Upload and OOB
 		pm.addIQProvider(Slot.NAME, Slot.XMLNS, new Slot.Provider());
+		pm.addExtensionProvider(Oob.ELEMENT, Oob.NAMESPACE, new Oob.Provider());
 
 		XmppStreamHandler.addExtensionProviders();
 	}
