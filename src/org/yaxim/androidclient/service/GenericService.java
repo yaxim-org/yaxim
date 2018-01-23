@@ -270,7 +270,7 @@ public abstract class GenericService extends Service {
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)
 			.setAutoCancel(true);
-		if (Build.VERSION.SDK_INT >= 25) // use Android7 in-notification reply, fall back to Activity
+		if (Build.VERSION.SDK_INT >= 24) // use Android7 in-notification reply, fall back to Activity
 			notificationBuilder.addAction(actReply);
 		mNotification = notificationBuilder
 			.addAction(actMarkRead)
