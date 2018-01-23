@@ -64,16 +64,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String statusMessage;
 	public String[] statusMessageHistory;
 
-	public boolean isLEDNotify;
-	public String vibraNotify;
-	public Uri notifySound;
-	public boolean ticker;
-	
 	public boolean highlightNickMuc;
-	public boolean isLEDNotifyMuc;
-	public String vibraNotifyMuc;
-	public Uri notifySoundMuc;
-	public boolean tickerMuc;
 	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
 	public String fileUploadDomain = null;
 	public long fileUploadSizeLimit = 0;
@@ -139,24 +130,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.jid_configured = false;
 
 		this.highlightNickMuc = prefs.getBoolean(PreferenceConstants.HIGHLIGHTMUC, true);
-		this.isLEDNotifyMuc = prefs.getBoolean(PreferenceConstants.LEDNOTIFYMUC,
-				false);
-		this.vibraNotifyMuc = prefs.getString(
-				PreferenceConstants.VIBRATIONNOTIFYMUC, "OFF");
-		this.notifySoundMuc = Uri.parse(prefs.getString(
-				PreferenceConstants.RINGTONENOTIFYMUC, ""));
-		this.tickerMuc = prefs.getBoolean(PreferenceConstants.TICKERMUC,
-				true);
-		
-		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
-				false);
-		this.vibraNotify = prefs.getString(
-				PreferenceConstants.VIBRATIONNOTIFY, "SYSTEM");
-		this.notifySound = Uri.parse(prefs.getString(
-				PreferenceConstants.RINGTONENOTIFY, ""));
-		this.ticker = prefs.getBoolean(PreferenceConstants.TICKER,
-				true);
-		
+
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs
 				.getString(PreferenceConstants.RESSOURCE, "yaxim");
@@ -219,6 +193,25 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
+	}
+
+	public String getJidString(boolean muc, String pref, String jid, String defValue) {
+		if (muc)
+			pref = "muc_" + pref;
+		/* try to obtain JID-specific value */
+		if (jid != null && prefs.contains(pref + "_" + jid))
+			return prefs.getString(pref + "_" + jid, null);
+		/* fall back to generic value */
+		return prefs.getString(pref, defValue);
+	}
+	public boolean getJidBoolean(boolean muc, String pref, String jid, boolean defValue) {
+		if (muc)
+			pref = "muc_" + pref;
+		/* try to obtain JID-specific value */
+		if (jid != null && prefs.contains(pref + "_" + jid))
+			return prefs.getBoolean(pref + "_" + jid, defValue);
+		/* fall back to generic value */
+		return prefs.getBoolean(pref, defValue);
 	}
 
 	public boolean needMucNotification(String nick, String message) {

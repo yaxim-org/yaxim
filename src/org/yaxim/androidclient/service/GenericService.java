@@ -37,6 +37,7 @@ import android.util.TypedValue;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.util.MessageStylingHelper;
+import org.yaxim.androidclient.util.PreferenceConstants;
 
 public abstract class GenericService extends Service {
 
@@ -97,13 +98,13 @@ public abstract class GenericService extends Service {
 			clearNotification(fromJid);
 			return;
 		}
-		
+
+		Uri sound = Uri.parse(mConfig.getJidString(isMuc, PreferenceConstants.RINGTONENOTIFY, fromJid, ""));
 		if (!showNotification) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
 			// only play sound and return
 			try {
-				Uri sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
 				if (!silent_notification && !Uri.EMPTY.equals(sound))
 					RingtoneManager.getRingtone(getApplicationContext(), sound).play();
 			} catch (NullPointerException e) {
@@ -158,14 +159,14 @@ public abstract class GenericService extends Service {
 		setNotification(fromJid, jid[1], fromUserName,
 				body, msg_long,
 				is_error, isMuc);
-		setLEDNotification(isMuc);
+		setLEDNotification(isMuc, fromJid);
 		
 		
 		if(!silent_notification) {
-			mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
+			mNotification.sound = sound;
 			// If vibration is set to "system default", add the vibration flag to the 
 			// notification and let the system decide.
-			String vibration = isMuc ? mConfig.vibraNotifyMuc : mConfig.vibraNotify;
+			String vibration = mConfig.getJidString(isMuc, PreferenceConstants.VIBRATIONNOTIFY, fromJid, "OFF");
 			if ("SYSTEM".equals(vibration)) {
 				mNotification.defaults |= Notification.DEFAULT_VIBRATE;
 			} else if ("ALWAYS".equals(vibration)) {
@@ -197,7 +198,7 @@ public abstract class GenericService extends Service {
 		else
 			title = author; // removed "Message from" prefix for brevity
 		String ticker;
-		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
+		if (mConfig.getJidBoolean(isMuc, PreferenceConstants.TICKER, fromJid, true)) {
 			String msg_string = message.toString();
 			int newline = msg_string.indexOf('\n');
 			int limit = 0;
@@ -285,8 +286,8 @@ public abstract class GenericService extends Service {
 			mNotification.number = mNotificationCounter;
 	}
 
-	private void setLEDNotification(boolean isMuc) {
-		if ((!isMuc && mConfig.isLEDNotify) || (isMuc && mConfig.isLEDNotifyMuc)) {
+	private void setLEDNotification(boolean isMuc, String fromJid) {
+		if (mConfig.getJidBoolean(isMuc, PreferenceConstants.LEDNOTIFY, fromJid, false)) {
 			mNotification.ledARGB = Color.MAGENTA;
 			mNotification.ledOnMS = 300;
 			mNotification.ledOffMS = 1000;
