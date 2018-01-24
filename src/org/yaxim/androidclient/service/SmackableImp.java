@@ -1412,7 +1412,10 @@ public class SmackableImp implements Smackable {
 					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
 
 					// perform a message-replace on self-sent MUC message
-					long upsert_id = is_muc ? getOutgoingMUCreplace(msg, fromJID) : -1;
+					long upsert_id = -1;
+					if (is_muc && matchOutgoingMucReflection(msg, fromJID)) {
+						return;
+					}
 
 					// obtain Last Message Correction, if present
 					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
@@ -1453,7 +1456,7 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 
-	private long getOutgoingMUCreplace(Message msg, String[] fromJid) {
+	private boolean matchOutgoingMucReflection(Message msg, String[] fromJid) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
 		String packet_id = msg.getPacketID();
@@ -1462,17 +1465,25 @@ public class SmackableImp implements Smackable {
 
 		MUCController mucc = multiUserChats.get(muc);
 		if (!nick.equals(getMyMucNick(muc)))
-			return -1;
+			return false;
+		// TODO: store pending _id's in MUCController
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND _id >= ?",
 				new String[] { muc, packet_id, msg.getBody(), "" + mucc.getFirstPacketID() }, null);
-		long result = -1;
+		boolean updated = false;
 		if (c.moveToFirst()) {
-			result = c.getLong(0);
+			long _id = c.getLong(0);
+			ContentValues values = new ContentValues();
+			values.put(ChatConstants.RESOURCE, nick);
+			values.put(ChatConstants.DIRECTION, ChatConstants.INCOMING);
+			values.put(ChatConstants.MESSAGE, msg.getBody());
+			values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_ACKED);
+			values.put(ChatConstants.PACKET_ID, packet_id);
+			updated = mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + _id),
+					values, null, null) == 1;
 		}
 		c.close();
-		Log.d(TAG, "message from " + nick + " matched id " + result + ". Replacing.");
-		return result;
+		return updated;
 	}
 
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
