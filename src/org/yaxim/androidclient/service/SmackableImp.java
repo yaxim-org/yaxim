@@ -1411,10 +1411,13 @@ public class SmackableImp implements Smackable {
 					// Carbons and MUC history are 'silent' by default
 					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
 
-					// perform a message-replace on self-sent MUC message
 					long upsert_id = -1;
-					if (is_muc && matchOutgoingMucReflection(msg, fromJID)) {
-						return;
+					if (is_muc && is_from_me) {
+						// perform a message-replace on self-sent MUC message, abort further processing
+						if (matchOutgoingMucReflection(msg, fromJID))
+							return;
+						// messages from our other client are "ACKed" automatically
+						is_new = ChatConstants.DS_ACKED;
 					}
 
 					// obtain Last Message Correction, if present
