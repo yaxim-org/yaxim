@@ -1470,9 +1470,14 @@ public class SmackableImp implements Smackable {
 		if (!nick.equals(getMyMucNick(muc)))
 			return false;
 		// TODO: store pending _id's in MUCController
+		// https://stackoverflow.com/a/8248052/539443 - securely use LIKE
+		String firstline = msg.getBody().replace("!", "!!")
+				.replace("%", "!%")
+				.replace("_", "!_")
+				.replace("[", "![") + "\n%";
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
-				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND _id >= ?",
-				new String[] { muc, packet_id, msg.getBody(), "" + mucc.getFirstPacketID() }, null);
+				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ?",
+				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID() }, null);
 		boolean updated = false;
 		if (c.moveToFirst()) {
 			long _id = c.getLong(0);
