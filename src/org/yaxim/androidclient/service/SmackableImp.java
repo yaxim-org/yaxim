@@ -1474,7 +1474,11 @@ public class SmackableImp implements Smackable {
 		String firstline = msg.getBody().replace("!", "!!")
 				.replace("%", "!%")
 				.replace("_", "!_")
-				.replace("[", "![") + "\n%";
+				.replace("[", "![");
+		if (msg.getBody().length() > 400)
+			firstline = firstline + "%"; /* prefix match on long lines split for IRC */
+		else
+			firstline = firstline + "\n%"; /* first line match on other lines */
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ?",
 				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID() }, null);
