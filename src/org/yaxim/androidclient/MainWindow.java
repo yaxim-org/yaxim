@@ -500,6 +500,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 								addToRosterDialog(jid);
 						}
 					})
+			.setNeutralButton(R.string.subscription_reject_all,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							serviceAdapter.sendPresenceRequest(null, "unsubscribed");
+						}
+					})
 			.setNegativeButton(R.string.subscription_reject,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {

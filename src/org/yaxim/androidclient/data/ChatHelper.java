@@ -7,6 +7,7 @@ import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.R;
 
@@ -168,6 +169,7 @@ public class ChatHelper {
 	public static final int ROSTER_FILTER_ALL = 0;
 	public static final int ROSTER_FILTER_CONTACTS = 1;
 	public static final int ROSTER_FILTER_MUCS = 2;
+	public static final int ROSTER_FILTER_SUBSCRIPTIONS = 3;
 	public static List<String[]> getRosterContacts(Context ctx, int filter) {
 		// we want all, online and offline
 		List<String[]> list = new ArrayList<String[]>();
@@ -176,6 +178,8 @@ public class ChatHelper {
 			selection = "roster_group != '" + RosterConstants.MUCS + "'";
 		else if (filter == ROSTER_FILTER_MUCS)
 			selection = "roster_group == '" + RosterConstants.MUCS + "'";
+		else if (filter == ROSTER_FILTER_SUBSCRIPTIONS)
+			selection = "status_mode == " + StatusMode.subscribe.ordinal();
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
 					selection, null, RosterConstants.ALIAS);
 		int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);

@@ -212,6 +212,7 @@
 	<string name="subscriptionRequest_title">Subscription Request</string>
 	<string name="subscription_accept">Accept</string>
 	<string name="subscription_reject">Reject</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
