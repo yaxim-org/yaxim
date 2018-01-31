@@ -89,6 +89,10 @@
 			android:label="@string/account_settings_title">
 		</activity>
 
+		<activity android:name=".preferences.NotificationPrefs"
+				  android:label="@string/preftitle_notify">
+		</activity>
+
 		<service android:name=".service.XMPPService">
 			<intent-filter>
 				<action android:name="de.hdmstuttgart.yaxim.XMPPSERVICE" />

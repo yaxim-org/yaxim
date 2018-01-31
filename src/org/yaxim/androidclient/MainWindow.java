@@ -22,6 +22,7 @@ import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
+import org.yaxim.androidclient.preferences.NotificationPrefs;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
@@ -639,6 +640,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 			case R.id.roster_contextmenu_group_rename:
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				renameRosterGroupDialog(seletedGroup);
+				return true;
+			case R.id.roster_contextmenu_ringtone:
+				Intent ringToneIntent = new Intent(this, NotificationPrefs.class);
+				ringToneIntent.putExtra("jid", seletedGroup);
+				startActivity(ringToneIntent);
 				return true;
 
 			}

@@ -6,6 +6,7 @@ import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
+import org.yaxim.androidclient.preferences.NotificationPrefs;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -131,6 +132,7 @@ public class ChatHelper {
 	}
 
 	public static boolean handleJidOptions(Activity act, int menu_id, String jid, String userName) {
+		Intent ringToneIntent = new Intent(act, NotificationPrefs.class);
 		switch (menu_id) {
 		// generic options (roster_item_contextmenu.xml)
 		case R.id.roster_contextmenu_contact_mark_as_read:
@@ -152,6 +154,13 @@ public class ChatHelper {
 			return true;
 		case R.id.roster_contextmenu_muc_leave:
 			ConfirmDialog.showMucLeave(act, jid);
+			return true;
+		case R.id.roster_contextmenu_muc_ringtone:
+			ringToneIntent.setData(Uri.parse("muc"));
+		case R.id.roster_contextmenu_ringtone:
+			ringToneIntent.putExtra("jid", jid);
+			ringToneIntent.putExtra("name", userName);
+			act.startActivity(ringToneIntent);
 			return true;
 		case R.id.roster_contextmenu_muc_share:
 			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,

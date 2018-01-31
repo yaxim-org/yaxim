@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="@string/preftitle_notify"
+		android:key="notification">
+        <!-- override MUST be FIRST preference for dependency injection to work -->
+		<CheckBoxPreference
+			android:id="@+id/override"
+			android:key="override"
+			android:title="Override defaults"
+			android:summary=""
+			android:defaultValue="false"
+			/>
+		<CheckBoxPreference
+			android:id="@+id/highlight"
+			android:key="highlight"
+			android:title="@string/muc_highlight_title"
+			android:summary="@string/muc_highlight_sum"
+			android:defaultValue="true"
+			/>
+		<CheckBoxPreference
+			android:id="@+id/led"
+			android:key="led"
+			android:title="@string/led_title"
+			android:summary="@string/led_summ"
+			android:defaultValue="true"
+		/>
+		<ListPreference
+			android:id="@+id/vibration"
+			android:title="@string/vibr_title"
+			android:summary="@string/vibr_summ"
+			android:key="vibration_list"
+			android:defaultValue="OFF"
+			android:entries="@array/vibr_values_displayed"
+			android:entryValues="@array/vibr_values"
+		/>
+		<RingtonePreference
+			android:id="@+id/ringtone"
+			android:key="ringtone"
+			android:title="@string/ringtone_title"
+			android:ringtoneType="notification"
+			android:showDefault="true"
+			android:showSilent="true"
+			android:summary="@string/ringtone_summ"
+		/>
+		<CheckBoxPreference
+			android:id="@+id/ticker"
+			android:key="ticker"
+			android:title="@string/ticker_title"
+			android:summary="@string/ticker_summ"
+			android:defaultValue="true"
+		/>
+	</PreferenceCategory>	
+</PreferenceScreen>
+
+
