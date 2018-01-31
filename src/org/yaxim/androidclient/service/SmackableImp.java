@@ -570,6 +570,12 @@ public class SmackableImp implements Smackable {
 
 	public void sendPresenceRequest(String user, String type) {
 		// HACK: remove the fake roster entry added by handleIncomingSubscribe()
+		if (user == null) {
+			for (String[] jid_name : ChatHelper.getRosterContacts(mService, ChatHelper.ROSTER_FILTER_SUBSCRIPTIONS)) {
+				sendPresenceRequest(jid_name[0], type);
+			}
+			return;
+		}
 		subscriptionRequests.remove(user);
 		if ("unsubscribed".equals(type))
 			deleteRosterEntryFromDB(user);
