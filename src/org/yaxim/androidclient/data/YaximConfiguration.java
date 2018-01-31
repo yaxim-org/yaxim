@@ -6,11 +6,14 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -81,10 +84,12 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	/// this stores tuples of (JID, valid_until) or (token, valid_until) for PARS
 	private HashMap<String, Long> invitationCodes = new HashMap<String, Long>();
 
+	private final Context ctx;
 	private final SharedPreferences prefs;
 
-	public YaximConfiguration(SharedPreferences _prefs) {
-		prefs = _prefs;
+	public YaximConfiguration(Context _ctx) {
+		ctx = _ctx;
+		prefs = PreferenceManager.getDefaultSharedPreferences(_ctx);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		loadPrefs(prefs);
 	}
@@ -195,23 +200,30 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public SharedPreferences getJidPrefs(String jid) {
+		return ctx.getSharedPreferences("notification_" + URLEncoder.encode(jid), Context.MODE_PRIVATE);
+	}
 	public String getJidString(boolean muc, String pref, String jid, String defValue) {
-		if (muc)
-			pref = "muc_" + pref;
-		/* try to obtain JID-specific value */
-		if (jid != null && prefs.contains(pref + "_" + jid))
-			return prefs.getString(pref + "_" + jid, null);
+		if (jid != null) {
+			/* try to obtain JID-specific value */
+			SharedPreferences jidPrefs = getJidPrefs(jid);
+			if (jidPrefs.getBoolean("override", false))
+				return jidPrefs.getString(pref, defValue);
+		}
 		/* fall back to generic value */
-		return prefs.getString(pref, defValue);
+		SharedPreferences default_prefs = muc ? getJidPrefs("muc") : prefs;
+		return default_prefs.getString(pref, defValue);
 	}
 	public boolean getJidBoolean(boolean muc, String pref, String jid, boolean defValue) {
-		if (muc)
-			pref = "muc_" + pref;
-		/* try to obtain JID-specific value */
-		if (jid != null && prefs.contains(pref + "_" + jid))
-			return prefs.getBoolean(pref + "_" + jid, defValue);
+		if (jid != null) {
+			/* try to obtain JID-specific value */
+			SharedPreferences jidPrefs = getJidPrefs(jid);
+			if (jidPrefs.getBoolean("override", false))
+				return jidPrefs.getBoolean(pref, defValue);
+		}
 		/* fall back to generic value */
-		return prefs.getBoolean(pref, defValue);
+		SharedPreferences default_prefs = muc ? getJidPrefs("muc") : prefs;
+		return default_prefs.getBoolean(pref, defValue);
 	}
 
 	public boolean needMucNotification(String nick, String message) {
