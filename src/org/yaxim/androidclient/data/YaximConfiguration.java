@@ -240,6 +240,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public synchronized void storeInstallReferrer(String referrer) {
+		prefs.edit().putString(PreferenceConstants.INSTALL_REFERRER, referrer).commit();
+
+	}
 	private synchronized void storeInvitationCodes() {
 		Iterator<String> it = invitationCodes.keySet().iterator();
 		// remove all expired codes

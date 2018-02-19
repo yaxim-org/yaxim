@@ -31,4 +31,5 @@ public class PreferenceConstants {
 	public static final String STATUS_MESSAGE_HISTORY = "status_message_history";
 	public final static String THEME = "theme";
 	public final static String INVITATION_CODES = "invitation_codes";
+	public final static String INSTALL_REFERRER = "install_referrer";
 }

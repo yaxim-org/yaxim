@@ -109,6 +109,11 @@
 				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_REPLY" />
 			</intent-filter>
 		</receiver>
+		<receiver android:name=".service.InstallReferrerReceiver"
+				android:enabled="true"
+				android:exported="true">
+			<action android:name="com.android.vending.INSTALL_REFERRER"/>
+		</receiver>
 
 		<provider android:name=".data.ChatProvider"
 			android:exported="false"
