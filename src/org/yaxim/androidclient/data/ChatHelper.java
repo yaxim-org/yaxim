@@ -176,6 +176,8 @@ public class ChatHelper {
 							public void onClick(DialogInterface dialog, int which) {
 								try {
 									YaximApplication.getApp(act).getSmackable().removeRosterItem(jid);
+									if (act instanceof ChatWindow)
+										act.finish();
 								} catch (Exception e) {
 									shortToastNotify(act, e);
 								}
