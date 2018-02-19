@@ -6,7 +6,7 @@
 		<CheckBoxPreference
 			android:id="@+id/override"
 			android:key="override"
-			android:title="Override defaults"
+			android:title="@string/notification_custom"
 			android:summary=""
 			android:defaultValue="false"
 			/>

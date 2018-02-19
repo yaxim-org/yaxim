@@ -59,6 +59,7 @@
 	<string name="preftitle_notify">Notification Settings</string>
 	<string name="preftitle_notify_msg">Message Notification</string>
 	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="notification_custom">Custom Ringtone</string>
 	<string name="muc_highlight_title">Only notify on mention</string>
 	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">Blinking LED</string>
