@@ -1,6 +1,7 @@
 package org.yaxim.androidclient;
 
 import org.yaxim.androidclient.data.YaximConfiguration;
+import org.yaxim.androidclient.service.Smackable;
 import org.yaxim.androidclient.service.YaximBroadcastReceiver;
 
 import android.app.Activity;
@@ -23,6 +24,7 @@ public class YaximApplication extends Application {
 	public MemorizingTrustManager mMTM;
 
 	private YaximConfiguration mConfig;
+	private Smackable mSmackable;
 
 	public YaximApplication() {
 		super();
@@ -39,11 +41,9 @@ public class YaximApplication extends Application {
 	}
 
 	public static YaximApplication getApp(Activity ctx) {
-		android.util.Log.d("YaximApplication", "app = " + ctx.getApplication());
 		return (YaximApplication)ctx.getApplication();
 	}
 	public static YaximApplication getApp(Service ctx) {
-		android.util.Log.d("YaximApplication", "app = " + ctx.getApplication());
 		return (YaximApplication)ctx.getApplication();
 	}
 
@@ -52,6 +52,14 @@ public class YaximApplication extends Application {
 	}
 	public static YaximConfiguration getConfig(Service ctx) {
 		return getApp(ctx).mConfig;
+	}
+
+	// short-cut from the UI to the network
+	public Smackable getSmackable() {
+		return mSmackable;
+	}
+	public void setSmackable(Smackable smackable) {
+		mSmackable = smackable;
 	}
 }
 

@@ -8,6 +8,7 @@ import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -530,6 +531,7 @@ public class XMPPService extends GenericService {
 		System.setProperty("smack.debugEnabled", "" + mConfig.smackdebug);
 		try {
 			mSmackable = new SmackableImp(mConfig, getContentResolver(), this);
+			YaximApplication.getApp(this).setSmackable(mSmackable);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
