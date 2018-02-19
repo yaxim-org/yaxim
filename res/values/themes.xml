@@ -24,6 +24,10 @@
         <item name="ChatText">@style/ChatText.Light</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
 	<item name="ic_action_group">@drawable/ic_action_group_light</item>
+	<item name="ic_action_new_attachment">@drawable/ic_action_new_attachment_light</item>
+	<item name="ic_action_camera">@drawable/ic_action_camera_light</item>
+	<item name="ic_action_collection">@drawable/ic_action_collection_light</item>
+	<item name="ic_action_picture">@drawable/ic_action_picture_light</item>
     </style>
 
     <style name="IndeterminateProgress" parent="Widget.Sherlock.ProgressBar">
@@ -60,6 +64,10 @@
         <item name="ChatText">@style/ChatText</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
 	<item name="ic_action_group">@drawable/ic_action_group_dark</item>
+	<item name="ic_action_new_attachment">@drawable/ic_action_new_attachment_dark</item>
+	<item name="ic_action_camera">@drawable/ic_action_camera_dark</item>
+	<item name="ic_action_collection">@drawable/ic_action_collection_dark</item>
+	<item name="ic_action_picture">@drawable/ic_action_picture_dark</item>
     </style>
 
 </resources>

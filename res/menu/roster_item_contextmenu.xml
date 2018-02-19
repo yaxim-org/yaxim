@@ -11,7 +11,7 @@
 			/>
 		<item   android:id="@+id/roster_contextmenu_send"
 			android:title="@string/roster_contextmenu_send"
-			android:icon="@android:drawable/ic_menu_upload"
+			android:icon="?attr/ic_action_new_attachment"
 			android:showAsAction="always"
 			android:orderInCategory="1"
 			android:visible="false"
@@ -19,17 +19,17 @@
 			<menu>
 				<item
 					android:id="@+id/roster_contextmenu_take_image"
-					android:icon="@android:drawable/ic_menu_camera"
+					android:icon="?attr/ic_action_camera"
 					android:title="@string/roster_contextmenu_take_image"
 					/>
 				<item
 					android:id="@+id/roster_contextmenu_send_image"
-					android:icon="@android:drawable/ic_menu_camera"
+					android:icon="?attr/ic_action_picture"
 					android:title="@string/roster_contextmenu_send_image"
 					/>
 				<item
 					android:id="@+id/roster_contextmenu_send_file"
-					android:icon="@android:drawable/ic_menu_upload"
+					android:icon="?attr/ic_action_collection"
 					android:title="@string/roster_contextmenu_send_file"
 					/>
 			</menu>
