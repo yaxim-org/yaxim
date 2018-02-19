@@ -32,8 +32,7 @@ public class YaximApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		mMTM = new MemorizingTrustManager(this);
-		mConfig = new YaximConfiguration(PreferenceManager
-				.getDefaultSharedPreferences(this));
+		mConfig = new YaximConfiguration(this);
 		// since Android 7, you need to manually register for network changes
 		// https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#MonitorChanges
 		registerReceiver(new YaximBroadcastReceiver(), new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));

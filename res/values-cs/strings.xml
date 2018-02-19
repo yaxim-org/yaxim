@@ -56,7 +56,8 @@
 	<string name="notification_error">Chyba při odesílání zprávy!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Nastavení upozornění na zprávy</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Nastavení upozornění na zprávy</string>
 	<string name="preftitle_notify_muc">Group Chat Notification</string>
 	<string name="muc_highlight_title">Only notify on mention</string>
 	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
@@ -151,6 +152,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Změnit skupinu</string>
 	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_ringtone">Vyzvánění</string>
 	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
 	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
 	<string name="muc_leave_question">Really leave %s?</string>
@@ -213,6 +215,7 @@
 	<string name="subscriptionRequest_title">Subscription Request</string>
 	<string name="subscription_accept">Accept</string>
 	<string name="subscription_reject">Reject</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->
@@ -284,5 +287,13 @@
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Send…</string>
+	<string name="roster_contextmenu_take_image">Take picture</string>
+	<string name="roster_contextmenu_send_image">Choose picture</string>
+	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="upload_compress">Compressing picture…</string>
+	<string name="upload_uploading">Uploading…</string>
+	<string name="upload_too_large">file too large!</string>
 
 </resources>

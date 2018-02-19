@@ -9,6 +9,7 @@
 	<uses-permission android:name="android.permission.NFC" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 	<application android:icon="@drawable/icon"
 		android:name=".YaximApplication"
@@ -29,6 +30,11 @@
 				<action android:name="android.intent.action.SEND"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>
 				<data android:mimeType="text/*"></data>
+			</intent-filter>
+			<intent-filter android:icon="@drawable/icon" android:label="@string/app_name">
+				<action android:name="android.intent.action.SEND"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+				<data android:mimeType="*/*"></data>
 			</intent-filter>
 			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
 				<action android:name="android.intent.action.SENDTO" />
@@ -86,6 +92,10 @@
 			android:label="@string/account_settings_title">
 		</activity>
 
+		<activity android:name=".preferences.NotificationPrefs"
+				  android:label="@string/preftitle_notify">
+		</activity>
+
 		<service android:name=".service.XMPPService">
 			<intent-filter>
 				<action android:name="de.hdmstuttgart.yaxim.XMPPSERVICE" />
@@ -100,6 +110,13 @@
 			<intent-filter>
 				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_HEARD" />
 				<action android:name="org.yaxim.androidclient.ACTION_MESSAGE_REPLY" />
+			</intent-filter>
+		</receiver>
+		<receiver android:name=".service.InstallReferrerReceiver"
+				android:enabled="true"
+				android:exported="true">
+			<intent-filter>
+				<action android:name="com.android.vending.INSTALL_REFERRER"/>
 			</intent-filter>
 		</receiver>
 

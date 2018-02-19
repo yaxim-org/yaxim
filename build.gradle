@@ -2,6 +2,7 @@
 buildscript {
 	repositories {
 		jcenter()
+		mavenCentral()
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:2.3.1'
@@ -9,6 +10,9 @@ buildscript {
 		// in the individual module build.gradle files
 
 		classpath 'org.ajoberstar:grgit:1.1.0'
+
+		// https://github.com/Triple-T/gradle-play-publisher#usage
+		classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
 	}
 }
 
@@ -25,6 +29,7 @@ allprojects {
 
 /////////////// yaxim specific build rules ///////////////
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.triplet.play'
 
 ext {
 	build_date = "${new Date().format('yyyy-MM-dd')}"
@@ -45,13 +50,23 @@ task buildVersion (type: Copy) {
 	}
 }
 
+play {
+	track = 'beta'
+}
+
 android {
 	compileSdkVersion 22
 	buildToolsVersion "25.0.0"
+	playAccountConfigs {
+		defaultAccountConfig {
+			jsonFile = file('play-publish-credentials.json')
+		}
+	}
 	defaultConfig {
 		minSdkVersion 7
 		targetSdkVersion 17
 		versionName "$build_revision"
+		playAccountConfig = playAccountConfigs.defaultAccountConfig
 	}
 
 	signingConfigs {

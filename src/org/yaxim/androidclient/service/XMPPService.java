@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
@@ -202,6 +203,11 @@ public class XMPPService extends GenericService {
 			
 			public void clearNotifications(String Jid) throws RemoteException {
 				clearNotification(Jid);
+			}
+
+			public void sendFile(Uri path, String user, String message, int flags) throws RemoteException {
+				if (mSmackable != null)
+					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, message, flags).execute();
 			}
 		};
 	}

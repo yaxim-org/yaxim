@@ -3,6 +3,7 @@ package org.yaxim.androidclient.packet;
 import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.provider.PacketExtensionProvider;
 
+import org.jivesoftware.smack.util.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 
 public class PreAuth implements PacketExtension {
@@ -27,7 +28,7 @@ public class PreAuth implements PacketExtension {
 	}
 
 	public String toXML() {
-		return "<" + getElementName() + " token=\"" + getToken() + "\" xmlns=\"" + getNamespace() + "\" />";
+		return "<" + getElementName() + " token=\"" + StringUtils.escapeForXML(getToken()) + "\" xmlns=\"" + getNamespace() + "\" />";
 	}
 
 	public static class Provider implements PacketExtensionProvider {

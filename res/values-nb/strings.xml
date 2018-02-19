@@ -52,7 +52,8 @@
 	<string name="notification_error">Feil ved forsendelse av melding!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Meldingsmerknad</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Meldingsmerknad</string>
 	<string name="preftitle_notify_muc">Gruppesluddermerknad</string>
 	<string name="muc_highlight_title">Kun merknad når nevnt</string>
 	<string name="muc_highlight_sum">Merknad når kallenavnet ditt blir nevnt i et rom</string>
@@ -147,6 +148,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Forespør godkjenning</string>
 	<string name="roster_contextmenu_contact_change_group">Endre gruppe</string>
 	<string name="roster_contextmenu_contact_share">Del adresse</string>
+	<string name="roster_contextmenu_contact_ringtone">Ringetone</string>
 	<string name="roster_contextmenu_muc_edit">Endre gruppesludring</string>
 	<string name="roster_contextmenu_muc_leave">Forlat gruppesludring</string>
 	<string name="muc_leave_question">Forlat %s?</string>
@@ -209,6 +211,7 @@
 	<string name="subscriptionRequest_title">Abonnementsforespørsel</string>
 	<string name="subscription_accept">Godta</string>
 	<string name="subscription_reject">Avvis</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">kan se din status</string>
 
 	<!-- CHATWINDOW -->
@@ -278,5 +281,13 @@
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Bannlyst av %1$s: %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Send…</string>
+	<string name="roster_contextmenu_take_image">Take picture</string>
+	<string name="roster_contextmenu_send_image">Choose picture</string>
+	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="upload_compress">Compressing picture…</string>
+	<string name="upload_uploading">Uploading…</string>
+	<string name="upload_too_large">file too large!</string>
 
 </resources>

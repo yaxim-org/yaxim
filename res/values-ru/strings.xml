@@ -52,7 +52,8 @@
 	<string name="notification_error">Ошибка при отправлении сообщения</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Уведомление о сообщении</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Уведомление о сообщении</string>
 	<string name="preftitle_notify_muc">Уведомление конференции</string>
 	<string name="muc_highlight_title">Только уведомить об упоминании</string>
 	<string name="muc_highlight_sum">Уведомлять при упоминании вашего ника в конференции</string>
@@ -147,6 +148,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Запросить авторизацию</string>
 	<string name="roster_contextmenu_contact_change_group">Изменить группу</string>
 	<string name="roster_contextmenu_contact_share">Поделиться адресом</string>
+	<string name="roster_contextmenu_contact_ringtone">Звук сообщения</string>
 	<string name="roster_contextmenu_muc_edit">Перезайти в конференцию</string>
 	<string name="roster_contextmenu_muc_leave">Покинуть конференцию</string>
 	<string name="muc_leave_question">Действительно покинуть %s?</string>
@@ -209,6 +211,7 @@
 	<string name="subscriptionRequest_title">Запрос подписки</string>
 	<string name="subscription_accept">Принять</string>
 	<string name="subscription_reject">Отклонить</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">может видеть ваш статус</string>
 
 	<!-- CHATWINDOW -->
@@ -244,6 +247,7 @@
 	<string name="status_offline">Отключён</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Alexandr https://launchpad.net/~k.a.a.
   Drow_Ranger https://launchpad.net/~d3jow9y5j
   Georg Lukas https://launchpad.net/~ge0rg
   Ilya https://launchpad.net/~me-detected
@@ -284,5 +288,13 @@
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Забанен %1$s: %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Отправка...</string>
+	<string name="roster_contextmenu_take_image">Камера</string>
+	<string name="roster_contextmenu_send_image">Выбрать фото</string>
+	<string name="roster_contextmenu_send_file">Отправить файл</string>
+	<string name="upload_compress">Сжатие...</string>
+	<string name="upload_uploading">Загрузка...</string>
+	<string name="upload_too_large">Слишком большой файл!</string>
 
 </resources>

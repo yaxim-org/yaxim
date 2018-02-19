@@ -52,7 +52,8 @@
 	<string name="notification_error">Erreur lors de l\'envoi du message !</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification de message</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Notification de message</string>
 	<string name="preftitle_notify_muc">Notification de salon</string>
 	<string name="muc_highlight_title">Ne notifier que les mentions</string>
 	<string name="muc_highlight_sum">Ne notifier que quand votre nom est mentionné dans un salon</string>
@@ -147,6 +148,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Demander l\'autorisation</string>
 	<string name="roster_contextmenu_contact_change_group">Changer de groupe</string>
 	<string name="roster_contextmenu_contact_share">Partager l\'adresse</string>
+	<string name="roster_contextmenu_contact_ringtone">Sonnerie</string>
 	<string name="roster_contextmenu_muc_edit">Éditer le salon</string>
 	<string name="roster_contextmenu_muc_leave">Quitter le salon</string>
 	<string name="muc_leave_question">Vraiment quitter %s ?</string>
@@ -209,6 +211,7 @@
 	<string name="subscriptionRequest_title">Demande d\'inscription</string>
 	<string name="subscription_accept">Accepter</string>
 	<string name="subscription_reject">Rejeter</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">peut voir votre statut</string>
 
 	<!-- CHATWINDOW -->
@@ -287,5 +290,13 @@
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Bannis par %1$s : %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Send…</string>
+	<string name="roster_contextmenu_take_image">Take picture</string>
+	<string name="roster_contextmenu_send_image">Choose picture</string>
+	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="upload_compress">Compressing picture…</string>
+	<string name="upload_uploading">Uploading…</string>
+	<string name="upload_too_large">file too large!</string>
 
 </resources>

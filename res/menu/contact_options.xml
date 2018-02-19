@@ -16,6 +16,11 @@
 		android:orderInCategory="4"
 		/>
 
+	<item   android:id="@+id/roster_contextmenu_ringtone"
+			android:title="@string/roster_contextmenu_contact_ringtone"
+			android:icon="@android:drawable/ic_menu_edit"
+			android:orderInCategory="5"
+		/>
 	<item   android:id="@+id/roster_contextmenu_contact_share"
 		android:title="@string/roster_contextmenu_contact_share"
 		android:icon="@android:drawable/ic_menu_share"

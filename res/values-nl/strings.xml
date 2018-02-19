@@ -52,7 +52,8 @@
 	<string name="notification_error">Fout bij het verzenden van bericht!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Meldingen voor bericht</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Meldingen voor bericht</string>
 	<string name="preftitle_notify_muc">Meldingen voor groepsgesprek</string>
 	<string name="muc_highlight_title">Alleen bij vermelding</string>
 	<string name="muc_highlight_sum">Attenderen wanneer je gebruikersnaam in een groepsgesprek wordt genoemd</string>
@@ -147,6 +148,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Vraag om authorisering</string>
 	<string name="roster_contextmenu_contact_change_group">Groep wijzigen</string>
 	<string name="roster_contextmenu_contact_share">Adres delen</string>
+	<string name="roster_contextmenu_contact_ringtone">Beltoon</string>
 	<string name="roster_contextmenu_muc_edit">Groepsgesprek bewerken</string>
 	<string name="roster_contextmenu_muc_leave">Groepsgesprek verlaten</string>
 	<string name="muc_leave_question">Weet je zeker dat je %s wilt verlaten?</string>
@@ -209,6 +211,7 @@
 	<string name="subscriptionRequest_title">Inschrijvingsverzoek</string>
 	<string name="subscription_accept">Accepteren</string>
 	<string name="subscription_reject">Weigeren</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">Kan je status zien</string>
 
 	<!-- CHATWINDOW -->
@@ -286,5 +289,13 @@ PROGRAMMA LIGT BIJ U. MOCHT HET PROGRAMMA DEFECT BLIJKEN DAN DRAAGT U DE KOSTEN 
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Verbannen door %1$s: %2$s</string>
 
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Send…</string>
+	<string name="roster_contextmenu_take_image">Take picture</string>
+	<string name="roster_contextmenu_send_image">Choose picture</string>
+	<string name="roster_contextmenu_send_file">Send file</string>
+	<string name="upload_compress">Compressing picture…</string>
+	<string name="upload_uploading">Uploading…</string>
+	<string name="upload_too_large">file too large!</string>
 
 </resources>

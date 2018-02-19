@@ -1,13 +1,21 @@
 package org.yaxim.androidclient.chat;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.*;
+import android.os.*;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
 
+import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
@@ -18,6 +26,7 @@ import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
+import org.yaxim.androidclient.util.FileHelper;
 import org.yaxim.androidclient.util.MessageStylingHelper;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -27,21 +36,12 @@ import eu.siacs.conversations.utils.StylingHelper;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Window;
 
-import android.content.ComponentName;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -70,6 +70,10 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class ChatWindow extends SherlockFragmentActivity implements OnKeyListener,
 		TextWatcher, LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
 
+	private static final int REQUEST_FILE = 1;
+	private static final int REQUEST_IMAGE = 2;
+	private static final int REQUEST_CAMERA = 3;
+
 	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
 	public static final String INTENT_EXTRA_MESSAGE = ChatWindow.class.getName() + ".message";
 	
@@ -87,6 +91,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private static final int CHAT_MSG_LOADER = 0;
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
+	private Uri cameraPictureUri = null;
 
 	protected YaximConfiguration mConfig;
 	private ContentObserver mContactObserver = new ContactObserver();
@@ -280,6 +285,28 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			unbindXMPPService();
 	}
 
+	public void sendFile(Uri path, int flags) {
+		mChatServiceAdapter.sendFile(path, mWithJabberID, mChatInput.getText().toString(), flags);
+		mChatInput.setText("");
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != RESULT_OK)
+			return;
+		if (requestCode == REQUEST_FILE || requestCode == REQUEST_IMAGE) {
+			Uri uri = data.getData();
+			if (uri != null) {
+				int flags = 0;
+				if (requestCode == REQUEST_IMAGE)
+					flags |= FileHttpUploadTask.F_RESIZE;
+				sendFile(uri, flags);
+			}
+		} else if (requestCode == REQUEST_CAMERA && cameraPictureUri != null) {
+			sendFile(cameraPictureUri, FileHttpUploadTask.F_RESIZE);
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		Log.d(TAG, "onResume");
@@ -327,6 +354,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				
 				mChatServiceAdapter.clearNotifications(mWithJabberID);
 				updateContactStatus();
+				handleSendIntent();
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -363,6 +391,15 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		mChatInput.addTextChangedListener(new StylingHelper.MessageEditorStyler(mChatInput));
 		if (i.hasExtra(INTENT_EXTRA_MESSAGE)) {
 			mChatInput.setText(i.getExtras().getString(INTENT_EXTRA_MESSAGE));
+			i.removeExtra(INTENT_EXTRA_MESSAGE);
+		}
+	}
+	private void handleSendIntent() {
+		Intent i = getIntent();
+		if (i.hasExtra(Intent.EXTRA_STREAM)) {
+			Uri stream = (Uri)i.getParcelableExtra(Intent.EXTRA_STREAM);
+			sendFile(stream, FileHttpUploadTask.F_RESIZE);
+			i.removeExtra(Intent.EXTRA_STREAM);
 		}
 	}
 
@@ -439,9 +476,16 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		return inflateGenericContactOptions(menu);
+	}
+
+	public boolean inflateGenericContactOptions(com.actionbarsherlock.view.Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		//inflater.inflate(R.menu.contact_options, menu);
 		inflater.inflate(R.menu.roster_item_contextmenu, menu);
+		if (mConfig.fileUploadDomain != null) {
+			menu.findItem(R.id.roster_contextmenu_send).setVisible(true);
+		}
 		return true;
 	}
 	
@@ -454,6 +498,30 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			finish();
+			return true;
+		case R.id.roster_contextmenu_take_image:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			File tempFile = FileHelper.createImageFile(this);
+			if (tempFile == null) {
+				Toast.makeText(this, "Error creating file!", Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			cameraPictureUri = Uri.fromFile(tempFile);
+			// TODO: wrap file Uri into a FileProvider to target Android M+
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUri);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
+			return true;
+		case R.id.roster_contextmenu_send_image:
+			intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_send_image)), REQUEST_IMAGE);
+			return true;
+		case R.id.roster_contextmenu_send_file:
+			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+			fileIntent.setType("*/*");
+			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.roster_contextmenu_send_file)), REQUEST_FILE);
 			return true;
 		default:
 			return ChatHelper.handleJidOptions(this, item.getItemId(), mWithJabberID, mUserScreenName);
@@ -797,4 +865,5 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			updateContactStatus();
 		}
 	}
+
 }

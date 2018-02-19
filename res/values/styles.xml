@@ -90,4 +90,8 @@
     </style>
 
     <attr name="ic_action_group" format="reference"/>
+    <attr name="ic_action_new_attachment" format="reference"/>
+    <attr name="ic_action_camera" format="reference"/>
+    <attr name="ic_action_collection" format="reference"/>
+    <attr name="ic_action_picture" format="reference"/>
 </resources>

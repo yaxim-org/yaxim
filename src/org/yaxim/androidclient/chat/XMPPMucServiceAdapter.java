@@ -2,6 +2,7 @@ package org.yaxim.androidclient.chat;
 
 import java.util.List;
 
+import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
 import org.yaxim.androidclient.service.IXMPPMucService;

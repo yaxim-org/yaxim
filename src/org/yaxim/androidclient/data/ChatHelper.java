@@ -6,7 +6,9 @@ import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
+import org.yaxim.androidclient.preferences.NotificationPrefs;
 import org.yaxim.androidclient.service.IXMPPChatService;
+import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.R;
 
@@ -95,7 +97,7 @@ public class ChatHelper {
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { jid });
 	}
 
-	public static void startChatActivity(Context ctx, String user, String userName, String message) {
+	public static void startChatActivity(Context ctx, String user, String userName, String message, Uri image) {
 		Intent chatIntent = new Intent(ctx, ChatWindow.class);
 		if (ChatRoomHelper.isRoom(ctx, user))
 			chatIntent.setClass(ctx, MUCChatWindow.class);
@@ -105,7 +107,14 @@ public class ChatHelper {
 		if (message != null) {
 			chatIntent.putExtra(ChatWindow.INTENT_EXTRA_MESSAGE, message);
 		}
+		if (image != null) {
+			chatIntent.putExtra(Intent.EXTRA_STREAM, image);
+			chatIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		}
 		ctx.startActivity(chatIntent);
+	}
+	public static void startChatActivity(Context ctx, String user, String userName, String message) {
+		startChatActivity(ctx, user, userName, message, null);
 	}
 
 	public static void removeChatHistoryDialog(final Context ctx, final String jid, final String userName) {
@@ -123,6 +132,7 @@ public class ChatHelper {
 	}
 
 	public static boolean handleJidOptions(Activity act, int menu_id, String jid, String userName) {
+		Intent ringToneIntent = new Intent(act, NotificationPrefs.class);
 		switch (menu_id) {
 		// generic options (roster_item_contextmenu.xml)
 		case R.id.roster_contextmenu_contact_mark_as_read:
@@ -145,6 +155,13 @@ public class ChatHelper {
 		case R.id.roster_contextmenu_muc_leave:
 			ConfirmDialog.showMucLeave(act, jid);
 			return true;
+		case R.id.roster_contextmenu_muc_ringtone:
+			ringToneIntent.setData(Uri.parse("muc"));
+		case R.id.roster_contextmenu_ringtone:
+			ringToneIntent.putExtra("jid", jid);
+			ringToneIntent.putExtra("name", userName);
+			act.startActivity(ringToneIntent);
+			return true;
 		case R.id.roster_contextmenu_muc_share:
 			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
 					XMPPHelper.createMucLinkHTTPS(jid));
@@ -161,6 +178,7 @@ public class ChatHelper {
 	public static final int ROSTER_FILTER_ALL = 0;
 	public static final int ROSTER_FILTER_CONTACTS = 1;
 	public static final int ROSTER_FILTER_MUCS = 2;
+	public static final int ROSTER_FILTER_SUBSCRIPTIONS = 3;
 	public static List<String[]> getRosterContacts(Context ctx, int filter) {
 		// we want all, online and offline
 		List<String[]> list = new ArrayList<String[]>();
@@ -169,6 +187,8 @@ public class ChatHelper {
 			selection = "roster_group != '" + RosterConstants.MUCS + "'";
 		else if (filter == ROSTER_FILTER_MUCS)
 			selection = "roster_group == '" + RosterConstants.MUCS + "'";
+		else if (filter == ROSTER_FILTER_SUBSCRIPTIONS)
+			selection = "status_mode == " + StatusMode.subscribe.ordinal();
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
 					selection, null, RosterConstants.ALIAS);
 		int JIDIdx = cursor.getColumnIndex(RosterConstants.JID);

@@ -6,11 +6,14 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,17 +67,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String statusMessage;
 	public String[] statusMessageHistory;
 
-	public boolean isLEDNotify;
-	public String vibraNotify;
-	public Uri notifySound;
-	public boolean ticker;
-	
 	public boolean highlightNickMuc;
-	public boolean isLEDNotifyMuc;
-	public String vibraNotifyMuc;
-	public Uri notifySoundMuc;
-	public boolean tickerMuc;
 	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
+	public String fileUploadDomain = null;
+	public long fileUploadSizeLimit = 0;
 
 	public boolean smackdebug;
     public String theme;
@@ -88,10 +84,12 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	/// this stores tuples of (JID, valid_until) or (token, valid_until) for PARS
 	private HashMap<String, Long> invitationCodes = new HashMap<String, Long>();
 
+	private final Context ctx;
 	private final SharedPreferences prefs;
 
-	public YaximConfiguration(SharedPreferences _prefs) {
-		prefs = _prefs;
+	public YaximConfiguration(Context _ctx) {
+		ctx = _ctx;
+		prefs = PreferenceManager.getDefaultSharedPreferences(_ctx);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		loadPrefs(prefs);
 	}
@@ -137,24 +135,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.jid_configured = false;
 
 		this.highlightNickMuc = prefs.getBoolean(PreferenceConstants.HIGHLIGHTMUC, true);
-		this.isLEDNotifyMuc = prefs.getBoolean(PreferenceConstants.LEDNOTIFYMUC,
-				false);
-		this.vibraNotifyMuc = prefs.getString(
-				PreferenceConstants.VIBRATIONNOTIFYMUC, "OFF");
-		this.notifySoundMuc = Uri.parse(prefs.getString(
-				PreferenceConstants.RINGTONENOTIFYMUC, ""));
-		this.tickerMuc = prefs.getBoolean(PreferenceConstants.TICKERMUC,
-				true);
-		
-		this.isLEDNotify = prefs.getBoolean(PreferenceConstants.LEDNOTIFY,
-				false);
-		this.vibraNotify = prefs.getString(
-				PreferenceConstants.VIBRATIONNOTIFY, "SYSTEM");
-		this.notifySound = Uri.parse(prefs.getString(
-				PreferenceConstants.RINGTONENOTIFY, ""));
-		this.ticker = prefs.getBoolean(PreferenceConstants.TICKER,
-				true);
-		
+
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs
 				.getString(PreferenceConstants.RESSOURCE, "yaxim");
@@ -219,6 +200,32 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public SharedPreferences getJidPrefs(String jid) {
+		return ctx.getSharedPreferences("notification_" + URLEncoder.encode(jid), Context.MODE_PRIVATE);
+	}
+	public String getJidString(boolean muc, String pref, String jid, String defValue) {
+		if (jid != null) {
+			/* try to obtain JID-specific value */
+			SharedPreferences jidPrefs = getJidPrefs(jid);
+			if (jidPrefs.getBoolean("override", false))
+				return jidPrefs.getString(pref, defValue);
+		}
+		/* fall back to generic value */
+		SharedPreferences default_prefs = muc ? getJidPrefs("muc") : prefs;
+		return default_prefs.getString(pref, defValue);
+	}
+	public boolean getJidBoolean(boolean muc, String pref, String jid, boolean defValue) {
+		if (jid != null) {
+			/* try to obtain JID-specific value */
+			SharedPreferences jidPrefs = getJidPrefs(jid);
+			if (jidPrefs.getBoolean("override", false))
+				return jidPrefs.getBoolean(pref, defValue);
+		}
+		/* fall back to generic value */
+		SharedPreferences default_prefs = muc ? getJidPrefs("muc") : prefs;
+		return default_prefs.getBoolean(pref, defValue);
+	}
+
 	public boolean needMucNotification(String nick, String message) {
 		if (!highlightNickMuc)
 			return true;
@@ -245,6 +252,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public synchronized void storeInstallReferrer(String referrer) {
+		prefs.edit().putString(PreferenceConstants.INSTALL_REFERRER, referrer).commit();
+
+	}
 	private synchronized void storeInvitationCodes() {
 		Iterator<String> it = invitationCodes.keySet().iterator();
 		// remove all expired codes

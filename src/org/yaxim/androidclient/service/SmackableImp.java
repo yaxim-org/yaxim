@@ -17,16 +17,7 @@ import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
-import org.jivesoftware.smack.AccountManager;
-import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.ConnectionListener;
-import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.RosterEntry;
-import org.jivesoftware.smack.RosterGroup;
-import org.jivesoftware.smack.RosterListener;
-import org.jivesoftware.smack.SmackConfiguration;
-import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.IQ.Type;
@@ -40,6 +31,7 @@ import org.jivesoftware.smack.parsing.UnparsablePacket;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
+import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.bookmark.BookmarkManager;
 import org.jivesoftware.smackx.bookmark.BookmarkedConference;
@@ -54,6 +46,8 @@ import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
+import org.jivesoftware.smackx.packet.DataForm;
+import org.jivesoftware.smackx.packet.DiscoverItems;
 import org.jivesoftware.smackx.provider.DataFormProvider;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
@@ -82,8 +76,10 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.packet.Oob;
 import org.yaxim.androidclient.packet.PreAuth;
 import org.yaxim.androidclient.packet.Replace;
+import org.yaxim.androidclient.packet.httpupload.Slot;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
@@ -176,6 +172,10 @@ public class SmackableImp implements Smackable {
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
 		pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
 		pm.addIQProvider("query","jabber:iq:private", new PrivateDataManager.PrivateDataIQProvider());
+
+		// HTTP Upload and OOB
+		pm.addIQProvider(Slot.NAME, Slot.XMLNS, new Slot.Provider());
+		pm.addExtensionProvider(Oob.ELEMENT, Oob.NAMESPACE, new Oob.Provider());
 
 		XmppStreamHandler.addExtensionProviders();
 	}
@@ -570,6 +570,12 @@ public class SmackableImp implements Smackable {
 
 	public void sendPresenceRequest(String user, String type) {
 		// HACK: remove the fake roster entry added by handleIncomingSubscribe()
+		if (user == null) {
+			for (String[] jid_name : ChatHelper.getRosterContacts(mService, ChatHelper.ROSTER_FILTER_SUBSCRIPTIONS)) {
+				sendPresenceRequest(jid_name[0], type);
+			}
+			return;
+		}
 		subscriptionRequests.remove(user);
 		if ("unsubscribed".equals(type))
 			deleteRosterEntryFromDB(user);
@@ -665,7 +671,7 @@ public class SmackableImp implements Smackable {
 				mStreamHandler.notifyInitialLogin();
 				cleanupMUCs(true);
 				setStatusFromConfig();
-				discoverMUCDomainAsync();
+				discoverServicesAsync();
 				mLastOnline = System.currentTimeMillis();
 			}
 
@@ -1411,8 +1417,14 @@ public class SmackableImp implements Smackable {
 					// Carbons and MUC history are 'silent' by default
 					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
 
-					// perform a message-replace on self-sent MUC message
-					long upsert_id = is_muc ? getOutgoingMUCreplace(msg, fromJID) : -1;
+					long upsert_id = -1;
+					if (is_muc && is_from_me) {
+						// perform a message-replace on self-sent MUC message, abort further processing
+						if (matchOutgoingMucReflection(msg, fromJID))
+							return;
+						// messages from our other client are "ACKed" automatically
+						is_new = ChatConstants.DS_ACKED;
+					}
 
 					// obtain Last Message Correction, if present
 					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
@@ -1453,7 +1465,7 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPacketListener, filter);
 	}
 
-	private long getOutgoingMUCreplace(Message msg, String[] fromJid) {
+	private boolean matchOutgoingMucReflection(Message msg, String[] fromJid) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
 		String packet_id = msg.getPacketID();
@@ -1462,17 +1474,34 @@ public class SmackableImp implements Smackable {
 
 		MUCController mucc = multiUserChats.get(muc);
 		if (!nick.equals(getMyMucNick(muc)))
-			return -1;
+			return false;
+		// TODO: store pending _id's in MUCController
+		// https://stackoverflow.com/a/8248052/539443 - securely use LIKE
+		String firstline = msg.getBody().replace("!", "!!")
+				.replace("%", "!%")
+				.replace("_", "!_")
+				.replace("[", "![");
+		if (msg.getBody().length() > 400)
+			firstline = firstline + "%"; /* prefix match on long lines split for IRC */
+		else
+			firstline = firstline + "\n%"; /* first line match on other lines */
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
-				"jid = ? AND from_me = 1 AND (pid = ? OR message = ?) AND _id >= ?",
-				new String[] { muc, packet_id, msg.getBody(), "" + mucc.getFirstPacketID() }, null);
-		long result = -1;
+				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ?",
+				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID() }, null);
+		boolean updated = false;
 		if (c.moveToFirst()) {
-			result = c.getLong(0);
+			long _id = c.getLong(0);
+			ContentValues values = new ContentValues();
+			values.put(ChatConstants.RESOURCE, nick);
+			values.put(ChatConstants.DIRECTION, ChatConstants.INCOMING);
+			values.put(ChatConstants.MESSAGE, msg.getBody());
+			values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_ACKED);
+			values.put(ChatConstants.PACKET_ID, packet_id);
+			updated = mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + _id),
+					values, null, null) == 1;
 		}
 		c.close();
-		Log.d(TAG, "message from " + nick + " matched id " + result + ". Replacing.");
-		return result;
+		return updated;
 	}
 
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
@@ -1699,15 +1728,19 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
-	private void discoverMUCDomain() {
-		Log.d(TAG, "discoverMUCDomain started");
-		try {
-			Collection<String> mucDomains = MultiUserChat.getServiceNames(mXMPPConnection);
-			if (mucDomains.size() >= 1)
-				mConfig.mucDomain = mucDomains.iterator().next();
-			Log.d(TAG, "discoverMUCDomain finished: " + mucDomains.size() + " entries, using " + mConfig.mucDomain);
-		} catch (Exception e) {
-			Log.d(TAG, "discoverMUCDomain failed: " + e.getMessage());
+	private void discoverMUCDomain(String jid, DiscoverInfo info) {
+		if (mConfig.mucDomain != null)
+			return;
+
+		Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
+		while (identities.hasNext()) {
+			DiscoverInfo.Identity identity = identities.next();
+			// only accept conference/text, not conference/irc!
+			if (identity.getCategory().equals("conference") && identity.getType().equals("text")) {
+				mConfig.mucDomain = jid;
+				Log.d(TAG, "discoverMUCDomain: " + mConfig.mucDomain);
+				return;
+			}
 		}
 	}
 	private void loadMUCBookmarks() {
@@ -1736,14 +1769,69 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	private void discoverMUCDomainAsync() {
+	private void discoverServicesAsync() {
 		new Thread() {
 			public void run() {
-				discoverMUCDomain();
+				discoverServices();
 				loadMUCBookmarks(); // XXX: hack
 			}
 		}.start();
 	}
+
+	private void discoverFileUpload(String jid, DiscoverInfo info) {
+		if (mConfig.fileUploadDomain != null)
+			return;
+		Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
+		while (identities.hasNext()) {
+			DiscoverInfo.Identity identity = identities.next();
+			if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
+				mConfig.fileUploadDomain = jid;
+			}
+		}
+		if (mConfig.fileUploadDomain != null) {
+			DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
+			if (dataForm != null) {
+				Iterator<FormField> fields = dataForm.getFields();
+				while (fields.hasNext()) {
+					FormField field = fields.next();
+					if (field.getVariable().equals("max-file-size")) {
+						try {
+							mConfig.fileUploadSizeLimit = Long.parseLong(field.getValues().next());
+						} catch (NumberFormatException nfe) {
+							mConfig.fileUploadSizeLimit = 0;
+						}
+					}
+				}
+			}
+			Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
+		}
+	}
+	private void discoverServices(ServiceDiscoveryManager sdm, String jid) {
+		try {
+			DiscoverInfo info = sdm.discoverInfo(jid);
+			discoverMUCDomain(jid, info);
+			discoverFileUpload(jid, info);
+		} catch (Exception e) {
+			Log.e(TAG, "Error response from " + jid + ": " + e.getLocalizedMessage());
+		}
+	}
+	private void discoverServices() {
+		try {
+			ServiceDiscoveryManager serviceDiscoveryManager = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
+			discoverServices(serviceDiscoveryManager, mConfig.server);
+			DiscoverItems items = serviceDiscoveryManager.discoverItems(mConfig.server);
+
+			Iterator<DiscoverItems.Item> it = items.getItems();
+			while (it.hasNext() && mConfig.fileUploadDomain == null) {
+				DiscoverItems.Item item = it.next();
+				String jid = item.getEntityID();
+				discoverServices(serviceDiscoveryManager, jid);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Error discovering services: " + e.getLocalizedMessage());
+		}
+	}
+
 
 	private synchronized void cleanupMUCs(boolean set_offline) {
 		// get a fresh MUC list
@@ -2070,4 +2158,10 @@ public class SmackableImp implements Smackable {
 		Log.d(TAG, "getUserList(" + jid + "): " + tmpList.size());
 		return tmpList;
 	}
+
+	@Override
+	public XMPPConnection getConnection() {
+		return mXMPPConnection;
+	}
+
 }
