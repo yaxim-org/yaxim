@@ -1728,15 +1728,19 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
-	private void discoverMUCDomain() {
-		Log.d(TAG, "discoverMUCDomain started");
-		try {
-			Collection<String> mucDomains = MultiUserChat.getServiceNames(mXMPPConnection);
-			if (mucDomains.size() >= 1)
-				mConfig.mucDomain = mucDomains.iterator().next();
-			Log.d(TAG, "discoverMUCDomain finished: " + mucDomains.size() + " entries, using " + mConfig.mucDomain);
-		} catch (Exception e) {
-			Log.d(TAG, "discoverMUCDomain failed: " + e.getMessage());
+	private void discoverMUCDomain(String jid, DiscoverInfo info) {
+		if (mConfig.mucDomain != null)
+			return;
+
+		Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
+		while (identities.hasNext()) {
+			DiscoverInfo.Identity identity = identities.next();
+			// only accept conference/text, not conference/irc!
+			if (identity.getCategory().equals("conference") && identity.getType().equals("text")) {
+				mConfig.mucDomain = jid;
+				Log.d(TAG, "discoverMUCDomain: " + mConfig.mucDomain);
+				return;
+			}
 		}
 	}
 	private void loadMUCBookmarks() {
@@ -1768,54 +1772,63 @@ public class SmackableImp implements Smackable {
 	private void discoverServicesAsync() {
 		new Thread() {
 			public void run() {
-				discoverFileUpload();
-				discoverMUCDomain();
+				discoverServices();
 				loadMUCBookmarks(); // XXX: hack
 			}
 		}.start();
 	}
 
-	private void discoverFileUpload() {
+	private void discoverFileUpload(String jid, DiscoverInfo info) {
+		if (mConfig.fileUploadDomain != null)
+			return;
+		Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
+		while (identities.hasNext()) {
+			DiscoverInfo.Identity identity = identities.next();
+			if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
+				mConfig.fileUploadDomain = jid;
+			}
+		}
+		if (mConfig.fileUploadDomain != null) {
+			DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
+			if (dataForm != null) {
+				Iterator<FormField> fields = dataForm.getFields();
+				while (fields.hasNext()) {
+					FormField field = fields.next();
+					if (field.getVariable().equals("max-file-size")) {
+						try {
+							mConfig.fileUploadSizeLimit = Long.parseLong(field.getValues().next());
+						} catch (NumberFormatException nfe) {
+							mConfig.fileUploadSizeLimit = 0;
+						}
+					}
+				}
+			}
+			Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
+		}
+	}
+	private void discoverServices(ServiceDiscoveryManager sdm, String jid) {
+		try {
+			DiscoverInfo info = sdm.discoverInfo(jid);
+			discoverMUCDomain(jid, info);
+			discoverFileUpload(jid, info);
+		} catch (Exception e) {
+			Log.e(TAG, "Error response from " + jid + ": " + e.getLocalizedMessage());
+		}
+	}
+	private void discoverServices() {
 		try {
 			ServiceDiscoveryManager serviceDiscoveryManager = ServiceDiscoveryManager.getInstanceFor(mXMPPConnection);
+			discoverServices(serviceDiscoveryManager, mConfig.server);
 			DiscoverItems items = serviceDiscoveryManager.discoverItems(mConfig.server);
 
 			Iterator<DiscoverItems.Item> it = items.getItems();
 			while (it.hasNext() && mConfig.fileUploadDomain == null) {
 				DiscoverItems.Item item = it.next();
 				String jid = item.getEntityID();
-				try {
-					DiscoverInfo info = serviceDiscoveryManager.discoverInfo(jid);
-					Iterator<DiscoverInfo.Identity> identities = info.getIdentities();
-					while (identities.hasNext()) {
-						DiscoverInfo.Identity identity = identities.next();
-						if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
-							mConfig.fileUploadDomain = jid;
-						}
-					}
-					if (mConfig.fileUploadDomain != null) {
-						DataForm dataForm = (DataForm) info.getExtension("x", "jabber:x:data");
-						if (dataForm != null) {
-							Iterator<FormField> fields = dataForm.getFields();
-							while (fields.hasNext()) {
-								FormField field = fields.next();
-								if (field.getVariable().equals("max-file-size")) {
-									try {
-										mConfig.fileUploadSizeLimit = Long.parseLong(field.getValues().next());
-									} catch (NumberFormatException nfe) {
-										mConfig.fileUploadSizeLimit = 0;
-									}
-								}
-							}
-						}
-						Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
-					}
-				} catch (Exception e) {
-					Log.e(TAG, "Error response from " + jid + ": " + e.getLocalizedMessage());
-				}
+				discoverServices(serviceDiscoveryManager, jid);
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "Error discovering HTTP Upload: " + e.getLocalizedMessage());
+			Log.e(TAG, "Error discovering services: " + e.getLocalizedMessage());
 		}
 	}
 
