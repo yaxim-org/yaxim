@@ -473,6 +473,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.contact_options, menu);
 		return inflateGenericContactOptions(menu);
 	}
 
@@ -520,6 +522,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
 			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.roster_contextmenu_send_file)), REQUEST_FILE);
 			return true;
+
+		// items that require an authenticated connection
+		case R.id.roster_contextmenu_contact_delete:
+		case R.id.roster_contextmenu_contact_rename:
+		case R.id.roster_contextmenu_contact_request_auth:
+		case R.id.roster_contextmenu_contact_change_group:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
+			// fall through to default handler
 		default:
 			return ChatHelper.handleJidOptions(this, item.getItemId(), mWithJabberID, mUserScreenName);
 		}
