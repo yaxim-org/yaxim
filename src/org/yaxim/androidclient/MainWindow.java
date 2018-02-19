@@ -430,7 +430,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	boolean addToRosterDialog(String jid, String alias, String token) {
 		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
-			new AddRosterItemDialog(this, serviceAdapter, jid)
+			new AddRosterItemDialog(this, jid)
 				.setAlias(alias)
 				.setToken(token)
 				.show();

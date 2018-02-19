@@ -24,7 +24,6 @@ public class AddRosterItemDialog extends AlertDialog implements
 		DialogInterface.OnClickListener, TextWatcher {
 
 	private MainWindow mMainWindow;
-	private XMPPRosterServiceAdapter mServiceAdapter;
 
 	private Button okButton;
 	private AutoCompleteJidEdit userInputField;
@@ -33,11 +32,9 @@ public class AddRosterItemDialog extends AlertDialog implements
 	private String mToken = null;
 	private GroupNameView mGroupNameView;
 
-	public AddRosterItemDialog(MainWindow mainWindow,
-			XMPPRosterServiceAdapter serviceAdapter) {
+	public AddRosterItemDialog(MainWindow mainWindow) {
 		super(mainWindow);
 		mMainWindow = mainWindow;
-		mServiceAdapter = serviceAdapter;
 
 		setTitle(R.string.addFriend_Title);
 
@@ -59,9 +56,8 @@ public class AddRosterItemDialog extends AlertDialog implements
 				(DialogInterface.OnClickListener)null);
 
 	}
-	public AddRosterItemDialog(MainWindow mainWindow,
-			XMPPRosterServiceAdapter serviceAdapter, String jid) {
-		this(mainWindow, serviceAdapter);
+	public AddRosterItemDialog(MainWindow mainWindow, String jid) {
+		this(mainWindow);
 		userInputField.setText(jid);
 	}
 
@@ -98,11 +94,19 @@ public class AddRosterItemDialog extends AlertDialog implements
 			e.printStackTrace();
 			return;
 		}
-		mServiceAdapter.addRosterItem(
-				realJid,
-				alias,
-				mGroupNameView.getGroupName(),
-				mToken);
+		try {
+			YaximApplication.getApp(mMainWindow).getSmackable().addRosterItem(
+					realJid,
+					alias,
+					mGroupNameView.getGroupName(),
+					mToken);
+		} catch (Exception e) {
+			ChatHelper.shortToastNotify(mMainWindow, e);
+			new AddRosterItemDialog(mMainWindow, userInputField.getText().toString())
+					.setAlias(aliasInputField.getText().toString())
+					.setToken(mToken)
+					.show();
+		}
 	}
 
 	public void afterTextChanged(Editable s) {
