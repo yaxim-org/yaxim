@@ -112,7 +112,9 @@
 		<receiver android:name=".service.InstallReferrerReceiver"
 				android:enabled="true"
 				android:exported="true">
-			<action android:name="com.android.vending.INSTALL_REFERRER"/>
+			<intent-filter>
+				<action android:name="com.android.vending.INSTALL_REFERRER"/>
+			</intent-filter>
 		</receiver>
 
 		<provider android:name=".data.ChatProvider"
