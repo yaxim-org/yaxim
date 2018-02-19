@@ -1,12 +1,8 @@
 package org.yaxim.androidclient;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.yaxim.androidclient.chat.MUCChatWindow;
-import org.yaxim.androidclient.chat.XMPPChatServiceAdapter;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -16,15 +12,11 @@ import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
-import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
-import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
-import org.yaxim.androidclient.service.IXMPPChatService;
-import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -32,16 +24,9 @@ import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.ComponentName;
-import android.content.DialogInterface.OnClickListener;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -52,7 +37,6 @@ import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,28 +51,15 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import org.yaxim.androidclient.util.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import org.yaxim.androidclient.IXMPPRosterCallback;
-import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.service.IXMPPRosterService;
-
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockExpandableListActivity;
@@ -457,20 +428,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 				ChatProvider.ChatConstants.JID + " = ?", new String[] { JID });
 	}
 
-	void removeRosterItemDialog(final String JID, final String userName) {
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.deleteRosterItem_title)
-			.setMessage(getString(R.string.deleteRosterItem_text, userName, JID))
-			.setPositiveButton(android.R.string.yes,
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							serviceAdapter.removeRosterItem(JID);
-						}
-					})
-			.setNegativeButton(android.R.string.no, null)
-			.create().show();
-	}
-
 	boolean addToRosterDialog(String jid, String alias, String token) {
 		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
 			new AddRosterItemDialog(this, serviceAdapter, jid)
@@ -516,76 +473,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 			.create().show();
 	}
 
-	abstract class EditOk {
-		abstract public void ok(String result);
-	}
-
-	void editTextDialog(int titleId, CharSequence message, String text,
-			final EditOk ok) {
-		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.edittext_dialog,
-		                               (ViewGroup) findViewById(R.id.layout_root));
-
-		TextView messageView = (TextView) layout.findViewById(R.id.text);
-		messageView.setText(message);
-		final EditText input = (EditText) layout.findViewById(R.id.editText);
-		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
-		input.setText(text);
-		new AlertDialog.Builder(this)
-			.setTitle(titleId)
-			.setView(layout)
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							String newName = input.getText().toString();
-							if (newName.length() != 0)
-								ok.ok(newName);
-						}})
-			.setNegativeButton(android.R.string.cancel, null)
-			.create().show();
-	}
-
-	void renameRosterItemDialog(final String JID, final String userName) {
-		String newUserName = userName;
-		if (JID.equals(userName))
-			newUserName = XMPPHelper.capitalizeString(JID.split("@")[0]);
-		editTextDialog(R.string.RenameEntry_title,
-				getString(R.string.RenameEntry_summ, userName, JID),
-				newUserName, new EditOk() {
-					public void ok(String result) {
-						serviceAdapter.renameRosterItem(JID, result);
-					}
-				});
-	}
-
 	void renameRosterGroupDialog(final String groupName) {
-		editTextDialog(R.string.RenameGroup_title,
+		ChatHelper.editTextDialog(this, R.string.RenameGroup_title,
 				getString(R.string.RenameGroup_summ, groupName),
-				groupName, new EditOk() {
+				groupName, new ChatHelper.EditOk() {
 					public void ok(String result) {
 						serviceAdapter.renameRosterGroup(groupName, result);
 					}
 				});
-	}
-
-	void moveRosterItemToGroupDialog(final String jabberID) {
-		LayoutInflater inflater = (LayoutInflater)getSystemService(
-			      LAYOUT_INFLATER_SERVICE);
-		View group = inflater.inflate(R.layout.moverosterentrytogroupview, null, false);
-		final GroupNameView gv = (GroupNameView)group.findViewById(R.id.moverosterentrytogroupview_gv);
-		gv.setGroupList(getRosterGroups());
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.MoveRosterEntryToGroupDialog_title)
-			.setView(group)
-			.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						Log.d(TAG, "new group: " + gv.getGroupName());
-						serviceAdapter.moveRosterItemToGroup(jabberID,
-								gv.getGroupName());
-					}
-				})
-			.setNegativeButton(android.R.string.cancel, null)
-			.create().show();
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
@@ -607,26 +502,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 			int itemID = item.getItemId();
 
 			switch (itemID) {
+			// items that require an authenticated connection
 			case R.id.roster_contextmenu_contact_delete:
-				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-				removeRosterItemDialog(userJid, userName);
-				return true;
-
 			case R.id.roster_contextmenu_contact_rename:
-				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-				renameRosterItemDialog(userJid, userName);
-				return true;
-
 			case R.id.roster_contextmenu_contact_request_auth:
-				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-				serviceAdapter.sendPresenceRequest(userJid, "subscribe");
-				return true;
-
 			case R.id.roster_contextmenu_contact_change_group:
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-				moveRosterItemToGroupDialog(userJid);
-				return true;
-
+				// fall through to default handler
 			default:
 				return ChatHelper.handleJidOptions(this, itemID, userJid, userName);
 			}
@@ -1108,10 +990,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			"SELECT COUNT() FROM " + RosterProvider.TABLE_ROSTER + " inner_query" +
 					" WHERE inner_query." + RosterConstants.GROUP + " = " +
 					RosterProvider.QUERY_ALIAS + "." + RosterConstants.GROUP;
-	private static final String[] GROUPS_QUERY = new String[] {
-		RosterConstants._ID,
-		RosterConstants.GROUP,
-	};
 	private static final String[] GROUPS_QUERY_COUNTED = new String[] {
 		RosterConstants._ID,
 		RosterConstants.GROUP,
@@ -1145,22 +1023,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 		RosterConstants.STATUS_MODE,
 		RosterConstants.STATUS_MESSAGE,
 	};
-
-	public List<String> getRosterGroups() {
-		// we want all, online and offline
-		List<String> list = new ArrayList<String>();
-		Cursor cursor = getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
-					null, null, RosterConstants.GROUP);
-		int idx = cursor.getColumnIndex(RosterConstants.GROUP);
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			list.add(cursor.getString(idx));
-			cursor.moveToNext();
-		}
-		cursor.close();
-		list.remove(RosterProvider.RosterConstants.MUCS);
-		return list;
-	}
 
 	public class RosterExpListAdapter extends SimpleCursorTreeAdapter {
 
