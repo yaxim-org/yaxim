@@ -56,7 +56,8 @@
 	<string name="notification_error">Error while sending message!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Message Notification</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Message Notification</string>
 	<string name="preftitle_notify_muc">Group Chat Notification</string>
 	<string name="muc_highlight_title">Only notify on mention</string>
 	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
@@ -150,6 +151,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Change group</string>
 	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_ringtone">Ringtone</string>
 	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
 	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
 	<string name="muc_leave_question">Really leave %s?</string>
@@ -212,6 +214,7 @@
 	<string name="subscriptionRequest_title">Subscription Request</string>
 	<string name="subscription_accept">Accept</string>
 	<string name="subscription_reject">Reject</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->

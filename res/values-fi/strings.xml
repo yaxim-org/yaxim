@@ -60,7 +60,8 @@
 	<string name="notification_error">Virhe lähetettäessä viestiä!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Viesti-ilmoitus</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Viesti-ilmoitus</string>
 	<string name="preftitle_notify_muc">Ryhmäkeskustelun ilmoitukset</string>
 	<string name="muc_highlight_title">Ilmoita vain mainittaessa</string>
 	<string name="muc_highlight_sum">Ilmoita, kun nimesi mainitaan huoneessa</string>
@@ -153,6 +154,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Pyydä hyväksyntää</string>
 	<string name="roster_contextmenu_contact_change_group">Vaihda ryhmää</string>
 	<string name="roster_contextmenu_contact_share">Jaa osoite</string>
+	<string name="roster_contextmenu_contact_ringtone">Soittoääni</string>
 	<string name="roster_contextmenu_muc_edit">Muokkaa ryhmäkeskustelua</string>
 	<string name="roster_contextmenu_muc_leave">Poistu ryhmäkeskustelusta</string>
 	<string name="muc_leave_question">Poistutaanko ryhmästä %s?</string>
@@ -215,6 +217,7 @@
 	<string name="subscriptionRequest_title">Hyväksyntäpyyntö</string>
 	<string name="subscription_accept">Hyväksy</string>
 	<string name="subscription_reject">Hylkää</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">voi nähdä tilasi</string>
 
 	<!-- CHATWINDOW -->

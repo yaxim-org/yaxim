@@ -52,7 +52,8 @@
 	<string name="notification_error">メッセージの送信中にエラーが発生しました!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">メッセージの通知</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">メッセージの通知</string>
 	<string name="preftitle_notify_muc">グループチャｔット通知</string>
 	<string name="muc_highlight_title">メンション時のみ通知</string>
 	<string name="muc_highlight_sum">ルームであなたのニックネームがメンションされた時に通知します</string>
@@ -145,6 +146,7 @@
 	<string name="roster_contextmenu_contact_request_auth">認証のリクエスト</string>
 	<string name="roster_contextmenu_contact_change_group">グループを変更</string>
 	<string name="roster_contextmenu_contact_share">アドレスを共有</string>
+	<string name="roster_contextmenu_contact_ringtone">着信音</string>
 	<string name="roster_contextmenu_muc_edit">グループチャットを編集</string>
 	<string name="roster_contextmenu_muc_leave">グループチャットを離れる</string>
 	<string name="muc_leave_question">%s を離れてもよろしいですか?</string>
@@ -207,6 +209,7 @@
 	<string name="subscriptionRequest_title">登録のリクエスト</string>
 	<string name="subscription_accept">承認</string>
 	<string name="subscription_reject">拒否</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">あなたのステータスを参照可能</string>
 
 	<!-- CHATWINDOW -->

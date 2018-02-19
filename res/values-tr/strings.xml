@@ -56,7 +56,8 @@
 	<string name="notification_error">Mesajın gönderilmesinde hata!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Mesaj Uyarısı</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Mesaj Uyarısı</string>
 	<string name="preftitle_notify_muc">Group Chat Notification</string>
 	<string name="muc_highlight_title">Only notify on mention</string>
 	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
@@ -149,6 +150,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
 	<string name="roster_contextmenu_contact_change_group">Grup değiştir</string>
 	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_ringtone">Melodi</string>
 	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
 	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
 	<string name="muc_leave_question">Really leave %s?</string>
@@ -211,6 +213,7 @@
 	<string name="subscriptionRequest_title">Abone olma talebi</string>
 	<string name="subscription_accept">Accept</string>
 	<string name="subscription_reject">Reject</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">can see your status</string>
 
 	<!-- CHATWINDOW -->

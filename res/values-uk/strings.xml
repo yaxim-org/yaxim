@@ -52,7 +52,8 @@
 	<string name="notification_error">Помилка при відправленні повідомлення!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Сповіщення про повідомлення</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Сповіщення про повідомлення</string>
 	<string name="preftitle_notify_muc">Повідомлення конференції</string>
 	<string name="muc_highlight_title">Тільки повідомити про згадку</string>
 	<string name="muc_highlight_sum">Повідомляти при згадці вашого ника в конференції</string>
@@ -145,6 +146,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Запит авторизації</string>
 	<string name="roster_contextmenu_contact_change_group">Змінити групу</string>
 	<string name="roster_contextmenu_contact_share">Поділитись адресою</string>
+	<string name="roster_contextmenu_contact_ringtone">Звук повідомлення</string>
 	<string name="roster_contextmenu_muc_edit">Перезайти в конференцію</string>
 	<string name="roster_contextmenu_muc_leave">Покинути конференцію</string>
 	<string name="muc_leave_question">Дійсно покинути %s?</string>
@@ -207,6 +209,7 @@
 	<string name="subscriptionRequest_title">Запит на підписку</string>
 	<string name="subscription_accept">Прийняти</string>
 	<string name="subscription_reject">Відхилити</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">може бачити ваш статус</string>
 
 	<!-- CHATWINDOW -->

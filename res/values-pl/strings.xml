@@ -52,7 +52,8 @@
 	<string name="notification_error">Błąd podczas wysyłania wiadomości!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Powiadamianie o wiadomościach</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Powiadamianie o wiadomościach</string>
 	<string name="preftitle_notify_muc">Powiadamianie o czatach</string>
 	<string name="muc_highlight_title">Only notify on mention</string>
 	<string name="muc_highlight_sum">Powiadamiaj gdy twój pseudonim zostanie wspomniany w pokoju czatu</string>
@@ -145,6 +146,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Zażądaj autoryzacji</string>
 	<string name="roster_contextmenu_contact_change_group">Zmień grupę</string>
 	<string name="roster_contextmenu_contact_share">Udostępnij adres</string>
+	<string name="roster_contextmenu_contact_ringtone">Dzwonek</string>
 	<string name="roster_contextmenu_muc_edit">Edytuj grupę czatu</string>
 	<string name="roster_contextmenu_muc_leave">Opuść grupę czatu</string>
 	<string name="muc_leave_question">Naprawdę opuścić %s?</string>
@@ -207,6 +209,7 @@
 	<string name="subscriptionRequest_title">Prośba o autoryzację</string>
 	<string name="subscription_accept">Akceptuj</string>
 	<string name="subscription_reject">Odmów</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">możesz zobaczyć swój status</string>
 
 	<!-- CHATWINDOW -->

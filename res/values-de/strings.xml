@@ -52,7 +52,8 @@
 	<string name="notification_error">Fehler beim Nachrichtenversand!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Benachrichtigung</string>
+	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify_msg">Benachrichtigung</string>
 	<string name="preftitle_notify_muc">Gruppenchat-Benachrichtigung</string>
 	<string name="muc_highlight_title">Nur bei Erwähnung benachrichtigen</string>
 	<string name="muc_highlight_sum">Benachrichtigen, wenn der eigene Nickname erwähnt wird</string>
@@ -145,6 +146,7 @@
 	<string name="roster_contextmenu_contact_request_auth">Genehmigung anfragen</string>
 	<string name="roster_contextmenu_contact_change_group">Gruppe ändern</string>
 	<string name="roster_contextmenu_contact_share">Adresse teilen</string>
+	<string name="roster_contextmenu_contact_ringtone">Klingelton</string>
 	<string name="roster_contextmenu_muc_edit">Gruppenchat bearbeiten</string>
 	<string name="roster_contextmenu_muc_leave">Gruppenchat verlassen</string>
 	<string name="muc_leave_question">%s wirklich verlassen?</string>
@@ -207,6 +209,7 @@
 	<string name="subscriptionRequest_title">Abonnementanfrage</string>
 	<string name="subscription_accept">Annehmen</string>
 	<string name="subscription_reject">Ablehnen</string>
+	<string name="subscription_reject_all">Reject all</string>
 	<string name="subscription_status_from">kann Ihren Status sehen</string>
 
 	<!-- CHATWINDOW -->
@@ -242,7 +245,7 @@
 	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Daniel Winzen https://launchpad.net/~q-d
+  Daniel Winzen https://launchpad.net/~q-d-deactivatedaccount
   Georg Lukas https://launchpad.net/~ge0rg
   Jan Kiszka https://launchpad.net/~jan-kiszka
   Johannes Boost https://launchpad.net/~jjjb
