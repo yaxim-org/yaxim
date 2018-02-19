@@ -3,7 +3,6 @@ package org.yaxim.androidclient.preferences;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.widget.BaseAdapter;
 
@@ -39,14 +38,13 @@ public class NotificationPrefs extends SherlockPreferenceActivity {
 
 		addPreferencesFromResource(R.xml.notificationprefs);
 		PreferenceScreen ps = getPreferenceScreen();
-		PreferenceCategory pc = (PreferenceCategory)ps.findPreference("notification");
 		if (!isMuc)
-			pc.removePreference(ps.findPreference("highlight"));
+			ps.removePreference(ps.findPreference("highlight"));
 		if (jid == null) {
-			pc.removePreference(ps.findPreference("override"));
+			ps.removePreference(ps.findPreference("override"));
 		} else {
-			for (int i = 1; i < pc.getPreferenceCount(); i++)
-				pc.getPreference(i).setDependency("override");
+			for (int i = 1; i < ps.getPreferenceCount(); i++)
+				ps.getPreference(i).setDependency("override");
 		}
 
 		actionBar = getSupportActionBar();

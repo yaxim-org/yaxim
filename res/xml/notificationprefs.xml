@@ -2,8 +2,6 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="@string/preftitle_notify"
-		android:key="notification">
         <!-- override MUST be FIRST preference for dependency injection to work -->
 		<CheckBoxPreference
 			android:id="@+id/override"
@@ -51,7 +49,6 @@
 			android:summary="@string/ticker_summ"
 			android:defaultValue="true"
 		/>
-	</PreferenceCategory>	
 </PreferenceScreen>
 
 
