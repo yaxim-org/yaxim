@@ -103,6 +103,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	protected EditText mChatInput = null;
 	protected String mWithJabberID = null;
 	protected String mUserScreenName = null;
+	private boolean isContact = false;
 	private Intent mChatServiceIntent;
 	private ServiceConnection mChatServiceConnection;
 	private XMPPChatServiceAdapter mChatServiceAdapter;
@@ -474,7 +475,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.contact_options, menu);
+		if (isContact)
+			inflater.inflate(R.menu.contact_options, menu);
+		else
+			inflater.inflate(R.menu.noncontact_options, menu);
 		return inflateGenericContactOptions(menu);
 	}
 
@@ -823,7 +827,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		int MODE_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MODE);
 		int MSG_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MESSAGE);
 
-		if (cursor.getCount() == 1) {
+		isContact = cursor.getCount() == 1;
+		if (isContact) {
 			cursor.moveToFirst();
 			int status_mode = cursor.getInt(MODE_IDX);
 			String status_message = cursor.getString(MSG_IDX);
@@ -838,6 +843,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
 		cursor.close();
+		invalidateOptionsMenu();
 	}
 
 	// this method is a "virtual" placeholder for the MUC activity

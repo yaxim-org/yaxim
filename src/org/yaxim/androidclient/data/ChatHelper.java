@@ -5,6 +5,7 @@ import org.yaxim.androidclient.chat.ChatWindow;
 import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
+import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
@@ -251,6 +252,10 @@ public class ChatHelper {
 			return true;
 		case R.id.roster_contextmenu_contact_change_group:
 			moveRosterItemToGroupDialog(act, jid);
+			return true;
+
+		case R.id.menu_add_friend:
+			new AddRosterItemDialog(act, jid).show();
 			return true;
 
 		case R.id.roster_contextmenu_contact_share:
