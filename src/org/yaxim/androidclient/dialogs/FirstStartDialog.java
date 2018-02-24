@@ -59,16 +59,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		mShowPassword = (CheckBox) group.findViewById(R.id.password_show);
 
 		mEditJabberID.setServerList(R.array.xmpp_servers);
-		mEditJabberID.addTextChangedListener(this);
-		mEditPassword.addTextChangedListener(this);
-		mCreateAccount.setOnCheckedChangeListener(this);
-		mShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-					mEditPassword.setTransformationMethod(isChecked ? null :
-							new android.text.method.PasswordTransformationMethod());
-				}
-			});
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +72,16 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		mEditJabberID.setText(sharedPreferences.getString(PreferenceConstants.JID, ""));
 		mEditPassword.setText(sharedPreferences.getString(PreferenceConstants.PASSWORD, ""));
 
+		mEditJabberID.addTextChangedListener(this);
+		mEditPassword.addTextChangedListener(this);
+		mCreateAccount.setOnCheckedChangeListener(this);
+		mShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				mEditPassword.setTransformationMethod(isChecked ? null :
+						new android.text.method.PasswordTransformationMethod());
+			}
+		});
 		// if create is set, simulate click on checkbox
 		if (sharedPreferences.getBoolean(PreferenceConstants.INITIAL_CREATE, false)) {
 			mCreateAccount.setChecked(true);
