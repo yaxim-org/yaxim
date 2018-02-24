@@ -16,6 +16,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
@@ -37,6 +39,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 	private EditText mEditPassword;
 	private CheckBox mShowPassword;
 	private CheckBox mCreateAccount;
+	private String preauth;
 
 	public FirstStartDialog(MainWindow mainWindow,
 			XMPPRosterServiceAdapter serviceAdapter) {
@@ -88,6 +91,17 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		}
 	}
 
+	public FirstStartDialog setJID(String jid, String preauth) {
+		android.util.Log.d("FirstStartDialog", "setJID: " + jid + " / " + preauth);
+		((TextView)findViewById(R.id.StartupDialog_Summary)).setText(R.string.StartupDialog_invitation);
+		this.preauth = preauth;
+		mEditJabberID.setText(jid);
+		mEditJabberID.setInputType(android.text.InputType.TYPE_NULL);
+		mEditJabberID.dismissDropDown();
+		mCreateAccount.setChecked(true);
+		mCreateAccount.setEnabled(false);
+		return this;
+	}
 
 	public void onClick(DialogInterface dialog, int which) {
 		switch (which) {
@@ -178,6 +192,8 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		editor.putString(PreferenceConstants.PASSWORD, password);
 		editor.putString(PreferenceConstants.RESSOURCE, resource);
 		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
+		if (preauth != null)
+			editor.putString(PreferenceConstants.INITIAL_PREAUTH, preauth);
 		editor.commit();
 	}
 

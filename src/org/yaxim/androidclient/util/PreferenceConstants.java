@@ -4,6 +4,7 @@ public class PreferenceConstants {
 	public final static String JID = "account_jabberID";
 	public final static String PASSWORD = "account_jabberPW";
 	public final static String INITIAL_CREATE = "initial_create";
+	public final static String INITIAL_PREAUTH = "initial_preauth";
 	public final static String CUSTOM_SERVER = "account_customserver";
 	public final static String PORT = "account_port";
 	public final static String RESSOURCE = "account_resource";
