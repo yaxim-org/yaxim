@@ -942,9 +942,22 @@ public class MainWindow extends SherlockExpandableListActivity {
 	}
 
 	private void showFirstStartUpDialog() {
+		String jid = null;
+		String preauth = null;
+		Intent i = getIntent();
+		if (!mHandledIntent && isJabberIntentAction(i.getAction()) && transmogrifyXmppUri(i)) {
+			Uri data = i.getData();
+			if (data.getQueryParameter("register") != null) {
+				jid = data.getAuthority();
+				preauth = data.getQueryParameter("preauth");
+				mHandledIntent = true;
+			}
+		}
 		if (mFirstStartDialog == null)
 			mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
 		mFirstStartDialog.show();
+		if (!TextUtils.isEmpty(jid))
+			mFirstStartDialog.setJID(jid, preauth);
 	}
 	private void showFirstStartUpDialogIfPrefsEmpty() {
 		Log.i(TAG, "showFirstStartUpDialogIfPrefsEmpty, JID: "
