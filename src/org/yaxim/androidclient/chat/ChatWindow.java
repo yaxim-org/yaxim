@@ -15,10 +15,7 @@ import android.provider.MediaStore;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
 
-import org.yaxim.androidclient.FileHttpUploadTask;
-import org.yaxim.androidclient.MainWindow;
-import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.*;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -748,6 +745,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			// Android's default email linkifuckation breaks xmpp: URIs
 			Linkify.addLinks(getMessageView(), XMPPHelper.XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(getMessageView(), XMPPHelper.EMAIL_ADDRESS, "mailto:");
+
+			Pictures.loadPicture(ChatWindow.this, getMessageView());
 		}
 		
 		TextView getDateView() {
