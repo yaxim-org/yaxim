@@ -302,21 +302,24 @@ public class SmackableImp implements Smackable {
 		updateConnectionState(ConnectionState.CONNECTING);
 		if (mXMPPConnection == null || mConfig.reconnect_required)
 			initXMPPConnection();
-		tryToConnect(create_account);
-		// actually, authenticated must be true now, or an exception must have
-		// been thrown.
-		if (isAuthenticated()) {
-			updateConnectionState(ConnectionState.LOADING);
-			registerMessageListener();
-			registerPresenceListener();
-			registerPongListener();
-			syncDbRooms();
-			sendOfflineMessages();
-			sendUserWatching();
-			// we need to "ping" the service to let it know we are actually
-			// connected, even when no roster entries will come in
-			updateConnectionState(ConnectionState.ONLINE);
-		} else throw new YaximXMPPException("SMACK connected, but authentication failed");
+		boolean fresh_session = tryToConnect(create_account);
+		if (!isAuthenticated())
+			throw new YaximXMPPException("SMACK connected, but authentication failed");
+		updateConnectionState(ConnectionState.LOADING);
+		registerMessageListener();
+		registerPresenceListener();
+		registerPongListener();
+		if (fresh_session) {
+			cleanupMUCs(true);
+			setStatusFromConfig();
+			discoverServicesAsync();
+		}
+		syncDbRooms();
+		sendOfflineMessages();
+		sendUserWatching();
+		// we need to "ping" the service to let it know we are actually
+		// connected, even when no roster entries will come in
+		updateConnectionState(ConnectionState.ONLINE);
 		return true;
 	}
 
@@ -611,7 +614,13 @@ public class SmackableImp implements Smackable {
 		onDisconnected(reason.getLocalizedMessage());
 	}
 
-	private void tryToConnect(boolean create_account) throws YaximXMPPException {
+	/** establishes an XMPP connection and performs login / account creation.
+	 *
+	 * @param create_account
+	 * @return true if this is a new session, as opposed to a resumed one
+	 * @throws YaximXMPPException
+	 */
+	private boolean tryToConnect(boolean create_account) throws YaximXMPPException {
 		try {
 			if (mXMPPConnection.isConnected()) {
 				try {
@@ -669,12 +678,9 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
 			if (need_bind) {
 				mStreamHandler.notifyInitialLogin();
-				cleanupMUCs(true);
-				setStatusFromConfig();
-				discoverServicesAsync();
 				mLastOnline = System.currentTimeMillis();
 			}
-
+			return need_bind;
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
 			throw new YaximXMPPException("tryToConnect failed", e);
