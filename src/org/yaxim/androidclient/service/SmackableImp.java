@@ -315,7 +315,7 @@ public class SmackableImp implements Smackable {
 			discoverServicesAsync();
 		}
 		syncDbRooms();
-		sendOfflineMessages();
+		sendOfflineMessages(null);
 		sendUserWatching();
 		// we need to "ping" the service to let it know we are actually
 		// connected, even when no roster entries will come in
@@ -848,10 +848,17 @@ public class SmackableImp implements Smackable {
 		mConfig.presence_required = false;
 	}
 
-	public void sendOfflineMessages() {
+	public void sendOfflineMessages(String toMUCjid) {
+		boolean is_muc = (toMUCjid != null);
+		String selection = SEND_OFFLINE_SELECTION;
+		String[] selection_args = null;
+		if (is_muc) {
+			selection = selection + " AND jid = ?";
+			selection_args = new String[] { toMUCjid };
+		}
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI,
-				SEND_OFFLINE_PROJECTION, SEND_OFFLINE_SELECTION,
-				null, null);
+				SEND_OFFLINE_PROJECTION, selection,
+				selection_args, null);
 		final int      _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
 		final int      JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
 		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
@@ -860,8 +867,10 @@ public class SmackableImp implements Smackable {
 		ContentValues mark_sent = new ContentValues();
 		mark_sent.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 		while (cursor.moveToNext()) {
-			int _id = cursor.getInt(_ID_COL);
+			long _id = cursor.getLong(_ID_COL);
 			String toJID = cursor.getString(JID_COL);
+			if (!is_muc && mucJIDs.contains(toJID))
+				continue;
 			String message = cursor.getString(MSG_COL);
 			String packetID = cursor.getString(PACKETID_COL);
 			long ts = cursor.getLong(TS_COL);
@@ -871,7 +880,7 @@ public class SmackableImp implements Smackable {
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
-			if (mucJIDs.contains(toJID))
+			if (is_muc)
 				newMessage.setType(Message.Type.groupchat);
 			else
 				newMessage.addExtension(new DeliveryReceiptRequest());
@@ -2107,6 +2116,7 @@ public class SmackableImp implements Smackable {
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
 			Log.d(TAG, "upserting MUC as online: " + roomname);
 			upsertRoster(cvR, room);
+			sendOfflineMessages(room);
 			return true;
 		}
 		
