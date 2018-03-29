@@ -303,7 +303,7 @@ public class SmackableImp implements Smackable {
 		if (mXMPPConnection == null || mConfig.reconnect_required)
 			initXMPPConnection();
 		boolean fresh_session = tryToConnect(create_account);
-		if (!isAuthenticated())
+		if (!mXMPPConnection.isAuthenticated())
 			throw new YaximXMPPException("SMACK connected, but authentication failed");
 		updateConnectionState(ConnectionState.LOADING);
 		registerMessageListener();
@@ -941,10 +941,11 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
+	// method checks whether the XMPP connection is authenticated and fully bound (i.e. after resume/bind)
 	public boolean isAuthenticated() {
 		if (mXMPPConnection != null) {
-			return (mXMPPConnection.isConnected() && mXMPPConnection
-					.isAuthenticated());
+			return mXMPPConnection.isConnected() && mXMPPConnection.isAuthenticated() &&
+					mState != ConnectionState.CONNECTING;
 		}
 		return false;
 	}
@@ -1108,7 +1109,7 @@ public class SmackableImp implements Smackable {
 		if (is_user_watching == user_watching)
 			return;
 		is_user_watching = user_watching;
-		if (mXMPPConnection != null && mXMPPConnection.isAuthenticated())
+		if (isAuthenticated())
 			sendUserWatching();
 	}
 
@@ -1129,7 +1130,7 @@ public class SmackableImp implements Smackable {
 	 * to reestablish a connection otherwise.
 	 */
 	public void sendServerPing() {
-		if (mXMPPConnection == null || !mXMPPConnection.isAuthenticated()) {
+		if (isAuthenticated()) {
 			debugLog("Ping: requested, but not connected to server.");
 			requestConnectionState(ConnectionState.ONLINE, false);
 			return;
