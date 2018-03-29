@@ -974,8 +974,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 			// show welcome dialog
 			showFirstStartUpDialog();
-		} else
+		} else {
 			XMPPHelper.setNFCInvitation(this, mConfig);
+			// implement auto-connect when started from launcher
+			if (!mConfig.autoConnect && Intent.ACTION_MAIN.equals(getIntent().getAction()))
+				prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, true).commit();
+		}
 	}
 
 	public static Intent createIntent(Context context) {
