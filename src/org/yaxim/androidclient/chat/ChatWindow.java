@@ -831,6 +831,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		if (isContact) {
 			cursor.moveToFirst();
 			int status_mode = cursor.getInt(MODE_IDX);
+			if (status_mode == StatusMode.subscribe.ordinal())
+				isContact = false;
 			String status_message = cursor.getString(MSG_IDX);
 			Log.d(TAG, "contact status changed: " + status_mode + " " + status_message);
 			mTitle.setText(cursor.getString(ALIAS_IDX));
