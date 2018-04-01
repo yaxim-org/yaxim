@@ -28,12 +28,10 @@ import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.Toast;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.util.MessageStylingHelper;
@@ -44,6 +42,8 @@ public abstract class GenericService extends Service {
 	private static final String TAG = "yaxim.Service";
 	private static final String APP_NAME = "yaxim";
 	private static final int MAX_TICKER_MSG_LEN = 45;
+
+	private static final int SECONDS_OF_SILENCE = 144; /* Conversations: grace_period = "short" */
 
 	protected NotificationManagerCompat mNotificationMGR;
 	private Notification mNotification;
@@ -57,6 +57,7 @@ public abstract class GenericService extends Service {
 	protected Map<String, SpannableStringBuilder> notificationBigText = new HashMap<String, SpannableStringBuilder>(2);
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
+	protected long gracePeriodStart = 0;
 
 	protected YaximConfiguration mConfig;
 
@@ -81,6 +82,10 @@ public abstract class GenericService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(TAG, "called onStartCommand()");
 		return START_STICKY;
+	}
+
+	public void setGracePeriod(boolean silence) {
+		gracePeriodStart = silence ? System.currentTimeMillis() : 0;
 	}
 
 	private void addNotificationMGR() {
@@ -114,14 +119,11 @@ public abstract class GenericService extends Service {
 		}
 		mWakeLock.acquire();
 
-		// Override silence when notification is created initially
-		// if there is no open notification for that JID, and we get a "silent"
-		// one (i.e. caused by an incoming carbon message), we still ring/vibrate,
-		// but only once. As long as the user ignores the notifications, no more
-		// sounds are made. When the user opens the chat window, the counter is
-		// reset and a new sound can be made.
-		if (silent_notification && !notificationCount.containsKey(fromJid)) {
-			silent_notification = false;		
+		// Override silence when activity from other client happened recently
+		long silent_seconds = (System.currentTimeMillis() - gracePeriodStart)/1000;
+		if (!silent_notification && silent_seconds < SECONDS_OF_SILENCE) {
+			Log.d(TAG, "Silent notification: last activity was " + silent_seconds + "s ago.");
+			silent_notification = true;
 		}
 
 		int notifyId = 0;
