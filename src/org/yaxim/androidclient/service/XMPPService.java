@@ -549,6 +549,11 @@ public class XMPPService extends GenericService {
 					}});
 				}
 
+			@Override
+			public void setGracePeriod(boolean silence) {
+				XMPPService.this.setGracePeriod(silence);
+			}
+
 			public void connectionStateChanged() {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
@@ -628,6 +633,7 @@ public class XMPPService extends GenericService {
 		logInfo("userStartedWatching: " + number_of_eyes);
 		if (mSmackable != null)
 			mSmackable.setUserWatching(true);
+		setGracePeriod(false);
 	}
 
 	private void userStoppedWatching() {

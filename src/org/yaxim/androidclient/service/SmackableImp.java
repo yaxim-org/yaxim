@@ -1383,6 +1383,16 @@ public class SmackableImp implements Smackable {
 						return; // we do not want to add errors as "incoming messages"
 					}
 
+					boolean is_muc = (msg.getType() == Message.Type.groupchat);
+					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
+							(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
+
+					// TODO: catch self-CSN to MUC once sent by yaxim
+					if (is_from_me) {
+						Log.d(TAG, "user is active on different device --> Silent mode");
+						mServiceCallBack.setGracePeriod(true);
+					}
+
 					// ignore empty messages
 					if (chatMessage == null) {
 						if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
@@ -1405,10 +1415,6 @@ public class SmackableImp implements Smackable {
 					if (msg.getType() == Message.Type.error)
 						is_new = ChatConstants.DS_FAILED;
 
-					boolean is_muc = (msg.getType() == Message.Type.groupchat);
-					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
-						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
-
 					// handle MUC-PMs: messages from a nick from a known MUC or with
 					// an <x> element
 					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
@@ -1430,8 +1436,8 @@ public class SmackableImp implements Smackable {
 						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
 					}
 
-					// Carbons and MUC history are 'silent' by default
-					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
+					// synchronized MUCs and contacts are not silent by default
+					boolean is_silent = !(is_muc ? multiUserChats.get(fromJID[0]).isSynchronized : mRoster.contains(fromJID[0]));
 
 					long upsert_id = -1;
 					if (is_muc && is_from_me) {
