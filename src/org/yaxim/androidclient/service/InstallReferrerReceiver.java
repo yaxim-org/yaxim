@@ -21,9 +21,10 @@ public class InstallReferrerReceiver extends BroadcastReceiver {
 		try {
 			YaximConfiguration config = new YaximConfiguration(context);
 			String ref = URLDecoder.decode(intent.getStringExtra("referrer"), "UTF-8");
-			config.storeInstallReferrer(ref);
+			//config.storeInstallReferrer(ref);
 			Log.i(TAG, "Referrer: " + ref);
 			Intent ref_intent = new Intent(context, MainWindow.class)
+					.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP)
 					.setAction(Intent.ACTION_VIEW)
 					.setData(Uri.parse(ref));
 			context.startActivity(ref_intent);

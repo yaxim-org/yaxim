@@ -302,21 +302,24 @@ public class SmackableImp implements Smackable {
 		updateConnectionState(ConnectionState.CONNECTING);
 		if (mXMPPConnection == null || mConfig.reconnect_required)
 			initXMPPConnection();
-		tryToConnect(create_account);
-		// actually, authenticated must be true now, or an exception must have
-		// been thrown.
-		if (isAuthenticated()) {
-			updateConnectionState(ConnectionState.LOADING);
-			registerMessageListener();
-			registerPresenceListener();
-			registerPongListener();
-			syncDbRooms();
-			sendOfflineMessages();
-			sendUserWatching();
-			// we need to "ping" the service to let it know we are actually
-			// connected, even when no roster entries will come in
-			updateConnectionState(ConnectionState.ONLINE);
-		} else throw new YaximXMPPException("SMACK connected, but authentication failed");
+		boolean fresh_session = tryToConnect(create_account);
+		if (!mXMPPConnection.isAuthenticated())
+			throw new YaximXMPPException("SMACK connected, but authentication failed");
+		updateConnectionState(ConnectionState.LOADING);
+		registerMessageListener();
+		registerPresenceListener();
+		registerPongListener();
+		if (fresh_session) {
+			cleanupMUCs(true);
+			setStatusFromConfig();
+			discoverServicesAsync();
+		}
+		syncDbRooms();
+		sendOfflineMessages(null);
+		sendUserWatching();
+		// we need to "ping" the service to let it know we are actually
+		// connected, even when no roster entries will come in
+		updateConnectionState(ConnectionState.ONLINE);
 		return true;
 	}
 
@@ -611,7 +614,13 @@ public class SmackableImp implements Smackable {
 		onDisconnected(reason.getLocalizedMessage());
 	}
 
-	private void tryToConnect(boolean create_account) throws YaximXMPPException {
+	/** establishes an XMPP connection and performs login / account creation.
+	 *
+	 * @param create_account
+	 * @return true if this is a new session, as opposed to a resumed one
+	 * @throws YaximXMPPException
+	 */
+	private boolean tryToConnect(boolean create_account) throws YaximXMPPException {
 		try {
 			if (mXMPPConnection.isConnected()) {
 				try {
@@ -669,12 +678,9 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "SM: can resume = " + mStreamHandler.isResumePossible() + " needbind=" + need_bind);
 			if (need_bind) {
 				mStreamHandler.notifyInitialLogin();
-				cleanupMUCs(true);
-				setStatusFromConfig();
-				discoverServicesAsync();
 				mLastOnline = System.currentTimeMillis();
 			}
-
+			return need_bind;
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
 			throw new YaximXMPPException("tryToConnect failed", e);
@@ -842,10 +848,17 @@ public class SmackableImp implements Smackable {
 		mConfig.presence_required = false;
 	}
 
-	public void sendOfflineMessages() {
+	public void sendOfflineMessages(String toMUCjid) {
+		boolean is_muc = (toMUCjid != null);
+		String selection = SEND_OFFLINE_SELECTION;
+		String[] selection_args = null;
+		if (is_muc) {
+			selection = selection + " AND jid = ?";
+			selection_args = new String[] { toMUCjid };
+		}
 		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI,
-				SEND_OFFLINE_PROJECTION, SEND_OFFLINE_SELECTION,
-				null, null);
+				SEND_OFFLINE_PROJECTION, selection,
+				selection_args, null);
 		final int      _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
 		final int      JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
 		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
@@ -854,8 +867,10 @@ public class SmackableImp implements Smackable {
 		ContentValues mark_sent = new ContentValues();
 		mark_sent.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);
 		while (cursor.moveToNext()) {
-			int _id = cursor.getInt(_ID_COL);
+			long _id = cursor.getLong(_ID_COL);
 			String toJID = cursor.getString(JID_COL);
+			if (!is_muc && mucJIDs.contains(toJID))
+				continue;
 			String message = cursor.getString(MSG_COL);
 			String packetID = cursor.getString(PACKETID_COL);
 			long ts = cursor.getLong(TS_COL);
@@ -865,7 +880,7 @@ public class SmackableImp implements Smackable {
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
-			if (mucJIDs.contains(toJID))
+			if (is_muc)
 				newMessage.setType(Message.Type.groupchat);
 			else
 				newMessage.addExtension(new DeliveryReceiptRequest());
@@ -926,10 +941,11 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
+	// method checks whether the XMPP connection is authenticated and fully bound (i.e. after resume/bind)
 	public boolean isAuthenticated() {
 		if (mXMPPConnection != null) {
-			return (mXMPPConnection.isConnected() && mXMPPConnection
-					.isAuthenticated());
+			return mXMPPConnection.isConnected() && mXMPPConnection.isAuthenticated() &&
+					mState != ConnectionState.CONNECTING;
 		}
 		return false;
 	}
@@ -1093,7 +1109,7 @@ public class SmackableImp implements Smackable {
 		if (is_user_watching == user_watching)
 			return;
 		is_user_watching = user_watching;
-		if (mXMPPConnection != null && mXMPPConnection.isAuthenticated())
+		if (isAuthenticated())
 			sendUserWatching();
 	}
 
@@ -1114,7 +1130,7 @@ public class SmackableImp implements Smackable {
 	 * to reestablish a connection otherwise.
 	 */
 	public void sendServerPing() {
-		if (mXMPPConnection == null || !mXMPPConnection.isAuthenticated()) {
+		if (isAuthenticated()) {
 			debugLog("Ping: requested, but not connected to server.");
 			requestConnectionState(ConnectionState.ONLINE, false);
 			return;
@@ -1367,6 +1383,16 @@ public class SmackableImp implements Smackable {
 						return; // we do not want to add errors as "incoming messages"
 					}
 
+					boolean is_muc = (msg.getType() == Message.Type.groupchat);
+					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
+							(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
+
+					// TODO: catch self-CSN to MUC once sent by yaxim
+					if (is_from_me) {
+						Log.d(TAG, "user is active on different device --> Silent mode");
+						mServiceCallBack.setGracePeriod(true);
+					}
+
 					// ignore empty messages
 					if (chatMessage == null) {
 						if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
@@ -1389,10 +1415,6 @@ public class SmackableImp implements Smackable {
 					if (msg.getType() == Message.Type.error)
 						is_new = ChatConstants.DS_FAILED;
 
-					boolean is_muc = (msg.getType() == Message.Type.groupchat);
-					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
-						(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
-
 					// handle MUC-PMs: messages from a nick from a known MUC or with
 					// an <x> element
 					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
@@ -1414,8 +1436,8 @@ public class SmackableImp implements Smackable {
 						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
 					}
 
-					// Carbons and MUC history are 'silent' by default
-					boolean is_silent = (cc != null) || (is_muc && timestamp != null);
+					// synchronized MUCs and contacts are not silent by default
+					boolean is_silent = !(is_muc ? multiUserChats.get(fromJID[0]).isSynchronized : mRoster.contains(fromJID[0]));
 
 					long upsert_id = -1;
 					if (is_muc && is_from_me) {
@@ -2101,6 +2123,7 @@ public class SmackableImp implements Smackable {
 			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
 			Log.d(TAG, "upserting MUC as online: " + roomname);
 			upsertRoster(cvR, room);
+			sendOfflineMessages(room);
 			return true;
 		}
 		

@@ -1,11 +1,14 @@
 package org.yaxim.androidclient.data;
 
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.chat.ChatWindow;
 import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
+import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
+import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.util.StatusMode;
@@ -25,6 +28,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -131,6 +140,95 @@ public class ChatHelper {
 			.create().show();
 	}
 
+	public interface EditOk {
+		abstract public void ok(String result);
+	}
+
+	public static void editTextDialog(Activity act, int titleId, CharSequence message, String text,
+						final EditOk ok) {
+		LayoutInflater inflater = (LayoutInflater) act.getSystemService(act.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.edittext_dialog,
+				(ViewGroup) act.findViewById(R.id.layout_root));
+
+		TextView messageView = (TextView) layout.findViewById(R.id.text);
+		messageView.setText(message);
+		final EditText input = (EditText) layout.findViewById(R.id.editText);
+		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
+		input.setText(text);
+		new AlertDialog.Builder(act)
+				.setTitle(titleId)
+				.setView(layout)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						String newName = input.getText().toString();
+						if (newName.length() != 0)
+							ok.ok(newName);
+					}})
+				.setNegativeButton(android.R.string.cancel, null)
+				.create().show();
+	}
+
+	public static void removeRosterItemDialog(final Activity act, final String jid, final String userName) {
+		new AlertDialog.Builder(act)
+				.setTitle(R.string.deleteRosterItem_title)
+				.setMessage(act.getString(R.string.deleteRosterItem_text, userName, jid))
+				.setPositiveButton(android.R.string.yes,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								try {
+									YaximApplication.getApp(act).getSmackable().removeRosterItem(jid);
+									if (act instanceof ChatWindow)
+										act.finish();
+								} catch (Exception e) {
+									shortToastNotify(act, e);
+								}
+							}
+						})
+				.setNegativeButton(android.R.string.no, null)
+				.create().show();
+	}
+	public static void renameRosterItemDialog(final Activity act, final String jid, final String userName) {
+		String newUserName = userName;
+		if (jid.equals(userName))
+			newUserName = XMPPHelper.capitalizeString(jid.split("@")[0]);
+		editTextDialog(act, R.string.RenameEntry_title,
+				act.getString(R.string.RenameEntry_summ, userName, jid),
+				newUserName, new EditOk() {
+					public void ok(String result) {
+						try {
+							YaximApplication.getApp(act).getSmackable().renameRosterItem(jid, result);
+						} catch (Exception e) {
+							shortToastNotify(act, e);
+						}
+					}
+				});
+	}
+	public static void moveRosterItemToGroupDialog(final Activity act, final String jabberID) {
+		LayoutInflater inflater = (LayoutInflater)act.getSystemService(
+				act.LAYOUT_INFLATER_SERVICE);
+		View group = inflater.inflate(R.layout.moverosterentrytogroupview, null, false);
+		final GroupNameView gv = (GroupNameView)group.findViewById(R.id.moverosterentrytogroupview_gv);
+		gv.setGroupList(getRosterGroups(act));
+		new AlertDialog.Builder(act)
+				.setTitle(R.string.MoveRosterEntryToGroupDialog_title)
+				.setView(group)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								try {
+									YaximApplication.getApp(act).getSmackable().moveRosterItemToGroup(jabberID,
+											gv.getGroupName());
+								} catch (Exception e) {
+									shortToastNotify(act, e);
+								}
+							}
+						})
+				.setNegativeButton(android.R.string.cancel, null)
+				.create().show();
+	}
+
+
+
 	public static boolean handleJidOptions(Activity act, int menu_id, String jid, String userName) {
 		Intent ringToneIntent = new Intent(act, NotificationPrefs.class);
 		switch (menu_id) {
@@ -143,6 +241,23 @@ public class ChatHelper {
 			return true;
 
 		// contact specific options (contact_options.xml)
+		case R.id.roster_contextmenu_contact_delete:
+			removeRosterItemDialog(act, jid, userName);
+			return true;
+		case R.id.roster_contextmenu_contact_rename:
+			renameRosterItemDialog(act, jid, userName);
+			return true;
+		case R.id.roster_contextmenu_contact_request_auth:
+			YaximApplication.getApp(act).getSmackable().sendPresenceRequest(jid, "subscribe");
+			return true;
+		case R.id.roster_contextmenu_contact_change_group:
+			moveRosterItemToGroupDialog(act, jid);
+			return true;
+
+		case R.id.menu_add_friend:
+			new AddRosterItemDialog(act, jid).show();
+			return true;
+
 		case R.id.roster_contextmenu_contact_share:
 			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
 					XMPPHelper.createRosterLinkHTTPS(jid));
@@ -169,6 +284,17 @@ public class ChatHelper {
 		default:
 			return false;
 		}
+	}
+
+	public static void shortToastNotify(Context ctx, String msg) {
+		Toast toast = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+		toast.show();
+	}
+	public static void shortToastNotify(Context ctx, Throwable e) {
+		e.printStackTrace();
+		while (e.getCause() != null)
+			e = e.getCause();
+		shortToastNotify(ctx,e.getMessage());
 	}
 
 	private static final String[] ROSTER_QUERY = new String[] {
@@ -204,6 +330,27 @@ public class ChatHelper {
 		cursor.close();
 		return list;
 	}
+
+	private static final String[] GROUPS_QUERY = new String[] {
+			RosterConstants._ID,
+			RosterConstants.GROUP,
+	};
+	public static List<String> getRosterGroups(Context ctx) {
+		// we want all, online and offline
+		List<String> list = new ArrayList<String>();
+		Cursor cursor = ctx.getContentResolver().query(RosterProvider.GROUPS_URI, GROUPS_QUERY,
+				null, null, RosterConstants.GROUP);
+		int idx = cursor.getColumnIndex(RosterConstants.GROUP);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			list.add(cursor.getString(idx));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		list.remove(RosterProvider.RosterConstants.MUCS);
+		return list;
+	}
+
 
 	public static Collection<String> getXMPPDomains(Context ctx, int filter) {
 		HashSet<String> servers = new HashSet<String>();

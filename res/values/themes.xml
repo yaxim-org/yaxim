@@ -28,6 +28,7 @@
 	<item name="ic_action_camera">@drawable/ic_action_camera_light</item>
 	<item name="ic_action_collection">@drawable/ic_action_collection_light</item>
 	<item name="ic_action_picture">@drawable/ic_action_picture_light</item>
+	<item name="ic_action_add_person">@drawable/ic_action_add_person_light</item>
     </style>
 
     <style name="IndeterminateProgress" parent="Widget.Sherlock.ProgressBar">
@@ -68,6 +69,7 @@
 	<item name="ic_action_camera">@drawable/ic_action_camera_dark</item>
 	<item name="ic_action_collection">@drawable/ic_action_collection_dark</item>
 	<item name="ic_action_picture">@drawable/ic_action_picture_dark</item>
+	<item name="ic_action_add_person">@drawable/ic_action_add_person_dark</item>
     </style>
 
 	<style name="LightPinkTheme" parent="YaximLightTheme">

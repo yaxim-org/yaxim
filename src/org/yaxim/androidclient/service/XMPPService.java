@@ -8,6 +8,7 @@ import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.IXMPPRosterCallback;
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -530,6 +531,7 @@ public class XMPPService extends GenericService {
 		System.setProperty("smack.debugEnabled", "" + mConfig.smackdebug);
 		try {
 			mSmackable = new SmackableImp(mConfig, getContentResolver(), this);
+			YaximApplication.getApp(this).setSmackable(mSmackable);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
@@ -547,11 +549,18 @@ public class XMPPService extends GenericService {
 					}});
 				}
 
+			@Override
+			public void setGracePeriod(boolean silence) {
+				XMPPService.this.setGracePeriod(silence);
+			}
+
 			public void connectionStateChanged() {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
-				updateServiceNotification();
 				switch (mSmackable.getConnectionState()) {
+				case LOADING:
+					mReconnectInfo = getString(R.string.muc_synchronizing);
+					break;
 				//case OFFLINE:
 				case DISCONNECTED:
 					connectionFailed(getString(R.string.conn_disconnected));
@@ -560,6 +569,7 @@ public class XMPPService extends GenericService {
 					mReconnectTimeout = RECONNECT_AFTER;
 				default:
 				}
+				updateServiceNotification();
 			}
 
 			@Override
@@ -623,6 +633,7 @@ public class XMPPService extends GenericService {
 		logInfo("userStartedWatching: " + number_of_eyes);
 		if (mSmackable != null)
 			mSmackable.setUserWatching(true);
+		setGracePeriod(false);
 	}
 
 	private void userStoppedWatching() {

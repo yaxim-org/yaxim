@@ -103,6 +103,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	protected EditText mChatInput = null;
 	protected String mWithJabberID = null;
 	protected String mUserScreenName = null;
+	private boolean isContact = false;
 	private Intent mChatServiceIntent;
 	private ServiceConnection mChatServiceConnection;
 	private XMPPChatServiceAdapter mChatServiceAdapter;
@@ -476,6 +477,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		if (isContact)
+			inflater.inflate(R.menu.contact_options, menu);
+		else
+			inflater.inflate(R.menu.noncontact_options, menu);
 		return inflateGenericContactOptions(menu);
 	}
 
@@ -523,6 +529,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
 			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.roster_contextmenu_send_file)), REQUEST_FILE);
 			return true;
+
+		// items that require an authenticated connection
+		case R.id.roster_contextmenu_contact_delete:
+		case R.id.roster_contextmenu_contact_rename:
+		case R.id.roster_contextmenu_contact_request_auth:
+		case R.id.roster_contextmenu_contact_change_group:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
+			// fall through to default handler
 		default:
 			return ChatHelper.handleJidOptions(this, item.getItemId(), mWithJabberID, mUserScreenName);
 		}
@@ -817,9 +831,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		int MODE_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MODE);
 		int MSG_IDX = cursor.getColumnIndex(RosterProvider.RosterConstants.STATUS_MESSAGE);
 
-		if (cursor.getCount() == 1) {
+		isContact = cursor.getCount() == 1;
+		if (isContact) {
 			cursor.moveToFirst();
 			int status_mode = cursor.getInt(MODE_IDX);
+			if (status_mode == StatusMode.subscribe.ordinal())
+				isContact = false;
 			String status_message = cursor.getString(MSG_IDX);
 			Log.d(TAG, "contact status changed: " + status_mode + " " + status_message);
 			mTitle.setText(cursor.getString(ALIAS_IDX));
@@ -832,6 +849,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
 		cursor.close();
+		invalidateOptionsMenu();
 	}
 
 	// this method is a "virtual" placeholder for the MUC activity

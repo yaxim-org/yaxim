@@ -5,9 +5,9 @@ import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.XMPPHelper;
 import org.yaxim.androidclient.widget.AutoCompleteJidEdit;
-import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.YaximApplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,8 +23,7 @@ import org.yaxim.androidclient.R;
 public class AddRosterItemDialog extends AlertDialog implements
 		DialogInterface.OnClickListener, TextWatcher {
 
-	private MainWindow mMainWindow;
-	private XMPPRosterServiceAdapter mServiceAdapter;
+	private Activity mActivity;
 
 	private Button okButton;
 	private AutoCompleteJidEdit userInputField;
@@ -33,35 +32,32 @@ public class AddRosterItemDialog extends AlertDialog implements
 	private String mToken = null;
 	private GroupNameView mGroupNameView;
 
-	public AddRosterItemDialog(MainWindow mainWindow,
-			XMPPRosterServiceAdapter serviceAdapter) {
-		super(mainWindow);
-		mMainWindow = mainWindow;
-		mServiceAdapter = serviceAdapter;
+	public AddRosterItemDialog(Activity act) {
+		super(act);
+		mActivity = act;
 
 		setTitle(R.string.addFriend_Title);
 
-		LayoutInflater inflater = (LayoutInflater) mainWindow
+		LayoutInflater inflater = (LayoutInflater) act
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View group = inflater.inflate(R.layout.addrosteritemdialog, null, false);
 		setView(group);
 
 		userInputField = (AutoCompleteJidEdit)group.findViewById(R.id.AddContact_EditTextField);
-		userInputField.setServerList(YaximApplication.getConfig(mMainWindow).server,
-				ChatHelper.getXMPPDomains(mainWindow, ChatHelper.ROSTER_FILTER_CONTACTS), R.array.xmpp_servers);
+		userInputField.setServerList(YaximApplication.getConfig(mActivity).server,
+				ChatHelper.getXMPPDomains(act, ChatHelper.ROSTER_FILTER_CONTACTS), R.array.xmpp_servers);
 		aliasInputField = (EditText)group.findViewById(R.id.AddContactAlias_EditTextField);
 
 		mGroupNameView = (GroupNameView)group.findViewById(R.id.AddRosterItem_GroupName);
-		mGroupNameView.setGroupList(mMainWindow.getRosterGroups());
+		mGroupNameView.setGroupList(ChatHelper.getRosterGroups(mActivity));
 
-		setButton(BUTTON_POSITIVE, mainWindow.getString(android.R.string.ok), this);
-		setButton(BUTTON_NEGATIVE, mainWindow.getString(android.R.string.cancel),
+		setButton(BUTTON_POSITIVE, act.getString(android.R.string.ok), this);
+		setButton(BUTTON_NEGATIVE, act.getString(android.R.string.cancel),
 				(DialogInterface.OnClickListener)null);
 
 	}
-	public AddRosterItemDialog(MainWindow mainWindow,
-			XMPPRosterServiceAdapter serviceAdapter, String jid) {
-		this(mainWindow, serviceAdapter);
+	public AddRosterItemDialog(Activity act, String jid) {
+		this(act);
 		userInputField.setText(jid);
 	}
 
@@ -98,11 +94,19 @@ public class AddRosterItemDialog extends AlertDialog implements
 			e.printStackTrace();
 			return;
 		}
-		mServiceAdapter.addRosterItem(
-				realJid,
-				alias,
-				mGroupNameView.getGroupName(),
-				mToken);
+		try {
+			YaximApplication.getApp(mActivity).getSmackable().addRosterItem(
+					realJid,
+					alias,
+					mGroupNameView.getGroupName(),
+					mToken);
+		} catch (Exception e) {
+			ChatHelper.shortToastNotify(mActivity, e);
+			new AddRosterItemDialog(mActivity, userInputField.getText().toString())
+					.setAlias(aliasInputField.getText().toString())
+					.setToken(mToken)
+					.show();
+		}
 	}
 
 	public void afterTextChanged(Editable s) {
@@ -113,7 +117,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 		} catch (YaximXMPPAdressMalformedException e) {
 			okButton.setEnabled(false);
 			if (s.length() > 0)
-				userInputField.setError(mMainWindow.getString(R.string.Global_JID_malformed));
+				userInputField.setError(mActivity.getString(R.string.Global_JID_malformed));
 		}
 		if (s.length() > 0) {
 			String userpart[] = s.toString().split("@");
