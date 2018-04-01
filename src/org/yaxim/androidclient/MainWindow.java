@@ -67,6 +67,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.Window;
 import com.nullwire.trace.ExceptionHandler;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 public class MainWindow extends SherlockExpandableListActivity {
 
 	private static final String TAG = "yaxim.MainWindow";
@@ -687,6 +689,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			
 		case R.id.menu_markallread:
 			ChatHelper.markAllAsRead(this);
+			ShortcutBadger.applyCount(this, 0);
 			return true;
 
 		case android.R.id.home:
