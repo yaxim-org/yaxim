@@ -7,6 +7,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -189,9 +191,33 @@ public class FileHelper {
 			);
 			return image;
 		} catch (Exception e) {
-			Log.d("FileHelper", e.getLocalizedMessage());
+			Log.d("yaxim.FileHelper", e.getLocalizedMessage());
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public static int getExifOrientation(Context ctx, Uri path) {
+		try {
+			ExifInterface exif;
+			exif = new ExifInterface(getPath(ctx, path));
+			return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+		} catch (Exception e) {
+			Log.e("yaxim.FileHelper", "getExifOrientation: " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return 1; // default to "no rotation"
+	}
+	public static int getExifRotation(Context ctx, Uri path) {
+		switch (getExifOrientation(ctx, path)) {
+		case ExifInterface.ORIENTATION_ROTATE_90:
+			return 90;
+		case ExifInterface.ORIENTATION_ROTATE_180:
+			return 180;
+		case ExifInterface.ORIENTATION_ROTATE_270:
+			return 270;
+		default:
+			return 0;
 		}
 	}
 
@@ -206,14 +232,22 @@ public class FileHelper {
 			int current_size = (opts.outWidth > opts.outHeight)? opts.outWidth : opts.outHeight;
 			int factor = (int)Math.ceil((double)current_size/ IMAGE_SIZE);
 			is.close();
+			int rotation = getExifRotation(ctx, path);
 			ByteArrayOutputStream baos;
 			do {
-				Log.d("FileHelper", "Shrinking image from " + opts.outWidth + "*" + opts.outHeight + " by factor " + factor + "...");
+				Log.d("yaxim.FileHelper", "Shrinking image from " + opts.outWidth + "*" + opts.outHeight + " by factor " + factor + "...");
 				opts.inSampleSize = factor;
 				opts.inJustDecodeBounds = false;
 				is = ctx.getContentResolver().openInputStream(path);
 				Bitmap result = BitmapFactory.decodeStream(is, null, opts);
 				is.close();
+				if (rotation != 0) {
+					Log.d("yaxim.FileHelper", "Rotating image by " + rotation + "°");
+					Matrix matrix = new Matrix();
+					matrix.postRotate(rotation);
+					result = Bitmap.createBitmap(result, 0, 0, result.getWidth(), result.getHeight(),
+							matrix, true);
+				}
 				baos = new ByteArrayOutputStream();
 				result.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, baos);
 				factor++;
