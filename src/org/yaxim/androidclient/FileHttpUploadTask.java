@@ -106,6 +106,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
                         conn.setDoInput(true);
                         conn.setUseCaches(false);
                         conn.setRequestMethod("PUT");
+                        conn.setRequestProperty("Content-Type", fi.mimeType);
 
 						DataOutputStream out = new DataOutputStream(conn.getOutputStream());
 						out.write(bytes, 0, bytes.length);
