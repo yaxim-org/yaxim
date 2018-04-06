@@ -10,7 +10,7 @@
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">No contacts to show!</string>
 	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
+		- Android Beam™: touch a contact\'s phone\n\n
 		- Scan a QR code\n\n
 		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
 		- \"Add contact\" if you know the JID</string>
@@ -140,7 +140,7 @@
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Add a Contact</string>
-	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
+	<string name="addFriend_Summ">Please enter the Jabber ID of your contact, the
 		desired screen name and choose their contact group!</string>
 	<string name="addFriend_aliasHint">Screen name</string>
 	<string name="addrosteritemaddgroupchoice">Add to a new group</string>
