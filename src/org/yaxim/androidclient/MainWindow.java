@@ -68,6 +68,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.Window;
 import com.nullwire.trace.ExceptionHandler;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 public class MainWindow extends SherlockExpandableListActivity {
 
 	private static final String TAG = "yaxim.MainWindow";
@@ -691,6 +693,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			
 		case R.id.menu_markallread:
 			ChatHelper.markAllAsRead(this);
+			ShortcutBadger.applyCount(this, 0);
 			return true;
 
 		case android.R.id.home:
@@ -1040,12 +1043,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		R.id.groupname,
 		R.id.members
 	};
+	// virtual boolean column `subscribe` to sort pending subscriptions to the top
 	private static final String[] ROSTER_QUERY = new String[] {
 		RosterConstants._ID,
 		RosterConstants.JID,
 		RosterConstants.ALIAS,
 		RosterConstants.STATUS_MODE,
 		RosterConstants.STATUS_MESSAGE,
+		"(" + RosterConstants.STATUS_MODE + " == " + StatusMode.subscribe.ordinal() + ") AS subscribe",
 	};
 
 	public class RosterExpListAdapter extends SimpleCursorTreeAdapter {
@@ -1101,7 +1106,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				args = new String[] { groupname };
 			}
 			return getContentResolver().query(RosterProvider.CONTENT_URI, ROSTER_QUERY,
-				selectWhere, args, null);
+				selectWhere, args, "subscribe DESC, " + RosterConstants.ALIAS + " COLLATE NOCASE");
 		}
 
 		@Override

@@ -37,6 +37,8 @@ import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.util.MessageStylingHelper;
 import org.yaxim.androidclient.util.PreferenceConstants;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 public abstract class GenericService extends Service {
 
 	private static final String TAG = "yaxim.Service";
@@ -70,6 +72,7 @@ public abstract class GenericService extends Service {
 		mWakeLock = ((PowerManager)getSystemService(Context.POWER_SERVICE))
 				.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, APP_NAME);
 		addNotificationMGR();
+		updateBadger();
 	}
 
 	@Override
@@ -176,6 +179,7 @@ public abstract class GenericService extends Service {
 			}
 		}
 		mNotificationMGR.notify(notifyId, mNotification);
+		updateBadger();
 		mWakeLock.release();
 	}
 	
@@ -312,9 +316,17 @@ public abstract class GenericService extends Service {
 		shortToastNotify(e.getMessage());
 	}
 
+	public void updateBadger() {
+		int count = 0;
+		for (int c : notificationCount.values())
+			count += c;
+		ShortcutBadger.applyCount(this, count);
+	}
+
 	public void resetNotificationCounter(String userJid) {
 		notificationCount.remove(userJid);
 		notificationBigText.remove(userJid);
+		updateBadger();
 	}
 
 	protected void logError(String data) {
