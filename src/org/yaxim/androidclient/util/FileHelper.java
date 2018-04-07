@@ -274,8 +274,16 @@ public class FileHelper {
 		 */
 		int nameIndex = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
 		int sizeIndex = c.getColumnIndex(OpenableColumns.SIZE);
-		if (c.moveToFirst())
+		int dataIndex = c.getColumnIndex(MediaStore.Images.Media.DATA);
+		if (c.moveToFirst()) {
 			fi = new FileInfo(cr.getType(path), c.getString(nameIndex), c.getLong(sizeIndex));
+			if (fi.size == 0) {
+				String filepath = c.getString(dataIndex);
+				File f = new File(filepath);
+				fi = new FileInfo(URLConnection.guessContentTypeFromName(filepath),
+						f.getName(), f.length());
+			}
+		}
 		c.close();
 		return fi;
 	}
