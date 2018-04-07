@@ -55,7 +55,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
             }
             FileHelper.FileInfo fi = FileHelper.getFileInfo(ctx, path);
 
-            if (fi == null)
+            if (fi == null || fi.size == 0)
                 return failResponse("File not found");
 
             XMPPConnection connection = smackable.getConnection();
