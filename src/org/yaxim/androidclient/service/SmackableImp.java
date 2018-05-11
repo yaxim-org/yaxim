@@ -2170,8 +2170,12 @@ public class SmackableImp implements Smackable {
 		Log.d(TAG, "MUC instance: " + jid + " " + muc);
 		Iterator<String> occIter = muc.getOccupants();
 		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
-		while(occIter.hasNext())
-			tmpList.add(new ParcelablePresence(muc.getOccupantPresence(occIter.next())));
+		while(occIter.hasNext()) {
+			ParcelablePresence pp = new ParcelablePresence(muc.getOccupantPresence(occIter.next()));
+			// smack3 bug: work around nameless participant from ejabberd MUC vcard
+			if (!TextUtils.isEmpty(pp.resource))
+				tmpList.add(pp);
+		}
 		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
 			@Override
 			public int compare(ParcelablePresence lhs, ParcelablePresence rhs) {
