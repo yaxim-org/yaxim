@@ -1514,8 +1514,8 @@ public class SmackableImp implements Smackable {
 		else
 			firstline = firstline + "\n%"; /* first line match on other lines */
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
-				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ?",
-				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID() }, null);
+				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ? AND read != ?",
+				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_FAILED }, null);
 		boolean updated = false;
 		if (c.moveToFirst()) {
 			long _id = c.getLong(0);
@@ -1555,8 +1555,9 @@ public class SmackableImp implements Smackable {
 		};
 
 		if (packet_id == null) packet_id = "";
-		final String selection = "jid = ? AND resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= ?";
-		final String[] selectionArgs = new String[] { muc, nick, packet_id, ""+ts, msg.getBody(), "" + mucc.getFirstPacketID() };
+		// TODO: merge failed messages with re-send attempts when sending, disable DS_FAILED check
+		final String selection = "jid = ? AND resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= ? AND read != ?";
+		final String[] selectionArgs = new String[] { muc, nick, packet_id, ""+ts, msg.getBody(), ""+mucc.getFirstPacketID(), ""+ChatConstants.DS_FAILED };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
 			Log.d(TAG, "message from " + nick + " matched " + cursor.getCount() + " items.");
