@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
@@ -256,15 +257,20 @@ public class SmackableImp implements Smackable {
 		if (mConfig.require_ssl)
 			this.mXMPPConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
 
-		// register MemorizingTrustManager for HTTPS
+		// register MemorizingTrustManager for XMPP and HTTPS
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			MemorizingTrustManager mtm = YaximApplication.getApp(mService).mMTM;
 			sc.init(null, new X509TrustManager[] { mtm },
 					new java.security.SecureRandom());
+			// XMPP
 			this.mXMPPConfig.setCustomSSLContext(sc);
 			this.mXMPPConfig.setHostnameVerifier(mtm.wrapHostnameVerifier(
 						new org.apache.http.conn.ssl.StrictHostnameVerifier()));
+			// HTTPS (for HTTP Upload)
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HttpsURLConnection.setDefaultHostnameVerifier(mtm.wrapHostnameVerifier(
+						HttpsURLConnection.getDefaultHostnameVerifier()));
 		} catch (java.security.GeneralSecurityException e) {
 			debugLog("initialize MemorizingTrustManager: " + e);
 		}
