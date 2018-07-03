@@ -1395,6 +1395,9 @@ public class SmackableImp implements Smackable {
 
 					// TODO: catch self-CSN to MUC once sent by yaxim
 					if (is_from_me) {
+						// perform a message-replace on self-sent MUC message, abort further processing
+						if (is_muc && matchOutgoingMucReflection(msg, fromJID))
+							return;
 						Log.d(TAG, "user is active on different device --> Silent mode");
 						mServiceCallBack.setGracePeriod(true);
 					}
@@ -1447,9 +1450,6 @@ public class SmackableImp implements Smackable {
 
 					long upsert_id = -1;
 					if (is_muc && is_from_me) {
-						// perform a message-replace on self-sent MUC message, abort further processing
-						if (matchOutgoingMucReflection(msg, fromJID))
-							return;
 						// messages from our other client are "ACKed" automatically
 						is_new = ChatConstants.DS_ACKED;
 					}
