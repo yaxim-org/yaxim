@@ -1503,7 +1503,9 @@ public class SmackableImp implements Smackable {
 		MUCController mucc = multiUserChats.get(muc);
 		if (!nick.equals(getMyMucNick(muc)))
 			return false;
-		// TODO: store pending _id's in MUCController
+		// TODO: store pending _id's in MUCController (will be needed for CSN sending!)
+		if (msg.getBody() == null)
+			return false; /* TODO: yaxim doesn't emit CSN, so it's another client! */
 		// https://stackoverflow.com/a/8248052/539443 - securely use LIKE
 		String firstline = msg.getBody().replace("!", "!!")
 				.replace("%", "!%")
