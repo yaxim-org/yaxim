@@ -1516,8 +1516,9 @@ public class SmackableImp implements Smackable {
 		else
 			firstline = firstline + "\n%"; /* first line match on other lines */
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
-				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ? AND read != ?",
-				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_FAILED }, null);
+				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ? AND read = ?",
+				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_NEW },
+				"_id DESC");
 		boolean updated = false;
 		if (c.moveToFirst()) {
 			long _id = c.getLong(0);
