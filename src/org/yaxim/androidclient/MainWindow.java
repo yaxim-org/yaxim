@@ -230,9 +230,14 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	/** opens a ChatWindow / MUCChat window to the given JID, potentially sending the attached text.
+	 *
+	 * @return true if the chat was successfully opened.
+	 */
 	public boolean openChatWithJid(String jid, String text) {
 		Log.d(TAG, "openChatWithJid: " + jid);
 
+		// search for JID in roster, to obtain display name
 		List<String[]> contacts = ChatHelper.getRosterContacts(this, ChatHelper.ROSTER_FILTER_ALL);
 		for (String[] c : contacts) {
 			if (jid.equalsIgnoreCase(c[0])) {
@@ -242,7 +247,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				return true;
 			}
 		}
-		// if we have a message, open chat to JID
+		// if we have a message, open chat to JID irregardless of roster
 		if (text != null) {
 			ChatHelper.startChatActivity(this, jid, jid, text);
 			finish();
