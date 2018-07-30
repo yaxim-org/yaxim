@@ -243,14 +243,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 			if (jid.equalsIgnoreCase(c[0])) {
 				// found it
 				ChatHelper.startChatActivity(this, c[0], c[1], text);
-				finish();
 				return true;
 			}
 		}
 		// if we have a message, open chat to JID irregardless of roster
 		if (text != null) {
 			ChatHelper.startChatActivity(this, jid, jid, text);
-			finish();
 			return true;
 		}
 		return false;
