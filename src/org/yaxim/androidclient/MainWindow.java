@@ -44,6 +44,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -363,6 +364,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
+	public Uri xmppUriFromClipboard() {
+		ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+		String clip = cm.getText().toString();
+		return transmogrifyXmppUriHelper(Uri.parse(clip));
+	}
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -576,6 +584,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 		item.setIcon(iconId);
 		item.setTitle(title);
 	}
+	void setMenuItemFromClipboard(Menu menu, int itemId) {
+		com.actionbarsherlock.view.MenuItem item = menu.findItem(itemId);
+		if (item == null)
+			return;
+		Uri link = xmppUriFromClipboard();
+		item.setVisible(link != null);
+		if (link != null)
+			item.setTitle(getString(R.string.Menu_addClipboard, link.getAuthority()));
+	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -583,6 +600,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				getConnectDisconnectText());
 		setMenuItem(menu, R.id.menu_show_hide, getShowHideMenuIcon(),
 				getShowHideMenuText());
+		setMenuItemFromClipboard(menu, R.id.menu_add_clipboard);
 		return true;
 	}
 
@@ -695,6 +713,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 		switch (itemID) {
 		case R.id.menu_connect:
 			toggleConnection();
+			return true;
+
+		case R.id.menu_add_clipboard:
+			Uri link = xmppUriFromClipboard();
+			if (link != null)
+				handleXmppUri(link);
 			return true;
 
 		case R.id.menu_add_friend:
