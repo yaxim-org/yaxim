@@ -368,6 +368,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 	public Uri xmppUriFromClipboard() {
 		ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 		String clip = cm.getText().toString();
+		if (XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
+			return new Uri.Builder().scheme("xmpp").authority(clip).build();
+		}
 		return transmogrifyXmppUriHelper(Uri.parse(clip));
 	}
 
