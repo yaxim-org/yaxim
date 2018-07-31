@@ -1323,7 +1323,8 @@ public class SmackableImp implements Smackable {
 						}
 					}
 				}
-				if (mPingID != null && mPingID.equals(packet.getPacketID()))
+				if (getJabberID(packet.getFrom(), mConfig.server)[0].equals(mConfig.server)
+						&& mPingID != null && mPingID.equals(packet.getPacketID()))
 					gotServerPong(packet.getPacketID());
 
 			}
