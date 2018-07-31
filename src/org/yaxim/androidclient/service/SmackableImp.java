@@ -1136,7 +1136,7 @@ public class SmackableImp implements Smackable {
 	 * to reestablish a connection otherwise.
 	 */
 	public void sendServerPing() {
-		if (isAuthenticated()) {
+		if (!isAuthenticated()) {
 			debugLog("Ping: requested, but not connected to server.");
 			requestConnectionState(ConnectionState.ONLINE, false);
 			return;
