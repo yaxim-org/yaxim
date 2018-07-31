@@ -24,6 +24,7 @@ public class MUCController {
 	final String jid;
 	public MultiUserChat muc;
 	boolean isSynchronized = false;
+	boolean isTimeout = false;
 
 
 	static final int LOOKUP_SIZE = 50;

@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -31,6 +32,7 @@ import org.jivesoftware.smack.parsing.ParsingExceptionCallback;
 import org.jivesoftware.smack.parsing.UnparsablePacket;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
+import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
 import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.PrivateDataManager;
@@ -99,6 +101,7 @@ import android.database.Cursor;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 public class SmackableImp implements Smackable {
@@ -1218,8 +1221,15 @@ public class SmackableImp implements Smackable {
 						// the MUC didn't give us anything in the last two ping rounds
 						if (lastActivity < mucPreviousPing) {
 							debugLog("Ping timeout from " + muc.getRoom());
+							mucc.isTimeout = true;
 							//do not leave MUC; the server is unavailable anyway - either it will recover or we will get an error
 							//muc.leave();
+							CharSequence lastActTime = DateUtils.getRelativeDateTimeString(mService, lastActivity,
+								DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
+							String message = String.format((Locale)null, "%s (%s)",
+									mService.getString(R.string.conn_ping_timeout),
+									lastActTime);
+							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,  message);
 							upsertRoster(cvR, muc.getRoom());
 						}
 						// send a ping if we didn't receive anything during the last ping round, even multiple times in a row
@@ -1258,6 +1268,16 @@ public class SmackableImp implements Smackable {
 		return false;
 	}
 
+	/** Updates internal structures for a sender's last activity.
+	 *
+	 * Currently only used for MUC self-pinging.
+	 */
+	private void registerLastActivity(String from_full) {
+		MUCController mucc = multiUserChats.get(StringUtils.parseBareAddress(from_full));
+		if (mucc != null)
+			mucc.setLastActivity();
+
+	}
 	/**
 	 * Registers a smack packet listener for IQ packets, intended to recognize "pongs" with
 	 * a packet id matching the last "ping" sent to the server.
@@ -1281,12 +1301,18 @@ public class SmackableImp implements Smackable {
 					IQ pong = (IQ)packet;
 					String[] from = getJabberID(pong.getFrom(), null);
 					// check for MUC self-ping response
-					MUCController mucc = multiUserChats.get(from[0]);
-					if (mucc != null)
-						mucc.setLastActivity();
+					registerLastActivity(packet.getFrom());
 					if (mucJIDs.contains(from[0]) && from[1].equals(getMyMucNick(from[0]))) {
-						if (isValidPingResponse(pong)) {
+						MUCController mucc = multiUserChats.get(from[0]);
+						if (isValidPingResponse(pong) && mucc != null) {
 							Log.d(TAG, "Ping: got response from MUC " + from[0]);
+							if (mucc.isTimeout) {
+								ContentValues cvR = new ContentValues();
+								cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mucc.muc.getSubject());
+								cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
+								upsertRoster(cvR, mucc.jid);
+								mucc.isTimeout = false;
+							}
 						} else if (pong.getError() != null) {
 							Log.d(TAG, "Ping: got error from MUC " + from[0] + ": " + pong.getError());
 							MUCController muc = multiUserChats.get(from[0]);
@@ -1377,6 +1403,7 @@ public class SmackableImp implements Smackable {
 							return;
 						}
 					}
+					registerLastActivity(fromJID[0]);
 
 					// check for jabber MUC invitation
 					if(direction == ChatConstants.INCOMING && handleMucInvitation(msg)) {
@@ -1625,6 +1652,8 @@ public class SmackableImp implements Smackable {
 						subscriptionRequests.remove(p.getFrom());
 						break;
 					}
+					// reduce MUC pinging by registering incoming presence activity
+					registerLastActivity(p.getFrom());
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
 					Log.e(TAG, "failed to process presence:");
