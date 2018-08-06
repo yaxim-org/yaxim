@@ -58,6 +58,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String server;
 	public String customServer;
 	public String jabberID;
+	public String screenName;
 	public boolean jid_configured;
 	public boolean require_ssl;
 
@@ -198,6 +199,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
+		this.screenName = prefs.getString(PreferenceConstants.SCREEN_NAME, XMPPHelper.capitalizeString(this.userName));
 	}
 
 	public SharedPreferences getJidPrefs(String jid) {
@@ -240,6 +242,12 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public synchronized void storeScreennameIfChanged(String name) {
+		if (name != screenName) {
+			screenName = name;
+			prefs.edit().putString(PreferenceConstants.SCREEN_NAME, screenName).commit();
+		}
+	}
 	public synchronized void storeInstallReferrer(String referrer) {
 		prefs.edit().putString(PreferenceConstants.INSTALL_REFERRER, referrer).commit();
 

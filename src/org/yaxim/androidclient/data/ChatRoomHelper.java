@@ -82,7 +82,7 @@ public class ChatRoomHelper {
 		Cursor cursor = ctx.getContentResolver().query(RosterProvider.MUCS_URI,
 				new String[] { RosterConstants.NICKNAME },
 				null, null, RosterConstants.NICKNAME );
-		String best = XMPPHelper.capitalizeString(fallback);
+		String best = fallback;
 		int best_count = 0;
 		String current = null;
 		int current_count = 0;

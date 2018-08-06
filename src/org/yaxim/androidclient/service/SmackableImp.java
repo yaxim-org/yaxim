@@ -51,6 +51,7 @@ import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
 import org.jivesoftware.smackx.packet.DataForm;
 import org.jivesoftware.smackx.packet.DiscoverItems;
+import org.jivesoftware.smackx.packet.VCard;
 import org.jivesoftware.smackx.provider.DataFormProvider;
 import org.jivesoftware.smackx.provider.DelayInfoProvider;
 import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
@@ -66,6 +67,7 @@ import org.jivesoftware.smackx.packet.Version;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.ping.packet.*;
 import org.jivesoftware.smackx.ping.provider.PingProvider;
+import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
@@ -141,6 +143,8 @@ public class SmackableImp implements Smackable {
 		pm.addExtensionProvider("x","jabber:x:delay", new DelayInfoProvider());
 		// add XEP-0092 Software Version
 		pm.addIQProvider("query", Version.NAMESPACE, new Version.Provider());
+
+		pm.addIQProvider("vCard", "vcard-temp", new VCardProvider());
 
 		// data forms
 		pm.addExtensionProvider("x","jabber:x:data", new DataFormProvider());
@@ -1797,6 +1801,22 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
+	private void loadOrUpdateVCard() {
+		try {
+			VCard vc = new VCard();
+			vc.load(mXMPPConnection);
+			String nick = vc.getNickName();
+			if (TextUtils.isEmpty(nick)) {
+				vc.setNickName(nick);
+				vc.save(mXMPPConnection);
+			} else
+				mConfig.storeScreennameIfChanged(nick);
+			Log.i(TAG, "Using nickname " + mConfig.screenName);
+		} catch (XMPPException e) {
+			Log.d(TAG, "loadVCard failed: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	private void discoverMUCDomain(String jid, DiscoverInfo info) {
 		if (mConfig.mucDomain != null)
 			return;
@@ -1824,7 +1844,7 @@ public class SmackableImp implements Smackable {
 					String jid = bookmark.getJid();
 					String nickname = bookmark.getNickname();
 					if (TextUtils.isEmpty(nickname))
-						nickname = ChatRoomHelper.guessMyNickname(mService, mConfig.userName);
+						nickname = ChatRoomHelper.guessMyNickname(mService, mConfig.screenName);
 					Log.d(TAG, "Adding MUC: " + jid + "/" + nickname + " join=" + bookmark.isAutoJoin());
 					ChatRoomHelper.addRoom(mService, jid, bookmark.getPassword(), nickname, bookmark.isAutoJoin());
 					added = true;
@@ -1842,6 +1862,7 @@ public class SmackableImp implements Smackable {
 		new Thread() {
 			public void run() {
 				discoverServices();
+				loadOrUpdateVCard();
 				loadMUCBookmarks(); // XXX: hack
 			}
 		}.start();
