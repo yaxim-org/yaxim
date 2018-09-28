@@ -1818,7 +1818,7 @@ public class SmackableImp implements Smackable {
 			} else
 				mConfig.storeScreennameIfChanged(nick);
 			Log.i(TAG, "Using nickname " + mConfig.screenName);
-		} catch (XMPPException e) {
+		} catch (Exception e) {
 			Log.d(TAG, "loadVCard failed: " + e.getMessage());
 			e.printStackTrace();
 		}
