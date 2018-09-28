@@ -196,10 +196,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 			else if (customServer.length() == 0 && port != -1)
 				customServer = server;
 			this.jid_configured = true;
+			this.screenName = prefs.getString(PreferenceConstants.SCREEN_NAME, XMPPHelper.capitalizeString(this.userName));
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
-		this.screenName = prefs.getString(PreferenceConstants.SCREEN_NAME, XMPPHelper.capitalizeString(this.userName));
 	}
 
 	public SharedPreferences getJidPrefs(String jid) {
