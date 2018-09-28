@@ -126,11 +126,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			e.printStackTrace();
 			jabberID = mEditJabberID.getText().toString();
 		}
-		String resource = String.format("%s.%08X",
-			mainWindow.getString(R.string.app_name),
-			new java.util.Random().nextInt());
-
-		savePreferences(jabberID, password, resource, mCreateAccount.isChecked());
+		savePreferences(jabberID, password, XMPPHelper.createResource(mainWindow), mCreateAccount.isChecked());
 		cancel();
 	}
 

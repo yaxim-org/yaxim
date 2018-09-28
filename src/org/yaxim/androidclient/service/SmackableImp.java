@@ -27,6 +27,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Mode;
+import org.jivesoftware.smack.packet.StreamError;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ParsingExceptionCallback;
 import org.jivesoftware.smack.parsing.UnparsablePacket;
@@ -621,6 +622,11 @@ public class SmackableImp implements Smackable {
 	private void onDisconnected(Throwable reason) {
 		Log.e(TAG, "onDisconnected: " + reason);
 		reason.printStackTrace();
+		if (reason instanceof XMPPException) {
+			StreamError se = ((XMPPException)reason).getStreamError();
+			if (se != null && se.getCode().equals("conflict"))
+				mConfig.generateNewResource();
+		}
 		// iterate through to the deepest exception
 		while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
 			reason = reason.getCause();

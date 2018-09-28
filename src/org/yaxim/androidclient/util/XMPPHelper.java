@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.security.SecureRandom;
 
+import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 
@@ -69,7 +70,13 @@ public class XMPPHelper {
 			throws YaximXMPPAdressMalformedException {
 		return verifyJabberID(jid.toString());
 	}
-	
+
+	public static String createResource(Context ctx) {
+		return String.format("%s.%08X",
+				ctx.getString(R.string.app_name),
+				new java.util.Random().nextInt());
+	}
+
 	public static int tryToParseInt(String value, int defVal) {
 		int ret;
 		try {

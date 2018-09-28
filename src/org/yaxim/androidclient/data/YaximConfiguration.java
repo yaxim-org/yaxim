@@ -242,6 +242,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 	}
 
+	public synchronized void generateNewResource() {
+		prefs.edit().putString(PreferenceConstants.RESSOURCE, XMPPHelper.createResource(ctx)).commit();
+	}
 	public synchronized void storeScreennameIfChanged(String name) {
 		if (name != screenName) {
 			screenName = name;
