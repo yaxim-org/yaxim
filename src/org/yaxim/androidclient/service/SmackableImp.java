@@ -1111,9 +1111,11 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
+	public boolean changeMessageDeliveryStatus(String packetID, int new_status, String error) {
 		ContentValues cv = new ContentValues();
 		cv.put(ChatConstants.DELIVERY_STATUS, new_status);
+		if (error != null || new_status == ChatConstants.DS_ACKED)
+			cv.put(ChatConstants.ERROR, error);
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
 				+ ChatProvider.TABLE_NAME);
 		return mContentResolver.update(rowuri, cv,
@@ -1121,6 +1123,9 @@ public class SmackableImp implements Smackable {
 				ChatConstants.DELIVERY_STATUS + " != " + ChatConstants.DS_ACKED + " AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
 				new String[] { packetID }) > 0;
+	}
+	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
+		return changeMessageDeliveryStatus(packetID, new_status, null);
 	}
 
 	protected boolean is_user_watching = false;
@@ -1426,11 +1431,12 @@ public class SmackableImp implements Smackable {
 
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
-						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
-							mServiceCallBack.notifyMessage(fromJID, msg.getError().toString(), (cc != null), Message.Type.error);
+						String errmsg = msg.getError().toString();
+						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED, errmsg))
+							mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
 						else if (mucJIDs.contains(msg.getFrom())) {
 							handleKickedFromMUC(msg.getFrom(), false, null,
-									msg.getError().toString());
+									errmsg);
 						}
 						return; // we do not want to add errors as "incoming messages"
 					}
