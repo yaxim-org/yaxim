@@ -222,7 +222,7 @@ public class ChatProvider extends ContentProvider {
 	private static class ChatDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "yaxim.db";
-		private static final int DATABASE_VERSION = 7;
+		private static final int DATABASE_VERSION = 8;
 
 		public ChatDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -240,6 +240,10 @@ public class ChatProvider extends ContentProvider {
 					+ ChatConstants.DIRECTION + " INTEGER,"
 					+ ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
+					+ ChatConstants.MSGTYPE + " INT,"
+					+ ChatConstants.EXTRA + " TEXT,"
+					+ ChatConstants.ERROR + " TEXT,"
+					+ ChatConstants.CORRECTION + " TEXT,"
 					+ ChatConstants.DELIVERY_STATUS + " INTEGER,"
 					+ ChatConstants.PACKET_ID + " TEXT,"
 					+ ChatConstants.RESOURCE + " TEXT DEFAULT NULL);");
@@ -259,6 +263,12 @@ public class ChatProvider extends ContentProvider {
 				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_pid on chats (pid)");
 				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_date on chats (jid, date)");
 				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_from_read on chats (jid, from_me, read)");
+			case 7:
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.MSGTYPE + " INT DEFAULT 0");
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.EXTRA + " TEXT DEFAULT NULL");
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.ERROR + " TEXT DEFAULT NULL");
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.CORRECTION + " TEXT DEFAULT NULL");
+
 				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -281,6 +291,10 @@ public class ChatProvider extends ContentProvider {
 		public static final String DIRECTION = "from_me";
 		public static final String JID = "jid";
 		public static final String MESSAGE = "message";
+		public static final String MSGTYPE = "msgtype";
+		public static final String EXTRA = "extra";
+		public static final String ERROR = "error";
+		public static final String CORRECTION = "correction";
 		public static final String DELIVERY_STATUS = "read"; // SQLite can not rename columns, reuse old name
 		public static final String PACKET_ID = "pid";
 		public static final String RESOURCE = "resource"; // to identify senders in MUCs (among others)
@@ -288,10 +302,16 @@ public class ChatProvider extends ContentProvider {
 		// boolean mappings
 		public static final int INCOMING = 0;
 		public static final int OUTGOING = 1;
+		// delivery status mappings
 		public static final int DS_NEW = 0; //< this message has not been sent/displayed yet
 		public static final int DS_SENT_OR_READ = 1; //< this message was sent but not yet acked, or it was received and read
 		public static final int DS_ACKED = 2; //< this message was XEP-0184 acknowledged
 		public static final int DS_FAILED = 3; //< this message was returned as failed
+
+		// message type mappings
+		public static final int MT_TEXT = 0; //< this is a regular chat message
+		public static final int MT_FILE = 1; //< this is a file upload URL / SIMS / OOB
+		public static final int MT_INVITE = 2; //< this is a file upload URL / SIMS / OOB
 
 		public static ArrayList<String> getRequiredColumns() {
 			ArrayList<String> tmpList = new ArrayList<String>();
