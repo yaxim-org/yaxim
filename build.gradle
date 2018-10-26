@@ -111,6 +111,7 @@ dependencies {
 	compile project('MemorizingTrustManager')
 	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile "me.leolin:ShortcutBadger:1.1.21@aar"
+	compile 'org.hsluv:hsluv:0.2'
 }
 
 preBuild.dependsOn buildVersion
