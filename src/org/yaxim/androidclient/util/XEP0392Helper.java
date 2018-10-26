@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.TypedValue;
 
+import org.hsluv.HUSLColorConverter;
 import org.yaxim.androidclient.R;
 
 public class XEP0392Helper {
@@ -16,12 +17,12 @@ public class XEP0392Helper {
 	static final double KB=0.0593;
 	static final double y = 0.5;
 
-	public static double cbCrFromNick(String nickname) {
+	public static double angleFromNick(String nickname) {
 		try {
 			MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
 			byte[] digest = sha1.digest(nickname.getBytes("UTF-8"));
 			int angle = ((int)(digest[0])&0xff) + ((int)(digest[1])&0xff)*256;
-			return angle*2.*Math.PI/65536.;
+			return angle/65536.;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
@@ -51,8 +52,16 @@ public class XEP0392Helper {
 		double g = (y - KR*r - KB*b)/KG;
 		return Color.rgb(clipColorValue(r), clipColorValue(g), clipColorValue(b));
 	}
-	public static int rgbFromNick(String nick) {
-		return rgbFromCbCr(cbCrFromNick(nick));
+	public static int rgbFromNickCbCr(String nick) {
+		return rgbFromCbCr(angleFromNick(nick)*2*Math.PI);
+	}
+	public static int rgbFromNick(String nick, int lightness) {
+		double[] hsluv = new double[3];
+		hsluv[0] = angleFromNick(nick) * 360;
+		hsluv[1] = 100;
+		hsluv[2] = lightness;
+		double[] rgb = HUSLColorConverter.hsluvToRgb(hsluv);
+		return Color.rgb((int) Math.round(rgb[0] * 255), (int) Math.round(rgb[1] * 255), (int) Math.round(rgb[2] * 255));
 	}
 
 	public static int mixValues(int fg, int bg, int factor) {
@@ -65,13 +74,16 @@ public class XEP0392Helper {
 		return Color.rgb(r, g, b);
 	}
 	public static int mixNickWithBackground(String nick, Resources.Theme theme, int yaxim_theme) {
+		int lightness = (yaxim_theme == R.style.YaximLightTheme) ? 50 : 75;
 		// obtain theme's background color - https://stackoverflow.com/a/14468034/539443
 		TypedValue tv = new TypedValue();
 		theme.resolveAttribute(android.R.attr.windowBackground, tv, true);
 		if (tv.type < TypedValue.TYPE_FIRST_COLOR_INT || tv.type > TypedValue.TYPE_LAST_COLOR_INT) {
 			// fall back to black or white, depending on theme
 			tv.data = (yaxim_theme == R.style.YaximLightTheme) ? 0xffffff : 0x000000;
+			return rgbFromNick(nick, lightness);
 		}
-		return mixColors(rgbFromNick(nick), tv.data, 100 /*0.4*/);
+		return rgbFromNick(nick, lightness);
+		//return mixColors(rgbFromNick(nick, lightness), tv.data, 100 /*0.4*/);
 	}
 }
