@@ -17,7 +17,7 @@
 	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
 	<string name="conn_disconnected">Connection closed</string>
 	<string name="conn_no_network">No network connection</string>
-	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
@@ -126,6 +126,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">Show offline</string>
 	<string name="Menu_HideOff">Hide offline</string>
 	<string name="Menu_AccSettings">Edit account</string>

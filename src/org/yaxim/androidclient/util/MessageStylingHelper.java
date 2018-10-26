@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.util;
 
 import android.graphics.Typeface;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -43,7 +44,7 @@ public class MessageStylingHelper {
 		return body;
 	}
 
-	public static void applyEmojiScaling(SpannableStringBuilder message, float max_scale) {
+	public static void applyEmojiScaling(Editable message, float max_scale) {
 		String msg_string = message.toString();
 		int start = 0;
 		while (start < msg_string.length()) {

@@ -45,6 +45,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -192,6 +193,11 @@ public class MainWindow extends SherlockExpandableListActivity {
 		mHandledIntent = false;
 	}
 
+	protected void clearIntent() {
+		getIntent().setData(null);
+		mHandledIntent = true;
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -234,22 +240,25 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 	}
 
+	/** opens a ChatWindow / MUCChat window to the given JID, potentially sending the attached text.
+	 *
+	 * @return true if the chat was successfully opened.
+	 */
 	public boolean openChatWithJid(String jid, String text) {
 		Log.d(TAG, "openChatWithJid: " + jid);
 
+		// search for JID in roster, to obtain display name
 		List<String[]> contacts = ChatHelper.getRosterContacts(this, ChatHelper.ROSTER_FILTER_ALL);
 		for (String[] c : contacts) {
 			if (jid.equalsIgnoreCase(c[0])) {
 				// found it
 				ChatHelper.startChatActivity(this, c[0], c[1], text);
-				finish();
 				return true;
 			}
 		}
-		// if we have a message, open chat to JID
+		// if we have a message, open chat to JID irregardless of roster
 		if (text != null) {
 			ChatHelper.startChatActivity(this, jid, jid, text);
-			finish();
 			return true;
 		}
 		return false;
@@ -259,8 +268,17 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return Intent.ACTION_VIEW.equals(action) ||
 			android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action);
 	}
+
 	public boolean transmogrifyXmppUri(Intent intent) {
-		Uri data = intent.getData();
+		Uri data = transmogrifyXmppUriHelper(intent.getData());
+		if (data != null) {
+			intent.setData(data);
+			return true;
+		}
+		return false;
+	}
+	public Uri transmogrifyXmppUriHelper(Uri uri) {
+		Uri data = uri;
 		if ("xmpp".equalsIgnoreCase(data.getScheme())) {
 			if (data.isOpaque()) {
 				// cheat around android's unwillingness to parse opaque URIs
@@ -285,19 +303,18 @@ public class MainWindow extends SherlockExpandableListActivity {
 					data = Uri.parse("xmpp://" + jid + "?roster" + token);
 				else if ("j".equalsIgnoreCase(code))
 					data = Uri.parse("xmpp://" + jid + "?join");
-				else return false;
+				else return null;
 			} catch (Exception e) {
 				Log.d(TAG, "Failed to parse URI " + data);
-				return false;
+				return null;
 			}
 		} else
-			return false;
-		Log.d(TAG, "transmogrifyXmppUri: " + intent.getData() + " --> " + data);
-		intent.setData(data);
-		return true;
+			return null;
+		Log.d(TAG, "transmogrifyXmppUri: " + uri + " --> " + data);
+		return data;
 	}
 
-	public void handleJabberIntent() {
+	public synchronized void handleJabberIntent() {
 		Intent intent = getIntent();
 		Log.d(TAG, "handleJabberIntent: " + intent);
 		String action = intent.getAction();
@@ -310,42 +327,57 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
 			// 1. look for JID in roster; 2. attempt to add
 			String jid = data.getPathSegments().get(0);
-			if (!openChatWithJid(jid, null) &&
-			    !addToRosterDialog(jid))
-				finish();
+			if (openChatWithJid(jid, null) || addToRosterDialog(jid))
+				clearIntent();
 		} else if (isJabberIntentAction(action) && transmogrifyXmppUri(intent)) {
-			data = intent.getData();
-			String jid = data.getAuthority();
-			String body = data.getQueryParameter("body");
-			if (TextUtils.isEmpty(jid)) {
-				if (!TextUtils.isEmpty(body)) {
-					// this is a body-less `xmpp:?message;body=TEXT` - convert to ACTION_SEND
-					intent.setAction(Intent.ACTION_SEND)
+			if (handleXmppUri(intent.getData()))
+				clearIntent();
+		}
+	}
+
+	public boolean handleXmppUri(Uri data) {
+		String jid = data.getAuthority();
+		String body = data.getQueryParameter("body");
+		if (TextUtils.isEmpty(jid)) {
+			if (!TextUtils.isEmpty(body)) {
+				// this is a body-less `xmpp:?message;body=TEXT` - convert to ACTION_SEND
+				getIntent().setAction(Intent.ACTION_SEND)
 						.setData(null)
 						.putExtra(Intent.EXTRA_TEXT, body);
-					handleSendIntent();
-				}
-				// stop processing if JID is empty
-				return;
+				handleSendIntent();
 			}
-			String name = data.getQueryParameter("name");
-			String preauth = data.getQueryParameter("preauth");
-			if (data.getQueryParameter("register") != null) {
-				showToastNotification(R.string.StartupDialog_no_more_accounts);
-			}
-			if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
-				addToRosterDialog(jid, name, preauth);
-			} else if (data.getQueryParameter("join") != null && !openChatWithJid(jid, null)) {
-				new EditMUCDialog(this, jid, data.getQueryParameter("body"),
+			// stop processing if JID is empty
+			return false;
+		}
+		String name = data.getQueryParameter("name");
+		String preauth = data.getQueryParameter("preauth");
+		if (data.getQueryParameter("register") != null) {
+			showToastNotification(R.string.StartupDialog_no_more_accounts);
+			// consume the event, even though not supported
+			return true;
+		}
+		if (data.getQueryParameter("roster") != null || data.getQueryParameter("subscribe") != null) {
+			return addToRosterDialog(jid, name, preauth);
+		} else if (data.getQueryParameter("join") != null && !openChatWithJid(jid, null)) {
+			new EditMUCDialog(this, jid, data.getQueryParameter("body"),
 					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
-			} else if (!openChatWithJid(jid, body) &&
-				   !addToRosterDialog(jid, name, preauth)) {
-				finish();
-			} else return;
-		} else return;
-		// clear the intent data to prevent re-triggering
-		getIntent().setData(null);
-		mHandledIntent = true;
+			return true;
+		} else if (openChatWithJid(jid, body) || addToRosterDialog(jid, name, preauth)) {
+			return true;
+		}
+		return false;
+	}
+
+	@SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
+	public Uri xmppUriFromClipboard() {
+		ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+		if (cm.getText() == null)
+			return null;
+		String clip = cm.getText().toString();
+		if (XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
+			return new Uri.Builder().scheme("xmpp").authority(clip).build();
+		}
+		return transmogrifyXmppUriHelper(Uri.parse(clip));
 	}
 
 	@Override
@@ -561,6 +593,15 @@ public class MainWindow extends SherlockExpandableListActivity {
 		item.setIcon(iconId);
 		item.setTitle(title);
 	}
+	void setMenuItemFromClipboard(Menu menu, int itemId) {
+		com.actionbarsherlock.view.MenuItem item = menu.findItem(itemId);
+		if (item == null)
+			return;
+		Uri link = xmppUriFromClipboard();
+		item.setVisible(link != null);
+		if (link != null)
+			item.setTitle(getString(R.string.Menu_addClipboard, link.getAuthority()));
+	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -568,6 +609,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				getConnectDisconnectText());
 		setMenuItem(menu, R.id.menu_show_hide, getShowHideMenuIcon(),
 				getShowHideMenuText());
+		setMenuItemFromClipboard(menu, R.id.menu_add_clipboard);
 		return true;
 	}
 
@@ -680,6 +722,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 		switch (itemID) {
 		case R.id.menu_connect:
 			toggleConnection();
+			return true;
+
+		case R.id.menu_add_clipboard:
+			Uri link = xmppUriFromClipboard();
+			if (link != null)
+				handleXmppUri(link);
 			return true;
 
 		case R.id.menu_add_friend:
@@ -797,10 +845,13 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case ONLINE:
 			mConnectingText.setVisibility(View.GONE);
 			setSupportProgressBarIndeterminateVisibility(false);
-			PreferenceManager.getDefaultSharedPreferences(this).edit().
-				remove(PreferenceConstants.INITIAL_CREATE).commit();
-			// in case we just registered, re-fire the Intent
-			handleJabberIntent();
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			if (prefs.contains(PreferenceConstants.INITIAL_CREATE)) {
+				// in case we just registered, re-fire the Intent
+				handleJabberIntent();
+				prefs.edit().remove(PreferenceConstants.INITIAL_CREATE).commit();
+			}
 		}
 	}
 	

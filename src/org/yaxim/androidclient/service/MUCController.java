@@ -24,6 +24,7 @@ public class MUCController {
 	final String jid;
 	public MultiUserChat muc;
 	boolean isSynchronized = false;
+	boolean isTimeout = false;
 
 
 	static final int LOOKUP_SIZE = 50;
@@ -35,12 +36,15 @@ public class MUCController {
 		muc = new MultiUserChat(c, jid);
 	}
 
+	public synchronized void setLastActivity() {
+		lastPong = System.currentTimeMillis();
+	}
 	public synchronized void addPacketID(long id) {
 		while (lastIDs.size() >= LOOKUP_SIZE)
 			lastIDs.popFirst();
 		android.util.Log.d("MUCController", jid + " -> " + id);
 		lastIDs.addLast(id);
-		lastPong = System.currentTimeMillis();
+		setLastActivity();
 	}
 	public synchronized void addPacketID(Uri contentUri) {
 		addPacketID(ContentUris.parseId(contentUri));

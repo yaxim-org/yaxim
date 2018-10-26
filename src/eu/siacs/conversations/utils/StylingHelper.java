@@ -39,11 +39,14 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.util.DisplayMetrics;
 import android.widget.EditText;
+
+import org.yaxim.androidclient.util.MessageStylingHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +57,7 @@ import eu.siacs.conversations.ui.text.QuoteSpan;
 public class StylingHelper {
 
 	private static List<? extends Class<? extends ParcelableSpan>> SPAN_CLASSES = Arrays.asList(
+			RelativeSizeSpan.class,
 			StyleSpan.class,
 			StrikethroughSpan.class,
 			TypefaceSpan.class,
@@ -141,10 +145,12 @@ public class StylingHelper {
 		public void afterTextChanged(Editable editable) {
 			clear(editable);
 			format(editable, mEditText.getCurrentTextColor());
+			MessageStylingHelper.applyEmojiScaling(editable, 5.0f); /* >5.0 will exceed Emoji rendering limit of 150px */
+			//handleTextQuotes(editable, mEditText.getCurrentTextColor(), mEditText.getResources().getDisplayMetrics());
 		}
 	}
 
-	public static boolean handleTextQuotes(SpannableStringBuilder body, int color, DisplayMetrics dm) {
+	public static boolean handleTextQuotes(Editable body, int color, DisplayMetrics dm) {
 		boolean startsWithQuote = false;
 		char previous = '\n';
 		int lineStart = -1;
@@ -192,7 +198,7 @@ public class StylingHelper {
 		return startsWithQuote;
 	}
 
-	private static int applyQuoteSpan(SpannableStringBuilder body, int start, int end, int color, DisplayMetrics dm) {
+	private static int applyQuoteSpan(Editable body, int start, int end, int color, DisplayMetrics dm) {
 		if (start > 1 && !"\n\n".equals(body.subSequence(start - 2, start).toString())) {
 			body.insert(start++, "\n");
 			body.setSpan(new DividerSpan(false), start - 2, start, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

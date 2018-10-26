@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">yaxim</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_connecting">Conectare la server…</string>
+	<string name="conn_disconnecting">Deconectare…</string>
+	<string name="conn_online">Conectat</string>
+	<string name="conn_offline">Deconectat</string>
+	<string name="conn_empty_roster">Nici un contact de arătat!</string>
+	<string name="conn_empty_roster_hints">Există multe moduri de a adăuga contacte:\n
+  \n
+   		- Android Beam™: atingeți dispozitivul contactului\n
+  \n
+   		- Scanare cod QR\n
+  \n
+   		- \"Creeare invitație\" și partajare (e-mail, SMS, cod QR, …)\n
+  \n
+   		- \"Adăugare contact\" dacă cunoașteți ID-ul Jabber</string>
+	<string name="conn_reconnect">Următoarea încercare de conexiune în %d secunde.</string>
+	<string name="conn_disconnected">Conexiune închisă</string>
+	<string name="conn_no_network">Nici o conexiune la rețea</string>
+	<string name="conn_ping_timeout">Expirare ping</string>
+	<string name="conn_error">Eroare: %s</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">Ieșire</string>
+	<string name="Global_authenticate_first">Vă rugăm să vă conectați întâi</string>
+	<string name="Global_JID_hint">utilizator@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">Verificați formatul adresei!</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">Bine ați venit la yaxim!</string>
+	<string name="StartupDialog_Summary">Trebuie să configurați yaxim înainte de a-l folosi. Vă rugăm să introduceți ID-ul Jabber și parola.</string>
+	<string name="StartupDialog_pwHint">Introducere parolă</string>
+	<string name="StartupDialog_pwshowHint">Arată parola</string>
+	<string name="StartupDialog_Username_title">ID Jabber:</string>
+	<string name="StartupDialog_passwd_title">Parolă:</string>
+	<string name="StartupDialog_advanced">Avansat…</string>
+	<string name="StartupDialog_create_new">Înregistrează un cont nou</string>
+	<string name="StartupDialog_error_password">Parola este prea scurtă!</string>
+	<string name="StartupDialog_created_password">Parola securizată a fost creată</string>
+	<string name="StartupDialog_auth_failed">Vă rugăm să verificați numele de utilizator și parola!</string>
+
+	<string name="StartupDialog_invitation">Ați fost invitat(ă) la Jabber. Vă rugăm să completați datele de înregistrare</string>
+	<string name="StartupDialog_no_more_accounts">Nu este suportat un cont în plus!</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">Mesaj de la %s</string>
+	<string name="notification_anonymous_message">Mesaj primit</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s în %2$s</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">Răspunde</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">Marchează ca citit</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">Eroare la trimiterea mesajului!</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">Setări notificare</string>
+	<string name="preftitle_notify_msg">Notificare mesaje</string>
+	<string name="preftitle_notify_muc">Notificare discuție de grup</string>
+	<string name="notification_custom">Sunet personalizat</string>
+	<string name="muc_highlight_title">Notificare doar la mențiuni</string>
+	<string name="muc_highlight_sum">Notificare atunci când numele vă este menționat într-o discuție</string>
+	<string name="led_title">Notificare LED</string>
+	<string name="led_summ">Clipește lumina de notificare la primirea mesajelor</string>
+	<string name="vibr_title">Vibrație</string>
+	<string name="vibr_summ">Vibrează la mesajele primite</string>
+	<string-array name="vibr_values_displayed">
+		<item>Niciodată</item>
+		<item>Preferință de sistem</item>
+		<item>Mereu</item>
+	</string-array>
+	<string name="ringtone_title">Ton de apel</string>
+	<string name="ringtone_summ">Sunet la mesaj primit</string>
+	<string name="ticker_title">Previzualizare mesaj</string>
+	<string name="ticker_summ">Arată în bara de stare expeditorul și mesajul</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_general">Setări generale</string>
+	<string name="pref_dnd_when_silent">\"Nu deranja\" în modul silențios</string>
+	<string name="pref_dnd_when_silent_summ">Setează starea de prezență ca \"Nu deranja\" atunci când dispozitivul este în mod silențios</string>
+	<string name="statuspopup_name">Setare stare</string>
+	<string name="showOffline_summ">Arată mereu toate contactele din listă</string>
+	<string name="showOffline_title">Arată contactele deconectate</string>
+	<string name="enableGroups_summ">Aranjare contacte în grupuri</string>
+	<string name="enableGroups_title">Arată grupurile contactelor</string>
+	<string name="foregroundService_summ">Se păstrează yaxim în memorie pentru a asigura o conexiune în permanență (serviciul în prim-plan)</string>
+	<string name="foregroundService_title">Iconița în bara de stare</string>
+
+	<string name="preftitle_debug">Rapoarte erori</string>
+	<string name="smackdebug_summ">Jurnal de erori din logcat (poate conține informații personale)</string>
+	<string name="smackdebug_title">Raport erori SMACK</string>
+
+	<string name="reportcrash_title">Trimite rapoarte opriri neașteptate</string>
+	<string name="reportcrash_summ">Rapoartele de erori vor ajunge la dezvoltator</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">Interfață</string>
+	<string name="FontChat_title">Mărime text</string>
+	<string name="FontChat_summ">Setează mărimea fontului</string>
+	<string name="FontChat_dialog">Mărime font discuție</string>
+	<!--
+	-->
+	<string name="pref_theme">Temă</string>
+	<string-array name="pref_theme_entries">
+		<item>Întunecată</item>
+		<item>Luminoasă</item>
+	</string-array>
+	<string name="preftitle_ui">Interfață</string>
+	<string-array name="fontSizesChat">
+		<item>Mică</item>
+		<item>Normală</item>
+		<item>Mare</item>
+		<item>Imensă</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">Adaugă contact</string>
+	<string name="Menu_ShowOff">Arată deconectate</string>
+	<string name="Menu_HideOff">Ascunde deconectate</string>
+	<string name="Menu_AccSettings">Editare cont</string>
+	<string name="Menu_Settings">Setări</string>
+	<string name="Menu_Status">Stare</string>
+	<string name="Menu_connect">Conectare</string>
+	<string name="Menu_disconnect">Deconectare</string>
+	<string name="Menu_about">Despre yaxim</string>
+	<string name="Menu_muc">Adaugă discuție de grup</string>
+	<string name="Menu_mark_all_as_read">Marchează totul ca citit</string>
+	<string name="Menu_send_invitation">Creează invitație</string>
+    <string name="Menu_userlist">Participanți</string>
+
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">Adaugă un contact</string>
+	<string name="addFriend_Summ">Vă rugăm să introduceți ID-ul Jabber al contactului, aliasul dorit și să alegeți grupul de care aparține!</string>
+	<string name="addFriend_aliasHint">Alias</string>
+	<string name="addrosteritemaddgroupchoice">Adaugă la un grup nou</string>
+	<string name="NewGroup_EditTextField_Hint">Numele noului grup</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_group_rename">Redenumire grup</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Marchează ca citit</string>
+	<string name="roster_contextmenu_contact_delete">Șterge contactul</string>
+	<string name="roster_contextmenu_contact_delmsg">Șterge istoric discuție</string>
+	<string name="roster_contextmenu_contact_rename">Redenumire</string>
+	<string name="roster_contextmenu_contact_request_auth">Cerere autorizare</string>
+	<string name="roster_contextmenu_contact_change_group">Schimbă grup</string>
+	<string name="roster_contextmenu_contact_share">Partajare adresă</string>
+	<string name="roster_contextmenu_contact_ringtone">Ton de apel</string>
+	<string name="roster_contextmenu_muc_edit">Editare discuție de grup</string>
+	<string name="roster_contextmenu_muc_leave">Parăsire discuție de grup</string>
+	<string name="muc_leave_question">Chiar doriți să părăsiți %s?</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">Informatii autentificare</string>
+	<string name="account_settings_title">Setări cont</string>
+	<string name="account_options_title">Opțiuni de conectare</string>
+	<string name="account_options_advanced">Opțiuni avansate</string>
+	<string name="carbons_title">Copii la indigo ale mesajelor (XEP-0280)</string>
+	<string name="carbons_summ">Se cere copia mesajului de la ceilalți clienți ai dumneavoastră</string>
+	<string name="account_jabberID_title">ID Jabber</string>
+	<string name="account_jabberID_sum">exemplu: eu@jabber.exemplu.ro</string>
+	<string name="account_jabberID_dialog_title">Introduceți-vă ID-ul Jabber:</string>
+	<string name="account_jabberPW_title">Parolă cont</string>
+	<string name="account_jabberPW_sum">Parola contului dumneavoastră Jabber</string>
+	<string name="account_jabberPW_change_on_server">Schimbare parolă pe server</string>
+	<string name="account_jabberPW_password_old">Parolă veche:</string>
+	<string name="account_jabberPW_password_new">Parolă nouă:</string>
+	<string name="account_jabberPW_warning">ATENȚIE! Pentru o autentificare reușită trebuie să setați acceași parolă și pe server!</string>
+	<string name="account_jabberPW_progress">Vă rugăm să așteptați, se schimbă parola…</string>
+	<string name="account_jabberPW_finished">Parola a fost schimbată cu succes.</string>
+	<string name="account_jabberPW_error">Eroare la schimbarea parolei: %s</string>
+	
+	<!-- accountprefs -->
+	<string name="account_resource_title">Nume resursa client</string>
+	<string name="account_resource_summ">Implicit: yaxim</string>
+	<string name="account_resource_dialog_title">Introducere nume resursa:</string>
+	<string name="account_resource_hint">yaxim</string>
+	<string name="account_prio_title">Prioritate client</string>
+	<string name="account_prio_summ">Implicit: 0 (permis: -128 .. 127)</string>
+	<string name="account_prio_error">Valori permise: -128 .. 127</string>
+	<string name="account_prio_dialog_title">Introducere prioritate:</string>
+	<string name="account_port_title">Port server</string>
+	<string name="account_port_sum">Implicit: 5222</string>
+	<string name="account_port_dialog_title">Introducere port server:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">Server personalizat</string>
+	<string name="account_customserver_summ">(Optional) nume gazdă alternativ</string>
+	<string name="account_customserver_dialog_title">Introducere nume gazdă:</string>
+	<string name="account_customserver_hint">gazda.exemplu.ro</string>
+	<string name="require_ssl_title">Impune SSL/TLS</string>
+	<string name="require_ssl_summ">Criptează mereu conexiunea cu serverul</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">Alege grup</string>
+	<string name="setStatusmsgHint">Mesaj de stare</string>
+	<string name="setStatusTitle">Setare stare</string>
+	<string name="RenameGroup_summ">Redenumire group %s în:</string>
+	<string name="RenameGroup_title">Redenumire grup</string>
+	<string name="RenameEntry_summ">Redenumire %1$s (%2$s) în:</string>
+	<string name="RenameEntry_title">Redenumire contact</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Alegeți un grup din selectorul de mai jos</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Schimbă grup</string>
+	<string name="deleteRosterItem_text">Doriți ștergerea %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">Ștergere contact</string>
+	<string name="deleteChatHistory_text">Ștergeți toate mesajele cu %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Ștergere istoric discuție</string>
+	<string name="subscriptionRequest_text">%1$s dorește să vă adauge la lista de contacte: \"%2$s"</string>
+	<string name="subscriptionRequest_title">Cerere abonare la starea de prezență</string>
+	<string name="subscription_accept">Acceptare</string>
+	<string name="subscription_reject">Refuz</string>
+	<string name="subscription_reject_all">Refuzat toate</string>
+	<string name="subscription_status_from">poate să vă vadă starea</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">Eu:</string>
+	<string name="toast_stored_offline">Mesajul a fost stocat pentru trimitere.</string>
+	<string name="chat_enterMsgHint">Introduceți mesajul</string> 
+
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">Citează</string>
+	<!-- Message context menu: repeat the same message -->
+	<string name="chatmenu_resend">Retrimite</string>
+
+	<!-- GPS settings -->
+	<!--
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">Despre yaxim</string>
+	<string name="AboutDialog_DevelopersTitle">Dezvoltatori</string>
+	<string name="AboutDialog_DevelopersText">Contact</string>
+	<string name="AboutDialog_LicenceTitle">Licență</string>
+	<string name="AboutDialog_Vote">Evaluează aplicația</string>
+
+	<string name="status_available">Conectat(ă)</string>
+	<string name="status_away">Plecat(ă)</string>
+	<string name="status_chat">Disponibil(@) pentru conversație</string>
+	<string name="status_dnd">Nu deranja</string>
+	<string name="status_xa">Indisponibil(ă)</string>
+	<string name="status_offline">Deconectat(ă)</string>
+
+	<string name="translator_credits">Mulțumiri traducătorilor</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">General</string>
+	<string name="all_contacts_group">Toate contactele</string>
+	<string name="muc_group">Discuții de grup</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">Alege contact</string>
+	<string name="action_settings">Setări</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">ID discuție grup</string>
+	<string name="muc_nickname_hint">Nume</string>
+	<string name="muc_password_hint">Parolă (opțional)</string>
+	<string name="title_activity_muc_invite">Invitație la discuție de grup</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">Invitație de la %s</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d participanți)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">Alătură-te ca %s</string>
+	<string name="muc_synchronizing">Sincronizare…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">Participanți discuție de grup (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">Dat(ă) afară: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">Dat(ă) afara de către %1$s: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">Interzis: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">Interzis de către %1$s: %2$s</string>
+
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">Trimitere…</string>
+	<string name="roster_contextmenu_take_image">Fă o poză</string>
+	<string name="roster_contextmenu_send_image">Alegere imagine</string>
+	<string name="roster_contextmenu_send_file">Trimitere fișier</string>
+	<string name="upload_compress">Compresie imagine…</string>
+	<string name="upload_uploading">Încărcare…</string>
+	<string name="upload_too_large">fișier prea mare!</string>
+
+</resources>
