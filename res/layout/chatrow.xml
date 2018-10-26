@@ -39,4 +39,9 @@
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:gravity="center_vertical" />
 
+	<TextView android:id="@+id/chat_error"
+			  style="?attr/ChatText"
+			  android:visibility="gone"
+			  android:layout_width="fill_parent" android:layout_height="wrap_content"
+			  android:gravity="center_vertical" />
 </LinearLayout>

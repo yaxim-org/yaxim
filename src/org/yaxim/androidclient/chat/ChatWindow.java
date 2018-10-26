@@ -50,6 +50,7 @@ import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
@@ -79,13 +80,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 	private static final String TAG = "yaxim.ChatWindow";
 	private static final String[] PROJECTION_FROM = new String[] {
-			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
-			ChatProvider.ChatConstants.DIRECTION, ChatProvider.ChatConstants.JID,
-			ChatProvider.ChatConstants.RESOURCE, ChatProvider.ChatConstants.MESSAGE, 
-			ChatProvider.ChatConstants.DELIVERY_STATUS };
+			ChatConstants._ID, ChatConstants.DATE,
+			ChatConstants.DIRECTION, ChatConstants.JID,
+			ChatConstants.RESOURCE, ChatConstants.MESSAGE,
+			ChatConstants.ERROR,
+			ChatConstants.DELIVERY_STATUS };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
-			R.id.chat_from, R.id.chat_message };
+			R.id.chat_from, R.id.chat_message, R.id.chat_error };
 	
 	private static final int DELAY_NEWMSG = 3000;
 	private static final int CHAT_MSG_LOADER = 0;
@@ -628,6 +630,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+			String error = cursor.getString(cursor
+					.getColumnIndex(ChatConstants.ERROR));
 			boolean from_me = (cursor.getInt(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
 					ChatConstants.OUTGOING);
@@ -654,7 +658,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 			}
 
-			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status, mScreenName);
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, error, delivery_status, mScreenName);
 			return row;
 		}
 	}
@@ -669,6 +673,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		private TextView mDateView = null;
 		private TextView mFromView = null;
 		private TextView mMessageView = null;
+		private TextView mErrorView = null;
 		private ImageView mIconView = null;
 
 		private final View mRowView;
@@ -681,7 +686,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 
 		void populateFrom(String date, boolean from_me, String from, String message,
-				int delivery_status, String highlight_text) {
+				String error, int delivery_status, String highlight_text) {
 			getDateView().setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
@@ -741,6 +746,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			getErrorView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			getErrorView().setText(error);
+			getErrorView().setVisibility(TextUtils.isEmpty(error) ? View.GONE : View.VISIBLE);
 			// these calls must be in the exact right order.
 			Linkify.addLinks(getMessageView(), Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
 			// Android's default phone linkifuckation makes 13:37 two phone numbers
@@ -770,6 +778,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 						.findViewById(R.id.chat_message);
 			}
 			return mMessageView;
+		}
+		TextView getErrorView() {
+			if (mErrorView == null) {
+				mErrorView = (TextView) mRowView
+					.findViewById(R.id.chat_error);
+			}
+			return mErrorView;
 		}
 
 		ImageView getIconView() {
