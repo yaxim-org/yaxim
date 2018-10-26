@@ -17,7 +17,7 @@ public class MessageStylingHelper {
 		boolean match = false;
 		String msg = message.toString().toLowerCase();
 		int pos = 0, hl_len = highlight.length();
-		int color = XEP0392Helper.mixColors(XEP0392Helper.rgbFromNick(highlight), (text_color^0xffffff), 192);
+		int color = XEP0392Helper.mixColors(XEP0392Helper.rgbFromNick(highlight, 50), (text_color^0xffffff), 128);
 		highlight = highlight.toLowerCase();
 		while ((pos = msg.indexOf(highlight, pos)) >= 0) {
 			message.setSpan(new ForegroundColorSpan(color), pos, pos+hl_len,

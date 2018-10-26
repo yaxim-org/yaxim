@@ -203,7 +203,7 @@ public class MUCChatWindow extends ChatWindow {
 	public void nick2Color(String nick, TypedValue tv) {
 		if (nick == null || nick.length() == 0) // no color for empty nickname
 			return;
-		tv.data = XEP0392Helper.mixNickWithBackground(nick, getTheme(), mConfig.getTheme());
+		tv.data = XEP0392Helper.mixNickWithBackground(nick, getTheme(), mConfig.getPrefTheme());
 	}
 	
 

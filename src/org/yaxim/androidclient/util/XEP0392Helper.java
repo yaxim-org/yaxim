@@ -55,11 +55,11 @@ public class XEP0392Helper {
 	public static int rgbFromNickCbCr(String nick) {
 		return rgbFromCbCr(angleFromNick(nick)*2*Math.PI);
 	}
-	public static int rgbFromNick(String nick) {
+	public static int rgbFromNick(String nick, int lightness) {
 		double[] hsluv = new double[3];
 		hsluv[0] = angleFromNick(nick) * 360;
 		hsluv[1] = 100;
-		hsluv[2] = 50;
+		hsluv[2] = lightness;
 		double[] rgb = HUSLColorConverter.hsluvToRgb(hsluv);
 		return Color.rgb((int) Math.round(rgb[0] * 255), (int) Math.round(rgb[1] * 255), (int) Math.round(rgb[2] * 255));
 	}
@@ -74,13 +74,16 @@ public class XEP0392Helper {
 		return Color.rgb(r, g, b);
 	}
 	public static int mixNickWithBackground(String nick, Resources.Theme theme, int yaxim_theme) {
+		int lightness = (yaxim_theme == R.style.YaximLightTheme) ? 40 : 75;
 		// obtain theme's background color - https://stackoverflow.com/a/14468034/539443
 		TypedValue tv = new TypedValue();
 		theme.resolveAttribute(android.R.attr.windowBackground, tv, true);
 		if (tv.type < TypedValue.TYPE_FIRST_COLOR_INT || tv.type > TypedValue.TYPE_LAST_COLOR_INT) {
 			// fall back to black or white, depending on theme
 			tv.data = (yaxim_theme == R.style.YaximLightTheme) ? 0xffffff : 0x000000;
+			return rgbFromNick(nick, lightness);
 		}
-		return mixColors(rgbFromNick(nick), tv.data, 100 /*0.4*/);
+		return rgbFromNick(nick, lightness);
+		//return mixColors(rgbFromNick(nick, lightness), tv.data, 100 /*0.4*/);
 	}
 }
