@@ -510,7 +510,7 @@ public class SmackableImp implements Smackable {
 			mLastOffline = System.currentTimeMillis();
 		mState = new_state;
 		if (mServiceCallBack != null)
-			mServiceCallBack.connectionStateChanged();
+			mServiceCallBack.connectionStateChanged(new_state);
 	}
 	private void initServiceDiscovery() {
 		// register connection features

@@ -391,12 +391,7 @@ public class XMPPService extends GenericService {
 		return status;
 	}
 
-	private void updateServiceNotification() {
-		ConnectionState cs = ConnectionState.OFFLINE;
-		if (mSmackable != null) {
-			cs = mSmackable.getConnectionState();
-		}
-
+	private void updateServiceNotification(ConnectionState cs) {
 		// HACK to trigger show-offline when XEP-0198 reconnect is going on
 		getContentResolver().notifyChange(RosterProvider.CONTENT_URI, null);
 		getContentResolver().notifyChange(RosterProvider.GROUPS_URI, null);
@@ -431,6 +426,12 @@ public class XMPPService extends GenericService {
 
 
 		startForeground(SERVICE_NOTIFICATION, n);
+	}
+	private void updateServiceNotification() {
+		ConnectionState cs = ConnectionState.OFFLINE;
+		if (mSmackable != null) {
+			cs = mSmackable.getConnectionState();
+		}
 	}
 
 	private void doConnect() {
@@ -554,10 +555,10 @@ public class XMPPService extends GenericService {
 				XMPPService.this.setGracePeriod(silence);
 			}
 
-			public void connectionStateChanged() {
+			public void connectionStateChanged(ConnectionState connection_state) {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
-				switch (mSmackable.getConnectionState()) {
+				switch (connection_state) {
 				case LOADING:
 					mReconnectInfo = getString(R.string.muc_synchronizing);
 					break;
@@ -569,7 +570,7 @@ public class XMPPService extends GenericService {
 					mReconnectTimeout = RECONNECT_AFTER;
 				default:
 				}
-				updateServiceNotification();
+				updateServiceNotification(connection_state);
 			}
 
 			@Override
