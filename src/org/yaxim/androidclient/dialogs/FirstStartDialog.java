@@ -186,6 +186,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		editor.putString(PreferenceConstants.JID, jabberID);
 		editor.putString(PreferenceConstants.PASSWORD, password);
+		editor.putBoolean(PreferenceConstants.FIRSTRUN, true);
 		if (sharedPreferences.getString(PreferenceConstants.RESSOURCE, null) == null)
 			editor.putString(PreferenceConstants.RESSOURCE, resource);
 		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
