@@ -479,8 +479,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		MenuInflater inflater = getSupportMenuInflater();
 		if (isContact)
 			inflater.inflate(R.menu.contact_options, menu);
-		else
+		else {
 			inflater.inflate(R.menu.noncontact_options, menu);
+			menu.findItem(R.id.menu_add_friend).setVisible(!mWithJabberID.contains("/"));
+		}
 		return inflateGenericContactOptions(menu);
 	}
 
