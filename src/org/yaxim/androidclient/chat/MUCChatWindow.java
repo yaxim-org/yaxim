@@ -182,7 +182,7 @@ public class MUCChatWindow extends ChatWindow {
 			public boolean onItemLongClick(AdapterView<?> parent,
 					View view, int position, long id) {
 				String nickname = users.get(position).resource;
-				ChatHelper.startChatActivity(MUCChatWindow.this, mWithJabberID+"/"+nickname,
+				ChatHelper.startChatActivity(MUCChatWindow.this, users.get(position).bare_jid,
 						String.format("%s (%s)", nickname, mUserScreenName), null);
 				return true;
 			}});

@@ -2250,10 +2250,19 @@ public class SmackableImp implements Smackable {
 		Iterator<String> occIter = muc.getOccupants();
 		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
 		while(occIter.hasNext()) {
-			ParcelablePresence pp = new ParcelablePresence(muc.getOccupantPresence(occIter.next()));
+			Presence occupantPresence = muc.getOccupantPresence(occIter.next());
+			ParcelablePresence pp = new ParcelablePresence(occupantPresence);
 			// smack3 bug: work around nameless participant from ejabberd MUC vcard
-			if (!TextUtils.isEmpty(pp.resource))
+			if (!TextUtils.isEmpty(pp.resource)) {
+				// Default bare_jid to the actual full occupant JID (muc@domain/nickname) for MUCChatWindow
+				pp.bare_jid = occupantPresence.getFrom();
+				boolean non_anon = (mucc.roomInfo != null) && mucc.roomInfo.isNonanonymous();
+				MUCUser mu = (MUCUser) occupantPresence.getExtension("x", "http://jabber.org/protocol/muc#user");
+				// override bare_jid with real bare_jid if non-anon MUC and JID is known
+				if (non_anon && mu != null && mu.getItem() != null && !TextUtils.isEmpty(mu.getItem().getJid()))
+					pp.bare_jid = getBareJID(mu.getItem().getJid());
 				tmpList.add(pp);
+			}
 		}
 		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
 			@Override
