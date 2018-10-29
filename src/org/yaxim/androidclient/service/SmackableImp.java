@@ -918,7 +918,7 @@ public class SmackableImp implements Smackable {
 		cursor.close();
 	}
 
-	public static void sendOfflineMessage(ContentResolver cr, String toJID, String message) {
+	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DIRECTION, ChatConstants.OUTGOING);
 		values.put(ChatConstants.JID, toJID);

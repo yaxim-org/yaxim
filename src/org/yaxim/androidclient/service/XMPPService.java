@@ -190,7 +190,7 @@ public class XMPPService extends GenericService {
 				if (mSmackable != null)
 					mSmackable.sendMessage(user, message);
 				else
-					SmackableImp.sendOfflineMessage(getContentResolver(),
+					SmackableImp.addOfflineMessage(getContentResolver(),
 							user, message);
 			}
 
