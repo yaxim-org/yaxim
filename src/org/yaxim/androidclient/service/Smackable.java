@@ -33,7 +33,6 @@ public interface Smackable {
 	void registerCallback(XMPPServiceCallback callBack);
 	void unRegisterCallback();
 	
-	void sendMucMessage(String room, String message);
 	void syncDbRooms();
 	boolean inviteToRoom(String contactJid, String roomJid);
 	

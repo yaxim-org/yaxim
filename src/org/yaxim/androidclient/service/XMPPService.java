@@ -221,14 +221,6 @@ public class XMPPService extends GenericService {
 				toast.show();
 			}
 			@Override
-			public void sendMessage(String room, String message)
-					throws RemoteException {
-				if(mSmackable!=null)
-					mSmackable.sendMucMessage(room, message);
-				else
-					shortToastNotify(getString(R.string.Global_authenticate_first));
-			}
-			@Override
 			public void syncDbRooms() throws RemoteException {
 				if(mSmackable!=null)
 					new Thread() {

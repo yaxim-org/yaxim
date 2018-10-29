@@ -943,16 +943,14 @@ public class SmackableImp implements Smackable {
 	public void sendMessage(String toJID, String message) {
 		final Message newMessage = new Message(toJID, Message.Type.chat);
 		newMessage.setBody(message);
-		newMessage.addExtension(new DeliveryReceiptRequest());
+		if(mucJIDs.contains(toJID))
+			newMessage.setType(Message.Type.groupchat);
+		else
+			newMessage.addExtension(new DeliveryReceiptRequest());
 		if (isAuthenticated()) {
-
-			if(mucJIDs.contains(toJID)) {
-				sendMucMessage(toJID, message);
-			} else {
-				addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
-						System.currentTimeMillis(), newMessage.getPacketID());
-				mXMPPConnection.sendPacket(newMessage);
-			}
+			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
+					System.currentTimeMillis(), newMessage.getPacketID());
+			mXMPPConnection.sendPacket(newMessage);
 		} else {
 			// send offline -> store to DB
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_NEW,
@@ -2211,15 +2209,6 @@ public class SmackableImp implements Smackable {
 		
 		muc.cleanup();
 		return false;
-	}
-
-	@Override
-	public void sendMucMessage(String room, String message) {
-		Message newMessage = new Message(room, Message.Type.groupchat);
-		newMessage.setBody(message);
-		addChatMessageToDB(ChatConstants.OUTGOING, room, message, ChatConstants.DS_SENT_OR_READ,
-				System.currentTimeMillis(), newMessage.getPacketID());
-		mXMPPConnection.sendPacket(newMessage);
 	}
 
 	private void quitRoom(String room) {
