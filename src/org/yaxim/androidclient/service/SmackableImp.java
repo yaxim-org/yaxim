@@ -1569,7 +1569,7 @@ public class SmackableImp implements Smackable {
 			firstline = firstline + "\n%"; /* first line match on other lines */
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ? AND read = ?",
-				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_NEW },
+				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_SENT_OR_READ },
 				"_id DESC");
 		boolean updated = false;
 		if (c.moveToFirst()) {
@@ -2215,7 +2215,7 @@ public class SmackableImp implements Smackable {
 	public void sendMucMessage(String room, String message) {
 		Message newMessage = new Message(room, Message.Type.groupchat);
 		newMessage.setBody(message);
-		addChatMessageToDB(ChatConstants.OUTGOING, room, message, ChatConstants.DS_NEW,
+		addChatMessageToDB(ChatConstants.OUTGOING, room, message, ChatConstants.DS_SENT_OR_READ,
 				System.currentTimeMillis(), newMessage.getPacketID());
 		mXMPPConnection.sendPacket(newMessage);
 	}
