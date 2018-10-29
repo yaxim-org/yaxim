@@ -2002,6 +2002,8 @@ public class SmackableImp implements Smackable {
 						e.printStackTrace();
 					}
 				}
+				// send pending offline messages, eg. after 0198 resume
+				sendOfflineMessages(jid);
 			}
 			//debugLog("found data in contentprovider: "+jid+" "+password+" "+nickname);
 		}
