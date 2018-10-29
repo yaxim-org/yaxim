@@ -867,6 +867,14 @@ public class SmackableImp implements Smackable {
 		mConfig.presence_required = false;
 	}
 
+	public Message formatMessage(boolean is_muc, String to, String body, String lmc, String oob) {
+		final Message newMessage = new Message(to, is_muc ? Message.Type.groupchat : Message.Type.chat);
+		newMessage.setBody(body);
+		if (!is_muc)
+			newMessage.addExtension(new DeliveryReceiptRequest());
+		return newMessage;
+	}
+
 	public void sendOfflineMessages(String toMUCjid) {
 		boolean is_muc = (toMUCjid != null);
 		String selection = SEND_OFFLINE_SELECTION;
@@ -894,15 +902,10 @@ public class SmackableImp implements Smackable {
 			String packetID = cursor.getString(PACKETID_COL);
 			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
-			final Message newMessage = new Message(toJID, Message.Type.chat);
-			newMessage.setBody(message);
+			final Message newMessage = formatMessage(is_muc, toJID, message, null, null);
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
-			if (is_muc)
-				newMessage.setType(Message.Type.groupchat);
-			else
-				newMessage.addExtension(new DeliveryReceiptRequest());
 			if ((packetID != null) && (packetID.length() > 0)) {
 				newMessage.setPacketID(packetID);
 			} else {
@@ -941,12 +944,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	public void sendMessage(String toJID, String message) {
-		final Message newMessage = new Message(toJID, Message.Type.chat);
-		newMessage.setBody(message);
-		if(mucJIDs.contains(toJID))
-			newMessage.setType(Message.Type.groupchat);
-		else
-			newMessage.addExtension(new DeliveryReceiptRequest());
+		final Message newMessage = formatMessage(mucJIDs.contains(toJID), toJID, message, null, null);
 		if (isAuthenticated()) {
 			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
 					System.currentTimeMillis(), newMessage.getPacketID());
