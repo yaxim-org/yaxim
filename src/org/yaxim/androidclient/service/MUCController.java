@@ -10,6 +10,7 @@ import android.support.v4.util.CircularArray;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
+import org.jivesoftware.smackx.muc.RoomInfo;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 
@@ -23,6 +24,7 @@ import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 public class MUCController {
 	final String jid;
 	public MultiUserChat muc;
+	public RoomInfo roomInfo;
 	boolean isSynchronized = false;
 	boolean isTimeout = false;
 

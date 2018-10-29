@@ -2186,8 +2186,8 @@ public class SmackableImp implements Smackable {
 			}
 			String roomname = room.split("@")[0];
 			try {
-				RoomInfo ri = MultiUserChat.getRoomInfo(mXMPPConnection, room);
-				String rn = ri.getRoomName();
+				mucc.roomInfo = MultiUserChat.getRoomInfo(mXMPPConnection, room);
+				String rn = mucc.roomInfo.getRoomName();
 				if (rn != null && rn.length() > 0)
 					roomname = rn;
 				Log.d(TAG, "MUC name after disco: " + roomname);
