@@ -1996,6 +1996,7 @@ public class SmackableImp implements Smackable {
 	public synchronized void syncDbRooms() {
 		if (!isAuthenticated()) {
 			debugLog("syncDbRooms: aborting, not yet authenticated");
+			return;
 		}
 
 		java.util.Set<String> joinedRooms = multiUserChats.keySet();
