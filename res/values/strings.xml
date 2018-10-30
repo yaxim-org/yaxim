@@ -230,7 +230,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Quote</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Resend</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--

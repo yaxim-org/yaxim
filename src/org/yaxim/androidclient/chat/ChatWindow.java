@@ -417,6 +417,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	// the values will be populated
 	String mContextMenuMessage = null;
 	String mContextMenuQuote = null;
+	String mContextMenuPacketID = null;
+	long mContextMenuID = -1;
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -426,6 +428,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
 		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
 		mContextMenuMessage = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		mContextMenuPacketID = c.getString(c.getColumnIndex(ChatConstants.PACKET_ID));
+		mContextMenuID = c.getLong(c.getColumnIndex("_id"));
 		boolean from_me = c.getInt(c.getColumnIndex(ChatConstants.DIRECTION)) == ChatConstants.OUTGOING;
 		String resource = c.getString(c.getColumnIndex(ChatConstants.RESOURCE));
 		from_me = isFromMe(from_me, resource);
@@ -465,7 +469,17 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			Log.d(TAG, "quote!");
 			return true;
 		case R.id.chat_contextmenu_resend:
-			sendMessage(mContextMenuMessage);
+			final String pid = mContextMenuPacketID;
+			final long upsert_id = mContextMenuID;
+			ChatHelper.editTextDialog(this, R.string.chatmenu_resend, null,
+					mContextMenuMessage, new ChatHelper.EditOk() {
+						@Override
+						public void ok(String result) {
+							mChatServiceAdapter.sendMessage(mWithJabberID, result, pid, upsert_id);
+							if (!mChatServiceAdapter.isServiceAuthenticated())
+								showToastNotification(R.string.toast_stored_offline);
+						}
+					});
 			Log.d(TAG, "resend!");
 			return true;
 		default:
