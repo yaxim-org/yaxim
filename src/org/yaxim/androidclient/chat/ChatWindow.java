@@ -507,6 +507,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			finish();
 			return true;
 		case R.id.roster_contextmenu_take_image:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			File tempFile = FileHelper.createImageFile(this);
 			if (tempFile == null) {
@@ -519,12 +520,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
 			return true;
 		case R.id.roster_contextmenu_send_image:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
 			intent.setType("image/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_send_image)), REQUEST_IMAGE);
 			return true;
 		case R.id.roster_contextmenu_send_file:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			fileIntent.setType("*/*");
 			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
