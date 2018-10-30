@@ -1537,6 +1537,10 @@ public class SmackableImp implements Smackable {
 					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
 					String replace_id = (replace != null) ? replace.getId() : null;
 
+					// obtain OOB data, if present
+					Oob oob = (Oob)msg.getExtension(Oob.NAMESPACE);
+					String oob_extra = (oob != null) ? oob.getUrl() : null;
+
 					if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
 						// Self-Message, no need to display it twice --> replace old one
 						replace_id = msg.getPacketID();
@@ -1548,7 +1552,10 @@ public class SmackableImp implements Smackable {
 					}
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
-						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), upsert_id);
+						int msgType = ChatConstants.MT_TEXT;
+						ContentValues cv = formatMessageContentValues(direction, fromJID[0], fromJID[1],
+								chatMessage, msgType, replace_id, oob_extra, is_new, ts, msg.getPacketID());
+						addChatMessageToDB(fromJID[0], cv, upsert_id);
 						// only notify on private messages or on non-system MUC messages when MUC notification requested
 						boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
