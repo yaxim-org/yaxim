@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.*;
+import android.graphics.Bitmap;
 import android.os.*;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -35,6 +36,8 @@ import eu.siacs.conversations.utils.StylingHelper;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Window;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -83,7 +86,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			ChatConstants._ID, ChatConstants.DATE,
 			ChatConstants.DIRECTION, ChatConstants.JID,
 			ChatConstants.RESOURCE, ChatConstants.MESSAGE,
-			ChatConstants.ERROR, ChatConstants.CORRECTION,
+			ChatConstants.ERROR, ChatConstants.CORRECTION, ChatConstants.EXTRA,
 			ChatConstants.DELIVERY_STATUS, ChatConstants.PACKET_ID };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
@@ -652,6 +655,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					.getColumnIndex(ChatConstants.ERROR));
 			boolean correction = !TextUtils.isEmpty(cursor.getString(cursor
 					.getColumnIndex(ChatConstants.CORRECTION)));
+			String extra = cursor.getString(cursor
+					.getColumnIndex(ChatConstants.EXTRA));
 			boolean from_me = (cursor.getInt(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
 					ChatConstants.OUTGOING);
@@ -680,7 +685,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			if (correction)
 				date = "\u270d " + date;
 
-			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, error, delivery_status, mScreenName);
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, error, extra,
+					delivery_status, mScreenName);
 			return row;
 		}
 	}
@@ -708,7 +714,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 
 		void populateFrom(String date, boolean from_me, String from, String message,
-				String error, int delivery_status, String highlight_text) {
+				String error, final String extra, int delivery_status, String highlight_text) {
 			getDateView().setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
@@ -778,6 +784,37 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			// Android's default email linkifuckation breaks xmpp: URIs
 			Linkify.addLinks(getMessageView(), XMPPHelper.XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(getMessageView(), XMPPHelper.EMAIL_ADDRESS, "mailto:");
+
+			ImageView iv = (ImageView)mRowView.findViewById(R.id.chat_image);
+			boolean has_extra = !TextUtils.isEmpty(extra);
+			iv.setVisibility(has_extra ? View.VISIBLE : View.GONE);
+			if (has_extra) {
+				if (extra.equals(message))
+					getMessageView().setVisibility(View.GONE);
+				UrlImageViewHelper.setUrlDrawable(iv, extra, android.R.drawable.ic_menu_report_image, new UrlImageViewCallback() {
+					@Override
+					public void onLoaded(ImageView imageView, Bitmap bitmap, String s, boolean b) {
+						if (bitmap == null) {
+							// error loading, display URL again
+							getMessageView().setVisibility(View.VISIBLE);
+						}
+					}
+				});
+				iv.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(extra)));
+					}
+				});
+				iv.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View view) {
+						ChatWindow.this.openContextMenu(view);
+						return true;
+					}
+				});
+			} else
+				getMessageView().setVisibility(View.VISIBLE);
 		}
 		
 		TextView getDateView() {

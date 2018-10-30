@@ -112,6 +112,7 @@ dependencies {
 	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile "me.leolin:ShortcutBadger:1.1.21@aar"
 	compile 'org.hsluv:hsluv:0.2'
+	compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
 }
 
 preBuild.dependsOn buildVersion
