@@ -75,7 +75,7 @@ public class ChatHelper {
 		try {
 			cs.clearNotifications(jid);
 			if (response != null && response.length() > 0)
-				cs.sendMessage(jid, response);
+				cs.sendMessage(jid, response, null, -1);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -89,7 +89,7 @@ public class ChatHelper {
 				IXMPPChatService chatService = IXMPPChatService.Stub.asInterface(service);
 				try {
 					if (message != null)
-						chatService.sendMessage(jid, message);
+						chatService.sendMessage(jid, message, null, -1);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}

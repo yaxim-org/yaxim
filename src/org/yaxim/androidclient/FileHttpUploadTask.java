@@ -30,17 +30,15 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
     private Smackable smackable;
     private Uri path;
     private String user;
-    private String text;
     private int flags;
     private Toast status;
 
-    public FileHttpUploadTask(Context ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, String text, int flags) {
+    public FileHttpUploadTask(Context ctx, YaximConfiguration config, Smackable smackable, Uri path, String user, int flags) {
         this.ctx = ctx;
         this.config = config;
         this.smackable = smackable;
         this.path = path;
         this.user = user;
-        this.text = text;
         this.flags = flags;
     }
 
@@ -155,9 +153,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
             status.cancel();
         if (response.success) {
             String message = response.response;
-            if (text != null && !text.equals("")) message = text + "\n" + message;
-
-            smackable.sendMessage(user, message);
+            smackable.sendMessage(user, message, null, message, -1);
         } else {
             Toast.makeText(ctx, response.toString(), Toast.LENGTH_LONG).show();
         }

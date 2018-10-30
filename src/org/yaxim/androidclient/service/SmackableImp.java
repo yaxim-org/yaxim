@@ -921,15 +921,27 @@ public class SmackableImp implements Smackable {
 		cursor.close();
 	}
 
-	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
+	public static ContentValues formatMessageContentValues(int direction, String jid, String resource,
+			String message, int msgtype, String lmc, String extra,
+			int delivery_status, long ts, String packetID) {
 		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DIRECTION, ChatConstants.OUTGOING);
-		values.put(ChatConstants.JID, toJID);
+		values.put(ChatConstants.DIRECTION, direction);
+		values.put(ChatConstants.JID, jid);
+		values.put(ChatConstants.RESOURCE, resource);
 		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_NEW);
-		values.put(ChatConstants.DATE, System.currentTimeMillis());
-		values.put(ChatConstants.PACKET_ID, Packet.nextID());
+		values.put(ChatConstants.MSGTYPE, msgtype);
+		values.put(ChatConstants.CORRECTION, lmc);
+		values.put(ChatConstants.EXTRA, extra);
+		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
+		values.put(ChatConstants.DATE, (ts > 0) ? ts : System.currentTimeMillis());
+		values.put(ChatConstants.PACKET_ID, packetID);
+		return values;
+	}
 
+	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
+		ContentValues values = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
+			message, ChatConstants.MT_TEXT, null, null,
+			ChatConstants.DS_NEW, 0, Packet.nextID());
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
@@ -943,17 +955,23 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	public void sendMessage(String toJID, String message) {
-		final Message newMessage = formatMessage(mucJIDs.contains(toJID), toJID, message, null, null);
-		if (isAuthenticated()) {
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
-					System.currentTimeMillis(), newMessage.getPacketID());
+	public void sendMessage(String toJID, String message, String lmc, String oob, long upsert_id) {
+		final Message newMessage = formatMessage(mucJIDs.contains(toJID), toJID, message, lmc, oob);
+		boolean is_auth = isAuthenticated();
+		int msgType = TextUtils.isEmpty(oob) ? ChatConstants.MT_TEXT : ChatConstants.MT_FILE;
+		int deliveryStatus = is_auth ? ChatConstants.DS_SENT_OR_READ : ChatConstants.DS_NEW;
+		ContentValues cv = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
+				message, msgType, lmc, oob, deliveryStatus, 0, newMessage.getPacketID());
+		addChatMessageToDB(toJID, cv, upsert_id);
+		if (is_auth) {
 			mXMPPConnection.sendPacket(newMessage);
-		} else {
-			// send offline -> store to DB
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_NEW,
-					System.currentTimeMillis(), newMessage.getPacketID());
 		}
+	}
+	public void sendMessage(String toJID, String message) {
+		sendMessage(toJID, message, null, null, -1);
+	}
+	public void sendMessageCorrection(String toJID, String message, String lmc, long upsert_id) {
+		sendMessage(toJID, message, lmc, null, upsert_id);
 	}
 
 	// method checks whether the XMPP connection is authenticated and fully bound (i.e. after resume/bind)
@@ -1678,26 +1696,22 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPresenceListener, new PacketTypeFilter(Presence.class));
 	}
 
-	private void addChatMessageToDB(int direction, String[] tJID,
-			String message, int delivery_status, long ts, String packetID, long upsert_id) {
-		ContentValues values = new ContentValues();
-
-		values.put(ChatConstants.DIRECTION, direction);
-		values.put(ChatConstants.JID, tJID[0]);
-		values.put(ChatConstants.RESOURCE, tJID[1]);
-		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
-		values.put(ChatConstants.DATE, ts);
-		values.put(ChatConstants.PACKET_ID, packetID);
-
+	private void addChatMessageToDB(String bare_jid, ContentValues values, long upsert_id) {
 		if (upsert_id >= 0 &&
 		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
 				values, null, null) == 1)
 			return;
 		Uri res = mContentResolver.insert(ChatProvider.CONTENT_URI, values);
-		MUCController mucc = multiUserChats.get(tJID[0]);
+		MUCController mucc = multiUserChats.get(bare_jid);
 		if (mucc != null)
 			mucc.addPacketID(res);
+	}
+	private void addChatMessageToDB(int direction, String[] tJID,
+									String message, int delivery_status, long ts, String packetID, long upsert_id) {
+		ContentValues values = formatMessageContentValues(direction, tJID[0], tJID[1],
+				message, ChatConstants.MT_TEXT, null, null,
+				delivery_status, ts, packetID);
+		addChatMessageToDB(tJID[0], values, upsert_id);
 	}
 
 	private void addChatMessageToDB(int direction, String JID,

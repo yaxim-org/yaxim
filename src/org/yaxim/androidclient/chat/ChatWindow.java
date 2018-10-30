@@ -286,8 +286,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 	public void sendFile(Uri path, int flags) {
-		mChatServiceAdapter.sendFile(path, mWithJabberID, mChatInput.getText().toString(), flags);
-		mChatInput.setText("");
+		mChatServiceAdapter.sendFile(path, mWithJabberID, flags);
 	}
 
 	@Override
@@ -564,7 +563,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private void sendMessage(String message) {
 		mChatInput.setText(null);
 		mSendButton.setEnabled(false);
-		mChatServiceAdapter.sendMessage(mWithJabberID, message);
+		mChatServiceAdapter.sendMessage(mWithJabberID, message, null, -1);
 		if (!mChatServiceAdapter.isServiceAuthenticated())
 			showToastNotification(R.string.toast_stored_offline);
 	}

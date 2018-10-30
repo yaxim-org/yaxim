@@ -169,7 +169,7 @@ public class XMPPService extends GenericService {
 				String replystring = intent.getStringExtra("message");
 				if (replystring != null) {
 					Log.d(TAG, "got reply: " + replystring);
-					mSmackable.sendMessage(jid, replystring);
+					mSmackable.sendMessage(jid, replystring, null, null, -1);
 				}
 				org.yaxim.androidclient.data.ChatHelper.markAsRead(this, jid);
 				clearNotification(jid);
@@ -185,10 +185,10 @@ public class XMPPService extends GenericService {
 	private void createServiceChatStub() {
 		mServiceChatConnection = new IXMPPChatService.Stub() {
 
-			public void sendMessage(String user, String message)
+			public void sendMessage(String user, String message, String lmc, long upsert_id)
 					throws RemoteException {
 				if (mSmackable != null)
-					mSmackable.sendMessage(user, message);
+					mSmackable.sendMessage(user, message, lmc, null, upsert_id);
 				else
 					SmackableImp.addOfflineMessage(getContentResolver(),
 							user, message);
@@ -206,9 +206,9 @@ public class XMPPService extends GenericService {
 				clearNotification(Jid);
 			}
 
-			public void sendFile(Uri path, String user, String message, int flags) throws RemoteException {
+			public void sendFile(Uri path, String user, int flags) throws RemoteException {
 				if (mSmackable != null)
-					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, message, flags).execute();
+					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, flags).execute();
 			}
 		};
 	}
