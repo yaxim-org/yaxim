@@ -200,6 +200,11 @@ public class MUCChatWindow extends ChatWindow {
 	}
 
 	@Override
+	public boolean isFromMe(boolean from_me, String resource) {
+		return from_me || myNick.equals(resource);
+	}
+
+	@Override
 	public void nick2Color(String nick, TypedValue tv) {
 		if (nick == null || nick.length() == 0) // no color for empty nickname
 			return;

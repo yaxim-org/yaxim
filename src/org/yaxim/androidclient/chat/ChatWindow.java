@@ -414,31 +414,31 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		}
 	}
 
+	// hack to work around item positions being invalidated on cursor change while the menu is open
+	// the values will be populated
+	String mContextMenuMessage = null;
+	String mContextMenuQuote = null;
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		View target = ((AdapterContextMenuInfo)menuInfo).targetView;
-		TextView from = (TextView)target.findViewById(R.id.chat_from);
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
+		mContextMenuMessage = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		boolean from_me = c.getInt(c.getColumnIndex(ChatConstants.DIRECTION)) == ChatConstants.OUTGOING;
+		String resource = c.getString(c.getColumnIndex(ChatConstants.RESOURCE));
+		from_me = isFromMe(from_me, resource);
+		mContextMenuQuote = getQuotedMessageFromContextMenu(from_me, info);
+
 		getMenuInflater().inflate(R.menu.chat_contextmenu, menu);
-		if (!from.getText().equals(getString(R.string.chat_from_me))) {
-			menu.findItem(R.id.chat_contextmenu_resend).setEnabled(false);
-		}
+		menu.findItem(R.id.chat_contextmenu_resend).setEnabled(from_me);
 	}
 
-	private String getMessageFromContextMenu(android.view.MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+	private String getQuotedMessageFromContextMenu(boolean from_me, AdapterContextMenuInfo info) {
 		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
-		return c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
-	}
-
-	private String getQuotedMessageFromContextMenu(android.view.MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
-		boolean from_me = (c.getInt(c.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
-				ChatConstants.OUTGOING);
-		String message = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		String message = mContextMenuMessage;
 		if (!from_me) {
 			String jid = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.JID));
 			String resource = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.RESOURCE));
@@ -454,11 +454,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		switch (item.getItemId()) {
 		case R.id.chat_contextmenu_copy_text:
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-			cm.setText(getMessageFromContextMenu(item));
+			cm.setText(mContextMenuMessage);
 			return true;
 		case R.id.chat_contextmenu_quote:
 			// insert quote into the current cursor position
-			String quote = getQuotedMessageFromContextMenu(item);
+			String quote = mContextMenuQuote;
 			int position = Math.max(mChatInput.getSelectionStart(), 0);
 			mChatInput.getText().insert(position, quote);
 			position += quote.length();
@@ -466,7 +466,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			Log.d(TAG, "quote!");
 			return true;
 		case R.id.chat_contextmenu_resend:
-			sendMessage(getMessageFromContextMenu(item));
+			sendMessage(mContextMenuMessage);
 			Log.d(TAG, "resend!");
 			return true;
 		default:
@@ -869,7 +869,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	public void nick2Color(String nick, TypedValue tv) {
 		getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 	}
-	
+
+	// this method is a "virtual" placeholder for the MUC activity
+	public boolean isFromMe(boolean from_me, String resource) {
+			return from_me;
+	}
+
 	public ListView getListView() {
 		return mListView;
 	}
