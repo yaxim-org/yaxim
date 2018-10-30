@@ -114,7 +114,9 @@ public class SmackableImp implements Smackable {
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
-			ChatConstants.MESSAGE, ChatConstants.DATE, ChatConstants.PACKET_ID };
+			ChatConstants.MESSAGE, ChatConstants.MSGTYPE,
+			ChatConstants.CORRECTION, ChatConstants.EXTRA,
+			ChatConstants.DATE, ChatConstants.PACKET_ID };
 	final static private String SEND_OFFLINE_SELECTION =
 			ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING + " AND " +
 			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
@@ -872,6 +874,10 @@ public class SmackableImp implements Smackable {
 		newMessage.setBody(body);
 		if (!is_muc)
 			newMessage.addExtension(new DeliveryReceiptRequest());
+		if (!TextUtils.isEmpty(lmc))
+			newMessage.addExtension(new Replace(lmc));
+		if (!TextUtils.isEmpty(oob))
+			newMessage.addExtension(new Oob(oob));
 		return newMessage;
 	}
 
@@ -889,6 +895,9 @@ public class SmackableImp implements Smackable {
 		final int      _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
 		final int      JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
 		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
+		final int  MSGTYPE_COL = cursor.getColumnIndexOrThrow(ChatConstants.MSGTYPE);
+		final int      LMC_COL = cursor.getColumnIndexOrThrow(ChatConstants.CORRECTION);
+		final int    EXTRA_COL = cursor.getColumnIndexOrThrow(ChatConstants.EXTRA);
 		final int       TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
 		final int PACKETID_COL = cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID);
 		ContentValues mark_sent = new ContentValues();
@@ -900,9 +909,13 @@ public class SmackableImp implements Smackable {
 				continue;
 			String message = cursor.getString(MSG_COL);
 			String packetID = cursor.getString(PACKETID_COL);
+			int msgType = cursor.getInt(MSGTYPE_COL);
+			String lmc = cursor.getString(LMC_COL);
+			String extra = cursor.getString(EXTRA_COL);
+			String oob = (msgType == ChatConstants.MT_FILE) ? extra : null;
 			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
-			final Message newMessage = formatMessage(is_muc, toJID, message, null, null);
+			final Message newMessage = formatMessage(is_muc, toJID, message, lmc, oob);
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
