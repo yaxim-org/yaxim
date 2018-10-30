@@ -17,7 +17,7 @@
 	<string name="conn_reconnect">ניסיון חיבור נוסף בתוך %d שניות.</string>
 	<string name="conn_disconnected">חיבור נסגר</string>
 	<string name="conn_no_network">אין חיבור רשת</string>
-	<string name="conn_ping_timeout">Ping timeout</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
@@ -40,6 +40,9 @@
 	<string name="StartupDialog_created_password">Created secure password</string>
 	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
 
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+
 	<!-- Notifications -->
 	<string name="notification_message">הודעה מאת %s</string>
 	<string name="notification_anonymous_message">הודעה התקבלה</string>
@@ -59,6 +62,7 @@
 	<string name="preftitle_notify">Notification Settings</string>
 	<string name="preftitle_notify_msg">התרעת הודעה</string>
 	<string name="preftitle_notify_muc">Group Chat Notification</string>
+	<string name="notification_custom">Custom Ringtone</string>
 	<string name="muc_highlight_title">Only notify on mention</string>
 	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
 	<string name="led_title">LED מהבהב</string>
@@ -120,6 +124,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Add contact</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">Show offline</string>
 	<string name="Menu_HideOff">Hide offline</string>
 	<string name="Menu_AccSettings">Edit account</string>
@@ -224,7 +229,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Quote</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">שלח שנית</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--

@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">Следующая попытка подключения через %d секунд.</string>
 	<string name="conn_disconnected">Соединение закрыто</string>
 	<string name="conn_no_network">Отсутствует сетевое подключение</string>
-	<string name="conn_ping_timeout">Время пинга истекло</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Ошибка: %s</string>
 
 	<!-- Global Strings -->
@@ -36,6 +36,9 @@
 	<string name="StartupDialog_created_password">Создан надёжный пароль</string>
 	<string name="StartupDialog_auth_failed">Проверьте учётные данные и пароль!</string>
 
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+
 	<!-- Notifications -->
 	<string name="notification_message">Сообщение от %s</string>
 	<string name="notification_anonymous_message">Получено сообщение</string>
@@ -52,9 +55,10 @@
 	<string name="notification_error">Ошибка при отправлении сообщения</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
-	<string name="preftitle_notify_msg">Уведомление о сообщении</string>
-	<string name="preftitle_notify_muc">Уведомление конференции</string>
+	<string name="preftitle_notify">Настройки параметров уведомлений</string>
+	<string name="preftitle_notify_msg">Контакт ростера</string>
+	<string name="preftitle_notify_muc">Конференция</string>
+	<string name="notification_custom">Индивидуальные параметры</string>
 	<string name="muc_highlight_title">Только уведомить об упоминании</string>
 	<string name="muc_highlight_sum">Уведомлять при упоминании вашего ника в конференции</string>
 	<string name="led_title">LED-индикация</string>
@@ -116,6 +120,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Добавить контакт</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">Показать отключённых</string>
 	<string name="Menu_HideOff">Скрыть отключённых</string>
 	<string name="Menu_AccSettings">Редактировать учётную запись</string>
@@ -209,7 +214,7 @@
 	<string name="subscriptionRequest_title">Запрос подписки</string>
 	<string name="subscription_accept">Принять</string>
 	<string name="subscription_reject">Отклонить</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject_all">Отклонить все</string>
 	<string name="subscription_status_from">может видеть ваш статус</string>
 
 	<!-- CHATWINDOW -->
@@ -220,7 +225,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Цитировать</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Отправить повторно</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--
