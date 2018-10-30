@@ -534,6 +534,8 @@ public class SmackableImp implements Smackable {
 
 		// manually add LMC feature (XEP-0308) because it lacks a Manager
 		sdm.addFeature(Replace.NAMESPACE);
+		// same for OOB (XEP-0066)
+		sdm.addFeature(Oob.NAMESPACE);
 
 		// set Version for replies
 		String app_name = mService.getString(R.string.app_name);
