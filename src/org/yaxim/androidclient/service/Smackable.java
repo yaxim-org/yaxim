@@ -26,14 +26,13 @@ public interface Smackable {
 	String changePassword(String newPassword);
 	
 	void setStatusFromConfig();
-	void sendMessage(String user, String message);
+	void sendMessage(String user, String message, String lmc, String oob, long upsert_id);
 	void sendServerPing();
 	void setUserWatching(boolean user_watching);
 	
 	void registerCallback(XMPPServiceCallback callBack);
 	void unRegisterCallback();
 	
-	void sendMucMessage(String room, String message);
 	void syncDbRooms();
 	boolean inviteToRoom(String contactJid, String roomJid);
 	

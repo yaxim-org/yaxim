@@ -18,10 +18,10 @@ public class XMPPChatServiceAdapter {
 		this.jabberID = jabberID;
 	}
 
-	public void sendMessage(String user, String message) {
+	public void sendMessage(String user, String message, String lmc, long upsert_id) {
 		try {
 			Log.i(TAG, "Called sendMessage(): " + jabberID + ": " + message);
-			xmppServiceStub.sendMessage(user, message);
+			xmppServiceStub.sendMessage(user, message, lmc, upsert_id);
 		} catch (RemoteException e) {
 			Log.e(TAG, "caught RemoteException: " + e.getMessage());
 		}
@@ -44,9 +44,9 @@ public class XMPPChatServiceAdapter {
 		}
 	}
 
-	public void sendFile(Uri path, String user, String message, int flags) {
+	public void sendFile(Uri path, String user, int flags) {
 		try {
-			xmppServiceStub.sendFile(path, user, message, flags);
+			xmppServiceStub.sendFile(path, user, flags);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

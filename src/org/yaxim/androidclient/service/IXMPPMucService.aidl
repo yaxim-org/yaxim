@@ -4,7 +4,6 @@ import org.yaxim.androidclient.service.ParcelablePresence;
 
 interface IXMPPMucService {
 	void syncDbRooms();
-	void sendMessage(String room, String message);	
 	boolean inviteToRoom(String contactJid, String roomJid);
 	String getMyMucNick(String jid);
 	List<ParcelablePresence> getUserList(String jid);

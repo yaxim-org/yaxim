@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.*;
+import android.graphics.Bitmap;
 import android.os.*;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -35,6 +36,8 @@ import eu.siacs.conversations.utils.StylingHelper;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Window;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -50,6 +53,7 @@ import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
@@ -79,13 +83,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	
 	private static final String TAG = "yaxim.ChatWindow";
 	private static final String[] PROJECTION_FROM = new String[] {
-			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
-			ChatProvider.ChatConstants.DIRECTION, ChatProvider.ChatConstants.JID,
-			ChatProvider.ChatConstants.RESOURCE, ChatProvider.ChatConstants.MESSAGE, 
-			ChatProvider.ChatConstants.DELIVERY_STATUS };
+			ChatConstants._ID, ChatConstants.DATE,
+			ChatConstants.DIRECTION, ChatConstants.JID,
+			ChatConstants.RESOURCE, ChatConstants.MESSAGE,
+			ChatConstants.ERROR, ChatConstants.CORRECTION, ChatConstants.EXTRA,
+			ChatConstants.DELIVERY_STATUS, ChatConstants.PACKET_ID };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
-			R.id.chat_from, R.id.chat_message };
+			R.id.chat_from, R.id.chat_message, R.id.chat_error };
 	
 	private static final int DELAY_NEWMSG = 3000;
 	private static final int CHAT_MSG_LOADER = 0;
@@ -287,8 +292,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 	public void sendFile(Uri path, int flags) {
-		mChatServiceAdapter.sendFile(path, mWithJabberID, mChatInput.getText().toString(), flags);
-		mChatInput.setText("");
+		mChatServiceAdapter.sendFile(path, mWithJabberID, flags);
 	}
 
 	@Override
@@ -415,31 +419,35 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		}
 	}
 
+	// hack to work around item positions being invalidated on cursor change while the menu is open
+	// the values will be populated
+	String mContextMenuMessage = null;
+	String mContextMenuQuote = null;
+	String mContextMenuPacketID = null;
+	long mContextMenuID = -1;
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		View target = ((AdapterContextMenuInfo)menuInfo).targetView;
-		TextView from = (TextView)target.findViewById(R.id.chat_from);
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
+		mContextMenuMessage = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		mContextMenuPacketID = c.getString(c.getColumnIndex(ChatConstants.PACKET_ID));
+		mContextMenuID = c.getLong(c.getColumnIndex("_id"));
+		boolean from_me = c.getInt(c.getColumnIndex(ChatConstants.DIRECTION)) == ChatConstants.OUTGOING;
+		String resource = c.getString(c.getColumnIndex(ChatConstants.RESOURCE));
+		from_me = isFromMe(from_me, resource);
+		mContextMenuQuote = getQuotedMessageFromContextMenu(from_me, info);
+
 		getMenuInflater().inflate(R.menu.chat_contextmenu, menu);
-		if (!from.getText().equals(getString(R.string.chat_from_me))) {
-			menu.findItem(R.id.chat_contextmenu_resend).setEnabled(false);
-		}
+		menu.findItem(R.id.chat_contextmenu_resend).setEnabled(from_me);
 	}
 
-	private String getMessageFromContextMenu(android.view.MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+	private String getQuotedMessageFromContextMenu(boolean from_me, AdapterContextMenuInfo info) {
 		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
-		return c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
-	}
-
-	private String getQuotedMessageFromContextMenu(android.view.MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
-		boolean from_me = (c.getInt(c.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
-				ChatConstants.OUTGOING);
-		String message = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+		String message = mContextMenuMessage;
 		if (!from_me) {
 			String jid = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.JID));
 			String resource = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.RESOURCE));
@@ -455,11 +463,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		switch (item.getItemId()) {
 		case R.id.chat_contextmenu_copy_text:
 			ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-			cm.setText(getMessageFromContextMenu(item));
+			cm.setText(mContextMenuMessage);
 			return true;
 		case R.id.chat_contextmenu_quote:
 			// insert quote into the current cursor position
-			String quote = getQuotedMessageFromContextMenu(item);
+			String quote = mContextMenuQuote;
 			int position = Math.max(mChatInput.getSelectionStart(), 0);
 			mChatInput.getText().insert(position, quote);
 			position += quote.length();
@@ -467,7 +475,17 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			Log.d(TAG, "quote!");
 			return true;
 		case R.id.chat_contextmenu_resend:
-			sendMessage(getMessageFromContextMenu(item));
+			final String pid = mContextMenuPacketID;
+			final long upsert_id = mContextMenuID;
+			ChatHelper.editTextDialog(this, R.string.chatmenu_resend, null,
+					mContextMenuMessage, new ChatHelper.EditOk() {
+						@Override
+						public void ok(String result) {
+							mChatServiceAdapter.sendMessage(mWithJabberID, result, pid, upsert_id);
+							if (!mChatServiceAdapter.isServiceAuthenticated())
+								showToastNotification(R.string.toast_stored_offline);
+						}
+					});
 			Log.d(TAG, "resend!");
 			return true;
 		default:
@@ -480,8 +498,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		MenuInflater inflater = getSupportMenuInflater();
 		if (isContact)
 			inflater.inflate(R.menu.contact_options, menu);
-		else
+		else {
 			inflater.inflate(R.menu.noncontact_options, menu);
+			menu.findItem(R.id.menu_add_friend).setVisible(!mWithJabberID.contains("/"));
+		}
 		return inflateGenericContactOptions(menu);
 	}
 
@@ -506,6 +526,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			finish();
 			return true;
 		case R.id.roster_contextmenu_take_image:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			File tempFile = FileHelper.createImageFile(this);
 			if (tempFile == null) {
@@ -518,12 +539,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
 			return true;
 		case R.id.roster_contextmenu_send_image:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
 			intent.setType("image/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_send_image)), REQUEST_IMAGE);
 			return true;
 		case R.id.roster_contextmenu_send_file:
+			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			fileIntent.setType("*/*");
 			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -560,7 +583,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private void sendMessage(String message) {
 		mChatInput.setText(null);
 		mSendButton.setEnabled(false);
-		mChatServiceAdapter.sendMessage(mWithJabberID, message);
+		mChatServiceAdapter.sendMessage(mWithJabberID, message, null, -1);
 		if (!mChatServiceAdapter.isServiceAuthenticated())
 			showToastNotification(R.string.toast_stored_offline);
 	}
@@ -631,6 +654,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+			String error = cursor.getString(cursor
+					.getColumnIndex(ChatConstants.ERROR));
+			boolean correction = !TextUtils.isEmpty(cursor.getString(cursor
+					.getColumnIndex(ChatConstants.CORRECTION)));
+			String extra = cursor.getString(cursor
+					.getColumnIndex(ChatConstants.EXTRA));
 			boolean from_me = (cursor.getInt(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
 					ChatConstants.OUTGOING);
@@ -656,8 +685,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					delivery_status = ChatConstants.DS_SENT_OR_READ;
 
 			}
+			if (correction)
+				date = "\u270d " + date;
 
-			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, delivery_status, mScreenName);
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, error, extra,
+					delivery_status, mScreenName);
 			return row;
 		}
 	}
@@ -672,6 +704,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		private TextView mDateView = null;
 		private TextView mFromView = null;
 		private TextView mMessageView = null;
+		private TextView mErrorView = null;
 		private ImageView mIconView = null;
 
 		private final View mRowView;
@@ -684,7 +717,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 
 		void populateFrom(String date, boolean from_me, String from, String message,
-				int delivery_status, String highlight_text) {
+				String error, final String extra, int delivery_status, String highlight_text) {
 			getDateView().setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
@@ -745,6 +778,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			getMessageView().setTypeface(mRosterTypeface);
 			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
 			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			getErrorView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			getErrorView().setText(error);
+			getErrorView().setVisibility(TextUtils.isEmpty(error) ? View.GONE : View.VISIBLE);
 			// these calls must be in the exact right order.
 			Linkify.addLinks(getMessageView(), Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
 			// Android's default phone linkifuckation makes 13:37 two phone numbers
@@ -752,6 +788,37 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			// Android's default email linkifuckation breaks xmpp: URIs
 			Linkify.addLinks(getMessageView(), XMPPHelper.XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(getMessageView(), XMPPHelper.EMAIL_ADDRESS, "mailto:");
+
+			ImageView iv = (ImageView)mRowView.findViewById(R.id.chat_image);
+			boolean has_extra = !TextUtils.isEmpty(extra);
+			iv.setVisibility(has_extra ? View.VISIBLE : View.GONE);
+			if (has_extra) {
+				if (extra.equals(message))
+					getMessageView().setVisibility(View.GONE);
+				UrlImageViewHelper.setUrlDrawable(iv, extra, android.R.drawable.ic_menu_report_image, new UrlImageViewCallback() {
+					@Override
+					public void onLoaded(ImageView imageView, Bitmap bitmap, String s, boolean b) {
+						if (bitmap == null) {
+							// error loading, display URL again
+							getMessageView().setVisibility(View.VISIBLE);
+						}
+					}
+				});
+				iv.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(extra)));
+					}
+				});
+				iv.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View view) {
+						ChatWindow.this.openContextMenu(view);
+						return true;
+					}
+				});
+			} else
+				getMessageView().setVisibility(View.VISIBLE);
 		}
 		
 		TextView getDateView() {
@@ -774,6 +841,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 						.findViewById(R.id.chat_message);
 			}
 			return mMessageView;
+		}
+		TextView getErrorView() {
+			if (mErrorView == null) {
+				mErrorView = (TextView) mRowView
+					.findViewById(R.id.chat_error);
+			}
+			return mErrorView;
 		}
 
 		ImageView getIconView() {
@@ -856,7 +930,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	public void nick2Color(String nick, TypedValue tv) {
 		getTheme().resolveAttribute(R.attr.ChatMsgHeaderYouColor, tv, true);
 	}
-	
+
+	// this method is a "virtual" placeholder for the MUC activity
+	public boolean isFromMe(boolean from_me, String resource) {
+			return from_me;
+	}
+
 	public ListView getListView() {
 		return mListView;
 	}

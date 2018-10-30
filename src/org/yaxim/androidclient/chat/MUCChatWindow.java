@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -182,7 +183,7 @@ public class MUCChatWindow extends ChatWindow {
 			public boolean onItemLongClick(AdapterView<?> parent,
 					View view, int position, long id) {
 				String nickname = users.get(position).resource;
-				ChatHelper.startChatActivity(MUCChatWindow.this, mWithJabberID+"/"+nickname,
+				ChatHelper.startChatActivity(MUCChatWindow.this, users.get(position).bare_jid,
 						String.format("%s (%s)", nickname, mUserScreenName), null);
 				return true;
 			}});
@@ -197,6 +198,11 @@ public class MUCChatWindow extends ChatWindow {
 	
 	public String jid2nickname(String jid, String resource) {
 		return resource;
+	}
+
+	@Override
+	public boolean isFromMe(boolean from_me, String resource) {
+		return from_me || (!TextUtils.isEmpty(myNick) && myNick.equals(resource));
 	}
 
 	@Override

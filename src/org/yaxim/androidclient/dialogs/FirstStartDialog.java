@@ -68,7 +68,6 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		super.onCreate(savedInstanceState);
 
 		mOkButton = getButton(BUTTON_POSITIVE);
-		mOkButton.setEnabled(false);
 
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(mainWindow);
@@ -89,6 +88,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		if (sharedPreferences.getBoolean(PreferenceConstants.INITIAL_CREATE, false)) {
 			mCreateAccount.setChecked(true);
 		}
+		updateDialog(false);
 	}
 
 	public FirstStartDialog setJID(String jid, String preauth) {
@@ -130,7 +130,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		cancel();
 	}
 
-	private void updateDialog() {
+	private void updateDialog(boolean show_errors) {
 		boolean is_ok = true;
 		// verify jabber ID
 		Editable jid = mEditJabberID.getText();
@@ -139,7 +139,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			//mOkButton.setOnClickListener(this);
 			mEditJabberID.setError(null);
 		} catch (YaximXMPPAdressMalformedException e) {
-			if (jid.length() > 0)
+			if (show_errors && (jid.length() > 0))
 				mEditJabberID.setError(mainWindow.getString(R.string.Global_JID_malformed));
 			is_ok = false;
 		}
@@ -148,7 +148,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		if (mCreateAccount.isChecked()) {
 			boolean good_password = (mEditPassword.length() >= 6);
 			is_ok = is_ok && good_password;
-			mEditPassword.setError((good_password || mEditPassword.length() == 0) ?
+			mEditPassword.setError((!show_errors || good_password || mEditPassword.length() == 0) ?
 					null : mainWindow.getString(R.string.StartupDialog_error_password));
 		}
 		mOkButton.setEnabled(is_ok);
@@ -166,10 +166,10 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 			} else
 				mEditPassword.requestFocus();
 		}
-		updateDialog();
+		updateDialog(true);
 	}
 	public void afterTextChanged(Editable s) {
-		updateDialog();
+		updateDialog(true);
 	}
 
 	public void beforeTextChanged(CharSequence s, int start, int count,
@@ -186,7 +186,9 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 
 		editor.putString(PreferenceConstants.JID, jabberID);
 		editor.putString(PreferenceConstants.PASSWORD, password);
-		editor.putString(PreferenceConstants.RESSOURCE, resource);
+		editor.putBoolean(PreferenceConstants.FIRSTRUN, true);
+		if (sharedPreferences.getString(PreferenceConstants.RESSOURCE, null) == null)
+			editor.putString(PreferenceConstants.RESSOURCE, resource);
 		editor.putBoolean(PreferenceConstants.INITIAL_CREATE, initial_create);
 		if (preauth != null)
 			editor.putString(PreferenceConstants.INITIAL_PREAUTH, preauth);

@@ -322,7 +322,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (action == null || data == null || mHandledIntent)
 			return;
 		// ignore event if no account registered; TODO: handle xmpp://account@server?register
-		if (mConfig.jabberID.length() < 3 || PreferenceManager.getDefaultSharedPreferences(this).contains(PreferenceConstants.INITIAL_CREATE))
+		if (mConfig.jabberID.length() < 3 || PreferenceManager.getDefaultSharedPreferences(this).contains(PreferenceConstants.FIRSTRUN))
 			return;
 		if (action.equals(Intent.ACTION_SENDTO) && data.getHost().equals("jabber")) {
 			// 1. look for JID in roster; 2. attempt to add
@@ -825,7 +825,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case RECONNECT_DELAYED:
 		case OFFLINE:
 			if (cs == ConnectionState.DISCONNECTED && PreferenceManager.getDefaultSharedPreferences(this)
-									.contains(PreferenceConstants.INITIAL_CREATE)) {
+									.contains(PreferenceConstants.FIRSTRUN)) {
 				// somehow, cs==OFFLINE is triggered twice, but cs==DISCONNECTED only once
 				String error = serviceAdapter.getConnectionStateString().replace("conflict(-1) ", "");
 				if (error.contains("\n")) // TODO: work around getConnectionStateString() returning two lines
@@ -847,10 +847,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 			setSupportProgressBarIndeterminateVisibility(false);
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(this);
-			if (prefs.contains(PreferenceConstants.INITIAL_CREATE)) {
+			if (prefs.contains(PreferenceConstants.FIRSTRUN)) {
 				// in case we just registered, re-fire the Intent
 				handleJabberIntent();
-				prefs.edit().remove(PreferenceConstants.INITIAL_CREATE).commit();
+				prefs.edit().remove(PreferenceConstants.FIRSTRUN).commit();
 			}
 		}
 	}
@@ -1022,7 +1022,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 						+ mConfig.jabberID);
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (mConfig.jabberID.length() < 3 || prefs.contains(PreferenceConstants.INITIAL_CREATE)) {
+		if (mConfig.jabberID.length() < 3 || prefs.contains(PreferenceConstants.FIRSTRUN)) {
 			// load preference defaults
 			PreferenceManager.setDefaultValues(this, R.xml.mainprefs, false);
 			PreferenceManager.setDefaultValues(this, R.xml.accountprefs, false);

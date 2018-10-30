@@ -111,6 +111,7 @@ public class XMPPService extends GenericService {
 		registerReceiver(mRingerModeReceiver, new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION));
 		configureSmartAwayMode();
 
+		createAdapter();
 		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 
 		if (mConfig.autoConnect && mConfig.jid_configured) {
@@ -169,7 +170,7 @@ public class XMPPService extends GenericService {
 				String replystring = intent.getStringExtra("message");
 				if (replystring != null) {
 					Log.d(TAG, "got reply: " + replystring);
-					mSmackable.sendMessage(jid, replystring);
+					mSmackable.sendMessage(jid, replystring, null, null, -1);
 				}
 				org.yaxim.androidclient.data.ChatHelper.markAsRead(this, jid);
 				clearNotification(jid);
@@ -185,12 +186,12 @@ public class XMPPService extends GenericService {
 	private void createServiceChatStub() {
 		mServiceChatConnection = new IXMPPChatService.Stub() {
 
-			public void sendMessage(String user, String message)
+			public void sendMessage(String user, String message, String lmc, long upsert_id)
 					throws RemoteException {
 				if (mSmackable != null)
-					mSmackable.sendMessage(user, message);
+					mSmackable.sendMessage(user, message, lmc, null, upsert_id);
 				else
-					SmackableImp.sendOfflineMessage(getContentResolver(),
+					SmackableImp.addOfflineMessage(getContentResolver(),
 							user, message);
 			}
 
@@ -206,9 +207,9 @@ public class XMPPService extends GenericService {
 				clearNotification(Jid);
 			}
 
-			public void sendFile(Uri path, String user, String message, int flags) throws RemoteException {
+			public void sendFile(Uri path, String user, int flags) throws RemoteException {
 				if (mSmackable != null)
-					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, message, flags).execute();
+					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, flags).execute();
 			}
 		};
 	}
@@ -219,14 +220,6 @@ public class XMPPService extends GenericService {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						error, Toast.LENGTH_LONG);
 				toast.show();
-			}
-			@Override
-			public void sendMessage(String room, String message)
-					throws RemoteException {
-				if(mSmackable!=null)
-					mSmackable.sendMucMessage(room, message);
-				else
-					shortToastNotify(getString(R.string.Global_authenticate_first));
 			}
 			@Override
 			public void syncDbRooms() throws RemoteException {
@@ -391,12 +384,7 @@ public class XMPPService extends GenericService {
 		return status;
 	}
 
-	private void updateServiceNotification() {
-		ConnectionState cs = ConnectionState.OFFLINE;
-		if (mSmackable != null) {
-			cs = mSmackable.getConnectionState();
-		}
-
+	private void updateServiceNotification(ConnectionState cs) {
 		// HACK to trigger show-offline when XEP-0198 reconnect is going on
 		getContentResolver().notifyChange(RosterProvider.CONTENT_URI, null);
 		getContentResolver().notifyChange(RosterProvider.GROUPS_URI, null);
@@ -431,6 +419,12 @@ public class XMPPService extends GenericService {
 
 
 		startForeground(SERVICE_NOTIFICATION, n);
+	}
+	private void updateServiceNotification() {
+		ConnectionState cs = ConnectionState.OFFLINE;
+		if (mSmackable != null) {
+			cs = mSmackable.getConnectionState();
+		}
 	}
 
 	private void doConnect() {
@@ -554,10 +548,10 @@ public class XMPPService extends GenericService {
 				XMPPService.this.setGracePeriod(silence);
 			}
 
-			public void connectionStateChanged() {
+			public void connectionStateChanged(ConnectionState connection_state) {
 				// TODO: OFFLINE is sometimes caused by XMPPConnection calling
 				// connectionClosed() callback on an error, need to catch that?
-				switch (mSmackable.getConnectionState()) {
+				switch (connection_state) {
 				case LOADING:
 					mReconnectInfo = getString(R.string.muc_synchronizing);
 					break;
@@ -569,7 +563,7 @@ public class XMPPService extends GenericService {
 					mReconnectTimeout = RECONNECT_AFTER;
 				default:
 				}
-				updateServiceNotification();
+				updateServiceNotification(connection_state);
 			}
 
 			@Override

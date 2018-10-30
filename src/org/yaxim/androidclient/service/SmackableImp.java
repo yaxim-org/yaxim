@@ -114,7 +114,9 @@ public class SmackableImp implements Smackable {
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
-			ChatConstants.MESSAGE, ChatConstants.DATE, ChatConstants.PACKET_ID };
+			ChatConstants.MESSAGE, ChatConstants.MSGTYPE,
+			ChatConstants.CORRECTION, ChatConstants.EXTRA,
+			ChatConstants.DATE, ChatConstants.PACKET_ID };
 	final static private String SEND_OFFLINE_SELECTION =
 			ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING + " AND " +
 			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
@@ -229,7 +231,7 @@ public class SmackableImp implements Smackable {
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
 	
 	private final HashSet<String> mucJIDs = new HashSet<String>();	//< all configured MUCs, joined or not
-	private Map<String, MUCController> multiUserChats;
+	private Map<String, MUCController> multiUserChats = new HashMap<String, MUCController>();
 	private long mucLastPing = 0;
 	private long mucPreviousPing = 0;
 	private Map<String, Presence> subscriptionRequests = new HashMap<String, Presence>();
@@ -510,7 +512,7 @@ public class SmackableImp implements Smackable {
 			mLastOffline = System.currentTimeMillis();
 		mState = new_state;
 		if (mServiceCallBack != null)
-			mServiceCallBack.connectionStateChanged();
+			mServiceCallBack.connectionStateChanged(new_state);
 	}
 	private void initServiceDiscovery() {
 		// register connection features
@@ -867,6 +869,18 @@ public class SmackableImp implements Smackable {
 		mConfig.presence_required = false;
 	}
 
+	public Message formatMessage(boolean is_muc, String to, String body, String lmc, String oob) {
+		final Message newMessage = new Message(to, is_muc ? Message.Type.groupchat : Message.Type.chat);
+		newMessage.setBody(body);
+		if (!is_muc)
+			newMessage.addExtension(new DeliveryReceiptRequest());
+		if (!TextUtils.isEmpty(lmc))
+			newMessage.addExtension(new Replace(lmc));
+		if (!TextUtils.isEmpty(oob))
+			newMessage.addExtension(new Oob(oob));
+		return newMessage;
+	}
+
 	public void sendOfflineMessages(String toMUCjid) {
 		boolean is_muc = (toMUCjid != null);
 		String selection = SEND_OFFLINE_SELECTION;
@@ -881,6 +895,9 @@ public class SmackableImp implements Smackable {
 		final int      _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
 		final int      JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
 		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
+		final int  MSGTYPE_COL = cursor.getColumnIndexOrThrow(ChatConstants.MSGTYPE);
+		final int      LMC_COL = cursor.getColumnIndexOrThrow(ChatConstants.CORRECTION);
+		final int    EXTRA_COL = cursor.getColumnIndexOrThrow(ChatConstants.EXTRA);
 		final int       TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
 		final int PACKETID_COL = cursor.getColumnIndexOrThrow(ChatConstants.PACKET_ID);
 		ContentValues mark_sent = new ContentValues();
@@ -892,17 +909,16 @@ public class SmackableImp implements Smackable {
 				continue;
 			String message = cursor.getString(MSG_COL);
 			String packetID = cursor.getString(PACKETID_COL);
+			int msgType = cursor.getInt(MSGTYPE_COL);
+			String lmc = cursor.getString(LMC_COL);
+			String extra = cursor.getString(EXTRA_COL);
+			String oob = (msgType == ChatConstants.MT_FILE) ? extra : null;
 			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
-			final Message newMessage = new Message(toJID, Message.Type.chat);
-			newMessage.setBody(message);
+			final Message newMessage = formatMessage(is_muc, toJID, message, lmc, oob);
 			DelayInformation delay = new DelayInformation(new Date(ts));
 			newMessage.addExtension(delay);
 			newMessage.addExtension(new DelayInfo(delay));
-			if (is_muc)
-				newMessage.setType(Message.Type.groupchat);
-			else
-				newMessage.addExtension(new DeliveryReceiptRequest());
 			if ((packetID != null) && (packetID.length() > 0)) {
 				newMessage.setPacketID(packetID);
 			} else {
@@ -918,15 +934,27 @@ public class SmackableImp implements Smackable {
 		cursor.close();
 	}
 
-	public static void sendOfflineMessage(ContentResolver cr, String toJID, String message) {
+	public static ContentValues formatMessageContentValues(int direction, String jid, String resource,
+			String message, int msgtype, String lmc, String extra,
+			int delivery_status, long ts, String packetID) {
 		ContentValues values = new ContentValues();
-		values.put(ChatConstants.DIRECTION, ChatConstants.OUTGOING);
-		values.put(ChatConstants.JID, toJID);
+		values.put(ChatConstants.DIRECTION, direction);
+		values.put(ChatConstants.JID, jid);
+		values.put(ChatConstants.RESOURCE, resource);
 		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_NEW);
-		values.put(ChatConstants.DATE, System.currentTimeMillis());
-		values.put(ChatConstants.PACKET_ID, Packet.nextID());
+		values.put(ChatConstants.MSGTYPE, msgtype);
+		values.put(ChatConstants.CORRECTION, lmc);
+		values.put(ChatConstants.EXTRA, extra);
+		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
+		values.put(ChatConstants.DATE, (ts > 0) ? ts : System.currentTimeMillis());
+		values.put(ChatConstants.PACKET_ID, packetID);
+		return values;
+	}
 
+	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
+		ContentValues values = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
+			message, ChatConstants.MT_TEXT, null, null,
+			ChatConstants.DS_NEW, 0, Packet.nextID());
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
@@ -940,24 +968,23 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	public void sendMessage(String toJID, String message) {
-		final Message newMessage = new Message(toJID, Message.Type.chat);
-		newMessage.setBody(message);
-		newMessage.addExtension(new DeliveryReceiptRequest());
-		if (isAuthenticated()) {
-
-			if(mucJIDs.contains(toJID)) {
-				sendMucMessage(toJID, message);
-			} else {
-				addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_SENT_OR_READ,
-						System.currentTimeMillis(), newMessage.getPacketID());
-				mXMPPConnection.sendPacket(newMessage);
-			}
-		} else {
-			// send offline -> store to DB
-			addChatMessageToDB(ChatConstants.OUTGOING, toJID, message, ChatConstants.DS_NEW,
-					System.currentTimeMillis(), newMessage.getPacketID());
+	public void sendMessage(String toJID, String message, String lmc, String oob, long upsert_id) {
+		final Message newMessage = formatMessage(mucJIDs.contains(toJID), toJID, message, lmc, oob);
+		boolean is_auth = isAuthenticated();
+		int msgType = TextUtils.isEmpty(oob) ? ChatConstants.MT_TEXT : ChatConstants.MT_FILE;
+		int deliveryStatus = is_auth ? ChatConstants.DS_SENT_OR_READ : ChatConstants.DS_NEW;
+		ContentValues cv = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
+				message, msgType, lmc, oob, deliveryStatus, 0, newMessage.getPacketID());
+		addChatMessageToDB(toJID, cv, upsert_id);
+		if (is_auth) {
+			mXMPPConnection.sendPacket(newMessage);
 		}
+	}
+	public void sendMessage(String toJID, String message) {
+		sendMessage(toJID, message, null, null, -1);
+	}
+	public void sendMessageCorrection(String toJID, String message, String lmc, long upsert_id) {
+		sendMessage(toJID, message, lmc, null, upsert_id);
 	}
 
 	// method checks whether the XMPP connection is authenticated and fully bound (i.e. after resume/bind)
@@ -1111,9 +1138,11 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
+	public boolean changeMessageDeliveryStatus(String packetID, int new_status, String error) {
 		ContentValues cv = new ContentValues();
 		cv.put(ChatConstants.DELIVERY_STATUS, new_status);
+		if (error != null || new_status == ChatConstants.DS_ACKED)
+			cv.put(ChatConstants.ERROR, error);
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
 				+ ChatProvider.TABLE_NAME);
 		return mContentResolver.update(rowuri, cv,
@@ -1121,6 +1150,9 @@ public class SmackableImp implements Smackable {
 				ChatConstants.DELIVERY_STATUS + " != " + ChatConstants.DS_ACKED + " AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
 				new String[] { packetID }) > 0;
+	}
+	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
+		return changeMessageDeliveryStatus(packetID, new_status, null);
 	}
 
 	protected boolean is_user_watching = false;
@@ -1426,11 +1458,12 @@ public class SmackableImp implements Smackable {
 
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
-						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
-							mServiceCallBack.notifyMessage(fromJID, msg.getError().toString(), (cc != null), Message.Type.error);
+						String errmsg = msg.getError().toString();
+						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED, errmsg))
+							mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
 						else if (mucJIDs.contains(msg.getFrom())) {
 							handleKickedFromMUC(msg.getFrom(), false, null,
-									msg.getError().toString());
+									errmsg);
 						}
 						return; // we do not want to add errors as "incoming messages"
 					}
@@ -1504,6 +1537,10 @@ public class SmackableImp implements Smackable {
 					Replace replace = (Replace)msg.getExtension(Replace.NAMESPACE);
 					String replace_id = (replace != null) ? replace.getId() : null;
 
+					// obtain OOB data, if present
+					Oob oob = (Oob)msg.getExtension(Oob.NAMESPACE);
+					String oob_extra = (oob != null) ? oob.getUrl() : null;
+
 					if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
 						// Self-Message, no need to display it twice --> replace old one
 						replace_id = msg.getPacketID();
@@ -1515,7 +1552,10 @@ public class SmackableImp implements Smackable {
 					}
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
-						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID(), upsert_id);
+						int msgType = ChatConstants.MT_TEXT;
+						ContentValues cv = formatMessageContentValues(direction, fromJID[0], fromJID[1],
+								chatMessage, msgType, replace_id, oob_extra, is_new, ts, msg.getPacketID());
+						addChatMessageToDB(fromJID[0], cv, upsert_id);
 						// only notify on private messages or on non-system MUC messages when MUC notification requested
 						boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
@@ -1563,7 +1603,7 @@ public class SmackableImp implements Smackable {
 			firstline = firstline + "\n%"; /* first line match on other lines */
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND from_me = 1 AND (pid = ? OR message = ? OR message LIKE ? ESCAPE '!') AND _id >= ? AND read = ?",
-				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_NEW },
+				new String[] { muc, packet_id, msg.getBody(), firstline, "" + mucc.getFirstPacketID(), "" + ChatConstants.DS_SENT_OR_READ },
 				"_id DESC");
 		boolean updated = false;
 		if (c.moveToFirst()) {
@@ -1676,26 +1716,22 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPresenceListener, new PacketTypeFilter(Presence.class));
 	}
 
-	private void addChatMessageToDB(int direction, String[] tJID,
-			String message, int delivery_status, long ts, String packetID, long upsert_id) {
-		ContentValues values = new ContentValues();
-
-		values.put(ChatConstants.DIRECTION, direction);
-		values.put(ChatConstants.JID, tJID[0]);
-		values.put(ChatConstants.RESOURCE, tJID[1]);
-		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
-		values.put(ChatConstants.DATE, ts);
-		values.put(ChatConstants.PACKET_ID, packetID);
-
+	private void addChatMessageToDB(String bare_jid, ContentValues values, long upsert_id) {
 		if (upsert_id >= 0 &&
 		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
 				values, null, null) == 1)
 			return;
 		Uri res = mContentResolver.insert(ChatProvider.CONTENT_URI, values);
-		MUCController mucc = multiUserChats.get(tJID[0]);
+		MUCController mucc = multiUserChats.get(bare_jid);
 		if (mucc != null)
 			mucc.addPacketID(res);
+	}
+	private void addChatMessageToDB(int direction, String[] tJID,
+									String message, int delivery_status, long ts, String packetID, long upsert_id) {
+		ContentValues values = formatMessageContentValues(direction, tJID[0], tJID[1],
+				message, ChatConstants.MT_TEXT, null, null,
+				delivery_status, ts, packetID);
+		addChatMessageToDB(tJID[0], values, upsert_id);
 	}
 
 	private void addChatMessageToDB(int direction, String JID,
@@ -1960,6 +1996,7 @@ public class SmackableImp implements Smackable {
 	public synchronized void syncDbRooms() {
 		if (!isAuthenticated()) {
 			debugLog("syncDbRooms: aborting, not yet authenticated");
+			return;
 		}
 
 		java.util.Set<String> joinedRooms = multiUserChats.keySet();
@@ -1996,6 +2033,8 @@ public class SmackableImp implements Smackable {
 						e.printStackTrace();
 					}
 				}
+				// send pending offline messages, eg. after 0198 resume
+				sendOfflineMessages(jid);
 			}
 			//debugLog("found data in contentprovider: "+jid+" "+password+" "+nickname);
 		}
@@ -2180,8 +2219,8 @@ public class SmackableImp implements Smackable {
 			}
 			String roomname = room.split("@")[0];
 			try {
-				RoomInfo ri = MultiUserChat.getRoomInfo(mXMPPConnection, room);
-				String rn = ri.getRoomName();
+				mucc.roomInfo = MultiUserChat.getRoomInfo(mXMPPConnection, room);
+				String rn = mucc.roomInfo.getRoomName();
 				if (rn != null && rn.length() > 0)
 					roomname = rn;
 				Log.d(TAG, "MUC name after disco: " + roomname);
@@ -2203,15 +2242,6 @@ public class SmackableImp implements Smackable {
 		
 		muc.cleanup();
 		return false;
-	}
-
-	@Override
-	public void sendMucMessage(String room, String message) {
-		Message newMessage = new Message(room, Message.Type.groupchat);
-		newMessage.setBody(message);
-		addChatMessageToDB(ChatConstants.OUTGOING, room, message, ChatConstants.DS_NEW,
-				System.currentTimeMillis(), newMessage.getPacketID());
-		mXMPPConnection.sendPacket(newMessage);
 	}
 
 	private void quitRoom(String room) {
@@ -2244,10 +2274,19 @@ public class SmackableImp implements Smackable {
 		Iterator<String> occIter = muc.getOccupants();
 		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
 		while(occIter.hasNext()) {
-			ParcelablePresence pp = new ParcelablePresence(muc.getOccupantPresence(occIter.next()));
+			Presence occupantPresence = muc.getOccupantPresence(occIter.next());
+			ParcelablePresence pp = new ParcelablePresence(occupantPresence);
 			// smack3 bug: work around nameless participant from ejabberd MUC vcard
-			if (!TextUtils.isEmpty(pp.resource))
+			if (!TextUtils.isEmpty(pp.resource)) {
+				// Default bare_jid to the actual full occupant JID (muc@domain/nickname) for MUCChatWindow
+				pp.bare_jid = occupantPresence.getFrom();
+				boolean non_anon = (mucc.roomInfo != null) && mucc.roomInfo.isNonanonymous();
+				MUCUser mu = (MUCUser) occupantPresence.getExtension("x", "http://jabber.org/protocol/muc#user");
+				// override bare_jid with real bare_jid if non-anon MUC and JID is known
+				if (non_anon && mu != null && mu.getItem() != null && !TextUtils.isEmpty(mu.getItem().getJid()))
+					pp.bare_jid = getBareJID(mu.getItem().getJid());
 				tmpList.add(pp);
+			}
 		}
 		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
 			@Override

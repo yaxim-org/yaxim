@@ -74,7 +74,7 @@ public class XEP0392Helper {
 		return Color.rgb(r, g, b);
 	}
 	public static int mixNickWithBackground(String nick, Resources.Theme theme, int yaxim_theme) {
-		int lightness = (yaxim_theme == R.style.YaximLightTheme) ? 40 : 75;
+		int lightness = (yaxim_theme == R.style.YaximLightTheme) ? 50 : 75;
 		// obtain theme's background color - https://stackoverflow.com/a/14468034/539443
 		TypedValue tv = new TypedValue();
 		theme.resolveAttribute(android.R.attr.windowBackground, tv, true);
