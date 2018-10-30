@@ -83,8 +83,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			ChatConstants._ID, ChatConstants.DATE,
 			ChatConstants.DIRECTION, ChatConstants.JID,
 			ChatConstants.RESOURCE, ChatConstants.MESSAGE,
-			ChatConstants.ERROR,
-			ChatConstants.DELIVERY_STATUS };
+			ChatConstants.ERROR, ChatConstants.CORRECTION,
+			ChatConstants.DELIVERY_STATUS, ChatConstants.PACKET_ID };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message, R.id.chat_error };
@@ -637,6 +637,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
 			String error = cursor.getString(cursor
 					.getColumnIndex(ChatConstants.ERROR));
+			boolean correction = !TextUtils.isEmpty(cursor.getString(cursor
+					.getColumnIndex(ChatConstants.CORRECTION)));
 			boolean from_me = (cursor.getInt(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DIRECTION)) ==
 					ChatConstants.OUTGOING);
@@ -662,6 +664,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					delivery_status = ChatConstants.DS_SENT_OR_READ;
 
 			}
+			if (correction)
+				date = "\u270d " + date;
 
 			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, error, delivery_status, mScreenName);
 			return row;
