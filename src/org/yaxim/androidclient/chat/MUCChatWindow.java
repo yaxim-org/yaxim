@@ -126,8 +126,8 @@ public class MUCChatWindow extends ChatWindow {
 			new EditMUCDialog(this, mWithJabberID).dontOpen().show();
 			return true;
 		case R.id.roster_contextmenu_muc_share:
-			XMPPHelper.shareLink(this, R.string.roster_contextmenu_contact_share,
-					XMPPHelper.createMucLinkHTTPS(mWithJabberID));
+			ChatHelper.showQrDialog(this, mWithJabberID,
+				XMPPHelper.createMucLinkHTTPS(mWithJabberID), mUserScreenName);
 			return true;
 		case R.id.roster_contextmenu_muc_leave:
 			ConfirmDialog.show(this, R.string.roster_contextmenu_muc_leave,

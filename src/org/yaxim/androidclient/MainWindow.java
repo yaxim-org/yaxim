@@ -762,9 +762,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			new EditMUCDialog(this).withNick(mConfig.userName).show();
 			return true;
 		case R.id.menu_send_invitation:
-			XMPPHelper.shareLink(this, R.string.Menu_send_invitation,
-					XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
-						mConfig.createInvitationCode()));
+			ChatHelper.showQrDialog(this, mConfig.jabberID, XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
+						mConfig.createInvitationCode()), getString(R.string.Menu_send_invitation));
 			return true;
 
 		}

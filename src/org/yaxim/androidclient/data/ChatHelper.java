@@ -329,8 +329,7 @@ public class ChatHelper {
 			return true;
 
 		case R.id.roster_contextmenu_contact_share:
-			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
-					XMPPHelper.createRosterLinkHTTPS(jid));
+			showQrDialog(act, jid, XMPPHelper.createRosterLinkHTTPS(jid), userName);
 			return true;
 
 		// MUC specific options (muc_options.xml)
@@ -348,8 +347,7 @@ public class ChatHelper {
 			act.startActivity(ringToneIntent);
 			return true;
 		case R.id.roster_contextmenu_muc_share:
-			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
-					XMPPHelper.createMucLinkHTTPS(jid));
+			showQrDialog(act, jid, XMPPHelper.createMucLinkHTTPS(jid), userName);
 			return true;
 		default:
 			return false;
