@@ -374,7 +374,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (cm.getText() == null)
 			return null;
 		String clip = cm.getText().toString();
-		if (XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
+		if (clip.contains("@") && XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
 			return new Uri.Builder().scheme("xmpp").authority(clip).build();
 		}
 		return transmogrifyXmppUriHelper(Uri.parse(clip));
@@ -766,9 +766,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			new EditMUCDialog(this).withNick(mConfig.userName).show();
 			return true;
 		case R.id.menu_send_invitation:
-			XMPPHelper.shareLink(this, R.string.Menu_send_invitation,
-					XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
-						mConfig.createInvitationCode()));
+			ChatHelper.showQrDialog(this, mConfig.jabberID, XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
+						mConfig.createInvitationCode()), getString(R.string.Menu_send_invitation));
 			return true;
 
 		}

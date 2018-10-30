@@ -21,7 +21,7 @@
 	<string name="conn_reconnect">Seuraava yhteydenmuodostus %d sekunnin kuluttua.</string>
 	<string name="conn_disconnected">Yhteys suljettiin</string>
 	<string name="conn_no_network">Ei verkkoyhteyttä</string>
-	<string name="conn_ping_timeout">Aikakatkaisu</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Virhe: %s</string>
 
 	<!-- Global Strings -->
@@ -44,6 +44,9 @@
 	<string name="StartupDialog_created_password">Turvallinen salasana luotu</string>
 	<string name="StartupDialog_auth_failed">Ole hyvä ja tarkasta käyttäjätunnuksesi ja salasanasi!</string>
 
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+
 	<!-- Notifications -->
 	<string name="notification_message">Viesti käyttäjältä %s</string>
 	<string name="notification_anonymous_message">Viesti vastaanotettu</string>
@@ -63,6 +66,7 @@
 	<string name="preftitle_notify">Notification Settings</string>
 	<string name="preftitle_notify_msg">Viesti-ilmoitus</string>
 	<string name="preftitle_notify_muc">Ryhmäkeskustelun ilmoitukset</string>
+	<string name="notification_custom">Custom Ringtone</string>
 	<string name="muc_highlight_title">Ilmoita vain mainittaessa</string>
 	<string name="muc_highlight_sum">Ilmoita, kun nimesi mainitaan huoneessa</string>
 	<string name="led_title">Vilkkuva LED</string>
@@ -126,6 +130,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Lisää yhteystieto</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">Näytä poissaolevat</string>
 	<string name="Menu_HideOff">Piilota poissaolevat</string>
 	<string name="Menu_AccSettings">Muokkaa tiliä</string>
@@ -230,7 +235,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Lainaa</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Lähetä uudelleen</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--

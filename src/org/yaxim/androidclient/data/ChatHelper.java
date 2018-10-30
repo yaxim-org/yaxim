@@ -25,6 +25,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -33,12 +36,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 
 public class ChatHelper {
@@ -125,6 +137,62 @@ public class ChatHelper {
 	}
 	public static void startChatActivity(Context ctx, String user, String userName, String message) {
 		startChatActivity(ctx, user, userName, message, null);
+	}
+
+	public static Bitmap generateQr(String value, int size) {
+		QRCodeWriter qr = new QRCodeWriter();
+		final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
+		hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+		try {
+			BitMatrix matrix = qr.encode(value, BarcodeFormat.QR_CODE, size, size, hints);
+			int final_width = matrix.getWidth();
+			int final_height = matrix.getHeight();
+			int[] pixels = new int[final_width * final_height];
+			for (int y = 0; y < final_height; y++)
+				for (int x = 0; x < final_width; x++)
+					pixels[x + final_width*y] = matrix.get(x, y) ? Color.BLACK : Color.WHITE;
+			Bitmap bmp = Bitmap.createBitmap(final_width, final_height, Bitmap.Config.ARGB_8888);
+			bmp.setPixels(pixels, 0, final_width, 0, 0, final_width, final_height);
+			return bmp;
+		} catch (WriterException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public static void showQrDialog(final Activity act, final String jid, final String link,
+			final String userName) {
+		LayoutInflater inflater = (LayoutInflater) act.getSystemService(act.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.qrcode_dialog,
+				(ViewGroup) act.findViewById(R.id.layout_root));
+
+		int x = act.getWindowManager().getDefaultDisplay().getWidth();
+		int y = act.getWindowManager().getDefaultDisplay().getHeight();
+		int width = (x < y ? x : y) * 4 / 5;
+
+		View.OnClickListener l = new View.OnClickListener() {
+			public void onClick(View v) {
+				XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
+						link);
+			}
+		};
+		TextView messageView = (TextView) layout.findViewById(R.id.text);
+		messageView.setOnClickListener(l);
+		messageView.setText(jid);
+
+		ImageView qrCode = (ImageView) layout.findViewById(R.id.qr_code);
+		qrCode.setImageBitmap(generateQr(link, width));
+		qrCode.setOnClickListener(l);
+		new AlertDialog.Builder(act)
+				.setTitle(userName)
+				.setView(layout)
+				.setPositiveButton(R.string.roster_contextmenu_contact_share,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
+										link);
+							}
+						})
+				.create().show();
 	}
 
 	public static void removeChatHistoryDialog(final Context ctx, final String jid, final String userName) {
@@ -261,8 +329,7 @@ public class ChatHelper {
 			return true;
 
 		case R.id.roster_contextmenu_contact_share:
-			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
-					XMPPHelper.createRosterLinkHTTPS(jid));
+			showQrDialog(act, jid, XMPPHelper.createRosterLinkHTTPS(jid), userName);
 			return true;
 
 		// MUC specific options (muc_options.xml)
@@ -280,8 +347,7 @@ public class ChatHelper {
 			act.startActivity(ringToneIntent);
 			return true;
 		case R.id.roster_contextmenu_muc_share:
-			XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
-					XMPPHelper.createMucLinkHTTPS(jid));
+			showQrDialog(act, jid, XMPPHelper.createMucLinkHTTPS(jid), userName);
 			return true;
 		default:
 			return false;

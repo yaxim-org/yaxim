@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">Volgende poging in %d seconden</string>
 	<string name="conn_disconnected">Verbinding verbroken</string>
 	<string name="conn_no_network">Geen netwerkverbinding</string>
-	<string name="conn_ping_timeout">Ping Verlopen</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Fout: %s</string>
 
 	<!-- Global Strings -->
@@ -36,6 +36,9 @@
 	<string name="StartupDialog_created_password">Veilig wachtwoord aangemaakt</string>
 	<string name="StartupDialog_auth_failed">Loop je gebruikersnaam en wachtwoord na!</string>
 
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+
 	<!-- Notifications -->
 	<string name="notification_message">Bericht van %s</string>
 	<string name="notification_anonymous_message">Bericht ontvangen</string>
@@ -55,6 +58,7 @@
 	<string name="preftitle_notify">Notification Settings</string>
 	<string name="preftitle_notify_msg">Meldingen voor bericht</string>
 	<string name="preftitle_notify_muc">Meldingen voor groepsgesprek</string>
+	<string name="notification_custom">Custom Ringtone</string>
 	<string name="muc_highlight_title">Alleen bij vermelding</string>
 	<string name="muc_highlight_sum">Attenderen wanneer je gebruikersnaam in een groepsgesprek wordt genoemd</string>
 	<string name="led_title">Knipper LED</string>
@@ -118,6 +122,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Contact toevoegen</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">Offline tonen</string>
 	<string name="Menu_HideOff">Offline verbergen</string>
 	<string name="Menu_AccSettings">Account bewerken</string>
@@ -222,7 +227,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Quote</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Opnieuw versturen</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--

@@ -9,15 +9,11 @@
 	<string name="conn_online">En línea</string>
 	<string name="conn_offline">Fuera de Línea</string>
 	<string name="conn_empty_roster">No hay contactos para mostrar!</string>
-	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
-		- Scan a QR code\n\n
-		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
-		- \"Add contact\" if you know the JID</string>
+	<string name="conn_empty_roster_hints">Hay muchas maneras de añadir contactos:\n\n - Android Beam™: introducir el teléfono de un amigo\n\n - Escanear un código QR\n\n - \"Crear una invitación\" y compartirla vía (e-mail, SMS, código QR,...)\n\n - \"Añadir contacto" si conoces el JID</string>
 	<string name="conn_reconnect">Próximo intento de conexión en %d segundos.</string>
 	<string name="conn_disconnected">Conexión cerrada</string>
 	<string name="conn_no_network">Sin conexión de red</string>
-	<string name="conn_ping_timeout">Tiempo de espera excedido para ping</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
@@ -36,9 +32,12 @@
 	<string name="StartupDialog_passwd_title">Contraseña:</string>
 	<string name="StartupDialog_advanced">Avanzada…</string>
 	<string name="StartupDialog_create_new">Registrar nueva cuenta</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
-	<string name="StartupDialog_created_password">Created secure password</string>
-	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+	<string name="StartupDialog_error_password">La contraseña es demasiado corta!</string>
+	<string name="StartupDialog_created_password">Contraseña segura creada</string>
+	<string name="StartupDialog_auth_failed">Por favor, compruebe su nombre de usuario y contraseña!</string>
+
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mensaje de %s</string>
@@ -56,11 +55,12 @@
 	<string name="notification_error">Errores al enviar el mensaje!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Configuración de las notificaciones</string>
 	<string name="preftitle_notify_msg">Notificación de mensajes</string>
-	<string name="preftitle_notify_muc">Group Chat Notification</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
-	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
+	<string name="preftitle_notify_muc">Notificación de chat de grupo</string>
+	<string name="notification_custom">Tono de aviso personalizado</string>
+	<string name="muc_highlight_title">Notificar sólo en caso de mención</string>
+	<string name="muc_highlight_sum">Notificar cuando tu apodo sea mencionado en un chat en grupo</string>
 	<string name="led_title">LED parpadeante</string>
 	<string name="led_summ">Parpadeo del LED al recibir un mensaje</string>
 	<string name="vibr_title">Vibración</string>
@@ -77,8 +77,8 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_general">Configuración general</string>
-	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
+	<string name="pref_dnd_when_silent">\"No molestar\" en modo silencioso.</string>
+	<string name="pref_dnd_when_silent_summ">Establecer el estado de conexión a \"DND\" cuando tu teléfono está en modo silencio.</string>
 	<string name="statuspopup_name">Ponga su estado</string>
 	<string name="showOffline_summ">Mostrar siempre todos los contactos en la lista</string>
 	<string name="showOffline_title">Mostrar contactos desconectados</string>
@@ -109,8 +109,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Oscuro</item>
 		<item>Claro</item>
-		<item>Pine</item>
-		<item>Ice</item>
+		<item>Pino</item>
+		<item>Hielo</item>
 	</string-array>
 	<string name="preftitle_ui">Aspecto</string>
 	<string-array name="fontSizesChat">
@@ -122,7 +122,8 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Añadir contacto</string>
-	<string name="Menu_ShowOff">Show offline</string>
+	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_ShowOff">Mostrar los fuera de línea</string>
 	<string name="Menu_HideOff">Ocultar desconectados</string>
 	<string name="Menu_AccSettings">Editar cuenta</string>
 	<string name="Menu_Settings">Opciones</string>
@@ -130,9 +131,9 @@
 	<string name="Menu_connect">Conectar</string>
 	<string name="Menu_disconnect">Desconectar</string>
 	<string name="Menu_about">Acerca de yaxim</string>
-	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_muc">Añadir chat en grupo</string>
 	<string name="Menu_mark_all_as_read">Marcar todos como leídos</string>
-	<string name="Menu_send_invitation">Create invitation</string>
+	<string name="Menu_send_invitation">Crear invitación</string>
     <string name="Menu_userlist">Participantes</string>
 
 
@@ -147,15 +148,15 @@
 	<string name="roster_contextmenu_group_rename">Renombrar grupo</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Marcar como leído</string>
 	<string name="roster_contextmenu_contact_delete">Eliminar contacto</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_delmsg">Borrar el historial del chat</string>
 	<string name="roster_contextmenu_contact_rename">Renombrar</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_request_auth">Solicitar autorización</string>
 	<string name="roster_contextmenu_contact_change_group">Cambiar grupo</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_share">Compartir la dirección</string>
 	<string name="roster_contextmenu_contact_ringtone">Tono de aviso</string>
-	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
-	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
-	<string name="muc_leave_question">Really leave %s?</string>
+	<string name="roster_contextmenu_muc_edit">Editar el chat en grupo</string>
+	<string name="roster_contextmenu_muc_leave">Salir del chat en grupo</string>
+	<string name="muc_leave_question">¿Realmente quiere abandonar  %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Información de ingreso</string>
@@ -215,8 +216,8 @@
 	<string name="subscriptionRequest_title">Pedido de suscripción</string>
 	<string name="subscription_accept">Aceptar</string>
 	<string name="subscription_reject">Rechazar</string>
-	<string name="subscription_reject_all">Reject all</string>
-	<string name="subscription_status_from">can see your status</string>
+	<string name="subscription_reject_all">Rechazar todo</string>
+	<string name="subscription_status_from">puede ver su estado</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Yo:</string>
@@ -226,7 +227,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Cita</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Enviar de nuevo</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -240,7 +241,7 @@
 	<string name="AboutDialog_DevelopersTitle">Desarrolladores</string>
 	<string name="AboutDialog_DevelopersText">Contacto</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">Valoración de la app</string>
 	<string name="AboutDialog_LicenceText">Este programa es software libre: usted puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU versión 2 publicada por la Fundación para el Software Libre. Enlace: http://www.gnu.org/licenses/gpl-2.0.html\n \n Partes de este software son ofrecidas bajo la licencia MIT: \n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Se autoriza, de forma gratuita, a cualquier persona que ha obtenido una copia de este software y archivos de documentación asociados (el "Software"), para tratar en el Software sin restricción, incluyendo sin ninguna limitación en lo que concierne a los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias de este Software, y para permitir a las personas que usan el Software a hacerlo, con sujeción a las siguientes condiciones: \n El aviso de copyright anterior y este aviso de permiso se incluirá en todas las copias o partes sustanciales de este Software. \n EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUIDAS PERO NO LIMITADAS A LAS GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y DE NO INFRACCIÓN. EN NINGÚN  CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE ALGÚN RECLAMO, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU UTILIZACIÓN U OTRAS OPERACIONES EN EL SOFTWARE.</string>
 
 	<string name="status_available">En línea</string>
@@ -261,6 +262,7 @@
   Matias Castillo Felmer https://launchpad.net/~slashytu
   Mikael Nordfeldth https://launchpad.net/~mmn
   SILVIO BARLETTA https://launchpad.net/~ik1bqd
+  Suso https://launchpad.net/~susobaco-t
   lImIt https://launchpad.net/~limit-gb</string>
 
 	<!-- default roster group with no name -->
@@ -273,35 +275,35 @@
 	<string name="action_settings">Opciones</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Group chat JID</string>
+	<string name="muc_jid_hint">JID del chat en grupo</string>
 	<string name="muc_nickname_hint">Alias</string>
-	<string name="muc_password_hint">Password (optional)</string>
-	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_password_hint">Contraseña (optativo)</string>
+	<string name="title_activity_muc_invite">Invitación a chat en grupo</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">Invitación de %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d participantes)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
-	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="muc_invitation_join">Unirse como %s</string>
+	<string name="muc_synchronizing">Sincronizando...</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="chat_muc_userlist">Participantes del chat en grupo (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked">Toque de atención: %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_kicked_by">%1$s: %2$s te ha dado un toque de atención.</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">Vetado: %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+	<string name="muc_banned_by">Vetado por %1$s: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
+	<string name="roster_contextmenu_send">Enviando...</string>
+	<string name="roster_contextmenu_take_image">Hacer una foto</string>
+	<string name="roster_contextmenu_send_image">Escoger una foto</string>
+	<string name="roster_contextmenu_send_file">Envíar un archivo</string>
+	<string name="upload_compress">Comprimiendo imagen...</string>
+	<string name="upload_uploading">Subiendo...</string>
+	<string name="upload_too_large">Archivo demasiado grande!</string>
 
 </resources>

@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">Nächster Versuch in %d Sekunden.</string>
 	<string name="conn_disconnected">Verbindung getrennt</string>
 	<string name="conn_no_network">Keine Netzwerkverbindung</string>
-	<string name="conn_ping_timeout">Ping-Zeitüberschreitung</string>
+	<string name="conn_ping_timeout">Keine Antwort</string>
 	<string name="conn_error">Fehler: %s</string>
 
 	<!-- Global Strings -->
@@ -36,6 +36,9 @@
 	<string name="StartupDialog_created_password">Sicheres Passwort erzeugt</string>
 	<string name="StartupDialog_auth_failed">Bitte Benutzername und Passwort prüfen!</string>
 
+	<string name="StartupDialog_invitation">Sie wurden zu Jabber eingeladen. Bitte schließen Sie Ihre Registrierung ab.</string>
+	<string name="StartupDialog_no_more_accounts">Keine Unterstützung für mehrere Konten!</string>
+
 	<!-- Notifications -->
 	<string name="notification_message">Mitteilung von %s</string>
 	<string name="notification_anonymous_message">Mitteilung empfangen</string>
@@ -52,9 +55,10 @@
 	<string name="notification_error">Fehler beim Nachrichtenversand!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Benachrichtigungs-Einstellungen</string>
 	<string name="preftitle_notify_msg">Benachrichtigung</string>
 	<string name="preftitle_notify_muc">Gruppenchat-Benachrichtigung</string>
+	<string name="notification_custom">Eigener Klingelton</string>
 	<string name="muc_highlight_title">Nur bei Erwähnung benachrichtigen</string>
 	<string name="muc_highlight_sum">Benachrichtigen, wenn der eigene Nickname erwähnt wird</string>
 	<string name="led_title">LED-Blinken</string>
@@ -105,8 +109,8 @@
 	<string-array name="pref_theme_entries">
 		<item>Dunkel</item>
 		<item>Hell</item>
-		<item>Pine</item>
-		<item>Ice</item>
+		<item>Pinie</item>
+		<item>Eis</item>
 	</string-array>
 	<string name="preftitle_ui">Darstellung</string>
 	<string-array name="fontSizesChat">
@@ -118,6 +122,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Kontakt hinzufügen</string>
+	<string name="Menu_addClipboard">%s hinzufügen</string>
 	<string name="Menu_ShowOff">Abwesende anzeigen</string>
 	<string name="Menu_HideOff">Abwesende verstecken</string>
 	<string name="Menu_AccSettings">Konto bearbeiten</string>
@@ -211,7 +216,7 @@
 	<string name="subscriptionRequest_title">Abonnementanfrage</string>
 	<string name="subscription_accept">Annehmen</string>
 	<string name="subscription_reject">Ablehnen</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject_all">Alle ablehnen</string>
 	<string name="subscription_status_from">kann Ihren Status sehen</string>
 
 	<!-- CHATWINDOW -->
@@ -222,7 +227,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Zitieren</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Erneut senden</string>
+	<string name="chatmenu_resend">Nachricht bearbeiten</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -241,7 +246,7 @@
 
 	<string name="status_available">Online</string>
 	<string name="status_away">Abwesend</string>
-	<string name="status_chat">Frei zum Unterhalten</string>
+	<string name="status_chat">Frei zum Chatten</string>
 	<string name="status_dnd">Bitte nicht stören</string>
 	<string name="status_xa">Nicht verfügbar</string>
 	<string name="status_offline">Offline</string>

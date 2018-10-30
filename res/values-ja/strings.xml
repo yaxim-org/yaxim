@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">%d 秒後に接続します</string>
 	<string name="conn_disconnected">接続が閉じられました</string>
 	<string name="conn_no_network">ネットワークに接続されていません</string>
-	<string name="conn_ping_timeout">Ping タイムアウト</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">エラー: %s</string>
 
 	<!-- Global Strings -->
@@ -27,14 +27,17 @@
 	<string name="StartupDialog_Title">yaximへようこそ！</string>
 	<string name="StartupDialog_Summary">yaxim を使用する前に、yaxim を設定する必要があります。 あなたの Jabber ID とパスワードを入力してください。</string>
 	<string name="StartupDialog_pwHint">パスワードを入力</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">パスワードを表示</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">パスワード：</string>
 	<string name="StartupDialog_advanced">詳細…</string>
 	<string name="StartupDialog_create_new">新しいアカウントを登録</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
+	<string name="StartupDialog_error_password">パスワードが短すぎます!</string>
 	<string name="StartupDialog_created_password">安全なパスワードを作成しました</string>
 	<string name="StartupDialog_auth_failed">ユーザー名とパスワードを確認してください!</string>
+
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">%s さんからのメッセージ</string>
@@ -52,9 +55,10 @@
 	<string name="notification_error">メッセージの送信中にエラーが発生しました!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">通知設定</string>
 	<string name="preftitle_notify_msg">メッセージの通知</string>
 	<string name="preftitle_notify_muc">グループチャｔット通知</string>
+	<string name="notification_custom">カスタムの着信音</string>
 	<string name="muc_highlight_title">メンション時のみ通知</string>
 	<string name="muc_highlight_sum">ルームであなたのニックネームがメンションされた時に通知します</string>
 	<string name="led_title">LED点滅</string>
@@ -105,8 +109,8 @@
 	<string-array name="pref_theme_entries">
 		<item>ダーク</item>
 		<item>ライト</item>
-		<item>Pine</item>
-		<item>Ice</item>
+		<item>パイン</item>
+		<item>アイス</item>
 	</string-array>
 	<string name="preftitle_ui">外観</string>
 	<string-array name="fontSizesChat">
@@ -118,6 +122,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">連絡先を追加</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">オフラインを表示する</string>
 	<string name="Menu_HideOff">オフラインを非表示</string>
 	<string name="Menu_AccSettings">アカウントを編集</string>
@@ -211,7 +216,7 @@
 	<string name="subscriptionRequest_title">登録のリクエスト</string>
 	<string name="subscription_accept">承認</string>
 	<string name="subscription_reject">拒否</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject_all">すべて拒否</string>
 	<string name="subscription_status_from">あなたのステータスを参照可能</string>
 
 	<!-- CHATWINDOW -->
@@ -222,7 +227,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">引用</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">再送信</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -234,9 +239,9 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">yaxim について</string>
 	<string name="AboutDialog_DevelopersTitle">開発者</string>
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<string name="AboutDialog_DevelopersText">連絡先</string>
 	<string name="AboutDialog_LicenceTitle">ライセンス</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">アプリを評価</string>
 	<string name="AboutDialog_LicenceText">このプログラムはフリーソフトウェアです。 フリーソフトウェア財団が公開する GNU General Public License バージョン 2 の規約の下で再配布したり、変更することができます。 リンク: http://www.gnu.org/licenses/gpl-2.0.html\n \n このソフトウェアの一部は、MIT ライセンスの下で提供されています:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">オンライン</string>
@@ -283,12 +288,12 @@
 	<string name="muc_banned_by">%1$s から禁止されました: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
+	<string name="roster_contextmenu_send">送信…</string>
+	<string name="roster_contextmenu_take_image">写真を撮る</string>
+	<string name="roster_contextmenu_send_image">写真を選択</string>
+	<string name="roster_contextmenu_send_file">ファイルを送信</string>
+	<string name="upload_compress">写真を圧縮しています…</string>
+	<string name="upload_uploading">アップロードしています…</string>
+	<string name="upload_too_large">ファイルが大きすぎます!</string>
 
 </resources>

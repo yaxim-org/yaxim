@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">Neste tilkoblingsforsøk om %d sekunder.</string>
 	<string name="conn_disconnected">Tilkobling lukket</string>
 	<string name="conn_no_network">Ingen nettverkstilknytning</string>
-	<string name="conn_ping_timeout">Tidsavbrudd for ping</string>
+	<string name="conn_ping_timeout">No response</string>
 	<string name="conn_error">Feil: %s</string>
 
 	<!-- Global Strings -->
@@ -36,6 +36,9 @@
 	<string name="StartupDialog_created_password">Opprettet sikkert passord</string>
 	<string name="StartupDialog_auth_failed">Se over brukernavnet og passordet ditt!</string>
 
+	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
+	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+
 	<!-- Notifications -->
 	<string name="notification_message">Melding fra %s</string>
 	<string name="notification_anonymous_message">Melding mottatt</string>
@@ -55,6 +58,7 @@
 	<string name="preftitle_notify">Notification Settings</string>
 	<string name="preftitle_notify_msg">Meldingsmerknad</string>
 	<string name="preftitle_notify_muc">Gruppesluddermerknad</string>
+	<string name="notification_custom">Custom Ringtone</string>
 	<string name="muc_highlight_title">Kun merknad når nevnt</string>
 	<string name="muc_highlight_sum">Merknad når kallenavnet ditt blir nevnt i et rom</string>
 	<string name="led_title">Blinkende LED</string>
@@ -118,6 +122,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Legg til kontakt</string>
+	<string name="Menu_addClipboard">Add %s</string>
 	<string name="Menu_ShowOff">Vis frakoblede</string>
 	<string name="Menu_HideOff">Skjul frakoblede</string>
 	<string name="Menu_AccSettings">Rediger konto</string>
@@ -222,7 +227,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Quote</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Send på nytt</string>
+	<string name="chatmenu_resend">Edit message</string>
 
 	<!-- GPS settings -->
 	<!--
