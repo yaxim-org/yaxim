@@ -370,7 +370,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (cm.getText() == null)
 			return null;
 		String clip = cm.getText().toString();
-		if (XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
+		if (clip.contains("@") && XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
 			return new Uri.Builder().scheme("xmpp").authority(clip).build();
 		}
 		return transmogrifyXmppUriHelper(Uri.parse(clip));
