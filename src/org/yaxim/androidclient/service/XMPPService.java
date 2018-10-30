@@ -111,6 +111,7 @@ public class XMPPService extends GenericService {
 		registerReceiver(mRingerModeReceiver, new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION));
 		configureSmartAwayMode();
 
+		createAdapter();
 		YaximBroadcastReceiver.initNetworkStatus(getApplicationContext());
 
 		if (mConfig.autoConnect && mConfig.jid_configured) {

@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -201,7 +202,7 @@ public class MUCChatWindow extends ChatWindow {
 
 	@Override
 	public boolean isFromMe(boolean from_me, String resource) {
-		return from_me || myNick.equals(resource);
+		return from_me || (!TextUtils.isEmpty(myNick) && myNick.equals(resource));
 	}
 
 	@Override

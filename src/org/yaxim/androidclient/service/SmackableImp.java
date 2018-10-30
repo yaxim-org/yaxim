@@ -231,7 +231,7 @@ public class SmackableImp implements Smackable {
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
 	
 	private final HashSet<String> mucJIDs = new HashSet<String>();	//< all configured MUCs, joined or not
-	private Map<String, MUCController> multiUserChats;
+	private Map<String, MUCController> multiUserChats = new HashMap<String, MUCController>();
 	private long mucLastPing = 0;
 	private long mucPreviousPing = 0;
 	private Map<String, Presence> subscriptionRequests = new HashMap<String, Presence>();
