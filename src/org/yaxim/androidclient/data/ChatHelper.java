@@ -28,6 +28,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +153,7 @@ public class ChatHelper {
 
 		TextView messageView = (TextView) layout.findViewById(R.id.text);
 		messageView.setText(message);
+		messageView.setVisibility(TextUtils.isEmpty(message) ? View.GONE : View.VISIBLE);
 		final EditText input = (EditText) layout.findViewById(R.id.editText);
 		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
 		input.setText(text);
