@@ -1565,8 +1565,12 @@ public class SmackableImp implements Smackable {
 							mServiceCallBack.notifyMessage(fromJID, null, true, msg.getType());
 							// TODO: MUC PMs
 							ChatHelper.markAsRead(mService, fromJID[0]);
-						} else if (direction == ChatConstants.INCOMING && need_notify)
+						} else if (direction == ChatConstants.INCOMING && need_notify) {
+							// replace URL with paperclip for notification
+							if (chatMessage.equals(oob_extra))
+								chatMessage = "\uD83D\uDCCE";
 							mServiceCallBack.notifyMessage(fromJID, chatMessage, is_silent, msg.getType());
+						}
 					}
 					sendReceiptIfRequested(packet);
 				}
