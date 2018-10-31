@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">Próximo intento de conexión en %d segundos.</string>
 	<string name="conn_disconnected">Conexión cerrada</string>
 	<string name="conn_no_network">Sin conexión de red</string>
-	<string name="conn_ping_timeout">No response</string>
+	<string name="conn_ping_timeout">No hay respuesta.</string>
 	<string name="conn_error">Error: %s</string>
 
 	<!-- Global Strings -->
@@ -36,8 +36,8 @@
 	<string name="StartupDialog_created_password">Contraseña segura creada</string>
 	<string name="StartupDialog_auth_failed">Por favor, compruebe su nombre de usuario y contraseña!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Ha sido invitado a Jabber. Por favor complete su registro.</string>
+	<string name="StartupDialog_no_more_accounts">No hay cuentas adicionales compatibles!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mensaje de %s</string>
@@ -120,7 +120,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Añadir contacto</string>
-	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_addClipboard">Añade %s</string>
 	<string name="Menu_ShowOff">Mostrar los fuera de línea</string>
 	<string name="Menu_HideOff">Ocultar desconectados</string>
 	<string name="Menu_AccSettings">Editar cuenta</string>
@@ -225,7 +225,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Cita</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Edite el mensaje</string>
 
 	<!-- GPS settings -->
 	<!--

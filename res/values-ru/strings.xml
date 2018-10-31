@@ -13,7 +13,7 @@
 	<string name="conn_reconnect">Следующая попытка подключения через %d секунд.</string>
 	<string name="conn_disconnected">Соединение закрыто</string>
 	<string name="conn_no_network">Отсутствует сетевое подключение</string>
-	<string name="conn_ping_timeout">No response</string>
+	<string name="conn_ping_timeout">Нет ответа</string>
 	<string name="conn_error">Ошибка: %s</string>
 
 	<!-- Global Strings -->
@@ -36,8 +36,8 @@
 	<string name="StartupDialog_created_password">Создан надёжный пароль</string>
 	<string name="StartupDialog_auth_failed">Проверьте учётные данные и пароль!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Вас пригласили в Jabber. Пожалуйста, завершите регистрацию.</string>
+	<string name="StartupDialog_no_more_accounts">Дополнительная учетная запись не поддерживается!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Сообщение от %s</string>
@@ -120,7 +120,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Добавить контакт</string>
-	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_addClipboard">Добавить %s</string>
 	<string name="Menu_ShowOff">Показать отключённых</string>
 	<string name="Menu_HideOff">Скрыть отключённых</string>
 	<string name="Menu_AccSettings">Редактировать учётную запись</string>
@@ -225,7 +225,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Цитировать</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Редактировать</string>
 
 	<!-- GPS settings -->
 	<!--
