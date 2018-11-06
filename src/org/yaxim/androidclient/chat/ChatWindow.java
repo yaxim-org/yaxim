@@ -130,7 +130,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	};
 	private HandlerThread mMarkThread;
 	private Handler mMarkHandler;
-	private final HashSet<Integer> mReadMessages = new HashSet<Integer>();
+	private final HashSet<Long> mReadMessages = new HashSet<Long>();
 
 	private boolean mShowOrHide = true;
 
@@ -585,7 +585,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			showToastNotification(R.string.toast_stored_offline);
 	}
 
-	private boolean markAsReadDelayed(final int id, final int delay) {
+	private boolean markAsReadDelayed(final long id, final int delay) {
 		if (mReadMessages.contains(id)) {
 			return false;
 		}
@@ -598,13 +598,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private void markReadMessagesInDb() {
 		if (mReadMessages.size() == 0)
 			return;
-		HashSet<Integer> hs = (HashSet)mReadMessages.clone();
+		HashSet<Long> hs = (HashSet)mReadMessages.clone();
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 			+ "/" + ChatProvider.TABLE_NAME);
 		// create custom WHERE statement instead of relying on ContentResolvers whereArgs
 		StringBuilder where = new StringBuilder();
 		where.append("_id IN (");
-		for (int id : hs) {
+		for (long id : hs) {
 			where.append(id);
 			where.append(",");
 		}
@@ -646,7 +646,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			long dateMilliseconds = cursor.getLong(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.DATE));
 
-			int _id = cursor.getInt(cursor
+			long _id = cursor.getLong(cursor
 					.getColumnIndex(ChatProvider.ChatConstants._ID));
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
