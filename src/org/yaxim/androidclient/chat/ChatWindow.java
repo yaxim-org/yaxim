@@ -710,22 +710,27 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		ChatItemWrapper(View row, ChatWindow chatWindow) {
 			this.mRowView = row;
 			this.chatWindow = chatWindow;
+			mDateView = (TextView) mRowView.findViewById(R.id.chat_date);
+			mFromView = (TextView) mRowView.findViewById(R.id.chat_from);
+			mMessageView = (TextView) mRowView.findViewById(R.id.chat_message);
+			mErrorView = (TextView) mRowView.findViewById(R.id.chat_error);
+			mIconView = (ImageView) mRowView.findViewById(R.id.iconView);
 		}
 
 
-		void populateFrom(String date, boolean from_me, String from, String message,
+		void populateFrom(String date, boolean from_me, String from, String message, int msgFlags,
 				String error, final String extra, int delivery_status, String highlight_text) {
-			getDateView().setText(date);
+			mDateView.setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
 				getTheme().resolveAttribute(R.attr.ChatMsgHeaderMeColor, tv, true);
-				getFromView().setText(getString(R.string.chat_from_me));
-				getFromView().setTextColor(tv.data);
+				mFromView.setText(getString(R.string.chat_from_me));
+				mFromView.setTextColor(tv.data);
 				from = mConfig.userName;
 			} else {
 				nick2Color(from, tv);
-				getFromView().setText(from + ":");
-				getFromView().setTextColor(tv.data);
+				mFromView.setText(from + ":");
+				mFromView.setTextColor(tv.data);
 			}
 			switch (delivery_status) {
 			case ChatConstants.DS_NEW:
@@ -749,54 +754,54 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 				mRowView.setPadding(l, t, r, b);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(DELAY_NEWMSG);
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_queued);
+				mIconView.setImageResource(R.drawable.ic_chat_msg_status_queued);
 				break;
 			case ChatConstants.DS_SENT_OR_READ:
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_unread);
+				mIconView.setImageResource(R.drawable.ic_chat_msg_status_unread);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
 			case ChatConstants.DS_ACKED:
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_ok);
+				mIconView.setImageResource(R.drawable.ic_chat_msg_status_ok);
 				mRowView.setBackgroundColor(0x00000000); // default is transparent
 				break;
 			case ChatConstants.DS_FAILED:
-				getIconView().setImageResource(R.drawable.ic_chat_msg_status_failed);
+				mIconView.setImageResource(R.drawable.ic_chat_msg_status_failed);
 				mRowView.setBackgroundColor(0x30ff0000); // default is transparent
 				break;
 			}
 
 			SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
-					from, highlight_text, getMessageView().getCurrentTextColor());
-			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, getMessageView().getCurrentTextColor(), getResources().getDisplayMetrics());
+					from, highlight_text, mMessageView.getCurrentTextColor());
+			eu.siacs.conversations.utils.StylingHelper.handleTextQuotes(body, mMessageView.getCurrentTextColor(), getResources().getDisplayMetrics());
 			MessageStylingHelper.applyEmojiScaling(body, 5.0f); /* >5.0 will exceed Emoji rendering limit of 150px */
-			getMessageView().setText(body);
+			mMessageView.setText(body);
 
-			getMessageView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
-			getDateView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
-			getFromView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
-			getErrorView().setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
-			getErrorView().setText(error);
-			getErrorView().setVisibility(TextUtils.isEmpty(error) ? View.GONE : View.VISIBLE);
+			mMessageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize);
+			mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_SP, chatWindow.mChatFontSize*2/3);
+			mErrorView.setText(error);
+			mErrorView.setVisibility(TextUtils.isEmpty(error) ? View.GONE : View.VISIBLE);
 			// these calls must be in the exact right order.
-			Linkify.addLinks(getMessageView(), Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
+			Linkify.addLinks(mMessageView, Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
 			// Android's default phone linkifuckation makes 13:37 two phone numbers
-			Linkify.addLinks(getMessageView(), XMPPHelper.PHONE, "tel:");
+			Linkify.addLinks(mMessageView, XMPPHelper.PHONE, "tel:");
 			// Android's default email linkifuckation breaks xmpp: URIs
-			Linkify.addLinks(getMessageView(), XMPPHelper.XMPP_PATTERN, "xmpp");
-			Linkify.addLinks(getMessageView(), XMPPHelper.EMAIL_ADDRESS, "mailto:");
+			Linkify.addLinks(mMessageView, XMPPHelper.XMPP_PATTERN, "xmpp");
+			Linkify.addLinks(mMessageView, XMPPHelper.EMAIL_ADDRESS, "mailto:");
 
 			ImageView iv = (ImageView)mRowView.findViewById(R.id.chat_image);
 			boolean has_extra = !TextUtils.isEmpty(extra);
 			iv.setVisibility(has_extra ? View.VISIBLE : View.GONE);
 			if (has_extra) {
 				if (extra.equals(message))
-					getMessageView().setVisibility(View.GONE);
+					mMessageView.setVisibility(View.GONE);
 				UrlImageViewHelper.setUrlDrawable(iv, extra, android.R.drawable.ic_menu_report_image, new UrlImageViewCallback() {
 					@Override
 					public void onLoaded(ImageView imageView, Bitmap bitmap, String s, boolean b) {
 						if (bitmap == null) {
 							// error loading, display URL again
-							getMessageView().setVisibility(View.VISIBLE);
+							mMessageView.setVisibility(View.VISIBLE);
 						}
 					}
 				});
@@ -814,46 +819,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					}
 				});
 			} else
-				getMessageView().setVisibility(View.VISIBLE);
+				mMessageView.setVisibility(View.VISIBLE);
 		}
 		
-		TextView getDateView() {
-			if (mDateView == null) {
-				mDateView = (TextView) mRowView.findViewById(R.id.chat_date);
-			}
-			return mDateView;
-		}
-
-		TextView getFromView() {
-			if (mFromView == null) {
-				mFromView = (TextView) mRowView.findViewById(R.id.chat_from);
-			}
-			return mFromView;
-		}
-
-		TextView getMessageView() {
-			if (mMessageView == null) {
-				mMessageView = (TextView) mRowView
-						.findViewById(R.id.chat_message);
-			}
-			return mMessageView;
-		}
-		TextView getErrorView() {
-			if (mErrorView == null) {
-				mErrorView = (TextView) mRowView
-					.findViewById(R.id.chat_error);
-			}
-			return mErrorView;
-		}
-
-		ImageView getIconView() {
-			if (mIconView == null) {
-				mIconView = (ImageView) mRowView
-						.findViewById(R.id.iconView);
-			}
-			return mIconView;
-		}
-
 	}
 
 	// OnKeyListener
