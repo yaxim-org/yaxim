@@ -114,7 +114,7 @@ public class SmackableImp implements Smackable {
 
 	final static private String[] SEND_OFFLINE_PROJECTION = new String[] {
 			ChatConstants._ID, ChatConstants.JID,
-			ChatConstants.MESSAGE, ChatConstants.MSGTYPE,
+			ChatConstants.MESSAGE, ChatConstants.MSGFLAGS,
 			ChatConstants.CORRECTION, ChatConstants.EXTRA,
 			ChatConstants.DATE, ChatConstants.PACKET_ID };
 	final static private String SEND_OFFLINE_SELECTION =
@@ -897,7 +897,7 @@ public class SmackableImp implements Smackable {
 		final int      _ID_COL = cursor.getColumnIndexOrThrow(ChatConstants._ID);
 		final int      JID_COL = cursor.getColumnIndexOrThrow(ChatConstants.JID);
 		final int      MSG_COL = cursor.getColumnIndexOrThrow(ChatConstants.MESSAGE);
-		final int  MSGTYPE_COL = cursor.getColumnIndexOrThrow(ChatConstants.MSGTYPE);
+		final int MSGFLAGS_COL = cursor.getColumnIndexOrThrow(ChatConstants.MSGFLAGS);
 		final int      LMC_COL = cursor.getColumnIndexOrThrow(ChatConstants.CORRECTION);
 		final int    EXTRA_COL = cursor.getColumnIndexOrThrow(ChatConstants.EXTRA);
 		final int       TS_COL = cursor.getColumnIndexOrThrow(ChatConstants.DATE);
@@ -911,10 +911,10 @@ public class SmackableImp implements Smackable {
 				continue;
 			String message = cursor.getString(MSG_COL);
 			String packetID = cursor.getString(PACKETID_COL);
-			int msgType = cursor.getInt(MSGTYPE_COL);
+			int msgFlags = cursor.getInt(MSGFLAGS_COL);
 			String lmc = cursor.getString(LMC_COL);
 			String extra = cursor.getString(EXTRA_COL);
-			String oob = (msgType == ChatConstants.MT_FILE) ? extra : null;
+			String oob = ((msgFlags & ChatConstants.MF_FILE) != 0) ? extra : null;
 			long ts = cursor.getLong(TS_COL);
 			Log.d(TAG, "sendOfflineMessages: " + toJID + " > " + message);
 			final Message newMessage = formatMessage(is_muc, toJID, message, lmc, oob);
@@ -937,14 +937,14 @@ public class SmackableImp implements Smackable {
 	}
 
 	public static ContentValues formatMessageContentValues(int direction, String jid, String resource,
-			String message, int msgtype, String lmc, String extra,
+			String message, int msgflags, String lmc, String extra,
 			int delivery_status, long ts, String packetID) {
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DIRECTION, direction);
 		values.put(ChatConstants.JID, jid);
 		values.put(ChatConstants.RESOURCE, resource);
 		values.put(ChatConstants.MESSAGE, message);
-		values.put(ChatConstants.MSGTYPE, msgtype);
+		values.put(ChatConstants.MSGFLAGS, msgflags);
 		values.put(ChatConstants.CORRECTION, lmc);
 		values.put(ChatConstants.EXTRA, extra);
 		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
@@ -955,7 +955,7 @@ public class SmackableImp implements Smackable {
 
 	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
 		ContentValues values = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
-			message, ChatConstants.MT_TEXT, null, null,
+			message, ChatConstants.MF_TEXT, null, null,
 			ChatConstants.DS_NEW, 0, Packet.nextID());
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
@@ -973,10 +973,10 @@ public class SmackableImp implements Smackable {
 	public void sendMessage(String toJID, String message, String lmc, String oob, long upsert_id) {
 		final Message newMessage = formatMessage(mucJIDs.contains(toJID), toJID, message, lmc, oob);
 		boolean is_auth = isAuthenticated();
-		int msgType = TextUtils.isEmpty(oob) ? ChatConstants.MT_TEXT : ChatConstants.MT_FILE;
+		int msgFlags = TextUtils.isEmpty(oob) ? ChatConstants.MF_TEXT : ChatConstants.MF_FILE;
 		int deliveryStatus = is_auth ? ChatConstants.DS_SENT_OR_READ : ChatConstants.DS_NEW;
 		ContentValues cv = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
-				message, msgType, lmc, oob, deliveryStatus, 0, newMessage.getPacketID());
+				message, msgFlags, lmc, oob, deliveryStatus, 0, newMessage.getPacketID());
 		addChatMessageToDB(toJID, cv, upsert_id);
 		if (is_auth) {
 			mXMPPConnection.sendPacket(newMessage);
@@ -1554,9 +1554,9 @@ public class SmackableImp implements Smackable {
 					}
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
-						int msgType = ChatConstants.MT_TEXT;
+						int msgFlags = ChatConstants.MF_TEXT;
 						ContentValues cv = formatMessageContentValues(direction, fromJID[0], fromJID[1],
-								chatMessage, msgType, replace_id, oob_extra, is_new, ts, msg.getPacketID());
+								chatMessage, msgFlags, replace_id, oob_extra, is_new, ts, msg.getPacketID());
 						addChatMessageToDB(fromJID[0], cv, upsert_id);
 						// only notify on private messages or on non-system MUC messages when MUC notification requested
 						boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
@@ -1735,7 +1735,7 @@ public class SmackableImp implements Smackable {
 	private void addChatMessageToDB(int direction, String[] tJID,
 									String message, int delivery_status, long ts, String packetID, long upsert_id) {
 		ContentValues values = formatMessageContentValues(direction, tJID[0], tJID[1],
-				message, ChatConstants.MT_TEXT, null, null,
+				message, ChatConstants.MF_TEXT, null, null,
 				delivery_status, ts, packetID);
 		addChatMessageToDB(tJID[0], values, upsert_id);
 	}

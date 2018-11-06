@@ -240,7 +240,7 @@ public class ChatProvider extends ContentProvider {
 					+ ChatConstants.DIRECTION + " INTEGER,"
 					+ ChatConstants.JID + " TEXT,"
 					+ ChatConstants.MESSAGE + " TEXT,"
-					+ ChatConstants.MSGTYPE + " INT,"
+					+ ChatConstants.MSGFLAGS + " INT,"
 					+ ChatConstants.EXTRA + " TEXT,"
 					+ ChatConstants.ERROR + " TEXT,"
 					+ ChatConstants.CORRECTION + " TEXT,"
@@ -264,7 +264,7 @@ public class ChatProvider extends ContentProvider {
 				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_date on chats (jid, date)");
 				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_from_read on chats (jid, from_me, read)");
 			case 7:
-				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.MSGTYPE + " INT DEFAULT 0");
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.MSGFLAGS + " INT DEFAULT 0");
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.EXTRA + " TEXT DEFAULT NULL");
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.ERROR + " TEXT DEFAULT NULL");
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.CORRECTION + " TEXT DEFAULT NULL");
@@ -291,7 +291,7 @@ public class ChatProvider extends ContentProvider {
 		public static final String DIRECTION = "from_me";
 		public static final String JID = "jid";
 		public static final String MESSAGE = "message";
-		public static final String MSGTYPE = "msgtype";
+		public static final String MSGFLAGS = "msgtype";
 		public static final String EXTRA = "extra";
 		public static final String ERROR = "error";
 		public static final String CORRECTION = "correction";
@@ -308,9 +308,9 @@ public class ChatProvider extends ContentProvider {
 		public static final int DS_ACKED = 2; //< this message was XEP-0184 acknowledged
 		public static final int DS_FAILED = 3; //< this message was returned as failed
 
-		// message type mappings
-		public static final int MT_TEXT = 0; //< this is a regular chat message
-		public static final int MT_FILE = 1; //< this is a file upload URL / SIMS / OOB
+		// message flags mappings
+		public static final int MF_TEXT = 0; //< this is a regular chat message
+		public static final int MF_FILE = 1; //< this is a file upload URL / SIMS / OOB
 		public static final int MT_INVITE = 2; //< this is a file upload URL / SIMS / OOB
 
 		public static ArrayList<String> getRequiredColumns() {
