@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +58,10 @@ public abstract class GenericService extends Service {
 	protected Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
 	protected Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
 	protected Map<String, SpannableStringBuilder> notificationBigText = new HashMap<String, SpannableStringBuilder>(2);
+
+	//create an ArrayList
+	ArrayList<String> messageList;
+
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
 	protected long gracePeriodStart = 0;
@@ -144,6 +149,9 @@ public abstract class GenericService extends Service {
 
 		SpannableStringBuilder msg_long = notificationBigText.get(fromJid);
 		if (msg_long == null) {
+			//create a new arrayList to save messages
+			messageList = new ArrayList<>();
+
 			msg_long = new SpannableStringBuilder();
 			notificationBigText.put(fromJid, msg_long);
 		} else
@@ -160,6 +168,9 @@ public abstract class GenericService extends Service {
 		SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
 				from_nickname, null, 0xff808080);
 		msg_long.append(body);
+
+		//adding the messages into the messageList
+		messageList.add(body.toString());
 
 		setNotification(fromJid, jid[1], fromUserName,
 				body, msg_long,
@@ -245,7 +256,13 @@ public abstract class GenericService extends Service {
 		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
 			.setReadPendingIntent(msgHeardPendingIntent)
 			.setReplyAction(msgResponsePendingIntent, remoteInput);
-		ucb.addMessage(msg_long.toString()).setLatestTimestamp(System.currentTimeMillis());
+
+		//adding a loop outside
+		for (String msg_one : messageList){
+			ucb.addMessage(msg_one).setLatestTimestamp(System.currentTimeMillis());
+			Log.d(TAG, "msg_one:" + msg_one.toString());
+		}
+		//ucb.addMessage(msg_long.toString()).setLatestTimestamp(System.currentTimeMillis());
 
 		Uri userNameUri = Uri.parse(fromJid);
 		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
