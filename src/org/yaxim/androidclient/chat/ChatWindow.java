@@ -85,7 +85,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatConstants._ID, ChatConstants.DATE,
 			ChatConstants.DIRECTION, ChatConstants.JID,
-			ChatConstants.RESOURCE, ChatConstants.MESSAGE,
+			ChatConstants.RESOURCE, ChatConstants.MESSAGE, ChatConstants.MSGFLAGS,
 			ChatConstants.ERROR, ChatConstants.CORRECTION, ChatConstants.EXTRA,
 			ChatConstants.DELIVERY_STATUS, ChatConstants.PACKET_ID };
 
@@ -651,6 +651,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			String date = getDateString(dateMilliseconds);
 			String message = cursor.getString(cursor
 					.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+			int msgFlags = cursor.getInt(cursor
+					.getColumnIndex(ChatConstants.MSGFLAGS));
 			String error = cursor.getString(cursor
 					.getColumnIndex(ChatConstants.ERROR));
 			boolean correction = !TextUtils.isEmpty(cursor.getString(cursor
@@ -682,11 +684,12 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					delivery_status = ChatConstants.DS_SENT_OR_READ;
 
 			}
+			// work around for 0.9.3 not setting MF_CORRECT but storing LMC field
 			if (correction)
-				date = "\u270d " + date;
+				msgFlags |= ChatConstants.MF_CORRECT;
 
-			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, error, extra,
-					delivery_status, mScreenName);
+			wrapper.populateFrom(date, from_me, jid2nickname(jid, resource), message, msgFlags,
+					error, extra, delivery_status, mScreenName);
 			return row;
 		}
 	}
@@ -720,6 +723,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 		void populateFrom(String date, boolean from_me, String from, String message, int msgFlags,
 				String error, final String extra, int delivery_status, String highlight_text) {
+			if ((msgFlags & ChatConstants.MF_CORRECT) != 0)
+				date = "\u270d " + date;
+			else if ((msgFlags & ChatConstants.MF_DELAY) != 0)
+				date = "\u231A " + date;
 			mDateView.setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {

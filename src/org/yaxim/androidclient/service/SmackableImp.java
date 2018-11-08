@@ -1555,6 +1555,12 @@ public class SmackableImp implements Smackable {
 
 					if (!is_muc || checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp)) {
 						int msgFlags = ChatConstants.MF_TEXT;
+						if (oob_extra != null)
+							msgFlags |= ChatConstants.MF_FILE;
+						if (timestamp != null)
+							msgFlags |= ChatConstants.MF_DELAY;
+						if (replace != null)
+							msgFlags |= ChatConstants.MF_CORRECT;
 						ContentValues cv = formatMessageContentValues(direction, fromJID[0], fromJID[1],
 								chatMessage, msgFlags, replace_id, oob_extra, is_new, ts, msg.getPacketID());
 						addChatMessageToDB(fromJID[0], cv, upsert_id);
