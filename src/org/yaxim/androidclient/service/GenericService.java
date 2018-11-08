@@ -59,8 +59,8 @@ public abstract class GenericService extends Service {
 	protected Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
 	protected Map<String, SpannableStringBuilder> notificationBigText = new HashMap<String, SpannableStringBuilder>(2);
 
-	//create an ArrayList
-	ArrayList<String> messageList;
+	//create a hashmap of JID to message list
+	protected Map<String, ArrayList<String>> notificationMessage = new HashMap<>();
 
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
@@ -149,9 +149,6 @@ public abstract class GenericService extends Service {
 
 		SpannableStringBuilder msg_long = notificationBigText.get(fromJid);
 		if (msg_long == null) {
-			//create a new arrayList to save messages
-			messageList = new ArrayList<>();
-
 			msg_long = new SpannableStringBuilder();
 			notificationBigText.put(fromJid, msg_long);
 		} else
@@ -169,11 +166,17 @@ public abstract class GenericService extends Service {
 				from_nickname, null, 0xff808080);
 		msg_long.append(body);
 
+		//add the message into message list of individual sender
+		ArrayList<String> messageList = notificationMessage.get(fromJid);
+		if (messageList == null){
+			messageList = new ArrayList<>();
+			notificationMessage.put(fromJid,messageList);
+		}
 		//adding the messages into the messageList
 		messageList.add(body.toString());
 
 		setNotification(fromJid, jid[1], fromUserName,
-				body, msg_long,
+				body, msg_long, messageList,
 				is_error, isMuc);
 		setLEDNotification(isMuc, fromJid);
 		
@@ -195,7 +198,7 @@ public abstract class GenericService extends Service {
 	}
 	
 	private void setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, SpannableStringBuilder msg_long,
-			boolean is_error, boolean isMuc) {
+								 ArrayList<String> messageList, boolean is_error, boolean isMuc) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -260,7 +263,6 @@ public abstract class GenericService extends Service {
 		//adding a loop outside
 		for (String msg_one : messageList){
 			ucb.addMessage(msg_one).setLatestTimestamp(System.currentTimeMillis());
-			Log.d(TAG, "msg_one:" + msg_one.toString());
 		}
 		//ucb.addMessage(msg_long.toString()).setLatestTimestamp(System.currentTimeMillis());
 
@@ -339,6 +341,8 @@ public abstract class GenericService extends Service {
 	public void resetNotificationCounter(String userJid) {
 		notificationCount.remove(userJid);
 		notificationBigText.remove(userJid);
+		//clean up notification message of individual sender
+		notificationMessage.remove(userJid);
 		updateBadger();
 	}
 
