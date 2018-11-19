@@ -3,6 +3,7 @@ package org.yaxim.androidclient.chat;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
@@ -97,6 +98,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
 	private Uri cameraPictureUri = null;
+
+	private static HashMap<String, String> messageDrafts = new HashMap<String, String>();
 
 	protected YaximConfiguration mConfig;
 	private ContentObserver mContactObserver = new ContactObserver();
@@ -320,6 +323,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	@Override
 	protected void onPause() {
 		Log.d(TAG, "onPause");
+		String inputText = mChatInput.getText().toString();
+		if (!TextUtils.isEmpty(inputText))
+			messageDrafts.put(mWithJabberID, inputText);
+		else
+			messageDrafts.remove(mWithJabberID);
 		super.onPause();
 		changeBoundness(-1);
 	}
@@ -386,15 +394,18 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	}
 
 	private void setUserInput() {
+		String inputText = (messageDrafts.containsKey(mWithJabberID)) ? messageDrafts.get(mWithJabberID) : "";
 		Intent i = getIntent();
 		mChatInput = (EditText) findViewById(R.id.Chat_UserInput);
 		mChatInput.addTextChangedListener(this);
 		mChatInput.setOnKeyListener(this);
 		mChatInput.addTextChangedListener(new StylingHelper.MessageEditorStyler(mChatInput));
 		if (i.hasExtra(INTENT_EXTRA_MESSAGE)) {
-			mChatInput.setText(i.getExtras().getString(INTENT_EXTRA_MESSAGE));
+			inputText += i.getExtras().getString(INTENT_EXTRA_MESSAGE);
 			i.removeExtra(INTENT_EXTRA_MESSAGE);
 		}
+		mChatInput.setText(inputText);
+		messageDrafts.remove(mWithJabberID);
 	}
 	private void handleSendIntent() {
 		Intent i = getIntent();
