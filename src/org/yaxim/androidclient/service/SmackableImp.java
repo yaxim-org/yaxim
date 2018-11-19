@@ -1568,7 +1568,7 @@ public class SmackableImp implements Smackable {
 								chatMessage, msgFlags, replace_id, oob_extra, is_new, ts, msg.getPacketID());
 						addChatMessageToDB(fromJID[0], cv, upsert_id);
 						// only notify on private messages or on non-system MUC messages when MUC notification requested
-						boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(getMyMucNick(fromJID[0]), chatMessage);
+						boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(fromJID[0], getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
 						if (is_from_me) {
 							mServiceCallBack.notifyMessage(fromJID, null, true, msg.getType());

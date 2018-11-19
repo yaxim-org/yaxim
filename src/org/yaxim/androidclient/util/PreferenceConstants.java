@@ -22,7 +22,7 @@ public class PreferenceConstants {
 	public final static String RINGTONENOTIFY= "ringtone";
 	public final static String TICKER = "ticker";
 	
-	public final static String HIGHLIGHTMUC = "muc_highlight";
+	public final static String HIGHLIGHT = "highlight";
 
 	public final static String FOREGROUND = "foregroundService";
 	public final static String SMACKDEBUG = "smackdebug";

@@ -68,7 +68,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String statusMessage;
 	public String[] statusMessageHistory;
 
-	public boolean highlightNickMuc;
 	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
 	public String fileUploadDomain = null;
 	public long fileUploadSizeLimit = 0;
@@ -134,8 +133,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	private void loadPrefs(SharedPreferences prefs) {
 		this.jid_configured = false;
-
-		this.highlightNickMuc = prefs.getBoolean(PreferenceConstants.HIGHLIGHTMUC, true);
 
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs
@@ -228,8 +225,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		return default_prefs.getBoolean(pref, defValue);
 	}
 
-	public boolean needMucNotification(String nick, String message) {
-		if (!highlightNickMuc)
+	public boolean needMucNotification(String jid, String nick, String message) {
+		// highlight==false --> notify on all messages
+		if (getJidBoolean(true, PreferenceConstants.HIGHLIGHT, jid, true) == false)
 			return true;
 		return message.toLowerCase().contains(nick.toLowerCase());
 	}
