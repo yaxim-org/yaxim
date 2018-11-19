@@ -960,11 +960,15 @@ public class SmackableImp implements Smackable {
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
-	public void sendReceiptIfRequested(Packet packet) {
+	public void sendReceiptIfRequested(Message packet) {
 		DeliveryReceiptRequest drr = (DeliveryReceiptRequest)packet.getExtension(
 				DeliveryReceiptRequest.ELEMENT, DeliveryReceipt.NAMESPACE);
 		if (drr != null) {
-			Message ack = new Message(packet.getFrom(), Message.Type.normal);
+			if (packet.getType() != Message.Type.chat && packet.getType() != Message.Type.normal) {
+				Log.w(TAG, "Ignoring receipt request from " + packet.getFrom() + " for type " + packet.getType());
+				return;
+			}
+			Message ack = new Message(packet.getFrom(), packet.getType());
 			ack.addExtension(new DeliveryReceipt(packet.getPacketID()));
 			mXMPPConnection.sendPacket(ack);
 		}
@@ -1455,7 +1459,7 @@ public class SmackableImp implements Smackable {
 
 					// check for jabber MUC invitation
 					if(direction == ChatConstants.INCOMING && handleMucInvitation(msg)) {
-						sendReceiptIfRequested(packet);
+						sendReceiptIfRequested(msg);
 						return;
 					}
 
@@ -1581,7 +1585,7 @@ public class SmackableImp implements Smackable {
 							mServiceCallBack.notifyMessage(fromJID, chatMessage, is_silent, msg.getType());
 						}
 					}
-					sendReceiptIfRequested(packet);
+					sendReceiptIfRequested(msg);
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
