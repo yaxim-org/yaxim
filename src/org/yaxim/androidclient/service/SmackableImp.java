@@ -1044,12 +1044,15 @@ public class SmackableImp implements Smackable {
 
 	public long getRowIdForMessage(String jid, String resource, int direction, String packet_id) {
 		// query the DB for the RowID, return -1 if packet_id does not match
+		// this will check the last 10 messages from that JID
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
 				"jid = ? AND resource = ? AND from_me = ?",
-				new String[] { jid, resource, "" + direction }, "_id DESC");
+				new String[] { jid, resource, "" + direction }, "_id DESC LIMIT 10");
 		long result = -1;
-		if (c.moveToFirst() && c.getString(1).equals(packet_id))
-			result = c.getLong(0);
+		while(c.moveToNext()) {
+			if (c.getString(1).equals(packet_id))
+				result = c.getLong(0);
+		}
 		c.close();
 		return result;
 	}
