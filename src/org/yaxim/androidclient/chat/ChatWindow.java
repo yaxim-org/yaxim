@@ -735,9 +735,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		void populateFrom(String date, boolean from_me, String from, String message, int msgFlags,
 				String error, final String extra, int delivery_status, String highlight_text) {
 			if ((msgFlags & ChatConstants.MF_CORRECT) != 0)
-				date = "\u270d " + date;
+				date = "\u270d " + date; /* prepend Writing Hand */
 			else if ((msgFlags & ChatConstants.MF_DELAY) != 0)
-				date = "\u231A " + date;
+				date = "\u23F1 " + date; /* prepend Stopwatch */
 			mDateView.setText(date);
 			TypedValue tv = new TypedValue();
 			if (from_me) {
