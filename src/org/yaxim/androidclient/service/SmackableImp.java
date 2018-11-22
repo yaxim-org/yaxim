@@ -858,17 +858,29 @@ public class SmackableImp implements Smackable {
 		upsertRoster(values, request.getFrom());
 	}
 
+	public void setStatusFromConfig(Presence presence) {
+		Mode mode = Mode.valueOf(mConfig.getPresenceMode().toString());
+		presence.setMode(mode);
+		presence.setStatus(mConfig.statusMessage);
+		presence.setPriority(mConfig.priority);
+	}
 	public void setStatusFromConfig() {
 		// TODO: only call this when carbons changed, not on every presence change
 		CarbonManager.getInstanceFor(mXMPPConnection).sendCarbonsEnabled(mConfig.messageCarbons);
 
 		Presence presence = new Presence(Presence.Type.available);
-		Mode mode = Mode.valueOf(mConfig.getPresenceMode().toString());
-		presence.setMode(mode);
-		presence.setStatus(mConfig.statusMessage);
-		presence.setPriority(mConfig.priority);
+		setStatusFromConfig(presence);
 		mXMPPConnection.sendPacket(presence);
 		mConfig.presence_required = false;
+		Iterator<MUCController> muc_it = multiUserChats.values().iterator();
+		while (muc_it.hasNext()) {
+			MUCController mucc = muc_it.next();
+			MultiUserChat muc = mucc.muc;
+			if (!muc.isJoined())
+				continue;
+			presence.setTo(muc.getRoom() + "/" + muc.getNickname());
+			mXMPPConnection.sendPacket(presence);
+		}
 	}
 
 	public Message formatMessage(boolean is_muc, String to, String body, String lmc, String oob) {
@@ -2186,6 +2198,16 @@ public class SmackableImp implements Smackable {
 			public void banned(String actor, String reason) {
 				debugLog("Banned from " + room + " by " + actor + ": " + reason);
 				handleKickedFromMUC(room, true, actor, reason);
+			}
+		});
+		muc.addPresenceInterceptor(new PacketInterceptor() {
+			@Override
+			public void interceptPacket(Packet packet) {
+				Presence p = (Presence)packet;
+				if (p.getType() == Presence.Type.available) {
+					// inject from config
+					setStatusFromConfig(p);
+				}
 			}
 		});
 		
