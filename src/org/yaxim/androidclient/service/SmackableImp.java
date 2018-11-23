@@ -878,8 +878,10 @@ public class SmackableImp implements Smackable {
 			MultiUserChat muc = mucc.muc;
 			if (!muc.isJoined())
 				continue;
-			presence.setTo(muc.getRoom() + "/" + muc.getNickname());
-			mXMPPConnection.sendPacket(presence);
+			Presence muc_presence = new Presence(presence.getType(),
+					presence.getStatus(), presence.getPriority(), presence.getMode());
+			muc_presence.setTo(muc.getRoom() + "/" + muc.getNickname());
+			mXMPPConnection.sendPacket(muc_presence);
 		}
 	}
 
