@@ -169,20 +169,12 @@ public class ChatHelper {
 		int y = act.getWindowManager().getDefaultDisplay().getHeight();
 		int width = (x < y ? x : y) * 4 / 5;
 
-		View.OnClickListener l = new View.OnClickListener() {
-			public void onClick(View v) {
-				XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
-						link);
-			}
-		};
 		TextView messageView = (TextView) layout.findViewById(R.id.text);
-		messageView.setOnClickListener(l);
 		messageView.setText(jid);
 
 		ImageView qrCode = (ImageView) layout.findViewById(R.id.qr_code);
 		qrCode.setImageBitmap(generateQr(link, width));
-		qrCode.setOnClickListener(l);
-		new AlertDialog.Builder(act)
+		final AlertDialog d = new AlertDialog.Builder(act)
 				.setTitle(userName)
 				.setView(layout)
 				.setPositiveButton(R.string.roster_contextmenu_contact_share,
@@ -192,7 +184,17 @@ public class ChatHelper {
 										link);
 							}
 						})
-				.create().show();
+				.create();
+		View.OnClickListener l = new View.OnClickListener() {
+			public void onClick(View v) {
+				XMPPHelper.shareLink(act, R.string.roster_contextmenu_contact_share,
+						link);
+				d.dismiss();
+			}
+		};
+		messageView.setOnClickListener(l);
+		qrCode.setOnClickListener(l);
+		d.show();
 	}
 
 	public static void removeChatHistoryDialog(final Context ctx, final String jid, final String userName) {
