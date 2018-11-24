@@ -952,7 +952,7 @@ public class SmackableImp implements Smackable {
 
 	public static ContentValues formatMessageContentValues(int direction, String jid, String resource,
 			String message, int msgflags, String lmc, String extra,
-			int delivery_status, long ts, String packetID) {
+			int delivery_status, String packetID) {
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DIRECTION, direction);
 		values.put(ChatConstants.JID, jid);
@@ -962,7 +962,6 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.CORRECTION, lmc);
 		values.put(ChatConstants.EXTRA, extra);
 		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
-		values.put(ChatConstants.DATE, (ts > 0) ? ts : System.currentTimeMillis());
 		values.put(ChatConstants.PACKET_ID, packetID);
 		return values;
 	}
@@ -970,7 +969,8 @@ public class SmackableImp implements Smackable {
 	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
 		ContentValues values = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
 			message, ChatConstants.MF_TEXT, null, null,
-			ChatConstants.DS_NEW, 0, Packet.nextID());
+			ChatConstants.DS_NEW, Packet.nextID());
+		values.put(ChatConstants.DATE, System.currentTimeMillis());
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
@@ -994,8 +994,8 @@ public class SmackableImp implements Smackable {
 		int msgFlags = TextUtils.isEmpty(oob) ? ChatConstants.MF_TEXT : ChatConstants.MF_FILE;
 		int deliveryStatus = is_auth ? ChatConstants.DS_SENT_OR_READ : ChatConstants.DS_NEW;
 		ContentValues cv = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
-				message, msgFlags, lmc, oob, deliveryStatus, 0, newMessage.getPacketID());
-		addChatMessageToDB(toJID, cv, upsert_id);
+				message, msgFlags, lmc, oob, deliveryStatus, newMessage.getPacketID());
+		addChatMessageToDB(toJID, cv, 0, upsert_id);
 		if (is_auth) {
 			mXMPPConnection.sendPacket(newMessage);
 		}
@@ -1583,8 +1583,8 @@ public class SmackableImp implements Smackable {
 						if (replace != null)
 							msgFlags |= ChatConstants.MF_CORRECT;
 						ContentValues cv = formatMessageContentValues(direction, fromJID[0], fromJID[1],
-								chatMessage, msgFlags, replace_id, oob_extra, is_new, ts, msg.getPacketID());
-						addChatMessageToDB(fromJID[0], cv, upsert_id);
+								chatMessage, msgFlags, replace_id, oob_extra, is_new, msg.getPacketID());
+						addChatMessageToDB(fromJID[0], cv, ts, upsert_id);
 						// only notify on private messages or on non-system MUC messages when MUC notification requested
 						boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(fromJID[0], getMyMucNick(fromJID[0]), chatMessage);
 						// outgoing carbon -> clear notification by signalling 'null' message
@@ -1749,11 +1749,12 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addPacketListener(mPresenceListener, new PacketTypeFilter(Presence.class));
 	}
 
-	private void addChatMessageToDB(String bare_jid, ContentValues values, long upsert_id) {
+	private void addChatMessageToDB(String bare_jid, ContentValues values, long ts, long upsert_id) {
 		if (upsert_id >= 0 &&
 		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
 				values, null, null) == 1)
 			return;
+		values.put(ChatConstants.DATE, (ts > 0) ? ts : System.currentTimeMillis());
 		Uri res = mContentResolver.insert(ChatProvider.CONTENT_URI, values);
 		MUCController mucc = multiUserChats.get(bare_jid);
 		if (mucc != null)
@@ -1763,8 +1764,8 @@ public class SmackableImp implements Smackable {
 									String message, int delivery_status, long ts, String packetID, long upsert_id) {
 		ContentValues values = formatMessageContentValues(direction, tJID[0], tJID[1],
 				message, ChatConstants.MF_TEXT, null, null,
-				delivery_status, ts, packetID);
-		addChatMessageToDB(tJID[0], values, upsert_id);
+				delivery_status, packetID);
+		addChatMessageToDB(tJID[0], values, ts, upsert_id);
 	}
 
 	private void addChatMessageToDB(int direction, String JID,
