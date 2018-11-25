@@ -258,6 +258,8 @@ public class SmackableImp implements Smackable {
 			}
 		});
 
+		registerConnectionListener();
+		registerRosterListener();
 		registerMessageListener();
 		registerPresenceListener();
 		registerPongListener();
@@ -269,27 +271,22 @@ public class SmackableImp implements Smackable {
 	}
 
 	// blocking, run from a thread!
-	public boolean doConnect(boolean create_account) throws YaximXMPPException {
+	public void doConnect(boolean create_account) throws YaximXMPPException {
 		mRequestedState = ConnectionState.ONLINE;
 		updateConnectionState(ConnectionState.CONNECTING);
 		if (mXMPPConnection == null || mConfig.reconnect_required)
 			initXMPPConnection();
-		boolean fresh_session = tryToConnect(create_account);
+		connectAndLogin(create_account);
 		if (!mXMPPConnection.isAuthenticated())
 			throw new YaximXMPPException("SMACK connected, but authentication failed");
 		updateConnectionState(ConnectionState.LOADING);
-		if (fresh_session) {
-			cleanupMUCs(true);
-			setStatusFromConfig();
-			discoverServicesAsync();
-		}
+		Log.d(TAG, "connect has returned!");
 		syncDbRooms();
 		sendOfflineMessages(null);
 		sendUserWatching();
 		// we need to "ping" the service to let it know we are actually
 		// connected, even when no roster entries will come in
 		updateConnectionState(ConnectionState.ONLINE);
-		return true;
 	}
 
 	// BLOCKING, call on a new Thread!
@@ -606,83 +603,78 @@ public class SmackableImp implements Smackable {
 		onDisconnected(reason.getLocalizedMessage());
 	}
 
+	private void registerConnectionListener() {
+		if (mConnectionListener != null)
+			mXMPPConnection.removeConnectionListener(mConnectionListener);
+		mConnectionListener = new ConnectionListener() {
+			public void connected(XMPPConnection c) {
+				Log.d(TAG, "connected");
+			}
+			public void authenticated(XMPPConnection c, boolean resumed) {
+				Log.d(TAG, "authenticated, resumed=" + resumed);
+				if (!resumed) {
+					mLastOnline = System.currentTimeMillis();
+					cleanupMUCs(true);
+					setStatusFromConfig();
+					discoverServicesAsync();
+				}
+			}
+			public void connectionClosedOnError(Exception e) {
+				// XXX: this is the only callback we get from errors, so
+				// we need to check for non-resumability and work around
+				// here:
+				if (!mXMPPConnection.isSmResumptionPossible()) {
+					for (MUCController muc : multiUserChats.values())
+						muc.cleanup();
+					multiUserChats.clear();
+					mucLastPing = 0;
+					mucPreviousPing = 0;
+				}
+				onDisconnected(e);
+			}
+			public void connectionClosed() {
+				// TODO: fix reconnect when we got kicked by the server or SM failed!
+				//onDisconnected(null);
+				for (MUCController muc : multiUserChats.values())
+					muc.cleanup();
+				multiUserChats.clear();
+				mucLastPing = 0;
+				mucPreviousPing = 0;
+				updateConnectionState(ConnectionState.OFFLINE);
+			}
+			public void reconnectingIn(int seconds) { }
+			public void reconnectionFailed(Exception e) { }
+			public void reconnectionSuccessful() { }
+		};
+		mXMPPConnection.addConnectionListener(mConnectionListener);
+	}
 	/** establishes an XMPP connection and performs login / account creation.
 	 *
 	 * @param create_account
 	 * @return true if this is a new session, as opposed to a resumed one
 	 * @throws YaximXMPPException
 	 */
-	private boolean tryToConnect(boolean create_account) throws YaximXMPPException {
+	private void connectAndLogin(boolean create_account) throws YaximXMPPException {
 		try {
 			if (mXMPPConnection.isConnected()) {
 				try {
 					mXMPPConnection.instantShutdown(); // blocking shutdown prior to re-connection
 				} catch (Exception e) {
-					debugLog("conn.shutdown() failed: " + e);
+					debugLog("conn.shutdown() failed, ignoring: " + e);
 				}
 			}
-			registerRosterListener();
-			boolean need_bind = !mXMPPConnection.isSmResumptionPossible();
-
-			if (mConnectionListener != null)
-				mXMPPConnection.removeConnectionListener(mConnectionListener);
-			mConnectionListener = new ConnectionListener() {
-				public void connected(XMPPConnection c) {
-					Log.d(TAG, "connected");
-				}
-				public void authenticated(XMPPConnection c, boolean resumed) {
-					Log.d(TAG, "authenticated, resumed=" + resumed);
-				}
-				public void connectionClosedOnError(Exception e) {
-					// XXX: this is the only callback we get from errors, so
-					// we need to check for non-resumability and work around
-					// here:
-					if (!mXMPPConnection.isSmResumptionPossible()) {
-						for (MUCController muc : multiUserChats.values())
-							muc.cleanup();
-						multiUserChats.clear();
-						mucLastPing = 0;
-						mucPreviousPing = 0;
-					}
-					onDisconnected(e);
-				}
-				public void connectionClosed() {
-					// TODO: fix reconnect when we got kicked by the server or SM failed!
-					//onDisconnected(null);
-					for (MUCController muc : multiUserChats.values())
-						muc.cleanup();
-					multiUserChats.clear();
-					mucLastPing = 0;
-					mucPreviousPing = 0;
-					updateConnectionState(ConnectionState.OFFLINE);
-				}
-				public void reconnectingIn(int seconds) { }
-				public void reconnectionFailed(Exception e) { }
-				public void reconnectionSuccessful() { }
-			};
-			mXMPPConnection.addConnectionListener(mConnectionListener);
-
-			//SMAXX: need_bind was passed?!
 			mXMPPConnection.connect();
-			// SMACK auto-logins if we were authenticated before
-			if (!mXMPPConnection.isAuthenticated()) {
-				if (create_account) {
-					Log.d(TAG, "creating new server account...");
-					AccountManager am = AccountManager.getInstance(mXMPPConnection);
-					am.createAccount(Localpart.from(mConfig.userName), mConfig.password);
-				}
-				mXMPPConnection.login(mConfig.userName, mConfig.password,
-						Resourcepart.from(mConfig.ressource));
+			if (create_account) {
+				Log.d(TAG, "creating new server account...");
+				AccountManager am = AccountManager.getInstance(mXMPPConnection);
+				am.createAccount(Localpart.from(mConfig.userName), mConfig.password);
 			}
-			Log.d(TAG, "SM: can resume = " + mXMPPConnection.isSmResumptionPossible() + " needbind=" + need_bind);
-			if (need_bind) {
-				//SMAXX mStreamHandler.notifyInitialLogin();
-				mLastOnline = System.currentTimeMillis();
-			}
-			return need_bind;
+			mXMPPConnection.login(mConfig.userName, mConfig.password,
+					Resourcepart.from(mConfig.ressource));
+			Log.d(TAG, "SM: can resume = " + mXMPPConnection.isSmResumptionPossible());
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
-			throw new YaximXMPPException("tryToConnect failed", e);
+			throw new YaximXMPPException("connectAndLogin failed", e);
 		}
 	}
 
