@@ -31,6 +31,16 @@ allprojects {
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.triplet.play'
 
+// gradle rule to download sources for AS (because AS can't on its own)
+// run as: `gradle cleanIdea idea`
+apply plugin: 'idea'
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 ext {
 	build_date = "${new Date().format('yyyy-MM-dd')}"
 	build_revision = "${grgit.describe()}"
