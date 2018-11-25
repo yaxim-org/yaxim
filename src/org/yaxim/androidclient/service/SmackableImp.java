@@ -258,6 +258,10 @@ public class SmackableImp implements Smackable {
 			}
 		});
 
+		registerMessageListener();
+		registerPresenceListener();
+		registerPongListener();
+
 		mConfig.reconnect_required = false;
 
 		multiUserChats = new HashMap<String, MUCController>();
@@ -274,9 +278,6 @@ public class SmackableImp implements Smackable {
 		if (!mXMPPConnection.isAuthenticated())
 			throw new YaximXMPPException("SMACK connected, but authentication failed");
 		updateConnectionState(ConnectionState.LOADING);
-		registerMessageListener();
-		registerPresenceListener();
-		registerPongListener();
 		if (fresh_session) {
 			cleanupMUCs(true);
 			setStatusFromConfig();
