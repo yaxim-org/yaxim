@@ -335,7 +335,11 @@ public class XMPPService extends GenericService {
 
 			public void renameRosterGroup(String group, String newGroup)
 					throws RemoteException {
-				mSmackable.renameRosterGroup(group, newGroup);
+				try {
+					mSmackable.renameRosterGroup(group, newGroup);
+				} catch (YaximXMPPException e) {
+					shortToastNotify(e);
+				}
 			}
 
 			@Override
@@ -356,7 +360,11 @@ public class XMPPService extends GenericService {
 
 			public void sendPresenceRequest(String jid, String type)
 					throws RemoteException {
-				mSmackable.sendPresenceRequest(jid, type);
+				try {
+					mSmackable.sendPresenceRequest(jid, type);
+				} catch (YaximXMPPException e) {
+					shortToastNotify(e);
+				}
 			}
 
 		};

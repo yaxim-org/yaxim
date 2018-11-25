@@ -20,8 +20,8 @@ public interface Smackable {
 	void removeRosterItem(String user) throws YaximXMPPException;
 	void renameRosterItem(String user, String newName) throws YaximXMPPException;
 	void moveRosterItemToGroup(String user, String group) throws YaximXMPPException;
-	void renameRosterGroup(String group, String newGroup);
-	void sendPresenceRequest(String user, String type);
+	void renameRosterGroup(String group, String newGroup) throws YaximXMPPException;
+	void sendPresenceRequest(String user, String type) throws YaximXMPPException;
 	void addRosterGroup(String group);
 	String changePassword(String newPassword);
 	

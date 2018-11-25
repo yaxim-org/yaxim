@@ -20,10 +20,9 @@ public class ParcelablePresence implements Parcelable {
 	}
 	
 	public ParcelablePresence(Presence p) {
-		String[] full_jid = p.getFrom().split("/", 2);
-		this.bare_jid = full_jid[0];
-		if (full_jid.length > 1)
-			this.resource = full_jid[1];
+		//SMAXX
+		this.bare_jid = p.getFrom().asBareJid().toString();
+		this.resource = p.getFrom().getResourceOrNull().toString();
 		this.status = p.getStatus();
 		Presence.Mode pm = p.getMode();
 		this.status_mode = (pm == null) ? StatusMode.available : StatusMode.valueOf(pm.name());

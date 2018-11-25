@@ -10,7 +10,10 @@ import android.support.v4.util.CircularArray;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
+import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.muc.RoomInfo;
+import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.stringprep.XmppStringprepException;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 
@@ -35,7 +38,7 @@ public class MUCController {
 
 	MUCController(XMPPConnection c, String jid) {
 		this.jid = jid;
-		muc = new MultiUserChat(c, jid);
+		muc = MultiUserChatManager.getInstanceFor(c).getMultiUserChat(JidCreate.entityBareFromUnescapedOrThrowUnchecked(jid));
 	}
 
 	public synchronized void setLastActivity() {
@@ -73,6 +76,6 @@ public class MUCController {
 	}
 
 	public void cleanup() {
-		muc.cleanup();
+		//SMAXX muc.cleanup();
 	}
 }

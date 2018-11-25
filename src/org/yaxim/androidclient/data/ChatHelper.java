@@ -9,6 +9,7 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
+import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.util.StatusMode;
@@ -320,7 +321,11 @@ public class ChatHelper {
 			renameRosterItemDialog(act, jid, userName);
 			return true;
 		case R.id.roster_contextmenu_contact_request_auth:
-			YaximApplication.getApp(act).getSmackable().sendPresenceRequest(jid, "subscribe");
+			try {
+				YaximApplication.getApp(act).getSmackable().sendPresenceRequest(jid, "subscribe");
+			} catch (YaximXMPPException e) {
+				shortToastNotify(act, e);
+			}
 			return true;
 		case R.id.roster_contextmenu_contact_change_group:
 			moveRosterItemToGroupDialog(act, jid);
