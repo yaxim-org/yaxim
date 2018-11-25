@@ -124,6 +124,18 @@ dependencies {
 	compile 'org.hsluv:hsluv:0.2'
 	compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
 	compile 'com.google.zxing:core:3.2.1'
+    // smack4
+	compile "org.igniterealtime.smack:smack-android-extensions:4.3.1"
+	compile "org.igniterealtime.smack:smack-tcp:4.3.1"
+	compile "org.igniterealtime.smack:smack-im:4.3.1"
+	// for Carbons, and other
+	compile "org.igniterealtime.smack:smack-experimental:4.3.1"
+
+}
+
+// for smack4
+configurations {
+	all*.exclude group: 'xpp3', module: 'xpp3'
 }
 
 preBuild.dependsOn buildVersion
