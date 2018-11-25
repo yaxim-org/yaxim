@@ -6,13 +6,15 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.jivesoftware.smack.PacketCollector;
+import org.jivesoftware.smack.StanzaCollector;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.*;
 import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smackx.httpfileupload.element.Slot;
+import org.jivesoftware.smackx.httpfileupload.element.SlotRequest;
+import org.jxmpp.jid.BareJid;
+import org.jxmpp.jid.impl.JidCreate;
 import org.yaxim.androidclient.data.YaximConfiguration;
-import org.yaxim.androidclient.packet.httpupload.Request;
-import org.yaxim.androidclient.packet.httpupload.Slot;
 import org.yaxim.androidclient.service.Smackable;
 import org.yaxim.androidclient.util.FileHelper;
 
@@ -77,29 +79,30 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
                 return failResponse(e);
             }
 
-            Request request = new Request(fi.displayName, String.valueOf(bytes.length), fi.mimeType);
+            SlotRequest request = new SlotRequest(JidCreate.domainBareFrom(config.fileUploadDomain),
+                    fi.displayName, bytes.length, fi.mimeType);
             request.setTo(config.fileUploadDomain);
-            request.setType(IQ.Type.GET);
+            request.setType(IQ.Type.get);
 
-            PacketCollector collector = connection.createPacketCollector(new PacketIDFilter(request.getPacketID()));
+            StanzaCollector collector = connection.createStanzaCollector(new PacketIDFilter(request.getPacketID()));
 
             publishProgress(R.string.upload_uploading);
-            connection.sendPacket(request);
+            connection.sendStanza(request);
 
             IQ iq = (IQ) collector.nextResult(10000);
             if (iq != null) {
-                if (iq.getType() == IQ.Type.ERROR) {
-                    log(iq.toXML());
-                    return failResponse(iq.getError().getMessage());
+                if (iq.getType() == IQ.Type.error) {
+                    log(iq.toString());
+                    return failResponse(iq.getError().getDescriptiveText());
                 } else {
                     Slot slot = (Slot) iq;
-                    String putUrl = slot.getPutUrl();
-                    String getUrl = slot.getGetUrl();
+                    URL putUrl = slot.getPutUrl();
+                    URL getUrl = slot.getGetUrl();
 
                     HttpURLConnection conn = null;
 
                     try {
-                        conn = (HttpURLConnection) new URL(putUrl).openConnection();
+                        conn = (HttpURLConnection) putUrl.openConnection();
                         conn.setDoOutput(true);
                         conn.setDoInput(true);
                         conn.setUseCaches(false);
@@ -115,7 +118,7 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
                         if (responseCode != 200 && responseCode != 201) {
                             return failResponse(new Throwable("HTTP Status Code " + responseCode));
                         } else {
-                            return new UploadResponse(true, getUrl);
+                            return new UploadResponse(true, getUrl.toString());
                         }
                     } catch (Exception e) {
                         log(e.getLocalizedMessage());

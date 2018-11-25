@@ -1,16 +1,20 @@
 package org.yaxim.androidclient.packet;
 
-import org.jivesoftware.smack.packet.PacketExtension;
-import org.jivesoftware.smack.provider.PacketExtensionProvider;
+import org.bouncycastle.asn1.cmp.OOBCertHash;
+import org.jivesoftware.smack.packet.ExtensionElement;
+import org.jivesoftware.smack.provider.ExtensionElementProvider;
 import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.xmlpull.v1.XmlPullParser;
 
 /**
  * XEP-0066: Out-of-Band Data
  * Used to inform HTTP Upload capable clients of an inline image
+ *
+ * TODO: implement <desc/>
  */
 
-public class Oob implements PacketExtension {
+public class Oob implements ExtensionElement {
 	public final static String NAMESPACE = "jabber:x:oob";
 	public final static String ELEMENT = "x";
 	private String url;
@@ -31,16 +35,17 @@ public class Oob implements PacketExtension {
 		return url;
 	}
 
-	public String toXML() {
-		if (url != null)
-			return "<" + getElementName() + " xmlns=\"" + getNamespace() + "\" ><url>"
-				+ StringUtils.escapeForXML(getUrl()) + "</url></" + getElementName() + ">";
-		else
-			return "<" + getElementName() + " xmlns=\"" + getNamespace() + "\" />";
+	public CharSequence toXML(String enclosingNamespace) {
+		XmlStringBuilder xml = new XmlStringBuilder(this);
+		if (url != null) {
+			xml.rightAngleBracket().element("url", url).closeElement(ELEMENT);
+		} else
+			xml.closeEmptyElement();
+		return xml;
 	}
 
-	public static class Provider implements PacketExtensionProvider {
-		public PacketExtension parseExtension(XmlPullParser parser) throws Exception {
+	public static class Provider extends ExtensionElementProvider<Oob> {
+		public Oob parse(XmlPullParser parser, int initialDepth) throws Exception {
 			String url = null;
 			boolean done = false;
 			while (!done) {

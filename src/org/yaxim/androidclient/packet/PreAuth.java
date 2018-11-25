@@ -1,12 +1,13 @@
 package org.yaxim.androidclient.packet;
 
-import org.jivesoftware.smack.packet.PacketExtension;
-import org.jivesoftware.smack.provider.PacketExtensionProvider;
+import org.jivesoftware.smack.packet.ExtensionElement;
+import org.jivesoftware.smack.provider.ExtensionElementProvider;
 
 import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.xmlpull.v1.XmlPullParser;
 
-public class PreAuth implements PacketExtension {
+public class PreAuth implements ExtensionElement {
 	public final static String NAMESPACE = "urn:xmpp:pars:0";
 	public final static String ELEMENT = "preauth";
 	private String token;
@@ -27,12 +28,16 @@ public class PreAuth implements PacketExtension {
 		return token;
 	}
 
-	public String toXML() {
-		return "<" + getElementName() + " token=\"" + StringUtils.escapeForXML(getToken()) + "\" xmlns=\"" + getNamespace() + "\" />";
+	@Override
+	public CharSequence toXML(String enclosingNamespace) {
+		XmlStringBuilder xml = new XmlStringBuilder(this);
+		xml.attribute("token", token);
+		xml.closeEmptyElement();
+		return xml;
 	}
 
-	public static class Provider implements PacketExtensionProvider {
-		public PacketExtension parseExtension(XmlPullParser parser) throws Exception {
+	public static class Provider extends ExtensionElementProvider<PreAuth> {
+		public PreAuth parse(XmlPullParser parser, int initialDepth) throws Exception {
 			return new PreAuth(parser.getAttributeValue(null, "token"));
 		}
 	}
