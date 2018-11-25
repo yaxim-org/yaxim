@@ -486,6 +486,7 @@ public class SmackableImp implements Smackable {
 		// set Version for replies
 		String app_name = mService.getString(R.string.app_name);
 		String build_revision = mService.getString(R.string.build_revision);
+		VersionManager.setAutoAppendSmackVersion(false); // WTF flow? Why are you doing this to me?
 		VersionManager.getInstanceFor(mXMPPConnection).setVersion(
 				app_name, build_revision, "Android");
 
