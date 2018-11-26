@@ -44,8 +44,11 @@ public class AutoCompleteJidEdit extends AutoCompleteTextView {
 		setServerList(static_elents_id);
 		if (dyn_elements != null)
 			servers.addAll(dyn_elements);
-		if (first != null)
+		if (first != null) {
+			if (!servers.contains(first))
+				servers.add(first);
 			server_main = first;
+		}
 	}
 
 	protected void onAttachedToWindow() {
