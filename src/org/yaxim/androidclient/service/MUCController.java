@@ -32,7 +32,7 @@ public class MUCController {
 	boolean isTimeout = false;
 
 
-	static final int LOOKUP_SIZE = 50;
+	public static final int LOOKUP_SIZE = 250;
 	private CircularArray lastIDs = new CircularArray<Long>(LOOKUP_SIZE);
 	long lastPong = -1;
 
