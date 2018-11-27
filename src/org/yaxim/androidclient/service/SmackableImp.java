@@ -45,6 +45,7 @@ import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jivesoftware.smackx.iqversion.VersionManager;
 import org.jivesoftware.smackx.message_correct.element.MessageCorrectExtension;
+import org.jivesoftware.smackx.muc.MucEnterConfiguration;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.xdata.FormField;
 import org.jivesoftware.smackx.bookmarks.BookmarkManager;
@@ -2237,17 +2238,8 @@ public class SmackableImp implements Smackable {
 				handleKickedFromMUC(room, true, actor, reason);
 			}
 		});
-		muc.addPresenceInterceptor(new PresenceListener() {
-			@Override
-			public void processPresence(Presence p) {
-				if (p.getType() == Presence.Type.available) {
-					// inject from config
-					setStatusFromConfig(p);
-				}
-			}
-		});
-		
-		DiscussionHistory history = new DiscussionHistory();
+
+		Date lastDate = null;
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.DATE
 		};
@@ -2257,9 +2249,8 @@ public class SmackableImp implements Smackable {
 				new String[] { room }, "_id DESC LIMIT 1");
 		if(cursor.getCount()>0) {
 			cursor.moveToFirst();
-			Date lastDate = new Date(cursor.getLong(1));
+			lastDate = new Date(cursor.getLong(1));
 			Log.d(TAG, "Getting room history for " + room + " starting at " + lastDate);
-			history.setSince(lastDate);
 		} else Log.d(TAG, "Getting room history for " + room + " (full history)");
 		cursor.close();
 		
@@ -2276,7 +2267,14 @@ public class SmackableImp implements Smackable {
 			Presence force_resync = new Presence(Presence.Type.unavailable);
 			force_resync.setTo(room + "/" + nickname);
 			mXMPPConnection.sendStanza(force_resync);
-			muc.join(Resourcepart.from(nickname), password, history, 10*PACKET_TIMEOUT);
+			Presence join_presence = new Presence(Presence.Type.available);
+			setStatusFromConfig(join_presence);
+			MucEnterConfiguration.Builder mecb = muc.getEnterConfigurationBuilder(Resourcepart.from(nickname))
+					.withPassword(password)
+					.withPresence(join_presence)
+					.requestMaxStanzasHistory(MUCController.LOOKUP_SIZE)
+					.requestHistorySince(lastDate);
+			muc.join(mecb.build());
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
