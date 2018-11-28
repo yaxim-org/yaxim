@@ -1628,7 +1628,8 @@ public class SmackableImp implements Smackable {
 							mServiceCallBack.notifyMessage(fromJID, chatMessage, is_silent, msg.getType());
 						}
 					}
-					sendReceiptIfRequested(msg);
+					if (direction == ChatConstants.INCOMING)
+						sendReceiptIfRequested(msg);
 				}
 				} catch (Exception e) {
 					// SMACK silently discards exceptions dropped from processPacket :(
