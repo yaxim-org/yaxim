@@ -66,7 +66,6 @@ import org.jivesoftware.smackx.disco.packet.DiscoverInfo;
 import org.jivesoftware.smackx.muc.packet.MUCUser;
 import org.jivesoftware.smackx.ping.packet.Ping;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
-import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
 import org.jivesoftware.smackx.receipts.ReceiptReceivedListener;
 import org.jxmpp.jid.EntityBareJid;
@@ -985,7 +984,7 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.sendStanza(newMessage);
 			} catch (Exception e) {
 				// send failed
-				changeMessageDeliveryStatus(newMessage.getStanzaId(), ChatConstants.DS_NEW, null);
+				changeMessageDeliveryStatus(toJID, newMessage.getStanzaId(), ChatConstants.DS_NEW, null);
 			}
 		}
 	}
@@ -1160,7 +1159,7 @@ public class SmackableImp implements Smackable {
 		return getJabberID(from != null ? from.toString() : null, fallback);
 	}
 
-	public boolean changeMessageDeliveryStatus(String packetID, int new_status, String error) {
+	public boolean changeMessageDeliveryStatus(String jid, String packetID, int new_status, String error) {
 		ContentValues cv = new ContentValues();
 		cv.put(ChatConstants.DELIVERY_STATUS, new_status);
 		if (error != null || new_status == ChatConstants.DS_ACKED)
@@ -1168,13 +1167,14 @@ public class SmackableImp implements Smackable {
 		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
 				+ ChatProvider.TABLE_NAME);
 		return mContentResolver.update(rowuri, cv,
+				ChatConstants.JID + " = ? AND " +
 				ChatConstants.PACKET_ID + " = ? AND " +
 				ChatConstants.DELIVERY_STATUS + " != " + ChatConstants.DS_ACKED + " AND " +
 				ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING,
-				new String[] { packetID }) > 0;
+				new String[] { jid, packetID }) > 0;
 	}
-	public boolean changeMessageDeliveryStatus(String packetID, int new_status) {
-		return changeMessageDeliveryStatus(packetID, new_status, null);
+	public boolean changeMessageDeliveryStatus(String jid, String packetID, int new_status) {
+		return changeMessageDeliveryStatus(jid, packetID, new_status, null);
 	}
 
 	protected boolean is_user_watching = false;
@@ -1529,7 +1529,7 @@ public class SmackableImp implements Smackable {
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
 						String errmsg = msg.getError().toString();
-						if (changeMessageDeliveryStatus(msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
+						if (changeMessageDeliveryStatus(fromJID[0], msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
 							mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
 						else if (mucJIDs.contains(msg.getFrom())) {
 							handleKickedFromMUC(msg.getFrom().toString(), false, null,
@@ -1541,8 +1541,8 @@ public class SmackableImp implements Smackable {
 					// hook off carbonated delivery receipts
 					DeliveryReceipt dr = DeliveryReceipt.from(msg);
 					if (dr != null && direction == ChatConstants.INCOMING) {
-						Log.d(TAG, "got delivery receipt for " + dr.getId());
-						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
+						Log.d(TAG, "got delivery receipt from " + fromJID[0] + " for " + dr.getId());
+						changeMessageDeliveryStatus(fromJID[0], dr.getId(), ChatConstants.DS_ACKED);
 					}
 
 					// ignore empty messages
