@@ -1508,18 +1508,6 @@ public class SmackableImp implements Smackable {
 
 					String chatMessage = msg.getBody();
 
-					// display error inline
-					if (msg.getType() == Message.Type.error) {
-						String errmsg = msg.getError().toString();
-						if (changeMessageDeliveryStatus(msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
-							mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
-						else if (mucJIDs.contains(msg.getFrom())) {
-							handleKickedFromMUC(msg.getFrom().toString(), false, null,
-									errmsg);
-						}
-						return; // we do not want to add errors as "incoming messages"
-					}
-
 					boolean is_muc = (msg.getType() == Message.Type.groupchat);
 					boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
 							(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
@@ -1531,6 +1519,39 @@ public class SmackableImp implements Smackable {
 							return;
 						Log.d(TAG, "user is active on different device --> Silent mode");
 						mServiceCallBack.setGracePeriod(true);
+					}
+
+					// handle MUC-PMs: messages from a nick from a known MUC or with
+					// an <x> element
+					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
+					boolean is_muc_pm = !is_muc  && !TextUtils.isEmpty(fromJID[1]) &&
+							(muc_x != null || mucJIDs.contains(fromJID[0]));
+
+					// TODO: ignoring 'received' MUC-PM carbons, until XSF sorts out shit:
+					// - if yaxim is in the MUC, it will receive a non-carbonated copy of
+					//   incoming messages, but not of outgoing ones
+					// - if yaxim isn't in the MUC, it can't respond anyway
+					if (is_muc_pm && !is_from_me && cc != null)
+						return;
+
+					if (is_muc_pm) {
+						// store MUC-PMs under the participant's full JID, not bare
+						//is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
+						fromJID[0] = fromJID[0] + "/" + fromJID[1];
+						fromJID[1] = null;
+						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
+					}
+
+					// display error inline
+					if (msg.getType() == Message.Type.error) {
+						String errmsg = msg.getError().toString();
+						if (changeMessageDeliveryStatus(msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
+							mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
+						else if (mucJIDs.contains(msg.getFrom())) {
+							handleKickedFromMUC(msg.getFrom().toString(), false, null,
+									errmsg);
+						}
+						return; // we do not want to add errors as "incoming messages"
 					}
 
 					// ignore empty messages
@@ -1554,27 +1575,6 @@ public class SmackableImp implements Smackable {
 					int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
 					if (msg.getType() == Message.Type.error)
 						is_new = ChatConstants.DS_FAILED;
-
-					// handle MUC-PMs: messages from a nick from a known MUC or with
-					// an <x> element
-					MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
-					boolean is_muc_pm = !is_muc  && !TextUtils.isEmpty(fromJID[1]) &&
-							(muc_x != null || mucJIDs.contains(fromJID[0]));
-
-					// TODO: ignoring 'received' MUC-PM carbons, until XSF sorts out shit:
-					// - if yaxim is in the MUC, it will receive a non-carbonated copy of
-					//   incoming messages, but not of outgoing ones
-					// - if yaxim isn't in the MUC, it can't respond anyway
-					if (is_muc_pm && !is_from_me && cc != null)
-						return;
-
-					if (is_muc_pm) {
-						// store MUC-PMs under the participant's full JID, not bare
-						//is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
-						fromJID[0] = fromJID[0] + "/" + fromJID[1];
-						fromJID[1] = null;
-						Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
-					}
 
 					// synchronized MUCs and contacts are not silent by default
 					boolean is_silent = !(is_muc ? multiUserChats.get(fromJID[0]).isSynchronized : mRoster.contains(JidCreate.bareFrom(fromJID[0])));
