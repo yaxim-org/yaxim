@@ -3,6 +3,7 @@ buildscript {
 	repositories {
 		jcenter()
 		mavenCentral()
+		mavenLocal()
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:2.3.1'
@@ -125,11 +126,17 @@ dependencies {
 	compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
 	compile 'com.google.zxing:core:3.2.1'
     // smack4
-	compile "org.igniterealtime.smack:smack-android-extensions:4.3.1"
-	compile "org.igniterealtime.smack:smack-tcp:4.3.1"
-	compile "org.igniterealtime.smack:smack-im:4.3.1"
+	//compile project("Smack:smack-android-extensions")
+	//compile project("Smack:smack-tcp")
+	//compile project("Smack:smack-im")
+	//// for Carbons, and other
+	//compile project("Smack:smack-experimental")
+	compile "org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT"
+	compile "org.igniterealtime.smack:smack-android-extensions:4.3.2-SNAPSHOT"
+	compile "org.igniterealtime.smack:smack-tcp:4.3.2-SNAPSHOT"
+	compile "org.igniterealtime.smack:smack-im:4.3.2-SNAPSHOT"
 	// for Carbons, and other
-	compile "org.igniterealtime.smack:smack-experimental:4.3.1"
+	compile "org.igniterealtime.smack:smack-experimental:4.3.2-SNAPSHOT"
 
 }
 
