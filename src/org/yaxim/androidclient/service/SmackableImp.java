@@ -487,14 +487,6 @@ public class SmackableImp implements Smackable {
 		VersionManager.setAutoAppendSmackVersion(false); // WTF flow? Why are you doing this to me?
 		VersionManager.getInstanceFor(mXMPPConnection).setVersion(
 				app_name, build_revision, "Android");
-
-		// reference DeliveryReceiptManager, add listener
-		DeliveryReceiptManager dm = DeliveryReceiptManager.getInstanceFor(mXMPPConnection);
-		dm.addReceiptReceivedListener(new ReceiptReceivedListener() { // DOES NOT WORK IN CARBONS
-			public void onReceiptReceived(Jid fromJid, Jid toJid, String receiptId, Stanza receipt) {
-				Log.d(TAG, "got delivery receipt for " + receiptId);
-				changeMessageDeliveryStatus(receiptId, ChatConstants.DS_ACKED);
-			}});
 	}
 
 	public void addRosterItem(String user, String alias, String group, String token)
@@ -1482,14 +1474,6 @@ public class SmackableImp implements Smackable {
 							direction = ChatConstants.OUTGOING;
 						} else {
 							fromJID = getJabberID(msg.getFrom().toString(), mConfig.server);
-
-							// hook off carbonated delivery receipts
-							DeliveryReceipt dr = (DeliveryReceipt)msg.getExtension(
-									DeliveryReceipt.ELEMENT, DeliveryReceipt.NAMESPACE);
-							if (dr != null) {
-								Log.d(TAG, "got CC'ed delivery receipt for " + dr.getId());
-								changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
-							}
 						}
 
 						// ignore carbon copies of OTR messages sent by broken clients
@@ -1552,6 +1536,13 @@ public class SmackableImp implements Smackable {
 									errmsg);
 						}
 						return; // we do not want to add errors as "incoming messages"
+					}
+
+					// hook off carbonated delivery receipts
+					DeliveryReceipt dr = DeliveryReceipt.from(msg);
+					if (dr != null && direction == ChatConstants.INCOMING) {
+						Log.d(TAG, "got delivery receipt for " + dr.getId());
+						changeMessageDeliveryStatus(dr.getId(), ChatConstants.DS_ACKED);
 					}
 
 					// ignore empty messages
