@@ -284,6 +284,7 @@ public class SmackableImp implements Smackable {
 		syncDbRooms();
 		sendOfflineMessages(null);
 		sendUserWatching();
+		registerPingAlarm();
 		// we need to "ping" the service to let it know we are actually
 		// connected, even when no roster entries will come in
 		updateConnectionState(ConnectionState.ONLINE);
@@ -1216,7 +1217,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		try {
-			if (mXMPPConnection.isSmEnabled()) {
+			if (false /*mXMPPConnection.isSmEnabled()*/) { // disable 0198 ping due to Smack API
 				debugLog("Ping: sending SM request");
 				mPingID = "0198-ack"; //SMAXX
 				mXMPPConnection.requestSmAcknowledgement();
@@ -1230,13 +1231,9 @@ public class SmackableImp implements Smackable {
 			}
 			// register ping timeout handler: PACKET_TIMEOUT(30s) + 3s
 			registerPongTimeout(PACKET_TIMEOUT + 3000, mPingID);
-			//SMAXX TODO: handle tx fail with reconnect
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (SmackException.NotConnectedException e) {
-			e.printStackTrace();
-		} catch (StreamManagementException.StreamManagementNotEnabledException e) {
-			e.printStackTrace();
+			onDisconnected(e);
 		}
 	}
 
@@ -1278,6 +1275,7 @@ public class SmackableImp implements Smackable {
 	private class PingAlarmReceiver extends BroadcastReceiver {
 		public void onReceive(Context ctx, Intent i) {
 			try {
+				Log.d(TAG, "PingAlarmReceiver.onReceive");
 				sendServerPing();
 				// ping all MUCs. if no ping was received since last attempt, /cycle
 				Iterator<MUCController> muc_it = multiUserChats.values().iterator();
@@ -1419,6 +1417,8 @@ public class SmackableImp implements Smackable {
 		};
 
 		mXMPPConnection.addAsyncStanzaListener(mPongListener, new StanzaTypeFilter(IQ.class));
+	}
+	void registerPingAlarm() {
 		mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 
 				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
 	}
