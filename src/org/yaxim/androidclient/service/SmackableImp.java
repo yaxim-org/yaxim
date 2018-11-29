@@ -257,6 +257,14 @@ public class SmackableImp implements Smackable {
 				//SMAXX per stanza acks
 			}
 		});
+		mXMPPConnection.addStanzaDroppedListener(new StanzaListener() {
+			@Override
+			public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException, SmackException.NotLoggedInException {
+				if (packet instanceof Message && packet.getTo() != null) {
+					changeMessageDeliveryStatus(packet.getTo().toString(), packet.getStanzaId(), ChatConstants.DS_NEW);
+				}
+			}
+		});
 
 		registerConnectionListener();
 		registerRosterListener();
@@ -1161,6 +1169,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	public boolean changeMessageDeliveryStatus(String jid, String packetID, int new_status, String error) {
+		Log.d(TAG, "changeMessageDeliveryStatus: " + jid + " - " + packetID + " --> " + new_status + " " + error);
 		ContentValues cv = new ContentValues();
 		cv.put(ChatConstants.DELIVERY_STATUS, new_status);
 		if (error != null || new_status == ChatConstants.DS_ACKED)
