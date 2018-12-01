@@ -28,7 +28,8 @@ public interface Smackable {
 	void sendMessage(String user, String message, String lmc, String oob, long upsert_id);
 	void sendServerPing();
 	void setUserWatching(boolean user_watching);
-	
+	boolean hasFileUpload();
+
 	void registerCallback(XMPPServiceCallback callBack);
 	void unRegisterCallback();
 	

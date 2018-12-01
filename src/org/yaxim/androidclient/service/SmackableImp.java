@@ -42,6 +42,7 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.carbons.packet.CarbonExtension;
 import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
+import org.jivesoftware.smackx.httpfileupload.HttpFileUploadManager;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jivesoftware.smackx.iqversion.VersionManager;
 import org.jivesoftware.smackx.message_correct.element.MessageCorrectExtension;
@@ -1962,6 +1963,11 @@ public class SmackableImp implements Smackable {
 		} catch (Exception e) {
 			Log.d(TAG, "getBookmarks failed: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public boolean hasFileUpload() {
+		return (mXMPPConnection != null) && HttpFileUploadManager.getInstanceFor(mXMPPConnection).isUploadServiceDiscovered();
 	}
 
 	private void discoverServicesAsync() {

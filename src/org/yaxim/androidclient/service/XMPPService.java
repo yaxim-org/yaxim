@@ -207,6 +207,14 @@ public class XMPPService extends GenericService {
 				clearNotification(Jid);
 			}
 
+			@Override
+			public boolean hasFileUpload() throws RemoteException {
+				if (mSmackable != null) {
+					return mSmackable.hasFileUpload();
+				}
+				return false;
+			}
+
 			public void sendFile(Uri path, String user, int flags) throws RemoteException {
 				if (mSmackable != null)
 					new FileHttpUploadTask(XMPPService.this, mConfig, mSmackable, path, user, flags).execute();

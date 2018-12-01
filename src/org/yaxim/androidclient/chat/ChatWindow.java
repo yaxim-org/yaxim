@@ -517,7 +517,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		MenuInflater inflater = getSupportMenuInflater();
 		//inflater.inflate(R.menu.contact_options, menu);
 		inflater.inflate(R.menu.roster_item_contextmenu, menu);
-		if (mConfig.fileUploadDomain != null) {
+		if (mChatServiceAdapter != null && mChatServiceAdapter.hasFileUpload()) {
 			menu.findItem(R.id.roster_contextmenu_send).setVisible(true);
 		}
 		return true;

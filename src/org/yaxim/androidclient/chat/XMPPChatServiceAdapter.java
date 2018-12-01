@@ -44,6 +44,14 @@ public class XMPPChatServiceAdapter {
 		}
 	}
 
+	public boolean hasFileUpload() {
+		try {
+			return xmppServiceStub.hasFileUpload();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	public void sendFile(Uri path, String user, int flags) {
 		try {
 			xmppServiceStub.sendFile(path, user, flags);
