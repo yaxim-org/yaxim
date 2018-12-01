@@ -1980,35 +1980,10 @@ public class SmackableImp implements Smackable {
 		}.start();
 	}
 
-	private void discoverFileUpload(Jid jid, DiscoverInfo info) {
-		if (mConfig.fileUploadDomain != null)
-			return;
-		Iterator<DiscoverInfo.Identity> identities = info.getIdentities().iterator();
-		while (identities.hasNext()) {
-			DiscoverInfo.Identity identity = identities.next();
-			if (identity.getCategory().equals("store") && identity.getType().equals("file")) {
-				mConfig.fileUploadDomain = jid.toString();
-			}
-		}
-		if (mConfig.fileUploadDomain != null) {
-			mConfig.fileUploadSizeLimit = 0;
-			DataForm dataForm = DataForm.from(info);
-			if (dataForm != null) {
-				FormField fsfield = dataForm.getField("max-file-size");
-				if (fsfield != null) {
-					String fsize = fsfield.getFirstValue();
-					if (!TextUtils.isEmpty(fsize))
-						mConfig.fileUploadSizeLimit = Long.valueOf(fsize);
-				}
-			}
-			Log.i(TAG, "HTTP Upload at " + mConfig.fileUploadDomain + " with limit=" + mConfig.fileUploadSizeLimit);
-		}
-	}
 	private void discoverServices(ServiceDiscoveryManager sdm, Jid jid) {
 		try {
 			DiscoverInfo info = sdm.discoverInfo(jid);
 			discoverMUCDomain(jid, info);
-			discoverFileUpload(jid, info);
 		} catch (Exception e) {
 			Log.e(TAG, "Error response from " + jid + ": " + e.getLocalizedMessage());
 		}
@@ -2021,7 +1996,7 @@ public class SmackableImp implements Smackable {
 			DiscoverItems items = serviceDiscoveryManager.discoverItems(server);
 
 			Iterator<DiscoverItems.Item> it = items.getItems().iterator();
-			while (it.hasNext() && mConfig.fileUploadDomain == null) {
+			while (it.hasNext()) {
 				DiscoverItems.Item item = it.next();
 				Jid jid = item.getEntityID();
 				discoverServices(serviceDiscoveryManager, jid);

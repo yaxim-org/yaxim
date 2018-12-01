@@ -10,6 +10,8 @@ import org.jivesoftware.smack.StanzaCollector;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.*;
 import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smackx.httpfileupload.HttpFileUploadManager;
+import org.jivesoftware.smackx.httpfileupload.UploadService;
 import org.jivesoftware.smackx.httpfileupload.element.Slot;
 import org.jivesoftware.smackx.httpfileupload.element.SlotRequest;
 import org.jxmpp.jid.BareJid;
@@ -60,80 +62,64 @@ public class FileHttpUploadTask extends AsyncTask<Void, String, FileHttpUploadTa
 
             XMPPConnection connection = smackable.getConnection();
 
-            if (config.fileUploadDomain == null) {
+            HttpFileUploadManager hfum = HttpFileUploadManager.getInstanceFor(connection);
+
+            if (!hfum.isUploadServiceDiscovered()) {
                 return failResponse("No server support");
             }
+			UploadService us = hfum.getDefaultUploadService();
+            long fileUploadSizeLimit = us.hasMaxFileSizeLimit() ? us.getMaxFileSize() : 0;
 
 			byte[] bytes = null;
             try {
                 if ((flags & F_RESIZE) != 0) {
                     publishProgress(R.string.upload_compress);
-                    bytes = FileHelper.shrinkPicture(ctx, path, config.fileUploadSizeLimit);
+                    bytes = FileHelper.shrinkPicture(ctx, path, fileUploadSizeLimit);
                 }
                 if (bytes == null)
                     bytes = readFile(path, fi.size);
-                if (config.fileUploadSizeLimit > 0 && bytes.length > config.fileUploadSizeLimit) {
+                if (fileUploadSizeLimit > 0 && bytes.length > fileUploadSizeLimit) {
                     return failResponse(ctx.getString(R.string.upload_too_large));
                 }
             } catch (Exception e) {
                 return failResponse(e);
             }
 
-            SlotRequest request = new SlotRequest(JidCreate.domainBareFrom(config.fileUploadDomain),
-                    fi.displayName, bytes.length, fi.mimeType);
-            request.setTo(config.fileUploadDomain);
-            request.setType(IQ.Type.get);
-
-            StanzaCollector collector = connection.createStanzaCollector(new PacketIDFilter(request.getPacketID()));
-
             publishProgress(R.string.upload_uploading);
-            connection.sendStanza(request);
+            Slot slot = HttpFileUploadManager.getInstanceFor(connection).requestSlot(fi.displayName, bytes.length, fi.mimeType);
 
-            IQ iq = (IQ) collector.nextResult(10000);
-            if (iq != null) {
-                if (iq.getType() == IQ.Type.error) {
-                    log(iq.toString());
-                    return failResponse(iq.getError().getDescriptiveText());
-                } else {
-                    Slot slot = (Slot) iq;
-                    URL putUrl = slot.getPutUrl();
-                    URL getUrl = slot.getGetUrl();
+			URL putUrl = slot.getPutUrl();
+			URL getUrl = slot.getGetUrl();
 
-                    HttpURLConnection conn = null;
+			HttpURLConnection conn = null;
 
-                    try {
-                        conn = (HttpURLConnection) putUrl.openConnection();
-                        conn.setDoOutput(true);
-                        conn.setDoInput(true);
-                        conn.setUseCaches(false);
-                        conn.setRequestMethod("PUT");
-                        conn.setRequestProperty("Content-Type", fi.mimeType);
+			try {
+				conn = (HttpURLConnection) putUrl.openConnection();
+				conn.setDoOutput(true);
+				conn.setDoInput(true);
+				conn.setUseCaches(false);
+				conn.setRequestMethod("PUT");
+				conn.setRequestProperty("Content-Type", fi.mimeType);
 
-						DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-						out.write(bytes, 0, bytes.length);
-						out.flush();
-						out.close();
+				DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+				out.write(bytes, 0, bytes.length);
+				out.flush();
+				out.close();
 
-                        int responseCode = conn.getResponseCode();
-                        if (responseCode != 200 && responseCode != 201) {
-                            return failResponse(new Throwable("HTTP Status Code " + responseCode));
-                        } else {
-                            return new UploadResponse(true, getUrl.toString());
-                        }
-                    } catch (Exception e) {
-                        log(e.getLocalizedMessage());
-                        return failResponse(e);
-                    } finally {
-                        if (conn != null) {
-                            conn.disconnect();
-                        }
-                    }
-                }
-            } else {
-                log("SLOT is NULL");
-            }
-            collector.cancel();
-            return failResponse("Timeout uploading");
+				int responseCode = conn.getResponseCode();
+				if (responseCode != 200 && responseCode != 201) {
+					return failResponse(new Throwable("HTTP Status Code " + responseCode));
+				} else {
+					return new UploadResponse(true, getUrl.toString());
+				}
+			} catch (Exception e) {
+				log(e.getLocalizedMessage());
+				return failResponse(e);
+			} finally {
+				if (conn != null) {
+					conn.disconnect();
+				}
+			}
         } catch (Exception e) {
 			return failResponse(e);
 		}

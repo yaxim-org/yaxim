@@ -69,8 +69,6 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String[] statusMessageHistory;
 
 	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
-	public String fileUploadDomain = null;
-	public long fileUploadSizeLimit = 0;
 
 	public boolean smackdebug;
     public String theme;
