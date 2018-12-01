@@ -149,7 +149,7 @@ public class MUCChatWindow extends ChatWindow {
 	}
 	
 	private void addNicknameToInput(String nickname) {
-		if (nickname.equalsIgnoreCase(myNick))
+		if (TextUtils.isEmpty(nickname) || nickname.equalsIgnoreCase(myNick))
 			return;
 		int cursor_position = mChatInput.getSelectionStart();
 		String postfix = (cursor_position == 0) ? ": " : " ";
