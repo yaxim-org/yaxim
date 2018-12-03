@@ -77,6 +77,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean enableGroups;
 
     public boolean reconnect_required = false;
+    public boolean rosterreset_required = false;
     public boolean presence_required = false;
 
 	/// this stores tuples of (JID, valid_until) or (token, valid_until) for PARS
@@ -100,6 +101,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
 		loadPrefs(prefs);
+		if (PreferenceConstants.JID.equals(key))
+			rosterreset_required = true;
 		if (RECONNECT_PREFS.contains(key))
 			reconnect_required = true;
 		if (PRESENCE_PREFS.contains(key))

@@ -469,6 +469,10 @@ public class SmackableImp implements Smackable {
 			return;
 		if (mState == ConnectionState.ONLINE)
 			mLastOffline = System.currentTimeMillis();
+		else if (mState == ConnectionState.OFFLINE || mState == ConnectionState.DISCONNECTED) {
+			// clean up roster and MUCs
+			removeOldRosterIfNeeded();
+		}
 		mState = new_state;
 		if (mServiceCallBack != null)
 			mServiceCallBack.connectionStateChanged(new_state);
@@ -784,6 +788,16 @@ public class SmackableImp implements Smackable {
 		exclusion.append(") AND "+RosterConstants.GROUP+" NOT IN ('" + RosterProvider.RosterConstants.MUCS + "');");
 		int count = mContentResolver.delete(RosterProvider.CONTENT_URI, exclusion.toString(), null);
 		Log.d(TAG, "deleted " + count + " old roster entries");
+	}
+
+	private void removeOldRosterIfNeeded() {
+		if (!mConfig.rosterreset_required)
+			return;
+		Log.d(TAG, "removeOldRoster()");
+		int count = mContentResolver.delete(RosterProvider.CONTENT_URI, null, null);
+		int muc_count = mContentResolver.delete(RosterProvider.MUCS_URI, null, null);
+		Log.d(TAG, "deleted " + count + " old roster entries and " + muc_count + " MUCs.");
+		mConfig.rosterreset_required = false;
 	}
 
 	// HACK: add an incoming subscription request as a fake roster entry
