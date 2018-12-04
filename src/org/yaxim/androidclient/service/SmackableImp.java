@@ -204,7 +204,7 @@ public class SmackableImp implements Smackable {
 			if (mConfig.customServer.length() > 0)
 				cb = XMPPTCPConnectionConfiguration.builder()
 						.setXmppDomain(mConfig.server)
-						.setHost(mConfig.customServer)
+						.setHostAddressByNameOrIp(mConfig.customServer)
 						.setPort(mConfig.port);
 			else
 				cb = XMPPTCPConnectionConfiguration.builder()
