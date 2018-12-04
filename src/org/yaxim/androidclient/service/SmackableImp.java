@@ -42,6 +42,7 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.carbons.packet.CarbonExtension;
 import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
+import org.jivesoftware.smackx.delay.DelayInformationManager;
 import org.jivesoftware.smackx.httpfileupload.HttpFileUploadManager;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jivesoftware.smackx.iqversion.VersionManager;
@@ -1478,11 +1479,13 @@ public class SmackableImp implements Smackable {
 
 					// extract timestamp
 					long ts;
-					DelayInformation timestamp = DelayInformation.from(msg);
-					if (timestamp == null) //SMAXX: let smack check for both
-						timestamp = (DelayInformation)msg.getExtension("x", "jabber:x:delay");
-					if (cc != null) // Carbon timestamp overrides packet timestamp
+					DelayInformation timestamp = DelayInformationManager.getDelayInformation(msg);
+					if (cc != null) { // Carbon timestamp overrides packet timestamp
 						timestamp = cc.getForwarded().getDelayInformation();
+						DelayInformation inner_ts = DelayInformationManager.getDelayInformation(cc.getForwarded().getForwardedStanza());
+						if (inner_ts != null) // original timestamp wrapped in carbon message overrides "outer" timestamp
+							timestamp = inner_ts;
+					}
 					if (timestamp != null)
 						ts = timestamp.getStamp().getTime();
 					else
@@ -1622,7 +1625,7 @@ public class SmackableImp implements Smackable {
 						int msgFlags = ChatConstants.MF_TEXT;
 						if (oob_extra != null)
 							msgFlags |= ChatConstants.MF_FILE;
-						if (timestamp != null)
+						if (timestamp != null && TextUtils.isEmpty(timestamp.getFrom())) // only show as delayed if from initial sender (no @from JID)
 							msgFlags |= ChatConstants.MF_DELAY;
 						if (replace != null)
 							msgFlags |= ChatConstants.MF_CORRECT;
