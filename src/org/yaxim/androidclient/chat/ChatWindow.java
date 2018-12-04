@@ -803,7 +803,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			// these calls must be in the exact right order.
 			Linkify.addLinks(mMessageView, Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
 			// Android's default phone linkifuckation makes 13:37 two phone numbers
-			Linkify.addLinks(mMessageView, XMPPHelper.PHONE, "tel:");
+			Linkify.addLinks(mMessageView, XMPPHelper.PHONE, "tel:", Linkify.sPhoneNumberMatchFilter, Linkify.sPhoneNumberTransformFilter);
 			// Android's default email linkifuckation breaks xmpp: URIs
 			Linkify.addLinks(mMessageView, XMPPHelper.XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(mMessageView, XMPPHelper.EMAIL_ADDRESS, "mailto:");
