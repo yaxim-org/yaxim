@@ -47,6 +47,9 @@ public class XMPPHelper {
 						+ "|(?:\\%[a-fA-F0-9]{2}))+"
 						+ "(\\?[\\p{Alnum}=;&]+)?");
 
+	// case-insensitive "XEP-####" surrounded by word boundaries, will extract the number as group 1
+	public static final Pattern XEP_PATTERN = Pattern.compile("(?i)\\bXEP-(\\d{4})\\b");
+
 	public static String verifyJabberID(String jid)
 			throws YaximXMPPAdressMalformedException {
 		try {

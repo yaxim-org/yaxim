@@ -5,14 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.regex.Pattern;
+import java.util.Locale;
+import java.util.regex.Matcher;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.*;
 import android.graphics.Bitmap;
 import android.os.*;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
@@ -42,7 +40,6 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -51,12 +48,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.text.Editable;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
@@ -802,12 +796,19 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			mErrorView.setVisibility(TextUtils.isEmpty(error) ? View.GONE : View.VISIBLE);
 			// these calls must be in the exact right order.
 			Linkify.addLinks(mMessageView, Linkify.MAP_ADDRESSES | Linkify.WEB_URLS);
+			Linkify.addLinks(mMessageView, XMPPHelper.XEP_PATTERN, null, null, new Linkify.TransformFilter() {
+				@Override
+				public String transformUrl(Matcher matcher, String s) {
+					return String.format((Locale)null, "https://xmpp.org/extensions/xep-%s.html", matcher.group(1));
+					//return s.replace("XEP-", "https://xmpp.org/extensions/xep-") + ".html";
+				}
+			});
+
 			// Android's default phone linkifuckation makes 13:37 two phone numbers
 			Linkify.addLinks(mMessageView, XMPPHelper.PHONE, "tel:", Linkify.sPhoneNumberMatchFilter, Linkify.sPhoneNumberTransformFilter);
 			// Android's default email linkifuckation breaks xmpp: URIs
 			Linkify.addLinks(mMessageView, XMPPHelper.XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(mMessageView, XMPPHelper.EMAIL_ADDRESS, "mailto:");
-
 			ImageView iv = (ImageView)mRowView.findViewById(R.id.chat_image);
 			boolean has_extra = !TextUtils.isEmpty(extra);
 			iv.setVisibility(has_extra ? View.VISIBLE : View.GONE);
