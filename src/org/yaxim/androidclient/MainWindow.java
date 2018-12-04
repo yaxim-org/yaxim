@@ -825,7 +825,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 				String error = serviceAdapter.getConnectionStateString().replace("conflict(-1) ", "");
 				if (error.contains("\n")) // TODO: work around getConnectionStateString() returning two lines
 					error = error.split("\n")[1];
-				if (error.contains("SASL authentication failed")) // TODO: hack to circumvent old smack
+				if (error.contains("SASLError using")) // TODO: hack to circumvent old smack
 					error = getString(R.string.StartupDialog_auth_failed);
 				Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
 				showFirstStartUpDialog();
