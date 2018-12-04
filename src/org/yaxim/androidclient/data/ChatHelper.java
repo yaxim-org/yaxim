@@ -28,7 +28,6 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -53,6 +52,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+
+import eu.siacs.conversations.utils.StylingHelper;
 
 public class ChatHelper {
 
@@ -217,7 +218,7 @@ public class ChatHelper {
 	}
 
 	public static void editTextDialog(Activity act, int titleId, CharSequence message, String text,
-						final EditOk ok) {
+									  boolean applyStyling, final EditOk ok) {
 		LayoutInflater inflater = (LayoutInflater) act.getSystemService(act.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.edittext_dialog,
 				(ViewGroup) act.findViewById(R.id.layout_root));
@@ -226,7 +227,10 @@ public class ChatHelper {
 		messageView.setText(message);
 		messageView.setVisibility(TextUtils.isEmpty(message) ? View.GONE : View.VISIBLE);
 		final EditText input = (EditText) layout.findViewById(R.id.editText);
-		input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
+		if (applyStyling)
+			input.addTextChangedListener(new StylingHelper.MessageEditorStyler(input));
+		else
+			input.setTransformationMethod(android.text.method.SingleLineTransformationMethod.getInstance());
 		input.setText(text);
 		new AlertDialog.Builder(act)
 				.setTitle(titleId)
@@ -266,7 +270,7 @@ public class ChatHelper {
 			newUserName = XMPPHelper.capitalizeString(jid.split("@")[0]);
 		editTextDialog(act, R.string.RenameEntry_title,
 				act.getString(R.string.RenameEntry_summ, userName, jid),
-				newUserName, new EditOk() {
+				newUserName, false, new EditOk() {
 					public void ok(String result) {
 						try {
 							YaximApplication.getApp(act).getSmackable().renameRosterItem(jid, result);

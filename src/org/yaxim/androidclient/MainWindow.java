@@ -513,7 +513,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	void renameRosterGroupDialog(final String groupName) {
 		ChatHelper.editTextDialog(this, R.string.RenameGroup_title,
 				getString(R.string.RenameGroup_summ, groupName),
-				groupName, new ChatHelper.EditOk() {
+				groupName, false, new ChatHelper.EditOk() {
 					public void ok(String result) {
 						serviceAdapter.renameRosterGroup(groupName, result);
 					}

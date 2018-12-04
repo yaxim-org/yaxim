@@ -486,7 +486,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			final String pid = mContextMenuPacketID;
 			final long upsert_id = mContextMenuID;
 			ChatHelper.editTextDialog(this, R.string.chatmenu_resend, null,
-					mContextMenuMessage, new ChatHelper.EditOk() {
+					mContextMenuMessage, true, new ChatHelper.EditOk() {
 						@Override
 						public void ok(String result) {
 							mChatServiceAdapter.sendMessage(mWithJabberID, result, pid, upsert_id);
