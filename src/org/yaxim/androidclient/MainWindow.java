@@ -819,16 +819,20 @@ public class MainWindow extends SherlockExpandableListActivity {
 		case RECONNECT_NETWORK:
 		case RECONNECT_DELAYED:
 		case OFFLINE:
-			if (cs == ConnectionState.DISCONNECTED && PreferenceManager.getDefaultSharedPreferences(this)
-									.contains(PreferenceConstants.FIRSTRUN)) {
-				// somehow, cs==OFFLINE is triggered twice, but cs==DISCONNECTED only once
+			if (cs == ConnectionState.DISCONNECTED) {
+				boolean firstRun = PreferenceManager.getDefaultSharedPreferences(this)
+									.contains(PreferenceConstants.FIRSTRUN);
 				String error = serviceAdapter.getConnectionStateString().replace("conflict(-1) ", "");
 				if (error.contains("\n")) // TODO: work around getConnectionStateString() returning two lines
 					error = error.split("\n")[1];
-				if (error.contains("SASLError using")) // TODO: hack to circumvent old smack
+				if (error.contains("SASLError using")) {// TODO: hack to circumvent old smack
 					error = getString(R.string.StartupDialog_auth_failed);
-				Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-				showFirstStartUpDialog();
+					firstRun = true;
+				}
+				if (firstRun) {
+					Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+					showFirstStartUpDialog();
+				}
 			} else
 			if (cs == ConnectionState.OFFLINE) // override with "Offline" string, no error message
 				mConnectingText.setText(R.string.conn_offline);

@@ -503,6 +503,12 @@ public class XMPPService extends GenericService {
 			mSmackable.requestConnectionState(ConnectionState.RECONNECT_NETWORK);
 
 		} else if (mConnectionDemanded.get()) {
+			if (reason.contains("SASLError using")) {
+				mConnectionDemanded.set(false);
+				mConfig.jid_configured = false;
+				mSmackable.requestConnectionState(ConnectionState.OFFLINE);
+				return;
+			}
 			mReconnectInfo = getString(R.string.conn_reconnect, mReconnectTimeout);
 			mSmackable.requestConnectionState(ConnectionState.RECONNECT_DELAYED);
 			logInfo("connectionFailed(): registering reconnect in " + mReconnectTimeout + "s");
