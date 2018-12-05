@@ -607,6 +607,12 @@ public class SmackableImp implements Smackable {
 		// iterate through to the deepest exception
 		while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
 			reason = reason.getCause();
+		if (reason instanceof SmackException.ConnectionException) {
+			reason = ((SmackException.ConnectionException)reason).getFailedAddresses().get(0).getExceptions().values().iterator().next();
+			// reiterate on the inner reason
+			while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
+				reason = reason.getCause();
+		}
 		onDisconnected(reason.getLocalizedMessage());
 	}
 
