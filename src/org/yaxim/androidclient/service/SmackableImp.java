@@ -1290,11 +1290,11 @@ public class SmackableImp implements Smackable {
 	private void gotServerPong(String pongID) {
 		long latency = System.currentTimeMillis() - mPingTimestamp;
 		if (pongID != null && pongID.equals(mPingID))
-			Log.i(TAG, String.format("Ping: server latency %1.3fs",
-						latency/1000.));
+			Log.i(TAG, String.format("Ping: server latency %1.3fs (%s)",
+						latency/1000., pongID));
 		else
-			Log.i(TAG, String.format("Ping: server latency %1.3fs (estimated)",
-						latency/1000.));
+			Log.i(TAG, String.format("Ping: server latency %1.3fs (estimated, got %s instead of %s)",
+						latency/1000., pongID, mPingID));
 		mPingID = null;
 		mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 	}
