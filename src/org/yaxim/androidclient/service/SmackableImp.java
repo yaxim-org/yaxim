@@ -360,6 +360,10 @@ public class SmackableImp implements Smackable {
 				new Thread("connect") {
 					@Override
 					public void run() {
+						if (mConnectingThread.get() != null && mXMPPConnection != null) {
+							// hack: we are not connected yet, so try to abort connect
+							mXMPPConnection.abortConnect();
+						}
 						updateConnectingThread(this);
 						try {
 							doConnect(create_account);
@@ -422,6 +426,10 @@ public class SmackableImp implements Smackable {
 				// spawn thread to do disconnect
 				new Thread("disconnect") {
 					public void run() {
+						if (mConnectingThread.get() != null && mXMPPConnection != null) {
+							// hack: we are not connected yet, so try to abort connect
+							mXMPPConnection.abortConnect();
+						}
 						updateConnectingThread(this);
 						mXMPPConnection.disconnect();
 						mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
