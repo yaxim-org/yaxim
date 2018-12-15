@@ -672,7 +672,7 @@ public class SmackableImp implements Smackable {
 				multiUserChats.clear();
 				mucLastPing = 0;
 				mucPreviousPing = 0;
-				onDisconnected(mService.getString(R.string.conn_disconnected));
+				updateConnectionState(ConnectionState.OFFLINE);
 			}
 			public void reconnectingIn(int seconds) { }
 			public void reconnectionFailed(Exception e) { }
