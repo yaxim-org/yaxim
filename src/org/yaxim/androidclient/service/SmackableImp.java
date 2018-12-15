@@ -643,6 +643,7 @@ public class SmackableImp implements Smackable {
 			}
 			public void authenticated(XMPPConnection c, boolean resumed) {
 				Log.d(TAG, "authenticated, resumed=" + resumed);
+				gotServerPong("connection");
 				if (!resumed) {
 					mLastOnline = System.currentTimeMillis();
 					cleanupMUCs(true);
