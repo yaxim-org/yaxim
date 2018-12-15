@@ -357,7 +357,7 @@ public class SmackableImp implements Smackable {
 				// register ping (connection) timeout handler: 2*PACKET_TIMEOUT(30s) + 3s
 				registerPongTimeout(2*PACKET_TIMEOUT + 3000, "connection");
 
-				new Thread() {
+				new Thread("connect") {
 					@Override
 					public void run() {
 						updateConnectingThread(this);
@@ -393,8 +393,12 @@ public class SmackableImp implements Smackable {
 				// register ping (connection) timeout handler: PACKET_TIMEOUT(30s)
 				registerPongTimeout(PACKET_TIMEOUT, "forced disconnect");
 
-				new Thread() {
+				new Thread("instantShutdown") {
 					public void run() {
+						if (mConnectingThread.get() != null && mXMPPConnection != null) {
+							// hack: we are not connected yet, so try to abort connect
+							mXMPPConnection.abortConnect();
+						}
 						updateConnectingThread(this);
 						mXMPPConnection.instantShutdown();
 						onDisconnected("forced disconnect completed");
@@ -416,7 +420,7 @@ public class SmackableImp implements Smackable {
 				registerPongTimeout(PACKET_TIMEOUT, "manual disconnect");
 
 				// spawn thread to do disconnect
-				new Thread() {
+				new Thread("disconnect") {
 					public void run() {
 						updateConnectingThread(this);
 						mXMPPConnection.disconnect();
@@ -2000,7 +2004,7 @@ public class SmackableImp implements Smackable {
 	}
 
 	private void discoverServicesAsync() {
-		new Thread() {
+		new Thread("discoverServices") {
 			public void run() {
 				discoverServices();
 				loadOrUpdateVCard();
@@ -2161,7 +2165,7 @@ public class SmackableImp implements Smackable {
 
 	protected void asyncProcessMucInvitation(final EntityBareJid room, final String inviter,
 			final String reason, final String password) {
-		new Thread() {
+		new Thread("processMucInvitation " + room.toString()) {
 			public void run() {
 				processMucInvitation(room, inviter, reason, password);
 			}
@@ -2213,7 +2217,7 @@ public class SmackableImp implements Smackable {
 	private synchronized void joinRoomAsync(final String room, final String nickname, final String password) {
 		if (ongoingMucJoins.containsKey(room))
 			return;
-		Thread joiner = new Thread() {
+		Thread joiner = new Thread("join " + room) {
 			@Override
 			public void run() {
 				Log.d(TAG, "async joining " + room);
