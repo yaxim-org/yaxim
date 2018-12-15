@@ -50,6 +50,8 @@ import org.jivesoftware.smackx.iqversion.VersionManager;
 import org.jivesoftware.smackx.message_correct.element.MessageCorrectExtension;
 import org.jivesoftware.smackx.muc.MucEnterConfiguration;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jivesoftware.smackx.ping.PingFailedListener;
+import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.xdata.FormField;
 import org.jivesoftware.smackx.bookmarks.BookmarkManager;
 import org.jivesoftware.smackx.bookmarks.BookmarkedConference;
@@ -274,6 +276,13 @@ public class SmackableImp implements Smackable {
 		registerMessageListener();
 		registerPresenceListener();
 		registerPongListener();
+		PingManager.getInstanceFor(mXMPPConnection).registerPingFailedListener(new PingFailedListener() {
+			@Override
+			public void pingFailed() {
+				Log.w(TAG, "PingFailedListener invoked!");
+				onDisconnected(mService.getString(R.string.conn_ping_timeout));
+			}
+		});
 
 		mConfig.reconnect_required = false;
 
@@ -1326,7 +1335,7 @@ public class SmackableImp implements Smackable {
 		public void onReceive(Context ctx, Intent i) {
 			try {
 				Log.d(TAG, "PingAlarmReceiver.onReceive");
-				sendServerPing();
+				//sendServerPing();
 				// ping all MUCs. if no ping was received since last attempt, /cycle
 				Iterator<MUCController> muc_it = multiUserChats.values().iterator();
 				long ts = System.currentTimeMillis();
