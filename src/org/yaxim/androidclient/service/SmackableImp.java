@@ -1553,8 +1553,11 @@ public class SmackableImp implements Smackable {
 						// perform a message-replace on self-sent MUC message, abort further processing
 						if (is_muc && matchOutgoingMucReflection(msg, fromJID))
 							return;
-						Log.d(TAG, "user is active on different device --> Silent mode");
-						mServiceCallBack.setGracePeriod(true);
+						if (timestamp == null) {
+							// delayed messages don't trigger active
+							Log.d(TAG, "user is active on different device --> Silent mode");
+							mServiceCallBack.setGracePeriod(true);
+						}
 					}
 
 					// handle MUC-PMs: messages from a nick from a known MUC or with
