@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -135,13 +136,13 @@ public class SmackableImp implements Smackable {
 
 		ProviderManager.addExtensionProvider(Oob.ELEMENT, Oob.NAMESPACE, new Oob.Provider());
 		ProviderManager.addExtensionProvider(PreAuth.ELEMENT, PreAuth.NAMESPACE, new PreAuth.Provider());
+		PingManager.setDefaultPingInterval(3*60);
 	}
 
 	private final YaximConfiguration mConfig;
 	private XMPPTCPConnectionConfiguration mXMPPConfig;
 	private XMPPTCPConnection mXMPPConnection;
-	private Thread mConnectingThread;
-	private Object mConnectingThreadMutex = new Object();
+	private AtomicReference<Thread> mConnectingThread = new AtomicReference<Thread>();
 
 
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
@@ -302,24 +303,29 @@ public class SmackableImp implements Smackable {
 
 	// BLOCKING, call on a new Thread!
 	private void updateConnectingThread(Thread new_thread) {
-		synchronized(mConnectingThreadMutex) {
-			if (mConnectingThread == null) {
-				mConnectingThread = new_thread;
+		if (new_thread == null) {
+			// unset current thread if it's still set
+			mConnectingThread.compareAndSet(Thread.currentThread(), null);
+			return;
+		}
+		synchronized (mConnectingThread) {
+			if (mConnectingThread.get() == null) {
+				// no contention, just update
+				mConnectingThread.set(new_thread);
 			} else try {
-				Log.d(TAG, "updateConnectingThread: old thread is still running, killing it.");
-				mConnectingThread.interrupt();
-				mConnectingThread.join(50);
+				Thread old = mConnectingThread.get();
+				Log.d(TAG, "updateConnectingThread: old thread (" + old + ") is still running, killing it.");
+				old.interrupt();
+				old.join(0);
 			} catch (InterruptedException e) {
 				Log.d(TAG, "updateConnectingThread: failed to join(): " + e);
 			} finally {
-				mConnectingThread = new_thread;
+				mConnectingThread.set(new_thread);
 			}
 		}
 	}
 	private void finishConnectingThread() {
-		synchronized(mConnectingThreadMutex) {
-			mConnectingThread = null;
-		}
+		updateConnectingThread(null);
 	}
 
 	/** Non-blocking, synchronized function to connect/disconnect XMPP.
