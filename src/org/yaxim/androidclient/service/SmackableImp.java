@@ -1746,12 +1746,15 @@ public class SmackableImp implements Smackable {
 		MUCController mucc = multiUserChats.get(muc);
 		// messages with no timestamp are always new, and always come after join is completed
 		if (timestamp == null) {
+			Log.d(TAG, "checkAddMucMessage(" + fromJid[0] + "): " + nick + "/" + packet_id  + " without timestamp --> isSync=true");
 			mucc.isSynchronized = true;
 			return true;
 		}
 		// messages after we have joined and synchronized the MUC are always new
-		if (mucc.isSynchronized)
+		if (mucc.isSynchronized) {
+			Log.d(TAG, "checkAddMucMessage(" + fromJid[0] + "): " + nick + "/" + packet_id  + " MUC already synced.");
 			return true;
+		}
 
 		long ts = timestamp.getStamp().getTime();
 
@@ -1767,12 +1770,13 @@ public class SmackableImp implements Smackable {
 		final String[] selectionArgs = new String[] { muc, nick, packet_id, ""+ts, msg.getBody(), ""+mucc.getFirstPacketID(), ""+ChatConstants.DS_FAILED };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
-			Log.d(TAG, "message from " + nick + " matched " + cursor.getCount() + " items.");
+			Log.d(TAG, "checkAddMucMessage(" + fromJid[0] + "): " + nick + "/" + packet_id + " matched " + cursor.getCount() + " items.");
 			boolean result = (cursor.getCount() == 0);
 			cursor.close();
 			return result;
 		} catch (Exception e) { e.printStackTrace(); } // just return true...
-		return true;	
+		Log.d(TAG, "checkAddMucMessage(" + fromJid[0] + "): " + nick + "/" + packet_id + " didn't match msg in history.");
+		return true;
 	}
 
 	private void handleKickedFromMUC(String room, boolean banned, Jid actor, String reason) {
