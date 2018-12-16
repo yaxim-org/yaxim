@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import android.support.v4.util.CircularArray;
+import android.util.Log;
 
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smackx.muc.MultiUserChat;
@@ -25,6 +26,7 @@ import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
  *  - keep track of joining/leaving
  */
 public class MUCController {
+	static final String TAG = "yaxim.MUCController";
 	final String jid;
 	public MultiUserChat muc;
 	public RoomInfo roomInfo;
@@ -47,7 +49,7 @@ public class MUCController {
 	public synchronized void addPacketID(long id) {
 		while (lastIDs.size() >= LOOKUP_SIZE)
 			lastIDs.popFirst();
-		android.util.Log.d("MUCController", jid + " -> " + id);
+		//Log.d(TAG, jid + " -> " + id);
 		lastIDs.addLast(id);
 		setLastActivity();
 	}
@@ -59,17 +61,17 @@ public class MUCController {
 		if (lastIDs.isEmpty())
 			return 0;
 		long id = (Long)lastIDs.getFirst();
-		android.util.Log.d("MUCController", jid + " <- " + id);
+		Log.d(TAG, jid + " <- " + id);
 		return id;
 	}
 
 	public synchronized void loadPacketIDs(ContentResolver cr) {
 		lastIDs.clear();
-		Cursor c = cr.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID },
+		Cursor c = cr.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID /*, ChatConstants.PACKET_ID*/ },
 				"jid = ?", new String[] { jid }, "_id DESC LIMIT " + LOOKUP_SIZE);
 		long result = -1;
 		while (c.moveToNext()) {
-			android.util.Log.d("MUCController", jid + " -> " + c.getLong(0));
+			//Log.d(TAG, jid + ": " + c.getString(1) +  " -> " + c.getLong(0));
 			lastIDs.addFirst(c.getLong(0));
 		}
 		c.close();
