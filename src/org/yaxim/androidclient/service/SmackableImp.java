@@ -303,11 +303,17 @@ public class SmackableImp implements Smackable {
 		Log.d(TAG, "connect has returned!");
 		syncDbRooms();
 		sendOfflineMessages(null);
-		sendUserWatching();
+		try {
+			sendUserWatching();
+		} catch (Exception e) {
+			throw new YaximXMPPException("sendUserWatching", e);
+		}
 		registerPingAlarm();
 		// we need to "ping" the service to let it know we are actually
 		// connected, even when no roster entries will come in
-		updateConnectionState(ConnectionState.ONLINE);
+		if (mState == ConnectionState.LOADING)
+			updateConnectionState(ConnectionState.ONLINE);
+		else throw new YaximXMPPException("Connection state after connect is " + mState);
 	}
 
 	// BLOCKING, call on a new Thread!
@@ -1242,21 +1248,22 @@ public class SmackableImp implements Smackable {
 		if (is_user_watching == user_watching)
 			return;
 		is_user_watching = user_watching;
-		if (isAuthenticated())
-			sendUserWatching();
+		if (isAuthenticated()) {
+			try {
+				sendUserWatching();
+			} catch (SmackException.NotConnectedException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	protected void sendUserWatching() {
-		try {
-			if (is_user_watching)
-				ClientStateIndicationManager.active(mXMPPConnection);
-			else
-				ClientStateIndicationManager.inactive(mXMPPConnection);
-		} catch (SmackException.NotConnectedException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	protected void sendUserWatching() throws SmackException.NotConnectedException, InterruptedException {
+		if (is_user_watching)
+			ClientStateIndicationManager.active(mXMPPConnection);
+		else
+			ClientStateIndicationManager.inactive(mXMPPConnection);
 	}
 
 	/** Check the server connection, reconnect if needed.
