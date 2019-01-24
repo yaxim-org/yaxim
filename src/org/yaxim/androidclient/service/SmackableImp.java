@@ -41,6 +41,7 @@ import org.jivesoftware.smack.roster.RosterListener;
 import org.jivesoftware.smack.sm.StreamManagementException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jivesoftware.smack.util.TLSUtils;
 import org.jivesoftware.smackx.carbons.packet.CarbonExtension;
 import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
 import org.jivesoftware.smackx.delay.DelayInformationManager;
@@ -224,6 +225,7 @@ public class SmackableImp implements Smackable {
 
 		// register MemorizingTrustManager for XMPP and HTTPS
 		try {
+			TLSUtils.setTLSOnly(cb);
 			SSLContext sc = SSLContext.getInstance("TLS");
 			MemorizingTrustManager mtm = YaximApplication.getApp(mService).mMTM;
 			sc.init(null, new X509TrustManager[] { mtm },
