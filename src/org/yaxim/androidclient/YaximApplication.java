@@ -14,9 +14,9 @@ import android.preference.PreferenceManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 public class YaximApplication extends Application {
-	// identity name and type, see:
+	// identity type, see:
 	// http://xmpp.org/registrar/disco-categories.html
-	public static final String XMPP_IDENTITY_NAME = "yaxim";
+	// identity name is `app_name` string
 	public static final String XMPP_IDENTITY_TYPE = "phone";
 
 	// MTM is needed globally for both the backend (connect)

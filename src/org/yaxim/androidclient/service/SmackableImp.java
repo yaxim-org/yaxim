@@ -127,10 +127,6 @@ public class SmackableImp implements Smackable {
 			ChatConstants.DIRECTION + " = " + ChatConstants.OUTGOING + " AND " +
 			ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW;
 
-	static final DiscoverInfo.Identity YAXIM_IDENTITY = new DiscoverInfo.Identity("client",
-					YaximApplication.XMPP_IDENTITY_NAME,
-					YaximApplication.XMPP_IDENTITY_TYPE);
-
 	static File capsCacheDir = null; ///< this is used to cache if we already initialized EntityCapsCache
 
 	static {
@@ -199,6 +195,12 @@ public class SmackableImp implements Smackable {
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
+
+		DiscoverInfo.Identity yaxim_identity = new DiscoverInfo.Identity("client",
+				service.getString(R.string.app_name),
+				YaximApplication.XMPP_IDENTITY_TYPE);
+		ServiceDiscoveryManager.setDefaultIdentity(yaxim_identity);
+		EntityCapsManager.setDefaultEntityNode("https://yaxim.org/");
 	}
 		
 	// this code runs a DNS resolver, might be blocking
