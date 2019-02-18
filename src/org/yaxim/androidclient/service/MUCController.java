@@ -79,5 +79,7 @@ public class MUCController {
 
 	public void cleanup() {
 		//SMAXX muc.cleanup();
+		isSynchronized = false;
+		isTimeout = false;
 	}
 }

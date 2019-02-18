@@ -665,7 +665,8 @@ public class SmackableImp implements Smackable {
 				gotServerPong("connection");
 				if (!resumed) {
 					mLastOnline = System.currentTimeMillis();
-					cleanupMUCs(true);
+					cleanupMUCsRoster(true);
+					cleanupMUCsList(); /* TODO: this is a workaround for smack4 not updating the list */
 					setStatusFromConfig();
 					discoverServicesAsync();
 				}
@@ -675,22 +676,14 @@ public class SmackableImp implements Smackable {
 				// we need to check for non-resumability and work around
 				// here:
 				if (!mXMPPConnection.isSmResumptionPossible()) {
-					for (MUCController muc : multiUserChats.values())
-						muc.cleanup();
-					multiUserChats.clear();
-					mucLastPing = 0;
-					mucPreviousPing = 0;
+					cleanupMUCsList();
 				}
 				onDisconnected(e);
 			}
 			public void connectionClosed() {
 				// TODO: fix reconnect when we got kicked by the server or SM failed!
 				//onDisconnected(null);
-				for (MUCController muc : multiUserChats.values())
-					muc.cleanup();
-				multiUserChats.clear();
-				mucLastPing = 0;
-				mucPreviousPing = 0;
+				cleanupMUCsList();
 				updateConnectionState(ConnectionState.OFFLINE);
 			}
 			public void reconnectingIn(int seconds) { }
@@ -2076,7 +2069,17 @@ public class SmackableImp implements Smackable {
 	}
 
 
-	private synchronized void cleanupMUCs(boolean set_offline) {
+	/* set MUCs as not joined after a disconnect/reconnect */
+	private synchronized void cleanupMUCsList() {
+		for (MUCController muc : multiUserChats.values())
+			muc.cleanup();
+		multiUserChats.clear();
+		mucLastPing = 0;
+		mucPreviousPing = 0;
+	}
+
+	/* remove stale MUCs from Roster, mark remaining ones as offline if needed */
+	private synchronized void cleanupMUCsRoster(boolean set_offline) {
 		// get a fresh MUC list
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
 				new String[] { RosterProvider.RosterConstants.JID },
@@ -2160,7 +2163,7 @@ public class SmackableImp implements Smackable {
 				quitRoom(room);
 			}
 		}
-		cleanupMUCs(false);
+		cleanupMUCsRoster(false);
 	}
 	
 	protected boolean handleMucInvitation(Message msg) {
