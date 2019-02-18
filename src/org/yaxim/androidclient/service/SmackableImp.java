@@ -979,6 +979,7 @@ public class SmackableImp implements Smackable {
 				packetID = newMessage.getStanzaId();
 			}
 			mark_sent.put(ChatConstants.PACKET_ID, packetID);
+			mark_sent.put(ChatConstants.MSGFLAGS, msgFlags | ChatConstants.MF_DELAY);
 			Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
 				+ "/" + ChatProvider.TABLE_NAME + "/" + _id);
 			mContentResolver.update(rowuri, mark_sent,
