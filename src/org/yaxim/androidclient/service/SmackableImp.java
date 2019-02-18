@@ -1978,8 +1978,8 @@ public class SmackableImp implements Smackable {
 			VCard vc = new VCard();
 			vc.load(mXMPPConnection);
 			String nick = vc.getNickName();
-			if (TextUtils.isEmpty(nick)) {
-				vc.setNickName(nick);
+			if (TextUtils.isEmpty(nick) && !TextUtils.isEmpty(mConfig.screenName)) {
+				vc.setNickName(mConfig.screenName);
 				vc.save(mXMPPConnection);
 			} else
 				mConfig.storeScreennameIfChanged(nick);
