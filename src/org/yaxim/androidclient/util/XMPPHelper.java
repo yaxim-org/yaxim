@@ -92,6 +92,16 @@ public class XMPPHelper {
 	}
 
 	/* Convert a (single- or multi-line) message into a quote */
+	public static String quoteStringWithoutQuotes(String original) {
+		StringBuilder sb = new StringBuilder();
+		String[] lines = original.split("\n");
+		for (String s : lines) {
+			if (!s.startsWith(">"))
+				sb.append("> ").append(s).append('\n');
+		}
+		return sb.toString();
+	}
+	/* Convert a (single- or multi-line) message into a quote */
 	public static String quoteString(String original) {
 		return "> " + original.replace("\n", "\n> ") + "\n";
 	}

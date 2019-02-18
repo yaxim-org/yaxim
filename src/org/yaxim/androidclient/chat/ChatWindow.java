@@ -455,9 +455,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			String resource = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.RESOURCE));
 			long timestamp = c.getLong(c.getColumnIndex(ChatProvider.ChatConstants.DATE));
 			String ts = new SimpleDateFormat("HH:mm").format(new Date(timestamp));
-			return String.format("%s [%s]:\n%s", jid2nickname(jid, resource), ts, XMPPHelper.quoteString(message));
+			return String.format("%s [%s]:\n%s", jid2nickname(jid, resource), ts, XMPPHelper.quoteStringWithoutQuotes(message));
 		}
-		return XMPPHelper.quoteString(message);
+		return XMPPHelper.quoteStringWithoutQuotes(message);
 	}
 
 	@Override
