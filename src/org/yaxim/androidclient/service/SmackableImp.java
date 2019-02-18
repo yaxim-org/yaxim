@@ -707,14 +707,16 @@ public class SmackableImp implements Smackable {
 					debugLog("conn.shutdown() failed, ignoring: " + e);
 				}
 			}
-			mXMPPConnection.connect();
-			if (create_account) {
-				Log.d(TAG, "creating new server account...");
-				AccountManager am = AccountManager.getInstance(mXMPPConnection);
-				am.createAccount(Localpart.from(mConfig.userName), mConfig.password);
+			synchronized (mXMPPConnection) {
+				mXMPPConnection.connect();
+				if (create_account) {
+					Log.d(TAG, "creating new server account...");
+					AccountManager am = AccountManager.getInstance(mXMPPConnection);
+					am.createAccount(Localpart.from(mConfig.userName), mConfig.password);
+				}
+				mXMPPConnection.login(mConfig.userName, mConfig.password,
+						Resourcepart.from(mConfig.ressource));
 			}
-			mXMPPConnection.login(mConfig.userName, mConfig.password,
-					Resourcepart.from(mConfig.ressource));
 			Log.d(TAG, "SM: can resume = " + mXMPPConnection.isSmResumptionPossible());
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
