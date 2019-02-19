@@ -88,6 +88,7 @@ import org.yaxim.androidclient.exceptions.YaximXMPPException;
 import org.yaxim.androidclient.packet.Oob;
 import org.yaxim.androidclient.packet.PreAuth;
 import org.yaxim.androidclient.util.ConnectionState;
+import org.yaxim.androidclient.util.ErrorReportManager;
 import org.yaxim.androidclient.util.LogConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.R;
@@ -251,7 +252,8 @@ public class SmackableImp implements Smackable {
 					e.printStackTrace();
 					return;
 				}
-				throw e;
+				Log.e(TAG, "parsing exception", e);
+				ErrorReportManager.get(mService).report(e);
 			}
 		});
 
