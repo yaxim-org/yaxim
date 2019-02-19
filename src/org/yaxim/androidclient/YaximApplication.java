@@ -19,6 +19,8 @@ public class YaximApplication extends Application {
 	// identity name is `app_name` string
 	public static final String XMPP_IDENTITY_TYPE = "phone";
 
+	private static YaximApplication app;
+
 	// MTM is needed globally for both the backend (connect)
 	// and the frontend (display dialog)
 	public MemorizingTrustManager mMTM;
@@ -26,8 +28,13 @@ public class YaximApplication extends Application {
 	private YaximConfiguration mConfig;
 	private Smackable mSmackable;
 
+	public static YaximApplication getInstance() {
+		return app;
+	}
+
 	public YaximApplication() {
 		super();
+		app = this;
 	}
 
 	@Override
