@@ -21,7 +21,7 @@ public class NotificationPrefs extends SherlockPreferenceActivity {
 	private String name = null;
 
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(YaximApplication.getConfig().getTheme());
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();

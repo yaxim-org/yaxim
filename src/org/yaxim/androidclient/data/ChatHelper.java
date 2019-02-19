@@ -253,7 +253,7 @@ public class ChatHelper {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								try {
-									YaximApplication.getApp(act).getSmackable().removeRosterItem(jid);
+									YaximApplication.getApp().getSmackable().removeRosterItem(jid);
 									if (act instanceof ChatWindow)
 										act.finish();
 								} catch (Exception e) {
@@ -273,7 +273,7 @@ public class ChatHelper {
 				newUserName, false, new EditOk() {
 					public void ok(String result) {
 						try {
-							YaximApplication.getApp(act).getSmackable().renameRosterItem(jid, result);
+							YaximApplication.getApp().getSmackable().renameRosterItem(jid, result);
 						} catch (Exception e) {
 							shortToastNotify(act, e);
 						}
@@ -293,7 +293,7 @@ public class ChatHelper {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								try {
-									YaximApplication.getApp(act).getSmackable().moveRosterItemToGroup(jabberID,
+									YaximApplication.getApp().getSmackable().moveRosterItemToGroup(jabberID,
 											gv.getGroupName());
 								} catch (Exception e) {
 									shortToastNotify(act, e);
@@ -326,7 +326,7 @@ public class ChatHelper {
 			return true;
 		case R.id.roster_contextmenu_contact_request_auth:
 			try {
-				YaximApplication.getApp(act).getSmackable().sendPresenceRequest(jid, "subscribe");
+				YaximApplication.getApp().getSmackable().sendPresenceRequest(jid, "subscribe");
 			} catch (YaximXMPPException e) {
 				shortToastNotify(act, e);
 			}

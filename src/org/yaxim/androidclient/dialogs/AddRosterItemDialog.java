@@ -44,7 +44,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 		setView(group);
 
 		userInputField = (AutoCompleteJidEdit)group.findViewById(R.id.AddContact_EditTextField);
-		userInputField.setServerList(YaximApplication.getConfig(mActivity).server,
+		userInputField.setServerList(YaximApplication.getConfig().server,
 				ChatHelper.getXMPPDomains(act, ChatHelper.ROSTER_FILTER_CONTACTS), R.array.xmpp_servers);
 		aliasInputField = (EditText)group.findViewById(R.id.AddContactAlias_EditTextField);
 
@@ -95,7 +95,7 @@ public class AddRosterItemDialog extends AlertDialog implements
 			return;
 		}
 		try {
-			YaximApplication.getApp(mActivity).getSmackable().addRosterItem(
+			YaximApplication.getApp().getSmackable().addRosterItem(
 					realJid,
 					alias,
 					mGroupNameView.getGroupName(),

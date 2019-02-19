@@ -229,7 +229,7 @@ public class SmackableImp implements Smackable {
 		try {
 			TLSUtils.setTLSOnly(cb);
 			SSLContext sc = SSLContext.getInstance("TLS");
-			MemorizingTrustManager mtm = YaximApplication.getApp(mService).mMTM;
+			MemorizingTrustManager mtm = YaximApplication.getApp().mMTM;
 			sc.init(null, new X509TrustManager[] { mtm },
 					new java.security.SecureRandom());
 			// XMPP

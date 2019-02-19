@@ -12,7 +12,7 @@ import org.yaxim.androidclient.YaximApplication;
 
 public class MainPrefs extends SherlockPreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(YaximApplication.getConfig().getTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.mainprefs);
 

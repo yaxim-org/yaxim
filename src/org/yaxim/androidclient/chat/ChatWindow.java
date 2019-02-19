@@ -133,7 +133,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		mConfig = YaximApplication.getConfig(this);
+		mConfig = YaximApplication.getConfig();
 		setContactFromUri();
 		Log.d(TAG, "onCreate, registering XMPP service");
 		registerXMPPService();

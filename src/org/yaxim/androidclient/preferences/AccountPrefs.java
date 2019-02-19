@@ -31,7 +31,7 @@ public class AccountPrefs extends SherlockPreferenceActivity {
 	private EditTextPreference prefAccountID;
 
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(YaximApplication.getConfig(this).getTheme());
+		setTheme(YaximApplication.getConfig().getTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.accountprefs);
 

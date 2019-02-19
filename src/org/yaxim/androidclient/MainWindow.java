@@ -97,7 +97,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, getString(R.string.build_version));
-		mConfig = YaximApplication.getConfig(this);
+		mConfig = YaximApplication.getConfig();
 		mTheme = mConfig.theme;
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
@@ -200,7 +200,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		if (serviceAdapter != null)
 			serviceAdapter.unregisterUICallback(rosterCallback);
 
-		YaximApplication.getApp(this).mMTM.unbindDisplayActivity(this);
+		YaximApplication.getApp().mMTM.unbindDisplayActivity(this);
 		unbindXMPPService();
 		storeExpandedState();
 	}
@@ -221,7 +221,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		displayOwnStatus();
 		bindXMPPService();
 
-		YaximApplication.getApp(this).mMTM.bindDisplayActivity(this);
+		YaximApplication.getApp().mMTM.bindDisplayActivity(this);
 
 		// handle SEND action
 		handleSendIntent();

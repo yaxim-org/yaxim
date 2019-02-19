@@ -72,7 +72,7 @@ public abstract class GenericService extends Service {
 	public void onCreate() {
 		Log.i(TAG, "called onCreate()");
 		super.onCreate();
-		mConfig = org.yaxim.androidclient.YaximApplication.getConfig(this);
+		mConfig = org.yaxim.androidclient.YaximApplication.getConfig();
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		mWakeLock = ((PowerManager)getSystemService(Context.POWER_SERVICE))
 				.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, APP_NAME);

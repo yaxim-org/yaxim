@@ -547,7 +547,7 @@ public class XMPPService extends GenericService {
 		System.setProperty("smack.debugEnabled", "" + mConfig.smackdebug);
 		try {
 			mSmackable = new SmackableImp(mConfig, getContentResolver(), this);
-			YaximApplication.getApp(this).setSmackable(mSmackable);
+			YaximApplication.getApp().setSmackable(mSmackable);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}

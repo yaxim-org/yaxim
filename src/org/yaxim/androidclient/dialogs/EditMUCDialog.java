@@ -49,7 +49,7 @@ public class EditMUCDialog extends AlertDialog implements
 
 		mInvitation = (TextView)group.findViewById(R.id.muc_invitation);
 		mRoomJID = (AutoCompleteJidEdit)group.findViewById(R.id.muc_new_jid);
-		String mucDomain = YaximApplication.getConfig(mContext).mucDomain;
+		String mucDomain = YaximApplication.getConfig().mucDomain;
 		mRoomJID.setServerList(mucDomain, ChatHelper.getXMPPDomains(context, ChatHelper.ROSTER_FILTER_MUCS),
 				R.array.muc_services);
 		mNickName = (EditText)group.findViewById(R.id.muc_new_nick);

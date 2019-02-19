@@ -47,19 +47,8 @@ public class YaximApplication extends Application {
 		registerReceiver(new YaximBroadcastReceiver(), new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
 	}
 
-	public static YaximApplication getApp(Activity ctx) {
-		return (YaximApplication)ctx.getApplication();
-	}
-	public static YaximApplication getApp(Service ctx) {
-		return (YaximApplication)ctx.getApplication();
-	}
-
-	public static YaximConfiguration getConfig(Activity ctx) {
-		return getApp(ctx).mConfig;
-	}
-	public static YaximConfiguration getConfig(Service ctx) {
-		return getApp(ctx).mConfig;
-	}
+	public static YaximApplication getApp() { return app; }
+	public static YaximConfiguration getConfig() { return app.mConfig; }
 
 	// short-cut from the UI to the network
 	public Smackable getSmackable() {
