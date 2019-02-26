@@ -105,6 +105,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	protected EditText mChatInput = null;
 	protected String mWithJabberID = null;
 	protected String mUserScreenName = null;
+	protected boolean mIsMucPM = false;
 	private boolean isContact = false;
 	private Intent mChatServiceIntent;
 	private ServiceConnection mChatServiceConnection;
@@ -134,13 +135,14 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		mConfig = YaximApplication.getConfig();
-		setContactFromUri();
+		String titleUserid = setContactFromUri();
 		Log.d(TAG, "onCreate, registering XMPP service");
 		registerXMPPService();
 
 		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
-		XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
+		if (!mIsMucPM)
+			XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
 
 		mChatFontSize = Integer.valueOf(mConfig.chatFontSize);
 
@@ -168,13 +170,6 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		setSendButton();
 		setUserInput();
 		
-		String titleUserid;
-		if (mUserScreenName != null) {
-			titleUserid = mUserScreenName;
-		} else {
-			titleUserid = mWithJabberID;
-		}
-
 		setCustomTitle(titleUserid);
 
 		// Setup the loader
@@ -410,15 +405,25 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		}
 	}
 
-	private void setContactFromUri() {
+	private String setContactFromUri() {
 		Intent i = getIntent();
-		mWithJabberID = i.getDataString(); // TODO: lowercase bare-JID, stringprep-normalize
 		Log.d(TAG, "setting contact from URI: "+mWithJabberID);
+		mWithJabberID = i.getDataString(); // TODO: lowercase bare-JID, stringprep-normalize
+		mIsMucPM = mWithJabberID.contains("/");
+		String longName;
 		if (i.hasExtra(INTENT_EXTRA_USERNAME)) {
-			mUserScreenName = i.getExtras().getString(INTENT_EXTRA_USERNAME);
+			longName = i.getExtras().getString(INTENT_EXTRA_USERNAME);
+			mUserScreenName = longName;
 		} else {
-			mUserScreenName = mWithJabberID;
+			// we don't have a screen name, use the localpart of the JID (or domain JID if it is a domain)
+			longName = mWithJabberID;
+			mUserScreenName = mWithJabberID.split("@")[0];
 		}
+		if (mIsMucPM) {
+			// re-extract nickname from localpart
+			mUserScreenName = mWithJabberID.split("/")[1];
+		}
+		return longName;
 	}
 
 	// hack to work around item positions being invalidated on cursor change while the menu is open
@@ -502,7 +507,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			inflater.inflate(R.menu.contact_options, menu);
 		else {
 			inflater.inflate(R.menu.noncontact_options, menu);
-			menu.findItem(R.id.menu_add_friend).setVisible(!mWithJabberID.contains("/"));
+			menu.findItem(R.id.menu_add_friend).setVisible(!mIsMucPM);
 		}
 		return inflateGenericContactOptions(menu);
 	}
