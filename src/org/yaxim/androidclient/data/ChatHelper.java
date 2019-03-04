@@ -64,7 +64,19 @@ public class ChatHelper {
 						ChatConstants.DIRECTION + " = " + ChatConstants.INCOMING + " AND "
 						+ ChatConstants.DELIVERY_STATUS + " = " + ChatConstants.DS_NEW, null);
 	}
-	
+
+	public static long getChatHistoryStartId(Context ctx, String jid, long history_size) {
+		Cursor c = ctx.getContentResolver().query(ChatProvider.CONTENT_URI,
+				new String[] { "_id" }, "jid = ?", new String[] { jid },
+				"_id DESC LIMIT 1 OFFSET " + history_size);
+		long result_id = -1;
+		if (c.moveToFirst()) {
+			result_id = c.getLong(0);
+		}
+		c.close();
+		return result_id;
+	}
+
 	public static void markAsRead(Context ctx, String jid) {
 		ContentValues cv = new ContentValues();
 		cv.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_SENT_OR_READ);

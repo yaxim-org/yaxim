@@ -31,14 +31,10 @@ public class ChatProvider extends ContentProvider {
 
 	private static final int MESSAGES = 1;
 	private static final int MESSAGE_ID = 2;
-	private static final int LASTLOG = 3;
-	private static final int LASTLOG_MUCPM = 4;
 
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "chats", MESSAGES);
 		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
-		URI_MATCHER.addURI(AUTHORITY, "chats/*/#", LASTLOG);
-		URI_MATCHER.addURI(AUTHORITY, "chats/*/*/#", LASTLOG_MUCPM);
 	}
 
 	private static final String TAG = "yaxim.ChatProvider";
@@ -130,11 +126,18 @@ public class ChatProvider extends ContentProvider {
 		//    AND _id > IFNULL((SELECT _id FROM chats WHERE jid="?" ORDER BY _id DESC LIMIT 1 OFFSET 200), 0)
 		qBuilder.appendWhere("jid=");
 		qBuilder.appendWhereEscapeString(jid);
-		qBuilder.appendWhere("AND _id > IFNULL((SELECT _id FROM chats WHERE jid=");
-		qBuilder.appendWhereEscapeString(jid);
-		qBuilder.appendWhere("ORDER BY _id DESC LIMIT 1 OFFSET ");
-		qBuilder.appendWhereEscapeString(count);
-		qBuilder.appendWhere("), 0)");
+		long lCount = Long.valueOf(count);
+		if (lCount < 0) {
+			// negative count - everything starting with _id == -count
+			qBuilder.appendWhere("AND _id >= ");
+			qBuilder.appendWhereEscapeString(String.valueOf(-lCount));
+		} else {
+			qBuilder.appendWhere("AND _id > IFNULL((SELECT _id FROM chats WHERE jid=");
+			qBuilder.appendWhereEscapeString(jid);
+			qBuilder.appendWhere("ORDER BY _id DESC LIMIT 1 OFFSET ");
+			qBuilder.appendWhereEscapeString(count);
+			qBuilder.appendWhere("), 0)");
+		}
 	}
 
 	@Override
@@ -147,14 +150,6 @@ public class ChatProvider extends ContentProvider {
 		switch (match) {
 		case MESSAGES:
 			qBuilder.setTables(TABLE_NAME);
-			break;
-		case LASTLOG:
-			qBuilder.setTables(TABLE_NAME);
-			appendWhereJidCount(qBuilder, url.getPathSegments().get(1), url.getPathSegments().get(2));
-			break;
-		case LASTLOG_MUCPM:
-			appendWhereJidCount(qBuilder, url.getPathSegments().get(1) + "/" + url.getPathSegments().get(2),
-					url.getPathSegments().get(3));
 			break;
 		case MESSAGE_ID:
 			qBuilder.setTables(TABLE_NAME);

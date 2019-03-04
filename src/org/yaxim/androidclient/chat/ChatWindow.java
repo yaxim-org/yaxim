@@ -200,18 +200,9 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		// There's only one Loader, so ...
-		if (i == CHAT_MSG_LOADER) {
-			String selection = null;
-			Uri lastlog = new Uri.Builder().scheme("content").authority(ChatProvider.AUTHORITY)
-				.appendPath("chats")
-				.appendPath(mWithJabberID).appendPath(String.valueOf(lastlog_size))
-				.build();
-			return new CursorLoader(this, lastlog, PROJECTION_FROM,
-					selection, null, "date");
-		} else {
-			Log.w(TAG, "Unknown loader id returned in LoaderCallbacks.onCreateLoader: " + i);
-			return null;
-		}
+		long start_id = ChatHelper.getChatHistoryStartId(this, mWithJabberID, lastlog_size);
+		return new CursorLoader(this, ChatProvider.CONTENT_URI, PROJECTION_FROM,
+				"jid = ? AND _id > ?", new String[] { mWithJabberID, "" + start_id }, "date");
 	}
 
 	@Override
@@ -243,10 +234,10 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 
 	public void increaseLastLog() {
 		// only trigger this if we already have a cursor and that was LIMITed by lastlog_size
-		if (mChatAdapter.getCursor() != null && mChatAdapter.getCursor().getCount() == lastlog_size) {
-			Log.d(TAG, "increaseLastLog: " + mChatAdapter.getCursor().getCount());
-			lastlog_size += 200;
+		if (mChatAdapter.getCursor() != null && mChatAdapter.getCursor().getCount() >= lastlog_size) {
+			Log.d(TAG, "increaseLastLog: " + mChatAdapter.getCursor().getCount() + " += 200");
 			lastlog_index = mChatAdapter.getCursor().getCount();
+			lastlog_size = lastlog_index + 200;
 			getSupportLoaderManager().restartLoader(CHAT_MSG_LOADER, null, this /*LoaderCallbacks<Cursor>*/);
 		}
 	}
