@@ -245,6 +245,11 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	/* AbsListView.OnScrollListener */
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// if we have pending mark-read messages, delay them further. ScrollView doesn't like it otherwise
+		if (mReadMessages.size() > 0) {
+			mMarkHandler.removeCallbacks(mMarkRunnable);
+			mMarkHandler.postDelayed(mMarkRunnable, DELAY_NEWMSG);
+		}
 		// re-query the lastlog when reaching the first item
 		if (visibleItemCount > 0 && firstVisibleItem == 0)
 			increaseLastLog();
