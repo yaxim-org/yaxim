@@ -333,6 +333,7 @@ public class SmackableImp implements Smackable {
 				Log.d(TAG, "updateConnectingThread: old thread (" + old + ") is still running, killing it.");
 				old.interrupt();
 				old.join(0);
+				Log.d(TAG, "updateConnectingThread: killed old thread.");
 			} catch (InterruptedException e) {
 				Log.d(TAG, "updateConnectingThread: failed to join(): " + e);
 			} finally {
@@ -378,7 +379,8 @@ public class SmackableImp implements Smackable {
 					public void run() {
 						if (mConnectingThread.get() != null && mXMPPConnection != null) {
 							// hack: we are not connected yet, so try to abort connect
-							mXMPPConnection.abortConnect();
+							Log.e(TAG, "Ongoing connection attempt!");
+							//mXMPPConnection.abortConnect();
 						}
 						updateConnectingThread(this);
 						try {
@@ -417,7 +419,8 @@ public class SmackableImp implements Smackable {
 					public void run() {
 						if (mConnectingThread.get() != null && mXMPPConnection != null) {
 							// hack: we are not connected yet, so try to abort connect
-							mXMPPConnection.abortConnect();
+							Log.e(TAG, "Ongoing connection attempt!");
+							//mXMPPConnection.abortConnect();
 						}
 						updateConnectingThread(this);
 						mXMPPConnection.instantShutdown();
@@ -444,7 +447,8 @@ public class SmackableImp implements Smackable {
 					public void run() {
 						if (mConnectingThread.get() != null && mXMPPConnection != null) {
 							// hack: we are not connected yet, so try to abort connect
-							mXMPPConnection.abortConnect();
+							Log.e(TAG, "Ongoing connection attempt!");
+							//mXMPPConnection.abortConnect();
 						}
 						updateConnectingThread(this);
 						mXMPPConnection.disconnect();
@@ -697,14 +701,15 @@ public class SmackableImp implements Smackable {
 	 */
 	private void connectAndLogin(boolean create_account) throws YaximXMPPException {
 		try {
-			if (mXMPPConnection.isConnected()) {
-				try {
-					mXMPPConnection.instantShutdown(); // blocking shutdown prior to re-connection
-				} catch (Exception e) {
-					debugLog("conn.shutdown() failed, ignoring: " + e);
-				}
+			try {
+				debugLog("connectAndLogin: force-instant-shutdown!");
+				mXMPPConnection.instantShutdown(); // blocking shutdown prior to re-connection
+			} catch (Exception e) {
+				debugLog("conn.shutdown() failed, ignoring: " + e);
 			}
+			debugLog("connectAndLogin: entering synchronized mXMPPConnection");
 			synchronized (mXMPPConnection) {
+				debugLog("connectAndLogin: within synchronized mXMPPConnection");
 				mXMPPConnection.connect();
 				if (create_account) {
 					Log.d(TAG, "creating new server account...");
@@ -714,6 +719,7 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.login(mConfig.userName, mConfig.password,
 						Resourcepart.from(mConfig.ressource));
 			}
+			debugLog("connectAndLogin: left synchronized mXMPPConnection");
 			Log.d(TAG, "SM: can resume = " + mXMPPConnection.isSmResumptionPossible());
 		} catch (Exception e) {
 			// actually we just care for IllegalState or NullPointer or XMPPEx.
