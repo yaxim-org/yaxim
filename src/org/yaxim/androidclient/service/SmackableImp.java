@@ -1411,8 +1411,8 @@ public class SmackableImp implements Smackable {
 		if (response.getType() == Type.error) {
 			StanzaError e = response.getError();
 			return (e.getType() == StanzaError.Type.CANCEL) &&
-				("service-unavailable".equals(e.getCondition()) ||
-				 "feature-not-implemented".equals(e.getCondition()));
+				(StanzaError.Condition.service_unavailable == e.getCondition() ||
+				 StanzaError.Condition.feature_not_implemented == e.getCondition());
 		}
 		return false;
 	}
