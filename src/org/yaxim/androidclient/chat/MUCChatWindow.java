@@ -177,7 +177,7 @@ public class MUCChatWindow extends ChatWindow {
 				addNicknameToInput(users.get(which).resource);
 			}
 		});
-		AlertDialog dialog = dialogBuilder.create();
+		final AlertDialog dialog = dialogBuilder.create();
 		dialog.getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent,
@@ -185,6 +185,7 @@ public class MUCChatWindow extends ChatWindow {
 				String nickname = users.get(position).resource;
 				ChatHelper.startChatActivity(MUCChatWindow.this, users.get(position).bare_jid,
 						String.format("%s (%s)", nickname, mUserScreenName), null);
+				dialog.dismiss();
 				return true;
 			}});
 		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
