@@ -356,4 +356,7 @@
 	<string name="upload_uploading">Uploading&#8230;</string>
 	<string name="upload_too_large">file too large!</string>
 
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
 </resources>

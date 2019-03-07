@@ -14,6 +14,7 @@ import android.os.*;
 import android.provider.MediaStore;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.widget.SearchView;
 
 import org.yaxim.androidclient.FileHttpUploadTask;
 import org.yaxim.androidclient.MainWindow;
@@ -114,6 +115,7 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 	private ActionBar actionBar;
 	private ListView mListView;
 	protected ChatWindowAdapter mChatAdapter;
+	protected SearchView mSearchView;
 
 	volatile boolean mMarkRunnableQuit = false;
 	private Runnable mMarkRunnable = new Runnable() {
@@ -495,8 +497,8 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 			return super.onContextItemSelected((android.view.MenuItem) item);
 		}
 	}
-	
 
+	// specific for a roster/PM menu, overridden by MUC
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		if (isContact)
@@ -508,10 +510,26 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 		return inflateGenericContactOptions(menu);
 	}
 
+	// used by subclasses
 	public boolean inflateGenericContactOptions(com.actionbarsherlock.view.Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		//inflater.inflate(R.menu.contact_options, menu);
 		inflater.inflate(R.menu.roster_item_contextmenu, menu);
+
+		mSearchView = (SearchView)menu.findItem(R.id.app_bar_search).getActionView();
+		mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String query) {
+				mChatAdapter.getFilter().filter(query.trim());
+				return true;
+			}
+		});
+		mSearchView.setQueryHint(getString(R.string.search_msg_hint));
 		if (mChatServiceAdapter != null && mChatServiceAdapter.hasFileUpload()) {
 			menu.findItem(R.id.roster_contextmenu_send).setVisible(true);
 		}
@@ -640,6 +658,13 @@ public class ChatWindow extends SherlockFragmentActivity implements OnKeyListene
 					from, to);
 			mScreenName = screenName;
 			mJID = JID;
+			setFilterQueryProvider(new FilterQueryProvider() {
+				@Override
+				public Cursor runQuery(CharSequence q) {
+					return getContentResolver().query(ChatProvider.CONTENT_URI, PROJECTION_FROM,
+							"jid = ? AND message LIKE ?", new String[] { mWithJabberID, "%" + q + "%" }, "date");
+				}
+			});
 		}
 
 		@Override
