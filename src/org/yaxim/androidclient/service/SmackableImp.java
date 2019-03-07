@@ -85,6 +85,8 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.packet.MuclumbusIQ;
+import org.yaxim.androidclient.packet.MuclumbusResult;
 import org.yaxim.androidclient.packet.Oob;
 import org.yaxim.androidclient.packet.PreAuth;
 import org.yaxim.androidclient.util.ConnectionState;
@@ -131,6 +133,8 @@ public class SmackableImp implements Smackable {
 
 		ProviderManager.addExtensionProvider(Oob.ELEMENT, Oob.NAMESPACE, new Oob.Provider());
 		ProviderManager.addExtensionProvider(PreAuth.ELEMENT, PreAuth.NAMESPACE, new PreAuth.Provider());
+		ProviderManager.addIQProvider(MuclumbusIQ.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusIQ.Provider());
+		ProviderManager.addIQProvider(MuclumbusResult.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusResult.Provider());
 		PingManager.setDefaultPingInterval(3*60);
 	}
 
