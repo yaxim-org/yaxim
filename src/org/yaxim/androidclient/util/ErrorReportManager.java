@@ -3,9 +3,6 @@ package org.yaxim.androidclient.util;
 import android.content.Context;
 import android.util.Log;
 
-import com.nullwire.trace.DefaultExceptionHandler;
-import com.nullwire.trace.ExceptionHandler;
-
 import org.yaxim.androidclient.YaximApplication;
 
 /**
@@ -34,21 +31,21 @@ public class ErrorReportManager {
 
 	public ErrorReportManager(Context ctx) {
 		this.ctx = ctx;
-		this.handler = new DefaultExceptionHandler(NOP_HANDLER);
+		//this.handler = new DefaultExceptionHandler(NOP_HANDLER);
 	}
 
 	public void report(Throwable e) {
 		if (!YaximApplication.getInstance().getConfig().reportCrash)
 			return;
-		handler.uncaughtException(Thread.currentThread(), e);
+		//handler.uncaughtException(Thread.currentThread(), e);
 		sendReports();
 	}
 	public void sendReports() {
 		new Thread() {
 			@Override public void run() {
-				Log.d(TAG, "Submitting stack traces...");
-				ExceptionHandler.submitStackTraces();
-				Log.d(TAG, "Finished submitting stack traces...");
+				//Log.d(TAG, "Submitting stack traces...");
+				//ExceptionHandler.submitStackTraces();
+				//Log.d(TAG, "Finished submitting stack traces...");
 			}
 		}.start();
 	}
