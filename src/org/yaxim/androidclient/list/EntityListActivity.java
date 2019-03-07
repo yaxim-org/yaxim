@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 
 import org.jivesoftware.smackx.bookmarks.BookmarkedConference;
 import org.yaxim.androidclient.R;
@@ -32,7 +31,7 @@ import org.yaxim.androidclient.dialogs.EditMUCDialog;
  * activity will be opened with search, and closed when search is closed.
  *
  */
-public class EntityListActivity extends SherlockActivity implements ExpandableListView.OnChildClickListener, SearchView.OnQueryTextListener {
+public class EntityListActivity extends AppCompatActivity implements ExpandableListView.OnChildClickListener, SearchView.OnQueryTextListener {
 	ExpandableListView elv;
 	EntityListAdapter ela;
 	protected SearchView sv;
@@ -65,11 +64,11 @@ public class EntityListActivity extends SherlockActivity implements ExpandableLi
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem si = menu.add(android.R.string.search_go);
-		si.setIcon(R.drawable.abs__ic_search)
-				.setActionView(sv)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		si.setIcon(R.drawable.ic_search_black_24dp);
+		MenuItemCompat.setActionView(si, sv);
+		MenuItemCompat.setShowAsAction(si, MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		if (searchByDefault)
-			si.expandActionView();
+			MenuItemCompat.expandActionView(si);
 
 		return true;
 	}
