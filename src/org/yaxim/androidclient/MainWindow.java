@@ -14,6 +14,7 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
+import org.yaxim.androidclient.list.SearchActivity;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
@@ -759,7 +760,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			aboutDialog();
 			return true;
 		case R.id.menu_muc:
-			new EditMUCDialog(this).withNick(mConfig.userName).show();
+			startActivity(new Intent(this, SearchActivity.class));
 			return true;
 		case R.id.menu_send_invitation:
 			ChatHelper.showQrDialog(this, mConfig.jabberID, XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
