@@ -17,8 +17,7 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
-	android:paddingRight="16dip"
-	android:paddingEnd="16dip">
+	>
 
 	<ImageView android:id="@+id/action_bar_status"
 		android:layout_gravity="center_vertical|left"
@@ -36,6 +35,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:singleLine="true"
+			style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
 			android:ellipsize="end" />
 		<TextView android:id="@+id/action_bar_subtitle"
 			android:layout_width="wrap_content"

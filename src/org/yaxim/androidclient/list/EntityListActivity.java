@@ -64,7 +64,7 @@ public class EntityListActivity extends AppCompatActivity implements ExpandableL
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem si = menu.add(android.R.string.search_go);
-		si.setIcon(R.drawable.ic_search_black_24dp);
+		si.setIcon(android.R.drawable.ic_menu_search);
 		MenuItemCompat.setActionView(si, sv);
 		MenuItemCompat.setShowAsAction(si, MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		if (searchByDefault)

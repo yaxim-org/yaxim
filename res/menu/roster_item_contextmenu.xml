@@ -5,7 +5,7 @@
 		<item   android:id="@+id/app_bar_search"
 			app:actionViewClass="android.support.v7.widget.SearchView"
 			app:showAsAction="never|collapseActionView"
-			android:icon="@drawable/ic_search_black_24dp"
+			android:icon="@android:drawable/ic_menu_search"
 			android:orderInCategory="2"
 			android:title="@android:string/search_go"/>
 		<item   android:id="@+id/roster_contextmenu_contact_mark_as_read"

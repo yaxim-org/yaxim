@@ -1,7 +1,8 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >
 	<item android:id="@+id/menu_show_hide" android:title="@string/Menu_HideOff"
 		android:alphabeticShortcut="o"
-		android:icon="@android:drawable/ic_menu_delete" android:showAsAction="ifRoom"/>
+		android:icon="@android:drawable/ic_menu_delete" app:showAsAction="ifRoom"/>
 
 	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
 		android:alphabeticShortcut="c"
