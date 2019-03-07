@@ -23,6 +23,10 @@ public class MuclumbusIQ extends IQ {
 
 	DataForm searchform;
 
+	/** Create a Muclumbus request IQ with a pre-filled data form.
+	 *
+	 * @param searchform the request data form to send to the search bot
+	 */
 	public MuclumbusIQ(DataForm searchform) {
 		super(ELEMENT, NAMESPACE);
 		this.searchform = searchform;
@@ -34,6 +38,15 @@ public class MuclumbusIQ extends IQ {
 	}
 
 
+	/** Create a default search request for a given query string.
+	 *
+	 * This will return a pre-filled request to search for a string, with the
+	 * results sorted by number of users (a.k.a. relevance).
+	 *
+	 * @param query string to search for
+	 *
+	 * @return an IQ that can be sent to the search bot
+	 */
 	public static MuclumbusIQ searchFor(String query) {
 		DataForm sf = new DataForm(DataForm.Type.submit);
 		FormField fieldType = new FormField(FormField.FORM_TYPE);

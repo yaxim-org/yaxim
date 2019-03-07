@@ -48,13 +48,18 @@ public class MuclumbusResult extends SimpleIQ {
     List<Item> items;
 
     /**
-     * Creates a new IQ result with a list of items.
+     * Creates a new IQ result with a list of search result items.
      */
     public MuclumbusResult(List<Item> items) {
         super(ELEMENT, MuclumbusIQ.NAMESPACE);
         this.items = items;
     }
 
+    /**
+     * Obtain the search results.
+     *
+     * @return the list of search results from this response
+     */
     public List<Item> getItems() {
         return items;
     }
@@ -69,6 +74,9 @@ public class MuclumbusResult extends SimpleIQ {
         public String anonymity_mode;
     }
 
+    /** Parse an individual <item/> from the XML parser.
+     *
+     */
     protected static Item parseItem(XmlPullParser parser, EntityBareJid jid) throws XmlPullParserException, IOException {
         boolean done = false;
         Item item = new Item();
@@ -104,8 +112,6 @@ public class MuclumbusResult extends SimpleIQ {
      * Result parsing Provider.
      */
     public static class Provider extends IQProvider<IQ> {
-
-        // FIXME this provider does return two different types of IQs
         @Override
         public IQ parse(XmlPullParser parser, int initialDepth) throws Exception {
             ArrayList<Item> items = new ArrayList<>();
