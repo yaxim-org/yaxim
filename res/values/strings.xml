@@ -133,7 +133,7 @@
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
-	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_muc">Add / browse…</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
     <string name="Menu_userlist">Participants</string>
@@ -358,5 +358,11 @@
 
 	<!-- Search -->
 	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
 
 </resources>

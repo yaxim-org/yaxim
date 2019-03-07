@@ -82,6 +82,30 @@
 				android:value=".MainWindow"/>
 		</activity>
 
+		<activity android:name=".list.EntityListActivity" android:label="@string/app_name"
+			android:parentActivityName=".MainWindow"
+			android:configChanges="orientation|keyboardHidden|screenSize"
+			android:windowSoftInputMode="stateHidden">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainWindow"/>
+		</activity>
+		<activity android:name=".list.ServiceDiscoveryActivity" android:label="@string/title_service_disco"
+			android:parentActivityName=".MainWindow"
+			android:configChanges="orientation|keyboardHidden|screenSize"
+			android:windowSoftInputMode="stateHidden">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainWindow"/>
+		</activity>
+		<activity android:name=".list.SearchActivity" android:label="@string/Menu_muc"
+			android:parentActivityName=".MainWindow"
+			android:configChanges="orientation|keyboardHidden|screenSize"
+			android:windowSoftInputMode="stateHidden">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainWindow"/>
+		</activity>
 		<activity android:name=".preferences.MainPrefs"
 			android:label="@string/Menu_Settings">
 		</activity>
