@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 
 import org.jivesoftware.smackx.bookmarks.BookmarkedConference;
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.ThemedActivity;
 import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.EntityInfo;
@@ -31,7 +32,7 @@ import org.yaxim.androidclient.dialogs.EditMUCDialog;
  * activity will be opened with search, and closed when search is closed.
  *
  */
-public class EntityListActivity extends AppCompatActivity implements ExpandableListView.OnChildClickListener, SearchView.OnQueryTextListener {
+public class EntityListActivity extends ThemedActivity implements ExpandableListView.OnChildClickListener, SearchView.OnQueryTextListener {
 	ExpandableListView elv;
 	EntityListAdapter ela;
 	protected SearchView sv;

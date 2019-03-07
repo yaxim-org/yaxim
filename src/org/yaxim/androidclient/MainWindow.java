@@ -9,7 +9,6 @@ import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.ChatRoomHelper;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
-import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
@@ -64,19 +63,15 @@ import org.yaxim.androidclient.IXMPPRosterCallback.Stub;
 import org.yaxim.androidclient.service.IXMPPRosterService;
 
 import android.view.Menu;
-import android.view.Window;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
-public class MainWindow extends AppCompatActivity implements ExpandableListView.OnChildClickListener {
+public class MainWindow extends ThemedActivity implements ExpandableListView.OnChildClickListener {
 
 	private static final String TAG = "yaxim.MainWindow";
 
-	private YaximConfiguration mConfig;
 
 	private Handler mainHandler = new Handler();
 
@@ -92,25 +87,13 @@ public class MainWindow extends AppCompatActivity implements ExpandableListView.
 	private ContentObserver mChatObserver = new ChatObserver();
 	private HashMap<String, Boolean> mGroupsExpanded = new HashMap<String, Boolean>();
 
-	private ActionBar actionBar;
-	private String mTheme;
 	private boolean mHandledIntent = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, getString(R.string.build_version));
-		mConfig = YaximApplication.getConfig();
-		mTheme = mConfig.theme;
-		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
 		
-		requestWindowFeature(Window.FEATURE_ACTION_BAR);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		actionBar = getSupportActionBar();
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
-		actionBar.setDisplayShowHomeEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
-
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mRosterObserver);
 		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
@@ -188,6 +171,11 @@ public class MainWindow extends AppCompatActivity implements ExpandableListView.
 					handleGroupChange(groupPosition, true);
 				}
 			});
+	}
+
+	@Override
+	protected void onTitleClicked(View view) {
+		new ChangeStatusDialog(this, mConfig).show();
 	}
 
 	@Override
@@ -659,13 +647,8 @@ public class MainWindow extends AppCompatActivity implements ExpandableListView.
 
 	private void displayOwnStatus() {
 		// This and many other things like it should be done with observer
-		actionBar.setIcon(getStatusActionIcon());
-
-		if (mConfig.statusMessage.equals("")) {
-			actionBar.setSubtitle(null);
-		} else {
-			actionBar.setSubtitle(mConfig.statusMessage);
-		}
+		setIcon(getStatusActionIcon());
+		setSubtitle(mConfig.statusMessage);
 	}
 
 	private void aboutDialog() {

@@ -17,12 +17,11 @@ import org.yaxim.androidclient.FileHttpUploadTask;
 
 import org.yaxim.androidclient.MainWindow;
 import org.yaxim.androidclient.R;
-import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.ThemedActivity;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider;
-import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.IXMPPChatService;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.FileHelper;
@@ -33,8 +32,6 @@ import org.yaxim.androidclient.util.XMPPHelper;
 import eu.siacs.conversations.utils.StylingHelper;
 
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 
 import android.view.Menu;
@@ -73,7 +70,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 @SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
-public class ChatWindow extends AppCompatActivity implements OnKeyListener,
+public class ChatWindow extends ThemedActivity implements OnKeyListener,
 		TextWatcher, LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
 
 	private static final int REQUEST_FILE = 1;
@@ -102,11 +99,7 @@ public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 
 	private static HashMap<String, String> messageDrafts = new HashMap<String, String>();
 
-	protected YaximConfiguration mConfig;
 	private ContentObserver mContactObserver = new ContactObserver();
-	private ImageView mStatusMode;
-	private TextView mTitle;
-	private TextView mSubTitle;
 	private Button mSendButton = null;
 	private ProgressBar mLoadingProgress;
 	protected EditText mChatInput = null;
@@ -118,7 +111,6 @@ public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 	private ServiceConnection mChatServiceConnection;
 	private XMPPChatServiceAdapter mChatServiceAdapter;
 	private int mChatFontSize;
-	private ActionBar actionBar;
 	private ListView mListView;
 	protected ChatWindowAdapter mChatAdapter;
 	protected SearchView mSearchView;
@@ -142,19 +134,16 @@ public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		mConfig = YaximApplication.getConfig();
 		String titleUserid = setContactFromUri();
 		Log.d(TAG, "onCreate, registering XMPP service");
 		registerXMPPService();
 
-		setTheme(mConfig.getTheme());
 		super.onCreate(savedInstanceState);
 		if (!mIsMucPM)
 			XMPPHelper.setStaticNFC(this, "xmpp:" + java.net.URLEncoder.encode(mWithJabberID) + "?roster;name=" + java.net.URLEncoder.encode(mUserScreenName));
 
 		mChatFontSize = Integer.valueOf(mConfig.chatFontSize);
 
-		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
 
 		setContentView(R.layout.mainchat);
@@ -162,10 +151,6 @@ public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 		getContentResolver().registerContentObserver(RosterProvider.CONTENT_URI,
 				true, mContactObserver);
 		
-		actionBar = getSupportActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
 		// Setup the actual chat view
 		mListView = (ListView) findViewById(android.R.id.list);
 		mChatAdapter = new ChatWindowAdapter(null, PROJECTION_FROM, PROJECTION_TO,
@@ -178,7 +163,7 @@ public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 		setSendButton();
 		setUserInput();
 		
-		setCustomTitle(titleUserid);
+		setTitle(titleUserid);
 
 		// Setup the loader
 		getSupportLoaderManager().initLoader(CHAT_MSG_LOADER, null, this);
@@ -190,19 +175,6 @@ public class ChatWindow extends AppCompatActivity implements OnKeyListener,
 		mMarkThread = new HandlerThread("MarkAsReadThread: " + mWithJabberID);
 		mMarkThread.start();
 		mMarkHandler = new Handler(mMarkThread.getLooper());
-	}
-
-	private void setCustomTitle(String title) {
-		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.chat_action_title, null);
-		mStatusMode = (ImageView)layout.findViewById(R.id.action_bar_status);
-		mTitle = (TextView)layout.findViewById(R.id.action_bar_title);
-		mSubTitle = (TextView)layout.findViewById(R.id.action_bar_subtitle);
-		mTitle.setText(title);
-
-		setTitle(null);
-		getSupportActionBar().setCustomView(layout);
-		getSupportActionBar().setDisplayShowCustomEnabled(true);
 	}
 
 	@Override
