@@ -3,6 +3,7 @@
 	android:orientation="horizontal"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
+	android:gravity="center_vertical"
 	style="?attr/MainGroup"
 	>
 
@@ -19,10 +20,21 @@
 		android:ellipsize="end"
 		/>
 
+	<ProgressBar
+		android:id="@+id/loading_progress"
+		style="@android:style/Widget.ProgressBar.Small"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:visibility="gone"
+		/>
+
 	<TextView android:id="@+id/members"
 		style="@style/RosterGroupName"
 		android:paddingRight="6dp"
 		android:paddingEnd="6dp"
+		android:paddingLeft="4dp"
+		android:paddingStart="4dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		/>
