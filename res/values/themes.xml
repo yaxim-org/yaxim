@@ -7,9 +7,6 @@
 <!--     the unprefixed ones (without android:) are for the Sherlock implementation -->
 
     <style name="YaximLightTheme" parent="Theme.AppCompat.Light">
-        <item name="android:actionBarStyle">@style/MyActionBarLight</item>
-        <item name="actionBarStyle">@style/MyActionBarLight</item>
-        
         <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
         <item name="MainGroup">@style/RosterGroupName.Light</item>
         <item name="MainChild">@style/RosterGroupItem.Light</item>
@@ -44,14 +41,11 @@
         <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
     </style>
 
-    <style name="MyActionBarDark" parent="Widget.AppCompat.ActionBar">
-        <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
-        <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
-    </style>
-
-    <style name="YaximDarkTheme" parent="@style/Theme.AppCompat">
-        <item name="android:actionBarStyle">@style/MyActionBarDark</item>
-        <item name="actionBarStyle">@style/MyActionBarDark</item>
+    <style name="YaximDarkTheme" parent="Theme.AppCompat">
+        <item name="colorPrimary">#404040</item>
+        <item name="colorPrimaryDark">#303030</item>
+        <item name="colorAccent">#d5e6b3</item>
+        <item name="android:windowBackground">@color/colorBackground.dark</item>
         <item name="MainGroup">@style/RosterGroupName.Dark</item>
         <item name="MainChild">@style/RosterGroupItem</item>
         <item name="OnlineFriends">@drawable/ic_action_online_friends_dark</item>
@@ -71,4 +65,5 @@
 	<item name="ic_action_add_person">@drawable/ic_action_add_person_dark</item>
     </style>
 
+    <color name="colorBackground.dark">#101010</color>
 </resources>
