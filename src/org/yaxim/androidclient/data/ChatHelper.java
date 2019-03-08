@@ -158,7 +158,7 @@ public class ChatHelper {
 		final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
 		hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
 		try {
-			BitMatrix matrix = qr.encode(value, BarcodeFormat.QR_CODE, size, size, hints);
+			BitMatrix matrix = qr.encode(value, BarcodeFormat.QR_CODE, 0, 0, hints);
 			int final_width = matrix.getWidth();
 			int final_height = matrix.getHeight();
 			int[] pixels = new int[final_width * final_height];
@@ -167,7 +167,7 @@ public class ChatHelper {
 					pixels[x + final_width*y] = matrix.get(x, y) ? Color.BLACK : Color.WHITE;
 			Bitmap bmp = Bitmap.createBitmap(final_width, final_height, Bitmap.Config.ARGB_8888);
 			bmp.setPixels(pixels, 0, final_width, 0, 0, final_width, final_height);
-			return bmp;
+			return Bitmap.createScaledBitmap(bmp, size, size, false);
 		} catch (WriterException e) {
 			e.printStackTrace();
 			return null;
