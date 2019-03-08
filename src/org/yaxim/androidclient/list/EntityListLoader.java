@@ -27,6 +27,7 @@ import org.yaxim.androidclient.util.XMPPHelper;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -62,11 +63,20 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 
 	}
 
-	private String langToEmoji(String lang) {
-		lang = lang.toUpperCase();
-		int firstLetter = Character.codePointAt(lang, 0) - 0x41 + 0x1F1E6;
-		int secondLetter = Character.codePointAt(lang, 1) - 0x41 + 0x1F1E6;
-		return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+	private String langToDisplay(String lang) {
+		if (TextUtils.isEmpty(lang))
+			return null;
+		Locale l;
+		String[] tagsoup = lang.split("-");
+		if (tagsoup.length >= 2)
+			l = new Locale(tagsoup[0], tagsoup[1]);
+		else if (tagsoup.length == 1)
+			l = new Locale(tagsoup[0]);
+		else
+			return null;
+		if (l != null && l.getDisplayLanguage() != null)
+			return l.getDisplayLanguage();
+		return null;
 	}
 
 	void loadMyMUCs(XMPPConnection c) throws Exception {
@@ -135,8 +145,9 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 			for (MuclumbusResult.Item muc : r.getItems()) {
 				StatusMode sm = muc.is_open ? StatusMode.available : StatusMode.dnd;
 				String desc = muc.description;
-				if (!TextUtils.isEmpty(muc.language) && muc.language.length() == 2) {
-					desc = langToEmoji(muc.language) + " " + muc.description;
+				String lang = langToDisplay(muc.language);
+				if (lang != null) {
+					muc.name = muc.name + " (" + lang + ")";
 				}
 				publishProgress(new EntityInfo(EnumSet.of(EntityInfo.Type.MUC, EntityInfo.Type.SearchResult),
 						muc.address.toString(), sm, 0, muc.name, desc, muc.nusers, muc));
