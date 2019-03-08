@@ -63,6 +63,8 @@ public class SearchActivity extends EntityListActivity {
 					public void onGroupExpand(int groupPosition) {
 						switch (groupPosition) {
 							case 1:
+								if (mucSearchLoader != null)
+									return;
 								mucSearchLoader = new EntityListLoader(EntityListLoader.MODE_MUCLUMBUS, search);
 								initiateMUCSearch(sv.getQuery().toString());
 								break;
