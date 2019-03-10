@@ -357,6 +357,7 @@
 	<string name="upload_compress">Compressing picture&#8230;</string>
 	<string name="upload_uploading">Uploading&#8230;</string>
 	<string name="upload_too_large">file too large!</string>
+	<string name="storage_permission">yaxim needs storage access to send files!</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Message content</string>

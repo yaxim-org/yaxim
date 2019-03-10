@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import android.Manifest;
 import android.content.*;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.provider.MediaStore;
@@ -31,6 +33,8 @@ import org.yaxim.androidclient.util.XMPPHelper;
 
 import eu.siacs.conversations.utils.StylingHelper;
 
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 
@@ -260,7 +264,74 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 		mChatServiceAdapter.sendFile(path, mWithJabberID, flags);
 	}
 
+	public void requestStoragePermissionAndRun(int request_id) {
+		if (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+					Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				// Show an explanation to the user *asynchronously* -- don't block
+				// this thread waiting for the user's response! After the user
+				// sees the explanation, try again to request the permission.
+				Toast.makeText(this, R.string.storage_permission, Toast.LENGTH_LONG).show();
+			}
+			ActivityCompat.requestPermissions(this,
+					new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+					request_id);
+
+		} else {
+			// Permission has already been granted
+			runPermissionAction(request_id);
+		}
+	}
+
+	public int requestIdForMenuId(int menu_id) {
+		switch (menu_id) {
+		case R.id.roster_contextmenu_take_image: return REQUEST_CAMERA;
+		case R.id.roster_contextmenu_send_image: return REQUEST_IMAGE;
+		case R.id.roster_contextmenu_send_file: return REQUEST_FILE;
+		default: throw new IllegalStateException("Unknown menu ID!");
+		}
+	}
+	public void runPermissionAction(int request_id) {
+		Intent intent;
+		switch (request_id) {
+		case REQUEST_CAMERA:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			File tempFile = FileHelper.createImageFile(this);
+			if (tempFile == null) {
+				Toast.makeText(this, "Error creating file!", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			cameraPictureUri = Uri.fromFile(tempFile);
+			// TODO: wrap file Uri into a FileProvider to target Android M+
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUri);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
+			return;
+		case REQUEST_IMAGE:
+			intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_send_image)), REQUEST_IMAGE);
+			return;
+		case REQUEST_FILE:
+			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+			fileIntent.setType("*/*");
+			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.roster_contextmenu_send_file)), REQUEST_FILE);
+			return;
+		}
+	}
 	@Override
+	public void onRequestPermissionsResult(int requestCode,
+		   String permissions[], int[] grantResults) {
+		if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+			runPermissionAction(requestCode);
+		else
+			Toast.makeText(this, R.string.storage_permission, Toast.LENGTH_LONG).show();
+	}
+
+		@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != RESULT_OK)
 			return;
@@ -525,31 +596,11 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 			finish();
 			return true;
 		case R.id.roster_contextmenu_take_image:
-			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			File tempFile = FileHelper.createImageFile(this);
-			if (tempFile == null) {
-				Toast.makeText(this, "Error creating file!", Toast.LENGTH_SHORT).show();
-				return true;
-			}
-			cameraPictureUri = Uri.fromFile(tempFile);
-			// TODO: wrap file Uri into a FileProvider to target Android M+
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUri);
-			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
-			return true;
 		case R.id.roster_contextmenu_send_image:
-			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("image/*");
-			intent.addCategory(Intent.CATEGORY_OPENABLE);
-			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_send_image)), REQUEST_IMAGE);
-			return true;
 		case R.id.roster_contextmenu_send_file:
 			if (!mChatServiceAdapter.isServiceAuthenticated()) { showToastNotification(R.string.Global_authenticate_first); return true; }
-			Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-			fileIntent.setType("*/*");
-			fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
-			startActivityForResult(Intent.createChooser(fileIntent, getString(R.string.roster_contextmenu_send_file)), REQUEST_FILE);
+			//runPermissionAction(requestIdForMenuId(item.getItemId()));
+			requestStoragePermissionAndRun(requestIdForMenuId(item.getItemId()));
 			return true;
 
 		// items that require an authenticated connection
