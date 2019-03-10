@@ -40,6 +40,8 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
+import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
+
 public abstract class GenericService extends Service {
 
 	private static final String TAG = "yaxim.Service";
@@ -49,7 +51,6 @@ public abstract class GenericService extends Service {
 	private static final int SECONDS_OF_SILENCE = 144; /* Conversations: grace_period = "short" */
 
 	protected NotificationManagerCompat mNotificationMGR;
-	private Notification mNotification;
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
 	protected WakeLock mWakeLock;
@@ -175,30 +176,32 @@ public abstract class GenericService extends Service {
 		//adding the messages into the messageList
 		messageList.add(body.toString());
 
-		setNotification(fromJid, jid[1], fromUserName,
-				body, msg_long, messageList,
-				is_error, isMuc);
-		setLEDNotification(isMuc, fromJid);
-		
-		
+		boolean vibrate = false;
 		if(!silent_notification) {
-			mNotification.sound = sound;
-			// If vibration is set to "system default", add the vibration flag to the 
-			// notification and let the system decide.
 			String vibration = mConfig.getJidString(isMuc, PreferenceConstants.VIBRATIONNOTIFY, fromJid, "OFF");
-			if ("SYSTEM".equals(vibration)) {
-				mNotification.defaults |= Notification.DEFAULT_VIBRATE;
-			} else if ("ALWAYS".equals(vibration)) {
+			switch (vibration) {
+			case "SYSTEM":
+				vibrate = true;
+				break;
+			case "ALWAYS":
 				mVibrator.vibrate(400);
+				break;
 			}
-		}
-		mNotificationMGR.notify(notifyId, mNotification);
+		} else
+			sound = null; // override ringtone with silent_notification
+		boolean blink = mConfig.getJidBoolean(isMuc, PreferenceConstants.LEDNOTIFY, fromJid, false);
+		Notification n = setNotification(fromJid, jid[1], fromUserName,
+				body, msg_long, messageList,
+				blink, sound, vibrate, isMuc);
+
+		
+		mNotificationMGR.notify(notifyId, n);
 		updateBadger();
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, SpannableStringBuilder msg_long,
-								 ArrayList<String> messageList, boolean is_error, boolean isMuc) {
+	private Notification setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, SpannableStringBuilder msg_long,
+										 ArrayList<String> messageList, boolean blink, Uri ringtone, boolean vibrate, boolean isMuc) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -285,6 +288,7 @@ public abstract class GenericService extends Service {
 				android.R.drawable.ic_menu_edit,
 				getString(R.string.notification_reply), msgResponsePendingIntent)
 			.addRemoteInput(remoteInput).build();
+		// TODO: split public and private parts, use .setPublicVersion()
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
 			.setContentTitle(title)
 			.setContentText(message)
@@ -298,27 +302,21 @@ public abstract class GenericService extends Service {
 			.setAutoCancel(true);
 		if (Build.VERSION.SDK_INT >= 24) // use Android7 in-notification reply, fall back to Activity
 			notificationBuilder.addAction(actReply);
-		mNotification = notificationBuilder
+		notificationBuilder
 			.addAction(actMarkRead)
 			//.addAction(android.R.drawable.ic_menu_share, "Forward", msgHeardPendingIntent)
 			.extend(new CarExtender().setUnreadConversation(ucb.build()))
 			.extend(new NotificationCompat.WearableExtender()
 					.addAction(actReply)
 					.addAction(actMarkRead))
-			.build();
-		mNotification.defaults = 0;
-
-		if (mNotificationCounter > 1)
-			mNotification.number = mNotificationCounter;
-	}
-
-	private void setLEDNotification(boolean isMuc, String fromJid) {
-		if (mConfig.getJidBoolean(isMuc, PreferenceConstants.LEDNOTIFY, fromJid, false)) {
-			mNotification.ledARGB = Color.MAGENTA;
-			mNotification.ledOnMS = 300;
-			mNotification.ledOffMS = 1000;
-			mNotification.flags |= Notification.FLAG_SHOW_LIGHTS;
-		}
+			.setDefaults(vibrate ? DEFAULT_VIBRATE : 0)
+			.setNumber(mNotificationCounter)
+			;
+		if (blink)
+			notificationBuilder.setLights(Color.MAGENTA, 300, 1000);
+		if (ringtone != null)
+			notificationBuilder.setSound(ringtone);
+		return notificationBuilder.build();
 	}
 
 	protected void shortToastNotify(String msg) {
