@@ -5,6 +5,8 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import android.content.Context;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.net.ConnectivityManager;
@@ -16,7 +18,19 @@ import android.preference.PreferenceManager;
 public class YaximBroadcastReceiver extends BroadcastReceiver {
 	static final String TAG = "yaxim.BroadcastReceiver";
 	private static int networkType = -1;
-	
+	private static YaximBroadcastReceiver mSingleton;
+
+	public YaximBroadcastReceiver() {
+		super();
+		mSingleton = this;
+	}
+
+	public static YaximBroadcastReceiver getInstance() {
+		if (mSingleton == null)
+			new YaximBroadcastReceiver();
+		return mSingleton;
+	}
+
 	public static void initNetworkStatus(Context context) {
 		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -30,19 +44,43 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 		Log.d(TAG, "initNetworkStatus -> " + networkType);
 	}
 
+	private boolean trackingConnectivity = false;
+	public void trackConnectivity(Context ctx) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !trackingConnectivity) {
+			IntentFilter filter = new IntentFilter();
+			filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+			ctx.registerReceiver(YaximBroadcastReceiver.getInstance(), filter);
+			trackingConnectivity = true;
+		}
+	}
+	public void untrackConnectivity(Context ctx) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && trackingConnectivity) {
+			ctx.unregisterReceiver(this);
+			trackingConnectivity = false;
+		}
+	}
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "onReceive " + intent);
 		// prepare intent
 		Intent xmppServiceIntent = new Intent(context, XMPPService.class);
+		boolean connstartup = PreferenceManager.getDefaultSharedPreferences(context)
+				.getBoolean(PreferenceConstants.CONN_STARTUP, false);
 
 		if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
 			Log.d(TAG, "System shutdown, stopping yaxim.");
 			context.stopService(xmppServiceIntent);
 		} else
+		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+			if (connstartup) // ignore event, we are not running
+				trackConnectivity(context);
+		} else
+		if (intent.getAction().equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
+			if (connstartup) // ignore event, we are not running
+				context.startService(xmppServiceIntent);
+		} else
 		if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-			boolean connstartup = PreferenceManager.getDefaultSharedPreferences(context)
-				.getBoolean(PreferenceConstants.CONN_STARTUP, false);
 			if (!connstartup) // ignore event, we are not running
 				return;
 

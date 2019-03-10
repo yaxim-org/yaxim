@@ -136,6 +136,7 @@ public class XMPPService extends GenericService {
 		}
 		unregisterReceiver(mAlarmReceiver);
 		unregisterReceiver(mRingerModeReceiver);
+		YaximBroadcastReceiver.getInstance().untrackConnectivity(this);
 	}
 
 	@Override
@@ -179,6 +180,7 @@ public class XMPPService extends GenericService {
 		}
 		
 		mConnectionDemanded.set(mConfig.autoConnect);
+		YaximBroadcastReceiver.getInstance().trackConnectivity(this);
 		doConnect();
 		return START_STICKY;
 	}
