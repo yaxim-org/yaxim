@@ -13,6 +13,7 @@ public class PreferenceConstants {
 	public final static String PRIORITY = "account_prio";
 	public final static int DEFAULT_PORT_INT = 5222;
 	public final static String CONN_STARTUP = "connstartup";
+	public final static String DOZE_NAG = "doze_nag";
 	public final static String MESSAGE_CARBONS = "carbons";
 	public final static String SHOW_OFFLINE = "showOffline";
 	public final static String ENABLE_GROUPS = "enableGroups";

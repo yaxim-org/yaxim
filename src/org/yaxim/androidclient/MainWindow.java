@@ -42,8 +42,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -988,6 +990,22 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		}
 	}
 
+	private void checkIgnoreBatteryOptimization() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (prefs.getLong(PreferenceConstants.DOZE_NAG, 0) > 0)
+				return; // we asked the user already
+			String pn = getPackageName();
+			if (!((PowerManager) getSystemService(POWER_SERVICE)).isIgnoringBatteryOptimizations(pn)) {
+				prefs.edit().putLong(PreferenceConstants.DOZE_NAG, System.currentTimeMillis()).commit();
+				startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+						.setData(Uri.parse("package:" + pn)));
+
+			}
+		}
+	}
+
 	private void showFirstStartUpDialog() {
 		String jid = null;
 		String preauth = null;
@@ -1026,6 +1044,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			// implement auto-connect when started from launcher
 			if (!mConfig.autoConnect && Intent.ACTION_MAIN.equals(getIntent().getAction()))
 				prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, true).commit();
+			checkIgnoreBatteryOptimization();
 		}
 	}
 

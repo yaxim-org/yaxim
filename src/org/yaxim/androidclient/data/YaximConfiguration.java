@@ -101,8 +101,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		Log.i(TAG, "onSharedPreferenceChanged(): " + key);
 		loadPrefs(prefs);
-		if (PreferenceConstants.JID.equals(key))
+		if (PreferenceConstants.JID.equals(key)) {
 			rosterreset_required = true;
+			prefs.edit().remove(PreferenceConstants.DOZE_NAG).commit();
+		}
 		if (RECONNECT_PREFS.contains(key))
 			reconnect_required = true;
 		if (PRESENCE_PREFS.contains(key))
