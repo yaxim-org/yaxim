@@ -28,6 +28,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.Uri.Builder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
@@ -545,6 +546,11 @@ public class XMPPService extends GenericService {
 		}
 	}
 
+	static int invitationDrawableId() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+			return R.drawable.ic_action_contacts_online;
+		else return R.drawable.ic_online;
+	}
 	private void createAdapter() {
 		System.setProperty("smack.debugEnabled", "" + mConfig.smackdebug);
 		try {
@@ -609,7 +615,7 @@ public class XMPPService extends GenericService {
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
 						 .setContentTitle(roomname)
 						 .setContentText(body)
-						 .setSmallIcon(R.drawable.ic_action_contacts_online)
+						 .setSmallIcon(invitationDrawableId())
 						 .setTicker(invite_from + ": " + roomname)
 						 .setStyle(new NotificationCompat.BigTextStyle()
 								 .bigText(roomdescription)

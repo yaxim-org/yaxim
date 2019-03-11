@@ -10,6 +10,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatDelegate;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -40,6 +41,7 @@ public class YaximApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 		mMTM = new MemorizingTrustManager(this);
 		mConfig = new YaximConfiguration(this);
 		// since Android 7, you need to manually register for network changes
