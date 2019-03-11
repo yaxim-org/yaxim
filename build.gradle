@@ -68,7 +68,7 @@ play {
 }
 
 android {
-	compileSdkVersion 25
+	compileSdkVersion 28
 	buildToolsVersion "28.0.3"
 	playAccountConfigs {
 		defaultAccountConfig {
@@ -78,7 +78,7 @@ android {
 	defaultConfig {
 		minSdkVersion 14
 		//noinspection ExpiredTargetSdkVersion
-		targetSdkVersion 25
+		targetSdkVersion 28
 		versionName "$build_revision"
 		playAccountConfig = playAccountConfigs.defaultAccountConfig
 		vectorDrawables.useSupportLibrary = true
@@ -122,26 +122,26 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:25.+'
+	implementation 'com.android.support:appcompat-v7:28.+'
 	// implicit compile 'com.android.support:support-v4:25.+'
-	compile project('MemorizingTrustManager')
-	compile fileTree(include: ['*.jar'], dir: 'libs')
-	compile "me.leolin:ShortcutBadger:1.1.22@aar"
-	compile 'org.hsluv:hsluv:0.2'
-	compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
-	compile 'com.google.zxing:core:3.3.3'
+	implementation project('MemorizingTrustManager')
+	api fileTree(include: ['*.jar'], dir: 'libs')
+	implementation "me.leolin:ShortcutBadger:1.1.22@aar"
+	implementation 'org.hsluv:hsluv:0.2'
+	implementation 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
+	implementation 'com.google.zxing:core:3.3.3'
     // smack4
 	//compile project("Smack:smack-android-extensions")
 	//compile project("Smack:smack-tcp")
 	//compile project("Smack:smack-im")
 	//// for Carbons, and other
 	//compile project("Smack:smack-experimental")
-	compile "org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT"
-	compile "org.igniterealtime.smack:smack-android-extensions:4.3.3-SNAPSHOT"
-	compile "org.igniterealtime.smack:smack-tcp:4.3.3-SNAPSHOT"
-	compile "org.igniterealtime.smack:smack-im:4.3.3-SNAPSHOT"
+	implementation "org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT"
+	implementation "org.igniterealtime.smack:smack-android-extensions:4.3.3-SNAPSHOT"
+	implementation "org.igniterealtime.smack:smack-tcp:4.3.3-SNAPSHOT"
+	implementation "org.igniterealtime.smack:smack-im:4.3.3-SNAPSHOT"
 	// for Carbons, and other
-	compile "org.igniterealtime.smack:smack-experimental:4.3.3-SNAPSHOT"
+	implementation "org.igniterealtime.smack:smack-experimental:4.3.3-SNAPSHOT"
 
 }
 
