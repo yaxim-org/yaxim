@@ -6,15 +6,15 @@
 
 	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
 		android:alphabeticShortcut="c"
-		android:icon="@drawable/ic_menu_plug"/>
+		/>
 
 	<item android:id="@+id/menu_add_clipboard" android:title="@string/Menu_addClipboard"
 		android:visible="false"
-		android:icon="?attr/ic_action_add_person" />
+		android:icon="@drawable/ic_action_person_add" />
 
 	<item android:id="@+id/menu_add_friend" android:title="@string/Menu_addFriend"
 		android:alphabeticShortcut="a"
-		android:icon="?attr/ic_action_add_person" />
+		android:icon="@drawable/ic_action_person_add" />
 
 	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" 
 	    android:alphabeticShortcut="t" />

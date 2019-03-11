@@ -8,10 +8,9 @@
 
     <style name="YaximLightTheme" parent="Theme.AppCompat.Light">
         <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
+        <item name="colorControlNormal">#800080</item>
         <item name="MainGroup">@style/RosterGroupName.Light</item>
         <item name="MainChild">@style/RosterGroupItem.Light</item>
-        <item name="OnlineFriends">@drawable/ic_action_online_friends_light</item>
-        <item name="AllFriends">@drawable/ic_action_all_friends_light</item>
         <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
         <item name="ChatMsgHeaderMeColor">#ff6d6dcc</item>
         <item name="ChatMsgHeaderYouColor">#ffcc5050</item>
@@ -20,12 +19,6 @@
 		<item name="ChatStoredMessageColor">#60b0b0b0</item>
         <item name="ChatText">@style/ChatText.Light</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
-	<item name="ic_action_group">@drawable/ic_action_group_light</item>
-	<item name="ic_action_new_attachment">@drawable/ic_action_new_attachment_light</item>
-	<item name="ic_action_camera">@drawable/ic_action_camera_light</item>
-	<item name="ic_action_collection">@drawable/ic_action_collection_light</item>
-	<item name="ic_action_picture">@drawable/ic_action_picture_light</item>
-	<item name="ic_action_add_person">@drawable/ic_action_add_person_light</item>
     </style>
 
     <style name="IndeterminateProgress" parent="Widget.AppCompat.ProgressBar">
@@ -48,8 +41,6 @@
         <item name="android:windowBackground">@color/colorBackground.dark</item>
         <item name="MainGroup">@style/RosterGroupName.Dark</item>
         <item name="MainChild">@style/RosterGroupItem</item>
-        <item name="OnlineFriends">@drawable/ic_action_online_friends_dark</item>
-        <item name="AllFriends">@drawable/ic_action_all_friends_dark</item>
         <item name="ChatMsgHeaderMeColor">#ff8888ff</item>
         <item name="ChatMsgHeaderYouColor">#ffff8888</item>
 		<item name="ChatNewMessageColor">#ff404040</item>
@@ -57,12 +48,6 @@
 		<item name="ErrorView">@style/StyleErrorView</item>
         <item name="ChatText">@style/ChatText</item>
         <item name="dialogTextColor">@style/dialogBackground</item>
-	<item name="ic_action_group">@drawable/ic_action_group_dark</item>
-	<item name="ic_action_new_attachment">@drawable/ic_action_new_attachment_dark</item>
-	<item name="ic_action_camera">@drawable/ic_action_camera_dark</item>
-	<item name="ic_action_collection">@drawable/ic_action_collection_dark</item>
-	<item name="ic_action_picture">@drawable/ic_action_picture_dark</item>
-	<item name="ic_action_add_person">@drawable/ic_action_add_person_dark</item>
     </style>
 
     <color name="colorBackground.dark">#101010</color>

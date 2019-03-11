@@ -5,7 +5,7 @@
 		<item   android:id="@+id/app_bar_search"
 			app:actionViewClass="android.support.v7.widget.SearchView"
 			app:showAsAction="never|collapseActionView"
-			android:icon="@android:drawable/ic_menu_search"
+			android:icon="@drawable/ic_action_search"
 			android:orderInCategory="2"
 			android:title="@android:string/search_go"/>
 		<item   android:id="@+id/roster_contextmenu_contact_mark_as_read"
@@ -18,7 +18,7 @@
 			/>
 		<item   android:id="@+id/roster_contextmenu_send"
 			android:title="@string/roster_contextmenu_send"
-			android:icon="?attr/ic_action_new_attachment"
+			android:icon="@drawable/ic_action_attach"
 			app:showAsAction="always"
 			android:orderInCategory="1"
 			android:visible="false"
@@ -26,17 +26,17 @@
 			<menu>
 				<item
 					android:id="@+id/roster_contextmenu_take_image"
-					android:icon="?attr/ic_action_camera"
+					android:icon="@drawable/ic_action_camera"
 					android:title="@string/roster_contextmenu_take_image"
 					/>
 				<item
 					android:id="@+id/roster_contextmenu_send_image"
-					android:icon="?attr/ic_action_picture"
+					android:icon="@drawable/ic_action_photo"
 					android:title="@string/roster_contextmenu_send_image"
 					/>
 				<item
 					android:id="@+id/roster_contextmenu_send_file"
-					android:icon="?attr/ic_action_collection"
+					android:icon="@drawable/ic_action_file"
 					android:title="@string/roster_contextmenu_send_file"
 					/>
 			</menu>

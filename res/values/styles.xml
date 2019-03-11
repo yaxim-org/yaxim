@@ -81,5 +81,4 @@
     <attr name="ic_action_camera" format="reference"/>
     <attr name="ic_action_collection" format="reference"/>
     <attr name="ic_action_picture" format="reference"/>
-    <attr name="ic_action_add_person" format="reference"/>
 </resources>

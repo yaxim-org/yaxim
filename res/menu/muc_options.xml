@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto" >
 	<item android:id="@+id/chat_optionsmenu_userlist"
 		android:title="@string/Menu_userlist"
-		android:icon="?attr/ic_action_group"
+		android:icon="@drawable/ic_action_contacts_online"
 		app:showAsAction="ifRoom" />
 	<item   android:id="@+id/roster_contextmenu_muc_edit"
 		android:title="@string/roster_contextmenu_muc_edit"

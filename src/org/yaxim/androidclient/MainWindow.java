@@ -598,10 +598,11 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		setMenuItem(menu, R.id.menu_connect, getConnectDisconnectIcon(),
+		setMenuItem(menu, R.id.menu_connect, 0,
 				getConnectDisconnectText());
-		setMenuItem(menu, R.id.menu_show_hide, getShowHideMenuIcon(),
-				getShowHideMenuText());
+		setMenuItem(menu, R.id.menu_show_hide,
+				mConfig.showOffline ? R.drawable.ic_action_contacts_all : R.drawable.ic_action_contacts_online,
+				mConfig.showOffline ? getString(R.string.Menu_HideOff) : getString(R.string.Menu_ShowOff));
 		setMenuItemFromClipboard(menu, R.id.menu_add_clipboard);
 		return true;
 	}
@@ -611,20 +612,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		return applyMainMenuChoice(item);
 	}
 
-	private int getShowHideMenuIcon() {
-		TypedValue tv = new TypedValue();
-		if (mConfig.showOffline) {
-			getTheme().resolveAttribute(R.attr.OnlineFriends, tv, true);
-			return tv.resourceId;
-		}
-		getTheme().resolveAttribute(R.attr.AllFriends, tv, true);
-		return tv.resourceId;
-	}
-
-	private String getShowHideMenuText() {
-		return mConfig.showOffline ? getString(R.string.Menu_HideOff)
-				: getString(R.string.Menu_ShowOff);
-	}
 
 	public StatusMode getStatusMode() {
 		return mConfig.getPresenceMode();
@@ -867,13 +854,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			stopService(xmppServiceIntent);
 		} else
 			startConnection(false);
-	}
-
-	private int getConnectDisconnectIcon() {
-		if (isConnected() || isConnecting()) {
-			return R.drawable.ic_menu_unplug;
-		}
-		return R.drawable.ic_menu_plug;
 	}
 
 	private String getConnectDisconnectText() {

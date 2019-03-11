@@ -609,7 +609,7 @@ public class XMPPService extends GenericService {
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
 						 .setContentTitle(roomname)
 						 .setContentText(body)
-						 .setSmallIcon(R.drawable.ic_action_group_dark)
+						 .setSmallIcon(R.drawable.ic_action_contacts_online)
 						 .setTicker(invite_from + ": " + roomname)
 						 .setStyle(new NotificationCompat.BigTextStyle()
 								 .bigText(roomdescription)
