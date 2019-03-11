@@ -11,6 +11,8 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -99,6 +101,16 @@ public abstract class GenericService extends Service {
 
 	private void addNotificationMGR() {
 		mNotificationMGR = NotificationManagerCompat.from(this);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			NotificationManager oreoDamager = getSystemService(NotificationManager.class);
+			NotificationChannel nc_status = new NotificationChannel("status",
+					getString(R.string.notification_status), NotificationManager.IMPORTANCE_LOW);
+			oreoDamager.createNotificationChannel(nc_status);
+			NotificationChannel nc_msg = new NotificationChannel("messages",
+				getString(R.string.notification_msg), NotificationManager.IMPORTANCE_DEFAULT);
+			nc_msg.setShowBadge(true);
+			oreoDamager.createNotificationChannel(nc_msg);
+		}
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
@@ -289,7 +301,7 @@ public abstract class GenericService extends Service {
 				getString(R.string.notification_reply), msgResponsePendingIntent)
 			.addRemoteInput(remoteInput).build();
 		// TODO: split public and private parts, use .setPublicVersion()
-		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "messages")
 			.setContentTitle(title)
 			.setContentText(message)
 			.setStyle(new NotificationCompat.BigTextStyle()

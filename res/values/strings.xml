@@ -368,4 +368,9 @@
 	<!-- Service Discovery -->
 	<string name="title_service_disco">Browser: %s</string>
 
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
+
 </resources>

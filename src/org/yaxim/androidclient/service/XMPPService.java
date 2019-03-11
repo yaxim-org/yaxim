@@ -121,7 +121,10 @@ public class XMPPService extends GenericService {
 			 * unbound
 			 */
 			Intent xmppServiceIntent = new Intent(this, XMPPService.class);
-			startService(xmppServiceIntent);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mConfig.foregroundService)
+				startForegroundService(xmppServiceIntent);
+			else
+				startService(xmppServiceIntent);
 		}
 	}
 
@@ -424,7 +427,7 @@ public class XMPPService extends GenericService {
 		Intent notificationIntent = new Intent(this, MainWindow.class);
 		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-		Notification n = new NotificationCompat.Builder(this)
+		Notification n = new NotificationCompat.Builder(this, "status")
 			.setSmallIcon((cs == ConnectionState.ONLINE) ? R.drawable.ic_online : R.drawable.ic_offline)
 			.setLargeIcon(android.graphics.BitmapFactory.decodeResource(getResources(), R.drawable.icon))
 			.setWhen(mSmackable.getConnectionStateTimestamp())
@@ -612,7 +615,7 @@ public class XMPPService extends GenericService {
 				intent.setData(Uri.parse(uri + b.toString()));
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
 						intent, 0);
-				Notification invNotify = new NotificationCompat.Builder(getApplicationContext())
+				Notification invNotify = new NotificationCompat.Builder(getApplicationContext(), "messages")
 						 .setContentTitle(roomname)
 						 .setContentText(body)
 						 .setSmallIcon(invitationDrawableId())

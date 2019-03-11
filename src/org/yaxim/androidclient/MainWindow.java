@@ -866,7 +866,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	private void registerXMPPService() {
 		Log.i(TAG, "called startXMPPService()");
 		xmppServiceIntent = new Intent(this, XMPPService.class);
-		xmppServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
+		//xmppServiceIntent.setAction("org.yaxim.androidclient.XMPPSERVICE");
 
 		xmppServiceConnection = new ServiceConnection() {
 
