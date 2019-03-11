@@ -8,7 +8,6 @@
 
     <style name="YaximLightTheme" parent="Theme.AppCompat.Light">
         <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
-        <item name="colorControlNormal">#800080</item>
         <item name="MainGroup">@style/RosterGroupName.Light</item>
         <item name="MainChild">@style/RosterGroupItem.Light</item>
         <!-- <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item> -->
@@ -26,12 +25,6 @@
         <item name="android:maxWidth">32dip</item>
         <item name="android:minHeight">32dip</item>
         <item name="android:maxHeight">32dip</item>
-    </style>
-
-    <style name="MyActionBarLight" parent="Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">#3000</item>
-        <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
-        <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
     </style>
 
     <style name="YaximDarkTheme" parent="Theme.AppCompat">
