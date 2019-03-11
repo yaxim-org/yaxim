@@ -1,4 +1,1 @@
-include ':actionbarsherlock'
 include ':MemorizingTrustManager'
-
-project(':actionbarsherlock').projectDir = new File(settingsDir, 'ActionBarSherlock/actionbarsherlock')

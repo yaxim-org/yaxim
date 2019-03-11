@@ -4,9 +4,10 @@ buildscript {
 		jcenter()
 		mavenCentral()
 		mavenLocal()
+		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:2.3.1'
+		classpath 'com.android.tools.build:gradle:3.3.2'
 		// NOTE: Do not place your application dependencies here; they belong
 		// in the individual module build.gradle files
 
@@ -24,6 +25,7 @@ plugins {
 
 allprojects {
 	repositories {
+        google()
 		jcenter()
 	}
 }
@@ -67,17 +69,19 @@ play {
 
 android {
 	compileSdkVersion 25
-	buildToolsVersion "25.0.0"
+	buildToolsVersion "28.0.3"
 	playAccountConfigs {
 		defaultAccountConfig {
 			jsonFile = file('play-publish-credentials.json')
 		}
 	}
 	defaultConfig {
-		minSdkVersion 9
-		targetSdkVersion 23
+		minSdkVersion 14
+		//noinspection ExpiredTargetSdkVersion
+		targetSdkVersion 25
 		versionName "$build_revision"
 		playAccountConfig = playAccountConfigs.defaultAccountConfig
+		vectorDrawables.useSupportLibrary = true
 	}
 
 	signingConfigs {
@@ -122,10 +126,10 @@ dependencies {
 	// implicit compile 'com.android.support:support-v4:25.+'
 	compile project('MemorizingTrustManager')
 	compile fileTree(include: ['*.jar'], dir: 'libs')
-	compile "me.leolin:ShortcutBadger:1.1.21@aar"
+	compile "me.leolin:ShortcutBadger:1.1.22@aar"
 	compile 'org.hsluv:hsluv:0.2'
 	compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
-	compile 'com.google.zxing:core:3.2.1'
+	compile 'com.google.zxing:core:3.3.3'
     // smack4
 	//compile project("Smack:smack-android-extensions")
 	//compile project("Smack:smack-tcp")
