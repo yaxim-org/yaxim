@@ -118,6 +118,7 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 	private ListView mListView;
 	protected ChatWindowAdapter mChatAdapter;
 	protected SearchView mSearchView;
+	protected String mSearchQuery = "";
 
 	volatile boolean mMarkRunnableQuit = false;
 	private Runnable mMarkRunnable = new Runnable() {
@@ -184,6 +185,10 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		// There's only one Loader, so ...
+		if (!TextUtils.isEmpty(mSearchQuery)) {
+			return new CursorLoader(this, ChatProvider.CONTENT_URI, PROJECTION_FROM,
+					"jid = ? AND message LIKE ?", new String[]{mWithJabberID, "%" + mSearchQuery + "%"}, "date");
+		}
 		long start_id = ChatHelper.getChatHistoryStartId(this, mWithJabberID, lastlog_size);
 		return new CursorLoader(this, ChatProvider.CONTENT_URI, PROJECTION_FROM,
 				"jid = ? AND _id > ?", new String[] { mWithJabberID, "" + start_id }, "date");
@@ -203,7 +208,7 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 		}
 
 		// correct position after loading more lastlog
-		if (lastlog_index >= 0) {
+		if (lastlog_index >= 0 && TextUtils.isEmpty(mSearchQuery)) {
 			int delta = 1 + mChatAdapter.getCursor().getCount() - lastlog_index;
 			mListView.setSelection(delta);
 			lastlog_index = -1;
@@ -574,7 +579,12 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 
 			@Override
 			public boolean onQueryTextChange(String query) {
-				mChatAdapter.getFilter().filter(query.trim());
+				if (TextUtils.isEmpty(query))
+					query = "";
+				if (query.equals(mSearchQuery))
+					return true;
+				else mSearchQuery = query;
+				getSupportLoaderManager().restartLoader(CHAT_MSG_LOADER, null, ChatWindow.this);
 				return true;
 			}
 		});
@@ -687,13 +697,6 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 					from, to);
 			mScreenName = screenName;
 			mJID = JID;
-			setFilterQueryProvider(new FilterQueryProvider() {
-				@Override
-				public Cursor runQuery(CharSequence q) {
-					return getContentResolver().query(ChatProvider.CONTENT_URI, PROJECTION_FROM,
-							"jid = ? AND message LIKE ?", new String[] { mWithJabberID, "%" + q + "%" }, "date");
-				}
-			});
 		}
 
 		@Override
