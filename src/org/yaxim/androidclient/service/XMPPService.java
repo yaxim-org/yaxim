@@ -415,12 +415,13 @@ public class XMPPService extends GenericService {
 		Log.d(TAG, "updateServiceNotification: " + cs);
 		broadcastConnectionState(cs);
 
-		// do not show notification if not a foreground service
-		if (!mConfig.foregroundService)
-			return;
-
 		if (cs == ConnectionState.OFFLINE) {
 			stopForeground(true);
+			return;
+		}
+
+		// do not show notification if not a foreground service
+		if (!mConfig.foregroundService) {
 			return;
 		}
 
