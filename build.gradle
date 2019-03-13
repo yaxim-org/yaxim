@@ -70,12 +70,14 @@ play {
 android {
 	compileSdkVersion 28
 	buildToolsVersion "28.0.3"
+	flavorDimensions "version"
 	playAccountConfigs {
 		defaultAccountConfig {
 			jsonFile = file('play-publish-credentials.json')
 		}
 	}
 	defaultConfig {
+		applicationId "org.yaxim"
 		minSdkVersion 14
 		//noinspection ExpiredTargetSdkVersion
 		targetSdkVersion 28
@@ -104,6 +106,14 @@ android {
 			signingConfig signingConfigs.release
 		}
 	}
+	productFlavors {
+		yaxim {
+			applicationIdSuffix "androidclient"
+		}
+		bruno {
+			applicationIdSuffix "bruno"
+		}
+	}
 
 	sourceSets {
 		main {
@@ -114,6 +124,11 @@ android {
 			renderscript.srcDirs = ['src']
 			res.srcDirs = ['res']
 			assets.srcDirs = ['assets']
+		}
+		bruno {
+			java.srcDirs = ['bruno/src']
+			res.srcDirs = ['bruno/res']
+			assets.srcDirs = ['bruno/assets']
 		}
 	}
 	lintOptions {
