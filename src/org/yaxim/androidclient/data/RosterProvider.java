@@ -2,6 +2,7 @@ package org.yaxim.androidclient.data;
 
 import java.util.ArrayList;
 
+import org.yaxim.androidclient.BuildConfig;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.content.ContentProvider;
@@ -22,7 +23,7 @@ import android.util.Log;
 
 public class RosterProvider extends ContentProvider {
 
-	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Roster";
+	public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider.Roster";
 	public static final String TABLE_ROSTER = "roster";
 	public static final String TABLE_GROUPS = "groups";
 	public static final String TABLE_MUCS = "mucs";

@@ -2,6 +2,7 @@ package org.yaxim.androidclient.data;
 
 import java.util.ArrayList;
 
+import org.yaxim.androidclient.BuildConfig;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.content.ContentProvider;
@@ -21,7 +22,7 @@ import android.util.Log;
 
 public class ChatProvider extends ContentProvider {
 
-	public static final String AUTHORITY = "org.yaxim.androidclient.provider.Chats";
+	public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider.Chats";
 	public static final String TABLE_NAME = "chats";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + TABLE_NAME);
