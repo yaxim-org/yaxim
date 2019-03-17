@@ -49,13 +49,13 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !trackingConnectivity) {
 			IntentFilter filter = new IntentFilter();
 			filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-			ctx.registerReceiver(YaximBroadcastReceiver.getInstance(), filter);
+			ctx.getApplicationContext().registerReceiver(YaximBroadcastReceiver.getInstance(), filter);
 			trackingConnectivity = true;
 		}
 	}
 	public void untrackConnectivity(Context ctx) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && trackingConnectivity) {
-			ctx.unregisterReceiver(this);
+			ctx.getApplicationContext().unregisterReceiver(this);
 			trackingConnectivity = false;
 		}
 	}
