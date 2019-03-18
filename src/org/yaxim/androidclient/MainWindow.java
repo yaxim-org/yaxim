@@ -83,7 +83,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	private Stub rosterCallback;
 	private RosterExpListAdapter rosterListAdapter;
 	private TextView mConnectingText;
-	private FirstStartDialog mFirstStartDialog;
 
 	private ContentObserver mRosterObserver = new RosterObserver();
 	private ContentObserver mChatObserver = new ChatObserver();
@@ -998,8 +997,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 				mHandledIntent = true;
 			}
 		}
-		if (mFirstStartDialog == null)
-			mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
+		FirstStartDialog mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
 		mFirstStartDialog.show();
 		if (!TextUtils.isEmpty(jid))
 			mFirstStartDialog.setJID(jid, preauth);
