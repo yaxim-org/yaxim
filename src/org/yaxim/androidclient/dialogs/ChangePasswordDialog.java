@@ -7,7 +7,7 @@ import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;

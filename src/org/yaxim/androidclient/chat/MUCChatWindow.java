@@ -14,7 +14,7 @@ import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.XEP0392Helper;
 import org.yaxim.androidclient.util.XMPPHelper;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;

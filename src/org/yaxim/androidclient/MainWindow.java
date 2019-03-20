@@ -24,7 +24,7 @@ import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
