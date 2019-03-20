@@ -45,10 +45,14 @@ class EntityViewLoader extends AsyncTask<String, EntityInfo, Throwable> {
 			DiscoverInfo di = sm.discoverInfo(smackJid);
 			publishProgress(EntityInfo.fromDisco(jid, di));
 		} catch (XMPPException.XMPPErrorException e) {
-			if (e.getStanzaError().getCondition() != StanzaError.Condition.service_unavailable)
+			switch (e.getStanzaError().getCondition()) {
+			case service_unavailable: // this is maybe a user account
+			case subscription_required: // this is probably a user account (from ejabberd)
+				publishProgress(EntityInfo.fromJid(jid));
+				break;
+			default:
 				throw e;
-			// service-unavailable: this is maybe an account
-			publishProgress(EntityInfo.fromJid(jid));
+			}
 		}
 		try {
 			VCard vc = VCardManager.getInstanceFor(c).loadVCard(smackJid.asEntityBareJidOrThrow());
