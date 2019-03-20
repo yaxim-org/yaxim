@@ -62,6 +62,7 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.disco.packet.DiscoverItems;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jivesoftware.smackx.delay.packet.DelayInformation;
 import org.jivesoftware.smackx.disco.packet.DiscoverInfo;
@@ -1982,12 +1983,18 @@ public class SmackableImp implements Smackable {
 
 	private void loadOrUpdateVCard() {
 		try {
-			VCard vc = new VCard();
-			vc.load(mXMPPConnection);
+			VCardManager vcm = VCardManager.getInstanceFor(mXMPPConnection);
+			VCard vc = null;
+			try {
+				vc = vcm.loadVCard();
+			} catch (XMPPException.XMPPErrorException e) {
+				// ignore the error exception and create a new vcard
+				vc =  new VCard();
+			}
 			String nick = vc.getNickName();
 			if (TextUtils.isEmpty(nick) && !TextUtils.isEmpty(mConfig.screenName)) {
 				vc.setNickName(mConfig.screenName);
-				vc.save(mXMPPConnection);
+				vcm.saveVCard(vc);
 			} else
 				mConfig.storeScreennameIfChanged(nick);
 			Log.i(TAG, "Using nickname " + mConfig.screenName);
