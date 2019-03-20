@@ -2028,9 +2028,8 @@ public class SmackableImp implements Smackable {
 				bookmarked_jids.add(bookmark.getJid().toString());
 				if (!ChatRoomHelper.isRoom(mService, bookmark.getJid().toString())) {
 					String jid = bookmark.getJid().toString();
-					String nickname = bookmark.getNickname().toString();
-					if (TextUtils.isEmpty(nickname))
-						nickname = ChatRoomHelper.guessMyNickname(mService, mConfig.screenName);
+					Resourcepart nick = bookmark.getNickname();
+					String nickname = (nick != null) ? nick.toString() : ChatRoomHelper.guessMyNickname(mService, mConfig.screenName);
 					Log.d(TAG, "Adding MUC: " + jid + "/" + nickname + " join=" + bookmark.isAutoJoin());
 					ChatRoomHelper.addRoom(mService, jid, bookmark.getPassword(), nickname, bookmark.isAutoJoin());
 					added = true;
