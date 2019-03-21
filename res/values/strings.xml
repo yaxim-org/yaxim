@@ -110,10 +110,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Theme</string>
-	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
-	</string-array>
+	<string name="pref_theme_dark">Dark</string>
+	<string name="pref_theme_light">Light</string>
+	<string name="pref_theme_pine">Pine</string>
+	<string name="pref_theme_ice">Ice</string>
 	<string name="preftitle_ui">Appearance</string>
 	<string-array name="fontSizesChat">
 		<item>small</item>

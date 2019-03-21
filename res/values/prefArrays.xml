@@ -22,6 +22,10 @@
         <item>12</item>
         <item>14</item>
     </string-array> -->
+    <string-array name="pref_theme_entries">
+	<item>@string/pref_theme_dark</item>
+	<item>@string/pref_theme_light</item>
+    </string-array>
     <string-array name="pref_theme_values">
         <item>dark</item>
         <item>light</item>
