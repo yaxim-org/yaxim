@@ -30,7 +30,7 @@
         <item name="colorPrimary">#404040</item>
         <item name="colorPrimaryDark">#303030</item>
         <item name="colorAccent">#d5e6b3</item>
-        <item name="android:windowBackground">@color/colorBackground.dark</item>
+        <item name="android:windowBackground">@color/colorBackgroundDark</item>
         <item name="MainGroup">@style/RosterGroupName.Dark</item>
         <item name="MainChild">@style/RosterGroupItem</item>
         <item name="ChatMsgHeaderMeColor">#ff8888ff</item>
@@ -41,5 +41,5 @@
         <item name="ChatText">@style/ChatText</item>
     </style>
 
-    <color name="colorBackground.dark">#101010</color>
+    <color name="colorBackgroundDark">#101010</color>
 </resources>
