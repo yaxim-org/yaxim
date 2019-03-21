@@ -125,6 +125,11 @@ android {
 			res.srcDirs = ['res']
 			assets.srcDirs = ['assets']
 		}
+        yaxim {
+            java.srcDirs = ['yaxim/src']
+            res.srcDirs = ['yaxim/res']
+            assets.srcDirs = ['yaxim/assets']
+        }
 		bruno {
 			java.srcDirs = ['bruno/src']
 			res.srcDirs = ['bruno/res']

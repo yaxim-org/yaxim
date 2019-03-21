@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.data;
 
+import org.yaxim.androidclient.FlavorConfig;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -236,11 +237,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	}
 
 	public int getTheme() {
-		if (theme.equals("light")) {
-			return R.style.YaximLightTheme;
-		} else {
-			return R.style.YaximDarkTheme;
-		}
+		return FlavorConfig.getTheme(theme);
 	}
 
 	public synchronized void generateNewResource() {
