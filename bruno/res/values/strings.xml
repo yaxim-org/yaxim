@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">@string/app_name_bruno</string>
+	<string name="conn_title">@string/conn_title_bruno</string>
+	<string name="Menu_about">@string/Menu_about_bruno</string>
+</resources>
+
