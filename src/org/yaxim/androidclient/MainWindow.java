@@ -751,7 +751,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	}
 
 	/** Sets if all contacts are shown in the roster or online contacts only. */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 	private void setOfflinceContactsVisibility(boolean showOffline) {
 		PreferenceManager.getDefaultSharedPreferences(this).edit().
 			putBoolean(PreferenceConstants.SHOW_OFFLINE, showOffline).commit();
@@ -869,7 +868,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 
 		xmppServiceConnection = new ServiceConnection() {
 
-			@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				Log.i(TAG, "called onServiceConnected()");
 				serviceAdapter = new XMPPRosterServiceAdapter(
@@ -924,7 +922,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			public void connectionStateChanged(final int connectionstate)
 						throws RemoteException {
 				mainHandler.post(new Runnable() {
-					@TargetApi(Build.VERSION_CODES.HONEYCOMB) // required for Sherlock's invalidateOptionsMenu */
 					public void run() {
 						ConnectionState cs = ConnectionState.values()[connectionstate];
 						//Log.d(TAG, "connectionStatusChanged: " + cs);

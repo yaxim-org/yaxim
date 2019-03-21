@@ -190,11 +190,6 @@ public class MUCChatWindow extends ChatWindow {
 				dialog.dismiss();
 				return true;
 			}});
-		// TODO: this is a fix for broken theming on android 2.x, fix more cleanly!
-		if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			boolean is_dark = (mConfig.getTheme() == R.style.YaximDarkTheme);
-			dialog.getListView().setBackgroundColor(is_dark ? Color.BLACK : Color.WHITE);
-		}
 		dialog.show();
 	}
 
