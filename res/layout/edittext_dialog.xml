@@ -17,7 +17,6 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/editText"
 		android:layout_width="match_parent"
-		style="@style/dialogEditText"
 		>
 		<requestFocus></requestFocus>
 	</EditText>

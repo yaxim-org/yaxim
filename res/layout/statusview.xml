@@ -42,7 +42,6 @@
 		android:inputType="textCapSentences"
 		android:singleLine="true"
 		android:imeOptions="actionDone"
-		style="@style/dialogEditText"
 	  />
 	  <Button
 	      android:id="@+id/statusview_message_button_clear"

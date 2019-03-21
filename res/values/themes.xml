@@ -17,7 +17,6 @@
 		<item name="ChatNewMessageColor">#ffb0b0b0</item>
 		<item name="ChatStoredMessageColor">#60b0b0b0</item>
         <item name="ChatText">@style/ChatText.Light</item>
-        <item name="dialogTextColor">@style/dialogBackground</item>
     </style>
 
     <style name="IndeterminateProgress" parent="Widget.AppCompat.ProgressBar">
@@ -40,7 +39,6 @@
 		<item name="ChatStoredMessageColor">#60404040</item>
 		<item name="ErrorView">@style/StyleErrorView</item>
         <item name="ChatText">@style/ChatText</item>
-        <item name="dialogTextColor">@style/dialogBackground</item>
     </style>
 
     <color name="colorBackground.dark">#101010</color>

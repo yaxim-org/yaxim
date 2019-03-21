@@ -47,7 +47,6 @@
 			android:maxWidth="200sp"
 			android:inputType="textEmailAddress"
 			android:hint="@string/Global_JID_hint"
-			style="@style/dialogEditText"
 			android:contentDescription="@string/StartupDialog_Username_title"/>
 	<CheckBox
 			android:id="@+id/create_account"
@@ -76,7 +75,6 @@
 			android:maxWidth="200sp"
 			android:hint="@string/StartupDialog_pwHint"
 			android:contentDescription="@string/StartupDialog_passwd_title"
-			style="@style/dialogEditText"
 			/>
 	<CheckBox
 			android:id="@+id/password_show"

@@ -34,7 +34,6 @@
 			android:maxWidth="200sp"
 			android:inputType="textEmailAddress"
 			android:hint="@string/Global_JID_hint"
-			style="@style/dialogEditText"
 			/>
 	
 	<EditText
@@ -47,7 +46,6 @@
 			android:textSize="18sp"
 			android:maxWidth="200sp"
 			android:hint="@string/addFriend_aliasHint"
-			style="@style/dialogEditText"
 			/>
 		<org.yaxim.androidclient.dialogs.GroupNameView
 			android:id="@+id/AddRosterItem_GroupName"
