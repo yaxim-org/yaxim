@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Connecting to server…</string>
 	<string name="conn_disconnecting">Disconnecting…</string>
 	<string name="conn_online">Online</string>
@@ -133,6 +135,7 @@
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
+	<string name="Menu_about_bruno">About Bruno</string>
 	<string name="Menu_muc">Add / browse…</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
