@@ -52,7 +52,7 @@ public class XMPPService extends GenericService {
 	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
 	private BroadcastReceiver mRingerModeReceiver = new RingerModeReceiver();
 
-	private Smackable mSmackable;
+	private SmackableImp mSmackable;
 	private boolean create_account = false;
 	private IXMPPRosterService.Stub mService2RosterConnection;
 	private IXMPPChatService.Stub mServiceChatConnection;

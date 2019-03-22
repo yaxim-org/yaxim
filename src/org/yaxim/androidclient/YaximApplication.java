@@ -1,15 +1,11 @@
 package org.yaxim.androidclient;
 
 import org.yaxim.androidclient.data.YaximConfiguration;
-import org.yaxim.androidclient.service.Smackable;
+import org.yaxim.androidclient.service.SmackableImp;
 import org.yaxim.androidclient.service.YaximBroadcastReceiver;
 
-import android.app.Activity;
 import android.app.Application;
-import android.app.Service;
-import android.content.Context;
 import android.content.IntentFilter;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -27,7 +23,7 @@ public class YaximApplication extends Application {
 	public MemorizingTrustManager mMTM;
 
 	private YaximConfiguration mConfig;
-	private Smackable mSmackable;
+	private SmackableImp mSmackable;
 
 	public static YaximApplication getInstance() {
 		return app;
@@ -53,10 +49,10 @@ public class YaximApplication extends Application {
 	public static YaximConfiguration getConfig() { return app.mConfig; }
 
 	// short-cut from the UI to the network
-	public Smackable getSmackable() {
+	public SmackableImp getSmackable() {
 		return mSmackable;
 	}
-	public void setSmackable(Smackable smackable) {
+	public void setSmackable(SmackableImp smackable) {
 		mSmackable = smackable;
 	}
 }
