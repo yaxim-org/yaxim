@@ -885,8 +885,11 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 					// login config changed, force reconnection
 					serviceAdapter.disconnect();
 					serviceAdapter.connect();
-				} else if (mConfig.presence_required && isConnected())
+				} else if (mConfig.presence_required && isConnected()) {
 					serviceAdapter.setStatusFromConfig();
+				} else if (mConfig.nickchange_required && isConnected()) {
+					YaximApplication.getApp().getSmackable().updateNickname();
+				}
 
 				// handle server-related intents after connecting to the backend
 				handleJabberIntent();

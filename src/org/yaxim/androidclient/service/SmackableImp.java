@@ -50,6 +50,7 @@ import org.jivesoftware.smackx.iqversion.VersionManager;
 import org.jivesoftware.smackx.message_correct.element.MessageCorrectExtension;
 import org.jivesoftware.smackx.muc.MucEnterConfiguration;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jivesoftware.smackx.nick.packet.Nick;
 import org.jivesoftware.smackx.ping.PingFailedListener;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.bookmarks.BookmarkManager;
@@ -62,6 +63,9 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.carbons.CarbonManager;
 import org.jivesoftware.smackx.disco.packet.DiscoverItems;
+import org.jivesoftware.smackx.pubsub.LeafNode;
+import org.jivesoftware.smackx.pubsub.PayloadItem;
+import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jivesoftware.smackx.delay.packet.DelayInformation;
@@ -1981,27 +1985,56 @@ public class SmackableImp implements Smackable {
 		return mLastError;
 	}
 
-	private void loadOrUpdateVCard() {
-		try {
-			VCardManager vcm = VCardManager.getInstanceFor(mXMPPConnection);
-			VCard vc = null;
-			try {
-				vc = vcm.loadVCard();
-			} catch (XMPPException.XMPPErrorException e) {
-				// ignore the error exception and create a new vcard
-				vc =  new VCard();
+	public synchronized void updateNickname() {
+		mConfig.nickchange_required = false;
+		new Thread("updateNickname " + mConfig.screenName) {
+			public void run() {
+				if (loadOrUpdateNickname(true))
+					syncDbRooms();
 			}
-			String nick = vc.getNickName();
-			if (TextUtils.isEmpty(nick) && !TextUtils.isEmpty(mConfig.screenName)) {
-				vc.setNickName(mConfig.screenName);
-				vcm.saveVCard(vc);
-			} else
-				mConfig.storeScreennameIfChanged(nick);
-			Log.i(TAG, "Using nickname " + mConfig.screenName);
+		}.start();
+	}
+	// returns true if the nickname changed
+	private boolean loadOrUpdateNickname(boolean force_rename) {
+		try {
+			// first attempt to load nickname from PEP / store it into PEP
+			PubSubManager psm = PubSubManager.getInstance(mXMPPConnection, mXMPPConnection.getUser().asEntityBareJid());
+			String pepNickname = null;
+			try {
+				LeafNode n = psm.createUnverifiedLeafNode(Nick.NAMESPACE);
+				List<?> ln = n.getItems();
+				if (ln.size() > 0)
+					pepNickname = ((PayloadItem<Nick>)ln.get(0)).getPayload().getName();
+			} catch (XMPPException.XMPPErrorException e) {
+				if (e.getStanzaError().getCondition() != StanzaError.Condition.item_not_found)
+					throw e;
+			}
+			if (pepNickname == null || force_rename) {
+				Log.i(TAG, "Storing nickname into PEP: " + mConfig.screenName);
+				psm.tryToPublishAndPossibleAutoCreate(Nick.NAMESPACE, new PayloadItem<>(new Nick(mConfig.screenName)));
+				return true;
+			} else {
+				Log.i(TAG, "Using nickname from PEP: " + pepNickname);
+				return mConfig.storeScreennameIfChanged(pepNickname);
+			}
 		} catch (Exception e) {
-			Log.d(TAG, "loadVCard failed: " + e.getMessage());
+			Log.d(TAG, "PEP nickname request failed: " + e.getMessage());
 			e.printStackTrace();
 		}
+		try {
+			// then attempt to load nickname from VCard
+			VCardManager vcm = VCardManager.getInstanceFor(mXMPPConnection);
+			VCard vc = vcm.loadVCard();
+			String nick = vc.getNickName();
+			if (!TextUtils.isEmpty(nick)) {
+				Log.i(TAG, "Using nickname from VCard: " + mConfig.screenName);
+				return mConfig.storeScreennameIfChanged(nick);
+			}
+		} catch (Exception e) {
+			Log.d(TAG, "VCard request failed: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 	private void discoverMUCDomain(Jid jid, DiscoverInfo info) {
 		if (mConfig.mucDomain != null)
@@ -2052,7 +2085,7 @@ public class SmackableImp implements Smackable {
 		new Thread("discoverServices") {
 			public void run() {
 				discoverServices();
-				loadOrUpdateVCard();
+				loadOrUpdateNickname(mConfig.nickchange_required);
 				loadMUCBookmarks(); // XXX: hack
 			}
 		}.start();

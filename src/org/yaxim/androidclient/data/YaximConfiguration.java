@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.net.URLEncoder;
@@ -77,9 +78,10 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
     public boolean showOffline;
 	public boolean enableGroups;
 
-    public boolean reconnect_required = false;
-    public boolean rosterreset_required = false;
-    public boolean presence_required = false;
+	public boolean reconnect_required = false;
+	public boolean rosterreset_required = false;
+	public boolean presence_required = false;
+	public boolean nickchange_required = false;
 
 	/// this stores tuples of (JID, valid_until) or (token, valid_until) for PARS
 	private HashMap<String, Long> invitationCodes = new HashMap<String, Long>();
@@ -110,6 +112,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 			reconnect_required = true;
 		if (PRESENCE_PREFS.contains(key))
 			presence_required = true;
+		if (PreferenceConstants.SCREEN_NAME.equals(key))
+			nickchange_required = true;
 	}
 
 	private void splitAndSetJabberID(String jid) {
@@ -243,11 +247,15 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public synchronized void generateNewResource() {
 		prefs.edit().putString(PreferenceConstants.RESSOURCE, XMPPHelper.createResource(ctx)).commit();
 	}
-	public synchronized void storeScreennameIfChanged(String name) {
-		if (name != screenName) {
+	public synchronized boolean storeScreennameIfChanged(String name) {
+		if (TextUtils.isEmpty(name))
+			name = XMPPHelper.capitalizeString(this.userName);
+		if (!name.equals(screenName)) {
 			screenName = name;
 			prefs.edit().putString(PreferenceConstants.SCREEN_NAME, screenName).commit();
+			return true;
 		}
+		return false;
 	}
 	public synchronized void storeInstallReferrer(String referrer) {
 		prefs.edit().putString(PreferenceConstants.INSTALL_REFERRER, referrer).commit();
