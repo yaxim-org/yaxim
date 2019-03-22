@@ -171,3 +171,10 @@ configurations {
 }
 
 preBuild.dependsOn buildVersion
+
+// required to fill applicationId into prefs XML files
+afterEvaluate {
+	android.applicationVariants.all { variant ->
+		variant.resValue 'string', 'application_id', variant.applicationId
+	}
+}
