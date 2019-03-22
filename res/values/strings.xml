@@ -90,7 +90,7 @@
 	<string name="showOffline_title">Show offline contacts</string>
 	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
 	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Debugging</string>
@@ -360,7 +360,7 @@
 	<string name="upload_compress">Compressing picture&#8230;</string>
 	<string name="upload_uploading">Uploading&#8230;</string>
 	<string name="upload_too_large">file too large!</string>
-	<string name="storage_permission">yaxim needs storage access to send files!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Message content</string>

@@ -278,7 +278,7 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 				// Show an explanation to the user *asynchronously* -- don't block
 				// this thread waiting for the user's response! After the user
 				// sees the explanation, try again to request the permission.
-				Toast.makeText(this, R.string.storage_permission, Toast.LENGTH_LONG).show();
+				Toast.makeText(this, getString(R.string.storage_permission, getString(R.string.app_name)), Toast.LENGTH_LONG).show();
 			}
 			ActivityCompat.requestPermissions(this,
 					new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
