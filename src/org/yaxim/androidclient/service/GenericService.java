@@ -248,12 +248,12 @@ public abstract class GenericService extends Service {
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
 
-		Intent msgHeardIntent = new Intent()
+		Intent msgHeardIntent = new Intent(this, YaximBroadcastReceiver.class)
 			.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
 			.setAction("org.yaxim.androidclient.ACTION_MESSAGE_HEARD")
 			.putExtra("jid", fromJid);
 
-		Intent msgResponseIntent = new Intent()
+		Intent msgResponseIntent = new Intent(this, YaximBroadcastReceiver.class)
 			.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
 			.setAction("org.yaxim.androidclient.ACTION_MESSAGE_REPLY")
 			.putExtra("jid", fromJid);
