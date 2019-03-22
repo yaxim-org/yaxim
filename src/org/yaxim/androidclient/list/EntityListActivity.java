@@ -83,11 +83,11 @@ public class EntityListActivity extends ThemedActivity implements ExpandableList
 			ChatHelper.startChatActivity(this, ei.jid, ei.name, null);
 		} else
 		if (ei.type.contains(EntityInfo.Type.MUC)) {
-			String nickname = YaximApplication.getConfig().screenName;
+			String nickname = null;
 			String password = null;
 			if (ei.data instanceof BookmarkedConference) {
 				BookmarkedConference bc = (BookmarkedConference)ei.data;
-				if (!TextUtils.isEmpty(bc.getNickname()))
+				if (bc.getNickname() != null)
 					nickname = bc.getNickname().toString();
 				password = bc.getPassword();
 			}

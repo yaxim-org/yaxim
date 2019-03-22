@@ -1819,8 +1819,9 @@ public class SmackableImp implements Smackable {
 			return muc.muc.getNickname().toString();
 		if (mucJIDs.contains(jid)) {
 			ChatRoomHelper.RoomInfo ri = ChatRoomHelper.getRoomInfo(mService, jid);
-			if (ri != null)
+			if (ri != null && !TextUtils.isEmpty(ri.nickname))
 				return ri.nickname;
+			return mConfig.screenName;
 		}
 		return null;
 	}
@@ -2062,7 +2063,7 @@ public class SmackableImp implements Smackable {
 				if (!ChatRoomHelper.isRoom(mService, bookmark.getJid().toString())) {
 					String jid = bookmark.getJid().toString();
 					Resourcepart nick = bookmark.getNickname();
-					String nickname = (nick != null) ? nick.toString() : ChatRoomHelper.guessMyNickname(mService, mConfig.screenName);
+					String nickname = (nick != null) ? nick.toString() : null;
 					Log.d(TAG, "Adding MUC: " + jid + "/" + nickname + " join=" + bookmark.isAutoJoin());
 					ChatRoomHelper.addRoom(mService, jid, bookmark.getPassword(), nickname, bookmark.isAutoJoin());
 					added = true;
@@ -2180,6 +2181,8 @@ public class SmackableImp implements Smackable {
 			String jid = cursor.getString(JID_ID);
 			String password = cursor.getString(PASSWORD_ID);
 			String nickname = cursor.getString(NICKNAME_ID);
+			if (TextUtils.isEmpty(nickname))
+				nickname = mConfig.screenName;
 			mucJIDs.add(jid);
 			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
 			if(!joinedRooms.contains(jid) || !multiUserChats.get(jid).muc.isJoined()) {

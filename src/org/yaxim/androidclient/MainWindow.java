@@ -352,7 +352,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			return addToRosterDialog(jid, name, preauth);
 		} else if (data.getQueryParameter("join") != null && !openChatWithJid(jid, null)) {
 			new EditMUCDialog(this, jid, data.getQueryParameter("body"),
-					null, data.getQueryParameter("password")).withNick(mConfig.userName).show();
+					null, data.getQueryParameter("password")).show();
 			return true;
 		} else if (openChatWithJid(jid, body) || addToRosterDialog(jid, name, preauth)) {
 			return true;
@@ -669,7 +669,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 					String jid = getString(R.string.yaxim_muc);
 					if (!openChatWithJid(jid, null)) {
 						new EditMUCDialog(MainWindow.this, jid, null,
-								null, null).withNick(mConfig.userName).show();
+								null, null).show();
 					}
 				}})
 			.setPositiveButton(android.R.string.ok, null)

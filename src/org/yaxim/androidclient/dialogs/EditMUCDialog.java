@@ -53,6 +53,7 @@ public class EditMUCDialog extends AlertDialog implements
 		mRoomJID.setServerList(mucDomain, ChatHelper.getXMPPDomains(context, ChatHelper.ROSTER_FILTER_MUCS),
 				R.array.muc_services);
 		mNickName = (EditText)group.findViewById(R.id.muc_new_nick);
+		mNickName.setHint(YaximApplication.getConfig().screenName);
 		mPassword = (EditText)group.findViewById(R.id.muc_new_pw);
 		mShowPassword = (CheckBox) group.findViewById(R.id.password_show);
 		mShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -137,7 +138,7 @@ public class EditMUCDialog extends AlertDialog implements
 	public void afterTextChanged(Editable s) {
 		try {
 			XMPPHelper.verifyJabberID(mRoomJID.getText());
-			okButton.setEnabled(mNickName.getText().length() > 0);
+			//okButton.setEnabled(mNickName.getText().length() > 0);
 			mRoomJID.setError(null);
 		} catch (YaximXMPPAdressMalformedException e) {
 			okButton.setEnabled(false);
