@@ -2,6 +2,7 @@ package org.yaxim.androidclient.util;
 
 import android.util.Log;
 
+import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.logging.*;
 
@@ -44,7 +45,7 @@ public class JULHandler extends Handler {
 
 		try {
 			int level = getAndroidLevel(record.getLevel());
-			Log.println(level, tag, record.getMessage());
+			Log.println(level, tag, MessageFormat.format(record.getMessage(), record.getParameters()));
 			if (record.getThrown() != null) {
 				Log.println(level, tag, Log.getStackTraceString(record.getThrown()));
 			}
