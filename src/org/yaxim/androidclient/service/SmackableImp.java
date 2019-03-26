@@ -41,6 +41,7 @@ import org.jivesoftware.smack.roster.RosterListener;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smack.util.TLSUtils;
+import org.jivesoftware.smack.util.dns.HostAddress;
 import org.jivesoftware.smackx.carbons.packet.CarbonExtension;
 import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
 import org.jivesoftware.smackx.delay.DelayInformationManager;
@@ -655,10 +656,13 @@ public class SmackableImp implements Smackable {
 		while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
 			reason = reason.getCause();
 		if (reason instanceof SmackException.ConnectionException) {
-			reason = ((SmackException.ConnectionException)reason).getFailedAddresses().get(0).getExceptions().values().iterator().next();
-			// reiterate on the inner reason
-			while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
-				reason = reason.getCause();
+			List<HostAddress> fail = ((SmackException.ConnectionException)reason).getFailedAddresses();
+			if (fail.size() > 0) {
+				reason = fail.get(0).getExceptions().values().iterator().next();
+				// reiterate on the inner reason
+				while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
+					reason = reason.getCause();
+			}
 		}
 		onDisconnected(reason.getLocalizedMessage());
 	}
