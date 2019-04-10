@@ -2404,8 +2404,7 @@ public class SmackableImp implements Smackable {
 			}
 			String roomname = room.split("@")[0];
 			try {
-				mucc.roomInfo = MultiUserChatManager.getInstanceFor(mXMPPConnection).getRoomInfo(JidCreate.entityBareFromUnescapedOrNull(room));
-				String rn = mucc.roomInfo.getName();
+				String rn = muc.getRoomInfo().getName();
 				if (rn != null && rn.length() > 0)
 					roomname = rn;
 				Log.d(TAG, "MUC name after disco: " + roomname);
@@ -2480,7 +2479,7 @@ public class SmackableImp implements Smackable {
 			if (!TextUtils.isEmpty(pp.resource)) {
 				// Default bare_jid to the actual full occupant JID (muc@domain/nickname) for MUCChatWindow
 				pp.bare_jid = occupantPresence.getFrom().toString();
-				boolean non_anon = (mucc.roomInfo != null) && mucc.roomInfo.isNonanonymous();
+				boolean non_anon = (muc.getRoomInfo() != null) && muc.getRoomInfo().isNonanonymous();
 				MUCUser mu = (MUCUser) occupantPresence.getExtension("x", "http://jabber.org/protocol/muc#user");
 				// override bare_jid with real bare_jid if non-anon MUC and JID is known
 				if (non_anon && mu != null && mu.getItem() != null && !TextUtils.isEmpty(mu.getItem().getJid()))

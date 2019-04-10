@@ -29,7 +29,6 @@ public class MUCController {
 	static final String TAG = "yaxim.MUCController";
 	final String jid;
 	public MultiUserChat muc;
-	public RoomInfo roomInfo;
 	boolean isSynchronized = false;
 	boolean isTimeout = false;
 
