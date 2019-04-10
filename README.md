@@ -1,24 +1,19 @@
 yaxim (Yet Another XMPP Instant Messenger)
 ==========================================
 
-yaxim is a Jabber/XMPP client with open source (GPLv2). Why pay for SMS if you can have unlimited messaging on your data plan?
-
-yaxim aims at security, low overhead and keeping your server connection open. So far, it only supports a single account.
+yaxim is a lean Jabber/XMPP client for Android. It aims at usability, low overhead and security, and works on low-end Android devices starting with Android 4.0.
 
 Check the [yaxim homepage](https://yaxim.org/) for latest news and downloads.
 
 ## Features
 
-The following is already supported:
+ * Easy configuration and usability, using one XMPP account
+ * Keeping your connection when the phone is started and on mobile/WiFi network changes
+ * Chatting with friends and in group chats
+ * Sending and receiving of text messages, images and files
+ * Managing of your contact list
+ * [more...](https://yaxim.org/features/)
 
- * Connection with a single XMPP server (or GTalk, or Facebook Chat, or ...)
- * You are asked about self-signed SSL certificates
- * Allows automatic connection after turning on your phone
- * Transparent reconnection on 3G/WiFi network change (XEP-0198)
- * Chat with your buddies (all messages are stored)
- * Delivery receipts (XEP-0184)
- * Message carbons (XEP-0280)
- 
 
 ## Links
 
@@ -27,47 +22,38 @@ The following is already supported:
  * [Download APK](http://yax.im/apk)
  * [Screenshots](https://yaxim.org/screenshots/)
  * [Project Home](https://yaxim.org/)
- * [Source on GitHub](https://github.com/pfleidi/yaxim)
+ * [Source on GitHub](https://github.com/yaxim-org/yaxim)
  * [Translation](https://translations.launchpad.net/yaxim/master/+pots/yaxim/)
 
 
 ## Build Instructions
 
 yaxim is written in Java and source code is maintained in `git`. The official
-repository is [pfleidi's](https://github.com/pfleidi/yaxim), most development
-work happens in [ge0rg's repo](https://github.com/ge0rg/yaxim). You will need
-the Android SDK and `ant` to compile.
+repository is [yaxim-org](https://github.com/yaxim-org/yaxim), whereas
+experimental development work happens in
+[ge0rg's repo](https://github.com/ge0rg/yaxim). You will need Android Studio 3.x
+to compile the app.
 
 To compile yaxim, the following steps need to be taken:
 
 	# fetch source code from github
-	git clone git@github.com:pfleidi/yaxim.git
+	git clone https://github.com/yaxim-org/yaxim.git
 	cd yaxim
 	
 	# initialize submodules
 	git submodule init
 	git submodule update
 	
-	# prepare android build (with subprojects)
-	android update project -p . -s
-	android update project -p ActionBarSherlock/actionbarsherlock
-	android update project -p MemorizingTrustManager --subprojects
+	# you can stop here, or go on to compile with gradle:
+
+	# compile and install debug version of yaxim or Bruno
+	gradle installYaximDebug
+	gradle installBrunoDebug
 	
-	# compile debug version
-	ant proguard debug
-	
-	# compile release version
-	ant proguard release
+	# compile release APKs for both
+	# create RELEASE_STORE_FILE according to http://stackoverflow.com/a/25391891/539443
+	gradle assembleRelease
 
-
-## Building without `ant`
-
-If you are using a different build environment, consider the following things:
-
- * You need to generate `res/values/version.xml` containing the `build_version` string. The template is in `version.xml.tpl`.
- * Without ProGuard, the compiled binary will be around 30% larger.
-
-See also the [Setting up Eclipse](https://github.com/pfleidi/yaxim/wiki/Setting-up-Eclipse) wiki page.
 
 ## License
 
