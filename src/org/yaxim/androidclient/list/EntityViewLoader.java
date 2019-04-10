@@ -46,6 +46,9 @@ class EntityViewLoader extends AsyncTask<String, EntityInfo, Throwable> {
 			publishProgress(EntityInfo.fromDisco(jid, di));
 		} catch (XMPPException.XMPPErrorException e) {
 			switch (e.getStanzaError().getCondition()) {
+			case remote_server_not_found: // user hasn't finished typing yet
+				publishProgress(null);
+				break;
 			case service_unavailable: // this is maybe a user account
 			case subscription_required: // this is probably a user account (from ejabberd)
 				publishProgress(EntityInfo.fromJid(jid));
