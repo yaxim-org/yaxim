@@ -1620,7 +1620,16 @@ public class SmackableImp implements Smackable {
 
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
-						String errmsg = msg.getError().toString();
+						StanzaError e = msg.getError();
+						String errmsg = e.toString();
+						if (mucJIDs.contains(msg.getFrom()) && e.getType() == StanzaError.Type.CANCEL && e.getCondition() == StanzaError.Condition.not_acceptable) {
+							// failed attempt to deliver a message to a MUC because we are not joined
+							// anymore. If message ID is known, mark as NEW, trigger rejoin.
+							if (changeMessageDeliveryStatus(fromJID[0], msg.getStanzaId(), ChatConstants.DS_NEW, errmsg)) {
+								rejoinMUC(fromJID[0]);
+								return;
+							}
+						}
 						if (changeMessageDeliveryStatus(fromJID[0], msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
 							mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
 						else if (mucJIDs.contains(msg.getFrom())) {
@@ -1759,6 +1768,7 @@ public class SmackableImp implements Smackable {
 			values.put(ChatConstants.DIRECTION, ChatConstants.INCOMING);
 			values.put(ChatConstants.MESSAGE, msg.getBody());
 			values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_ACKED);
+			values.put(ChatConstants.ERROR, (String)null);
 			values.put(ChatConstants.PACKET_ID, packet_id);
 			updated = mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + _id),
 					values, null, null) == 1;
