@@ -1414,6 +1414,19 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
+	private void rejoinMUC(String jid) {
+		MUCController muc = multiUserChats.get(jid);
+		if (muc != null) {
+			try {
+				if (muc.muc.isJoined())
+					muc.muc.leave();
+			} catch (Exception e) {
+				// best effort, just ignore
+			}
+			syncDbRooms();
+		}
+
+	}
 	private boolean isValidPingResponse(IQ response) {
 		// a 'result' response means, the other party supports ping and responded appropriately
 		if (response.getType() == Type.result)
@@ -1478,15 +1491,7 @@ public class SmackableImp implements Smackable {
 							}
 						} else if (pong.getError() != null) {
 							Log.d(TAG, "Ping: got error from MUC " + from[0] + ": " + pong.getError());
-							MUCController muc = multiUserChats.get(from[0]);
-							if (muc != null && muc.muc.isJoined()) {
-								try {
-									muc.muc.leave();
-								} catch (Exception e) {
-									// best effort, just ignore
-								}
-								syncDbRooms();
-							}
+							rejoinMUC(from[0]);
 						}
 					}
 				}
