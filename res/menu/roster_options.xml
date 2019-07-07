@@ -16,6 +16,9 @@
 		android:alphabeticShortcut="a"
 		android:icon="@drawable/ic_action_person_add" />
 
+	<item android:id="@+id/menu_matrix" android:title="@string/Menu_matrix" 
+	    />
+
 	<item android:id="@+id/menu_muc" android:title="@string/Menu_muc" 
 	    android:alphabeticShortcut="t" />
 
