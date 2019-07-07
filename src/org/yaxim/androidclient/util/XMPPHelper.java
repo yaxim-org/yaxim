@@ -156,6 +156,33 @@ public class XMPPHelper {
 		return sb.toString();
 	}
 
+	public static final String MATRIX_BRIDGE = "bridge.xmpp.matrix.org";
+	static final Pattern JID2MXID = Pattern.compile("^(#?)([^_#]*)[_#](.*)@" + MATRIX_BRIDGE);
+	static final Pattern MXID2JID = Pattern.compile("^([@#])([^:]*):(.*)");
+
+	public static String jid2mxid(String jid) {
+		if (jid.equals(MATRIX_BRIDGE))
+			return "The Matrix";
+		Matcher m = JID2MXID.matcher(jid);
+		if (m.find()) {
+			String prefix = m.group(1).length() == 0 ? "@" : m.group(1);
+			return prefix + m.group(2) + ":" + m.group(3);
+		} else
+			return jid;
+	}
+
+	public static String mxid2jid(String mxid) {
+		Matcher m = MXID2JID.matcher(mxid);
+		if (m.find()) {
+			if (m.group(1).equals("@"))
+				return m.group(2) + "_" + m.group(3) + "@" + MATRIX_BRIDGE;
+			else
+				return "#" + m.group(2) + "#" + m.group(3) + "@" + MATRIX_BRIDGE;
+		} else
+			return mxid;
+	}
+
+
 	// WARNING: This is not secure! This method is supposed to create a nice-
 	// looking URL parameter for JIDs, not to encode all special characters.
 	// This is especially important for i18n bare-JIDs which would get

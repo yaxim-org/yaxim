@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.data.EntityInfo;
 import org.yaxim.androidclient.data.EntityList;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 /**
  * Activity used to search for JIDs, MUCs, etc.
@@ -92,6 +93,7 @@ public class SearchActivity extends EntityListActivity {
 
 	@Override
 	public void searchLater(String query) {
+		query = XMPPHelper.mxid2jid(query);
 		if (jidLoader != null) {
 			jidLoader.cancel(true);
 		}

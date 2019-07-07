@@ -10,6 +10,7 @@ import org.jivesoftware.smackx.disco.packet.DiscoverItems;
 import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.muc.packet.MUCInitialPresence;
 import org.yaxim.androidclient.util.StatusMode;
+import org.yaxim.androidclient.util.XMPPHelper;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -71,8 +72,9 @@ public class EntityInfo {
 	public static EntityInfo fromDisco(String jid, DiscoverInfo di) {
 		EntityInfo ei = new EntityInfo();
 		ei.jid = jid;
+		ei.type = EnumSet.of(Type.User);
 		// boring: set name to JID
-		ei.name = jid;
+		ei.name = XMPPHelper.jid2mxid(jid);
 		// obtain fallback name from first identity, if available
 		List<DiscoverInfo.Identity> i = di.getIdentities();
 		if (i != null && i.size() > 0 && !TextUtils.isEmpty(i.get(0).getName())) {
@@ -112,8 +114,7 @@ public class EntityInfo {
 			// add as contact
 			ei.statusMode = StatusMode.unknown;
 			ei.type = EnumSet.of(EntityInfo.Type.User);
-		} else
-			return null;
+		}
 		return ei;
 	}
 

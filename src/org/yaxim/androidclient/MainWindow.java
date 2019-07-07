@@ -14,6 +14,7 @@ import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.list.SearchActivity;
+import org.yaxim.androidclient.list.ServiceDiscoveryActivity;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
@@ -684,6 +685,9 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			return true;
 		case R.id.menu_muc:
 			startActivity(new Intent(this, SearchActivity.class));
+			return true;
+		case R.id.menu_matrix:
+			startActivity(new Intent(this, ServiceDiscoveryActivity.class).setData(Uri.parse(XMPPHelper.MATRIX_BRIDGE)));
 			return true;
 		case R.id.menu_send_invitation:
 			new InvitationTask(this, mConfig, YaximApplication.getApp().getSmackable()).execute();

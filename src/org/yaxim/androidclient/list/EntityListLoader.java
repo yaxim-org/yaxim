@@ -118,6 +118,7 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(c);
 		publishProgress(null);
 		for (String jid : muc_domains) {
+			boolean is_matrix = jid.equals(XMPPHelper.MATRIX_BRIDGE);
 			if (isCancelled())
 				return;
 			DiscoverItems items = sdm.discoverItems(JidCreate.from(jid));
@@ -127,8 +128,15 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 				if (TextUtils.isEmpty(name)) {
 					name = item.getEntityID().toString();
 				}
-				publishProgress(new EntityInfo(EnumSet.of(EntityInfo.Type.Domain), item.getEntityID().toString(), sm, 0, name, "", 0, item));
+				if (is_matrix)
+					publishProgress(new EntityInfo(EnumSet.of(EntityInfo.Type.MUC),
+						item.getEntityID().toString(), sm, 0, name,
+						XMPPHelper.jid2mxid(item.getEntityID().toString()), 0, item));
+				else
+					publishProgress(new EntityInfo(EnumSet.of(EntityInfo.Type.Domain), item.getEntityID().toString(), sm, 0, name, "", 0, item));
 			}
+			if (is_matrix)
+				continue;
 			// second round: disco#info them all!
 			for (DiscoverItems.Item item : items.getItems()) {
 				if (isCancelled())
