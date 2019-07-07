@@ -1,26 +1,32 @@
 package org.yaxim.androidclient.preferences;
 
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
-import android.widget.BaseAdapter;
+import android.text.TextUtils;
 
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.data.YaximConfiguration;
 
 import java.net.URLEncoder;
 
-public class NotificationPrefs extends AppCompatPreferenceActivity {
+public class NotificationPrefs extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 	private ActionBar actionBar;
+	YaximConfiguration mConfig;
 	private boolean isMuc = false;
 	private String jid = null;
 	private String name = null;
+	private boolean has_changed = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(YaximApplication.getConfig().getTheme());
 		super.onCreate(savedInstanceState);
+		mConfig = org.yaxim.androidclient.YaximApplication.getConfig();
 
 		Intent intent = getIntent();
 		if (intent != null) {
@@ -50,11 +56,29 @@ public class NotificationPrefs extends AppCompatPreferenceActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(isMuc ? R.string.preftitle_notify_muc : R.string.preftitle_notify_msg);
 		actionBar.setSubtitle(name);
+
+		mConfig.getJidPrefs(jid).registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (!has_changed)
+			return;
+		has_changed = false;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			if (!TextUtils.isEmpty(jid))
+				getSystemService(NotificationManager.class).deleteNotificationChannel("msg_" + jid);
+			if (mConfig.getJidOverride(isMuc, jid)) {
+				getSystemService(NotificationManager.class).createNotificationChannel(
+						mConfig.createNotificationChannelFor(isMuc, jid, name));
+			}
+		}
 	}
 
 	@Override
@@ -68,4 +92,8 @@ public class NotificationPrefs extends AppCompatPreferenceActivity {
 		}
 	}
 
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+		has_changed = true;
+	}
 }

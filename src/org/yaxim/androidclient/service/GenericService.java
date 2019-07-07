@@ -106,10 +106,9 @@ public abstract class GenericService extends Service {
 			NotificationChannel nc_status = new NotificationChannel("status",
 					getString(R.string.notification_status), NotificationManager.IMPORTANCE_LOW);
 			oreoDamager.createNotificationChannel(nc_status);
-			NotificationChannel nc_msg = new NotificationChannel("messages",
-				getString(R.string.notification_msg), NotificationManager.IMPORTANCE_DEFAULT);
-			nc_msg.setShowBadge(true);
-			oreoDamager.createNotificationChannel(nc_msg);
+			oreoDamager.deleteNotificationChannel("messages"); // is "msg" now
+			oreoDamager.createNotificationChannel(mConfig.createNotificationChannelFor(false, null, getString(R.string.preftitle_notify_msg)));
+			oreoDamager.createNotificationChannel(mConfig.createNotificationChannelFor(true, null, getString(R.string.preftitle_notify_muc)));
 		}
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
@@ -293,6 +292,14 @@ public abstract class GenericService extends Service {
 			.addNextIntentWithParentStack(chatIntent)
 			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+		String notification_channel = mConfig.getEffectiveNotificationChannelId(isMuc, fromJid);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			if (mConfig.getJidOverride(isMuc, fromJid)) {
+				getSystemService(NotificationManager.class).createNotificationChannel(
+						mConfig.createNotificationChannelFor(isMuc, fromJid, author));
+			}
+		}
+
 		NotificationCompat.Action actMarkRead = new NotificationCompat.Action.Builder(
 				android.R.drawable.ic_menu_close_clear_cancel,
 				getString(R.string.notification_mark_read), msgHeardPendingIntent).build();
@@ -301,7 +308,7 @@ public abstract class GenericService extends Service {
 				getString(R.string.notification_reply), msgResponsePendingIntent)
 			.addRemoteInput(remoteInput).build();
 		// TODO: split public and private parts, use .setPublicVersion()
-		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "messages")
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, notification_channel)
 			.setContentTitle(title)
 			.setContentText(message)
 			.setStyle(new NotificationCompat.BigTextStyle()

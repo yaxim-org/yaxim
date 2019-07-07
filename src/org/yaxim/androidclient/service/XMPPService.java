@@ -616,7 +616,7 @@ public class XMPPService extends GenericService {
 				intent.setData(Uri.parse(uri + b.toString()));
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
 						intent, 0);
-				Notification invNotify = new NotificationCompat.Builder(getApplicationContext(), "messages")
+				Notification invNotify = new NotificationCompat.Builder(getApplicationContext(), "msg")
 						 .setContentTitle(roomname)
 						 .setContentText(body)
 						 .setSmallIcon(invitationDrawableId())

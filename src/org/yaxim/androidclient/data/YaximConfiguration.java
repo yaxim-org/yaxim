@@ -1,16 +1,19 @@
 package org.yaxim.androidclient.data;
 
 import org.yaxim.androidclient.FlavorConfig;
-import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,7 +23,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 
 public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
@@ -205,6 +207,35 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		} catch (YaximXMPPAdressMalformedException e) {
 			Log.e(TAG, "Exception in getPreferences(): " + e);
 		}
+	}
+
+	public boolean getJidOverride(boolean muc, String jid) {
+		return getJidPrefs(jid).getBoolean("override", false);
+	}
+	public String getEffectiveNotificationChannelId(boolean muc, String jid) {
+		if (TextUtils.isEmpty(jid) || !getJidOverride(muc, jid)) {
+			return muc ? "msg_muc" : "msg";
+		} else return "msg_" + jid;
+	}
+	public NotificationChannel createNotificationChannelFor(boolean muc, String jid, String name) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+			return null;
+		NotificationChannel nc_msg = new NotificationChannel(
+				getEffectiveNotificationChannelId(muc, jid),
+				name, NotificationManager.IMPORTANCE_DEFAULT);
+		// LED
+		boolean blink = getJidBoolean(muc, PreferenceConstants.LEDNOTIFY, jid, false);
+		nc_msg.enableLights(blink);
+		nc_msg.setLightColor(Color.MAGENTA);
+		// vibration
+		String vibration = getJidString(muc, PreferenceConstants.VIBRATIONNOTIFY, jid, "OFF");
+		nc_msg.enableVibration(!"OFF".equals(vibration));
+		//nc_msg.setVibrationPattern();
+		// ringtone
+		Uri sound = Uri.parse(getJidString(muc, PreferenceConstants.RINGTONENOTIFY, jid, ""));
+		nc_msg.setSound(sound, null);
+		nc_msg.setShowBadge(true);
+		return nc_msg;
 	}
 
 	public SharedPreferences getJidPrefs(String jid) {
