@@ -184,9 +184,12 @@ public class MUCChatWindow extends ChatWindow {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent,
 					View view, int position, long id) {
+				String jid = users.get(position).bare_jid;
 				String nickname = users.get(position).resource;
+				boolean is_anon = jid.contains("/"); // hack in backend, full JID in user list = anon
+				String screenname = is_anon ? String.format("%s (%s)", nickname, mUserScreenName) : jid;
 				ChatHelper.startChatActivity(MUCChatWindow.this, users.get(position).bare_jid,
-						String.format("%s (%s)", nickname, mUserScreenName), null);
+						screenname, null);
 				dialog.dismiss();
 				return true;
 			}});
