@@ -1658,7 +1658,7 @@ public class SmackableImp implements Smackable {
 							upsertRoster(cvR, fromJID[0]);
 							return;
 						}
-						Log.d(TAG, "empty message.");
+						Log.d(TAG, "empty message: " + msg.getStanzaId());
 						return;
 					}
 
