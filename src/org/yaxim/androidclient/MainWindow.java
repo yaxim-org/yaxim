@@ -450,11 +450,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		menu.setHeaderTitle(menuName);
 	}
 
-	void removeChatHistory(final String JID) {
-		getContentResolver().delete(ChatProvider.CONTENT_URI,
-				ChatProvider.ChatConstants.JID + " = ?", new String[] { JID });
-	}
-
 	boolean addToRosterDialog(String jid, String alias, String token) {
 		if (serviceAdapter != null && serviceAdapter.isAuthenticated()) {
 			new AddRosterItemDialog(this, jid)
