@@ -23,7 +23,6 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
-import android.annotation.TargetApi;
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.ComponentName;
@@ -49,7 +48,6 @@ import android.provider.Settings;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,14 +64,13 @@ import org.yaxim.androidclient.service.IXMPPRosterService;
 
 import android.view.Menu;
 
-import android.support.v7.app.ActionBar;
-
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainWindow extends ThemedActivity implements ExpandableListView.OnChildClickListener {
 
 	private static final String TAG = "yaxim.MainWindow";
 
+	ExpandableListView elv;
 
 	private Handler mainHandler = new Handler();
 
@@ -100,7 +97,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		getContentResolver().registerContentObserver(ChatProvider.CONTENT_URI,
 				true, mChatObserver);
 		registerXMPPService();
-		setupContenView();
+		setupContentView();
 		createUICallback();
 		registerListAdapter();
 
@@ -112,10 +109,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		super.onDestroy();
 		getContentResolver().unregisterContentObserver(mRosterObserver);
 		getContentResolver().unregisterContentObserver(mChatObserver);
-	}
-
-	public ExpandableListView getExpandableListView() {
-		return (ExpandableListView)findViewById(android.R.id.list);
 	}
 
 	public int getStatusActionIcon() {
@@ -145,14 +138,15 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	}
 
 
-	void setupContenView() {
+	void setupContentView() {
 		setContentView(R.layout.main);
 		mConnectingText = (TextView)findViewById(R.id.error_view);
-		registerForContextMenu(getExpandableListView());
-		getExpandableListView().requestFocus();
+		elv = (ExpandableListView)findViewById(android.R.id.list);
+		registerForContextMenu(elv);
+		elv.requestFocus();
 
-		getExpandableListView().setOnChildClickListener(this);
-		getExpandableListView().setOnGroupClickListener(
+		elv.setOnChildClickListener(this);
+		elv.setOnGroupClickListener(
 			new ExpandableListView.OnGroupClickListener() {
 				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
 						long id) {
@@ -160,13 +154,13 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 					return false;
 				}
 			});
-		getExpandableListView().setOnGroupCollapseListener(
+		elv.setOnGroupCollapseListener(
 			new ExpandableListView.OnGroupCollapseListener() {
 				public void onGroupCollapse(int groupPosition) {
 					handleGroupChange(groupPosition, false);
 				}
 			});
-		getExpandableListView().setOnGroupExpandListener(
+		elv.setOnGroupExpandListener(
 			new ExpandableListView.OnGroupExpandListener() {
 				public void onGroupExpand(int groupPosition) {
 					handleGroupChange(groupPosition, true);
@@ -376,7 +370,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		Log.d(TAG, "onConfigurationChanged");
-		getExpandableListView().requestFocus();
+		elv.requestFocus();
 	}
 
 	private boolean isConnected() {
@@ -404,14 +398,14 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	}
 
 	private StatusMode getItemStatusMode(long packedPosition) {
-		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
-		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
+		int flatPosition = elv.getFlatListPosition(packedPosition);
+		Cursor c = (Cursor)elv.getItemAtPosition(flatPosition);
 		return getContactStatusMode(c);
 	}
 
 	private String getPackedItemRow(long packedPosition, String rowName) {
-		int flatPosition = getExpandableListView().getFlatListPosition(packedPosition);
-		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(flatPosition);
+		int flatPosition = elv.getFlatListPosition(packedPosition);
+		Cursor c = (Cursor)elv.getItemAtPosition(flatPosition);
 		return c.getString(c.getColumnIndex(rowName));
 	}
 
@@ -762,7 +756,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			int groupPosition, int childPosition, long id) {
 
 		long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
-		Cursor c = (Cursor)getExpandableListView().getItemAtPosition(getExpandableListView().getFlatListPosition(packedPosition));
+		Cursor c = (Cursor)elv.getItemAtPosition(elv.getFlatListPosition(packedPosition));
 		String userJid = c.getString(c.getColumnIndexOrThrow(RosterConstants.JID));
 		String userName = c.getString(c.getColumnIndexOrThrow(RosterConstants.ALIAS));
 		Intent i = getIntent();
@@ -916,7 +910,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	private void registerListAdapter() {
 
 		rosterListAdapter = new RosterExpListAdapter(this);
-		getExpandableListView().setAdapter(rosterListAdapter);
+		elv.setAdapter(rosterListAdapter);
 	}
 
 	private void createUICallback() {
@@ -963,9 +957,9 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			if (!mGroupsExpanded.containsKey(name))
 				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
 			if (mGroupsExpanded.get(name))
-				getExpandableListView().expandGroup(count);
+				elv.expandGroup(count);
 			else
-				getExpandableListView().collapseGroup(count);
+				elv.collapseGroup(count);
 		}
 	}
 
@@ -1220,7 +1214,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		@Override
 		protected void onPostExecute(HashMap<String, Integer> result) {
 			mUnreadCounters = result;
-			getExpandableListView().invalidateViews();
+			elv.invalidateViews();
 		}
 
 	}
