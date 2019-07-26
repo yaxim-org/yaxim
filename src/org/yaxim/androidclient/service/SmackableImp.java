@@ -225,6 +225,7 @@ public class SmackableImp implements Smackable {
 		} catch (XmppStringprepException e) {
 			throw new YaximXMPPException("Invalid server name", e);
 		}
+		cb.setLanguage(Locale.getDefault());
 		cb.setSendPresence(false);
 		cb.setCompressionEnabled(false); // disable for now
 		SmackConfiguration.DEBUG = mConfig.smackdebug;
