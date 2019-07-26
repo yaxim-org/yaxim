@@ -511,7 +511,7 @@ public class SmackableImp implements Smackable {
 
 	// called at the end of a state transition
 	private synchronized void updateConnectionState(ConnectionState new_state) {
-		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.LOADING)
+		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.LOADING || new_state == ConnectionState.RECONNECT_NETWORK)
 			mLastError = null;
 		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state + " (" + mLastError + ")");
 		if (new_state == mState)
