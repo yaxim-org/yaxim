@@ -647,10 +647,15 @@ public class SmackableImp implements Smackable {
 	private void onDisconnected(Throwable reason) {
 		Log.e(TAG, "onDisconnected: " + reason);
 		reason.printStackTrace();
+		if (reason instanceof YaximXMPPException && reason.getCause() != null)
+			reason = reason.getCause();
 		if (reason instanceof XMPPException.StreamErrorException) {
 			StreamError se = ((XMPPException.StreamErrorException)reason).getStreamError();
 			if (se != null && se.getCondition().equals(StreamError.Condition.conflict))
 				mConfig.generateNewResource();
+			// XXX: getCondition() isn't human-readable, but we lack i18n for it yet
+			onDisconnected(se.getCondition() + " " + se.getDescriptiveText());
+			return;
 		}
 		// iterate through to the deepest exception
 		while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
