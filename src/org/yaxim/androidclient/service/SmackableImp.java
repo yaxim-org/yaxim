@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -86,6 +87,7 @@ import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatRoomHelper;
+import org.yaxim.androidclient.data.EntityInfo;
 import org.yaxim.androidclient.data.RosterProvider;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -2483,35 +2485,35 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
-	@Override
-	public List<ParcelablePresence> getUserList(String jid) {
+	public List<EntityInfo> getUserList(String jid) {
 		MUCController mucc = multiUserChats.get(jid);
 		if (mucc == null) {
 			return null;
 		}
 		MultiUserChat muc = mucc.muc;
+		boolean non_anon = (muc.getRoomInfo() != null) && muc.getRoomInfo().isNonanonymous();
 		Log.d(TAG, "MUC instance: " + jid + " " + muc);
 		Iterator<EntityFullJid> occIter = muc.getOccupants().iterator();
-		ArrayList<ParcelablePresence> tmpList = new ArrayList<ParcelablePresence>();
+		ArrayList<EntityInfo> tmpList = new ArrayList<EntityInfo>();
 		while(occIter.hasNext()) {
 			Presence occupantPresence = muc.getOccupantPresence(occIter.next());
-			ParcelablePresence pp = new ParcelablePresence(occupantPresence);
-			// smack3 bug: work around nameless participant from ejabberd MUC vcard
-			if (!TextUtils.isEmpty(pp.resource)) {
+			EntityInfo ei = new EntityInfo(EnumSet.of(EntityInfo.Type.MUC_PM), occupantPresence);
+			// work around nameless participant from ejabberd MUC vcard
+			if (occupantPresence.getFrom().getResourceOrNull() != null) {
 				// Default bare_jid to the actual full occupant JID (muc@domain/nickname) for MUCChatWindow
-				pp.bare_jid = occupantPresence.getFrom().toString();
-				boolean non_anon = (muc.getRoomInfo() != null) && muc.getRoomInfo().isNonanonymous();
+				ei.jid = occupantPresence.getFrom().toString();
+				ei.name = occupantPresence.getFrom().getResourceOrEmpty().toString();
 				MUCUser mu = (MUCUser) occupantPresence.getExtension("x", "http://jabber.org/protocol/muc#user");
 				// override bare_jid with real bare_jid if non-anon MUC and JID is known
 				if (non_anon && mu != null && mu.getItem() != null && !TextUtils.isEmpty(mu.getItem().getJid()))
-					pp.bare_jid = mu.getItem().getJid().asBareJid().toString();
-				tmpList.add(pp);
+					ei.jid = mu.getItem().getJid().asBareJid().toString();
+				tmpList.add(ei);
 			}
 		}
-		Collections.sort(tmpList, new Comparator<ParcelablePresence>() {
+		Collections.sort(tmpList, new Comparator<EntityInfo>() {
 			@Override
-			public int compare(ParcelablePresence lhs, ParcelablePresence rhs) {
-				return java.text.Collator.getInstance().compare(lhs.resource, rhs.resource);
+			public int compare(EntityInfo lhs, EntityInfo rhs) {
+				return java.text.Collator.getInstance().compare(lhs.name, rhs.name);
 			}
 		});
 		Log.d(TAG, "getUserList(" + jid + "): " + tmpList.size());

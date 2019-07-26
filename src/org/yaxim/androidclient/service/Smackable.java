@@ -38,7 +38,6 @@ public interface Smackable {
 	
 	String getNameForJID(String jid);
 	String getMyMucNick(String jid);
-	List<ParcelablePresence> getUserList(String jid);
 
 	XMPPConnection getConnection();
 

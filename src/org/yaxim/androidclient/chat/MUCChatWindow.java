@@ -3,13 +3,16 @@ package org.yaxim.androidclient.chat;
 import java.util.List;
 
 import org.yaxim.androidclient.R;
+import org.yaxim.androidclient.YaximApplication;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatRoomHelper;
+import org.yaxim.androidclient.data.EntityInfo;
 import org.yaxim.androidclient.dialogs.ConfirmDialog;
 import org.yaxim.androidclient.dialogs.EditMUCDialog;
+import org.yaxim.androidclient.list.EntityListAdapter;
 import org.yaxim.androidclient.service.IXMPPMucService;
-import org.yaxim.androidclient.service.ParcelablePresence;
+import org.yaxim.androidclient.service.SmackableImp;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.XEP0392Helper;
 import org.yaxim.androidclient.util.XMPPHelper;
@@ -159,9 +162,10 @@ public class MUCChatWindow extends ChatWindow {
 	}
 
 	private void showUserList() {
-		if (mMucServiceAdapter == null)
+		SmackableImp s = YaximApplication.getInstance().getSmackable();
+		if (s == null)
 			return;
-		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
+		final List<EntityInfo> users = s.getUserList(mWithJabberID);
 		if (users == null) {
 			Toast.makeText(this, R.string.Global_authenticate_first, Toast.LENGTH_SHORT).show();
 			return;
@@ -176,7 +180,7 @@ public class MUCChatWindow extends ChatWindow {
 		dialogBuilder.setAdapter(adapter, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				addNicknameToInput(users.get(which).resource);
+				addNicknameToInput(users.get(which).name);
 			}
 		});
 		final AlertDialog dialog = dialogBuilder.create();
@@ -184,11 +188,11 @@ public class MUCChatWindow extends ChatWindow {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent,
 					View view, int position, long id) {
-				String jid = users.get(position).bare_jid;
-				String nickname = users.get(position).resource;
+				String jid = users.get(position).jid;
+				String nickname = users.get(position).name;
 				boolean is_anon = jid.contains("/"); // hack in backend, full JID in user list = anon
 				String screenname = is_anon ? String.format("%s (%s)", nickname, mUserScreenName) : jid;
-				ChatHelper.startChatActivity(MUCChatWindow.this, users.get(position).bare_jid,
+				ChatHelper.startChatActivity(MUCChatWindow.this, users.get(position).jid,
 						screenname, null);
 				dialog.dismiss();
 				return true;
@@ -214,16 +218,16 @@ public class MUCChatWindow extends ChatWindow {
 	}
 	
 
-	private class PresenceArrayAdapter extends ArrayAdapter<ParcelablePresence> {
+	private class PresenceArrayAdapter extends ArrayAdapter<EntityInfo> {
 		TypedValue tv = new TypedValue();
 
-		public PresenceArrayAdapter(Context context, List<ParcelablePresence> pp) {
-			super(context, R.layout.mainchild_row, pp);
+		public PresenceArrayAdapter(Context context, List<EntityInfo> ei) {
+			super(context, R.layout.mainchild_row, ei);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ParcelablePresence pp = getItem(position);
+			EntityInfo ei = getItem(position);
 
 			if (convertView == null)
 				convertView = getLayoutInflater().inflate(R.layout.mainchild_row, parent, false);
@@ -231,16 +235,16 @@ public class MUCChatWindow extends ChatWindow {
 			TextView nick = ((TextView)convertView.findViewById(R.id.roster_screenname));
 			TextView statusmsg = ((TextView)convertView.findViewById(R.id.roster_statusmsg));
 			
-			nick.setText(pp.resource);
-			nick2Color(pp.resource, tv);
+			nick.setText(ei.name);
+			nick2Color(ei.name, tv);
 			nick.setTextColor(tv.data);
 			nick.setTypeface(null, android.graphics.Typeface.BOLD);
 			
-			boolean hasStatus = pp.status != null && pp.status.length() > 0;
-			statusmsg.setText(pp.status);
+			boolean hasStatus = ei.status != null && ei.status.length() > 0;
+			statusmsg.setText(ei.status);
 			statusmsg.setVisibility(hasStatus ? View.VISIBLE : View.GONE);
 			
-			((ImageView)convertView.findViewById(R.id.roster_icon)).setImageResource(pp.status_mode.getDrawableId());
+			((ImageView)convertView.findViewById(R.id.roster_icon)).setImageResource(ei.statusMode.getDrawableId());
 			
 			return convertView;
 		}

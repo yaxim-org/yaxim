@@ -3,6 +3,7 @@ package org.yaxim.androidclient.data;
 import android.text.TextUtils;
 
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.StanzaError;
 import org.jivesoftware.smackx.disco.packet.DiscoverInfo;
 import org.jivesoftware.smackx.disco.packet.DiscoverItems;
@@ -39,6 +40,15 @@ public class EntityInfo {
 		this.status = status;
 		this.users = users;
 		this.data = data;
+	}
+
+	public EntityInfo(EnumSet<Type> type, Presence p) {
+		this.type = type;
+		this.jid = p.getFrom().asBareJid().toString();
+		this.status = p.getStatus();
+		Presence.Mode pm = p.getMode();
+		this.statusMode = (pm == null) ? StatusMode.available : StatusMode.valueOf(pm.name());
+		this.data = p;
 	}
 
 	public static EntityInfo fromJidName(String jid, String name) {

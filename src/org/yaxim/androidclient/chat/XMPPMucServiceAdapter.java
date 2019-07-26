@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
 import org.yaxim.androidclient.service.IXMPPMucService;
-import org.yaxim.androidclient.service.ParcelablePresence;
 
 public class XMPPMucServiceAdapter {
 
@@ -34,14 +33,6 @@ public class XMPPMucServiceAdapter {
 	public String getMyMucNick() {
 		try {
 			return xmppServiceStub.getMyMucNick(this.jabberID);
-		} catch (RemoteException e) {
-			return null;
-		}
-	}
-
-	public List<ParcelablePresence> getUserList() {
-		try {
-			return xmppServiceStub.getUserList(this.jabberID);
 		} catch (RemoteException e) {
 			return null;
 		}

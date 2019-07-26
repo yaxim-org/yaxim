@@ -260,15 +260,6 @@ public class XMPPService extends GenericService {
 					return mSmackable.getMyMucNick(jid);
 				return null;
 			}
-			@Override
-			public List<ParcelablePresence> getUserList(String jid) throws RemoteException {
-				if(mSmackable!=null)
-					return mSmackable.getUserList(jid);
-				else {
-					shortToastNotify(getString(R.string.Global_authenticate_first));
-					return null;
-				}
-			}
 		};
 	}
 
