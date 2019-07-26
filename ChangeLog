@@ -1,3 +1,11 @@
+0.9.9:
+ * User Interface: major rework for Material Design
+ * Service Discovery: allow browsing other servers and join rooms (XEP-0030)
+ * Chat Rooms: use account-synchronized nickname (XEP-0172)
+ * Chat Rooms: room search, bookmarks
+ * Chat: support message search
+ * Android: Support for new OS versions
+
 0.9.3:
  * File Upload: support sharing of pictures and files, and inline display (thanks Igor; XEP-0363)
  * Chat: support *bold*, _emphasis_, ~strikethrough~ and `code` (thanks Conversations!; XEP-0393)
