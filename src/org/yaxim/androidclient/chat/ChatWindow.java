@@ -964,7 +964,9 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 			mStatusMode.setImageResource(StatusMode.values()[status_mode].getDrawableId());
 		}
 		cursor.close();
-		invalidateOptionsMenu();
+		// work around deleting the search text on menu update
+		if (TextUtils.isEmpty(mSearchQuery))
+			invalidateOptionsMenu();
 	}
 
 	// this method is a "virtual" placeholder for the MUC activity
