@@ -65,6 +65,7 @@ public class NotificationPrefs extends AppCompatPreferenceActivity implements Sh
 		super.onResume();
 	}
 
+	/* only set channel on actual notification, otherwise user can't change ringtone any more :(
 	@Override
 	protected void onStop() {
 		super.onStop();
@@ -80,6 +81,7 @@ public class NotificationPrefs extends AppCompatPreferenceActivity implements Sh
 			}
 		}
 	}
+	*/
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
