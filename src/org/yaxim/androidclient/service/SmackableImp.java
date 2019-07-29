@@ -143,7 +143,7 @@ public class SmackableImp implements Smackable {
 		ProviderManager.addExtensionProvider(PreAuth.ELEMENT, PreAuth.NAMESPACE, new PreAuth.Provider());
 		ProviderManager.addIQProvider(MuclumbusIQ.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusIQ.Provider());
 		ProviderManager.addIQProvider(MuclumbusResult.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusResult.Provider());
-		PingManager.setDefaultPingInterval(3*60);
+		PingManager.setDefaultPingInterval(14*60);
 	}
 
 	private final YaximConfiguration mConfig;
