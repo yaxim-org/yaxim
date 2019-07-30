@@ -66,7 +66,7 @@ public class EntityInfo {
 			else
 				msg = se.toString();
 		}
-		return new EntityInfo(null,null, null, 0, msg, null, 0, ex);
+		return new EntityInfo(EnumSet.noneOf(Type.class),null, null, 0, msg, null, 0, ex);
 	}
 
 
