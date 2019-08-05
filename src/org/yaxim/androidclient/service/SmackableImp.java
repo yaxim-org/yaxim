@@ -2409,11 +2409,19 @@ public class SmackableImp implements Smackable {
 					.requestHistorySince(lastDate);
 			muc.join(mecb.build());
 		} catch (Exception e) {
-			Log.e(TAG, "Could not join MUC-room "+room);
+			Log.e(TAG, "Could not join MUC "+room);
 			e.printStackTrace();
+			String error_msg;
+			if (e instanceof XMPPException.XMPPErrorException) {
+				StanzaError se = ((XMPPException.XMPPErrorException)e).getStanzaError();
+				error_msg = se.getDescriptiveText();
+				if (TextUtils.isEmpty(error_msg))
+					error_msg = se.toString();
+			} else
+				error_msg = e.getLocalizedMessage();
 			// work around race condition when MUC was removed while joining
 			if(mucJIDs.contains(room)) {
-				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, e.getLocalizedMessage()));
+				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_error, error_msg));
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
 				upsertRoster(cvR, room);
 			}
