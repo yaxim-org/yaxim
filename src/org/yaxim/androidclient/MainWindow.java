@@ -1214,13 +1214,26 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 
 	}
 
+	long mLoadUnreadLast = 0;
+	private Runnable mLoadUnread = new Runnable() {
+		@Override
+		public void run() {
+			new LoadUnreadTask().execute();
+			mLoadUnreadLast = System.currentTimeMillis();
+		}
+	};
+
 	private class ChatObserver extends ContentObserver {
 		public ChatObserver() {
 			super(mainHandler);
 		}
 		public void onChange(boolean selfChange) {
-			updateRoster();
+			mainHandler.removeCallbacks(mLoadUnread);
+			long ts = System.currentTimeMillis();
+			if (ts > mLoadUnreadLast + 1000)
+				mLoadUnread.run();
+			else
+				mainHandler.postDelayed(mLoadUnread, 200);
 		}
 	}
-	
 }
