@@ -114,7 +114,8 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String[] jid, String fromUserName, String message,
-			boolean showNotification, boolean silent_notification, Message.Type msgType) {
+			boolean showNotification, boolean silent_notification, Message.Type msgType,
+			long timestamp) {
 		String fromJid = jid[0];
 		boolean isMuc = (msgType==Message.Type.groupchat);
 		boolean is_error = (msgType==Message.Type.error);
@@ -203,7 +204,7 @@ public abstract class GenericService extends Service {
 		boolean blink = mConfig.getJidBoolean(isMuc, PreferenceConstants.LEDNOTIFY, fromJid, false);
 		Notification n = setNotification(fromJid, jid[1], fromUserName,
 				body, msg_long, messageList,
-				blink, sound, vibrate, isMuc);
+				blink, sound, vibrate, isMuc, timestamp);
 
 		
 		mNotificationMGR.notify(notifyId, n);
@@ -212,7 +213,8 @@ public abstract class GenericService extends Service {
 	}
 	
 	private Notification setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, SpannableStringBuilder msg_long,
-										 ArrayList<String> messageList, boolean blink, Uri ringtone, boolean vibrate, boolean isMuc) {
+										 ArrayList<String> messageList, boolean blink, Uri ringtone, boolean vibrate, boolean isMuc,
+										 long timestamp) {
 		
 		int mNotificationCounter = 0;
 		if (notificationCount.containsKey(fromJid)) {
@@ -315,6 +317,7 @@ public abstract class GenericService extends Service {
 					 .setBigContentTitle(author)
 					.bigText(msg_long))
 			.setTicker(ticker)
+			.setWhen(timestamp)
 			.setSmallIcon(R.drawable.sb_message)
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)

@@ -557,14 +557,15 @@ public class XMPPService extends GenericService {
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
 			public void notifyMessage(final String[] from, final String message,
-					final boolean silent_notification, final Type msgType) {
+					final boolean silent_notification, final Type msgType,
+					final long timestamp) {
 				final String name = mSmackable.getNameForJID(from[0]);
 				logInfo("notification: " + from[0] + "=" + name +" with type: "+msgType.name());
 				mMainHandler.post(new Runnable() {
 					public void run() {
 						// work around Toast fallback for errors
 						notifyClient(from, name, message,
-							!mIsBoundTo.contains(from[0]), silent_notification, msgType);
+							!mIsBoundTo.contains(from[0]), silent_notification, msgType, timestamp);
 					}});
 				}
 
