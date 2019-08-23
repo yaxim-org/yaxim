@@ -68,6 +68,7 @@ import org.jivesoftware.smackx.disco.packet.DiscoverItems;
 import org.jivesoftware.smackx.pubsub.LeafNode;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
+import org.jivesoftware.smackx.sid.element.StanzaIdElement;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jivesoftware.smackx.delay.packet.DelayInformation;
@@ -1019,7 +1020,7 @@ public class SmackableImp implements Smackable {
 
 	public static ContentValues formatMessageContentValues(int direction, String jid, String resource,
 			String message, int msgflags, String lmc, String extra,
-			int delivery_status, String packetID) {
+			int delivery_status, String packetID, String uniqueID) {
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.DIRECTION, direction);
 		values.put(ChatConstants.JID, jid);
@@ -1030,13 +1031,14 @@ public class SmackableImp implements Smackable {
 		values.put(ChatConstants.EXTRA, extra);
 		values.put(ChatConstants.DELIVERY_STATUS, delivery_status);
 		values.put(ChatConstants.PACKET_ID, packetID);
+		values.put(ChatConstants.UNIQUE_ID, uniqueID);
 		return values;
 	}
 
 	public static void addOfflineMessage(ContentResolver cr, String toJID, String message) {
 		ContentValues values = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
 			message, ChatConstants.MF_TEXT, null, null,
-			ChatConstants.DS_NEW, StanzaIdUtil.newStanzaId());
+			ChatConstants.DS_NEW, StanzaIdUtil.newStanzaId(), null);
 		values.put(ChatConstants.DATE, System.currentTimeMillis());
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
@@ -1066,7 +1068,7 @@ public class SmackableImp implements Smackable {
 		int msgFlags = TextUtils.isEmpty(oob) ? ChatConstants.MF_TEXT : ChatConstants.MF_FILE;
 		int deliveryStatus = is_auth ? ChatConstants.DS_SENT_OR_READ : ChatConstants.DS_NEW;
 		ContentValues cv = formatMessageContentValues(ChatConstants.OUTGOING, toJID, null,
-				message, msgFlags, lmc, oob, deliveryStatus, newMessage.getStanzaId());
+				message, msgFlags, lmc, oob, deliveryStatus, newMessage.getStanzaId(), null);
 		addChatMessageToDB(toJID, cv, 0, upsert_id);
 		if (is_auth) {
 			try {
@@ -1594,6 +1596,16 @@ public class SmackableImp implements Smackable {
 		}
 		registerLastActivity(msg.getFrom());
 
+		// obtain unique stanza id (XEP-0359)
+		StanzaIdElement uniqueStanzaElement = StanzaIdElement.getStanzaId(msg);
+		String unique_id = (mam != null) ? mam.getId() : null;
+		if (mam == null && uniqueStanzaElement != null)
+			unique_id = uniqueStanzaElement.getId();
+		if (!TextUtils.isEmpty(unique_id)) {
+			String archiveJid = (msg.getType() == Message.Type.groupchat) ? withJID[0] : mConfig.jabberID;
+			addChatArchiveEntry(archiveJid, unique_id, ts);
+		}
+
 		// check for jabber MUC invitation
 		if(direction == ChatConstants.INCOMING && handleMucInvitation(msg)) {
 			sendReceiptIfRequested(msg);
@@ -1886,6 +1898,29 @@ public class SmackableImp implements Smackable {
 		};
 
 		mXMPPConnection.addAsyncStanzaListener(mPresenceListener, new StanzaTypeFilter(Presence.class));
+	}
+
+	/** return the Unique ID of the last archived message, or null */
+	private String getChatArchiveEntry(String jid) {
+		if (TextUtils.isEmpty(jid))
+			jid = mConfig.jabberID;
+		Cursor cursor = mContentResolver.query(ChatProvider.ARCHIVE_URI,
+				new String[] { "jid", "uid", "date" },
+				"jid = ?", new String[] { jid},
+				null);
+		String result = null;
+		if (cursor.moveToNext())
+			result = cursor.getString(1);
+		cursor.close();
+		return result;
+	}
+
+	private void addChatArchiveEntry(String jid, String uid, long ts) {
+		ContentValues cv = new ContentValues();
+		cv.put("jid", jid);
+		cv.put("uid", uid);
+		cv.put("date", ts);
+		mContentResolver.insert(ChatProvider.ARCHIVE_URI, cv);
 	}
 
 	private void addChatMessageToDB(String bare_jid, ContentValues values, long ts, long upsert_id) {
