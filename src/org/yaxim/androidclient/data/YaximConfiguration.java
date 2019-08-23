@@ -1,5 +1,7 @@
 package org.yaxim.androidclient.data;
 
+import org.jxmpp.jid.BareJid;
+import org.jxmpp.jid.impl.JidCreate;
 import org.yaxim.androidclient.FlavorConfig;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -62,6 +64,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String server;
 	public String customServer;
 	public String jabberID;
+	public BareJid jid;
 	public String screenName;
 	public boolean jid_configured;
 	public boolean require_ssl;
@@ -122,6 +125,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		String[] res = jid.split("@");
 		this.userName = res[0];
 		this.server = res[1];
+		this.jid = JidCreate.bareFromOrNull(jid);
 		// check for gmail.com and other google hosted jabber accounts
 		if ("gmail.com".equals(res[1]) || "googlemail.com".equals(res[1])
 				|| GMAIL_SERVER.equals(this.customServer)) {
