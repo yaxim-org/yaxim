@@ -24,18 +24,23 @@ public class ChatProvider extends ContentProvider {
 
 	public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider.Chats";
 	public static final String TABLE_NAME = "chats";
+	public static final String TABLE_ARCHIVE = "archive";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + TABLE_NAME);
+	public static final Uri ARCHIVE_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + TABLE_ARCHIVE);
 
 	private static final UriMatcher URI_MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
 
 	private static final int MESSAGES = 1;
 	private static final int MESSAGE_ID = 2;
+	private static final int ARCHIVE = 3;
 
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "chats", MESSAGES);
 		URI_MATCHER.addURI(AUTHORITY, "chats/#", MESSAGE_ID);
+		URI_MATCHER.addURI(AUTHORITY, "archive", ARCHIVE);
 	}
 
 	private static final String TAG = "yaxim.ChatProvider";
@@ -88,7 +93,14 @@ public class ChatProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri url, ContentValues initialValues) {
-		if (URI_MATCHER.match(url) != MESSAGES) {
+		switch (URI_MATCHER.match(url)) {
+		case ARCHIVE:
+			SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+			db.insert(TABLE_ARCHIVE, null, initialValues);
+			return null;
+		case MESSAGES:
+			break; // fall through
+		default:
 			throw new IllegalArgumentException("Cannot insert into URL: " + url);
 		}
 
@@ -156,6 +168,11 @@ public class ChatProvider extends ContentProvider {
 			qBuilder.setTables(TABLE_NAME);
 			qBuilder.appendWhere("_id=");
 			qBuilder.appendWhere(url.getPathSegments().get(1));
+			break;
+		case ARCHIVE:
+			qBuilder.setTables(TABLE_ARCHIVE);
+			if (TextUtils.isEmpty(sortOrder))
+				sortOrder = "jid";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URL " + url);
@@ -242,7 +259,17 @@ public class ChatProvider extends ContentProvider {
 					+ ChatConstants.CORRECTION + " TEXT,"
 					+ ChatConstants.DELIVERY_STATUS + " INTEGER,"
 					+ ChatConstants.PACKET_ID + " TEXT,"
+					+ ChatConstants.UNIQUE_ID + " TEXT,"
 					+ ChatConstants.RESOURCE + " TEXT DEFAULT NULL);");
+
+			db.execSQL("CREATE TABLE IF NOT EXISTS archive (" +
+					"jid TEXT PRIMARY KEY ON CONFLICT REPLACE," +
+					"uid TEXT," +
+					"date INTEGER)");
+			db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_pid on chats (pid)");
+			db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_date on chats (jid, date)");
+			db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_uid on chats (jid, uid)");
+			db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_from_read on chats (jid, from_me, read)");
 		}
 
 		@Override
@@ -256,15 +283,23 @@ public class ChatProvider extends ContentProvider {
 			case 5:
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.RESOURCE + " TEXT DEFAULT NULL");
 			case 6:
-				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_pid on chats (pid)");
-				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_date on chats (jid, date)");
-				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_from_read on chats (jid, from_me, read)");
+				// moved INDEX creation to version 8->9, because it wasn't in onCreate()
 			case 7:
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.MSGFLAGS + " INT DEFAULT 0");
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.EXTRA + " TEXT DEFAULT NULL");
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.ERROR + " TEXT DEFAULT NULL");
 				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.CORRECTION + " TEXT DEFAULT NULL");
+			case 8:
+				db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD " + ChatConstants.UNIQUE_ID + " TEXT DEFAULT NULL");
+				db.execSQL("CREATE TABLE IF NOT EXISTS archive (" +
+						"jid TEXT PRIMARY KEY ON CONFLICT REPLACE," +
+						"uid TEXT," +
+						"date INTEGER)");
 
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_pid on chats (pid)");
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_date on chats (jid, date)");
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_uid on chats (jid, uid)");
+				db.execSQL("CREATE INDEX IF NOT EXISTS idx_chat_jid_from_read on chats (jid, from_me, read)");
 				break;
 			default:
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -293,6 +328,7 @@ public class ChatProvider extends ContentProvider {
 		public static final String CORRECTION = "correction";
 		public static final String DELIVERY_STATUS = "read"; // SQLite can not rename columns, reuse old name
 		public static final String PACKET_ID = "pid";
+		public static final String UNIQUE_ID = "uid";
 		public static final String RESOURCE = "resource"; // to identify senders in MUCs (among others)
 
 		// boolean mappings
