@@ -307,7 +307,7 @@ public class ChatProvider extends ContentProvider {
 		// message flags mappings
 		public static final int MF_TEXT = 0; //< this is a regular chat message
 		public static final int MF_FILE = 1; //< this is a file upload URL / SIMS / OOB
-		public static final int MT_INVITE = 2; //< this is a file upload URL / SIMS / OOB
+		public static final int MT_INVITE = 2; //< this is a chatroom invitation
 		public static final int MF_DELAY = 4; //< this message was delayed
 		public static final int MF_CORRECT = 8; //< this message was corrected
 
