@@ -1971,19 +1971,6 @@ public class SmackableImp implements Smackable {
 		if (mucc != null)
 			mucc.addPacketID(res);
 	}
-	private void addChatMessageToDB(int direction, String[] tJID,
-									String message, int delivery_status, long ts, String packetID, long upsert_id) {
-		ContentValues values = formatMessageContentValues(direction, tJID[0], tJID[1],
-				message, ChatConstants.MF_TEXT, null, null,
-				delivery_status, packetID);
-		addChatMessageToDB(tJID[0], values, ts, upsert_id);
-	}
-
-	private void addChatMessageToDB(int direction, String JID,
-			String message, int delivery_status, long ts, String packetID) {
-		String[] tJID = {JID, ""};
-		addChatMessageToDB(direction, tJID, message, delivery_status, ts, packetID, -1);
-	}
 
 	private ContentValues getContentValuesForRosterEntry(final RosterEntry entry) {
 		Presence presence = mRoster.getPresence(entry.getJid());
