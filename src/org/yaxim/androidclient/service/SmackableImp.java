@@ -1638,6 +1638,11 @@ public class SmackableImp implements Smackable {
 		if (mam == null && uniqueStanzaElement != null)
 			unique_id = uniqueStanzaElement.getId();
 		if (!TextUtils.isEmpty(unique_id)) {
+			// abort processing of already known messages, e.g on MAM dups or Offline copies of MAMed msgs
+			if (messageAlreadyArchived(withJID[0], unique_id)) {
+				Log.d(TAG, "Msg from " + withJID[0] + " already archived as " + unique_id);
+				return;
+			}
 			String archiveJid = (msg.getType() == Message.Type.groupchat) ? withJID[0] : mConfig.jabberID;
 			addChatArchiveEntry(archiveJid, unique_id, ts);
 		}
@@ -1835,6 +1840,19 @@ public class SmackableImp implements Smackable {
 		}
 		c.close();
 		return updated;
+	}
+
+	private boolean messageAlreadyArchived(String withJid, String uid) {
+		final String[] projection = new String[] {
+				ChatConstants._ID, ChatConstants.JID, ChatConstants.UNIQUE_ID
+		};
+		Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection,
+				ChatConstants.JID + " = ? AND " +
+						ChatConstants.UNIQUE_ID + " = ?",
+				new String[] { withJid, uid }, null);
+		boolean results = cursor.getCount() > 0;
+		cursor.close();
+		return results;
 	}
 
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInformation timestamp) {
