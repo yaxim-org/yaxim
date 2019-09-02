@@ -46,9 +46,17 @@ import org.jivesoftware.smack.util.dns.HostAddress;
 import org.jivesoftware.smackx.carbons.packet.CarbonExtension;
 import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
 import org.jivesoftware.smackx.delay.DelayInformationManager;
+import org.jivesoftware.smackx.forward.packet.Forwarded;
 import org.jivesoftware.smackx.httpfileupload.HttpFileUploadManager;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jivesoftware.smackx.iqversion.VersionManager;
+import org.jivesoftware.smackx.mam.MamManager;
+import org.jivesoftware.smackx.mam.element.MamElements;
+import org.jivesoftware.smackx.mam.element.MamFinIQ;
+import org.jivesoftware.smackx.mam.element.MamPrefsIQ;
+import org.jivesoftware.smackx.mam.provider.MamFinIQProvider;
+import org.jivesoftware.smackx.mam.provider.MamPrefsIQProvider;
+import org.jivesoftware.smackx.mam.provider.MamResultProvider;
 import org.jivesoftware.smackx.message_correct.element.MessageCorrectExtension;
 import org.jivesoftware.smackx.muc.MucEnterConfiguration;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
@@ -77,6 +85,7 @@ import org.jivesoftware.smackx.muc.packet.MUCUser;
 import org.jivesoftware.smackx.ping.packet.Ping;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
+import org.jxmpp.jid.BareJid;
 import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.EntityFullJid;
 import org.jxmpp.jid.Jid;
@@ -142,6 +151,9 @@ public class SmackableImp implements Smackable {
 
 		ProviderManager.addExtensionProvider(Oob.ELEMENT, Oob.NAMESPACE, new Oob.Provider());
 		ProviderManager.addExtensionProvider(PreAuth.ELEMENT, PreAuth.NAMESPACE, new PreAuth.Provider());
+		ProviderManager.addExtensionProvider(MamElements.MamResultExtension.ELEMENT, MamElements.NAMESPACE, new MamResultProvider());
+		ProviderManager.addIQProvider(MamPrefsIQ.ELEMENT, MamElements.NAMESPACE, new MamPrefsIQProvider());
+		ProviderManager.addIQProvider(MamFinIQ.ELEMENT, MamElements.NAMESPACE, new MamFinIQProvider());
 		ProviderManager.addIQProvider(MuclumbusIQ.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusIQ.Provider());
 		ProviderManager.addIQProvider(MuclumbusResult.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusResult.Provider());
 		PingManager.setDefaultPingInterval(14*60);
@@ -1538,7 +1550,7 @@ public class SmackableImp implements Smackable {
 			public void processStanza(Stanza packet) {
 				try {
 				if (packet instanceof Message) {
-					processMessage((Message)packet);
+					processMessage((Message)packet, true);
 
 				}
 				} catch (Exception e) {
@@ -1552,43 +1564,67 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addSyncStanzaListener(mStanzaListener, filter);
 	}
 
-	private void processMessage(Message msg) {
-		String[] fromJID = getJabberID(msg.getFrom().toString(), mConfig.server);
-
-		int direction = ChatConstants.INCOMING;
-		CarbonExtension cc = CarbonExtension.from(msg);
-		if (cc != null && !msg.getFrom().toString().equalsIgnoreCase(mConfig.jabberID)) {
-			Log.w(TAG, "Received illegal carbon from " + msg.getFrom() + "!");
-			cc = null;
-		}
-
-		// extract timestamp
-		long ts;
+	private DelayInformation getMessageTimestamp(Message msg, Forwarded fwd) {
 		DelayInformation timestamp = DelayInformationManager.getDelayInformation(msg);
-		if (cc != null) { // Carbon timestamp overrides packet timestamp
-			timestamp = cc.getForwarded().getDelayInformation();
-			DelayInformation inner_ts = DelayInformationManager.getDelayInformation(cc.getForwarded().getForwardedStanza());
+		if (fwd != null) { // Carbon timestamp overrides packet timestamp
+			timestamp = fwd.getDelayInformation();
+			DelayInformation inner_ts = DelayInformationManager.getDelayInformation(fwd.getForwardedStanza());
 			if (inner_ts != null) // original timestamp wrapped in carbon message overrides "outer" timestamp
 				timestamp = inner_ts;
 		}
+		return timestamp;
+	}
+
+	private void processMessage(Message msg, boolean skip_mam) {
+		String[] withJID = getJabberID(msg.getFrom(), mConfig.server);
+
+		int direction = ChatConstants.INCOMING;
+		Forwarded fwd = null;
+
+		MamElements.MamResultExtension mam = MamElements.MamResultExtension.from(msg);
+		if (mam != null) {
+			if (skip_mam)
+				return;
+			// TODO: check origin
+			fwd = mam.getForwarded();
+		}
+
+		CarbonExtension cc = CarbonExtension.from(msg);
+		if (cc != null) {
+			if (!msg.getFrom().toString().equalsIgnoreCase(mConfig.jabberID)) {
+				Log.w(TAG, "Received illegal carbon from " + msg.getFrom() + "!");
+				cc = null;
+			} else
+				fwd = cc.getForwarded();
+		}
+
+		// extract timestamp
+		long ts = System.currentTimeMillis();
+		DelayInformation timestamp = getMessageTimestamp(msg, fwd);
 		if (timestamp != null)
 			ts = timestamp.getStamp().getTime();
-		else
-			ts = System.currentTimeMillis();
 
-		// try to extract a carbon
-		if (cc != null) {
-			msg = (Message)cc.getForwarded().getForwardedStanza();
-
+		// try to extract a MAM result / carbon
+		if (fwd != null) {
+			msg = (Message)fwd.getForwardedStanza();
+			// own bare jid is parent of @from == outgoing
+			direction = mConfig.jid.isParentOf(msg.getFrom()) ? ChatConstants.OUTGOING : ChatConstants.INCOMING;
+			if (cc != null) {
+				int cc_direction = (cc.getDirection() == CarbonExtension.Direction.sent) ? ChatConstants.OUTGOING : ChatConstants.INCOMING;
+				if (direction != cc_direction) {
+					Log.e(TAG, "Carbon direction mismatch: " + cc.getDirection() + " vs. " + msg.getFrom());
+					return;
+				}
+			}
 			// outgoing carbon: fromJID is actually chat peer's JID
-			if (cc.getDirection() == CarbonExtension.Direction.sent) {
-				fromJID = getJabberID(msg.getTo().toString(), mConfig.jabberID);
-				direction = ChatConstants.OUTGOING;
+			if (direction == ChatConstants.OUTGOING) {
+				withJID = getJabberID(msg.getTo(), mConfig.jabberID);
+
 			} else {
-				fromJID = getJabberID(msg.getFrom().toString(), mConfig.server);
+				withJID = getJabberID(msg.getFrom(), mConfig.server);
 			}
 
-			// ignore carbon copies of OTR messages sent by broken clients
+			// ignore carbon copies / outdated archives of OTR messages sent by broken clients
 			if (msg.getBody() != null && msg.getBody().startsWith("?OTR")) {
 				Log.i(TAG, "Ignoring OTR carbon from " + msg.getFrom() + " to " + msg.getTo());
 				return;
@@ -1616,12 +1652,12 @@ public class SmackableImp implements Smackable {
 
 		boolean is_muc = (msg.getType() == Message.Type.groupchat);
 		boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
-				(is_muc && fromJID[1].equals(getMyMucNick(fromJID[0])));
+				(is_muc && withJID[1].equals(getMyMucNick(withJID[0])));
 
 		// TODO: catch self-CSN to MUC once sent by yaxim
 		if (is_from_me) {
 			// perform a message-replace on self-sent MUC message, abort further processing
-			if (is_muc && matchOutgoingMucReflection(msg, fromJID))
+			if (is_muc && matchOutgoingMucReflection(msg, withJID))
 				return;
 			if (timestamp == null) {
 				// delayed messages don't trigger active
@@ -1633,8 +1669,8 @@ public class SmackableImp implements Smackable {
 		// handle MUC-PMs: messages from a nick from a known MUC or with
 		// an <x> element
 		MUCUser muc_x = (MUCUser)msg.getExtension("x", "http://jabber.org/protocol/muc#user");
-		boolean is_muc_pm = !is_muc  && !TextUtils.isEmpty(fromJID[1]) &&
-				(muc_x != null || mucJIDs.contains(fromJID[0]));
+		boolean is_muc_pm = !is_muc  && !TextUtils.isEmpty(withJID[1]) &&
+				(muc_x != null || mucJIDs.contains(withJID[0]));
 
 		// TODO: ignoring 'received' MUC-PM carbons, until XSF sorts out shit:
 		// - if yaxim is in the MUC, it will receive a non-carbonated copy of
@@ -1646,9 +1682,9 @@ public class SmackableImp implements Smackable {
 		if (is_muc_pm) {
 			// store MUC-PMs under the participant's full JID, not bare
 			//is_from_me = fromJID[1].equals(getMyMucNick(fromJID[0]));
-			fromJID[0] = fromJID[0] + "/" + fromJID[1];
-			fromJID[1] = null;
-			Log.d(TAG, "MUC-PM: " + fromJID[0] + " d=" + direction + " fromme=" + is_from_me);
+			withJID[0] = withJID[0] + "/" + withJID[1];
+			withJID[1] = null;
+			Log.d(TAG, "MUC-PM: " + withJID[0] + " d=" + direction + " fromme=" + is_from_me);
 		}
 
 		// display error inline
@@ -1658,13 +1694,13 @@ public class SmackableImp implements Smackable {
 			if (mucJIDs.contains(msg.getFrom()) && e.getType() == StanzaError.Type.CANCEL && e.getCondition() == StanzaError.Condition.not_acceptable) {
 				// failed attempt to deliver a message to a MUC because we are not joined
 				// anymore. If message ID is known, mark as NEW, trigger rejoin.
-				if (changeMessageDeliveryStatus(fromJID[0], msg.getStanzaId(), ChatConstants.DS_NEW, errmsg)) {
-					rejoinMUC(fromJID[0]);
+				if (changeMessageDeliveryStatus(withJID[0], msg.getStanzaId(), ChatConstants.DS_NEW, errmsg)) {
+					rejoinMUC(withJID[0]);
 					return;
 				}
 			}
-			if (changeMessageDeliveryStatus(fromJID[0], msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
-				mServiceCallBack.notifyMessage(fromJID, errmsg, (cc != null), Message.Type.error);
+			if (changeMessageDeliveryStatus(withJID[0], msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
+				mServiceCallBack.notifyMessage(withJID, errmsg, (fwd != null), Message.Type.error, ts);
 			else if (mucJIDs.contains(msg.getFrom())) {
 				handleKickedFromMUC(msg.getFrom().toString(), false, null,
 						errmsg);
@@ -1675,20 +1711,20 @@ public class SmackableImp implements Smackable {
 		// hook off carbonated delivery receipts
 		DeliveryReceipt dr = DeliveryReceipt.from(msg);
 		if (dr != null && direction == ChatConstants.INCOMING) {
-			Log.d(TAG, "got delivery receipt from " + fromJID[0] + " for " + dr.getId());
-			changeMessageDeliveryStatus(fromJID[0], dr.getId(), ChatConstants.DS_ACKED);
+			Log.d(TAG, "got delivery receipt from " + withJID[0] + " for " + dr.getId());
+			changeMessageDeliveryStatus(withJID[0], dr.getId(), ChatConstants.DS_ACKED);
 		}
 
 		// ignore empty messages
 		if (chatMessage == null) {
 			if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
-					&& mucJIDs.contains(fromJID[0])) {
+					&& mucJIDs.contains(withJID[0])) {
 				// this is a MUC subject, update our DB
 				ContentValues cvR = new ContentValues();
 				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
-				Log.d(TAG, "MUC subject for " + fromJID[0] + " set to: " + msg.getSubject());
-				upsertRoster(cvR, fromJID[0]);
+				Log.d(TAG, "MUC subject for " + withJID[0] + " set to: " + msg.getSubject());
+				upsertRoster(cvR, withJID[0]);
 				return;
 			}
 			Log.d(TAG, "empty message: " + msg.getStanzaId());
@@ -1696,13 +1732,14 @@ public class SmackableImp implements Smackable {
 		}
 
 
-		// carbons are old. all others are new
-		int is_new = (cc == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
+		// archive / carbons are old. all others are new
+		// TODO: from me vs. incoming!?!?!!
+		int is_new = (fwd == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
 		if (msg.getType() == Message.Type.error)
 			is_new = ChatConstants.DS_FAILED;
 
 		// synchronized MUCs and contacts are not silent by default
-		boolean is_silent = !(is_muc ? multiUserChats.get(fromJID[0]).isSynchronized : mRoster.contains(JidCreate.bareFrom(fromJID[0])));
+		boolean is_silent = !(is_muc ? multiUserChats.get(withJID[0]).isSynchronized : mRoster.contains(JidCreate.bareFromOrNull(withJID[0])));
 
 		long upsert_id = -1;
 		if (is_muc && is_from_me) {
@@ -1718,39 +1755,39 @@ public class SmackableImp implements Smackable {
 		Oob oob = (Oob)msg.getExtension(Oob.NAMESPACE);
 		String oob_extra = (oob != null) ? oob.getUrl() : null;
 
-		if (fromJID[0].equalsIgnoreCase(mConfig.jabberID)) {
+		if (withJID[0].equalsIgnoreCase(mConfig.jabberID)) {
 			// Self-Message, no need to display it twice --> replace old one
 			replace_id = msg.getStanzaId();
 		}
 		if (replace_id != null && upsert_id == -1) {
 			// obtain row id for last message with that full JID, or -1
-			upsert_id = getRowIdForMessage(fromJID[0], fromJID[1], direction, replace_id);
-			Log.d(TAG, "Replacing last message from " + fromJID[0] + "/" + fromJID[1] + ": " + replace_id + " -> " + msg.getStanzaId());
+			upsert_id = getRowIdForMessage(withJID[0], withJID[1], direction, replace_id);
+			Log.d(TAG, "Replacing last message from " + withJID[0] + "/" + withJID[1] + ": " + replace_id + " -> " + msg.getStanzaId());
 		}
 
-		if (!is_muc || checkAddMucMessage(msg, msg.getStanzaId(), fromJID, timestamp)) {
+		if (!is_muc || checkAddMucMessage(msg, msg.getStanzaId(), withJID, timestamp)) {
 			int msgFlags = ChatConstants.MF_TEXT;
 			if (oob_extra != null)
 				msgFlags |= ChatConstants.MF_FILE;
-			if (timestamp != null && TextUtils.isEmpty(timestamp.getFrom())) // only show as delayed if from initial sender (no @from JID)
+			if (DelayInformationManager.isDelayedStanza(msg))
 				msgFlags |= ChatConstants.MF_DELAY;
 			if (replace != null)
 				msgFlags |= ChatConstants.MF_CORRECT;
-			ContentValues cv = formatMessageContentValues(direction, fromJID[0], fromJID[1],
-					chatMessage, msgFlags, replace_id, oob_extra, is_new, msg.getStanzaId());
-			addChatMessageToDB(fromJID[0], cv, ts, upsert_id);
+			ContentValues cv = formatMessageContentValues(direction, withJID[0], withJID[1],
+					chatMessage, msgFlags, replace_id, oob_extra, is_new, msg.getStanzaId(), unique_id);
+			addChatMessageToDB(withJID[0], cv, ts, upsert_id);
 			// only notify on private messages or on non-system MUC messages when MUC notification requested
-			boolean need_notify = !is_muc || (fromJID[1].length() > 0) && mConfig.needMucNotification(fromJID[0], getMyMucNick(fromJID[0]), chatMessage);
+			boolean need_notify = !is_muc || (withJID[1].length() > 0) && mConfig.needMucNotification(withJID[0], getMyMucNick(withJID[0]), chatMessage);
 			// outgoing carbon -> clear notification by signalling 'null' message
 			if (is_from_me) {
-				mServiceCallBack.notifyMessage(fromJID, null, true, msg.getType());
+				mServiceCallBack.notifyMessage(withJID, null, true, msg.getType(), ts);
 				// TODO: MUC PMs
-				ChatHelper.markAsRead(mService, fromJID[0]);
+				ChatHelper.markAsRead(mService, withJID[0]);
 			} else if (direction == ChatConstants.INCOMING && need_notify) {
 				// replace URL with paperclip for notification
 				if (chatMessage.equals(oob_extra))
 					chatMessage = "\uD83D\uDCCE";
-				mServiceCallBack.notifyMessage(fromJID, chatMessage, is_silent, msg.getType());
+				mServiceCallBack.notifyMessage(withJID, chatMessage, is_silent, msg.getType(), ts);
 			}
 		}
 		if (direction == ChatConstants.INCOMING)
