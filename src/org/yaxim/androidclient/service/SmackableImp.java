@@ -1782,7 +1782,8 @@ public class SmackableImp implements Smackable {
 				mServiceCallBack.displayPendingNotifications(withJID[0]);
 				return;
 			}
-			Log.d(TAG, "empty message: " + msg.getStanzaId());
+			if (dr == null)
+				Log.d(TAG, "empty message from " + withJID[0]  + ": " + msg.getStanzaId() + " - " + msg.getExtensions());
 			return;
 		}
 
