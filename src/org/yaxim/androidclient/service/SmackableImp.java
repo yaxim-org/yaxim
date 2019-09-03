@@ -317,6 +317,45 @@ public class SmackableImp implements Smackable {
 		initServiceDiscovery();
 	}
 
+	public void fetchMam() {
+		mLastError = "0%";
+		updateConnectionState(ConnectionState.LOADING);
+		MamManager mm = MamManager.getInstanceFor(mXMPPConnection);
+		try {
+			mConfig.mamSupported = mm.isSupported();
+			if (!mConfig.mamSupported)
+				return;
+			MamManager.MamPrefs mp = mm.retrieveArchivingPreferences().asMamPrefs();
+			Log.d(TAG, "" + mp);
+			if (mp.getDefaultBehavior() != MamPrefsIQ.DefaultBehavior.always) {
+				mp.setDefaultBehavior(MamPrefsIQ.DefaultBehavior.always);
+				mm.updateArchivingPreferences(mp);
+			}
+			MamManager.MamQueryArgs.Builder mqab = MamManager.MamQueryArgs.builder();
+			String uid = getChatArchiveEntry(null);
+			if (!TextUtils.isEmpty(uid))
+				mqab.afterUid(uid);
+			else
+				mqab.limitResultsSince(new Date(System.currentTimeMillis() - (31L * 24*60*60*1000)));
+			MamManager.MamQuery mq = mm.queryArchive(mqab.build());
+			int loaded = mq.getMessageCount();
+			for (Message m : mq.getPage().getMamResultCarrierMessages())
+				processMessage(m, false);
+			while (!mq.isComplete()) {
+				mLastError = "" + (loaded*100/mq.getPage().getMamFinIq().getRSMSet().getCount()) + "%";
+				updateConnectionState(ConnectionState.LOADING);
+				loaded = loaded + mq.pageNext(20).size();
+				for (Message m : mq.getPage().getMamResultCarrierMessages())
+					processMessage(m, false);
+			}
+			mLastError = "99%";
+			updateConnectionState(ConnectionState.LOADING);
+			mServiceCallBack.displayPendingNotifications(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	// blocking, run from a thread!
 	public void doConnect(boolean create_account) throws YaximXMPPException {
 		mRequestedState = ConnectionState.ONLINE;
@@ -527,10 +566,10 @@ public class SmackableImp implements Smackable {
 
 	// called at the end of a state transition
 	private synchronized void updateConnectionState(ConnectionState new_state) {
-		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.LOADING || new_state == ConnectionState.RECONNECT_NETWORK)
+		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.RECONNECT_NETWORK)
 			mLastError = null;
 		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state + " (" + mLastError + ")");
-		if (new_state == mState)
+		if (new_state == mState && mState != ConnectionState.LOADING)
 			return;
 		if (mState == ConnectionState.ONLINE)
 			mLastOffline = System.currentTimeMillis();
@@ -702,6 +741,7 @@ public class SmackableImp implements Smackable {
 					mLastOnline = System.currentTimeMillis();
 					cleanupMUCsRoster(true);
 					cleanupMUCsList(); /* TODO: this is a workaround for smack4 not updating the list */
+					fetchMam();
 					setStatusFromConfig();
 					discoverServicesAsync();
 				}

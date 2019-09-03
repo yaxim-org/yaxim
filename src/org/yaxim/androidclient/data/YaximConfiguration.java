@@ -76,6 +76,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String[] statusMessageHistory;
 
 	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
+	public boolean mamSupported = false;
 
 	public boolean smackdebug;
     public String theme;

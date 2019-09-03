@@ -378,7 +378,8 @@ public class XMPPService extends GenericService {
 		StringBuilder sb = new StringBuilder();
 		sb.append(mReconnectInfo);
 		if (mSmackable != null && mSmackable.getLastError() != null) {
-			sb.append("\n");
+			ConnectionState cs = mSmackable.getConnectionState();
+			sb.append((cs == ConnectionState.LOADING) ? " " : "\n");
 			sb.append(mSmackable.getLastError());
 		}
 		return sb.toString();
