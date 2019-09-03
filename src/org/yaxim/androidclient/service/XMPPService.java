@@ -1,7 +1,6 @@
 package org.yaxim.androidclient.service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.yaxim.androidclient.FileHttpUploadTask;
@@ -70,7 +69,7 @@ public class XMPPService extends GenericService {
 		if(chatPartner != null && chatPartner.endsWith("?chat")) {
 			return mServiceMucConnection;
 		} else if (chatPartner != null) {
-			resetNotificationCounter(chatPartner);
+			clearNotification(chatPartner);
 			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
 		}
@@ -83,7 +82,7 @@ public class XMPPService extends GenericService {
 		String chatPartner = intent.getDataString();
 		if ((chatPartner != null)) {
 			mIsBoundTo.add(chatPartner);
-			resetNotificationCounter(chatPartner);
+			clearNotification(chatPartner);
 		}
 	}
 
@@ -620,15 +619,12 @@ public class XMPPService extends GenericService {
 						 .setContentIntent(pi)
 						 .setAutoCancel(true)
 						 .build();
-				int notifyId;
-				if (notificationId.containsKey(room)) {
-					notifyId = notificationId.get(room);
-				} else {
-					lastNotificationId++;
-					notifyId = lastNotificationId;
-					notificationId.put(room, Integer.valueOf(notifyId));
+				NotificationData nd = notifications.get(room);
+				if (nd == null) {
+					nd = new NotificationData(++lastNotificationId);
+					notifications.put(room, nd);
 				}
-				mNotificationMGR.notify(notifyId, invNotify);
+				mNotificationMGR.notify(nd.id, invNotify);
 			}
 		});
 	}

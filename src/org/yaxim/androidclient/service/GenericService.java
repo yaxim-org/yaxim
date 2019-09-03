@@ -33,6 +33,7 @@ import android.support.v4.app.RemoteInput;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
@@ -56,14 +57,26 @@ public abstract class GenericService extends Service {
 	private Vibrator mVibrator;
 	private Intent mNotificationIntent;
 	protected WakeLock mWakeLock;
-	//private int mNotificationCounter = 0;
-	
-	protected Map<String, Integer> notificationCount = new HashMap<String, Integer>(2);
-	protected Map<String, Integer> notificationId = new HashMap<String, Integer>(2);
-	protected Map<String, SpannableStringBuilder> notificationBigText = new HashMap<String, SpannableStringBuilder>(2);
 
-	//create a hashmap of JID to message list
-	protected Map<String, ArrayList<String>> notificationMessage = new HashMap<>();
+	static class NotificationData {
+		int id;
+		String displayName;
+		ArrayList<String> messages;
+		SpannableStringBuilder bigText;
+		CharSequence lastMessage;
+		String lastNickname;
+		long timestamp;
+		boolean isMuc;
+		boolean shown;
+
+		public NotificationData(int id) {
+			this.id = id;
+			messages = new ArrayList<String>();
+			bigText = new SpannableStringBuilder();
+		}
+	}
+
+	protected Map<String, NotificationData> notifications = new HashMap<String, NotificationData>(2);
 
 	protected static int SERVICE_NOTIFICATION = 1;
 	protected int lastNotificationId = 2;
@@ -113,19 +126,71 @@ public abstract class GenericService extends Service {
 		mNotificationIntent = new Intent(this, ChatWindow.class);
 	}
 
-	protected void notifyClient(String[] jid, String fromUserName, String message,
-			boolean showNotification, boolean silent_notification, Message.Type msgType,
-			long timestamp) {
-		String fromJid = jid[0];
-		boolean isMuc = (msgType==Message.Type.groupchat);
-		boolean is_error = (msgType==Message.Type.error);
-
+	protected NotificationData appendToNotification(String[] jid, String fromDisplayName, String message,
+			Message.Type msgType, long timestamp) {
 		if (message == null) {
-			clearNotification(fromJid);
+			clearNotification(jid[0]);
+			return null;
+		}
+
+		String fromJid = jid[0];
+
+		NotificationData nd = notifications.get(fromJid);
+		if (nd == null) {
+			nd = new NotificationData(++lastNotificationId);
+			notifications.put(fromJid, nd);
+		}
+		nd.isMuc = (msgType==Message.Type.groupchat);
+		nd.displayName = fromDisplayName;
+
+		// /me processing
+		boolean slash_me = message.startsWith("/me ");
+		String from_nickname = nd.isMuc ? jid[1] : fromDisplayName;
+		nd.lastNickname = nd.isMuc ? jid[1] : null;
+
+		if (nd.bigText.length() > 0)
+			nd.bigText.append("\n");
+		if (nd.isMuc && !slash_me) {
+			// work around .append(stylable) only available in SDK 21+
+			int start = nd.bigText.length();
+			nd.bigText.append(jid[1]).append(":");
+			nd.bigText.setSpan(new StyleSpan(Typeface.BOLD),
+					start, nd.bigText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			nd.bigText.append(" ");
+		}
+		// TODO: get real Notification color; using #808080 for now as Styling fallback
+		SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
+				from_nickname, null, 0xff808080);
+		nd.bigText.append(body);
+
+		//adding the messages into the messageList
+		nd.messages.add(body.toString());
+
+		nd.lastMessage = body;
+		nd.timestamp = timestamp;
+		nd.shown = false;
+		return nd;
+	}
+
+	protected void notifyClient(String[] jid, String fromDisplayName, String message,
+								boolean showNotification, boolean silent_notification, Message.Type msgType,
+								long timestamp) {
+		if (message == null) {
+			clearNotification(jid[0]);
 			return;
 		}
 
-		Uri sound = Uri.parse(mConfig.getJidString(isMuc, PreferenceConstants.RINGTONENOTIFY, fromJid, ""));
+		boolean isMuc = (msgType == Message.Type.groupchat);
+		boolean is_error = (msgType == Message.Type.error);
+
+		// Override silence when activity from other client happened recently
+		long silent_seconds = (System.currentTimeMillis() - gracePeriodStart)/1000;
+		if (!silent_notification && silent_seconds < SECONDS_OF_SILENCE) {
+			Log.d(TAG, "Silent notification: last activity was " + silent_seconds + "s ago.");
+			silent_notification = true;
+		}
+
+		Uri sound = Uri.parse(mConfig.getJidString(isMuc, PreferenceConstants.RINGTONENOTIFY, jid[0], ""));
 		if (!showNotification) {
 			if (is_error)
 				shortToastNotify(getString(R.string.notification_error) + " " + message);
@@ -138,114 +203,60 @@ public abstract class GenericService extends Service {
 			}
 			return;
 		}
+
+		NotificationData nd = appendToNotification(jid, fromDisplayName, message, msgType, timestamp);
+		displayNotification(jid[0], nd, silent_notification);
+	}
+
+	protected void displayNotification(String jid, NotificationData nd, boolean silent_notification) {
 		mWakeLock.acquire();
-
-		// Override silence when activity from other client happened recently
-		long silent_seconds = (System.currentTimeMillis() - gracePeriodStart)/1000;
-		if (!silent_notification && silent_seconds < SECONDS_OF_SILENCE) {
-			Log.d(TAG, "Silent notification: last activity was " + silent_seconds + "s ago.");
-			silent_notification = true;
-		}
-
-		int notifyId = 0;
-		if (notificationId.containsKey(fromJid)) {
-			notifyId = notificationId.get(fromJid);
-		} else {
-			lastNotificationId++;
-			notifyId = lastNotificationId;
-			notificationId.put(fromJid, Integer.valueOf(notifyId));
-		}
-
-		// /me processing
-		boolean slash_me = message.startsWith("/me ");
-		String from_nickname = isMuc ? jid[1] : fromUserName;
-
-		SpannableStringBuilder msg_long = notificationBigText.get(fromJid);
-		if (msg_long == null) {
-			msg_long = new SpannableStringBuilder();
-			notificationBigText.put(fromJid, msg_long);
-		} else
-			msg_long.append("\n");
-		if (isMuc && !slash_me) {
-			// work around .append(stylable) only available in SDK 21+
-			int start = msg_long.length();
-			msg_long.append(jid[1]).append(":");
-			msg_long.setSpan(new StyleSpan(Typeface.BOLD),
-					start, msg_long.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			msg_long.append(" ");
-		}
-		// TODO: get real Notification color; using #808080 for now as Styling fallback
-		SpannableStringBuilder body = MessageStylingHelper.formatMessage(message,
-				from_nickname, null, 0xff808080);
-		msg_long.append(body);
-
-		//add the message into message list of individual sender
-		ArrayList<String> messageList = notificationMessage.get(fromJid);
-		if (messageList == null){
-			messageList = new ArrayList<>();
-			notificationMessage.put(fromJid,messageList);
-		}
-		//adding the messages into the messageList
-		messageList.add(body.toString());
-
+		Uri sound = Uri.parse(mConfig.getJidString(nd.isMuc, PreferenceConstants.RINGTONENOTIFY, jid, ""));
 		boolean vibrate = false;
 		if(!silent_notification) {
-			String vibration = mConfig.getJidString(isMuc, PreferenceConstants.VIBRATIONNOTIFY, fromJid, "OFF");
+			String vibration = mConfig.getJidString(nd.isMuc, PreferenceConstants.VIBRATIONNOTIFY, jid, "OFF");
 			switch (vibration) {
-			case "SYSTEM":
-				vibrate = true;
-				break;
-			case "ALWAYS":
-				mVibrator.vibrate(400);
-				break;
+				case "SYSTEM":
+					vibrate = true;
+					break;
+				case "ALWAYS":
+					mVibrator.vibrate(400);
+					break;
 			}
 		} else
 			sound = null; // override ringtone with silent_notification
-		boolean blink = mConfig.getJidBoolean(isMuc, PreferenceConstants.LEDNOTIFY, fromJid, false);
-		Notification n = setNotification(fromJid, jid[1], fromUserName,
-				body, msg_long, messageList,
-				blink, sound, vibrate, isMuc, timestamp);
+		boolean blink = mConfig.getJidBoolean(nd.isMuc, PreferenceConstants.LEDNOTIFY, jid, false);
 
-		
-		mNotificationMGR.notify(notifyId, n);
+		Notification n = setNotification(jid, nd,
+				blink, sound, vibrate);
+
+		nd.shown = true;
+		mNotificationMGR.notify(nd.id, n);
 		updateBadger();
 		mWakeLock.release();
+
 	}
-	
-	private Notification setNotification(String fromJid, String fromResource, String fromUserId, CharSequence message, SpannableStringBuilder msg_long,
-										 ArrayList<String> messageList, boolean blink, Uri ringtone, boolean vibrate, boolean isMuc,
-										 long timestamp) {
-		
-		int mNotificationCounter = 0;
-		if (notificationCount.containsKey(fromJid)) {
-			mNotificationCounter = notificationCount.get(fromJid);
-		}
-		mNotificationCounter++;
-		notificationCount.put(fromJid, mNotificationCounter);
-		String author;
-		if (null == fromUserId || fromUserId.length() == 0) {
-			author = fromJid;
-		} else {
-			author = fromUserId;
-		}
-		String title;
-		if (isMuc)
-			title = getString(R.string.notification_muc_message, fromResource, author/* = name of chatroom */);
+
+	private Notification setNotification(String fromJid, NotificationData nd,
+			 boolean blink, Uri ringtone, boolean vibrate) {
+
+		String author_title;
+		if (nd.lastNickname != null)
+			author_title = getString(R.string.notification_muc_message, nd.lastNickname, nd.displayName/* = name of chatroom */);
 		else
-			title = author; // removed "Message from" prefix for brevity
+			author_title = nd.displayName; // removed "Message from" prefix for brevity
 		String ticker;
-		if (mConfig.getJidBoolean(isMuc, PreferenceConstants.TICKER, fromJid, true)) {
-			String msg_string = message.toString();
+		if (mConfig.getJidBoolean(nd.isMuc, PreferenceConstants.TICKER, fromJid, true)) {
+			String msg_string = nd.lastMessage.toString();
 			int newline = msg_string.indexOf('\n');
 			int limit = 0;
 			String messageSummary = msg_string;
 			if (newline >= 0)
 				limit = newline;
-			if (limit > MAX_TICKER_MSG_LEN || message.length() > MAX_TICKER_MSG_LEN)
+			if (limit > MAX_TICKER_MSG_LEN || nd.lastMessage.length() > MAX_TICKER_MSG_LEN)
 				limit = MAX_TICKER_MSG_LEN;
 			if (limit > 0)
 				messageSummary = msg_string.substring(0, limit) + "…";
-			ticker = title + ": " + messageSummary;
+			ticker = author_title + ": " + messageSummary;
 		} else
 			ticker = getString(R.string.notification_anonymous_message);
 
@@ -261,31 +272,31 @@ public abstract class GenericService extends Service {
 
 		PendingIntent msgHeardPendingIntent = PendingIntent.getBroadcast(
 					getApplicationContext(),
-					notificationId.get(fromJid),
+					notifications.get(fromJid).id,
 					msgHeardIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		PendingIntent msgResponsePendingIntent = PendingIntent.getBroadcast(
 					getApplicationContext(),
-					notificationId.get(fromJid),
+					notifications.get(fromJid).id,
 					msgResponseIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
 			.setLabel(getString(R.string.notification_reply))
 			.build();
-		UnreadConversation.Builder ucb = new UnreadConversation.Builder(author)
+		UnreadConversation.Builder ucb = new UnreadConversation.Builder(nd.displayName)
 			.setReadPendingIntent(msgHeardPendingIntent)
 			.setReplyAction(msgResponsePendingIntent, remoteInput);
 
 		//adding a loop outside
-		for (String msg_one : messageList){
+		for (String msg_one : nd.messages){
 			ucb.addMessage(msg_one).setLatestTimestamp(System.currentTimeMillis());
 		}
 		//ucb.addMessage(msg_long.toString()).setLatestTimestamp(System.currentTimeMillis());
 
 		Uri userNameUri = Uri.parse(fromJid);
-		Intent chatIntent = new Intent(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
+		Intent chatIntent = new Intent(this, nd.isMuc ? MUCChatWindow.class : ChatWindow.class);
 		chatIntent.setData(userNameUri);
-		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
+		chatIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, nd.displayName);
 		//XXX chatIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		// create back-stack (WTF were you smoking, Google!?)
@@ -294,11 +305,11 @@ public abstract class GenericService extends Service {
 			.addNextIntentWithParentStack(chatIntent)
 			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		String notification_channel = mConfig.getEffectiveNotificationChannelId(isMuc, fromJid);
+		String notification_channel = mConfig.getEffectiveNotificationChannelId(nd.isMuc, fromJid);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			if (mConfig.getJidOverride(isMuc, fromJid)) {
+			if (mConfig.getJidOverride(nd.isMuc, fromJid)) {
 				getSystemService(NotificationManager.class).createNotificationChannel(
-						mConfig.createNotificationChannelFor(isMuc, fromJid, author));
+						mConfig.createNotificationChannelFor(nd.isMuc, fromJid, nd.displayName));
 			}
 		}
 
@@ -311,13 +322,13 @@ public abstract class GenericService extends Service {
 			.addRemoteInput(remoteInput).build();
 		// TODO: split public and private parts, use .setPublicVersion()
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, notification_channel)
-			.setContentTitle(title)
-			.setContentText(message)
+			.setContentTitle(author_title)
+			.setContentText(nd.lastMessage)
 			.setStyle(new NotificationCompat.BigTextStyle()
-					 .setBigContentTitle(author)
-					.bigText(msg_long))
+					 .setBigContentTitle(nd.displayName)
+					.bigText(nd.bigText))
 			.setTicker(ticker)
-			.setWhen(timestamp)
+			.setWhen(nd.timestamp)
 			.setSmallIcon(R.drawable.sb_message)
 			.setCategory(Notification.CATEGORY_MESSAGE)
 			.setContentIntent(pi)
@@ -332,13 +343,23 @@ public abstract class GenericService extends Service {
 					.addAction(actReply)
 					.addAction(actMarkRead))
 			.setDefaults(vibrate ? DEFAULT_VIBRATE : 0)
-			.setNumber(mNotificationCounter)
+			.setNumber(nd.messages.size())
 			;
 		if (blink)
 			notificationBuilder.setLights(Color.MAGENTA, 300, 1000);
 		if (ringtone != null)
 			notificationBuilder.setSound(ringtone);
 		return notificationBuilder.build();
+	}
+
+	protected void displayPendingNonMUCNotifications() {
+		for (Map.Entry<String, NotificationData> entry : notifications.entrySet()) {
+			NotificationData nd = entry.getValue();
+			if (!nd.shown && !nd.isMuc) {
+				logInfo("Showing delayed notification for " + entry.getKey());
+				displayNotification(entry.getKey(), nd, true);
+			}
+		}
 	}
 
 	protected void shortToastNotify(String msg) {
@@ -354,17 +375,9 @@ public abstract class GenericService extends Service {
 
 	public void updateBadger() {
 		int count = 0;
-		for (int c : notificationCount.values())
-			count += c;
+		for (NotificationData nd : notifications.values())
+			count += nd.messages.size();
 		ShortcutBadger.applyCount(this, count);
-	}
-
-	public void resetNotificationCounter(String userJid) {
-		notificationCount.remove(userJid);
-		notificationBigText.remove(userJid);
-		//clean up notification message of individual sender
-		notificationMessage.remove(userJid);
-		updateBadger();
 	}
 
 	protected void logError(String data) {
@@ -380,11 +393,11 @@ public abstract class GenericService extends Service {
 	}
 
 	public void clearNotification(String Jid) {
-		int notifyId = 0;
-		if (notificationId.containsKey(Jid)) {
-			notifyId = notificationId.get(Jid);
-			mNotificationMGR.cancel(notifyId);
-			resetNotificationCounter(Jid);
+		NotificationData nd = notifications.get(Jid);
+		if (nd != null) {
+			mNotificationMGR.cancel(nd.id);
+			notifications.remove(Jid);
+			updateBadger();
 		}
 	}
 
