@@ -1787,11 +1787,10 @@ public class SmackableImp implements Smackable {
 		}
 
 
-		// archive / carbons are old. all others are new
-		// TODO: from me vs. incoming!?!?!!
-		int is_new = (fwd == null) ? ChatConstants.DS_NEW : ChatConstants.DS_SENT_OR_READ;
+		// incoming messages are new (no matter if fresh, mam, or carbon), outgoing ones are "sent/read"
+		int delivery_status = is_from_me ? ChatConstants.DS_SENT_OR_READ : ChatConstants.DS_NEW;
 		if (msg.getType() == Message.Type.error)
-			is_new = ChatConstants.DS_FAILED;
+			delivery_status = ChatConstants.DS_FAILED;
 
 		// synchronized MUCs and contacts are not silent by default
 		boolean is_silent = !(is_muc ? multiUserChats.get(withJID[0]).isSynchronized : mRoster.contains(JidCreate.bareFromOrNull(withJID[0])));
@@ -1799,7 +1798,7 @@ public class SmackableImp implements Smackable {
 		long upsert_id = -1;
 		if (is_muc && is_from_me) {
 			// messages from our other client are "ACKed" automatically
-			is_new = ChatConstants.DS_ACKED;
+			delivery_status = ChatConstants.DS_ACKED;
 		}
 
 		// obtain Last Message Correction, if present
@@ -1829,7 +1828,7 @@ public class SmackableImp implements Smackable {
 			if (replace != null)
 				msgFlags |= ChatConstants.MF_CORRECT;
 			ContentValues cv = formatMessageContentValues(direction, withJID[0], withJID[1],
-					chatMessage, msgFlags, replace_id, oob_extra, is_new, msg.getStanzaId(), unique_id);
+					chatMessage, msgFlags, replace_id, oob_extra, delivery_status, msg.getStanzaId(), unique_id);
 			addChatMessageToDB(withJID[0], cv, ts, upsert_id);
 			// only notify on private messages or on non-system MUC messages when MUC notification requested
 			boolean need_notify = !is_muc || (withJID[1].length() > 0) && mConfig.needMucNotification(withJID[0], getMyMucNick(withJID[0]), chatMessage);
