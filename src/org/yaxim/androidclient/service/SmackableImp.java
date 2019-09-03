@@ -1778,6 +1778,7 @@ public class SmackableImp implements Smackable {
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
 				Log.d(TAG, "MUC subject for " + withJID[0] + " set to: " + msg.getSubject());
 				upsertRoster(cvR, withJID[0]);
+				multiUserChats.get(withJID[0]).isSynchronized = true;
 				mServiceCallBack.displayPendingNotifications(withJID[0]);
 				return;
 			}
@@ -2574,11 +2575,9 @@ public class SmackableImp implements Smackable {
 				e.printStackTrace();
 			}
 			// delay requesting subject until room info IQ returned/failed
-			String subject = muc.getSubject();
 			cvR.put(RosterProvider.RosterConstants.ALIAS, roomname);
-			cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, subject);
-			cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
-			Log.d(TAG, "upserting MUC as online: " + roomname);
+			//cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
+			Log.d(TAG, "upserting MUC name for " + room + ": " + roomname);
 			upsertRoster(cvR, room);
 			try {
 				sendOfflineMessages(room);
