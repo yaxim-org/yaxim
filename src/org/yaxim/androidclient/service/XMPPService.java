@@ -557,16 +557,37 @@ public class XMPPService extends GenericService {
 		mSmackable.registerCallback(new XMPPServiceCallback() {
 			public void notifyMessage(final String[] from, final String message,
 					final boolean silent_notification, final Type msgType,
-					final long timestamp) {
+					final long timestamp, final boolean still_loading) {
 				final String name = mSmackable.getNameForJID(from[0]);
-				logInfo("notification: " + from[0] + "=" + name +" with type: "+msgType.name());
+				logInfo("notification: " + from[0] + " type="+msgType.name() + " clear=" + (message == null) + " loading=" + still_loading);
 				mMainHandler.post(new Runnable() {
 					public void run() {
 						// work around Toast fallback for errors
-						notifyClient(from, name, message,
-							!mIsBoundTo.contains(from[0]), silent_notification, msgType, timestamp);
+						if (still_loading)
+							XMPPService.this.appendToNotification(from, name, message,
+									msgType, timestamp);
+						else
+							notifyClient(from, name, message,
+								!mIsBoundTo.contains(from[0]), silent_notification, msgType, timestamp);
 					}});
 				}
+
+			@Override
+			public void displayPendingNotifications(final String jid) {
+				mMainHandler.post(new Runnable() {
+					public void run() {
+						// work around Toast fallback for errors
+						if (jid == null)
+							XMPPService.this.displayPendingNonMUCNotifications();
+						else {
+							NotificationData nd = notifications.get(jid);
+							if (nd != null && !nd.shown) {
+								logInfo("Showing delayed notification for " + jid);
+								displayNotification(jid, nd, true);
+							}
+						}
+					}});
+			}
 
 			@Override
 			public void setGracePeriod(boolean silence) {

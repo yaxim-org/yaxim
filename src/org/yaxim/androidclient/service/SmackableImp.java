@@ -1659,6 +1659,14 @@ public class SmackableImp implements Smackable {
 		boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
 				(is_muc && withJID[1].equals(getMyMucNick(withJID[0])));
 
+		if (is_muc && multiUserChats.get(withJID[0]) == null) {
+			Log.w(TAG, "Ignoring groupchat message from unknown MUC " + withJID[0] + ": " + msg.getStanzaId());
+			return;
+		}
+
+		// still loading: suppress notification until loading finished
+		boolean still_loading = is_muc ? (!multiUserChats.get(withJID[0]).isSynchronized) : (mam != null);
+
 		// TODO: catch self-CSN to MUC once sent by yaxim
 		if (is_from_me) {
 			// perform a message-replace on self-sent MUC message, abort further processing
@@ -1705,7 +1713,7 @@ public class SmackableImp implements Smackable {
 				}
 			}
 			if (changeMessageDeliveryStatus(withJID[0], msg.getStanzaId(), ChatConstants.DS_FAILED, errmsg))
-				mServiceCallBack.notifyMessage(withJID, errmsg, (fwd != null), Message.Type.error, ts);
+				mServiceCallBack.notifyMessage(withJID, errmsg, (fwd != null), Message.Type.error, ts, still_loading);
 			else if (mucJIDs.contains(msg.getFrom())) {
 				handleKickedFromMUC(msg.getFrom().toString(), false, null,
 						errmsg);
@@ -1730,6 +1738,7 @@ public class SmackableImp implements Smackable {
 				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
 				Log.d(TAG, "MUC subject for " + withJID[0] + " set to: " + msg.getSubject());
 				upsertRoster(cvR, withJID[0]);
+				mServiceCallBack.displayPendingNotifications(withJID[0]);
 				return;
 			}
 			Log.d(TAG, "empty message: " + msg.getStanzaId());
@@ -1785,14 +1794,14 @@ public class SmackableImp implements Smackable {
 			boolean need_notify = !is_muc || (withJID[1].length() > 0) && mConfig.needMucNotification(withJID[0], getMyMucNick(withJID[0]), chatMessage);
 			// outgoing carbon -> clear notification by signalling 'null' message
 			if (is_from_me) {
-				mServiceCallBack.notifyMessage(withJID, null, true, msg.getType(), ts);
+				mServiceCallBack.notifyMessage(withJID, null, true, msg.getType(), ts, still_loading);
 				// TODO: MUC PMs
 				ChatHelper.markAsRead(mService, withJID[0]);
 			} else if (direction == ChatConstants.INCOMING && need_notify) {
 				// replace URL with paperclip for notification
 				if (chatMessage.equals(oob_extra))
 					chatMessage = "\uD83D\uDCCE";
-				mServiceCallBack.notifyMessage(withJID, chatMessage, is_silent, msg.getType(), ts);
+				mServiceCallBack.notifyMessage(withJID, chatMessage, is_silent, msg.getType(), ts, still_loading);
 			}
 		}
 		if (direction == ChatConstants.INCOMING)
