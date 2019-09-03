@@ -375,6 +375,15 @@ public class SmackableImp implements Smackable {
 			throw new YaximXMPPException("sendUserWatching", e);
 		}
 		registerPingAlarm();
+		try {
+			// ping the server; once this ping is answered, all offline messages must have arrived
+			// -- thx iNPUTmice for the hint
+			PingManager.getInstanceFor(mXMPPConnection).pingMyServer();
+		} catch (Exception e) {
+			Log.w(TAG, "Self-Ping during connection setup failed!");
+			e.printStackTrace();
+		}
+
 		// we need to "ping" the service to let it know we are actually
 		// connected, even when no roster entries will come in
 		if (mState == ConnectionState.LOADING)
@@ -741,9 +750,9 @@ public class SmackableImp implements Smackable {
 					mLastOnline = System.currentTimeMillis();
 					cleanupMUCsRoster(true);
 					cleanupMUCsList(); /* TODO: this is a workaround for smack4 not updating the list */
+					discoverServicesAsync();
 					fetchMam();
 					setStatusFromConfig();
-					discoverServicesAsync();
 				}
 			}
 			public void connectionClosedOnError(Exception e) {
