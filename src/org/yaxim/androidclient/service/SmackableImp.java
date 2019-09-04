@@ -85,7 +85,6 @@ import org.jivesoftware.smackx.muc.packet.MUCUser;
 import org.jivesoftware.smackx.ping.packet.Ping;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptRequest;
-import org.jxmpp.jid.BareJid;
 import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.EntityFullJid;
 import org.jxmpp.jid.Jid;
@@ -1209,7 +1208,21 @@ public class SmackableImp implements Smackable {
 		}			
 	}
 
-	public long getRowIdForMessage(String jid, String resource, int direction, String packet_id) {
+	public long getRowIdForMyMessage(String jid, String packet_id) {
+		// query the DB for the RowID, return -1 if packet_id does not match
+		// this will check the last 10 messages from that JID
+		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
+				"jid = ? AND pid = ? AND from_me = ?",
+				new String[] { jid, packet_id, "" + ChatConstants.OUTGOING }, null);
+		long result = -1;
+		if(c.getCount() == 1 && c.moveToNext()) {
+			result = c.getLong(0);
+		}
+		c.close();
+		return result;
+	}
+
+	public long getRowIdForMessageCorrection(String jid, String resource, int direction, String packet_id) {
 		// query the DB for the RowID, return -1 if packet_id does not match
 		// this will check the last 10 messages from that JID
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
@@ -1774,6 +1787,16 @@ public class SmackableImp implements Smackable {
 			return; // we do not want to add errors as "incoming messages"
 		}
 
+		// store UID for self-messages from MAM: MUC-PM or normal
+		if (unique_id != null && is_from_me && !is_muc && mam != null && !skip_mam) {
+			long upsert_id = getRowIdForMyMessage(withJID[0], msg.getStanzaId());
+			Log.d(TAG, "Adding MAM-UID to message to " + withJID[0] + ": " + msg.getStanzaId() + " -> " + unique_id);
+			ContentValues cv = new ContentValues();
+			cv.put(ChatConstants.UNIQUE_ID, unique_id);
+			upsertChatMessageToDB(upsert_id, cv);
+			return;
+		}
+
 		// hook off carbonated delivery receipts
 		DeliveryReceipt dr = DeliveryReceipt.from(msg);
 		if (dr != null && direction == ChatConstants.INCOMING) {
@@ -1829,7 +1852,7 @@ public class SmackableImp implements Smackable {
 		}
 		if (replace_id != null && upsert_id == -1) {
 			// obtain row id for last message with that full JID, or -1
-			upsert_id = getRowIdForMessage(withJID[0], withJID[1], direction, replace_id);
+			upsert_id = getRowIdForMessageCorrection(withJID[0], withJID[1], direction, replace_id);
 			Log.d(TAG, "Replacing last message from " + withJID[0] + "/" + withJID[1] + ": " + replace_id + " -> " + msg.getStanzaId());
 		}
 
@@ -1898,8 +1921,7 @@ public class SmackableImp implements Smackable {
 			values.put(ChatConstants.DELIVERY_STATUS, ChatConstants.DS_ACKED);
 			values.put(ChatConstants.ERROR, (String)null);
 			values.put(ChatConstants.PACKET_ID, packet_id);
-			updated = mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + _id),
-					values, null, null) == 1;
+			updated = upsertChatMessageToDB(_id, values);
 		}
 		c.close();
 		return updated;
@@ -2041,10 +2063,14 @@ public class SmackableImp implements Smackable {
 		mContentResolver.insert(ChatProvider.ARCHIVE_URI, cv);
 	}
 
+	// returns true if upsert succeeded
+	private boolean upsertChatMessageToDB(long upsert_id, ContentValues values) {
+		return (mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
+				values, null, null) == 1);
+	}
+
 	private void addChatMessageToDB(String bare_jid, ContentValues values, long ts, long upsert_id) {
-		if (upsert_id >= 0 &&
-		    mContentResolver.update(Uri.withAppendedPath(ChatProvider.CONTENT_URI, "" + upsert_id),
-				values, null, null) == 1)
+		if (upsert_id >= 0 && upsertChatMessageToDB(upsert_id, values))
 			return;
 		values.put(ChatConstants.DATE, (ts > 0) ? ts : System.currentTimeMillis());
 		Uri res = mContentResolver.insert(ChatProvider.CONTENT_URI, values);
