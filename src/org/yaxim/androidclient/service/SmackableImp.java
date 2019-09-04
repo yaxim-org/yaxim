@@ -1012,8 +1012,12 @@ public class SmackableImp implements Smackable {
 			return null;
 		}
 		newMessage.setBody(body);
-		if (!is_muc)
+		if (!is_muc) {
 			newMessage.addExtension(new DeliveryReceiptRequest());
+			// If the JID has a "/", it's a MUC-PM; add <x/> according to XEP-0045 v1.28
+			if (to.contains("/"))
+				newMessage.addExtension(new MUCUser());
+		}
 		if (!TextUtils.isEmpty(lmc))
 			newMessage.addExtension(new MessageCorrectExtension(lmc));
 		if (!TextUtils.isEmpty(oob))
