@@ -334,8 +334,13 @@ public class SmackableImp implements Smackable {
 			String uid = getChatArchiveEntry(null);
 			if (!TextUtils.isEmpty(uid))
 				mqab.afterUid(uid);
-			else
-				mqab.limitResultsSince(new Date(System.currentTimeMillis() - (31L * 24*60*60*1000)));
+			else {
+				long history_since = getLatestTimestamp();
+				if (history_since < 0)
+					history_since = System.currentTimeMillis() - (31L * 24 * 60 * 60 * 1000);
+
+				mqab.limitResultsSince(new Date(history_since));
+			}
 			MamManager.MamQuery mq = mm.queryArchive(mqab.build());
 			int loaded = mq.getMessageCount();
 			for (Message m : mq.getPage().getMamResultCarrierMessages())
@@ -1206,6 +1211,19 @@ public class SmackableImp implements Smackable {
 		} else {
 			return jid;
 		}			
+	}
+
+	public long getLatestTimestamp() {
+		// query the DB for the RowID, return -1 if packet_id does not match
+		// this will check the last 10 messages from that JID
+		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants.DATE },
+				null, null, "_id DESC LIMIT 1");
+		long result = -1;
+		if(c.getCount() == 1 && c.moveToNext()) {
+			result = c.getLong(0);
+		}
+		c.close();
+		return result;
 	}
 
 	public long getRowIdForMyMessage(String jid, String packet_id) {
