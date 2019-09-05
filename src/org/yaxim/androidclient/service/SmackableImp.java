@@ -344,13 +344,13 @@ public class SmackableImp implements Smackable {
 			MamManager.MamQuery mq = mm.queryArchive(mqab.build());
 			int loaded = mq.getMessageCount();
 			for (Message m : mq.getPage().getMamResultCarrierMessages())
-				processMessage(m, false);
+				processMessage(m, true);
 			while (!mq.isComplete()) {
 				mLastError = "" + (loaded*100/mq.getPage().getMamFinIq().getRSMSet().getCount()) + "%";
 				updateConnectionState(ConnectionState.LOADING);
 				loaded = loaded + mq.pageNext(20).size();
 				for (Message m : mq.getPage().getMamResultCarrierMessages())
-					processMessage(m, false);
+					processMessage(m, true);
 			}
 			mLastError = "99%";
 			updateConnectionState(ConnectionState.LOADING);
@@ -1634,7 +1634,7 @@ public class SmackableImp implements Smackable {
 			public void processStanza(Stanza packet) {
 				try {
 				if (packet instanceof Message) {
-					processMessage((Message)packet, true);
+					processMessage((Message)packet, false);
 
 				}
 				} catch (Exception e) {
@@ -1659,7 +1659,7 @@ public class SmackableImp implements Smackable {
 		return timestamp;
 	}
 
-	private void processMessage(Message msg, boolean skip_mam) {
+	private void processMessage(Message msg, boolean is_history_sync) {
 		String[] withJID = getJabberID(msg.getFrom(), mConfig.server);
 
 		int direction = ChatConstants.INCOMING;
@@ -1667,7 +1667,10 @@ public class SmackableImp implements Smackable {
 
 		MamElements.MamResultExtension mam = MamElements.MamResultExtension.from(msg);
 		if (mam != null) {
-			if (skip_mam)
+			// ignore MAM elements that don't come from an explicit history sync
+			// helps prevent impersonation attacks like
+			// https://rt-solutions.de/en/2017/01/cve-2017-5589_xmpp_carbons/
+			if (!is_history_sync)
 				return;
 			// TODO: check origin
 			fwd = mam.getForwarded();
@@ -1806,7 +1809,7 @@ public class SmackableImp implements Smackable {
 		}
 
 		// store UID for self-messages from MAM: MUC-PM or normal
-		if (unique_id != null && is_from_me && !is_muc && mam != null && !skip_mam) {
+		if (is_history_sync && unique_id != null && is_from_me && !is_muc && mam != null) {
 			long upsert_id = getRowIdForMyMessage(withJID[0], msg.getStanzaId());
 			Log.d(TAG, "Adding MAM-UID to message to " + withJID[0] + ": " + msg.getStanzaId() + " -> " + unique_id);
 			ContentValues cv = new ContentValues();
