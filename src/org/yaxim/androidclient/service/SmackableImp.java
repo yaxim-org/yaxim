@@ -1268,10 +1268,10 @@ public class SmackableImp implements Smackable {
 	}
 
 	public long getLatestTimestamp() {
-		// query the DB for the RowID, return -1 if packet_id does not match
-		// this will check the last 10 messages from that JID
+		// query the DB for the newest INCOMING(=0) message that
+		// does not have MF_DELAY(=4) bit set.
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants.DATE },
-				null, null, "_id DESC LIMIT 1");
+				"from_me = 0 AND ((msgtype & 4)=0)", null, "_id DESC LIMIT 1");
 		long result = -1;
 		if(c.getCount() == 1 && c.moveToNext()) {
 			result = c.getLong(0);
@@ -1284,7 +1284,7 @@ public class SmackableImp implements Smackable {
 		// query the DB for the RowID, return -1 if packet_id does not match
 		// this will check the last 10 messages from that JID
 		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
-				"jid = ? AND pid = ? AND from_me = ?",
+				"jid = ? AND pid = ? AND from_me = ? AND uid IS NULL",
 				new String[] { jid, packet_id, "" + ChatConstants.OUTGOING }, null);
 		long result = -1;
 		if(c.getCount() == 1 && c.moveToNext()) {
@@ -1867,11 +1867,13 @@ public class SmackableImp implements Smackable {
 		// store UID for self-messages from MAM: MUC-PM or normal
 		if (is_history_sync && unique_id != null && is_from_me && !is_muc && mam != null) {
 			long upsert_id = getRowIdForMyMessage(withJID[0], msg.getStanzaId());
-			Log.d(TAG, "Adding MAM-UID to message to " + withJID[0] + ": " + msg.getStanzaId() + " -> " + unique_id);
-			ContentValues cv = new ContentValues();
-			cv.put(ChatConstants.UNIQUE_ID, unique_id);
-			upsertChatMessageToDB(upsert_id, cv);
-			return;
+			if (upsert_id >= 0) {
+				Log.d(TAG, "Adding MAM-UID to message to " + withJID[0] + ": " + msg.getStanzaId() + " -> " + unique_id);
+				ContentValues cv = new ContentValues();
+				cv.put(ChatConstants.UNIQUE_ID, unique_id);
+				upsertChatMessageToDB(upsert_id, cv);
+				return;
+			}
 		}
 
 		// hook off carbonated delivery receipts
