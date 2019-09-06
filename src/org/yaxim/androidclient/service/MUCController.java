@@ -60,7 +60,6 @@ public class MUCController {
 		if (lastIDs.isEmpty())
 			return 0;
 		long id = (Long)lastIDs.getFirst();
-		Log.d(TAG, jid + " <- " + id);
 		return id;
 	}
 
