@@ -1795,14 +1795,20 @@ public class SmackableImp implements Smackable {
 		boolean is_muc = (msg.getType() == Message.Type.groupchat);
 		boolean is_from_me = (direction == ChatConstants.OUTGOING) ||
 				(is_muc && withJID[1].equals(getMyMucNick(withJID[0])));
+		MUCController mucc = is_muc ? multiUserChats.get(withJID[0]) : null;
 
-		if (is_muc && multiUserChats.get(withJID[0]) == null) {
+		if (is_muc && mucc == null) {
 			Log.w(TAG, "Ignoring groupchat message from unknown MUC " + withJID[0] + ": " + msg.getStanzaId());
 			return;
 		}
 
+		if (is_muc && !mucc.isSynchronized && timestamp == null) {
+			Log.d(TAG, "MUC " + withJID[0] + ": " + withJID[1] + "/" + msg.getStanzaId()  + " without delay --> synchronized");
+			completeMucSync(withJID[0], null);
+		}
+
 		// still loading: suppress notification until loading finished
-		boolean still_loading = is_muc ? (!multiUserChats.get(withJID[0]).isSynchronized) : (mam != null);
+		boolean still_loading = is_muc ? (!mucc.isSynchronized) : (mam != null);
 
 		// TODO: catch self-CSN to MUC once sent by yaxim
 		if (is_from_me) {
@@ -1893,13 +1899,8 @@ public class SmackableImp implements Smackable {
 			if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
 					&& mucJIDs.contains(withJID[0])) {
 				// this is a MUC subject, update our DB
-				ContentValues cvR = new ContentValues();
-				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
-				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
 				Log.d(TAG, "MUC subject for " + withJID[0] + " set to: " + msg.getSubject());
-				upsertRoster(cvR, withJID[0]);
-				multiUserChats.get(withJID[0]).isSynchronized = true;
-				mServiceCallBack.displayPendingNotifications(withJID[0]);
+				completeMucSync(withJID[0], msg.getSubject());
 				return;
 			}
 			if (dr == null)
@@ -1914,7 +1915,7 @@ public class SmackableImp implements Smackable {
 			delivery_status = ChatConstants.DS_FAILED;
 
 		// synchronized MUCs and contacts are not silent by default
-		boolean is_silent = !(is_muc ? multiUserChats.get(withJID[0]).isSynchronized : mRoster.contains(JidCreate.bareFromOrNull(withJID[0])));
+		boolean is_silent = !(is_muc ? mucc.isSynchronized : mRoster.contains(JidCreate.bareFromOrNull(withJID[0])));
 
 		long upsert_id = -1;
 		if (is_muc && is_from_me) {
@@ -2024,6 +2025,20 @@ public class SmackableImp implements Smackable {
 		return results;
 	}
 
+	private void completeMucSync(String room, String subject) {
+		MUCController mucc = multiUserChats.get(room);
+		if (mucc.isSynchronized)
+			return;
+		if (subject == null)
+			subject = mucc.muc.getSubject();
+		ContentValues cvR = new ContentValues();
+		cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, subject);
+		cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.available.ordinal());
+		upsertRoster(cvR, room);
+		multiUserChats.get(room).isSynchronized = true;
+		mServiceCallBack.displayPendingNotifications(room);
+	}
+
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInformation timestamp) {
 		String muc = fromJid[0];
 		String nick = fromJid[1];
@@ -2032,7 +2047,7 @@ public class SmackableImp implements Smackable {
 		// messages with no timestamp are always new, and always come after join is completed
 		if (timestamp == null) {
 			Log.d(TAG, "checkAddMucMessage(" + fromJid[0] + "): " + nick + "/" + packet_id  + " without timestamp --> isSync=true");
-			mucc.isSynchronized = true;
+			completeMucSync(fromJid[0], msg.getSubject());
 			return true;
 		}
 		// messages after we have joined and synchronized the MUC are always new
@@ -2650,6 +2665,9 @@ public class SmackableImp implements Smackable {
 		cvR.clear();
 		cvR.put(RosterProvider.RosterConstants.JID, room);
 		try {
+			synchronized(this) {
+				multiUserChats.put(room, mucc);
+			}
 			Presence force_resync = new Presence(Presence.Type.unavailable);
 			force_resync.setTo(room + "/" + nickname);
 			mXMPPConnection.sendStanza(force_resync);
@@ -2679,13 +2697,13 @@ public class SmackableImp implements Smackable {
 				upsertRoster(cvR, room);
 			}
 			//SMAXX muc.cleanup();
+			synchronized(this) {
+				multiUserChats.remove(room);
+			}
 			return false;
 		}
 
 		if(muc.isJoined()) {
-			synchronized(this) {
-				multiUserChats.put(room, mucc);
-			}
 			String roomname = room.split("@")[0];
 			try {
 				String rn = muc.getRoomInfo().getName();
