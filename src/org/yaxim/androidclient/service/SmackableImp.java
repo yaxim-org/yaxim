@@ -377,8 +377,11 @@ public class SmackableImp implements Smackable {
 		sendOfflineMessages(null);
 		try {
 			sendUserWatching();
-		} catch (Exception e) {
+		} catch (SmackException.NotConnectedException e) {
 			throw new YaximXMPPException("sendUserWatching", e);
+		} catch (Exception e) {
+			Log.i(TAG, "server does not support CSI");
+			e.printStackTrace();
 		}
 		registerPingAlarm();
 		try {
@@ -1433,6 +1436,8 @@ public class SmackableImp implements Smackable {
 	}
 
 	protected void sendUserWatching() throws SmackException.NotConnectedException, InterruptedException {
+		if (!ClientStateIndicationManager.isSupported(mXMPPConnection))
+			return;
 		if (is_user_watching)
 			ClientStateIndicationManager.active(mXMPPConnection);
 		else
