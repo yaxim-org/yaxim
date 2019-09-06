@@ -9,6 +9,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -355,6 +356,7 @@ public class SmackableImp implements Smackable {
 			mLastError = "99%";
 			updateConnectionState(ConnectionState.LOADING);
 			mServiceCallBack.displayPendingNotifications(null);
+			sendPostponedReceipts();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1112,7 +1114,47 @@ public class SmackableImp implements Smackable {
 		cr.insert(ChatProvider.CONTENT_URI, values);
 	}
 
-	public void sendReceiptIfRequested(Message packet) {
+	// an optimized structure to hold pending receipt requests during MAM sync.
+	// We need this to be accessible by JID and stanza @id, to maintain order of the @id's
+	// and we optimize by sending it back ordered by the JID so that the recipient gets less TCP
+	// packets.
+	HashMap<Jid, LinkedHashMap<String, Message.Type>> postponedReceipts = new HashMap<>();
+
+	public void sendReceipt(Jid jid, String stanza_id, Message.Type original_type) {
+		Message ack = new Message(jid, original_type);
+		ack.addExtension(new DeliveryReceipt(stanza_id));
+		// MUC-PM special sauce
+		if (jid.hasLocalpart())
+			ack.addExtension(new MUCUser());
+		try {
+			mXMPPConnection.sendStanza(ack);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// whoops!
+		}
+	}
+	public void postponeReceipt(Jid jid, String stanza_id, Message.Type original_type) {
+		synchronized (postponedReceipts) {
+			LinkedHashMap<String, Message.Type> jidReceipts = postponedReceipts.get(jid);
+			if (jidReceipts == null) {
+				jidReceipts = new LinkedHashMap<>();
+				postponedReceipts.put(jid, jidReceipts);
+			}
+			jidReceipts.put(stanza_id, original_type);
+		}
+	}
+	public void cancelPostponedReceipt(Jid jid, String stanza_id) {
+		synchronized (postponedReceipts) {
+			LinkedHashMap<String, Message.Type> jidReceipts = postponedReceipts.get(jid);
+			if (jidReceipts != null) {
+				jidReceipts.remove(stanza_id);
+				if (jidReceipts.isEmpty())
+					postponedReceipts.remove(jid);
+			}
+		}
+	}
+
+	public void sendReceiptIfRequested(Message packet, Jid effective_jid, boolean is_history_sync) {
 		DeliveryReceiptRequest drr = (DeliveryReceiptRequest)packet.getExtension(
 				DeliveryReceiptRequest.ELEMENT, DeliveryReceipt.NAMESPACE);
 		if (drr != null) {
@@ -1120,14 +1162,23 @@ public class SmackableImp implements Smackable {
 				Log.w(TAG, "Ignoring receipt request from " + packet.getFrom() + " for type " + packet.getType());
 				return;
 			}
-			Message ack = new Message(packet.getFrom(), packet.getType());
-			ack.addExtension(new DeliveryReceipt(packet.getStanzaId()));
-			try {
-				mXMPPConnection.sendStanza(ack);
-			} catch (Exception e) {
-				e.printStackTrace();
-				// whoops!
+			if (is_history_sync)
+				postponeReceipt(effective_jid, packet.getStanzaId(), packet.getType());
+			else
+				sendReceipt(effective_jid, packet.getStanzaId(), packet.getType());
+		}
+	}
+
+	public void sendPostponedReceipts() {
+		synchronized (postponedReceipts) {
+			for (Map.Entry<Jid, LinkedHashMap<String, Message.Type>> jidReceipts : postponedReceipts.entrySet()) {
+				LinkedHashMap<String, Message.Type> receipts = jidReceipts.getValue();
+				Log.d(TAG, "pending receipts " + jidReceipts.getKey() + ": " + receipts.keySet());
+				for (Map.Entry<String, Message.Type> receipt : receipts.entrySet())
+					sendReceipt(jidReceipts.getKey(), receipt.getKey(), receipt.getValue());
+				receipts.clear();
 			}
+			postponedReceipts.clear();
 		}
 	}
 
@@ -1734,12 +1785,6 @@ public class SmackableImp implements Smackable {
 			addChatArchiveEntry(archiveJid, unique_id, ts);
 		}
 
-		// check for jabber MUC invitation
-		if(direction == ChatConstants.INCOMING && handleMucInvitation(msg)) {
-			sendReceiptIfRequested(msg);
-			return;
-		}
-
 		String chatMessage = msg.getBody();
 
 		boolean is_muc = (msg.getType() == Message.Type.groupchat);
@@ -1787,6 +1832,12 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, "MUC-PM: " + withJID[0] + " d=" + direction + " fromme=" + is_from_me);
 		}
 
+		// check for jabber MUC invitation
+		if(direction == ChatConstants.INCOMING && handleMucInvitation(msg)) {
+			sendReceiptIfRequested(msg, JidCreate.fromOrNull(withJID[0]), is_history_sync);
+			return;
+		}
+
 		// display error inline
 		if (msg.getType() == Message.Type.error) {
 			StanzaError e = msg.getError();
@@ -1820,9 +1871,14 @@ public class SmackableImp implements Smackable {
 
 		// hook off carbonated delivery receipts
 		DeliveryReceipt dr = DeliveryReceipt.from(msg);
-		if (dr != null && direction == ChatConstants.INCOMING) {
-			Log.d(TAG, "got delivery receipt from " + withJID[0] + " for " + dr.getId());
-			changeMessageDeliveryStatus(withJID[0], dr.getId(), ChatConstants.DS_ACKED);
+		if (dr != null) {
+			if (direction == ChatConstants.INCOMING) {
+				Log.d(TAG, "got delivery receipt from " + withJID[0] + " for " + dr.getId());
+				changeMessageDeliveryStatus(withJID[0], dr.getId(), ChatConstants.DS_ACKED);
+			} else {
+				Log.d(TAG, "got outgoing receipt to " + withJID[0] + " for " + dr.getId());
+				cancelPostponedReceipt(JidCreate.fromOrNull(withJID[0]), dr.getId());
+			}
 		}
 
 		// ignore empty messages
@@ -1903,7 +1959,7 @@ public class SmackableImp implements Smackable {
 			}
 		}
 		if (direction == ChatConstants.INCOMING)
-			sendReceiptIfRequested(msg);
+			sendReceiptIfRequested(msg, JidCreate.fromOrNull(withJID[0]), is_history_sync);
 	}
 
 	private boolean matchOutgoingMucReflection(Message msg, String[] fromJid) {
