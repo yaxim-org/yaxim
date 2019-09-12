@@ -2762,6 +2762,46 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
+	public EntityInfo getJidInfo(String jid) {
+		if (jid.contains("/")) { // MUC-PM
+			String[] jid_parts = jid.split("/", 2);
+			MUCController mucc = multiUserChats.get(jid_parts[0]);
+			EntityInfo ei = new EntityInfo(EnumSet.of(EntityInfo.Type.MUC_PM), jid,
+					StatusMode.unknown, 0, jid_parts[1], null, 0, null);
+			if (mucc != null && mucc.muc.isJoined()) {
+				ei.setPresenceStatus(mucc.muc.getOccupantPresence(JidCreate.entityFullFromOrNull(jid)));
+			} else
+				ei.name = String.format("%s (%s)", jid_parts[1],
+					ChatRoomHelper.getRoomName(mService, jid_parts[0]));
+			return ei;
+		}
+		RosterEntry re = null;
+		try {
+			re = mRoster.getEntry(JidCreate.bareFrom(jid));
+		} catch (XmppStringprepException e) {
+			// ignore exception and fall back to JID
+		}
+		if (re != null) {
+			EntityInfo ei = new EntityInfo(EnumSet.of(EntityInfo.Type.User, EntityInfo.Type.Known),
+					jid, StatusMode.unknown, 0, re.getName(), null, 0, re);
+			ei.setPresenceStatus(mRoster.getPresence(re.getJid()));
+			return ei;
+		} else if (mucJIDs.contains(jid)) {
+			String name = ChatRoomHelper.getRoomName(mService, jid);
+			MUCController mucc = multiUserChats.get(jid);
+			if (mucc != null) {
+				return new EntityInfo(EnumSet.of(EntityInfo.Type.MUC, EntityInfo.Type.Known),
+						jid, mucc.isSynchronized ? StatusMode.available : StatusMode.xa,
+						0, name, mucc.muc.getSubject(), mucc.muc.getOccupantsCount(), null);
+			} else
+				return new EntityInfo(EnumSet.of(EntityInfo.Type.MUC, EntityInfo.Type.Known),
+						jid, StatusMode.unknown,
+						0, name, null, 0, null);
+		} else {
+			return null;
+		}
+	}
+
 	public List<EntityInfo> getUserList(String jid) {
 		MUCController mucc = multiUserChats.get(jid);
 		if (mucc == null) {
