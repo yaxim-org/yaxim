@@ -45,9 +45,7 @@ public class EntityInfo {
 	public EntityInfo(EnumSet<Type> type, Presence p) {
 		this.type = type;
 		this.jid = p.getFrom().asBareJid().toString();
-		this.status = p.getStatus();
-		Presence.Mode pm = p.getMode();
-		this.statusMode = (pm == null) ? StatusMode.available : StatusMode.valueOf(pm.name());
+		setPresenceStatus(p);
 		this.data = p;
 	}
 
@@ -117,6 +115,14 @@ public class EntityInfo {
 		} else
 			return null;
 		return ei;
+	}
+
+	public void setPresenceStatus(Presence p) {
+		if (p == null)
+			return;
+		this.status = p.getStatus();
+		Presence.Mode pm = p.getMode();
+		this.statusMode = (pm == null) ? StatusMode.available : StatusMode.valueOf(pm.name());
 	}
 	/**
 	 * Type of EntityInfo
