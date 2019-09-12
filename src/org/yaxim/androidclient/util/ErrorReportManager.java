@@ -43,6 +43,7 @@ public class ErrorReportManager {
 		}
 		final String filePath = ctx.getDir("stacktraces", 0).getAbsolutePath();
 		this.handler = new ExceptionHandler(NOP_HANDLER, appVersion, filePath, false);
+		ExceptionHandler.register(ctx.getApplicationContext(), "https://yaxim.org/crash/");
 	}
 
 	public void report(Throwable e) {
@@ -54,9 +55,9 @@ public class ErrorReportManager {
 	public void sendReports() {
 		new Thread() {
 			@Override public void run() {
-				//Log.d(TAG, "Submitting stack traces...");
-				//ExceptionHandler.submitStackTraces();
-				//Log.d(TAG, "Finished submitting stack traces...");
+				Log.d(TAG, "Submitting stack traces...");
+				ExceptionHandler.register(ctx.getApplicationContext(), "https://yaxim.org/crash/");
+				Log.d(TAG, "Finished submitting stack traces...");
 			}
 		}.start();
 	}

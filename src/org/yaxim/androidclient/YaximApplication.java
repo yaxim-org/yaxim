@@ -3,6 +3,7 @@ package org.yaxim.androidclient;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.SmackableImp;
 import org.yaxim.androidclient.service.YaximBroadcastReceiver;
+import org.yaxim.androidclient.util.ErrorReportManager;
 import org.yaxim.androidclient.util.JULHandler;
 
 import android.app.Application;
@@ -42,6 +43,7 @@ public class YaximApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		new ErrorReportManager(this);
 		AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 		mMTM = new MemorizingTrustManager(this);
 		mConfig = new YaximConfiguration(this);
