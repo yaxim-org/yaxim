@@ -1951,7 +1951,7 @@ public class SmackableImp implements Smackable {
 			int msgFlags = ChatConstants.MF_TEXT;
 			if (oob_extra != null)
 				msgFlags |= ChatConstants.MF_FILE;
-			if (DelayInformationManager.isDelayedStanza(msg))
+			if (DelayInformationManager.isDelayedStanza(msg) && !still_loading)
 				msgFlags |= ChatConstants.MF_DELAY;
 			if (replace != null)
 				msgFlags |= ChatConstants.MF_CORRECT;
