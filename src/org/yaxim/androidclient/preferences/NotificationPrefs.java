@@ -57,7 +57,7 @@ public class NotificationPrefs extends AppCompatPreferenceActivity implements Sh
 		actionBar.setTitle(isMuc ? R.string.preftitle_notify_muc : R.string.preftitle_notify_msg);
 		actionBar.setSubtitle(name);
 
-		mConfig.getJidPrefs(jid).registerOnSharedPreferenceChangeListener(this);
+		getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
