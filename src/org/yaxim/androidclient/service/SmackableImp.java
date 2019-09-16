@@ -1704,6 +1704,12 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addSyncStanzaListener(mStanzaListener, filter);
 	}
 
+	/* Obtain a timestamp from a message, in the following priority order:
+	 *   1. MAM/Carbon: inner timestamp of the wrapped message (from sending client / remote server)
+	 *   2. MAM/Carbon: timestamp from the MAM/Carbon forwarded element
+	 *   3. timestamp from the message
+	 *   4. null --> message handler will use current timestamp
+	 */
 	private DelayInformation getMessageTimestamp(Message msg, Forwarded fwd) {
 		DelayInformation timestamp = DelayInformationManager.getDelayInformation(msg);
 		if (fwd != null) { // Carbon timestamp overrides packet timestamp
