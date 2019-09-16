@@ -2027,7 +2027,7 @@ public class SmackableImp implements Smackable {
 
 	private void completeMucSync(String room, String subject) {
 		MUCController mucc = multiUserChats.get(room);
-		if (mucc.isSynchronized)
+		if (mucc.isSynchronized && subject == null)
 			return;
 		if (subject == null)
 			subject = mucc.muc.getSubject();
