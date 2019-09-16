@@ -1127,7 +1127,7 @@ public class SmackableImp implements Smackable {
 		Message ack = new Message(jid, original_type);
 		ack.addExtension(new DeliveryReceipt(stanza_id));
 		// MUC-PM special sauce
-		if (jid.hasLocalpart())
+		if (jid.hasResource())
 			ack.addExtension(new MUCUser());
 		try {
 			mXMPPConnection.sendStanza(ack);
