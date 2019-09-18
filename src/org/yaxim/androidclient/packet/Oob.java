@@ -56,7 +56,7 @@ public class Oob implements ExtensionElement {
 	public CharSequence toXML(String enclosingNamespace) {
 		XmlStringBuilder xml = new XmlStringBuilder(this);
 		xml.rightAngleBracket().element("url", url);
-		if (!StringUtils.isEmpty(desc))
+		if (StringUtils.isNotEmpty(desc))
 			xml.element("desc", desc);
 		xml.closeElement(ELEMENT);
 		return xml;
