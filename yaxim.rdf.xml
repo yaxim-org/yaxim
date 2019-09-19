@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="style.xsl" type="text/xsl"?>
+<rdf:RDF xmlns="http://usefulinc.com/ns/doap#"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#"
+        xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  <Project>
+
+    <name>yaxim</name>
+
+    <shortdesc xml:lang="en">Yet Another XMPP Instant Messenger</shortdesc>
+    <description xml:lang="en">
+      yaxim is an Android XMPP/Jabber client with a clean user interface and open source (GPLv2).
+    </description>
+
+    <homepage rdf:resource="https://yaxim.org/" />
+    <wiki rdf:resource="https://github.com/yaxim-org/yaxim/wiki" />
+    <bug-database rdf:resource="https://github.com/yaxim-org/yaxim/issues" />
+    <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-client" />
+    <category rdf:resource="http://api.gnome.org/doap-extensions#apps" />
+    <license rdf:resource="http://usefulinc.com/doap/licenses/gplv3" />
+
+    <programming-language>Java</programming-language>
+    <os>Android</os>
+
+    <repository>
+      <GitRepository>
+        <location rdf:resource="https://github.com/yaxim-org/yaxim.git" />
+        <browse rdf:resource="https://github.com/yaxim-org/yaxim" />
+      </GitRepository>
+    </repository>
+
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc6120.html" />
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc6121.html" />
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc6122.html" />
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc7590.html" />
+
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0030.html" />
+	<xmpp:version>2.5rc3</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0045.html" />
+	<xmpp:version>1.32.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0048.html" />
+	<xmpp:version>1.1</xmpp:version>
+        <xmpp:status>partial</xmpp:status>
+        <xmpp:since>0.9.3</xmpp:since>
+        <xmpp:note>Loading, but no editing support</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0049.html" />
+	<xmpp:version>1.2</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.3</xmpp:since>
+        <xmpp:note>Used for Bookmarks</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0066.html" />
+	<xmpp:version>1.5</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+        <xmpp:note>Used for inline images</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0077.html" />
+	<xmpp:version>2.4</xmpp:version>
+        <xmpp:status>partial</xmpp:status>
+        <xmpp:note>No forms support</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0091.html" />
+	<xmpp:version>1.4</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Supported, obsoleted by XEP-0203</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0092.html" />
+	<xmpp:version>1.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Not possible yet to query other entities</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0115.html" />
+	<xmpp:version>1.5.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0147.html" />
+	<xmpp:version>1.2</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+	<xmpp:note>Support for xmpp: URIs and yax.im landing page</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0172.html" />
+	<xmpp:version>1.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>1.0</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0184.html" />
+	<xmpp:version>1.4.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Green checkmark for acknowledged messages</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0198.html" />
+	<xmpp:version>1.6</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Fast reconnects on 3G/WiFi switching, stream ACKs</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0199.html" />
+	<xmpp:version>2.0.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Automatic server pinging every 15 minutes</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0203.html" />
+	<xmpp:version>2.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0245.html" />
+	<xmpp:version>1.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0249.html" />
+	<xmpp:version>1.2</xmpp:version>
+        <xmpp:status>partial</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+        <xmpp:note>Receive-only support</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0280.html" />
+	<xmpp:version>0.13.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0286.html" />
+	<xmpp:version>1.0.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0297.html" />
+	<xmpp:version>1.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Used for MAM and Carbons</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0308.html" />
+	<xmpp:version>1.1.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+        <xmpp:note>Last 10 messages; sending support since 0.9.3</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0313.html" />
+	<xmpp:version>0.6.3</xmpp:version>
+        <xmpp:status>partial</xmpp:status>
+        <xmpp:since>1.0</xmpp:since>
+        <xmpp:note>Not used for MUCs; no configuration</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0352.html" />
+	<xmpp:version>0.3.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+        <xmpp:note>Using google:queue in 0.9.x; proper CSI since 1.0</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0359.html" />
+	<xmpp:version>0.6.0</xmpp:version>
+        <xmpp:status>partial</xmpp:status>
+        <xmpp:since>1.0</xmpp:since>
+        <xmpp:note>Only the subset required for MAM</xmpp:note>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0363.html" />
+	<xmpp:version>0.9.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.3</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0379.html" />
+	<xmpp:version>0.3.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.0</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0392.html" />
+	<xmpp:version>0.6.0</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.3</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0393.html" />
+	<xmpp:version>0.1.4</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:since>0.9.3</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0410.html" />
+	<xmpp:version>1.0.1</xmpp:version>
+        <xmpp:status>complete</xmpp:status>
+        <xmpp:note>Automatic pinging of MUCs every 15 minutes</xmpp:note>
+        <xmpp:since>0.9.0</xmpp:since>
+      </xmpp:SupportedXep>
+    </implements>
+  </Project>
+</rdf:RDF>
