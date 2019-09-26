@@ -1951,7 +1951,8 @@ public class SmackableImp implements Smackable {
 			int msgFlags = ChatConstants.MF_TEXT;
 			if (oob_extra != null)
 				msgFlags |= ChatConstants.MF_FILE;
-			if (DelayInformationManager.isDelayedStanza(msg) && !still_loading)
+			// only add Stopwatch if: delayed message, not delayed by our account, not loading from MUC join / MAM
+			if (DelayInformationManager.isDelayedStanza(msg) && !mConfig.jid.equals(timestamp.getFrom()) && !still_loading)
 				msgFlags |= ChatConstants.MF_DELAY;
 			if (replace != null)
 				msgFlags |= ChatConstants.MF_CORRECT;
