@@ -142,6 +142,8 @@ android {
 }
 
 dependencies {
+	def SMACK_VERSION = "4.3.5-SNAPSHOT"
+
 	implementation 'com.android.support:appcompat-v7:28.+'
 	// implicit compile 'com.android.support:support-v4:25.+'
 	implementation project('MemorizingTrustManager')
@@ -158,11 +160,11 @@ dependencies {
 	//// for Carbons, and other
 	//compile project("Smack:smack-experimental")
 	implementation "org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT"
-	implementation "org.igniterealtime.smack:smack-android-extensions:4.3.5-SNAPSHOT"
-	implementation "org.igniterealtime.smack:smack-tcp:4.3.5-SNAPSHOT"
-	implementation "org.igniterealtime.smack:smack-im:4.3.5-SNAPSHOT"
+	implementation "org.igniterealtime.smack:smack-android-extensions:$SMACK_VERSION"
+	implementation "org.igniterealtime.smack:smack-tcp:$SMACK_VERSION"
+	implementation "org.igniterealtime.smack:smack-im:$SMACK_VERSION"
 	// for Carbons, and other
-	implementation "org.igniterealtime.smack:smack-experimental:4.3.5-SNAPSHOT"
+	implementation "org.igniterealtime.smack:smack-experimental:$SMACK_VERSION"
 
 }
 
