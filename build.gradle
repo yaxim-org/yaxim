@@ -66,6 +66,7 @@ task buildVersion (type: Copy) {
 android {
 	compileSdkVersion 28
 	buildToolsVersion "28.0.3"
+	useLibrary 'org.apache.http.legacy'
 	flavorDimensions ("style", "distribution")
 	defaultConfig {
 		applicationId "org.yaxim"
@@ -148,23 +149,22 @@ dependencies {
 	implementation project('MemorizingTrustManager')
 	api fileTree(include: ['*.jar'], dir: 'libs')
 	api fileTree(include: ['*.aar'], dir: 'libs')
-	implementation "me.leolin:ShortcutBadger:1.1.22@aar"
+	implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
 	implementation 'org.hsluv:hsluv:0.2'
 	implementation 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
 	implementation 'com.google.zxing:core:3.3.3'
-    // smack4
+	// smack4
 	//compile project("Smack:smack-android-extensions")
 	//compile project("Smack:smack-tcp")
 	//compile project("Smack:smack-im")
 	//// for Carbons, and other
 	//compile project("Smack:smack-experimental")
-	implementation "org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT"
+	implementation 'org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT'
 	implementation "org.igniterealtime.smack:smack-android-extensions:$SMACK_VERSION"
 	implementation "org.igniterealtime.smack:smack-tcp:$SMACK_VERSION"
 	implementation "org.igniterealtime.smack:smack-im:$SMACK_VERSION"
 	// for Carbons, and other
 	implementation "org.igniterealtime.smack:smack-experimental:$SMACK_VERSION"
-
 }
 
 // for smack4
