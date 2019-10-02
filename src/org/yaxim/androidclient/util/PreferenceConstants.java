@@ -36,4 +36,5 @@ public class PreferenceConstants {
 	public final static String THEME = "theme";
 	public final static String INVITATION_CODES = "invitation_codes";
 	public final static String INSTALL_REFERRER = "install_referrer";
+	public final static String PUSH_NODE_ID = "push_node_id";
 }

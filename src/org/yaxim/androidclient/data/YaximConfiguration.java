@@ -78,6 +78,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public String mucDomain = null; // used in AutoCompleteJidEdit, null fallbacks to first static entry
 	public boolean mamSupported = false;
 
+	public String pushNodeId;
+
 	public boolean smackdebug;
     public String theme;
     public String chatFontSize;
@@ -179,6 +181,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		this.statusDndSilent = prefs.getBoolean(PreferenceConstants.STATUS_DNDSILENT, true);
 		this.statusMessage = prefs.getString(PreferenceConstants.STATUS_MESSAGE, "");
 		this.statusMessageHistory = prefs.getString(PreferenceConstants.STATUS_MESSAGE_HISTORY, statusMessage).split("\036");
+		this.pushNodeId = prefs.getString(PreferenceConstants.PUSH_NODE_ID, null);
 		this.theme = prefs.getString(PreferenceConstants.THEME, "dark");
 		this.chatFontSize = prefs.getString("setSizeChat", "18");
 		this.showOffline = prefs.getBoolean(PreferenceConstants.SHOW_OFFLINE, false);
@@ -351,5 +354,13 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		if (!statusDndSilent || smartAwayMode == null)
 			return sm;
 		return (smartAwayMode.compareTo(sm) < 0) ? smartAwayMode : sm;
+	}
+
+	public String getPushNodeId() {
+		if (pushNodeId == null) {
+			pushNodeId = XMPPHelper.securePassword();
+			prefs.edit().putString(PreferenceConstants.PUSH_NODE_ID, pushNodeId).commit();
+		}
+		return pushNodeId;
 	}
 }
