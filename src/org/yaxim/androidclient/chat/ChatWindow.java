@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.os.*;
 import android.provider.MediaStore;
 
+import org.yaxim.androidclient.BuildConfig;
 import org.yaxim.androidclient.FileHttpUploadTask;
 
 import org.yaxim.androidclient.MainWindow;
@@ -35,6 +36,7 @@ import eu.siacs.conversations.utils.StylingHelper;
 
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 
@@ -99,6 +101,7 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 	private static final int CHAT_MSG_LOADER = 0;
 	private int lastlog_size = 200;
 	private int lastlog_index = -1;
+	private File cameraPictureFile = null;
 	private Uri cameraPictureUri = null;
 
 	private static HashMap<String, String> messageDrafts = new HashMap<String, String>();
@@ -303,13 +306,14 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 		switch (request_id) {
 		case REQUEST_CAMERA:
 			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			File tempFile = FileHelper.createImageFile(this);
-			if (tempFile == null) {
+			cameraPictureFile = FileHelper.createImageFile(this);
+			if (cameraPictureFile == null) {
 				Toast.makeText(this, "Error creating file!", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			cameraPictureUri = Uri.fromFile(tempFile);
-			// TODO: wrap file Uri into a FileProvider to target Android M+
+			cameraPictureUri = FileProvider.getUriForFile(this,
+					BuildConfig.APPLICATION_ID + ".provider.Files",
+					cameraPictureFile);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUri);
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.roster_contextmenu_take_image)), REQUEST_CAMERA);
 			return;
@@ -349,7 +353,7 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 				sendFile(uri, flags);
 			}
 		} else if (requestCode == REQUEST_CAMERA && cameraPictureUri != null) {
-			sendFile(cameraPictureUri, FileHttpUploadTask.F_RESIZE);
+			sendFile(Uri.fromFile(cameraPictureFile), FileHttpUploadTask.F_RESIZE);
 		}
 	}
 

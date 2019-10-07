@@ -177,12 +177,7 @@ public class FileHelper {
 		// Create an image file name
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 		String imageFileName = timeStamp + "_";
-		File storageDir = null;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-			storageDir = ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		}
-		if (storageDir == null)
-			storageDir = new File(Environment.getExternalStorageDirectory() + "/DCIM/");
+		File storageDir = ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		try {
 			File image = File.createTempFile(
 					imageFileName,  /* prefix */

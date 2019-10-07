@@ -151,6 +151,15 @@
 		<provider android:name=".data.RosterProvider"
 			android:exported="false"
 			android:authorities="${applicationId}.provider.Roster" />
+		<provider
+			android:name="android.support.v4.content.FileProvider"
+			android:authorities="${applicationId}.provider.Files"
+			android:exported="false"
+			android:grantUriPermissions="true">
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/provider_paths"/>
+		</provider>
 
 		<activity android:name="de.duenndns.ssl.MemorizingActivity" />
 
