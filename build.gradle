@@ -131,6 +131,12 @@ android {
 			res.srcDirs = ['bruno/res']
 			assets.srcDirs = ['bruno/assets']
 		}
+		play {
+			manifest.srcFile 'play/AndroidManifest.xml'
+			java.srcDirs = ['play/src']
+			res.srcDirs = ['play/res']
+			assets.srcDirs = ['play/assets']
+		}
 	}
 	lintOptions {
 		disable 'MissingTranslation'
@@ -143,8 +149,13 @@ play {
 
 dependencies {
 	def SMACK_VERSION = "4.3.5-SNAPSHOT"
-
-	implementation 'com.android.support:appcompat-v7:28.+'
+	// Google Push via FCM
+	playImplementation('com.google.firebase:firebase-messaging:17.3.4') {
+		exclude group: 'com.google.firebase', module: 'firebase-core'
+		exclude group: 'com.google.firebase', module: 'firebase-analytics'
+		exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
+	}
+	implementation 'com.android.support:appcompat-v7:28.0.0'
 	// implicit compile 'com.android.support:support-v4:25.+'
 	implementation project('MemorizingTrustManager')
 	api fileTree(include: ['*.jar'], dir: 'libs')
