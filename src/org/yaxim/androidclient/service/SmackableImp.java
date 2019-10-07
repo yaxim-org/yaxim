@@ -534,6 +534,7 @@ public class SmackableImp implements Smackable {
 							//mXMPPConnection.abortConnect();
 						}
 						updateConnectingThread(this);
+						// TODO: unregister Push on *manual* disconnect only, not on Service shutdown
 						mXMPPConnection.disconnect();
 						mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 						// we should reset XMPPConnection the next time
@@ -760,6 +761,7 @@ public class SmackableImp implements Smackable {
 					cleanupMUCsRoster(true);
 					cleanupMUCsList(); /* TODO: this is a workaround for smack4 not updating the list */
 					discoverServicesAsync();
+					new PushManager(mService, mXMPPConnection).enableAccountPush();
 					fetchMam();
 					setStatusFromConfig();
 				}
