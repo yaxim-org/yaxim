@@ -347,7 +347,7 @@ public class SmackableImp implements Smackable {
 			for (Message m : mq.getPage().getMamResultCarrierMessages())
 				processMessage(m, true);
 			while (!mq.isComplete()) {
-				mLastError = "" + (loaded*100/mq.getPage().getMamFinIq().getRSMSet().getCount()) + "%";
+				mLastError = "" + (loaded*99/mq.getPage().getMamFinIq().getRSMSet().getCount()) + "%";
 				updateConnectionState(ConnectionState.LOADING);
 				loaded = loaded + mq.pageNext(20).size();
 				for (Message m : mq.getPage().getMamResultCarrierMessages())
@@ -355,6 +355,7 @@ public class SmackableImp implements Smackable {
 			}
 			mLastError = "99%";
 			updateConnectionState(ConnectionState.LOADING);
+			// TODO: use "connected" logo, not hollow one
 			mServiceCallBack.displayPendingNotifications(null);
 			sendPostponedReceipts();
 		} catch (Exception e) {
