@@ -1516,6 +1516,25 @@ public class SmackableImp implements Smackable {
 		}
 	}
 
+	private void showMucTimeout(MUCController mucc) {
+		MultiUserChat muc = mucc.muc;
+		ContentValues cvR = new ContentValues();
+		cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_ping_timeout));
+		cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.unknown.ordinal());
+		cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
+		debugLog("Ping timeout from " + muc.getRoom());
+		mucc.isTimeout = true;
+		//do not leave MUC; the server is unavailable anyway - either it will recover or we will get an error
+		//muc.leave();
+		CharSequence lastActTime = DateUtils.getRelativeDateTimeString(mService, mucc.lastPong,
+				DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
+		String message = String.format((Locale)null, "%s (%s)",
+				mService.getString(R.string.conn_ping_timeout),
+				lastActTime);
+		cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,  message);
+		upsertRoster(cvR, muc.getRoom().toString());
+
+	}
 	/**
 	 * BroadcastReceiver to trigger sending pings to the server
 	 */
@@ -1527,10 +1546,6 @@ public class SmackableImp implements Smackable {
 				// ping all MUCs. if no ping was received since last attempt, /cycle
 				Iterator<MUCController> muc_it = multiUserChats.values().iterator();
 				long ts = System.currentTimeMillis();
-				ContentValues cvR = new ContentValues();
-				cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, mService.getString(R.string.conn_ping_timeout));
-				cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.unknown.ordinal());
-				cvR.put(RosterProvider.RosterConstants.GROUP, RosterProvider.RosterConstants.MUCS);
 				while (muc_it.hasNext()) {
 					MUCController mucc = muc_it.next();
 					MultiUserChat muc = mucc.muc;
@@ -1540,17 +1555,7 @@ public class SmackableImp implements Smackable {
 					if (mucPreviousPing > 0 && (lastActivity >= 0 || lastActivity < mucLastPing)) {
 						// the MUC didn't give us anything in the last two ping rounds
 						if (lastActivity < mucPreviousPing) {
-							debugLog("Ping timeout from " + muc.getRoom());
-							mucc.isTimeout = true;
-							//do not leave MUC; the server is unavailable anyway - either it will recover or we will get an error
-							//muc.leave();
-							CharSequence lastActTime = DateUtils.getRelativeDateTimeString(mService, lastActivity,
-								DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
-							String message = String.format((Locale)null, "%s (%s)",
-									mService.getString(R.string.conn_ping_timeout),
-									lastActTime);
-							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE,  message);
-							upsertRoster(cvR, muc.getRoom().toString());
+							showMucTimeout(mucc);
 						}
 						// send a ping if we didn't receive anything during the last ping round, even multiple times in a row
 						Ping ping = new Ping();
@@ -1608,6 +1613,16 @@ public class SmackableImp implements Smackable {
 		return false;
 	}
 
+	private boolean isTimeoutPingResponse(IQ response) {
+		// reflect S2S errors according to XEP-0410
+		if (response.getType() == Type.error) {
+			StanzaError e = response.getError();
+			return (StanzaError.Condition.remote_server_not_found == e.getCondition() ||
+				 StanzaError.Condition.remote_server_timeout == e.getCondition());
+		}
+		return false;
+	}
+
 	/** Updates internal structures for a sender's last activity.
 	 *
 	 * Currently only used for MUC self-pinging.
@@ -1645,7 +1660,10 @@ public class SmackableImp implements Smackable {
 					registerLastActivity(packet.getFrom());
 					if (mucJIDs.contains(from[0]) && from[1].equals(getMyMucNick(from[0]))) {
 						MUCController mucc = multiUserChats.get(from[0]);
-						if (isValidPingResponse(pong) && mucc != null) {
+						if (isTimeoutPingResponse(pong) && mucc != null) {
+							Log.d(TAG, "Ping: got S2S timeout from MUC " + from[0]);
+							showMucTimeout(mucc);
+						} else if (isValidPingResponse(pong) && mucc != null) {
 							Log.d(TAG, "Ping: got response from MUC " + from[0]);
 							if (mucc.isTimeout) {
 								ContentValues cvR = new ContentValues();
