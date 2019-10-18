@@ -1,10 +1,13 @@
 0.9.9:
- * User Interface: major rework for Material Design
+ * User Interface: major rework for Material Design and Notification Channels
+ * Performance: significant improvement with many messages
+ * Reliable Messaging: implement Push (XEP-0357) and MAM (XEP-0313)
  * Service Discovery: allow browsing other servers and join rooms (XEP-0030)
  * Chat Rooms: use account-synchronized nickname (XEP-0172)
  * Chat Rooms: room search, bookmarks
  * Chat: support message search
  * Android: Support for new OS versions
+ * XMPP Backend: upgrade to Smack 4.3.5
 
 0.9.3:
  * File Upload: support sharing of pictures and files, and inline display (thanks Igor; XEP-0363)
