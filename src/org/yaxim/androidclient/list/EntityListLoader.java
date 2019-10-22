@@ -25,6 +25,9 @@ import org.yaxim.androidclient.packet.MuclumbusResult;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
@@ -53,6 +56,19 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 		List<BookmarkedConference> list = BookmarkManager.getBookmarkManager(c).getBookmarkedConferences();
 		if (isCancelled())
 			return;
+		/* make a mutable array of the response, sort by name */
+		list = new ArrayList<>(list);
+		Collections.sort(list, new Comparator<BookmarkedConference>() {
+			private String sortableName(BookmarkedConference bc) {
+				if (!TextUtils.isEmpty(bc.getName()))
+					return bc.getName();
+				return bc.getJid().toString();
+			}
+			@Override
+			public int compare(BookmarkedConference bookmarkedConference, BookmarkedConference with) {
+				return sortableName(bookmarkedConference).compareToIgnoreCase(sortableName(with));
+			}
+		});
 		for (BookmarkedConference conf : list) {
 			StatusMode sm = conf.isAutoJoin() ? StatusMode.available : StatusMode.offline;
 			String name = conf.getName();
