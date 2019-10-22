@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.data;
 
+import android.text.TextUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 
@@ -103,7 +104,10 @@ public class EntityList implements Filterable {
 
 		@Override
 		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-			items = (ArrayList<EntityInfo>) filterResults.values;
+			if (TextUtils.isEmpty(charSequence))
+				items = unfiltered_items;
+			else
+				items = (ArrayList<EntityInfo>) filterResults.values;
 			adapter.notifyDataSetChanged();
 		}
 	}
