@@ -191,7 +191,7 @@ public class SmackableImp implements Smackable {
 	private static final String PONG_TIMEOUT_ALARM = "org.yaxim.androidclient.PONG_TIMEOUT_ALARM";
 	private Intent mPingAlarmIntent = new Intent(PING_ALARM);
 	private Intent mPongTimeoutAlarmIntent = new Intent(PONG_TIMEOUT_ALARM);
-	private Service mService;
+	private XMPPService mService;
 
 	private PongTimeoutAlarmReceiver mPongTimeoutAlarmReceiver = new PongTimeoutAlarmReceiver();
 	private BroadcastReceiver mPingAlarmReceiver = new PingAlarmReceiver();
@@ -205,7 +205,7 @@ public class SmackableImp implements Smackable {
 
 	public SmackableImp(YaximConfiguration config,
 			ContentResolver contentResolver,
-			Service service) {
+			XMPPService service) {
 		this.mConfig = config;
 		this.mContentResolver = contentResolver;
 		this.mService = service;
@@ -1842,11 +1842,7 @@ public class SmackableImp implements Smackable {
 			// perform a message-replace on self-sent MUC message, abort further processing
 			if (is_muc && matchOutgoingMucReflection(msg, withJID))
 				return;
-			if (timestamp == null) {
-				// delayed messages don't trigger active
-				Log.d(TAG, "user is active on different device --> Silent mode");
-				mServiceCallBack.setGracePeriod(true);
-			}
+			mService.setGracePeriod(ts);
 		}
 
 		// handle MUC-PMs: messages from a nick from a known MUC or with

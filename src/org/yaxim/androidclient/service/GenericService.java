@@ -1,6 +1,8 @@
 package org.yaxim.androidclient.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,8 +110,13 @@ public abstract class GenericService extends Service {
 		return START_STICKY;
 	}
 
-	public void setGracePeriod(boolean silence) {
-		gracePeriodStart = silence ? System.currentTimeMillis() : 0;
+	public void setGracePeriod(long when) {
+		if (when > gracePeriodStart || when == 0) {
+			String when_s = (when == 0) ? "cleared" :
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(when));
+			Log.d(TAG, "user activity from different device: " + when_s);
+			gracePeriodStart = when;
+		}
 	}
 
 	private void addNotificationMGR() {
