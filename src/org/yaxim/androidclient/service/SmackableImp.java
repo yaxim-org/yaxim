@@ -45,6 +45,9 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smack.util.TLSUtils;
 import org.jivesoftware.smack.util.dns.HostAddress;
 import org.jivesoftware.smackx.carbons.packet.CarbonExtension;
+import org.jivesoftware.smackx.chatstates.ChatState;
+import org.jivesoftware.smackx.chatstates.packet.ChatStateExtension;
+import org.jivesoftware.smackx.chatstates.provider.ChatStateExtensionProvider;
 import org.jivesoftware.smackx.csi.ClientStateIndicationManager;
 import org.jivesoftware.smackx.delay.DelayInformationManager;
 import org.jivesoftware.smackx.forward.packet.Forwarded;
@@ -1725,6 +1728,15 @@ public class SmackableImp implements Smackable {
 		mXMPPConnection.addSyncStanzaListener(mStanzaListener, filter);
 	}
 
+	private boolean isUserActivity(Message m) {
+		if (m.getBody() != null)
+			return true;
+		ChatStateExtension cse = (ChatStateExtension)m.getExtension(ChatStateExtension.NAMESPACE);
+		if (cse != null && (cse.getChatState() == ChatState.active || cse.getChatState() == ChatState.composing))
+			return true;
+		return false;
+	}
+
 	/* Obtain a timestamp from a message, in the following priority order:
 	 *   1. MAM/Carbon: inner timestamp of the wrapped message (from sending client / remote server)
 	 *   2. MAM/Carbon: timestamp from the MAM/Carbon forwarded element
@@ -1842,7 +1854,8 @@ public class SmackableImp implements Smackable {
 			// perform a message-replace on self-sent MUC message, abort further processing
 			if (is_muc && matchOutgoingMucReflection(msg, withJID))
 				return;
-			mService.setGracePeriod(ts);
+			if (isUserActivity(msg))
+				mService.setGracePeriod(ts);
 		}
 
 		// handle MUC-PMs: messages from a nick from a known MUC or with
