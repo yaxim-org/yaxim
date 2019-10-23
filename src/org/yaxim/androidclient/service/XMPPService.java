@@ -584,7 +584,7 @@ public class XMPPService extends GenericService {
 							NotificationData nd = notifications.get(jid);
 							if (nd != null && !nd.shown) {
 								logInfo("Showing delayed notification for " + jid);
-								displayNotification(jid, nd, true);
+								displayNotification(jid, nd, false);
 							}
 						}
 					}});

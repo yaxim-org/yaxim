@@ -364,7 +364,7 @@ public abstract class GenericService extends Service {
 			NotificationData nd = entry.getValue();
 			if (!nd.shown && !nd.isMuc) {
 				logInfo("Showing delayed notification for " + entry.getKey());
-				displayNotification(entry.getKey(), nd, true);
+				displayNotification(entry.getKey(), nd, false);
 			}
 		}
 	}
