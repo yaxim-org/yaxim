@@ -320,11 +320,52 @@ public class SmackableImp implements Smackable {
 		initServiceDiscovery();
 	}
 
+	public MamManager.MamQuery queryMamAfter(MamManager mm, String jid, String uid,
+				 long fallback_days)
+			throws XMPPException.XMPPErrorException, InterruptedException,
+			SmackException.NotConnectedException, SmackException.NotLoggedInException,
+			SmackException.NoResponseException {
+		MamManager.MamQueryArgs.Builder mqab = MamManager.MamQueryArgs.builder();
+		if (!TextUtils.isEmpty(uid))
+			mqab.afterUid(uid);
+		else {
+			Log.d(TAG, "MAM: no UID for " + jid + " - falling back to " + fallback_days + " days history");
+			long history_since = getLatestTimestamp();
+			if (history_since < 0)
+				history_since = System.currentTimeMillis() - (fallback_days * 24 * 60 * 60 * 1000);
+
+			mqab.limitResultsSince(new Date(history_since));
+		}
+		return mm.queryArchive(mqab.build());
+	}
+
+	public MamManager.MamQuery queryMamHistory(MamManager mm, String jid, long fallback_days)
+			throws XMPPException.XMPPErrorException, InterruptedException,
+			SmackException.NotConnectedException, SmackException.NotLoggedInException,
+			SmackException.NoResponseException {
+		String uid = getChatArchiveEntry(null);
+		MamManager.MamQuery mq;
+		try {
+			// attemt a query with the last known unique ID
+			mq = queryMamAfter(mm, jid, uid, fallback_days);
+		} catch (XMPPException.XMPPErrorException e) {
+			if (StanzaError.Condition.item_not_found == e.getStanzaError().getCondition()) {
+				Log.d(TAG, "MAM server: unknown UID " + uid + " - falling back to " + fallback_days + " days history");
+				// work around new XEP-0313 'item-not-found' response if the submitted ID is expired
+				mq = queryMamAfter(mm, jid, null, fallback_days);
+			} else throw e;
+		}
+		return mq;
+	}
+
+	// jid to query MAM for, null for user account
 	public void fetchMam() {
 		mLastError = "0%";
 		updateConnectionState(ConnectionState.LOADING);
+		// TODO: get the right damager
 		MamManager mm = MamManager.getInstanceFor(mXMPPConnection);
 		try {
+			// todo: only on own account
 			mConfig.mamSupported = mm.isSupported();
 			if (!mConfig.mamSupported)
 				return;
@@ -334,18 +375,7 @@ public class SmackableImp implements Smackable {
 				mp.setDefaultBehavior(MamPrefsIQ.DefaultBehavior.always);
 				mm.updateArchivingPreferences(mp);
 			}
-			MamManager.MamQueryArgs.Builder mqab = MamManager.MamQueryArgs.builder();
-			String uid = getChatArchiveEntry(null);
-			if (!TextUtils.isEmpty(uid))
-				mqab.afterUid(uid);
-			else {
-				long history_since = getLatestTimestamp();
-				if (history_since < 0)
-					history_since = System.currentTimeMillis() - (31L * 24 * 60 * 60 * 1000);
-
-				mqab.limitResultsSince(new Date(history_since));
-			}
-			MamManager.MamQuery mq = mm.queryArchive(mqab.build());
+			MamManager.MamQuery mq = queryMamHistory(mm, null, 31);
 			int loaded = mq.getMessageCount();
 			for (Message m : mq.getPage().getMamResultCarrierMessages())
 				processMessage(m, true);
