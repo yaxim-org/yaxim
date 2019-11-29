@@ -2496,7 +2496,7 @@ public class SmackableImp implements Smackable {
 		Cursor cursor = mContentResolver.query(RosterProvider.MUCS_URI,
 				new String[] { RosterProvider.RosterConstants.JID },
 				"autojoin=1", null, null);
-		mucJIDs.clear();
+		HashSet<String> mucJIDs = new HashSet<String>();
 		while(cursor.moveToNext()) {
 			mucJIDs.add(cursor.getString(0));
 		}
@@ -2517,6 +2517,8 @@ public class SmackableImp implements Smackable {
 			mContentResolver.update(RosterProvider.CONTENT_URI, values, RosterProvider.RosterConstants.GROUP + " = ?",
 					new String[] { RosterProvider.RosterConstants.MUCS });
 		}
+		this.mucJIDs.addAll(mucJIDs);
+		this.mucJIDs.retainAll(mucJIDs);
 	}
 
 	public synchronized void syncDbRooms() {
@@ -2536,8 +2538,8 @@ public class SmackableImp implements Smackable {
 		final int JID_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.JID);
 		final int PASSWORD_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.PASSWORD);
 		final int NICKNAME_ID = cursor.getColumnIndexOrThrow(RosterProvider.RosterConstants.NICKNAME);
-		
-		mucJIDs.clear();
+
+		HashSet<String> mucJIDs = new HashSet<String>();
 		while(cursor.moveToNext()) {
 			int id = cursor.getInt(ID);
 			String jid = cursor.getString(JID_ID);
@@ -2546,6 +2548,7 @@ public class SmackableImp implements Smackable {
 			if (TextUtils.isEmpty(nickname))
 				nickname = mConfig.screenName;
 			mucJIDs.add(jid);
+			this.mucJIDs.add(jid);
 			//debugLog("Found MUC Room: "+jid+" with nick "+nickname+" and pw "+password);
 			if(!joinedRooms.contains(jid) || !multiUserChats.get(jid).muc.isJoined()) {
 				debugLog("room " + jid + " isn't joined yet, i wanna join...");
@@ -2577,6 +2580,7 @@ public class SmackableImp implements Smackable {
 				quitRoom(room);
 			}
 		}
+		this.mucJIDs.retainAll(mucJIDs);
 		cleanupMUCsRoster(false);
 	}
 	
