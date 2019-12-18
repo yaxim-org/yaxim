@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.util;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.security.SecureRandom;
@@ -12,7 +13,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Editable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -221,5 +224,51 @@ public class XMPPHelper {
 					.putExtra(Intent.EXTRA_TEXT,
 						link),
 				    act.getString(title_id)));
+	}
+
+	public static Uri transmogrifyXmppUriHelper(Uri uri) {
+		Uri data = uri;
+		if ("xmpp".equalsIgnoreCase(data.getScheme())) {
+			if (data.isOpaque()) {
+				// cheat around android's unwillingness to parse opaque URIs
+				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
+			}
+		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
+			// convert URI fragment (after # sign) into xmpp URI
+			String jid = data.getFragment().replace(';', '&');
+			data = Uri.parse("xmpp://" + jid2url(jid));
+		} else if ("conversations.im".equalsIgnoreCase(data.getHost())) {
+			try {
+				List<String> segments = data.getPathSegments();
+				String code = segments.get(0);
+				String jid = segments.get(1);
+				String token = "";
+				if (!jid.contains("@")) {
+					jid = segments.get(1) + "@" + segments.remove(2);
+				}
+				if (segments.size() > 2)
+					token = "&preauth=" + segments.get(2);
+				if ("i".equalsIgnoreCase(code))
+					data = Uri.parse("xmpp://" + jid + "?roster" + token);
+				else if ("j".equalsIgnoreCase(code))
+					data = Uri.parse("xmpp://" + jid + "?join");
+				else return null;
+			} catch (Exception e) {
+				Log.d("yaxim.XMPPHelper", "Failed to parse URI " + data);
+				return null;
+			}
+		} else
+			return null;
+		Log.d("yaxim.XMPPHelper", "transmogrifyXmppUri: " + uri + " --> " + data);
+		return data;
+	}
+
+	public static boolean transmogrifyXmppUri(Intent intent) {
+		Uri data = transmogrifyXmppUriHelper(intent.getData());
+		if (data != null) {
+			intent.setData(data);
+			return true;
+		}
+		return false;
 	}
 }

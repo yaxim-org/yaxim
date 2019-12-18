@@ -257,51 +257,6 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			android.nfc.NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action);
 	}
 
-	public boolean transmogrifyXmppUri(Intent intent) {
-		Uri data = transmogrifyXmppUriHelper(intent.getData());
-		if (data != null) {
-			intent.setData(data);
-			return true;
-		}
-		return false;
-	}
-	public Uri transmogrifyXmppUriHelper(Uri uri) {
-		Uri data = uri;
-		if ("xmpp".equalsIgnoreCase(data.getScheme())) {
-			if (data.isOpaque()) {
-				// cheat around android's unwillingness to parse opaque URIs
-				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
-			}
-		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
-			// convert URI fragment (after # sign) into xmpp URI
-			String jid = data.getFragment().replace(';', '&');
-			data = Uri.parse("xmpp://" + XMPPHelper.jid2url(jid));
-		} else if ("conversations.im".equalsIgnoreCase(data.getHost())) {
-			try {
-				List<String> segments = data.getPathSegments();
-				String code = segments.get(0);
-				String jid = segments.get(1);
-				String token = "";
-				if (!jid.contains("@")) {
-					jid = segments.get(1) + "@" + segments.remove(2);
-				}
-				if (segments.size() > 2)
-					token = "&preauth=" + segments.get(2);
-				if ("i".equalsIgnoreCase(code))
-					data = Uri.parse("xmpp://" + jid + "?roster" + token);
-				else if ("j".equalsIgnoreCase(code))
-					data = Uri.parse("xmpp://" + jid + "?join");
-				else return null;
-			} catch (Exception e) {
-				Log.d(TAG, "Failed to parse URI " + data);
-				return null;
-			}
-		} else
-			return null;
-		Log.d(TAG, "transmogrifyXmppUri: " + uri + " --> " + data);
-		return data;
-	}
-
 	public synchronized void handleJabberIntent() {
 		Intent intent = getIntent();
 		Log.d(TAG, "handleJabberIntent: " + intent);
@@ -317,7 +272,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			String jid = data.getPathSegments().get(0);
 			if (openChatWithJid(jid, null) || addToRosterDialog(jid))
 				clearIntent();
-		} else if (isJabberIntentAction(action) && transmogrifyXmppUri(intent)) {
+		} else if (isJabberIntentAction(action) && XMPPHelper.transmogrifyXmppUri(intent)) {
 			if (handleXmppUri(intent.getData()))
 				clearIntent();
 		}
@@ -365,7 +320,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		if (clip.contains("@") && XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
 			return new Uri.Builder().scheme("xmpp").authority(clip).build();
 		}
-		return transmogrifyXmppUriHelper(Uri.parse(clip));
+		return XMPPHelper.transmogrifyXmppUriHelper(Uri.parse(clip));
 	}
 
 	@Override
@@ -980,7 +935,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		String jid = null;
 		String preauth = null;
 		Intent i = getIntent();
-		if (!mHandledIntent && isJabberIntentAction(i.getAction()) && transmogrifyXmppUri(i)) {
+		if (!mHandledIntent && isJabberIntentAction(i.getAction()) && XMPPHelper.transmogrifyXmppUri(i)) {
 			Uri data = i.getData();
 			if (data.getQueryParameter("register") != null) {
 				jid = data.getAuthority();
