@@ -1,6 +1,7 @@
 0.9.9:
  * User Interface: major rework for Material Design and Notification Channels
  * Performance: significant improvement with many messages
+ * Easy Onboarding: implement account registration and contact adding (XEP-0401)
  * Reliable Messaging: implement Push (XEP-0357) and MAM (XEP-0313)
  * Service Discovery: allow browsing other servers and join rooms (XEP-0030)
  * Chat Rooms: use account-synchronized nickname (XEP-0172)
