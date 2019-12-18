@@ -87,6 +87,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	private HashMap<String, Boolean> mGroupsExpanded = new HashMap<String, Boolean>();
 
 	private boolean mHandledIntent = false;
+	FirstStartDialog mFirstStartDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -995,7 +996,9 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			}
 			preauth = data.getQueryParameter("preauth");
 		}
-		FirstStartDialog mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
+		if (mFirstStartDialog != null)
+			mFirstStartDialog.dismiss();
+		mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
 		mFirstStartDialog.show();
 		if (!TextUtils.isEmpty(jid))
 			mFirstStartDialog.setJID(jid, preauth);
