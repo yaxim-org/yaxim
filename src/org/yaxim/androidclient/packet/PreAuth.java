@@ -1,6 +1,7 @@
 package org.yaxim.androidclient.packet;
 
 import org.jivesoftware.smack.packet.ExtensionElement;
+import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.provider.ExtensionElementProvider;
 
 import org.jivesoftware.smack.util.StringUtils;
@@ -39,6 +40,23 @@ public class PreAuth implements ExtensionElement {
 	public static class Provider extends ExtensionElementProvider<PreAuth> {
 		public PreAuth parse(XmlPullParser parser, int initialDepth) throws Exception {
 			return new PreAuth(parser.getAttributeValue(null, "token"));
+		}
+	}
+
+	public static class PreAuthIQ extends IQ {
+		private String token;
+
+		public PreAuthIQ(String token) {
+			super(ELEMENT, NAMESPACE);
+			this.token = token;
+			this.setType(Type.set);
+		}
+
+		@Override
+		protected IQChildElementXmlStringBuilder getIQChildElementBuilder(IQChildElementXmlStringBuilder xml) {
+			xml.optAttribute("token", token);
+			xml.setEmptyElement();
+			return xml;
 		}
 	}
 }

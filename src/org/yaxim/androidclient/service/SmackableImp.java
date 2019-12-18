@@ -23,6 +23,7 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 import org.jivesoftware.smack.*;
+import org.jivesoftware.smack.filter.StanzaIdFilter;
 import org.jivesoftware.smack.filter.StanzaTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.IQ.Type;
@@ -106,6 +107,7 @@ import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.exceptions.YaximXMPPException;
+import org.yaxim.androidclient.packet.InviteRegister;
 import org.yaxim.androidclient.packet.MuclumbusIQ;
 import org.yaxim.androidclient.packet.MuclumbusResult;
 import org.yaxim.androidclient.packet.Oob;
@@ -159,6 +161,7 @@ public class SmackableImp implements Smackable {
 		ProviderManager.addIQProvider(MamFinIQ.ELEMENT, MamElements.NAMESPACE, new MamFinIQProvider());
 		ProviderManager.addIQProvider(MuclumbusIQ.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusIQ.Provider());
 		ProviderManager.addIQProvider(MuclumbusResult.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusResult.Provider());
+		ProviderManager.addStreamFeatureProvider(InviteRegister.ELEMENT, InviteRegister.NAMESPACE, new InviteRegister.StreamFeatureProvider());
 		PingManager.setDefaultPingInterval(14*60);
 	}
 
@@ -840,6 +843,12 @@ public class SmackableImp implements Smackable {
 				debugLog("connectAndLogin: within synchronized mXMPPConnection");
 				mXMPPConnection.connect();
 				if (create_account) {
+					if (!TextUtils.isEmpty(mConfig.initialPreAuth) && mXMPPConnection.hasFeature("register", "urn:xmpp:invite")) {
+						Log.d(TAG, "sending pre-auth token to server: " + mConfig.initialPreAuth);
+						PreAuth.PreAuthIQ preauth = new PreAuth.PreAuthIQ(mConfig.initialPreAuth);
+						mXMPPConnection.createStanzaCollectorAndSend(new StanzaIdFilter(preauth.getStanzaId()), preauth)
+							.nextResultOrThrow();
+					}
 					Log.d(TAG, "creating new server account...");
 					AccountManager am = AccountManager.getInstance(mXMPPConnection);
 					am.createAccount(Localpart.from(mConfig.userName), mConfig.password);
