@@ -162,7 +162,7 @@ dependencies {
 	api fileTree(include: ['*.aar'], dir: 'libs')
 	implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
 	implementation 'org.hsluv:hsluv:0.2'
-	implementation 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
+	implementation 'com.koushikdutta.ion:ion:2.2.1'
 	implementation 'com.google.zxing:core:3.3.3'
 	// smack4
 	//compile project("Smack:smack-android-extensions")
