@@ -814,8 +814,8 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 					.getDefaultSharedPreferences(this);
 			if (prefs.contains(PreferenceConstants.FIRSTRUN)) {
 				// in case we just registered, re-fire the Intent
-				handleJabberIntent();
 				prefs.edit().remove(PreferenceConstants.FIRSTRUN).commit();
+				handleJabberIntent();
 			}
 		}
 	}
