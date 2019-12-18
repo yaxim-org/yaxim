@@ -975,6 +975,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	}
 
 	private void showFirstStartUpDialog() {
+		String ibr_domain = null;
 		String jid = null;
 		String preauth = null;
 		Intent i = getIntent();
@@ -982,14 +983,24 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			Uri data = i.getData();
 			if (data.getQueryParameter("register") != null) {
 				jid = data.getAuthority();
-				preauth = data.getQueryParameter("preauth");
+				if (!jid.contains("@")) {
+					ibr_domain = jid;
+					jid = null;
+				}
 				mHandledIntent = true;
+			} else if (data.getQueryParameter("ibr") != null) {
+				String inviter = data.getAuthority();
+				if (!TextUtils.isEmpty(inviter) && inviter.contains("@"))
+					ibr_domain = inviter.split("@")[1];
 			}
+			preauth = data.getQueryParameter("preauth");
 		}
 		FirstStartDialog mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
 		mFirstStartDialog.show();
 		if (!TextUtils.isEmpty(jid))
 			mFirstStartDialog.setJID(jid, preauth);
+		else if (!TextUtils.isEmpty(ibr_domain))
+			mFirstStartDialog.setPreAuth(ibr_domain, preauth);
 	}
 	private void showFirstStartUpDialogIfPrefsEmpty() {
 		Log.i(TAG, "showFirstStartUpDialogIfPrefsEmpty, JID: "

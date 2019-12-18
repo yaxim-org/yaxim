@@ -102,6 +102,16 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		mCreateAccount.setEnabled(false);
 		return this;
 	}
+	public FirstStartDialog setPreAuth(String ibr_domain, String preauth) {
+		android.util.Log.d("FirstStartDialog", "setPreAuth: " + preauth);
+		((TextView)findViewById(R.id.StartupDialog_Summary)).setText(R.string.StartupDialog_invitation);
+		this.preauth = preauth;
+		mEditJabberID.setServerList(ibr_domain, null, R.array.xmpp_servers);
+		// TODO: refactor IBR hint for global domain
+		mEditJabberID.setHint(mainWindow.getString(R.string.Global_JID_hint).replace("yax.im", ibr_domain));
+		mCreateAccount.setChecked(true);
+		return this;
+	}
 
 	public void onClick(DialogInterface dialog, int which) {
 		switch (which) {
