@@ -17,6 +17,7 @@ import org.yaxim.androidclient.list.SearchActivity;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
+import org.yaxim.androidclient.service.InvitationTask;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -729,8 +730,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			startActivity(new Intent(this, SearchActivity.class));
 			return true;
 		case R.id.menu_send_invitation:
-			ChatHelper.showQrDialog(this, mConfig.jabberID, XMPPHelper.createInvitationLinkHTTPS(mConfig.jabberID,
-						mConfig.createInvitationCode()), getString(R.string.Menu_send_invitation));
+			new InvitationTask(this, mConfig, YaximApplication.getApp().getSmackable()).execute();
 			return true;
 
 		}
