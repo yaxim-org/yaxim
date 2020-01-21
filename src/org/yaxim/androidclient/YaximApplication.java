@@ -1,13 +1,17 @@
 package org.yaxim.androidclient;
 
 import org.yaxim.androidclient.data.YaximConfiguration;
+import org.yaxim.androidclient.service.InstallReferrerReceiver;
 import org.yaxim.androidclient.service.SmackableImp;
 import org.yaxim.androidclient.service.YaximBroadcastReceiver;
 import org.yaxim.androidclient.util.ErrorReportManager;
 import org.yaxim.androidclient.util.JULHandler;
+import org.yaxim.androidclient.util.PreferenceConstants;
 
 import android.app.Application;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 
 import java.util.logging.Level;
@@ -50,6 +54,11 @@ public class YaximApplication extends Application {
 		JULHandler.reset(new JULHandler());
 		LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.FINE);
 
+		SharedPreferences prefs = PreferenceManager
+			.getDefaultSharedPreferences(this);
+		if (mConfig.jabberID.length() < 3 || prefs.contains(PreferenceConstants.FIRSTRUN)) {
+			InstallReferrerReceiver.queryInstallReferrerLibrary(this);
+		}
 
 		// since Android 7, you need to manually register for network changes
 		// https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#MonitorChanges

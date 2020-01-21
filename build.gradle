@@ -164,6 +164,9 @@ dependencies {
 	implementation 'org.hsluv:hsluv:0.2'
 	implementation 'com.koushikdutta.ion:ion:2.2.1'
 	implementation 'com.google.zxing:core:3.3.3'
+
+	// play referrer
+	implementation 'com.android.installreferrer:installreferrer:1.1'
 	// smack4
 	//compile project("Smack:smack-android-extensions")
 	//compile project("Smack:smack-tcp")
