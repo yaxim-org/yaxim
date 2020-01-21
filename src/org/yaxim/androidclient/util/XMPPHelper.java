@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.nfc.NdefMessage;
@@ -233,7 +234,7 @@ public class XMPPHelper {
 				// cheat around android's unwillingness to parse opaque URIs
 				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
 			}
-		} else if ("yax.im".equalsIgnoreCase(data.getHost())) {
+		} else if ("yax.im".equalsIgnoreCase(data.getHost()) && !TextUtils.isEmpty(data.getFragment())) {
 			// convert URI fragment (after # sign) into xmpp URI
 			String jid = data.getFragment().replace(';', '&');
 			data = Uri.parse("xmpp://" + jid2url(jid));
