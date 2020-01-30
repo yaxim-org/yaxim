@@ -72,8 +72,8 @@ import android.view.WindowManager;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 @SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
 public class ChatWindow extends ThemedActivity implements OnKeyListener,
@@ -877,23 +877,15 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 			if (has_extra) {
 				if (extra.equals(message))
 					mMessageView.setVisibility(View.GONE);
-				Ion.with(iv)
-					.placeholder(android.R.drawable.ic_menu_report_image)
-					.error(android.R.drawable.ic_menu_report_image)
-					.fadeIn(false)
-					.smartSize(true)
-					.load(extra)
-					.setCallback(new FutureCallback<ImageView>() {
-						 @Override
-						 public void onCompleted(Exception e, ImageView result) {
-							 if (e != null) {
-								 mMessageView.setVisibility(View.VISIBLE);
-								 //mErrorView.setText(e.getLocalizedMessage());
-								 //mErrorView.setVisibility(View.VISIBLE);
-							 }
-
-						 }
-					 });
+				UrlImageViewHelper.setUrlDrawable(iv, extra, android.R.drawable.ic_menu_report_image, new UrlImageViewCallback() {
+					@Override
+					public void onLoaded(ImageView imageView, Bitmap bitmap, String s, boolean b) {
+						if (bitmap == null) {
+							// error loading, display URL again
+							mMessageView.setVisibility(View.VISIBLE);
+						}
+					}
+				});
 				iv.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
