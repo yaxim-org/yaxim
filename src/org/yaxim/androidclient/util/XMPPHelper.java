@@ -156,7 +156,7 @@ public class XMPPHelper {
 		return sb.toString();
 	}
 
-	public static final String MATRIX_BRIDGE = "bridge.xmpp.matrix.org";
+	public static final String MATRIX_BRIDGE = "matrix.org";
 	static final Pattern JID2MXID = Pattern.compile("^(#?)([^_#]*)[_#](.*)@" + MATRIX_BRIDGE);
 	static final Pattern MXID2JID = Pattern.compile("^([@#])([^:]*):(.*)");
 
