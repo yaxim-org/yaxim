@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Conectare la server…</string>
 	<string name="conn_disconnecting">Deconectare…</string>
 	<string name="conn_online">Conectat</string>
@@ -84,7 +86,7 @@
 	<string name="showOffline_title">Arată contactele deconectate</string>
 	<string name="enableGroups_summ">Aranjare contacte în grupuri</string>
 	<string name="enableGroups_title">Arată grupurile contactelor</string>
-	<string name="foregroundService_summ">Se păstrează yaxim în memorie pentru a asigura o conexiune în permanență (serviciul în prim-plan)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Iconița în bara de stare</string>
 
 	<string name="preftitle_debug">Rapoarte erori</string>
@@ -106,10 +108,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Mărime font discuție</string>
-	<string-array name="pref_theme_entries">
-		<item>Temă</item>
-		<item>Întunecată</item>
-	</string-array>
+	<string name="pref_theme_dark">Temă</string>
+	<string name="pref_theme_light">Întunecată</string>
+	<string name="pref_theme_pine">Pine</string>
+	<string name="pref_theme_ice">Ice</string>
 	<string name="preftitle_ui">Interfață</string>
 	<string-array name="fontSizesChat">
 		<item>Luminoasă</item>
@@ -129,7 +131,9 @@
 	<string name="Menu_connect">Setări</string>
 	<string name="Menu_disconnect">Stare</string>
 	<string name="Menu_about">Conectare</string>
-	<string name="Menu_muc">Deconectare</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Despre yaxim</string>
 	<string name="Menu_send_invitation">Adaugă discuție de grup</string>
     <string name="Menu_userlist">Marchează totul ca citit</string>
@@ -175,6 +179,8 @@
 	<string name="account_jabberPW_progress">Parolă veche:</string>
 	<string name="account_jabberPW_finished">Parolă nouă:</string>
 	<string name="account_jabberPW_error">ATENȚIE! Pentru o autentificare reușită trebuie să setați acceași parolă și pe server!</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Vă rugăm să așteptați, se schimbă parola…</string>
@@ -237,6 +243,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Conectare</string>
 	<string name="AboutDialog_DevelopersTitle">Refuzat toate</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">poate să vă vadă starea</string>
 	<string name="AboutDialog_LicenceTitle">Eu:</string>
 	<string name="AboutDialog_Vote">Mesajul a fost stocat pentru trimitere.</string>
@@ -353,5 +360,20 @@ Launchpad Contributions:
 	<string name="upload_compress">Alătură-te ca %s</string>
 	<string name="upload_uploading">Sincronizare…</string>
 	<string name="upload_too_large">Participanți discuție de grup (%s)</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

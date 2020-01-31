@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">सर्वर से कनेक्ट हो रहा है…</string>
 	<string name="conn_disconnecting">डिस्कनेक्ट हो रहा है…</string>
 	<string name="conn_online">ऑनलाइन</string>
@@ -88,7 +90,7 @@
 	<string name="showOffline_title">Show offline contacts</string>
 	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
 	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep yaxim in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Statusbar icon</string>
 
 	<string name="preftitle_debug">Debugging</string>
@@ -110,10 +112,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Theme</string>
-	<string-array name="pref_theme_entries">
-		<item>Dark</item>
-		<item>Light</item>
-	</string-array>
+	<string name="pref_theme_dark">Dark</string>
+	<string name="pref_theme_light">Light</string>
+	<string name="pref_theme_pine">Pine</string>
+	<string name="pref_theme_ice">Ice</string>
 	<string name="preftitle_ui">Appearance</string>
 	<string-array name="fontSizesChat">
 		<item>small</item>
@@ -133,7 +135,9 @@
 	<string name="Menu_connect">Connect</string>
 	<string name="Menu_disconnect">Disconnect</string>
 	<string name="Menu_about">About yaxim</string>
-	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
     <string name="Menu_userlist">Participants</string>
@@ -180,6 +184,8 @@
 	<string name="account_jabberPW_progress">Please wait, changing password…</string>
 	<string name="account_jabberPW_finished">Password successfully changed.</string>
 	<string name="account_jabberPW_error">Error changing password: %s</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client Resource</string>
@@ -242,6 +248,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">About yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_Vote">Rate app</string>
@@ -356,5 +363,20 @@
 	<string name="upload_compress">Compressing picture…</string>
 	<string name="upload_uploading">Uploading…</string>
 	<string name="upload_too_large">file too large!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

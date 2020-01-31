@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Yhdistetään palvelimeen...</string>
 	<string name="conn_disconnecting">Katkaistaan yhteyttä...</string>
 	<string name="conn_online">Verkossa</string>
 	<string name="conn_offline">Poissa verkosta</string>
-	<string name="conn_empty_roster">Ei kontakteja!</string>
+	<string name="conn_empty_roster">Ei yhteystietoja!</string>
 	<string name="conn_empty_roster_hints">Yhteystietoja voi lisätä monella tavalla:
 
 - Andoid Beam™: kosketa toista puhelinta
@@ -21,7 +23,7 @@
 	<string name="conn_reconnect">Seuraava yhteydenmuodostus %d sekunnin kuluttua.</string>
 	<string name="conn_disconnected">Yhteys suljettiin</string>
 	<string name="conn_no_network">Ei verkkoyhteyttä</string>
-	<string name="conn_ping_timeout">No response</string>
+	<string name="conn_ping_timeout">Ei vastausta</string>
 	<string name="conn_error">Virhe: %s</string>
 
 	<!-- Global Strings -->
@@ -44,8 +46,8 @@
 	<string name="StartupDialog_created_password">Turvallinen salasana luotu</string>
 	<string name="StartupDialog_auth_failed">Ole hyvä ja tarkasta käyttäjätunnuksesi ja salasanasi!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Sinut on kutsuttu Jabberiin. Ole hyvä ja viimeistele rekisteröintisi.</string>
+	<string name="StartupDialog_no_more_accounts">Lisätiliä ei tueta, sinulla voi olla vain yksi tili!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Viesti käyttäjältä %s</string>
@@ -63,10 +65,10 @@
 	<string name="notification_error">Virhe lähetettäessä viestiä!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Ilmoitusasetukset</string>
 	<string name="preftitle_notify_msg">Viesti-ilmoitus</string>
 	<string name="preftitle_notify_muc">Ryhmäkeskustelun ilmoitukset</string>
-	<string name="notification_custom">Custom Ringtone</string>
+	<string name="notification_custom">Omavalintainen soittoääni</string>
 	<string name="muc_highlight_title">Ilmoita vain mainittaessa</string>
 	<string name="muc_highlight_sum">Ilmoita, kun nimesi mainitaan huoneessa</string>
 	<string name="led_title">Vilkkuva LED</string>
@@ -92,7 +94,7 @@
 	<string name="showOffline_title">Näytä poissaolevat kontaktit</string>
 	<string name="enableGroups_summ">Järjestä kontaktit ryhmien mukaan</string>
 	<string name="enableGroups_title">Näytä ryhmät</string>
-	<string name="foregroundService_summ">Pidä yaxim muistissa, jotta yhteys ei katkeaisi (palvelu toimii etualalla)</string>
+	<string name="foregroundService_summ">Säilytä sovellus muistissa varmistaaksesi yhteyden pysyvän aina päällä (etualan palvelu)</string>
 	<string name="foregroundService_title">Tilapalkin kuvake</string>
 
 	<string name="preftitle_debug">Virheenjäljitys</string>
@@ -114,10 +116,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Teema</string>
-	<string-array name="pref_theme_entries">
-		<item>Tumma</item>
-		<item>Vaalea</item>
-	</string-array>
+	<string name="pref_theme_dark">Tumma</string>
+	<string name="pref_theme_light">Vaalea</string>
+	<string name="pref_theme_pine">Mänty</string>
+	<string name="pref_theme_ice">Jää</string>
 	<string name="preftitle_ui">Ulkoasu</string>
 	<string-array name="fontSizesChat">
 		<item>pieni</item>
@@ -128,7 +130,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Lisää yhteystieto</string>
-	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_addClipboard">Lisää %s</string>
 	<string name="Menu_ShowOff">Näytä poissaolevat</string>
 	<string name="Menu_HideOff">Piilota poissaolevat</string>
 	<string name="Menu_AccSettings">Muokkaa tiliä</string>
@@ -137,7 +139,9 @@
 	<string name="Menu_connect">Yhdistä</string>
 	<string name="Menu_disconnect">Katkaise yhteys</string>
 	<string name="Menu_about">Tietoja yaximista</string>
-	<string name="Menu_muc">Lisää ryhmäkeskustelu</string>
+	<string name="Menu_about_bruno">Tietoja Brunosta</string>
+	<string name="Menu_muc">Lisää / selaa...</string>
+	<string name="Menu_matrix">Astu sisään Matrixiin...</string>
 	<string name="Menu_mark_all_as_read">Merkitse kaikki luetuiksi</string>
 	<string name="Menu_send_invitation">Luo kutsu</string>
     <string name="Menu_userlist">Osallistujat</string>
@@ -183,6 +187,8 @@
 	<string name="account_jabberPW_progress">Odota hetki, salasanaa vaihdetaan...</string>
 	<string name="account_jabberPW_finished">Salasanan vaihto onnistui.</string>
 	<string name="account_jabberPW_error">Salasanan vaihto epäonnistui: %s</string>
+	<string name="account_nickname_title">Näyttönimi</string>
+	<string name="account_nickname_summ">Lempinimesi, joka näkyy muille käyttäjille</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ohjelman resurssi</string>
@@ -222,7 +228,7 @@
 	<string name="subscriptionRequest_title">Hyväksyntäpyyntö</string>
 	<string name="subscription_accept">Hyväksy</string>
 	<string name="subscription_reject">Hylkää</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject_all">Hylkää kaikki</string>
 	<string name="subscription_status_from">voi nähdä tilasi</string>
 
 	<!-- CHATWINDOW -->
@@ -233,7 +239,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Lainaa</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Muokkaa viestiä</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -245,9 +251,10 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Tietoja yaximista</string>
 	<string name="AboutDialog_DevelopersTitle">Kehittäjät</string>
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<!-- Contact the developer button -->
+	<string name="AboutDialog_DevelopersText">Ota yhteyttä</string>
 	<string name="AboutDialog_LicenceTitle">Lisenssit</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">Arvioi tämä sovellus</string>
 	<string name="AboutDialog_LicenceText">
 		This program is free software; you can redistribute
 		it and/or
@@ -354,12 +361,27 @@
 	<string name="muc_banned_by">%1$s:n estämä: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
+	<string name="roster_contextmenu_send">Lähetä...</string>
+	<string name="roster_contextmenu_take_image">Ota kuva</string>
+	<string name="roster_contextmenu_send_image">Valitse kuva</string>
+	<string name="roster_contextmenu_send_file">Lähetä tiedosto</string>
+	<string name="upload_compress">Pakataan kuvaa...</string>
+	<string name="upload_uploading">Lähetetään...</string>
+	<string name="upload_too_large">tiedosto on liian suuri!</string>
+	<string name="storage_permission">%s tarvitsee käyttöoikeuden tallennustilaan tiedostojen lähettämistä varten!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Viestin sisältö</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">Viestiryhmäni</string>
+	<string name="group_mucsearch">Julkiset viestiryhmät</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Selain: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Etualan palvelu</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Viestit</string>
 
 </resources>

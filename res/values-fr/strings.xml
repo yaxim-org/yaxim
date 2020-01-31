@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim : %s</string>
+	<string name="conn_title">yaxim : %s</string>
+	<string name="conn_title_bruno">Bruno : %s</string>
 	<string name="conn_connecting">Connexion au serveur…</string>
 	<string name="conn_disconnecting">Déconnexion…</string>
 	<string name="conn_online">En ligne</string>
 	<string name="conn_offline">Hors ligne</string>
-	<string name="conn_empty_roster">Aucun contact à afficher !</string>
-	<string name="conn_empty_roster_hints">Il existe de nombreuses façons d\'ajouter des contacts :\n\n - Android Beam™ : touchez le téléphone d\'un ami\n\n - Scannez un QR code\n\n - \"Créez une invitation\" et partagez-la (e-mail, SMS, QR code, …)\n\n - \"Ajouter un contact\" si vous connaissez le JID</string>
+	<string name="conn_empty_roster">Aucun contact à afficher !</string>
+	<string name="conn_empty_roster_hints">Il existe de nombreuses façons d\'ajouter des contacts :\n\n - Android Beam™ : touchez le téléphone d’un ami\n\n - Scannez un QR code\n\n - « Créez une invitation » et partagez-la (e-mail, SMS, QR code…)\n\n - « Ajoutez un contact » si vous connaissez son JID</string>
 	<string name="conn_reconnect">Prochaine tentative de connexion dans %d secondes.</string>
-	<string name="conn_disconnected">Connexion fermée</string>
+	<string name="conn_disconnected">Connexion terminée</string>
 	<string name="conn_no_network">Aucune connexion réseau</string>
-	<string name="conn_ping_timeout">No response</string>
-	<string name="conn_error">Erreur : %s</string>
+	<string name="conn_ping_timeout">Pas de réponse</string>
+	<string name="conn_error">Erreur : %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Quitter</string>
 	<string name="Global_authenticate_first">Merci de d\'abord vous connecter</string>
 	<string name="Global_JID_hint">utilisateur@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Vérifiez le format de l\'adresse !</string>
+	<string name="Global_JID_malformed">Vérifiez le format de l\'adresse !</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">Bienvenue dans yaxim !</string>
+	<string name="StartupDialog_Title">Bienvenue dans yaxim !</string>
 	<string name="StartupDialog_Summary">Vous devez configurer yaxim avant de pouvoir l\'utiliser. Merci d\'entrer votre identifiant Jabber et son mot de passe.</string>
 	<string name="StartupDialog_pwHint">Saisir un mot de passe</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
-	<string name="StartupDialog_Username_title">Identifiant Jabber :</string>
-	<string name="StartupDialog_passwd_title">Mot de passe :</string>
-	<string name="StartupDialog_advanced">Avancée…</string>
+	<string name="StartupDialog_pwshowHint">Afficher le mot de passe</string>
+	<string name="StartupDialog_Username_title">Identifiant Jabber :</string>
+	<string name="StartupDialog_passwd_title">Mot de passe :</string>
+	<string name="StartupDialog_advanced">Avancé…</string>
 	<string name="StartupDialog_create_new">Enregistrer un nouveau compte</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
+	<string name="StartupDialog_error_password">Le mot de passe est trop court !</string>
 	<string name="StartupDialog_created_password">Mot passe sûr créé</string>
-	<string name="StartupDialog_auth_failed">Vérifiez votre nom d\'utilisateur de mot de passe !</string>
+	<string name="StartupDialog_auth_failed">Vérifiez votre nom d’utilisateur et votre mot de passe !</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Vous avez été invités sur Jabber. Merci de bien vouloir finir votre inscription.</string>
+	<string name="StartupDialog_no_more_accounts">Pas de prise en charge d’un compte supplémentaire !</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Message de %s</string>
@@ -52,19 +54,19 @@
 	<string name="notification_mark_read">Marquer comme lu</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Erreur lors de l\'envoi du message !</string>
+	<string name="notification_error">Erreur lors de l\'envoi du message !</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Configuration des notifications</string>
 	<string name="preftitle_notify_msg">Notification de message</string>
 	<string name="preftitle_notify_muc">Notification de salon</string>
-	<string name="notification_custom">Custom Ringtone</string>
+	<string name="notification_custom">Sonnerie personnalisée</string>
 	<string name="muc_highlight_title">Ne notifier que les mentions</string>
 	<string name="muc_highlight_sum">Ne notifier que quand votre nom est mentionné dans un salon</string>
 	<string name="led_title">LED clignotante</string>
 	<string name="led_summ">LED clignotante lors de la réception d\'un nouveau message</string>
 	<string name="vibr_title">Vibration</string>
-	<string name="vibr_summ">Vibration lors de la réception d\'un nouveau message</string>
+	<string name="vibr_summ">Vibration lors de la réception d’un nouveau message</string>
 	<string-array name="vibr_values_displayed">
 		<item>Jamais</item>
 		<item>Préférence système</item>
@@ -73,32 +75,32 @@
 	<string name="ringtone_title">Sonnerie</string>
 	<string name="ringtone_summ">Sonnerie pour les messages entrants</string>
 	<string name="ticker_title">Prévisualisation du message</string>
-	<string name="ticker_summ">Affiché l\'expéditeur et le messsage dans la barre d\'état</string>
+	<string name="ticker_summ">Affiché l’expéditeur et le messsage dans la barre d’état</string>
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_general">Paramètres généraux</string>
-	<string name="pref_dnd_when_silent">\"Ne pas déranger\" en mode silence</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
-	<string name="statuspopup_name">Définissez votre état</string>
-	<string name="showOffline_summ">Toujours afficher l\'ensemble des contacts dans la liste</string>
+	<string name="pref_dnd_when_silent">« Ne pas déranger » en mode silence</string>
+	<string name="pref_dnd_when_silent_summ">Change votre statut en « ne pas déranger » quand votre téléphone est en mode silencieux</string>
+	<string name="statuspopup_name">Définir votre état</string>
+	<string name="showOffline_summ">Toujours afficher l’ensemble des contacts dans la liste</string>
 	<string name="showOffline_title">Afficher les contacts hors ligne</string>
 	<string name="enableGroups_summ">Organiser vos contacts selon leurs groupes</string>
 	<string name="enableGroups_title">Afficher les groupes du contact</string>
-	<string name="foregroundService_summ">Conserver yaxim en mémoire afin d\'assurer la connexion permanente (service au premier plan)</string>
+	<string name="foregroundService_summ">Garder l’application en mémoire pour garantir que la connexion sera toujours établie (service au premier plan)</string>
 	<string name="foregroundService_title">Icône de la barre d\'état</string>
 
 	<string name="preftitle_debug">Débogage</string>
-	<string name="smackdebug_summ">Paquets et informations de débogage via logcat (peut contenir des informations personnels)</string>
+	<string name="smackdebug_summ">Paquets et informations de débogage via logcat (peut contenir des informations personnelles)</string>
 	<string name="smackdebug_title">Débogage de SMACK</string>
 
-	<string name="reportcrash_title">Envoyer les rapports d\'erreur</string>
+	<string name="reportcrash_title">Envoyer les rapports d’erreur</string>
 	<string name="reportcrash_summ">Envoyer des rapports de crash anonymes au développeur</string>
 
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">Apparence</string>
-	<string name="FontChat_title">Taille de la police lors d\'un chat</string>
-	<string name="FontChat_summ">Paramétrer la taille de la police lors d\'un chat</string>
-	<string name="FontChat_dialog">Taille de la police lors d\'un chat</string>
+	<string name="FontChat_title">Taille de la police dans les conversations</string>
+	<string name="FontChat_summ">Paramétrer la taille de la police dans les conversations</string>
+	<string name="FontChat_dialog">Taille de la police dans les conversations</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
 	<string name="FontRost_summ">Set roster font size</string>
@@ -106,10 +108,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Thème</string>
-	<string-array name="pref_theme_entries">
-		<item>Sombre</item>
-		<item>Clair</item>
-	</string-array>
+	<string name="pref_theme_dark">Sombre</string>
+	<string name="pref_theme_light">Clair</string>
+	<string name="pref_theme_pine">Pin</string>
+	<string name="pref_theme_ice">Glace</string>
 	<string name="preftitle_ui">Apparence</string>
 	<string-array name="fontSizesChat">
 		<item>petit</item>
@@ -120,16 +122,18 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Ajouter un contact</string>
-	<string name="Menu_addClipboard">Add %s</string>
-	<string name="Menu_ShowOff">Montrer les hors ligne</string>
-	<string name="Menu_HideOff">Cacher les hors ligne</string>
+	<string name="Menu_addClipboard">Ajouter %s</string>
+	<string name="Menu_ShowOff">Montrer les contacts hors ligne</string>
+	<string name="Menu_HideOff">Cacher les contacts hors ligne</string>
 	<string name="Menu_AccSettings">Modifier le compte</string>
 	<string name="Menu_Settings">Préférences</string>
 	<string name="Menu_Status">État</string>
 	<string name="Menu_connect">Se connecter</string>
 	<string name="Menu_disconnect">Se déconnecter</string>
 	<string name="Menu_about">À propos de yaxim</string>
-	<string name="Menu_muc">Ajouter un salon</string>
+	<string name="Menu_about_bruno">À propos de Bruno</string>
+	<string name="Menu_muc">Ajouter / parcourir…</string>
+	<string name="Menu_matrix">Entrer dans Matrix…</string>
 	<string name="Menu_mark_all_as_read">Tout marquer comme lu</string>
 	<string name="Menu_send_invitation">Créer une invitation</string>
     <string name="Menu_userlist">Participants</string>
@@ -137,24 +141,24 @@
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">Ajouter un contact</string>
-	<string name="addFriend_Summ">Merci d’entrer l\'identifiant Jabber de votre ami, son pseudonyme ainsi que son groupe de contacts !</string>
+	<string name="addFriend_Summ">Merci d’entrer l’identifiant Jabber de votre ami, son pseudonyme ainsi que son groupe !</string>
 	<string name="addFriend_aliasHint">Pseudonyme</string>
 	<string name="addrosteritemaddgroupchoice">Ajouter à un nouveau groupe</string>
-	<string name="NewGroup_EditTextField_Hint">Nom du nouveau group</string>
+	<string name="NewGroup_EditTextField_Hint">Nom du nouveau groupe</string>
 
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_group_rename">Renommer le groupe</string>
 	<string name="roster_contextmenu_contact_mark_as_read">Marquer comme lu</string>
 	<string name="roster_contextmenu_contact_delete">Supprimer le contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Effacer l\'historique de conversations</string>
+	<string name="roster_contextmenu_contact_delmsg">Effacer l’historique de conversation</string>
 	<string name="roster_contextmenu_contact_rename">Renommer</string>
-	<string name="roster_contextmenu_contact_request_auth">Demander l\'autorisation</string>
-	<string name="roster_contextmenu_contact_change_group">Changer de groupe</string>
-	<string name="roster_contextmenu_contact_share">Partager l\'adresse</string>
+	<string name="roster_contextmenu_contact_request_auth">Demander l’autorisation</string>
+	<string name="roster_contextmenu_contact_change_group">Changer le groupe</string>
+	<string name="roster_contextmenu_contact_share">Partager l’adresse</string>
 	<string name="roster_contextmenu_contact_ringtone">Sonnerie</string>
 	<string name="roster_contextmenu_muc_edit">Éditer le salon</string>
 	<string name="roster_contextmenu_muc_leave">Quitter le salon</string>
-	<string name="muc_leave_question">Vraiment quitter %s ?</string>
+	<string name="muc_leave_question">Voulez-vous vraiment quitter %s ?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Information de connexion</string>
@@ -162,70 +166,72 @@
 	<string name="account_options_title">Options de connexion</string>
 	<string name="account_options_advanced">Options avancées</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Demander des copies de message de vos autres clients</string>
+	<string name="carbons_summ">Demander une copie des messages reçus et envoyés par vos autres clients</string>
 	<string name="account_jabberID_title">Identifiant Jabber</string>
-	<string name="account_jabberID_sum">exemple : moi@jabber.exemple.com</string>
-	<string name="account_jabberID_dialog_title">Saisir votre identifiant Jabber :</string>
+	<string name="account_jabberID_sum">exemple : moi@jabber.example.com</string>
+	<string name="account_jabberID_dialog_title">Veuillez entrer votre identifiant Jabber :</string>
 	<string name="account_jabberPW_title">Mot de passe du compte</string>
 	<string name="account_jabberPW_sum">Le mot de passe de votre compte Jabber</string>
 	<string name="account_jabberPW_change_on_server">Modifier le mot de passe sur le serveur</string>
-	<string name="account_jabberPW_password_old">Ancien mot de passe :</string>
-	<string name="account_jabberPW_password_new">Nouveau mot de passe :</string>
+	<string name="account_jabberPW_password_old">Ancien mot de passe :</string>
+	<string name="account_jabberPW_password_new">Nouveau mot de passe :</string>
 	<string name="account_jabberPW_warning">Attention ! Pour que votre prochaine tentative de connexion n’échoue pas, vous devez également modifier le mot de passe enregistré sur le serveur !</string>
 	<string name="account_jabberPW_progress">Veuillez patienter, modification du mot de passe…</string>
 	<string name="account_jabberPW_finished">Mot de passe modifié avec succès.</string>
-	<string name="account_jabberPW_error">Erreur lors de la modification du mot de passe : %s</string>
+	<string name="account_jabberPW_error">Erreur lors de la modification du mot de passe : %s</string>
+	<string name="account_nickname_title">Nom affiché</string>
+	<string name="account_nickname_summ">Pseudo qui sera affiché aux autres utilisateurs</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ressource client</string>
-	<string name="account_resource_summ">Par défaut : yaxim</string>
-	<string name="account_resource_dialog_title">Entrez votre ressource :</string>
+	<string name="account_resource_summ">Par défaut : yaxim</string>
+	<string name="account_resource_dialog_title">Entrez votre ressource :</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Priorité du client</string>
-	<string name="account_prio_summ">Par défaut : 0 (autorisé: -128 .. 127)</string>
-	<string name="account_prio_error">Valeurs autorisées : -128 .. 127</string>
-	<string name="account_prio_dialog_title">Entrez votre priorité :</string>
+	<string name="account_prio_summ">Par défaut : 0 (de -128 à 127)</string>
+	<string name="account_prio_error">Valeurs autorisées : -128 à 127</string>
+	<string name="account_prio_dialog_title">Entrez votre priorité :</string>
 	<string name="account_port_title">Port du serveur</string>
-	<string name="account_port_sum">Par défaut : 5222</string>
-	<string name="account_port_dialog_title">Entrez le port du serveur :</string>
+	<string name="account_port_sum">Par défaut : 5222</string>
+	<string name="account_port_dialog_title">Entrez le port du serveur :</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Serveur personnalisé</string>
 	<string name="account_customserver_summ">(Optionnel) domaine alternatif du serveur</string>
-	<string name="account_customserver_dialog_title">Entrez un nom de serveur :</string>
+	<string name="account_customserver_dialog_title">Entrez le nom de domaine du serveur :</string>
 	<string name="account_customserver_hint">hote.example.com</string>
-	<string name="require_ssl_title">Utiliser SSL/TLS</string>
+	<string name="require_ssl_title">Force TLS/SSL</string>
 	<string name="require_ssl_summ">Toujours chiffrer la connexion au serveur</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Choisir un groupe</string>
-	<string name="setStatusmsgHint">Votre message d\'état</string>
-	<string name="setStatusTitle">Définissez votre état</string>
-	<string name="RenameGroup_summ">Renommer le groupe %s en :</string>
+	<string name="setStatusmsgHint">Votre message d’état</string>
+	<string name="setStatusTitle">Définir votre état</string>
+	<string name="RenameGroup_summ">Renommer le groupe %s en :</string>
 	<string name="RenameGroup_title">Renommer le groupe</string>
 	<string name="RenameEntry_summ">Renommer %1$s (%2$s) en :</string>
 	<string name="RenameEntry_title">Renommer le contact</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Selectionner un groupe ci-dessous</string>
-	<string name="MoveRosterEntryToGroupDialog_title">Changer de groupe</string>
-	<string name="deleteRosterItem_text">Confirmer le retrait %1$s (%2$s) ?</string>
-	<string name="deleteRosterItem_title">Effacer le contact</string>
-	<string name="deleteChatHistory_text">Voulez-vous vraiment effacer tous les messages avec %1$s (%2$s) ?</string>
-	<string name="deleteChatHistory_title">Effacer l\'historique du chat</string>
-	<string name="subscriptionRequest_text">%1$s voudrait vous ajouter en tant que contact : \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Demande d\'inscription</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Changer le groupe</string>
+	<string name="deleteRosterItem_text">Voulez-vous vraiment supprimer %1$s (%2$s) ?</string>
+	<string name="deleteRosterItem_title">Supprimer le contact</string>
+	<string name="deleteChatHistory_text">Voulez-vous vraiment effacer tous les messages avec %1$s (%2$s) ?</string>
+	<string name="deleteChatHistory_title">Effacer l’historique de conversation</string>
+	<string name="subscriptionRequest_text">%1$s voudrait vous ajouter en tant que contact : « %2$s »</string>
+	<string name="subscriptionRequest_title">Demande d’ajout de contact</string>
 	<string name="subscription_accept">Accepter</string>
-	<string name="subscription_reject">Rejeter</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject">Refuser</string>
+	<string name="subscription_reject_all">Tout refuser</string>
 	<string name="subscription_status_from">peut voir votre statut</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_from_me">Moi :</string>
-	<string name="toast_stored_offline">Le message a été sauvegardé pour transmission.</string>
-	<string name="chat_enterMsgHint">Entrer un message</string> 
+	<string name="chat_from_me">Moi :</string>
+	<string name="toast_stored_offline">Le message a été stocké pour envoi futur.</string>
+	<string name="chat_enterMsgHint">Entrez un message</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Citer</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Éditer le message</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -237,10 +243,11 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">À propos de yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Développeurs</string>
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<!-- Contact the developer button -->
+	<string name="AboutDialog_DevelopersText">Nous contacter</string>
 	<string name="AboutDialog_LicenceTitle">Licence</string>
-	<string name="AboutDialog_Vote">Rate app</string>
-	<string name="AboutDialog_LicenceText">Ce programme est un logiciel libre : vous pouvez le redistribuez et/ou le modifier sous les termes de la version 2 de la licence GNU General Public License tel que publiée par la Free Software Foundation. Lien : http://www.gnu.org/licenses/gpl-2.0.html\n \n Une partie de ce logiciel est fourni sous la licence MIT :\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \nis hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+	<string name="AboutDialog_Vote">Évaluer cette application</string>
+	<string name="AboutDialog_LicenceText">Ce programme est un logiciel libre : vous pouvez le redistribuez et/ou le modifier sous les termes de la version 2 de la licence GNU General Public License tel que publiée par la Free Software Foundation. Lien : http://www.gnu.org/licenses/gpl-2.0.html\n \n Une partie de ce logiciel est fourni sous la licence MIT :\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \nis hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">En ligne</string>
 	<string name="status_away">Absent(e)</string>
@@ -251,6 +258,7 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Cedric Heintz https://launchpad.net/~ced117
+  Emmanuel Gil Peyrot https://launchpad.net/~linkmauve
   Gabriel U. https://launchpad.net/~gabriel-ull
   Georg Lukas https://launchpad.net/~ge0rg
   Mathias Hablützel https://launchpad.net/~mathias-habluetzel
@@ -267,39 +275,54 @@
 	<string name="muc_group">Salons de discussion</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choisissez le contact</string>
+	<string name="chooseContact">Choisissez un contact</string>
 	<string name="action_settings">Préférences</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Identifiant Jabber du salon de discussion</string>
+	<string name="muc_jid_hint">Identifiant Jabber du salon</string>
 	<string name="muc_nickname_hint">Pseudo</string>
 	<string name="muc_password_hint">Mot de passe (facultatif)</string>
-	<string name="title_activity_muc_invite">Invitation au salon de discussion</string>
+	<string name="title_activity_muc_invite">Invitation à un salon</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
 	<string name="muc_invitation_from">Invitation de %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
 	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
+	<string name="muc_invitation_join">Rejoindre en tant que %s</string>
 	<string name="muc_synchronizing">Synchronisation en cours…</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Participants au salon de discussion (%s)</string>
+	<string name="chat_muc_userlist">Participants au salon (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Éjecté : %s</string>
+	<string name="muc_kicked">Éjecté : %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Éjecté par %1$s : %2$s</string>
+	<string name="muc_kicked_by">Éjecté par %1$s : %2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Bannis : %s</string>
+	<string name="muc_banned">Banni : %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Bannis par %1$s : %2$s</string>
+	<string name="muc_banned_by">Banni par %1$s : %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
+	<string name="roster_contextmenu_send">Envoyer…</string>
+	<string name="roster_contextmenu_take_image">Prendre une photo</string>
+	<string name="roster_contextmenu_send_image">Sélectionner une photo</string>
+	<string name="roster_contextmenu_send_file">Envoyer un fichier</string>
+	<string name="upload_compress">Compression de la photo…</string>
+	<string name="upload_uploading">Envoi en cours…</string>
+	<string name="upload_too_large">Fichier trop gros !</string>
+	<string name="storage_permission">%s a besoin d’un accès au stockage pour envoyer des fichiers !</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Contenu du message</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">Mes salons</string>
+	<string name="group_mucsearch">Salons publics</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Navigateur : %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Service au premier plan</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

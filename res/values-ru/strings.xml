@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Подключение к серверу…</string>
 	<string name="conn_disconnecting">Отключение…</string>
 	<string name="conn_online">В сети</string>
 	<string name="conn_offline">Отключён</string>
 	<string name="conn_empty_roster">Нет контактов для отображения!</string>
-	<string name="conn_empty_roster_hints">Можете добавить контакты несколькими способами:\n\n - Через Android Beam™ (приложите устройства друг к другу)\n\n - Сканировать QR-код\n\n - \"Создать приглашение\" и поделиться им через e-mail, SMS, QR-код и т.д.\n\n - \"Добавить контакт\", если известен JID</string>
+	<string name="conn_empty_roster_hints">Можете добавить контакты несколькими способами:\n\n - Через Android Beam™ (приложите устройства друг к другу)\n\n - Сканировать QR-код\n\n - \«Создать приглашение\» и поделиться им через e-mail, SMS, QR-код и т. д.\n\n - \«Добавить контакт\», если известен JID</string>
 	<string name="conn_reconnect">Следующая попытка подключения через %d секунд.</string>
 	<string name="conn_disconnected">Соединение закрыто</string>
 	<string name="conn_no_network">Отсутствует сетевое подключение</string>
@@ -30,7 +32,7 @@
 	<string name="StartupDialog_pwshowHint">Показать пароль</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Пароль:</string>
-	<string name="StartupDialog_advanced">Дополнительно...</string>
+	<string name="StartupDialog_advanced">Дополнительно…</string>
 	<string name="StartupDialog_create_new">Зарегистрировать новую учётную запись</string>
 	<string name="StartupDialog_error_password">Пароль слишком короткий!</string>
 	<string name="StartupDialog_created_password">Создан надёжный пароль</string>
@@ -77,14 +79,14 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_general">Общие настройки</string>
-	<string name="pref_dnd_when_silent">\"Не беспокоить\" в беззвучном режиме</string>
-	<string name="pref_dnd_when_silent_summ">Установить статус \"Не беспокоить\" если телефон в беззвучном режиме</string>
+	<string name="pref_dnd_when_silent">\«Не беспокоить\» в беззвучном режиме</string>
+	<string name="pref_dnd_when_silent_summ">Установить статус \«Не беспокоить\», если телефон в беззвучном режиме</string>
 	<string name="statuspopup_name">Установить ваш статус</string>
 	<string name="showOffline_summ">Всегда показывать все контакты в списке собеседников</string>
 	<string name="showOffline_title">Показывать отключённые контакты</string>
 	<string name="enableGroups_summ">Упорядочить контакты по группам</string>
 	<string name="enableGroups_title">Показывать группы</string>
-	<string name="foregroundService_summ">Удерживать yaxim в памяти для обеспечения постоянного соединения (фоновый сервис)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Значок в статусной строке</string>
 
 	<string name="preftitle_debug">Отладка</string>
@@ -106,10 +108,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Оформление</string>
-	<string-array name="pref_theme_entries">
-		<item>Тёмное</item>
-		<item>Светлое</item>
-	</string-array>
+	<string name="pref_theme_dark">Тёмное</string>
+	<string name="pref_theme_light">Светлое</string>
+	<string name="pref_theme_pine">Сосна</string>
+	<string name="pref_theme_ice">Лёд</string>
 	<string name="preftitle_ui">Внешний вид</string>
 	<string-array name="fontSizesChat">
 		<item>маленький</item>
@@ -129,7 +131,9 @@
 	<string name="Menu_connect">Подключиться</string>
 	<string name="Menu_disconnect">Отключиться</string>
 	<string name="Menu_about">О yaxim</string>
-	<string name="Menu_muc">Добавить конференцию</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Отметить все как прочитанные</string>
 	<string name="Menu_send_invitation">Создать приглашение</string>
     <string name="Menu_userlist">Участники</string>
@@ -152,7 +156,7 @@
 	<string name="roster_contextmenu_contact_change_group">Изменить группу</string>
 	<string name="roster_contextmenu_contact_share">Поделиться адресом</string>
 	<string name="roster_contextmenu_contact_ringtone">Звук сообщения</string>
-	<string name="roster_contextmenu_muc_edit">Перезайти в конференцию</string>
+	<string name="roster_contextmenu_muc_edit">Изменить закладку</string>
 	<string name="roster_contextmenu_muc_leave">Покинуть конференцию</string>
 	<string name="muc_leave_question">Действительно покинуть %s?</string>
 
@@ -164,7 +168,7 @@
 	<string name="carbons_title">Копирование сообщений (XEP-0280)</string>
 	<string name="carbons_summ">Запрашивать копии сообщений от других ваших клиентов</string>
 	<string name="account_jabberID_title">Jabber ID</string>
-	<string name="account_jabberID_sum">пример: me@jabber.ru</string>
+	<string name="account_jabberID_sum">пример: me@jabber.example.com</string>
 	<string name="account_jabberID_dialog_title">Введите свой Jabber ID:</string>
 	<string name="account_jabberPW_title">Пароль учётной записи</string>
 	<string name="account_jabberPW_sum">Пароль вашей учётной записи Jabber</string>
@@ -175,6 +179,8 @@
 	<string name="account_jabberPW_progress">Подождите, пожалуйста, изменение пароля…</string>
 	<string name="account_jabberPW_finished">Пароль успешно изменён.</string>
 	<string name="account_jabberPW_error">Ошибка изменения пароля: %s</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ресурс клиента</string>
@@ -183,7 +189,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Приоритет клиента</string>
 	<string name="account_prio_summ">По умолчанию: 0 (разрешено от -128 до 127)</string>
-	<string name="account_prio_error">Допустимые значения: -128 .. 127</string>
+	<string name="account_prio_error">Допустимые значения: -128…127</string>
 	<string name="account_prio_dialog_title">Введите приоритет:</string>
 	<string name="account_port_title">Порт сервера</string>
 	<string name="account_port_sum">По умолчанию: 5222</string>
@@ -237,6 +243,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">О yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Разработчики</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">Контакт</string>
 	<string name="AboutDialog_LicenceTitle">Лицензирование</string>
 	<string name="AboutDialog_Vote">Оцените приложение</string>
@@ -254,10 +261,11 @@
   Drow_Ranger https://launchpad.net/~d3jow9y5j
   Georg Lukas https://launchpad.net/~ge0rg
   Ilya https://launchpad.net/~me-detected
+  Paul F. https://launchpad.net/~ultimius
   Xiong Sung https://launchpad.net/~xiongsung
   snm https://launchpad.net/~zastava-boty
   Кощеев https://launchpad.net/~zowenko
-  Кощеев Юрий Андреевич https://launchpad.net/~kashcheyeu</string>
+  Сейд https://launchpad.net/~sejd</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Общие</string>
@@ -299,5 +307,20 @@
 	<string name="upload_compress">Сжатие...</string>
 	<string name="upload_uploading">Загрузка...</string>
 	<string name="upload_too_large">Слишком большой файл!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

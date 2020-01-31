@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Pripájanie k serveru...</string>
 	<string name="conn_disconnecting">Odpájanie...</string>
 	<string name="conn_online">Pripojené</string>
@@ -88,7 +90,7 @@
 	<string name="showOffline_title">Zobraziť odpojené kontakty</string>
 	<string name="enableGroups_summ">Usporiadanie kontaktov do skupín</string>
 	<string name="enableGroups_title">Zobraziť skupiny kontaktov</string>
-	<string name="foregroundService_summ">Ponechať yaxim v pamäti - na zabezpečenie stáleho pripojenia</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Ikona v stavovom riadku</string>
 
 	<string name="preftitle_debug">Ladenie</string>
@@ -110,10 +112,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Téma vzhľadu</string>
-	<string-array name="pref_theme_entries">
-		<item>Tmavá</item>
-		<item>Svetlá</item>
-	</string-array>
+	<string name="pref_theme_dark">Tmavá</string>
+	<string name="pref_theme_light">Svetlá</string>
+	<string name="pref_theme_pine">Pine</string>
+	<string name="pref_theme_ice">Ice</string>
 	<string name="preftitle_ui">Vzhľad</string>
 	<string-array name="fontSizesChat">
 		<item>malé</item>
@@ -133,7 +135,9 @@
 	<string name="Menu_connect">Pripojiť</string>
 	<string name="Menu_disconnect">Odpojiť</string>
 	<string name="Menu_about">O aplikácii yaxim</string>
-	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
     <string name="Menu_userlist">Participants</string>
@@ -179,6 +183,8 @@
 	<string name="account_jabberPW_progress">Prosím čakajte, mení sa heslo...</string>
 	<string name="account_jabberPW_finished">Heslo bolo úspešne zmenené.</string>
 	<string name="account_jabberPW_error">Chyba pri zmene hesla: %s</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Client Resource</string>
@@ -241,6 +247,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">O aplikácii yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Vývojári</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licencia</string>
 	<string name="AboutDialog_Vote">Rate app</string>
@@ -355,5 +362,20 @@
 	<string name="upload_compress">Compressing picture…</string>
 	<string name="upload_uploading">Uploading…</string>
 	<string name="upload_too_large">file too large!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

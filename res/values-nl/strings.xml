@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Bezig met verbinden...</string>
 	<string name="conn_disconnecting">Verbinding verbreken…</string>
 	<string name="conn_online">Online</string>
@@ -84,7 +86,7 @@
 	<string name="showOffline_title">Offline contacten tonen</string>
 	<string name="enableGroups_summ">Contacten naar groep sorteren</string>
 	<string name="enableGroups_title">Contactengroepen tonen</string>
-	<string name="foregroundService_summ">Houdt yaxim in het geheugen om zeker te weten dat de verbinding actief blijft (Voorgrond service)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Statusbalk icoon</string>
 
 	<string name="preftitle_debug">Fouten opsporen</string>
@@ -106,10 +108,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Thema</string>
-	<string-array name="pref_theme_entries">
-		<item>Donker</item>
-		<item>Licht</item>
-	</string-array>
+	<string name="pref_theme_dark">Donker</string>
+	<string name="pref_theme_light">Licht</string>
+	<string name="pref_theme_pine">Pine</string>
+	<string name="pref_theme_ice">Ice</string>
 	<string name="preftitle_ui">Weergave</string>
 	<string-array name="fontSizesChat">
 		<item>klein</item>
@@ -129,7 +131,9 @@
 	<string name="Menu_connect">Verbinding maken</string>
 	<string name="Menu_disconnect">Verbinding verbreken</string>
 	<string name="Menu_about">Over yaxim</string>
-	<string name="Menu_muc">Groepsgesprek toevoegen</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Markeer alles als gelezen</string>
 	<string name="Menu_send_invitation">Uitnodiging maken</string>
     <string name="Menu_userlist">Deelnemers</string>
@@ -175,6 +179,8 @@
 	<string name="account_jabberPW_progress">Wachtwoord veranderen, even geduld a.u.b.</string>
 	<string name="account_jabberPW_finished">Wachtwoord succesvol gewijzigd.</string>
 	<string name="account_jabberPW_error">Fout bij wijzigen wachtwoord: %s</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Naam apparaat</string>
@@ -237,6 +243,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Over yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Ontwikkelaars</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licentie</string>
 	<string name="AboutDialog_Vote">Rate app</string>
@@ -254,11 +261,11 @@ PROGRAMMA LIGT BIJ U. MOCHT HET PROGRAMMA DEFECT BLIJKEN DAN DRAAGT U DE KOSTEN 
 	<string name="translator_credits">Launchpad Contributions:
   Argafål https://launchpad.net/~argafal
   Barry Zoot https://launchpad.net/~barryzoot
+  Eloy Degen https://launchpad.net/~eloydegen
   Georg Lukas https://launchpad.net/~ge0rg
   Jeroen Tietema https://launchpad.net/~jtietema
   NightWhistler https://launchpad.net/~0k53dmx9cig8-alex-f830mk0e7z07
-  Roel RA https://launchpad.net/~roelra
-  sinezi https://launchpad.net/~degeneloy</string>
+  Roel RA https://launchpad.net/~roelra</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Algemeen</string>
@@ -300,5 +307,20 @@ PROGRAMMA LIGT BIJ U. MOCHT HET PROGRAMMA DEFECT BLIJKEN DAN DRAAGT U DE KOSTEN 
 	<string name="upload_compress">Compressing picture…</string>
 	<string name="upload_uploading">Uploading…</string>
 	<string name="upload_too_large">file too large!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

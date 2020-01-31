@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Sunucuya bağlanılıyor…</string>
 	<string name="conn_disconnecting">Bağlantı kesiliyor…</string>
 	<string name="conn_online">Çevirimiçi</string>
@@ -88,7 +90,7 @@
 	<string name="showOffline_title">Çevrimdışı kişileri göster</string>
 	<string name="enableGroups_summ">Kişileri gruplara göre sıralandır</string>
 	<string name="enableGroups_title">Kişi gruplarını göster</string>
-	<string name="foregroundService_summ">Bağlantıyı daima açık tutmak için yaxim\'i hafızada tut (ön planda servis)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Durum çubuğu ikonu</string>
 
 	<string name="preftitle_debug">Hata ayıklama</string>
@@ -110,10 +112,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Tema</string>
-	<string-array name="pref_theme_entries">
-		<item>Koyu</item>
-		<item>Açık</item>
-	</string-array>
+	<string name="pref_theme_dark">Koyu</string>
+	<string name="pref_theme_light">Açık</string>
+	<string name="pref_theme_pine">Pine</string>
+	<string name="pref_theme_ice">Ice</string>
 	<string name="preftitle_ui">Görünüm</string>
 	<string-array name="fontSizesChat">
 		<item>küçük</item>
@@ -133,7 +135,9 @@
 	<string name="Menu_connect">Bağlan</string>
 	<string name="Menu_disconnect">Bağlantıyı kes</string>
 	<string name="Menu_about">Yaxim hakkında</string>
-	<string name="Menu_muc">Add group chat</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Mark all as read</string>
 	<string name="Menu_send_invitation">Create invitation</string>
     <string name="Menu_userlist">Participants</string>
@@ -179,6 +183,8 @@
 	<string name="account_jabberPW_progress">Bekleyiniz, parola değiştiriliyor…</string>
 	<string name="account_jabberPW_finished">Parola başarıyla değiştirildi.</string>
 	<string name="account_jabberPW_error">Parolanın değiştirilmesinde hata: %s</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">İstemci Kaynağı</string>
@@ -241,6 +247,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Yaxim hakkında</string>
 	<string name="AboutDialog_DevelopersTitle">Geliştiriciler</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Lisans</string>
 	<string name="AboutDialog_Vote">Rate app</string>
@@ -298,5 +305,20 @@
 	<string name="upload_compress">Compressing picture…</string>
 	<string name="upload_uploading">Uploading…</string>
 	<string name="upload_too_large">file too large!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

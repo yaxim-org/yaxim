@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Łączenie z serwerem…</string>
 	<string name="conn_disconnecting">Rozłączanie...</string>
 	<string name="conn_online">Połączony</string>
@@ -13,7 +15,7 @@
 	<string name="conn_reconnect">Natępna próba połączenia za %d sekund.</string>
 	<string name="conn_disconnected">Połączenie zakończone</string>
 	<string name="conn_no_network">Brak połączenia sieciowego</string>
-	<string name="conn_ping_timeout">No response</string>
+	<string name="conn_ping_timeout">Brak odpowiedzi</string>
 	<string name="conn_error">Błąd: %s</string>
 
 	<!-- Global Strings -->
@@ -27,17 +29,17 @@
 	<string name="StartupDialog_Title">Witaj w yaxim!</string>
 	<string name="StartupDialog_Summary">Używanie yaxima wymaga konfiguracji. Podaj swój Jabber ID i hasło.</string>
 	<string name="StartupDialog_pwHint">Wprowadź hasło</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Pokaż hasło</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">Hasło:</string>
 	<string name="StartupDialog_advanced">Zaawansowane…</string>
 	<string name="StartupDialog_create_new">Zarejestruj nowe konto</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
+	<string name="StartupDialog_error_password">Hasło jest zbyt krótkie!</string>
 	<string name="StartupDialog_created_password">Utworzono bezpieczne hasło</string>
 	<string name="StartupDialog_auth_failed">Prosze sprawdź swóją nazwę użytkownika i hasło</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Zostałeś zaproszony do Jabbera. Ukończ swoją rejestrację.</string>
+	<string name="StartupDialog_no_more_accounts">Dodatkowe konta nie są wspierane!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Wiadomość od %s</string>
@@ -55,11 +57,11 @@
 	<string name="notification_error">Błąd podczas wysyłania wiadomości!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Ustawienia powiadomień</string>
 	<string name="preftitle_notify_msg">Powiadamianie o wiadomościach</string>
 	<string name="preftitle_notify_muc">Powiadamianie o czatach</string>
-	<string name="notification_custom">Custom Ringtone</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
+	<string name="notification_custom">Własny dźwięk dzwonka</string>
+	<string name="muc_highlight_title">Powiadamiaj tylko przy wspomianiu</string>
 	<string name="muc_highlight_sum">Powiadamiaj gdy twój pseudonim zostanie wspomniany w pokoju czatu</string>
 	<string name="led_title">Powiadomienie diodą LED</string>
 	<string name="led_summ">Migaj diodą LED przy nowej wiadomości</string>
@@ -84,7 +86,7 @@
 	<string name="showOffline_title">Pokaż kontakty w trybie offline</string>
 	<string name="enableGroups_summ">Uporządkuj kontakty według grup</string>
 	<string name="enableGroups_title">Wyświetlanie grup kontaktów</string>
-	<string name="foregroundService_summ">Utrzymuj yaxima w pamięci aby zapewnić stałe połączenie (usługa w tle)</string>
+	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
 	<string name="foregroundService_title">Ikona na pasku powiadomień</string>
 
 	<string name="preftitle_debug">Debugowanie</string>
@@ -106,10 +108,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">Motyw</string>
-	<string-array name="pref_theme_entries">
-		<item>Ciemny</item>
-		<item>Jasny</item>
-	</string-array>
+	<string name="pref_theme_dark">Ciemny</string>
+	<string name="pref_theme_light">Jasny</string>
+	<string name="pref_theme_pine">Sosna</string>
+	<string name="pref_theme_ice">Lód</string>
 	<string name="preftitle_ui">Wygląd</string>
 	<string-array name="fontSizesChat">
 		<item>mały</item>
@@ -120,7 +122,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Dodaj kontakt</string>
-	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_addClipboard">Dodaj %s</string>
 	<string name="Menu_ShowOff">Pokaż offline</string>
 	<string name="Menu_HideOff">Ukryj offline</string>
 	<string name="Menu_AccSettings">Edytuj konto</string>
@@ -129,7 +131,9 @@
 	<string name="Menu_connect">Połącz</string>
 	<string name="Menu_disconnect">Rozłącz</string>
 	<string name="Menu_about">O programie</string>
-	<string name="Menu_muc">Utwórz grupę czatu</string>
+	<string name="Menu_about_bruno">About Bruno</string>
+	<string name="Menu_muc">Add / browse…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
 	<string name="Menu_send_invitation">Utwórz zaproszenie</string>
     <string name="Menu_userlist">Uczestnicy</string>
@@ -175,6 +179,8 @@
 	<string name="account_jabberPW_progress">Proszę czekać, zmieniam hasło…</string>
 	<string name="account_jabberPW_finished">Hasło zostało zmienione.</string>
 	<string name="account_jabberPW_error">Błąd zmiany hasła: %s</string>
+	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Zasób</string>
@@ -214,7 +220,7 @@
 	<string name="subscriptionRequest_title">Prośba o autoryzację</string>
 	<string name="subscription_accept">Akceptuj</string>
 	<string name="subscription_reject">Odmów</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject_all">Odrzuć wszystkie</string>
 	<string name="subscription_status_from">możesz zobaczyć swój status</string>
 
 	<!-- CHATWINDOW -->
@@ -225,7 +231,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Cytuj</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Edytuj wiadomość</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -237,9 +243,10 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">O programie</string>
 	<string name="AboutDialog_DevelopersTitle">Deweloperzy</string>
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<!-- Contact the developer button -->
+	<string name="AboutDialog_DevelopersText">Kontakt</string>
 	<string name="AboutDialog_LicenceTitle">Licencja</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">Oceń aplikację</string>
 	<string name="AboutDialog_LicenceText">Ten program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej i/lub modyfikować na warunkach GNU General Public License wersja 2 opublikowanej przez Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html \n \n Części tego oprogramowania są dostarczane w ramach licencji MIT: \n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS \n \n niniejszym udziela się bezpłatnie, każdej osobie uzyskanie kopii tego oprogramowania oraz powiązane pliki dokumentacji ("Oprogramowanie"), do czynienia w Oprogramowanie bez ograniczeń, w tym między innymi prawa do używania, kopiowania, modyfikowania , łączenia, publikowania, rozprowadzania, udzielania sublicencji, i/lub sprzedaży kopii Oprogramowania, oraz w celu umożliwienia osobom, do których jest dostarczane oprogramowanie, aby to zrobić, z zastrzeżeniem następujących warunków: \n powyższe informacje o prawach autorskich i niniejsze pozwolenie należy umieszczone we wszystkich egzemplarzach lub istotnych fragmentach oprogramowania. \n OPROGRAMOWANIE JEST DOSTARCZANE "TAK JAK JEST", BEZ JAKICHKOLWIEK GWARANCJI, WYRAŹNE LUB MIĘDZY INNYMI, LECZ NIE GWARANCJI PRZYDATNOŚCI HANDLOWEJ, PRZYDATNOŚCI DO OKREŚLONEGO CELU I NIENARUSZALNOŚCI. W ŻADNYM PRZYPADKU AUTORZY LUB WŁAŚCICIELE PRAW AUTORSKICH NIE BĘDĄ ODPOWIEDZIALNI ZA JAKIEKOLWIEK ROSZCZENIA, SZKODY LUB INNEJ ODPOWIEDZIALNOŚCI, CZY TO W RAMACH UMOWY, LUB INNYCH, WYNIKAJĄCE Z, LUB W ZWIĄZKU Z OPROGRAMOWANIEM LUB UŻYCIA LUB INNYCH ZWIĄZANYMI OPROGRAMOWANIA.</string>
 
 	<string name="status_available">Połączony</string>
@@ -253,7 +260,8 @@
   Adam Maćkowiak https://launchpad.net/~admc
   Antoni Kudelski https://launchpad.net/~antoni-kudelski-deactivatedaccount
   Georg Lukas https://launchpad.net/~ge0rg
-  Piotr Kaczmarek https://launchpad.net/~szopen</string>
+  Piotr Kaczmarek https://launchpad.net/~szopen
+  Wiktor https://launchpad.net/~wiktor-k</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Grupa domyślna</string>
@@ -288,12 +296,27 @@
 	<string name="muc_banned_by">Zbanowany przezy %1$s: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
+	<string name="roster_contextmenu_send">Wyślij...</string>
+	<string name="roster_contextmenu_take_image">Zrób zdjęcie</string>
+	<string name="roster_contextmenu_send_image">Wybierz zdjęcie</string>
+	<string name="roster_contextmenu_send_file">Wyślij plik</string>
+	<string name="upload_compress">Kompresowanie zdjęcia...</string>
+	<string name="upload_uploading">Wysyłanie…</string>
+	<string name="upload_too_large">plik jest zbyt duży!</string>
+	<string name="storage_permission">%s needs storage access to send files!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">Message content</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">My group chats</string>
+	<string name="group_mucsearch">Public group chats</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">Browser: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">Foreground service</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">Messages</string>
 
 </resources>

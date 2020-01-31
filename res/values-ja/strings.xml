@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
+	<string name="app_name_bruno">Bruno</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
+	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">サーバーに接続しています…</string>
 	<string name="conn_disconnecting">切断しています…</string>
 	<string name="conn_online">オンライン</string>
@@ -13,7 +15,7 @@
 	<string name="conn_reconnect">%d 秒後に接続します</string>
 	<string name="conn_disconnected">接続が閉じられました</string>
 	<string name="conn_no_network">ネットワークに接続されていません</string>
-	<string name="conn_ping_timeout">No response</string>
+	<string name="conn_ping_timeout">応答がありません</string>
 	<string name="conn_error">エラー: %s</string>
 
 	<!-- Global Strings -->
@@ -36,8 +38,8 @@
 	<string name="StartupDialog_created_password">安全なパスワードを作成しました</string>
 	<string name="StartupDialog_auth_failed">ユーザー名とパスワードを確認してください!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Jabber に招待されました。登録を完了してください。</string>
+	<string name="StartupDialog_no_more_accounts">追加のアカウントはサポートされていません!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">%s さんからのメッセージ</string>
@@ -84,7 +86,7 @@
 	<string name="showOffline_title">オフラインの連絡先を表示する</string>
 	<string name="enableGroups_summ">連絡先をグループ別に整理する</string>
 	<string name="enableGroups_title">連絡先グループを表示する</string>
-	<string name="foregroundService_summ">yaxim を常時接続 (フォアグラウンドサービス) するために、メモリに保存する</string>
+	<string name="foregroundService_summ">アプリをメモリ上に残して常時接続を確保する (フォアグラウンドサービス)</string>
 	<string name="foregroundService_title">ステータスバーアイコン</string>
 
 	<string name="preftitle_debug">デバッグ</string>
@@ -106,10 +108,10 @@
 	<string name="setFontRoster">Set roster font size</string>
 	-->
 	<string name="pref_theme">テーマ</string>
-	<string-array name="pref_theme_entries">
-		<item>ダーク</item>
-		<item>ライト</item>
-	</string-array>
+	<string name="pref_theme_dark">ダーク</string>
+	<string name="pref_theme_light">ライト</string>
+	<string name="pref_theme_pine">パイン</string>
+	<string name="pref_theme_ice">アイス</string>
 	<string name="preftitle_ui">外観</string>
 	<string-array name="fontSizesChat">
 		<item>小</item>
@@ -120,7 +122,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">連絡先を追加</string>
-	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_addClipboard">%s を追加</string>
 	<string name="Menu_ShowOff">オフラインを表示する</string>
 	<string name="Menu_HideOff">オフラインを非表示</string>
 	<string name="Menu_AccSettings">アカウントを編集</string>
@@ -129,7 +131,9 @@
 	<string name="Menu_connect">接続</string>
 	<string name="Menu_disconnect">切断</string>
 	<string name="Menu_about">yaxim について</string>
-	<string name="Menu_muc">グループチャットを追加</string>
+	<string name="Menu_about_bruno">Bruno について</string>
+	<string name="Menu_muc">追加 / 参照…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
 	<string name="Menu_mark_all_as_read">すべて既読にする</string>
 	<string name="Menu_send_invitation">招待状を作成</string>
     <string name="Menu_userlist">参加者</string>
@@ -175,6 +179,8 @@
 	<string name="account_jabberPW_progress">お待ちください。パスワードを変更しています…</string>
 	<string name="account_jabberPW_finished">パスワードを変更しました。</string>
 	<string name="account_jabberPW_error">パスワードの変更時にエラーが発生しました: %s</string>
+	<string name="account_nickname_title">表示名</string>
+	<string name="account_nickname_summ">他のユーザーに表示されるニックネーム</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">クライアント リソース</string>
@@ -225,7 +231,7 @@
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">引用</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">メッセージを編集</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -237,6 +243,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">yaxim について</string>
 	<string name="AboutDialog_DevelopersTitle">開発者</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">連絡先</string>
 	<string name="AboutDialog_LicenceTitle">ライセンス</string>
 	<string name="AboutDialog_Vote">アプリを評価</string>
@@ -250,8 +257,8 @@
 	<string name="status_offline">オフライン</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Naofumi Fukue https://launchpad.net/~naofum
-  R. Martins https://launchpad.net/~nbkhope</string>
+  M. https://launchpad.net/~nbkhope
+  Naofumi Fukue https://launchpad.net/~naofum</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">一般</string>
@@ -293,5 +300,20 @@
 	<string name="upload_compress">写真を圧縮しています…</string>
 	<string name="upload_uploading">アップロードしています…</string>
 	<string name="upload_too_large">ファイルが大きすぎます!</string>
+	<string name="storage_permission">%s はファイルを送信するためにストレージのアクセスが必要です!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">メッセージの内容</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">マイグループチャット</string>
+	<string name="group_mucsearch">公開グループチャット</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">ブラウザー: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">フォアグラウンドサービス</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">メッセージ</string>
 
 </resources>
