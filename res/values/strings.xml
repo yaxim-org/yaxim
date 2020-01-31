@@ -248,6 +248,7 @@
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">About yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Developers</string>
+	<!-- Contact the developer button -->
 	<string name="AboutDialog_DevelopersText">Contact</string>
 	<string name="AboutDialog_LicenceTitle">Licensing</string>
 	<string name="AboutDialog_Vote">Rate app</string>
