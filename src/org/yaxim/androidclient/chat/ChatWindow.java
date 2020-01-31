@@ -337,7 +337,7 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 		if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
 			runPermissionAction(requestCode);
 		else
-			Toast.makeText(this, R.string.storage_permission, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.storage_permission, getString(R.string.app_name)), Toast.LENGTH_LONG).show();
 	}
 
 		@Override
