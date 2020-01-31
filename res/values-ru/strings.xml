@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
-	<string name="app_name_bruno">Bruno</string>
+	<string name="app_name_bruno">Бруно</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_title_bruno">Bruno: %s</string>
+	<string name="conn_title_bruno">Бруно: %s</string>
 	<string name="conn_connecting">Подключение к серверу…</string>
 	<string name="conn_disconnecting">Отключение…</string>
 	<string name="conn_online">В сети</string>
@@ -86,7 +86,7 @@
 	<string name="showOffline_title">Показывать отключённые контакты</string>
 	<string name="enableGroups_summ">Упорядочить контакты по группам</string>
 	<string name="enableGroups_title">Показывать группы</string>
-	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Держать приложение в памяти, чтобы обеспечить постоянное соединение (служба на переднем плане)</string>
 	<string name="foregroundService_title">Значок в статусной строке</string>
 
 	<string name="preftitle_debug">Отладка</string>
@@ -131,9 +131,9 @@
 	<string name="Menu_connect">Подключиться</string>
 	<string name="Menu_disconnect">Отключиться</string>
 	<string name="Menu_about">О yaxim</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
+	<string name="Menu_about_bruno">О Бруно</string>
+	<string name="Menu_muc">Добавить / просмотреть…</string>
+	<string name="Menu_matrix">Войти в Matrix…</string>
 	<string name="Menu_mark_all_as_read">Отметить все как прочитанные</string>
 	<string name="Menu_send_invitation">Создать приглашение</string>
     <string name="Menu_userlist">Участники</string>
@@ -179,8 +179,8 @@
 	<string name="account_jabberPW_progress">Подождите, пожалуйста, изменение пароля…</string>
 	<string name="account_jabberPW_finished">Пароль успешно изменён.</string>
 	<string name="account_jabberPW_error">Ошибка изменения пароля: %s</string>
-	<string name="account_nickname_title">Display Name</string>
-	<string name="account_nickname_summ">Your nickname displayed to other users</string>
+	<string name="account_nickname_title">Отображаемое имя</string>
+	<string name="account_nickname_summ">Ваш ник показывается другим пользователям</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ресурс клиента</string>
@@ -307,20 +307,20 @@
 	<string name="upload_compress">Сжатие...</string>
 	<string name="upload_uploading">Загрузка...</string>
 	<string name="upload_too_large">Слишком большой файл!</string>
-	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="storage_permission">%s нужен доступ к хранилищу для отправки файлов!</string>
 
 	<!-- Search -->
-	<string name="search_msg_hint">Message content</string>
+	<string name="search_msg_hint">Cодержимое сообщения</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">Мои групповые чаты</string>
+	<string name="group_mucsearch">Публичные групповые чаты</string>
 	<!-- Service Discovery -->
-	<string name="title_service_disco">Browser: %s</string>
+	<string name="title_service_disco">Просмотр: %s</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
-	<string name="notification_status">Foreground service</string>
+	<string name="notification_status">Служба на переднем плане</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">Сообщения</string>
 
 </resources>
