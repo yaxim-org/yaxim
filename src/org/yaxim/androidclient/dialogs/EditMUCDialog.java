@@ -87,9 +87,9 @@ public class EditMUCDialog extends AlertDialog implements
 	public EditMUCDialog(Activity context, String roomJID, String invitation,
 			String nickname, String password) {
 		this(context);
-		setTitle(R.string.title_activity_muc_invite);
 
 		if (invitation != null) {
+			setTitle(R.string.title_activity_muc_invite);
 			mInvitation.setText(invitation);
 			mInvitation.setVisibility(View.VISIBLE);
 		}
