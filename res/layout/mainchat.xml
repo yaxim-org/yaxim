@@ -17,7 +17,8 @@
             android:layout_weight="1"
             android:fastScrollEnabled="true"
             android:stackFromBottom="true"
-            android:transcriptMode="normal"/>
+            android:transcriptMode="normal"
+            android:divider="#0000"/>
 
         <LinearLayout
             android:id="@+id/details"
