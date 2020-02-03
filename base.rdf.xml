@@ -6,14 +6,12 @@
         xmlns:foaf="http://xmlns.com/foaf/0.1/">
   <Project>
 
-    <name>yaxim</name>
+    <name>${NAME}</name>
 
-    <shortdesc xml:lang="en">Yet Another XMPP Instant Messenger</shortdesc>
-    <description xml:lang="en">
-      yaxim is an Android XMPP/Jabber client with a clean user interface and open source (GPLv2).
-    </description>
+    <shortdesc xml:lang="en">${SHORTDESC}</shortdesc>
+    <description xml:lang="en">${DESCRIPTION}</description>
 
-    <homepage rdf:resource="https://yaxim.org/" />
+    <homepage rdf:resource="${HOMEPAGE}" />
     <wiki rdf:resource="https://github.com/yaxim-org/yaxim/wiki" />
     <bug-database rdf:resource="https://github.com/yaxim-org/yaxim/issues" />
     <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-client" />
