@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">ಯಾಕ್ಸಿಂ</string>
+	<string name="app_name_bruno">ಬ್ರುನೊ</string>
+
+	<!-- Connection state -->
+	<string name="conn_title">ಯಾಕ್ಸಿಂ: %s</string>
+	<string name="conn_title_bruno">ಬ್ರುನೊ: %s</string>
+	<string name="conn_connecting">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ…</string>
+	<string name="conn_disconnecting">ಸಂಪರ್ಕ ಕಡಿಸುತ್ತಾ…</string>
+	<string name="conn_online">ಉಪಸ್ಥಿತ</string>
+	<string name="conn_offline">ಅಂತರ್ಜಾಲದ ಸಂಪರ್ಕವಿಲ್ಲ</string>
+	<string name="conn_empty_roster">ತೋರಿಸಲು ಸಂಪರ್ಕಗಳಿಲ್ಲ!</string>
+	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
+		- Android Beam™: touch a friend\'s phone\n\n
+		- Scan a QR code\n\n
+		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
+		- \"Add contact\" if you know the JID</string>
+	<string name="conn_reconnect">ಮುಂದಿನ ಸಂಪರ್ಕ ಪ್ರಯತ್ನ %d ಕ್ಷಣಗಳಲ್ಲಿ.</string>
+	<string name="conn_disconnected">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಮುಚ್ಚಲಾಗಿದೆ</string>
+	<string name="conn_no_network">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಇಲ್ಲ</string>
+	<string name="conn_ping_timeout">ಪ್ರತಿಕ್ರಿಯೆ ಇಲ್ಲ</string>
+	<string name="conn_error">ದೋಷ: %s</string>
+
+	<!-- Global Strings -->
+	<string name="Global_Exit">ನಿರ್ಗಮನ</string>
+	<string name="Global_authenticate_first">ದಯವಿಟ್ಟು ಮೊದಲು ಸಂಪರ್ಕಿಸಿ</string>
+	<string name="Global_JID_hint">ಬಳಕೆದಾರ@yax.im</string>
+	<!-- tooltip message when the user entered an invalid XMPP address -->
+	<string name="Global_JID_malformed">ವಿಳಾಸ ಸ್ವರೂಪ ಪರಿಶೀಲಿಸಿ!</string>
+
+	<!-- FirstStartUpDialog -->
+	<string name="StartupDialog_Title">ಯಾಕ್ಸಿಂ ಗೆ ಸುಸ್ವಾಗತ!</string>
+	<string name="StartupDialog_Summary">ಯಾಕ್ಸಿಂ ಬಳಸುವ ಮುನ್ನ ಖಾತೆ ಜೋಡಿಸಬೇಕು. ದಯವಿಟ್ಟು ನಿಮ್ಮ Jabber ID ಹಾಗು ಗುಪ್ತಪದ ಹಾಕಿ.</string>
+	<string name="StartupDialog_pwHint">ಗುಪ್ತಪದ ಒತ್ತು</string>
+	<string name="StartupDialog_pwshowHint">ಗುಪ್ತಪದ ತೋರಿಸು</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
+	<string name="StartupDialog_passwd_title">ಗುಪ್ತಪದ:</string>
+	<string name="StartupDialog_advanced">ತಿಳಿದವರ…</string>
+	<string name="StartupDialog_create_new">ಹೊಸ ಖಾತೆ ನೋಂದಿಸಿ</string>
+	<string name="StartupDialog_error_password">ಗುಪ್ತಪದ ತುಂಬಾ ಚಿಕ್ಕದು!</string>
+	<string name="StartupDialog_created_password">ಬದ್ಧ ಗುಪ್ತಪದ ಸೃಷ್ಟಿಸಲಾಯಿತು</string>
+	<string name="StartupDialog_auth_failed">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಳಕೆನಾಮ ಹಾಗು ಗುಪ್ತಪದ ಪರಿಶೀಲಿಸಿ!</string>
+
+	<string name="StartupDialog_invitation">ನಿಮ್ಮನ್ನು Jabberಗೆ ಆಹ್ವಾನಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ನೊಂದಣಿ ಪೂರ್ತಿ ಮಾಡಿ.</string>
+	<string name="StartupDialog_no_more_accounts">ಮತ್ತೊಂದು ಖಾತೆ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ!</string>
+
+	<!-- Notifications -->
+	<string name="notification_message">%s ಇಂದ ಸಂದೇಶ</string>
+	<string name="notification_anonymous_message">ಸಂದೇಶ ಬಂದಿದೆ</string>
+	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s %2$s ಅಲ್ಲಿ</string>
+	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
+	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
+	<!-- notification button: direct reply (make SHORT string) -->
+	<string name="notification_reply">ಉತ್ತರಿಸು</string>
+	<!-- notification button: mark as read (make SHORT string) -->
+	<string name="notification_mark_read">ಓದಿದೆ</string>
+
+	<!-- Notifications -->
+	<string name="notification_error">ಸಂದೇಶವನ್ನು ಕಳುಹಿಸುವಾಗ ದೋಷ!</string>
+
+	<!-- Notification Settings -->
+	<string name="preftitle_notify">ಅಧಿಸೂಚನೆ ಬದಲಾವಣೆಗಳು</string>
+	<string name="preftitle_notify_msg">ಸಂದೇಶ ಅಧಿಸೂಚನೆ</string>
+	<string name="preftitle_notify_muc">ಗುಂಪಿನ ಅಧಿಸೂಚನೆ</string>
+	<string name="notification_custom">ಬೇರೆ ರಿಂಗ್ಟೋನ್</string>
+	<string name="muc_highlight_title">ಉಲೇಖಿಸಿದಾಗ ಮಾತ್ರ ತಿಳಿಸು</string>
+	<string name="muc_highlight_sum">ಕೋಣೆಗಳಲ್ಲಿ ನಿಮ್ಮ ಉಪನಾಮವನ್ನು ಉಲ್ಲೇಖಿಸಿದಾಗ ತಿಳಿಸು</string>
+	<string name="led_title">ಮಿಣುಕುವ LED</string>
+	<string name="led_summ">ಸಂದೇಶ ಬಂದಾಗ ಫೋನಿನ LED ಬೆಳಕನ್ನು ಮಿಣುಕಿಸು</string>
+	<string name="vibr_title">ಕಂಪನ</string>
+	<string name="vibr_summ">ಸಂದೇಶಗಳು ಬಂದಾಗ ಕಂಪಿಸು</string>
+	<string-array name="vibr_values_displayed">
+		<item>Never</item>
+		<item>System preference</item>
+		<item>Always</item>
+	</string-array>
+	<string name="ringtone_title">ರಿಂಗ್ಟೋನ್</string>
+	<string name="ringtone_summ">ಒಳಬರುವ ಸಂದೇಶಗಳ ಧ್ವನಿ</string>
+	<string name="ticker_title">ಸಂದೇಶ ಮುನ್ನೋಟ</string>
+	<string name="ticker_summ">ಸ್ಥಿತಿ ಪಟ್ಟಿಯಲ್ಲಿ ಸಂದೇಶವನ್ನು ಮತ್ತು ಕಳುಹಿಸಿದವರನ್ನು ತೋರಿಸು</string>
+
+	<!-- Startup Setting Strings -->
+	<string name="preftitle_general">ಸಾಮಾನ್ಯ ಆಯ್ಕೆಗಳು</string>
+	<string name="pref_dnd_when_silent">ಸೈಲೆಣ್ಟ್ ಮೋಡ್ ನಲ್ಲಿ "ತೊಂದರೆ ಕೊಡಬೇಡಿ"</string>
+	<string name="pref_dnd_when_silent_summ">ನಿಮ್ಮ ಫೋನ್ ಸೈಲೆಂಟ್ ಮೋಡ್‌ನಲ್ಲಿರುವಾಗ ನಿಮ್ಮ ಉಪಸ್ಥಿತಿಯನ್ನು "ತೊಂದರೆ ಕೊಡಬೇಡಿ" ಗೆ ಬದಲಿಸು</string>
+	<string name="statuspopup_name">ಸ್ಥಿತಿ ಹಾಕು</string>
+	<string name="showOffline_summ">ಸಂಪರ್ಕ ಪಟ್ಟಿಯಲ್ಲಿನ ಎಲ್ಲಾ ಸಂಪರ್ಕಗಳನ್ನು ಸದಾ ತೋರಿಸು</string>
+	<string name="showOffline_title">ಅನುಪಸ್ಥಿತ ಸಂಪರ್ಕಗಳ ತೋರಿಸು</string>
+	<string name="enableGroups_summ">ನಿಮ್ಮ ಸಂಪರ್ಕಗಳನ್ನು ವಿಭಾಗ ಪ್ರಕಾರ ಜೋಡಿಸು</string>
+	<string name="enableGroups_title">ಸಂಪರ್ಕ ವಿಭಾಗಗಳನ್ನು ತೋರಿಸು</string>
+	<string name="foregroundService_summ">ಯಾವಾಗಲೂ ಸಂಪರ್ಕವನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಅನ್ವಯವನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಇರಿಸಿ (ಮುನ್ನೆಲೆ ಸೇವೆ)</string>
+	<string name="foregroundService_title">ಸ್ಥಿತಿಪಟ್ಟಿ ಚಿತ್ರ</string>
+
+	<string name="preftitle_debug">ಡೀಬಗ್ಗಿಂಗ್</string>
+	<string name="smackdebug_summ">Packet and debug output via logcat (ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರಬಹುದು)</string>
+	<string name="smackdebug_title">SMACK ಡೀಬಗ್ಗಿಂಗ್</string>
+
+	<string name="reportcrash_title">ಅಪ್ಪಳಿಕೆ ವರದಿಗಳನ್ನು ಕಳುಹಿಸು</string>
+	<string name="reportcrash_summ">ಅನಾಮಿಕ ಅಪ್ಪಳಿಕೆ ವರದಿಗಳನ್ನು ಅನ್ವಯ ಅಭಿವೃದ್ಧಕರಿಗೆ ಕಳುಹಿಸಿ</string>
+
+	<!-- Appearence Strings -->
+	<string name="preftitle_app">ನೋಟ</string>
+	<string name="FontChat_title">ಸಂವಾದ ಅಕ್ಷರ ಗಾತ್ರ</string>
+	<string name="FontChat_summ">ಸಂಭಾಷಣೆ ಅಕ್ಷರ ಗಾತ್ರ</string>
+	<string name="FontChat_dialog">ಸಂವಾದ ಅಕ್ಷರ ಗಾತ್ರ</string>
+	<!--
+	<string name="FontRost_title">Roster font size</string>
+	<string name="FontRost_summ">Set roster font size</string>
+	<string name="FontRost_dialog">Roster font fize</string>
+	<string name="setFontRoster">Set roster font size</string>
+	-->
+	<string name="pref_theme">ಬಣ್ಣ</string>
+	<string name="pref_theme_dark">ಕಪ್ಪು</string>
+	<string name="pref_theme_light">ಬಿಳಿ</string>
+	<string name="pref_theme_pine">ಕಾಯಿ</string>
+	<string name="pref_theme_ice">ಮಂಜು</string>
+	<string name="preftitle_ui">ನೋಟ</string>
+	<string-array name="fontSizesChat">
+		<item>small</item>
+		<item>normal</item>
+		<item>large</item>
+		<item>huge</item>
+	</string-array>
+
+	<!-- Mainmenu 	-->
+	<string name="Menu_addFriend">ಸಂಪರ್ಕ ಸೇರಿಸು</string>
+	<string name="Menu_addClipboard">%s ಸೇರಿಸಿಕೊ</string>
+	<string name="Menu_ShowOff">ಅನುಪಸ್ಥಿತರನ್ನು ತೋರಿಸು</string>
+	<string name="Menu_HideOff">ಅನುಪಸ್ಥಿತರನ್ನು ಮರೆಮಾಡು</string>
+	<string name="Menu_AccSettings">ಖಾತೆ ತಿದ್ದು</string>
+	<string name="Menu_Settings">ಬದಲಾವಣೆ</string>
+	<string name="Menu_Status">ಸ್ಥಿತಿ</string>
+	<string name="Menu_connect">ಅಂತರ್ಜಾಲಕ್ಕೆ ಸಂಪರ್ಕಿಸು</string>
+	<string name="Menu_disconnect">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಕಡಿಸು</string>
+	<string name="Menu_about">ಯಾಕ್ಸಿಂ ಬಗ್ಗೆ</string>
+	<string name="Menu_about_bruno">ಬ್ರುನೊ ಬಗ್ಗೆ</string>
+	<string name="Menu_muc">ಸೇರಿಸು / ಸಂಚಾರ…</string>
+	<string name="Menu_matrix">Enter the Matrix…</string>
+	<string name="Menu_mark_all_as_read">ಎಲ್ಲಾ ಓದಿದೆಯೆಂದು ಗುರುತಿಸು</string>
+	<string name="Menu_send_invitation">ಆಹ್ವಾನ ರಚಿಸು</string>
+    <string name="Menu_userlist">ಭಾಗಿಗಳು</string>
+
+
+	<!-- AddFriend -->
+	<string name="addFriend_Title">ಸಂಪರ್ಕವನ್ನು ಸೇರಿಸು</string>
+	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
+		desired screen name and choose their contact group!</string>
+	<string name="addFriend_aliasHint">ನಿಮಗೆ ಮಾತ್ರ ಕಾಣುವ ಹೆಸರು</string>
+	<string name="addrosteritemaddgroupchoice">ಹೊಸ ವಿಭಾಗಕ್ಕೆ ಸೇರಿಸು</string>
+	<string name="NewGroup_EditTextField_Hint">ಹೊಸ ವಿಭಾಗದ ಹೆಸರು</string>
+
+	<!-- Roster CONTEXTMENU -->
+	<string name="roster_contextmenu_group_rename">ವಿಭಾಗ ಹೆಸರು ತಿದ್ದು</string>
+	<string name="roster_contextmenu_contact_mark_as_read">ಓದಿದೆಯೆಂದು ಗುರುತಿಸು</string>
+	<string name="roster_contextmenu_contact_delete">ಸಂಪರ್ಕ ಅಳಿಸು</string>
+	<string name="roster_contextmenu_contact_delmsg">ಸಂವಾದ ಇತಿಹಾಸ ಅಳಿಸು</string>
+	<string name="roster_contextmenu_contact_rename">ಹೆಸರು ತಿದ್ದು</string>
+	<string name="roster_contextmenu_contact_request_auth">ಸ್ಥಿತಿ ಗೋಚರತೆ ಕೇಳು</string>
+	<string name="roster_contextmenu_contact_change_group">ವಿಭಾಗ ಬದಲಿಸು</string>
+	<string name="roster_contextmenu_contact_share">ವಿಳಾಸ ಹಂಚು</string>
+	<string name="roster_contextmenu_contact_ringtone">ರಿಂಗ್ಟೋನ್</string>
+	<string name="roster_contextmenu_muc_edit">ಗುಂಪು ತಿದ್ದು</string>
+	<string name="roster_contextmenu_muc_leave">ಗುಂಪಿನಿಂದ ಹೋಗು</string>
+	<string name="muc_leave_question">ಖಚಿತವಾಗಿ %s ಇಂದ ಹೋಗು?</string>
+
+	<!-- Accountprefs -->
+	<string name="account_settings_login">ಲಾಗಿನ್ ಮಾಹಿತಿ</string>
+	<string name="account_settings_title">ಖಾತೆ ಸಿದ್ಧತೆಗಳು</string>
+	<string name="account_options_title">ಸಂಪರ್ಕಿಸುವ ಆಯ್ಕೆಗಳು</string>
+	<string name="account_options_advanced">ತಿಳಿದವರ ಆಯ್ಕೆಗಳು</string>
+	<string name="carbons_title">ಸಂದೇಶ ಪ್ರತಿಗಳು (XEP-0280)</string>
+	<string name="carbons_summ">ನಿಮ್ಮ ಇತರ ಅನ್ವಯ(ಗಳ) ಇಂದ ಸಂದೇಶ ಪ್ರತಿಗಳನ್ನು ವಿನಂತಿಸು</string>
+	<string name="account_jabberID_title">Jabber ID</string>
+	<string name="account_jabberID_sum">ಉದಾಹರಣೆ: ನಾನು@jabber.example. com</string>
+	<string name="account_jabberID_dialog_title">ನಿಮ್ಮ Jabber ID ವಿಳಾಸ ಹಾಕಿ:</string>
+	<string name="account_jabberPW_title">ಖಾತೆ ಗುಪ್ತಪದ</string>
+	<string name="account_jabberPW_sum">ನಿಮ್ಮ Jabber ಖಾತೆ ಗುಪ್ತಪದ</string>
+	<string name="account_jabberPW_change_on_server">ಸರ್ವರ್ ಅಲ್ಲಿ ಗುಪ್ತಪದ ಬದಲಾಯಿಸು</string>
+	<string name="account_jabberPW_password_old">ಹಳೆಯ ಗುಪ್ತಪದ:</string>
+	<string name="account_jabberPW_password_new">ಹೊಸ ಗುಪ್ತಪದ:</string>
+	<string name="account_jabberPW_warning">⚠️ಎಚ್ಚರಿಕೆ!⚠️ ಯಶಸ್ವಿ ಲಾಗಿನ್ಗಾಗಿ ನೀವು ಸರ್ವರ್‌ನಲ್ಲಿ ಸಹ ಅದೇ ಪಾಸ್‌ವರ್ಡ್ಅನ್ನು ಹೊಂದಿಸಬೇಕು!</string>
+	<string name="account_jabberPW_progress">ದಯವಿಟ್ಟು ತಾಳಿ, ಗುಪ್ತಪದ ಬದಲಿಸುತ್ತಿದೆ…</string>
+	<string name="account_jabberPW_finished">ಯಶಸ್ವಿಯಾಗಿ ಗುಪ್ತಪದ ಬದಲಾಯಿತು.</string>
+	<string name="account_jabberPW_error">ಗುಪ್ತಪದ ಬದಲಿಸುವಾಗ ದೋಷ: %s</string>
+	<string name="account_nickname_title">ಪ್ರದರ್ಶನ ಹೆಸರು</string>
+	<string name="account_nickname_summ">ಬೇರೆ ಬಳಕೆದಾರರಿಗೆ ತೋರಿಸುವ ನಿಮ್ಮ ಉಪನಾಮ</string>
+	
+	<!-- accountprefs -->
+	<string name="account_resource_title">ಅನ್ವಯ ಸಂಪನ್ಮೂಲ</string>
+	<string name="account_resource_summ">ಅನ್ವಯ ಪೂರ್ವನಿಯೋಜಿತ: ಯಾಕ್ಸಿಂ</string>
+	<string name="account_resource_dialog_title">ನಿಮ್ಮ ಸಂಪನ್ಮೂಲ ಒತ್ತಿ:</string>
+	<string name="account_resource_hint">ಯಾಕ್ಸಿಂ</string>
+	<string name="account_prio_title">ಅನ್ವಯ ಆದ್ಯತೆ</string>
+	<string name="account_prio_summ">ಅನ್ವಯ ಪೂರ್ವನಿಯೋಜಿತ: 0 (ಅನುಮತಿಸಲಾದ: -128 .. 127)</string>
+	<string name="account_prio_error">ಅನುಮತಿಸಲಾದ ಮೌಲ್ಯಗಳು: -128 .. 127</string>
+	<string name="account_prio_dialog_title">ನಿಮ್ಮ ಆದ್ಯತೆ ನಮೂದಿಸಿ:</string>
+	<string name="account_port_title">ಸರ್ವರ್ ಪೊರ್ಟು</string>
+	<string name="account_port_sum">ಅನ್ವಯ ಪೂರ್ವನಿಯೋಜಿತ: 5222</string>
+	<string name="account_port_dialog_title">ಸರ್ವರ್ ಪೋರ್ಟ್ ಸಂಖ್ಯೆ ಹಾಕಿ:</string>
+	<string name="account_port_hint">5222</string>
+	<string name="account_customserver_title">ಬೇರೆ ಸರ್ವರ್</string>
+	<string name="account_customserver_summ">(ಅನವಶ್ಯಕ) ಪರ್ಯಾಯ ಸರ್ವರ್ ಹಾಸ್ಟ್ ಹೆಸರು</string>
+	<string name="account_customserver_dialog_title">ಸರ್ವರ್‌ ಹಾಸ್ಟ್ ಹೆಸರು ಹಾಕಿ:</string>
+	<string name="account_customserver_hint">host.ಉದಾಹರಣೆ.com</string>
+	<string name="require_ssl_title">SSL/TLS ಬದ್ಧತೆ ಅಗತ್ಯ</string>
+	<string name="require_ssl_summ">ಸರ್ವರ್ ಸಂಪರ್ಕವನ್ನು ಯಾವಾಗಲೂ ಭದ್ರ ಮಾಡಿ</string>
+
+	<!--StatusPopUp-->
+	<string name="AddContact_SpinnerPrompt">ವಿಭಾಗ ಆಯ್ಕೆ</string>
+	<string name="setStatusmsgHint">ನಿಮ್ಮ ಸ್ಥಿತಿ</string>
+	<string name="setStatusTitle">ಸ್ಥಿತಿ ಹಾಕು</string>
+	<string name="RenameGroup_summ">ತಿದ್ದು %s ಗುಂಪನ್ನು ಇದಕ್ಕೆ:</string>
+	<string name="RenameGroup_title">ವಿಭಾಗ ಹೆಸರು ತಿದ್ದು</string>
+	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
+	<string name="RenameEntry_title">ಸಂಪರ್ಕ ಹೆಸರು ತಿದ್ದು</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">ಒಂದು ಗುಂಪನ್ನು ಕೆಳಗೆ ಆಯ್ಕೆ ಮಾಡಿ</string>
+	<string name="MoveRosterEntryToGroupDialog_title">ವಿಭಾಗ ಬದಲಿಸು</string>
+	<string name="deleteRosterItem_text">ನಿಜವಾಗಲೂ %1$s (%2$s) ಅನ್ನು ತೆಗೆದುಹಾಕು?</string>
+	<string name="deleteRosterItem_title">ಸಂಪರ್ಕ ಅಳಿಸು</string>
+	<string name="deleteChatHistory_text">%1$s (%2$s)ರೊಂದಿಗೆ ಎಲ್ಲಾ ಸಂದೇಶಗಳನ್ನು ನಿಜವಾಗಿಯೂ ತೆಗೆದುಹಾಕುವುದೇ ?</string>
+	<string name="deleteChatHistory_title">ಸಂವಾದ ಇತಿಹಾಸ ಅಳಿಸು</string>
+	<string name="subscriptionRequest_text">%1$s ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕವಾಗಿ ಸೇರಿಸಲು ಬಯಸುತ್ತಿದ್ದಾರೆ: "%2$s"</string>
+	<string name="subscriptionRequest_title">ಸಂಪರ್ಕ ವಿನಂತಿ</string>
+	<string name="subscription_accept">ಒಪ್ಪಿಕೊ</string>
+	<string name="subscription_reject">ತಿರಸ್ಕರಿಸು</string>
+	<string name="subscription_reject_all">ಎಲ್ಲಾ ತಿರಸ್ಕರಿಸು</string>
+	<string name="subscription_status_from">ನಿಮ್ಮ ಸ್ಥಿತಿಯನ್ನು ನೋಡಬಹುದು</string>
+
+	<!-- CHATWINDOW -->
+	<string name="chat_from_me">ನಾ:</string>
+	<string name="toast_stored_offline">ಸಂದೇಶವನ್ನು ಪ್ರಸಾರಕ್ಕಾಗಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ.</string>
+	<string name="chat_enterMsgHint">ಸಂದೇಶ ಬರೆಯಿರಿ</string> 
+
+	<!-- Message context menu; use the verb form (to quote) -->
+	<string name="chatmenu_quote">ಉಲ್ಲೇಖಿಸು</string>
+	<!-- Message context menu: repeat the same message -->
+	<string name="chatmenu_resend">ಸಂದೇಶ ತಿದ್ದು</string>
+
+	<!-- GPS settings -->
+	<!--
+	<string name="showGPS_title">GPS to status</string>
+	<string name="showGPS_summ_on">GPS is send to StatusMessage</string>
+	<string name="showGPS_summ_off">GPS is send to StatusMessage</string>
+	-->
+
+	<!-- About Dialog -->
+	<string name="AboutDialog_title">ಯಾಕ್ಸಿಂ ಬಗ್ಗೆ</string>
+	<string name="AboutDialog_DevelopersTitle">ಅನ್ವಯ ರಚನಾಕಾರರು</string>
+	<!-- Contact the developer button -->
+	<string name="AboutDialog_DevelopersText">ಸಂಪರ್ಕಿಸು</string>
+	<string name="AboutDialog_LicenceTitle">ಪರವಾನಗಿ</string>
+	<string name="AboutDialog_Vote">ಅನ್ವಯ ಅಭಿಪ್ರಾಯ</string>
+	<string name="AboutDialog_LicenceText">
+		This program is free software; you can redistribute
+		it and/or
+		modify it under the terms of the GNU General Public License
+		version 2
+		as published by the Free Software Foundation.
+		Link:
+		http://www.gnu.org/licenses/gpl-2.0.html\n
+		\n
+		Parts of this software are
+		provided under the MIT License:\n
+		\n
+		Copyright © 2009 Mads
+		Kristiansen, Nullwire ApS\n
+		\n
+		Permission is hereby granted, free of
+		charge, to any person obtaining
+		a copy
+		of this software and associated
+		documentation files (the
+		"Software"), to deal
+		in the Software without
+		restriction, including
+		without limitation the rights
+		to use, copy,
+		modify, merge, publish,
+		distribute, sublicense, and/or sell
+		copies of
+		the Software, and to
+		permit persons to whom the Software is
+		furnished to
+		do so, subject to
+		the following conditions:
+		\n
+		The above copyright notice
+		and this permission notice shall be
+		included in all
+		copies or
+		substantial portions of the Software.
+		\n
+		THE SOFTWARE IS PROVIDED "AS
+		IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT
+		LIMITED TO THE WARRANTIES OF
+		MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR
+		PURPOSE AND NONINFRINGEMENT.
+		IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY
+		CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN
+		AN ACTION OF CONTRACT,
+		TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN
+		CONNECTION WITH THE
+		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+    </string>
+
+	<string name="status_available">ಉಪಸ್ಥಿತ</string>
+	<string name="status_away">ದೂರ</string>
+	<string name="status_chat">ಧಾರಾಳ ಮಾತಿಗೆ ಲಭ್ಯ</string>
+	<string name="status_dnd">ತೊಂದರೆ ಕೊಡಬೇಡಿ</string>
+	<string name="status_xa">ಲಭ್ಯವಿಲ್ಲ</string>
+	<string name="status_offline">ಅಂತರ್ಜಾಲದ ಸಂಪರ್ಕವಿಲ್ಲ</string>
+
+	<string name="translator_credits">ಅನುವಾದಕೃತಜ್ಞತೆಗಳು</string>
+
+	<!-- default roster group with no name -->
+	<string name="default_group">ಸಾಮಾನ್ಯ</string>
+	<string name="all_contacts_group">ಎಲ್ಲಾ ಸಂಪರ್ಕಗಳು</string>
+	<string name="muc_group">ಗುಂಪುಗಳು</string>
+
+	<!-- SEND listener popup -->
+	<string name="chooseContact">ಸಂಪರ್ಕ ಆಯ್ಕೆ</string>
+	<string name="action_settings">ಬದಲಾವಣೆ</string>
+
+	<!-- MUC strings -->
+	<string name="muc_jid_hint">ಗುಂಪಿನ ವಿಳಾಸ</string>
+	<string name="muc_nickname_hint">ಉಪನಾಮ</string>
+	<string name="muc_password_hint">ಗುಪ್ತ ಪದ (ಅನವಶ್ಯಕ)</string>
+	<string name="title_activity_muc_invite">ಗುಂಪಿಗೆ ಆಮಂತ್ರಣ</string>
+	<!-- Groupchat invitation: "Invitation from {contact name}" -->
+	<string name="muc_invitation_from">%s ಇಂದ ಆಮಂತ್ರಣ</string>
+	<!-- Groupchat info: {description} ({number} participants) -->
+	<string name="muc_invitation_occupants">%1$s (%2$d ಪ್ರತಿಭಾಗಿಗಳು)</string>
+	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
+	<string name="muc_invitation_join">%s ಆಗಿ ಸೇರಿ</string>
+	<string name="muc_synchronizing">ಒಟ್ಟಿಗೆ ಮಾಡುತ್ತಾ…</string>
+	<!-- Title of user list, contains JID -->
+	<string name="chat_muc_userlist">ಗುಂಪಿನ ಪ್ರತಿಭಾಗಿಗಳು (%s)</string>
+	<!-- Kicked from groupchat: "Kicked: {reason} -->
+	<string name="muc_kicked">ಒದೆಯಲಾಗಿದೆ: %s</string>
+	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
+	<string name="muc_kicked_by">%1$s ಒದ್ದರು: %2$s</string>
+	<!-- Banned from groupchat: "Banned: {reason} -->
+	<string name="muc_banned">ನಿಷೇದಿಸಲಾಗಿದೆ: %s</string>
+	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
+	<string name="muc_banned_by">%1$s ನಿಷೇಧಿಸಿದರು: %2$s</string>
+
+	<!-- File upload -->
+	<string name="roster_contextmenu_send">ಕಳಿಸು…</string>
+	<string name="roster_contextmenu_take_image">ಚಿತ್ರ ತೆಗೆ</string>
+	<string name="roster_contextmenu_send_image">ಚಿತ್ರ ಆಯ್ಕೆ</string>
+	<string name="roster_contextmenu_send_file">ಕಡತ ಕಳುಹಿಸು</string>
+	<string name="upload_compress">ಚಿತ್ರ ಸಂಕುಚಿಸುತ್ತಾ…</string>
+	<string name="upload_uploading">ಜಾಲಕ್ಕೆ ಏರಿಸುತ್ತಿದೇ…</string>
+	<string name="upload_too_large">ಕಡತ ತುಂಬಾ ದೊಡ್ದದು!</string>
+	<string name="storage_permission">%s ಗೆ ಕಡತಗಳ ಕಳುಹಿಸಲು ಶೇಖರಣಾ ಅನುಮತಿಯು ಅಗತ್ಯ!</string>
+
+	<!-- Search -->
+	<string name="search_msg_hint">ಸಂದೇಶ ವಿಷಯ</string>
+
+	<!-- MUC bookmarks -->
+	<string name="group_bookmarks">ನನ್ನ ಗುಂಪುಗಳು</string>
+	<string name="group_mucsearch">ಸಾರ್ವಜನಿಕ ಗುಂಪುಗಳು</string>
+	<!-- Service Discovery -->
+	<string name="title_service_disco">ಸಂಚಾರ: %s</string>
+
+	<!-- Android 9 notification preferences: permanent notification -->
+	<string name="notification_status">ಮುನ್ನೆಲೆ ಸೇವೆ</string>
+	<!-- Android 9 notification preferences: message notifications -->
+	<string name="notification_msg">ಸಂದೇಶಗಳು</string>
+
+</resources>
