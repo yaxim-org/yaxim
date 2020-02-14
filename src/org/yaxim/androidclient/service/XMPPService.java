@@ -120,7 +120,7 @@ public class XMPPService extends GenericService {
 			 * unbound
 			 */
 			Intent xmppServiceIntent = new Intent(this, XMPPService.class);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mConfig.foregroundService)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 				startForegroundService(xmppServiceIntent);
 			else
 				startService(xmppServiceIntent);

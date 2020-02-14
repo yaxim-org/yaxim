@@ -163,6 +163,9 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 				.getString(PreferenceConstants.PRIORITY, "0"), 0));
 
 		this.foregroundService = prefs.getBoolean(PreferenceConstants.FOREGROUND, true);
+		// force foreground notification on Android 8+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			this.foregroundService = true;
 
 		this.autoConnect = prefs.getBoolean(PreferenceConstants.CONN_STARTUP,
 				false);

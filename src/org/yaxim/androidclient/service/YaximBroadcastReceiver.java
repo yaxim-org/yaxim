@@ -31,6 +31,12 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 		return mSingleton;
 	}
 
+	public void startService(Context ctx, Intent i) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			ctx.startForegroundService(i);
+		else
+			ctx.startService(i);
+	}
 	public static void initNetworkStatus(Context context) {
 		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -78,7 +84,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 		} else
 		if (intent.getAction().equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
 			if (connstartup) // ignore event, we are not running
-				context.startService(xmppServiceIntent);
+				startService(context, xmppServiceIntent);
 		} else
 		if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 			if (!connstartup) // ignore event, we are not running
@@ -105,7 +111,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 				xmppServiceIntent.setAction("ping");
 			} else
 				return;
-			context.startService(xmppServiceIntent);
+			startService(context, xmppServiceIntent);
 		} else
 		if (intent.getAction().equals("org.yaxim.androidclient.ACTION_MESSAGE_HEARD")) {
 			Log.d(TAG, "heard " + intent);
@@ -113,7 +119,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 			String jid = intent.getStringExtra("jid");
 			if (jid == null) return;
 			xmppServiceIntent.setData(Uri.parse(jid));
-			context.startService(xmppServiceIntent);
+			startService(context, xmppServiceIntent);
 		} else
 		if (intent.getAction().equals("org.yaxim.androidclient.ACTION_MESSAGE_REPLY")) {
 			Log.d(TAG, "reply " + intent);
@@ -128,7 +134,7 @@ public class YaximBroadcastReceiver extends BroadcastReceiver {
 			if (jid == null) return;
 			xmppServiceIntent.setData(Uri.parse(jid));
 			xmppServiceIntent.putExtra("message", replystring);
-			context.startService(xmppServiceIntent);
+			startService(context, xmppServiceIntent);
 		}
 	}
 

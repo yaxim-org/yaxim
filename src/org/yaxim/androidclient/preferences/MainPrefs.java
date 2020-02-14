@@ -2,8 +2,10 @@ package org.yaxim.androidclient.preferences;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.support.v7.app.ActionBar;
@@ -18,6 +20,11 @@ public class MainPrefs extends AppCompatPreferenceActivity implements SharedPref
 		setTheme(YaximApplication.getConfig().getTheme());
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.mainprefs);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			CheckBoxPreference foreground = (CheckBoxPreference)findPreference(PreferenceConstants.FOREGROUND);
+			foreground.setEnabled(false);
+			foreground.setChecked(true);
+		}
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
