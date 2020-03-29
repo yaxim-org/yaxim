@@ -1377,6 +1377,7 @@ public class SmackableImp implements Smackable {
 				ContentValues[] cvs = new ContentValues[entries.size()];
 				int i = 0;
 				for (Jid entry : entries) {
+					subscriptionRequests.remove(entry);
 					//SMAXX
 					RosterEntry rosterEntry = mRoster.getEntry(entry.asBareJid());
 					cvs[i++] = getContentValuesForRosterEntry(rosterEntry);
