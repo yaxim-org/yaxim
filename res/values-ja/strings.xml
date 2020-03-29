@@ -133,7 +133,7 @@
 	<string name="Menu_about">yaxim について</string>
 	<string name="Menu_about_bruno">Bruno について</string>
 	<string name="Menu_muc">追加 / 参照…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
+	<string name="Menu_matrix">マトリックスを入力…</string>
 	<string name="Menu_mark_all_as_read">すべて既読にする</string>
 	<string name="Menu_send_invitation">招待状を作成</string>
     <string name="Menu_userlist">参加者</string>

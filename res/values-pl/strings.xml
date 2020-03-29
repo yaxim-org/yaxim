@@ -12,7 +12,7 @@
 	<string name="conn_offline">Rozłączony</string>
 	<string name="conn_empty_roster">Brak kontaktów</string>
 	<string name="conn_empty_roster_hints">Jest wiele sposobów dodania kontaktów:\n\n - Android Beam™: zetknij telefony ze sobą\n\n - Zeskanuj QR kod\n\n - \"Stwórz zaproszenie\" i udostępnij je (e-mail, SMS, QR kod, …)\n\n - \"Dodaj kontakt\" jeśli znasz identyfikator JID</string>
-	<string name="conn_reconnect">Natępna próba połączenia za %d sekund.</string>
+	<string name="conn_reconnect">Następna próba połączenia za %d sekund.</string>
 	<string name="conn_disconnected">Połączenie zakończone</string>
 	<string name="conn_no_network">Brak połączenia sieciowego</string>
 	<string name="conn_ping_timeout">Brak odpowiedzi</string>
@@ -20,7 +20,7 @@
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Wyjście</string>
-	<string name="Global_authenticate_first">Najpier nawiąż połączenie</string>
+	<string name="Global_authenticate_first">Najpierw nawiąż połączenie</string>
 	<string name="Global_JID_hint">użytkownik@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
 	<string name="Global_JID_malformed">Sprawdź format adresu!</string>
@@ -49,7 +49,7 @@
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Odpowiedź</string>
+	<string name="notification_reply">Odpowiedz</string>
 	<!-- notification button: mark as read (make SHORT string) -->
 	<string name="notification_mark_read">Oznacz jako przeczytane</string>
 
@@ -131,9 +131,9 @@
 	<string name="Menu_connect">Połącz</string>
 	<string name="Menu_disconnect">Rozłącz</string>
 	<string name="Menu_about">O programie</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
+	<string name="Menu_about_bruno">O programie</string>
+	<string name="Menu_muc">Dodaj / przeglądaj</string>
+	<string name="Menu_matrix">Wejdź do Matrixa...</string>
 	<string name="Menu_mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
 	<string name="Menu_send_invitation">Utwórz zaproszenie</string>
     <string name="Menu_userlist">Uczestnicy</string>
@@ -156,8 +156,8 @@
 	<string name="roster_contextmenu_contact_change_group">Zmień grupę</string>
 	<string name="roster_contextmenu_contact_share">Udostępnij adres</string>
 	<string name="roster_contextmenu_contact_ringtone">Dzwonek</string>
-	<string name="roster_contextmenu_muc_edit">Edytuj grupę czatu</string>
-	<string name="roster_contextmenu_muc_leave">Opuść grupę czatu</string>
+	<string name="roster_contextmenu_muc_edit">Edytuj czat grupowy</string>
+	<string name="roster_contextmenu_muc_leave">Opuść czat grupowy</string>
 	<string name="muc_leave_question">Naprawdę opuścić %s?</string>
 
 	<!-- Accountprefs -->
@@ -179,7 +179,7 @@
 	<string name="account_jabberPW_progress">Proszę czekać, zmieniam hasło…</string>
 	<string name="account_jabberPW_finished">Hasło zostało zmienione.</string>
 	<string name="account_jabberPW_error">Błąd zmiany hasła: %s</string>
-	<string name="account_nickname_title">Display Name</string>
+	<string name="account_nickname_title">Wyświetlana nazwa</string>
 	<string name="account_nickname_summ">Your nickname displayed to other users</string>
 	
 	<!-- accountprefs -->
@@ -219,14 +219,14 @@
 	<string name="subscriptionRequest_text">%1$s chce Cię dodać jako kontakt: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">Prośba o autoryzację</string>
 	<string name="subscription_accept">Akceptuj</string>
-	<string name="subscription_reject">Odmów</string>
+	<string name="subscription_reject">Odrzuć</string>
 	<string name="subscription_reject_all">Odrzuć wszystkie</string>
 	<string name="subscription_status_from">możesz zobaczyć swój status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ja:</string>
 	<string name="toast_stored_offline">Wiadomość została zapisana do wysłania.</string>
-	<string name="chat_enterMsgHint">Wpisz wpiadomość</string> 
+	<string name="chat_enterMsgHint">Wpisz wiadomość</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
 	<string name="chatmenu_quote">Cytuj</string>
@@ -260,11 +260,12 @@
   Adam Maćkowiak https://launchpad.net/~admc
   Antoni Kudelski https://launchpad.net/~antoni-kudelski-deactivatedaccount
   Georg Lukas https://launchpad.net/~ge0rg
+  Paweł Jaremczak https://launchpad.net/~ak47pabl0
   Piotr Kaczmarek https://launchpad.net/~szopen
   Wiktor https://launchpad.net/~wiktor-k</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">Grupa domyślna</string>
+	<string name="default_group">Ogólne</string>
 	<string name="all_contacts_group">Wszystkie kontakty</string>
 	<string name="muc_group">Czaty</string>
 
@@ -293,7 +294,7 @@
 	<!-- Banned from groupchat: "Banned: {reason} -->
 	<string name="muc_banned">Zbanowany: %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Zbanowany przezy %1$s: %2$s</string>
+	<string name="muc_banned_by">Zbanowany przez %1$s: %2$s</string>
 
 	<!-- File upload -->
 	<string name="roster_contextmenu_send">Wyślij...</string>
@@ -309,14 +310,14 @@
 	<string name="search_msg_hint">Message content</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">Moje czaty grupowe</string>
+	<string name="group_mucsearch">Publiczne czaty grupowe</string>
 	<!-- Service Discovery -->
 	<string name="title_service_disco">Browser: %s</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
 	<string name="notification_status">Foreground service</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">Wiadomości</string>
 
 </resources>

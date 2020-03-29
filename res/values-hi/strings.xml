@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">yaxim</string>
-	<string name="app_name_bruno">Bruno</string>
+	<string name="app_name">याक्सिं</string>
+	<string name="app_name_bruno">भालू</string>
 
 	<!-- Connection state -->
-	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_title_bruno">Bruno: %s</string>
-	<string name="conn_connecting">सर्वर से कनेक्ट हो रहा है…</string>
-	<string name="conn_disconnecting">डिस्कनेक्ट हो रहा है…</string>
-	<string name="conn_online">ऑनलाइन</string>
-	<string name="conn_offline">ऑफ़लाइन</string>
+	<string name="conn_title">याक्सिं: %s</string>
+	<string name="conn_title_bruno">भालू: %s</string>
+	<string name="conn_connecting">सर्वर से संपर्क जारी…</string>
+	<string name="conn_disconnecting">सर्वर से असंबंधन जारी...</string>
+	<string name="conn_online">उपस्थित</string>
+	<string name="conn_offline">अनुपस्थित</string>
 	<string name="conn_empty_roster">कोई संपर्क दिखाने के लिए नहीं है!</string>
 	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
 		- Android Beam™: touch a friend\'s phone\n\n
@@ -191,7 +191,7 @@
 	<string name="account_resource_title">Client Resource</string>
 	<string name="account_resource_summ">Default: yaxim</string>
 	<string name="account_resource_dialog_title">Enter your resource:</string>
-	<string name="account_resource_hint">yaxim</string>
+	<string name="account_resource_hint">याक्सिं</string>
 	<string name="account_prio_title">Client Priority</string>
 	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
 	<string name="account_prio_error">Allowed values: -128 .. 127</string>
@@ -313,15 +313,16 @@
 		SOFTWARE.
     </string>
 
-	<string name="status_available">ऑनलाइन</string>
+	<string name="status_available">उपस्थित</string>
 	<string name="status_away">Away</string>
 	<string name="status_chat">Free for chat</string>
 	<string name="status_dnd">Do not disturb</string>
 	<string name="status_xa">Not available</string>
-	<string name="status_offline">ऑफ़लाइन</string>
+	<string name="status_offline">अनुपस्थित</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Devendra Mani https://launchpad.net/~devmgs</string>
+  Devendra Mani https://launchpad.net/~devmgs
+  Sachin https://launchpad.net/~msachin</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">General</string>

@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ಯಾಕ್ಸಿಂ</string>
-	<string name="app_name_bruno">ಬ್ರುನೊ</string>
+	<string name="app_name_bruno">ಭಾಲೂ</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">ಯಾಕ್ಸಿಂ: %s</string>
-	<string name="conn_title_bruno">ಬ್ರುನೊ: %s</string>
+	<string name="conn_title_bruno">ಭಾಲೂ: %s</string>
 	<string name="conn_connecting">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ…</string>
 	<string name="conn_disconnecting">ಸಂಪರ್ಕ ಕಡಿಸುತ್ತಾ…</string>
 	<string name="conn_online">ಉಪಸ್ಥಿತ</string>
-	<string name="conn_offline">ಅಂತರ್ಜಾಲದ ಸಂಪರ್ಕವಿಲ್ಲ</string>
+	<string name="conn_offline">ಅನುಪಸ್ಥಿತ</string>
 	<string name="conn_empty_roster">ತೋರಿಸಲು ಸಂಪರ್ಕಗಳಿಲ್ಲ!</string>
-	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
-		- Scan a QR code\n\n
-		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
-		- \"Add contact\" if you know the JID</string>
+	<string name="conn_empty_roster_hints">ಸಂಪರ್ಕಗಳನ್ನು ಸೇರಿಸಲು ಹಲವು ಮಾರ್ಗಗಳಿವೆ:\n\n - QR ಕೋಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ\n\n - ಅನ್ವಯ ಮುಖ್ಯ ಪುಟದಲ್ಲಿ \"︙\" ಬಟ್ಟನ್ ಒಳಗೆ \"ಆಹ್ವಾನ ರಚಿಸು\" ಒತ್ತಿ ಮತ್ತು ಅದನ್ನು ಹಂಚಿಕೊಳ್ಳಿ (ಇ-ಮೇಲ್, SMS, QR ಕೋಡ್, …)\n\n - ನಿಮಗೆ JID ತಿಳಿದಿದ್ದರೆ \"ಸಂಪರ್ಕವನ್ನು ಸೇರಿಸು\" ಒತ್ತಿ</string>
 	<string name="conn_reconnect">ಮುಂದಿನ ಸಂಪರ್ಕ ಪ್ರಯತ್ನ %d ಕ್ಷಣಗಳಲ್ಲಿ.</string>
 	<string name="conn_disconnected">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಮುಚ್ಚಲಾಗಿದೆ</string>
 	<string name="conn_no_network">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಇಲ್ಲ</string>
@@ -24,7 +20,7 @@
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">ನಿರ್ಗಮನ</string>
-	<string name="Global_authenticate_first">ದಯವಿಟ್ಟು ಮೊದಲು ಸಂಪರ್ಕಿಸಿ</string>
+	<string name="Global_authenticate_first">ದಯವಿಟ್ಟು ಮೊದಲು ಅಂತರ್ಜಾಲಕ್ಕೆ ಸಂಪರ್ಕಿಸಿ</string>
 	<string name="Global_JID_hint">ಬಳಕೆದಾರ@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
 	<string name="Global_JID_malformed">ವಿಳಾಸ ಸ್ವರೂಪ ಪರಿಶೀಲಿಸಿ!</string>
@@ -32,7 +28,7 @@
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">ಯಾಕ್ಸಿಂ ಗೆ ಸುಸ್ವಾಗತ!</string>
 	<string name="StartupDialog_Summary">ಯಾಕ್ಸಿಂ ಬಳಸುವ ಮುನ್ನ ಖಾತೆ ಜೋಡಿಸಬೇಕು. ದಯವಿಟ್ಟು ನಿಮ್ಮ Jabber ID ಹಾಗು ಗುಪ್ತಪದ ಹಾಕಿ.</string>
-	<string name="StartupDialog_pwHint">ಗುಪ್ತಪದ ಒತ್ತು</string>
+	<string name="StartupDialog_pwHint">ಗುಪ್ತಪದ ಒತ್ತಿ</string>
 	<string name="StartupDialog_pwshowHint">ಗುಪ್ತಪದ ತೋರಿಸು</string>
 	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">ಗುಪ್ತಪದ:</string>
@@ -65,16 +61,16 @@
 	<string name="preftitle_notify_msg">ಸಂದೇಶ ಅಧಿಸೂಚನೆ</string>
 	<string name="preftitle_notify_muc">ಗುಂಪಿನ ಅಧಿಸೂಚನೆ</string>
 	<string name="notification_custom">ಬೇರೆ ರಿಂಗ್ಟೋನ್</string>
-	<string name="muc_highlight_title">ಉಲೇಖಿಸಿದಾಗ ಮಾತ್ರ ತಿಳಿಸು</string>
-	<string name="muc_highlight_sum">ಕೋಣೆಗಳಲ್ಲಿ ನಿಮ್ಮ ಉಪನಾಮವನ್ನು ಉಲ್ಲೇಖಿಸಿದಾಗ ತಿಳಿಸು</string>
+	<string name="muc_highlight_title">ಹೆಸರಿಸಿದಾಗ ಮಾತ್ರ ತಿಳಿಸು</string>
+	<string name="muc_highlight_sum">ಕೋಣೆಗಳಲ್ಲಿ ನಿಮ್ಮ ಉಪನಾಮವನ್ನು ಹೆಸರಿಸಿದಾಗ ತಿಳಿಸು</string>
 	<string name="led_title">ಮಿಣುಕುವ LED</string>
 	<string name="led_summ">ಸಂದೇಶ ಬಂದಾಗ ಫೋನಿನ LED ಬೆಳಕನ್ನು ಮಿಣುಕಿಸು</string>
 	<string name="vibr_title">ಕಂಪನ</string>
 	<string name="vibr_summ">ಸಂದೇಶಗಳು ಬಂದಾಗ ಕಂಪಿಸು</string>
 	<string-array name="vibr_values_displayed">
-		<item>Never</item>
-		<item>System preference</item>
-		<item>Always</item>
+		<item>ಎಂದಿಗೂ</item>
+		<item>ಫೋನ್ ಆದ್ಯತೆ</item>
+		<item>ಸದಾ</item>
 	</string-array>
 	<string name="ringtone_title">ರಿಂಗ್ಟೋನ್</string>
 	<string name="ringtone_summ">ಒಳಬರುವ ಸಂದೇಶಗಳ ಧ್ವನಿ</string>
@@ -83,19 +79,19 @@
 
 	<!-- Startup Setting Strings -->
 	<string name="preftitle_general">ಸಾಮಾನ್ಯ ಆಯ್ಕೆಗಳು</string>
-	<string name="pref_dnd_when_silent">ಸೈಲೆಣ್ಟ್ ಮೋಡ್ ನಲ್ಲಿ "ತೊಂದರೆ ಕೊಡಬೇಡಿ"</string>
-	<string name="pref_dnd_when_silent_summ">ನಿಮ್ಮ ಫೋನ್ ಸೈಲೆಂಟ್ ಮೋಡ್‌ನಲ್ಲಿರುವಾಗ ನಿಮ್ಮ ಉಪಸ್ಥಿತಿಯನ್ನು "ತೊಂದರೆ ಕೊಡಬೇಡಿ" ಗೆ ಬದಲಿಸು</string>
+	<string name="pref_dnd_when_silent">ಸೈಲೆಣ್ಟ್ ಮೋಡ್ ನಲ್ಲಿ \"ತೊಂದರೆ ಕೊಡಬೇಡಿ\"</string>
+	<string name="pref_dnd_when_silent_summ">ನಿಮ್ಮ ಫೋನ್ ಸೈಲೆಂಟ್ ಮೋಡ್‌ನಲ್ಲಿರುವಾಗ ನಿಮ್ಮ ಉಪಸ್ಥಿತಿಯನ್ನು \"ತೊಂದರೆ ಕೊಡಬೇಡಿ\" ಗೆ ಬದಲಿಸಿ</string>
 	<string name="statuspopup_name">ಸ್ಥಿತಿ ಹಾಕು</string>
 	<string name="showOffline_summ">ಸಂಪರ್ಕ ಪಟ್ಟಿಯಲ್ಲಿನ ಎಲ್ಲಾ ಸಂಪರ್ಕಗಳನ್ನು ಸದಾ ತೋರಿಸು</string>
 	<string name="showOffline_title">ಅನುಪಸ್ಥಿತ ಸಂಪರ್ಕಗಳ ತೋರಿಸು</string>
-	<string name="enableGroups_summ">ನಿಮ್ಮ ಸಂಪರ್ಕಗಳನ್ನು ವಿಭಾಗ ಪ್ರಕಾರ ಜೋಡಿಸು</string>
+	<string name="enableGroups_summ">ನಿಮ್ಮ ಸಂಪರ್ಕಗಳನ್ನು ವಿಭಾಗ ಪ್ರಕಾರ ಜೋಡಿಸಿ</string>
 	<string name="enableGroups_title">ಸಂಪರ್ಕ ವಿಭಾಗಗಳನ್ನು ತೋರಿಸು</string>
-	<string name="foregroundService_summ">ಯಾವಾಗಲೂ ಸಂಪರ್ಕವನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಅನ್ವಯವನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಇರಿಸಿ (ಮುನ್ನೆಲೆ ಸೇವೆ)</string>
+	<string name="foregroundService_summ">ಯಾವಾಗಲೂ ಜಾಲ ಸಂಪರ್ಕವನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಅನ್ವಯವನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಇರಿಸಿ (ಮುನ್ನೆಲೆ ಸೇವೆ)</string>
 	<string name="foregroundService_title">ಸ್ಥಿತಿಪಟ್ಟಿ ಚಿತ್ರ</string>
 
-	<string name="preftitle_debug">ಡೀಬಗ್ಗಿಂಗ್</string>
-	<string name="smackdebug_summ">Packet and debug output via logcat (ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರಬಹುದು)</string>
-	<string name="smackdebug_title">SMACK ಡೀಬಗ್ಗಿಂಗ್</string>
+	<string name="preftitle_debug">ದೋಷ ನಿವಾರಣೆ</string>
+	<string name="smackdebug_summ">logcat ಮುಖಾಂತರ ದೋಷಕ್ಕೆ ಕಾರಣದ ವರದಿ ಹಾಗೂ ಜಾಲ ಸಂಪರ್ಕತೆ ಪಟ್ಟಣಗಳು (ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರಬಹುದು)</string>
+	<string name="smackdebug_title">SMACK ದೋಷ ನಿವಾರಣೆ</string>
 
 	<string name="reportcrash_title">ಅಪ್ಪಳಿಕೆ ವರದಿಗಳನ್ನು ಕಳುಹಿಸು</string>
 	<string name="reportcrash_summ">ಅನಾಮಿಕ ಅಪ್ಪಳಿಕೆ ವರದಿಗಳನ್ನು ಅನ್ವಯ ಅಭಿವೃದ್ಧಕರಿಗೆ ಕಳುಹಿಸಿ</string>
@@ -103,7 +99,7 @@
 	<!-- Appearence Strings -->
 	<string name="preftitle_app">ನೋಟ</string>
 	<string name="FontChat_title">ಸಂವಾದ ಅಕ್ಷರ ಗಾತ್ರ</string>
-	<string name="FontChat_summ">ಸಂಭಾಷಣೆ ಅಕ್ಷರ ಗಾತ್ರ</string>
+	<string name="FontChat_summ">ಸಂವಾದದ ಅಕ್ಷರ ಗಾತ್ರ ಆರಿಸಿ</string>
 	<string name="FontChat_dialog">ಸಂವಾದ ಅಕ್ಷರ ಗಾತ್ರ</string>
 	<!--
 	<string name="FontRost_title">Roster font size</string>
@@ -118,10 +114,10 @@
 	<string name="pref_theme_ice">ಮಂಜು</string>
 	<string name="preftitle_ui">ನೋಟ</string>
 	<string-array name="fontSizesChat">
-		<item>small</item>
-		<item>normal</item>
-		<item>large</item>
-		<item>huge</item>
+		<item>ಚಿಕ್ಕ</item>
+		<item>ಸಹಜ</item>
+		<item>ದೊಡ್ಡ</item>
+		<item>ಬೃಹತ್</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
@@ -135,9 +131,9 @@
 	<string name="Menu_connect">ಅಂತರ್ಜಾಲಕ್ಕೆ ಸಂಪರ್ಕಿಸು</string>
 	<string name="Menu_disconnect">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಕಡಿಸು</string>
 	<string name="Menu_about">ಯಾಕ್ಸಿಂ ಬಗ್ಗೆ</string>
-	<string name="Menu_about_bruno">ಬ್ರುನೊ ಬಗ್ಗೆ</string>
+	<string name="Menu_about_bruno">ಭಾಲೂ ಬಗ್ಗೆ</string>
 	<string name="Menu_muc">ಸೇರಿಸು / ಸಂಚಾರ…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
+	<string name="Menu_matrix">ಮ್ಯಾಟ್ರಿಕ್ಸ್ ಒಳಗೆ ಹೋಗಿ</string>
 	<string name="Menu_mark_all_as_read">ಎಲ್ಲಾ ಓದಿದೆಯೆಂದು ಗುರುತಿಸು</string>
 	<string name="Menu_send_invitation">ಆಹ್ವಾನ ರಚಿಸು</string>
     <string name="Menu_userlist">ಭಾಗಿಗಳು</string>
@@ -145,8 +141,7 @@
 
 	<!-- AddFriend -->
 	<string name="addFriend_Title">ಸಂಪರ್ಕವನ್ನು ಸೇರಿಸು</string>
-	<string name="addFriend_Summ">Please enter the Jabber ID of your friend, the
-		desired screen name and choose their contact group!</string>
+	<string name="addFriend_Summ">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸ್ನೇಹಿತರ Jabber ID, ಬಯಸಿದ ಹೆಸರು ಹಾಕಿ ಮತ್ತು ಅವರ ಸಂಪರ್ಕವಿಭಾಗ ಆರಿಸಿ!</string>
 	<string name="addFriend_aliasHint">ನಿಮಗೆ ಮಾತ್ರ ಕಾಣುವ ಹೆಸರು</string>
 	<string name="addrosteritemaddgroupchoice">ಹೊಸ ವಿಭಾಗಕ್ಕೆ ಸೇರಿಸು</string>
 	<string name="NewGroup_EditTextField_Hint">ಹೊಸ ವಿಭಾಗದ ಹೆಸರು</string>
@@ -211,17 +206,17 @@
 	<string name="AddContact_SpinnerPrompt">ವಿಭಾಗ ಆಯ್ಕೆ</string>
 	<string name="setStatusmsgHint">ನಿಮ್ಮ ಸ್ಥಿತಿ</string>
 	<string name="setStatusTitle">ಸ್ಥಿತಿ ಹಾಕು</string>
-	<string name="RenameGroup_summ">ತಿದ್ದು %s ಗುಂಪನ್ನು ಇದಕ್ಕೆ:</string>
+	<string name="RenameGroup_summ">%s ವಿಭಾಗದ ಹೆಸರು ತಿದ್ದಿ ಇದಕ್ಕೆ ಇಡು:</string>
 	<string name="RenameGroup_title">ವಿಭಾಗ ಹೆಸರು ತಿದ್ದು</string>
-	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
+	<string name="RenameEntry_summ">%1$s (%2$s) ಹೆಸರು ತಿದ್ದಿ ಇದಕ್ಕೆ ಇಡು:</string>
 	<string name="RenameEntry_title">ಸಂಪರ್ಕ ಹೆಸರು ತಿದ್ದು</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">ಒಂದು ಗುಂಪನ್ನು ಕೆಳಗೆ ಆಯ್ಕೆ ಮಾಡಿ</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">ಒಂದು ವಿಭಾಗವನ್ನು ಕೆಳಗೆ ಆಯ್ಕೆ ಮಾಡಿ</string>
 	<string name="MoveRosterEntryToGroupDialog_title">ವಿಭಾಗ ಬದಲಿಸು</string>
 	<string name="deleteRosterItem_text">ನಿಜವಾಗಲೂ %1$s (%2$s) ಅನ್ನು ತೆಗೆದುಹಾಕು?</string>
 	<string name="deleteRosterItem_title">ಸಂಪರ್ಕ ಅಳಿಸು</string>
 	<string name="deleteChatHistory_text">%1$s (%2$s)ರೊಂದಿಗೆ ಎಲ್ಲಾ ಸಂದೇಶಗಳನ್ನು ನಿಜವಾಗಿಯೂ ತೆಗೆದುಹಾಕುವುದೇ ?</string>
 	<string name="deleteChatHistory_title">ಸಂವಾದ ಇತಿಹಾಸ ಅಳಿಸು</string>
-	<string name="subscriptionRequest_text">%1$s ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕವಾಗಿ ಸೇರಿಸಲು ಬಯಸುತ್ತಿದ್ದಾರೆ: "%2$s"</string>
+	<string name="subscriptionRequest_text">%1$s ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕವಾಗಿ ಸೇರಿಸಲು ಬಯಸುತ್ತಿದ್ದಾರೆ: \"%2$s\"</string>
 	<string name="subscriptionRequest_title">ಸಂಪರ್ಕ ವಿನಂತಿ</string>
 	<string name="subscription_accept">ಒಪ್ಪಿಕೊ</string>
 	<string name="subscription_reject">ತಿರಸ್ಕರಿಸು</string>
@@ -252,75 +247,17 @@
 	<string name="AboutDialog_DevelopersText">ಸಂಪರ್ಕಿಸು</string>
 	<string name="AboutDialog_LicenceTitle">ಪರವಾನಗಿ</string>
 	<string name="AboutDialog_Vote">ಅನ್ವಯ ಅಭಿಪ್ರಾಯ</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_LicenceText">ಈ ಪ್ರೋಗ್ರಾಂ (ಅನ್ವಯ) ಫ಼್ರೀ (ಸ್ವತಂತ್ರ) ಸಾಫ್ಟ್‌ವೇರ್ (ತಂತ್ರಾಂಶ) ಆಗಿದೆ;  ಸ್ವತಂತ್ರ ತಂತ್ರಾಂಶ ಫೌಂಡೇಶನ್ (ಪ್ರತಿಷ್ಠಾನ) ಪ್ರಕಟಿಸಿದಂತೆ ನೀವು ಅದನ್ನು ಪುನರ್ವಿತರಣೆ ಮಾಡಬಹುದು ಮತ್ತು / ಅಥವಾ ಗ್ನೂ ಜನರಲ್ ಪಬ್ಲಿಕ್ ಲೈಸೆನ್ಸ್ ಆವೃತ್ತಿ 2 ರ ನಿಯಮಗಳ ಅಡಿಯಲ್ಲಿ ಮಾರ್ಪಡಿಸಬಹುದು.  ಲಿಂಕ್: http://www.gnu.org/licenses/gpl-2.0.html\n\n ಈ ಸಾಫ್ಟ್‌ವೇರ್‌ನ ಭಾಗಗಳನ್ನು MIT ಪರವಾನಗಿ ಅಡಿಯಲ್ಲಿ ಒದಗಿಸಲಾಗಿದೆ:\n\n ಕೃತಿಸ್ವಾಮ್ಯ (Copyright) © 2009 ಮ್ಯಾಡ್ಸ್ ಕ್ರಿಸ್ಟಿಯೆನ್ಸೆನ್, ನಲ್ವೈಯರ್ ಎಪಿಎಸ್\n\n ಈ ಸಾಫ್ಟ್‌ವೇರ್ ಮತ್ತು ಅದಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ದಸ್ತಾವೇಜು ಫೈಲ್‌ಗಳ ( \"Software\") ಪ್ರತಿಯನ್ನು ಪಡೆಯುವ ಯಾವುದೇ ವ್ಯಕ್ತಿಗೆ ಸಾಫ್ಟ್‌ವೇರ್ ಅನ್ನು ನಿರ್ಬಂಧವಿಲ್ಲದೆ ವ್ಯವಹರಿಸಲು ಅನುಮತಿಯನ್ನು ನಿಷುಲ್ಕವಾಗಿ ನೀಡಲಾಗುತ್ತದೆ, ಇದನ್ನು ಯಾವುದೇ ಮಿತಿಗಳಿಲ್ಲದೆ, ನಕಲಿಸಲು, ಮಾರ್ಪಡಿಸಲು, ವಿಲೀನಗೊಳಿಸಲು, ಸಾಫ್ಟ್‌ವೇರ್‌ನ ಪ್ರತಿಗಳನ್ನು ಪ್ರಕಟಿಸಲು, ವಿತರಿಸಲು, ಉಪ-ಪರವಾನಗಿ ಮತ್ತು / ಅಥವಾ ಮಾರಾಟ ಮಾಡಲು, ಮತ್ತು ಸಾಫ್ಟ್‌ವೇರ್ ಅನ್ನು ಒದಗಿಸಲಾಗಿರುವ ವ್ಯಕ್ತಿಗಳಿಗೆ ಈ ಕೆಳಗಿನ ಷರತ್ತುಗಳಿಗೆ ಒಳಪಟ್ಟ ಅನುಮತಿ ನೀಡುವುದು:\nಮೇಲಿನ ಹಕ್ಕುಸ್ವಾಮ್ಯ ಸೂಚನೆ ಮತ್ತು ಈ ಅನುಮತಿ ಪ್ರಕಟಣೆಯನ್ನು ಸಾಫ್ಟ್‌ವೇರ್‌ನ ಎಲ್ಲಾ ಪ್ರತಿಗಳು ಅಥವಾ ಗಣನೀಯ ಭಾಗಗಳಲ್ಲಿ ಸೇರಿಸಲಾಗುವುದು.\nಸಾಫ್ಟ್‌ವೇರ್ \'ಇದ್ದ ಹಾಗೆಯೇ\', ಯಾವುದೇ ರೀತಿಯ ಖಾತರಿ ಇಲ್ಲದೆ, ವ್ಯಕ್ತಪಡಿಸಿರುವುದೋ ಅಥವಾ ಅಳವಡಿಸಿರುವುದೋ, ಕೊಡಲಾಗಿದೆ, ಹಾಗೂ ಆದರೆ ಅಷ್ಟೇ ಅಲ್ಲ ವ್ಯಾಪಾರದ ಖಾತರಿ ಕರಾರುಗಳಿಗೆ ಸೀಮಿತವಾಗಿಲ್ಲ ಹಾಗೂ, ಒಂದು ನಿರ್ದಿಷ್ಟ ಉದ್ದೇಶಕ್ಕಾಗಿ ಎಂದು ಒದಗಿಸಿಲ್ಲ.  ಯಾವುದೇ ಸಂದರ್ಭದಲ್ಲಿ, ಯಾವುದೇ ಹಕ್ಕು, ಹಾನಿ ಅಥವಾ ಇತರ ಹೊಣೆಗಾರಿಕೆಗಳಿಗೆ ಲೇಖಕರು ಅಥವಾ ಕಾಪಿರೈಟ್ ಹೋಲ್ಡರ್‌ಗಳು ಹೊಣೆಗಾರರಾಗಿರುವುದಿಲ್ಲ, ಸಂಪರ್ಕದ ಒಂದು ಕ್ರಿಯೆಯಲ್ಲಿ, ಟಾರ್ಟ್ ಅಥವಾ ಇತರವುಗಳಲ್ಲಿ, ಹೊರಹೊಮ್ಮುವ ಅಥವಾ ಹೊರಗಿನ ಅಥವಾ ಸಂಪರ್ಕದಲ್ಲಿ.</string>
 
 	<string name="status_available">ಉಪಸ್ಥಿತ</string>
 	<string name="status_away">ದೂರ</string>
 	<string name="status_chat">ಧಾರಾಳ ಮಾತಿಗೆ ಲಭ್ಯ</string>
 	<string name="status_dnd">ತೊಂದರೆ ಕೊಡಬೇಡಿ</string>
 	<string name="status_xa">ಲಭ್ಯವಿಲ್ಲ</string>
-	<string name="status_offline">ಅಂತರ್ಜಾಲದ ಸಂಪರ್ಕವಿಲ್ಲ</string>
+	<string name="status_offline">ಅನುಪಸ್ಥಿತ</string>
 
-	<string name="translator_credits">ಅನುವಾದಕೃತಜ್ಞತೆಗಳು</string>
+	<string name="translator_credits">Launchpad Contributions:
+  Sachin https://launchpad.net/~msachin</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">ಸಾಮಾನ್ಯ</string>
@@ -334,7 +271,7 @@
 	<!-- MUC strings -->
 	<string name="muc_jid_hint">ಗುಂಪಿನ ವಿಳಾಸ</string>
 	<string name="muc_nickname_hint">ಉಪನಾಮ</string>
-	<string name="muc_password_hint">ಗುಪ್ತ ಪದ (ಅನವಶ್ಯಕ)</string>
+	<string name="muc_password_hint">ಗುಪ್ತ ಪದ (ಐಚ್ಛಿಕ)</string>
 	<string name="title_activity_muc_invite">ಗುಂಪಿಗೆ ಆಮಂತ್ರಣ</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
 	<string name="muc_invitation_from">%s ಇಂದ ಆಮಂತ್ರಣ</string>

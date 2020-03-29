@@ -7,24 +7,20 @@
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Ansluter till server…</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
+	<string name="conn_disconnecting">Kopplar från…</string>
 	<string name="conn_online">Ansluten</string>
-	<string name="conn_offline">Frånkopplad</string>
+	<string name="conn_offline">Ej ansluten</string>
 	<string name="conn_empty_roster">Inga kontakter att visa!</string>
-	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
-		- Scan a QR code\n\n
-		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
-		- \"Add contact\" if you know the JID</string>
-	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
-	<string name="conn_disconnected">Anslutningen stängd</string>
+	<string name="conn_empty_roster_hints">Det finns många sätt att lägg till kontakter:\n\n - Android Beam™: klicka på en väns telefon\n\n - Läs av en QR-kod\n\n - \"Skapa inbjudan\" och dela den (datorpost, SMS, QR-kod, …)\n\n - \"Lägg till kontakt\" om du känner till användarens JID</string>
+	<string name="conn_reconnect">Nytt anslutningsförsök om %d sekunder.</string>
+	<string name="conn_disconnected">Anslutning stängd</string>
 	<string name="conn_no_network">Ingen nätverksanslutning</string>
-	<string name="conn_ping_timeout">No response</string>
-	<string name="conn_error">Error: %s</string>
+	<string name="conn_ping_timeout">Inget svar</string>
+	<string name="conn_error">Fel: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Avsluta</string>
-	<string name="Global_authenticate_first">Anslut först</string>
+	<string name="Global_authenticate_first">Du behöver ansluta först</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
 	<string name="Global_JID_malformed">Kontrollera adressformat!</string>
@@ -33,42 +29,42 @@
 	<string name="StartupDialog_Title">Välkommen till yaxim!</string>
 	<string name="StartupDialog_Summary">Vissa inställningar måste göras innan du kan börja använda programmet. Ange ditt Jabber-ID och lösenord.</string>
 	<string name="StartupDialog_pwHint">Ange lösenord</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Visa lösenord</string>
 	<string name="StartupDialog_Username_title">Jabber-ID:</string>
 	<string name="StartupDialog_passwd_title">Lösenord:</string>
 	<string name="StartupDialog_advanced">Avancerat…</string>
 	<string name="StartupDialog_create_new">Registrera nytt konto</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
-	<string name="StartupDialog_created_password">Created secure password</string>
-	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+	<string name="StartupDialog_error_password">För kort lösenord!</string>
+	<string name="StartupDialog_created_password">Skapade säkert lösenord</string>
+	<string name="StartupDialog_auth_failed">Kontrollera ditt användarnamn och lösenord!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Du har fått en inbjudan till Jabber.  Var vänlig slutför din registrering.</string>
+	<string name="StartupDialog_no_more_accounts">Flera konton stöds ej!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Meddelande från %s</string>
 	<string name="notification_anonymous_message">Meddelande mottaget</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
-	<string name="notification_muc_message">%1$s in %2$s</string>
+	<string name="notification_muc_message">%1$s i %2$s</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Reply</string>
+	<string name="notification_reply">Svara</string>
 	<!-- notification button: mark as read (make SHORT string) -->
-	<string name="notification_mark_read">Mark Read</string>
+	<string name="notification_mark_read">Markera läst</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Fel när meddelandet skickades!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Aviseringsinställningar</string>
 	<string name="preftitle_notify_msg">Meddelandeavisering</string>
-	<string name="preftitle_notify_muc">Group Chat Notification</string>
-	<string name="notification_custom">Custom Ringtone</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
-	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
+	<string name="preftitle_notify_muc">Gruppavisering</string>
+	<string name="notification_custom">Anpassad ringsignal</string>
+	<string name="muc_highlight_title">Avisera bara om nämnd</string>
+	<string name="muc_highlight_sum">Avisera även när ditt kortnamn är nämnt i ett rum</string>
 	<string name="led_title">Blinkande lysdiod</string>
-	<string name="led_summ">Blinkning LED vid inkommande meddelande</string>
+	<string name="led_summ">Blinka LED vid inkommande meddelande</string>
 	<string name="vibr_title">Vibration</string>
 	<string name="vibr_summ">Vibrera vid inkommande meddelande</string>
 	<string-array name="vibr_values_displayed">
@@ -76,21 +72,21 @@
 		<item>Systeminställning</item>
 		<item>Alltid</item>
 	</string-array>
-	<string name="ringtone_title">Ljudsignal</string>
+	<string name="ringtone_title">Ringsignal</string>
 	<string name="ringtone_summ">Ljud vid inkommande meddelande</string>
 	<string name="ticker_title">Förhandsgranskning</string>
 	<string name="ticker_summ">Visa avsändare och meddelande i statusfältet</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_general">General Settings</string>
-	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
-	<string name="statuspopup_name">Ange status</string>
+	<string name="preftitle_general">Allmänna inställningar</string>
+	<string name="pref_dnd_when_silent">\"Stör ej\" i tyst läge</string>
+	<string name="pref_dnd_when_silent_summ">Sätt din status till \"DND\" när din telefon är i tyst läge</string>
+	<string name="statuspopup_name">Ange din status</string>
 	<string name="showOffline_summ">Visa alltid alla kontakter i listan</string>
 	<string name="showOffline_title">Visa frånkopplade kontakter</string>
-	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
-	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
+	<string name="enableGroups_summ">Arrangera dina kontakter efter grupp</string>
+	<string name="enableGroups_title">Visa kontaktgrupper</string>
+	<string name="foregroundService_summ">Lås appen i minnet så att den är garanterat ansluten (förgrundstjänst)</string>
 	<string name="foregroundService_title">Statusfältikon</string>
 
 	<string name="preftitle_debug">Felsökning</string>
@@ -114,33 +110,33 @@
 	<string name="pref_theme">Tema</string>
 	<string name="pref_theme_dark">Mörk</string>
 	<string name="pref_theme_light">Ljus</string>
-	<string name="pref_theme_pine">Pine</string>
-	<string name="pref_theme_ice">Ice</string>
+	<string name="pref_theme_pine">Tall</string>
+	<string name="pref_theme_ice">Is</string>
 	<string name="preftitle_ui">Utseende</string>
 	<string-array name="fontSizesChat">
 		<item>liten</item>
 		<item>normal</item>
 		<item>stor</item>
-		<item>huge</item>
+		<item>enorm</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add contact</string>
-	<string name="Menu_addClipboard">Add %s</string>
-	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_addFriend">Lägg till kontakt</string>
+	<string name="Menu_addClipboard">Lägg till %s</string>
+	<string name="Menu_ShowOff">Visa frånkopplat</string>
+	<string name="Menu_HideOff">Dölj frånkopplat</string>
+	<string name="Menu_AccSettings">Redigera konto</string>
 	<string name="Menu_Settings">Inställningar</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Anslut</string>
 	<string name="Menu_disconnect">Koppla från</string>
 	<string name="Menu_about">Om yaxim</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
-	<string name="Menu_mark_all_as_read">Mark all as read</string>
-	<string name="Menu_send_invitation">Create invitation</string>
-    <string name="Menu_userlist">Participants</string>
+	<string name="Menu_about_bruno">Om Bruno</string>
+	<string name="Menu_muc">Lägg till / bläddra...</string>
+	<string name="Menu_matrix">Träd in i Matrisen...</string>
+	<string name="Menu_mark_all_as_read">Markera allt som läst</string>
+	<string name="Menu_send_invitation">Skapa en inbjudan</string>
+    <string name="Menu_userlist">Deltagare</string>
 
 
 	<!-- AddFriend -->
@@ -151,18 +147,18 @@
 	<string name="NewGroup_EditTextField_Hint">Den nya gruppens namn</string>
 
 	<!-- Roster CONTEXTMENU -->
-	<string name="roster_contextmenu_group_rename">Ändra namn på grupp</string>
-	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Delete contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
-	<string name="roster_contextmenu_contact_rename">Ändra namn</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_group_rename">Döp om grupp</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Markera som läst</string>
+	<string name="roster_contextmenu_contact_delete">Radera kontakt</string>
+	<string name="roster_contextmenu_contact_delmsg">Radera chatthistoriken</string>
+	<string name="roster_contextmenu_contact_rename">Byt namn</string>
+	<string name="roster_contextmenu_contact_request_auth">Begär åtkomst</string>
 	<string name="roster_contextmenu_contact_change_group">Byt grupp</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
-	<string name="roster_contextmenu_contact_ringtone">Ljudsignal</string>
-	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
-	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
-	<string name="muc_leave_question">Really leave %s?</string>
+	<string name="roster_contextmenu_contact_share">Dela adress</string>
+	<string name="roster_contextmenu_contact_ringtone">Ringsignal</string>
+	<string name="roster_contextmenu_muc_edit">Redigera chattgrupp</string>
+	<string name="roster_contextmenu_muc_leave">Lämna chattgrupp</string>
+	<string name="muc_leave_question">Verkligen lämna %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Inloggningsuppgifter</string>
@@ -176,15 +172,15 @@
 	<string name="account_jabberID_dialog_title">Ange ditt Jabber-ID:</string>
 	<string name="account_jabberPW_title">Lösenord</string>
 	<string name="account_jabberPW_sum">Jabberkontots lösenord</string>
-	<string name="account_jabberPW_change_on_server">Change password on server</string>
-	<string name="account_jabberPW_password_old">Old Password:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
-	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password…</string>
-	<string name="account_jabberPW_finished">Password successfully changed.</string>
-	<string name="account_jabberPW_error">Error changing password: %s</string>
-	<string name="account_nickname_title">Display Name</string>
-	<string name="account_nickname_summ">Your nickname displayed to other users</string>
+	<string name="account_jabberPW_change_on_server">Byt lösenord hos servern</string>
+	<string name="account_jabberPW_password_old">Gammalt lösenord:</string>
+	<string name="account_jabberPW_password_new">Nytt lösenord:</string>
+	<string name="account_jabberPW_warning">VARNING! För att kunna ansluta så måste du ange samma lösenord som hos servern!</string>
+	<string name="account_jabberPW_progress">Var vänlig vänta, byter lösenord...</string>
+	<string name="account_jabberPW_finished">Lösenordet har ändrats.</string>
+	<string name="account_jabberPW_error">Misslyckade att ändra lösenordet: %s</string>
+	<string name="account_nickname_title">Visningsnamn</string>
+	<string name="account_nickname_summ">Ditt kortnamn visas för andra användare</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Instans</string>
@@ -200,32 +196,32 @@
 	<string name="account_port_dialog_title">Ange port:</string>
 	<string name="account_port_hint">5222</string>
 	<string name="account_customserver_title">Ange annan server</string>
-	<string name="account_customserver_summ">Ange en annan server (valfritt)</string>
+	<string name="account_customserver_summ">Ange alternativt namn på server (valfritt)</string>
 	<string name="account_customserver_dialog_title">Ange serverns namn:</string>
 	<string name="account_customserver_hint">host.exempel.com</string>
-	<string name="require_ssl_title">Kräv SSL/TLS</string>
+	<string name="require_ssl_title">Kräver SSL/TLS</string>
 	<string name="require_ssl_summ">Krypterar alltid anslutning till servern</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">Välj grupp</string>
 	<string name="setStatusmsgHint">Statusmeddelande</string>
-	<string name="setStatusTitle">Ange status</string>
+	<string name="setStatusTitle">Ange din status</string>
 	<string name="RenameGroup_summ">Ändra namn på gruppen %s till:</string>
-	<string name="RenameGroup_title">Ändra namn på grupp</string>
+	<string name="RenameGroup_title">Döp om grupp</string>
 	<string name="RenameEntry_summ">Döp om %1$s (%2$s) till:</string>
 	<string name="RenameEntry_title">Döp om kontakt</string>
 	<string name="MoveRosterEntryToGroupDialog_summ">Välj en grupp nedan</string>
 	<string name="MoveRosterEntryToGroupDialog_title">Byt grupp</string>
-	<string name="deleteRosterItem_text">Ta bort %1$s (%2$s)?</string>
-	<string name="deleteRosterItem_title">Ta bort kontakt</string>
-	<string name="deleteChatHistory_text">Ta bort alla meddelanden för %1$s (%2$s)?</string>
-	<string name="deleteChatHistory_title">Ta bort chatthistorik</string>
+	<string name="deleteRosterItem_text">Verkligen radera %1$s (%2$s)?</string>
+	<string name="deleteRosterItem_title">Radera kontakt</string>
+	<string name="deleteChatHistory_text">Verkligen radera alla meddelanden för %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_title">Radera chatthistorik</string>
 	<string name="subscriptionRequest_text">%1$s vill lägga till dig som kontakt: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Prenumerationsbegäran</string>
-	<string name="subscription_accept">Accept</string>
-	<string name="subscription_reject">Reject</string>
-	<string name="subscription_reject_all">Reject all</string>
-	<string name="subscription_status_from">can see your status</string>
+	<string name="subscriptionRequest_title">Prenumerationsförfrågan</string>
+	<string name="subscription_accept">Godkänn</string>
+	<string name="subscription_reject">Avvisa</string>
+	<string name="subscription_reject_all">Avvisa alla</string>
+	<string name="subscription_status_from">kan se din status</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Jag:</string>
@@ -233,9 +229,9 @@
 	<string name="chat_enterMsgHint">Skriv meddelande</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Citat</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Redigera meddelande</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -248,9 +244,9 @@
 	<string name="AboutDialog_title">Om yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Utvecklare</string>
 	<!-- Contact the developer button -->
-	<string name="AboutDialog_DevelopersText">Contact</string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_DevelopersText">Kontakt</string>
+	<string name="AboutDialog_LicenceTitle">Licens</string>
+	<string name="AboutDialog_Vote">Bedöm app</string>
 	<string name="AboutDialog_LicenceText">Denna text har avsiktligt lämnats i sin helhet på orginalspråk: This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">Ansluten</string>
@@ -258,67 +254,68 @@
 	<string name="status_chat">Ledig för chatt</string>
 	<string name="status_dnd">Stör ej</string>
 	<string name="status_xa">Inte tillgänglig</string>
-	<string name="status_offline">Frånkopplad</string>
+	<string name="status_offline">Ej ansluten</string>
 
 	<string name="translator_credits">Launchpad Contributions:
+  Anders Jackson https://launchpad.net/~anders-jackson
   Argafål https://launchpad.net/~argafal
   Fredrik Wendt https://launchpad.net/~fredrik-wendt
   Förnamn Eftr https://launchpad.net/~erikl-deactivatedaccount</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
-	<string name="all_contacts_group">All contacts</string>
-	<string name="muc_group">Group Chats</string>
+	<string name="default_group">Generell</string>
+	<string name="all_contacts_group">Alla kontakter</string>
+	<string name="muc_group">Gruppchatt</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Välj kontakt</string>
 	<string name="action_settings">Inställningar</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Group chat JID</string>
-	<string name="muc_nickname_hint">Nickname</string>
-	<string name="muc_password_hint">Password (optional)</string>
-	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_jid_hint">JID till gruppchat</string>
+	<string name="muc_nickname_hint">Smeknamn</string>
+	<string name="muc_password_hint">Lösenord (valfritt)</string>
+	<string name="title_activity_muc_invite">Inbjudan till gruppchatt</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">Inbjudan från %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d deltagare)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
-	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="muc_invitation_join">Går med som %s</string>
+	<string name="muc_synchronizing">Synkroniserar...</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="chat_muc_userlist">Deltagare i gruppchatt (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked">Utsparkad: %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_kicked_by">Utsparkade av %1$s: %2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">Blockad: %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+	<string name="muc_banned_by">Blockad av %1$s: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
-	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="roster_contextmenu_send">Skickar...</string>
+	<string name="roster_contextmenu_take_image">Tag ett foto</string>
+	<string name="roster_contextmenu_send_image">Välj ett foto</string>
+	<string name="roster_contextmenu_send_file">Skicka fil</string>
+	<string name="upload_compress">Komprimerar foto...</string>
+	<string name="upload_uploading">Skickar upp…</string>
+	<string name="upload_too_large">Filen är för stor!</string>
+	<string name="storage_permission">%s behöver tillgång till filsystem för att sända filer!</string>
 
 	<!-- Search -->
-	<string name="search_msg_hint">Message content</string>
+	<string name="search_msg_hint">Meddelandeinnehåll</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">Mina gruppchatter</string>
+	<string name="group_mucsearch">Publika gruppchatter</string>
 	<!-- Service Discovery -->
-	<string name="title_service_disco">Browser: %s</string>
+	<string name="title_service_disco">Letar: %s</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
-	<string name="notification_status">Foreground service</string>
+	<string name="notification_status">Förgrundstjänst</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">Meddelanden</string>
 
 </resources>
