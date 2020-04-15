@@ -3,6 +3,7 @@ package org.yaxim.androidclient;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jivesoftware.smack.sasl.SASLErrorException;
 import org.yaxim.androidclient.data.ChatHelper;
 import org.yaxim.androidclient.data.ChatProvider;
 import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
@@ -19,6 +20,7 @@ import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.preferences.NotificationPrefs;
 import org.yaxim.androidclient.service.InvitationTask;
+import org.yaxim.androidclient.service.SmackableImp;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -748,16 +750,15 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			if (cs == ConnectionState.DISCONNECTED) {
 				boolean firstRun = PreferenceManager.getDefaultSharedPreferences(this)
 									.contains(PreferenceConstants.FIRSTRUN);
-				String error = serviceAdapter.getConnectionStateString().replace("conflict(-1) ", "");
-				if (error.contains("\n")) // TODO: work around getConnectionStateString() returning two lines
-					error = error.split("\n")[1];
-				if (error.contains("SASLError using")) {// TODO: hack to circumvent old smack
-					error = getString(R.string.StartupDialog_auth_failed);
+				SmackableImp s = YaximApplication.getApp().getSmackable();
+				Exception login_error = s.getLastLoginError();
+				if (login_error instanceof SASLErrorException) {
+					// login failed, bring up first-start dialog
 					firstRun = true;
 				}
+
 				if (firstRun) {
-					Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-					showFirstStartUpDialog();
+					showFirstStartUpDialog(login_error);
 				}
 			} else
 			if (cs == ConnectionState.OFFLINE) // override with "Offline" string, no error message
@@ -934,7 +935,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		}
 	}
 
-	private void showFirstStartUpDialog() {
+	private void showFirstStartUpDialog(Exception error) {
 		String ibr_domain = null;
 		String jid = null;
 		String preauth = null;
@@ -959,11 +960,15 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			mFirstStartDialog.dismiss();
 		mFirstStartDialog = new FirstStartDialog(this, serviceAdapter);
 		mFirstStartDialog.show();
+		// show JID after showing dialog to trigger change listener
 		if (!TextUtils.isEmpty(jid))
 			mFirstStartDialog.setJID(jid, preauth);
 		else if (!TextUtils.isEmpty(ibr_domain))
 			mFirstStartDialog.setPreAuth(ibr_domain, preauth);
+		if (error != null)
+			mFirstStartDialog.setError(error);
 	}
+
 	private void showFirstStartUpDialogIfPrefsEmpty() {
 		Log.i(TAG, "showFirstStartUpDialogIfPrefsEmpty, JID: "
 						+ mConfig.jabberID);
@@ -978,7 +983,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			prefs.edit().putBoolean(PreferenceConstants.CONN_STARTUP, false).commit();
 
 			// show welcome dialog
-			showFirstStartUpDialog();
+			showFirstStartUpDialog(null);
 		} else {
 			XMPPHelper.setNFCInvitation(this, mConfig);
 			// implement auto-connect when started from launcher

@@ -1,6 +1,12 @@
 package org.yaxim.androidclient.dialogs;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.StanzaError;
+import org.jivesoftware.smack.sasl.SASLErrorException;
 import org.yaxim.androidclient.XMPPRosterServiceAdapter;
+import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.preferences.AccountPrefs;
 import org.yaxim.androidclient.util.PreferenceConstants;
@@ -113,6 +119,29 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		return this;
 	}
 
+	public FirstStartDialog setError(Exception e) {
+		String jid_message = e.getLocalizedMessage();
+		String password_message = null;
+		if (e instanceof SASLErrorException) {
+			jid_message = mainWindow.getString(R.string.StartupDialog_auth_failed);
+		} else if (e instanceof XMPPException.XMPPErrorException) {
+			StanzaError se = ((XMPPException.XMPPErrorException)e).getStanzaError();
+			jid_message = se.getDescriptiveText();
+			if (jid_message == null) {
+				if (se.getCondition() == StanzaError.Condition.service_unavailable || se.getCondition() == StanzaError.Condition.not_allowed)
+					jid_message = mainWindow.getString(R.string.StartupDialog_no_registration);
+				else
+					jid_message = se.toString();
+			}
+		} else if (e instanceof SmackException.ConnectionException) {
+			String domain = YaximApplication.getConfig().getServerHost();
+			jid_message = mainWindow.getString(R.string.StartupDialog_server_failed, domain);
+		}
+		mEditJabberID.setError(jid_message);
+		mEditPassword.setError(password_message);
+		mEditJabberID.requestFocus();
+		return this;
+	}
 	public void onClick(DialogInterface dialog, int which) {
 		switch (which) {
 		case BUTTON_POSITIVE:
@@ -173,7 +202,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 				String pw = XMPPHelper.securePassword();
 				Toast.makeText(mainWindow, R.string.StartupDialog_created_password, Toast.LENGTH_SHORT).show();
 				mEditPassword.setText(pw);
-			} else
+			} else if (mEditJabberID.getError() != null)
 				mEditPassword.requestFocus();
 		}
 		updateDialog(true);
