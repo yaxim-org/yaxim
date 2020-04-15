@@ -174,6 +174,7 @@ public class SmackableImp implements Smackable {
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
 	private ConnectionState mState = ConnectionState.OFFLINE;
 	private String mLastError;
+	private Exception mLastLoginError; // StanzaError for IBR, SASLErrorException for login issues
 	private long mLastOnline = 0;	//< timestamp of last successful full login (XEP-0198 does not count)
 	private long mLastOffline = 0;	//< timestamp of the end of last successful login
 
@@ -389,7 +390,7 @@ public class SmackableImp implements Smackable {
 				for (Message m : mq.getPage().getMamResultCarrierMessages())
 					processMessage(m, true);
 			}
-			mLastError = "99%";
+			mLastError = "";
 			updateConnectionState(ConnectionState.LOADING);
 			// TODO: use "connected" logo, not hollow one
 			mServiceCallBack.displayPendingNotifications(null);
@@ -491,6 +492,7 @@ public class SmackableImp implements Smackable {
 				// update state before starting thread to prevent race conditions
 				updateConnectionState(ConnectionState.CONNECTING);
 
+				mLastLoginError = null;
 				// register ping (connection) timeout handler: 2*PACKET_TIMEOUT(30s) + 3s
 				registerPongTimeout(2*PACKET_TIMEOUT + 3000, "connection");
 
@@ -622,8 +624,10 @@ public class SmackableImp implements Smackable {
 
 	// called at the end of a state transition
 	private synchronized void updateConnectionState(ConnectionState new_state) {
-		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.RECONNECT_NETWORK)
+		if (new_state == ConnectionState.ONLINE || new_state == ConnectionState.RECONNECT_NETWORK) {
 			mLastError = null;
+			mLastLoginError = null;
+		}
 		Log.d(TAG, "updateConnectionState: " + mState + " -> " + new_state + " (" + mLastError + ")");
 		if (new_state == mState && mState != ConnectionState.LOADING)
 			return;
@@ -767,6 +771,9 @@ public class SmackableImp implements Smackable {
 			// XXX: getCondition() isn't human-readable, but we lack i18n for it yet
 			onDisconnected(se.getCondition() + " " + se.getDescriptiveText());
 			return;
+		}
+		if (reason instanceof XMPPException || reason instanceof SmackException) {
+			mLastLoginError = (Exception)reason;
 		}
 		// iterate through to the deepest exception
 		while (reason.getCause() != null && !(reason.getCause().getClass().getSimpleName().equals("GaiException")))
@@ -2356,6 +2363,10 @@ public class SmackableImp implements Smackable {
 	@Override
 	public String getLastError() {
 		return mLastError;
+	}
+
+	public Exception getLastLoginError() {
+		return mLastLoginError;
 	}
 
 	public synchronized void updateNickname() {

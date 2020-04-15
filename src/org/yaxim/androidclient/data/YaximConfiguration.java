@@ -369,4 +369,11 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		}
 		return pushNodeId;
 	}
+
+	/** return the hostname / service domain used for connection purposes */
+	public String getServerHost() {
+		if (TextUtils.isEmpty(customServer))
+			return server;
+		else return customServer;
+	}
 }
