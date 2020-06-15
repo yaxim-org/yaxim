@@ -14,6 +14,7 @@ import org.yaxim.androidclient.util.ConnectionState;
 import org.yaxim.androidclient.util.StatusMode;
 
 import org.jivesoftware.smack.packet.Message.Type;
+import org.jivesoftware.smack.sasl.SASLErrorException;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -501,7 +502,7 @@ public class XMPPService extends GenericService {
 			mSmackable.requestConnectionState(ConnectionState.RECONNECT_NETWORK);
 
 		} else if (mConnectionDemanded.get()) {
-			if (reason.contains("SASLError using")) {
+			if (mSmackable.getLastLoginError() instanceof SASLErrorException) {
 				mConnectionDemanded.set(false);
 				mConfig.jid_configured = false;
 				mSmackable.requestConnectionState(ConnectionState.OFFLINE);
