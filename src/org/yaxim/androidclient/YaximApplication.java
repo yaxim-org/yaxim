@@ -1,5 +1,6 @@
 package org.yaxim.androidclient;
 
+import org.jivesoftware.smack.android.AndroidSmackInitializer;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.service.InstallReferrerReceiver;
 import org.yaxim.androidclient.service.SmackableImp;
@@ -53,6 +54,8 @@ public class YaximApplication extends Application {
 		mConfig = new YaximConfiguration(this);
 		JULHandler.reset(new JULHandler());
 		LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.FINE);
+		// Initialize DNS, https://discourse.igniterealtime.org/t/smack-only-using-google-dns-for-srv-android/88164
+		AndroidSmackInitializer.initialize(this);
 
 		SharedPreferences prefs = PreferenceManager
 			.getDefaultSharedPreferences(this);
