@@ -1349,12 +1349,14 @@ public class SmackableImp implements Smackable {
 	public long getRowIdForMessageCorrection(String jid, String resource, int direction, String packet_id) {
 		// query the DB for the RowID, return -1 if packet_id does not match
 		// this will check the last 10 messages from that JID
-		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI, new String[] { ChatConstants._ID, ChatConstants.PACKET_ID },
+		Cursor c = mContentResolver.query(ChatProvider.CONTENT_URI,
+				new String[] { ChatConstants._ID, ChatConstants.PACKET_ID, ChatConstants.CORRECTION },
 				"jid = ? AND resource = ? AND from_me = ?",
 				new String[] { jid, resource, "" + direction }, "_id DESC LIMIT 10");
 		long result = -1;
 		while(c.moveToNext()) {
-			if (c.getString(1).equals(packet_id))
+			// match for packet_id (last correction's @id) or correction (initial message's @id)
+			if (packet_id.equals(c.getString(1)) || packet_id.equals(c.getString(2)))
 				result = c.getLong(0);
 		}
 		c.close();
@@ -2021,7 +2023,7 @@ public class SmackableImp implements Smackable {
 		if (replace_id != null && upsert_id == -1) {
 			// obtain row id for last message with that full JID, or -1
 			upsert_id = getRowIdForMessageCorrection(withJID[0], withJID[1], direction, replace_id);
-			Log.d(TAG, "Replacing last message from " + withJID[0] + "/" + withJID[1] + ": " + replace_id + " -> " + msg.getStanzaId());
+			Log.d(TAG, "Replacing last message from " + withJID[0] + "/" + withJID[1] + ": " + replace_id + " -> " + msg.getStanzaId() + " @" + upsert_id);
 		}
 
 		if (!is_muc || checkAddMucMessage(msg, msg.getStanzaId(), withJID, timestamp)) {
