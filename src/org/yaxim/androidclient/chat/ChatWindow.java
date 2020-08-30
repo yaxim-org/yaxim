@@ -497,7 +497,9 @@ public class ChatWindow extends ThemedActivity implements OnKeyListener,
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
 		Cursor c = (Cursor)mListView.getItemAtPosition(info.position);
 		mContextMenuMessage = c.getString(c.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
-		mContextMenuPacketID = c.getString(c.getColumnIndex(ChatConstants.PACKET_ID));
+		String packet_id = c.getString(c.getColumnIndex(ChatConstants.PACKET_ID));
+		String correction_id = c.getString(c.getColumnIndex(ChatConstants.CORRECTION));
+		mContextMenuPacketID = TextUtils.isEmpty(correction_id) ? packet_id : correction_id;
 		mContextMenuID = c.getLong(c.getColumnIndex("_id"));
 		boolean from_me = c.getInt(c.getColumnIndex(ChatConstants.DIRECTION)) == ChatConstants.OUTGOING;
 		String resource = c.getString(c.getColumnIndex(ChatConstants.RESOURCE));
