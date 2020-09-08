@@ -178,7 +178,7 @@ dependencies {
 	implementation 'com.google.zxing:core:3.3.3'
 
 	// play referrer
-	implementation 'com.android.installreferrer:installreferrer:1.1'
+	playImplementation 'com.android.installreferrer:installreferrer:1.1'
 	// smack4
 	//compile project("Smack:smack-android-extensions")
 	//compile project("Smack:smack-tcp")
