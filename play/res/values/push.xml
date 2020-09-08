@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="push_service">push.yax.im</string>
+	<string name="gcm_defaultSenderId" translatable="false">919923047082</string>
+	<string name="google_app_id">1:919923047082:android:5c6e1f8ed3616cbf88eed3</string>
+</resources>
