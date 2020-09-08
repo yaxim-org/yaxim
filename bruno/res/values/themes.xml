@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:targetApi="11">
+
+	<style name="YaximDialogLight" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+		<item name="colorAccent">#991272</item> <!-- more intense dark_pink -->
+		<item name="android:textColorPrimary">#000000</item>
+		<item name="android:background">#ffe2ff</item> <!-- very light light_pink -->
+	</style>
+	<style name="YaximLightTheme" parent="Theme.AppCompat.Light">
+		<item name="android:windowBackground">@color/light_pink</item>
+		<item name="ErrorView">@style/StyleErrorView.Light.Pink</item>
+		<item name="colorPrimary">#ffabe7</item> <!-- +50% saturated light_pink -->
+		<item name="colorPrimaryDark">#e69ad0</item> <!-- 90% valued colorPrimary -->
+		<item name="colorAccent">#991272</item> <!-- double-valued dark_pink -->
+		<item name="alertDialogTheme">@style/YaximDialogLight</item>
+
+		<item name="MainGroup">@style/RosterGroupName.Light</item>
+		<item name="MainChild">@style/RosterGroupItem.Light</item>
+		<item name="ChatMsgHeaderMeColor">#ff6d6dcc</item>
+		<item name="ChatMsgHeaderYouColor">#ffcc5050</item>
+		<item name="ChatNewMessageColor">#ffb0b0b0</item>
+		<item name="ChatStoredMessageColor">#60b0b0b0</item>
+		<item name="ChatText">@style/ChatText.Light</item>
+		<item name="fontFamily">@font/comfortaa_regular</item>
+	</style>
+
+	<style name="YaximDialogDark" parent="Base.Theme.AppCompat.Dialog.Alert">
+		<item name="colorAccent">@color/light_pink</item>
+		<item name="android:textColorPrimary">#ffffff</item>
+		<item name="android:background">#3a2634</item>
+	</style>
+
+	<style name="YaximDarkTheme" parent="Theme.AppCompat">
+		<item name="android:windowBackground">@color/dark_pink</item>
+		<item name="colorPrimary">#800f5f</item> <!-- 50% saturated dark_pink -->
+		<item name="colorPrimaryDark">#4f0035</item> <!-- 40% saturated dark_pink -->
+		<item name="colorAccent">@color/light_pink</item>
+		<item name="alertDialogTheme">@style/YaximDialogDark</item>
+
+		<item name="MainGroup">@style/RosterGroupName.Dark</item>
+		<item name="MainChild">@style/RosterGroupItem</item>
+		<item name="ChatMsgHeaderMeColor">#ff8888ff</item>
+		<item name="ChatMsgHeaderYouColor">#ffff8888</item>
+		<item name="ChatNewMessageColor">#ff404040</item>
+		<item name="ChatStoredMessageColor">#60404040</item>
+		<item name="ErrorView">@style/StyleErrorView</item>
+		<item name="ChatText">@style/ChatText</item>
+		<item name="fontFamily">@font/comfortaa_regular</item>
+	</style>
+
+	<style name="YaximDialogDark.Pine">
+		<item name="colorAccent">#c7ffc7</item>
+		<item name="android:background">#233a23</item> <!-- mix of dark_green and grey -->
+	</style>
+
+	<style name="YaximPineTheme" parent="YaximDarkTheme">
+		<item name="android:windowBackground">@color/dark_green</item>
+		<item name="ErrorView">@style/StyleErrorView.Light.Green</item>
+		<item name="colorPrimary">#031903</item> <!-- 50% saturated dark_pink -->
+		<item name="colorPrimaryDark">#021002</item> <!-- 40% saturated dark_pink -->
+		<item name="colorAccent">#c7ffc7</item>
+		<item name="alertDialogTheme">@style/YaximDialogDark.Pine</item>
+	</style>
+
+	<style name="YaximDialogLight.Ice">
+		<item name="colorAccent">#008fcc</item>
+		<item name="android:background">#def3ff</item> <!-- mix of ice and white -->
+	</style>
+	<style name="YaximIceTheme" parent="YaximLightTheme">
+		<item name="android:windowBackground">@color/light_ice</item>
+		<item name="ErrorView">@style/StyleErrorView.Light.Ice</item>
+		<item name="colorPrimary">#4dbfff</item> <!-- +50% saturated light_ice -->
+		<item name="colorPrimaryDark">#008fcc</item> <!-- colorPrimary adapted dark -->
+		<item name="colorAccent">#007bbf</item> <!-- darker, saturated ice -->
+		<item name="alertDialogTheme">@style/YaximDialogLight.Ice</item>
+	</style>
+</resources>
