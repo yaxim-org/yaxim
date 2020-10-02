@@ -1,3 +1,9 @@
+0.9.9b:
+ * First startup: improve error handling
+ * Service: use default DNS server instead of Google
+ * Last Message Correction: always use first message's @id
+0.9.9a:
+ * Service: enforce "foreground service" on Android 8+
 0.9.9:
  * User Interface: major rework for Material Design and Notification Channels
  * Performance: significant improvement with many messages
