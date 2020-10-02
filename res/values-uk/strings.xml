@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">yaxim</string>
-	<string name="app_name_bruno">Bruno</string>
+	<string name="app_name_bruno">Бруно</string>
 
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
-	<string name="conn_title_bruno">Bruno: %s</string>
+	<string name="conn_title_bruno">Бруно: %s</string>
 	<string name="conn_connecting">Підключення до сервера...</string>
 	<string name="conn_disconnecting">Відключення...</string>
 	<string name="conn_online">На зв’язку</string>
@@ -15,7 +15,7 @@
 	<string name="conn_reconnect">Наступна спроба підключення через %d секунд.</string>
 	<string name="conn_disconnected">З’єднання закрито</string>
 	<string name="conn_no_network">Не має підключення до мережі</string>
-	<string name="conn_ping_timeout">No response</string>
+	<string name="conn_ping_timeout">Немає відповіді</string>
 	<string name="conn_error">Помилка: %s</string>
 
 	<!-- Global Strings -->
@@ -29,17 +29,19 @@
 	<string name="StartupDialog_Title">Вітаємо в yaxim</string>
 	<string name="StartupDialog_Summary">Для початку користування вам необхідно налаштувати програму. Будь ласка, введіть ваш Jabber ID та пароль.</string>
 	<string name="StartupDialog_pwHint">Введіть пароль</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Показати пароль</string>
 	<string name="StartupDialog_Username_title">Jabber ID</string>
 	<string name="StartupDialog_passwd_title">Пароль</string>
 	<string name="StartupDialog_advanced">Додатково...</string>
 	<string name="StartupDialog_create_new">Створити новий обліковий запис</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
+	<string name="StartupDialog_error_password">Пароль занадто короткий</string>
 	<string name="StartupDialog_created_password">Створено надійний пароль</string>
 	<string name="StartupDialog_auth_failed">Перевірте облікові дані і пароль!</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Вас запросили в Jabber. Будь ласка, завершіть реєстрацію.</string>
+	<string name="StartupDialog_no_more_accounts">Додатковий обліковий запис не дозволений!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Повідомлення від %s</string>
@@ -57,10 +59,10 @@
 	<string name="notification_error">Помилка при відправленні повідомлення!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Налаштування сповіщень</string>
 	<string name="preftitle_notify_msg">Сповіщення про повідомлення</string>
 	<string name="preftitle_notify_muc">Повідомлення конференції</string>
-	<string name="notification_custom">Custom Ringtone</string>
+	<string name="notification_custom">Користувацький рингтон</string>
 	<string name="muc_highlight_title">Тільки повідомити про згадку</string>
 	<string name="muc_highlight_sum">Повідомляти при згадці вашого ника в конференції</string>
 	<string name="led_title">Сповіщення LED</string>
@@ -86,7 +88,7 @@
 	<string name="showOffline_title">Показувати співрозмовників, що відключені</string>
 	<string name="enableGroups_summ">Впорядкувати контакти по групам</string>
 	<string name="enableGroups_title">Показувати групи контактів</string>
-	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Тримати додаток в пам\'яті, щоб забезпечити постійне з\'єднання (служба на передньому плані)</string>
 	<string name="foregroundService_title">Іконка в статусному рідку</string>
 
 	<string name="preftitle_debug">Діагностика</string>
@@ -110,8 +112,8 @@
 	<string name="pref_theme">Тема</string>
 	<string name="pref_theme_dark">Темна</string>
 	<string name="pref_theme_light">Світла</string>
-	<string name="pref_theme_pine">Pine</string>
-	<string name="pref_theme_ice">Ice</string>
+	<string name="pref_theme_pine">Сосна</string>
+	<string name="pref_theme_ice">Лід</string>
 	<string name="preftitle_ui">Зовнішній вигляд</string>
 	<string-array name="fontSizesChat">
 		<item>малий</item>
@@ -122,7 +124,7 @@
 
 	<!-- Mainmenu 	-->
 	<string name="Menu_addFriend">Додати контакт</string>
-	<string name="Menu_addClipboard">Add %s</string>
+	<string name="Menu_addClipboard">Додати %s</string>
 	<string name="Menu_ShowOff">Показати відключених</string>
 	<string name="Menu_HideOff">Приховати відключених</string>
 	<string name="Menu_AccSettings">Правка облікового запису</string>
@@ -131,9 +133,9 @@
 	<string name="Menu_connect">З’єднатися</string>
 	<string name="Menu_disconnect">Від’єднатися</string>
 	<string name="Menu_about">Про yaxim</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
+	<string name="Menu_about_bruno">Про Бруно</string>
+	<string name="Menu_muc">Додати / подивитись...</string>
+	<string name="Menu_matrix">Увійти в Matrix...</string>
 	<string name="Menu_mark_all_as_read">Позначити всі як прочитані</string>
 	<string name="Menu_send_invitation">Створити запрошення</string>
     <string name="Menu_userlist">Учасники</string>
@@ -179,8 +181,8 @@
 	<string name="account_jabberPW_progress">Будь ласка, зачекайте, пароль змінюється...</string>
 	<string name="account_jabberPW_finished">Пароль успішно змінено.</string>
 	<string name="account_jabberPW_error">Помилка зміни пароля: %s</string>
-	<string name="account_nickname_title">Display Name</string>
-	<string name="account_nickname_summ">Your nickname displayed to other users</string>
+	<string name="account_nickname_title">Показуване ім’я</string>
+	<string name="account_nickname_summ">Ваш ник показується іншим користувачам</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Ресурс</string>
@@ -220,7 +222,7 @@
 	<string name="subscriptionRequest_title">Запит на підписку</string>
 	<string name="subscription_accept">Прийняти</string>
 	<string name="subscription_reject">Відхилити</string>
-	<string name="subscription_reject_all">Reject all</string>
+	<string name="subscription_reject_all">Відхилити всі</string>
 	<string name="subscription_status_from">може бачити ваш статус</string>
 
 	<!-- CHATWINDOW -->
@@ -229,9 +231,9 @@
 	<string name="chat_enterMsgHint">Введіть повідомлення</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Цитата</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Редагувати повідомлення</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -244,9 +246,9 @@
 	<string name="AboutDialog_title">Про yaxim</string>
 	<string name="AboutDialog_DevelopersTitle">Розробники</string>
 	<!-- Contact the developer button -->
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<string name="AboutDialog_DevelopersText">Контакт</string>
 	<string name="AboutDialog_LicenceTitle">Ліцензія</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">Оцініть додаток</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">На зв’язку</string>
@@ -292,27 +294,27 @@
 	<string name="muc_banned_by">Заблоковано з %1$s: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
-	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="roster_contextmenu_send">Відправлення...</string>
+	<string name="roster_contextmenu_take_image">Камера</string>
+	<string name="roster_contextmenu_send_image">Обрати фото</string>
+	<string name="roster_contextmenu_send_file">Надіслати файл</string>
+	<string name="upload_compress">Стиснення картинки…</string>
+	<string name="upload_uploading">Вивантаження...</string>
+	<string name="upload_too_large">Занадто великий файл!</string>
+	<string name="storage_permission">%s потрібен доступ до сховища для відправки файлів!</string>
 
 	<!-- Search -->
-	<string name="search_msg_hint">Message content</string>
+	<string name="search_msg_hint">Вміст повідомлення</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">Мої групові чати</string>
+	<string name="group_mucsearch">Публічні групові чати</string>
 	<!-- Service Discovery -->
-	<string name="title_service_disco">Browser: %s</string>
+	<string name="title_service_disco">Перегляд: %s</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
-	<string name="notification_status">Foreground service</string>
+	<string name="notification_status">Служба на передньому плані</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">Повідомлення</string>
 
 </resources>

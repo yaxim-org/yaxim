@@ -11,16 +11,12 @@
 	<string name="conn_online">Online</string>
 	<string name="conn_offline">Offline</string>
 	<string name="conn_empty_roster">Sem contatos para mostrar!</string>
-	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
-		- Scan a QR code\n\n
-		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
-		- \"Add contact\" if you know the JID</string>
+	<string name="conn_empty_roster_hints">Existem muitas formas de adicionar contatos:\n\n  - Android Beam™: Tocar no telefone de um amigo\n\n - Ler um QR code\n\n - \ "Criar um convite" \ e compartilhar (e-mail, SMS, QR code...)\n\n \"Adicionar contato"\ se souber o JID</string>
 	<string name="conn_reconnect">Próxima tentativa de conexão em %d segundos.</string>
 	<string name="conn_disconnected">Conexão encerrada</string>
 	<string name="conn_no_network">Sem conexão de rede</string>
-	<string name="conn_ping_timeout">No response</string>
-	<string name="conn_error">Error: %s</string>
+	<string name="conn_ping_timeout">Sem resposta</string>
+	<string name="conn_error">Erro: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Sair</string>
@@ -33,40 +29,42 @@
 	<string name="StartupDialog_Title">Bem vindo ao yaxim!</string>
 	<string name="StartupDialog_Summary">Você precisa configurar o yaxim antes de poder usá-lo. Por favor coloque seu usuário XMPP e senha.</string>
 	<string name="StartupDialog_pwHint">Digite a senha</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Exibir senha</string>
 	<string name="StartupDialog_Username_title">ID do Jabber:</string>
 	<string name="StartupDialog_passwd_title">Senha:</string>
 	<string name="StartupDialog_advanced">Avançado...</string>
 	<string name="StartupDialog_create_new">Registrar nova conta</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
-	<string name="StartupDialog_created_password">Created secure password</string>
-	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+	<string name="StartupDialog_error_password">Senha muito curta!</string>
+	<string name="StartupDialog_created_password">Senha segura gerada</string>
+	<string name="StartupDialog_auth_failed">Por favor, confirme usuário e senha!</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Você foi convidado ao Jabber. Por favor, complete seu registro.</string>
+	<string name="StartupDialog_no_more_accounts">Sem suporte para contas adicionais!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">Mensagem de %s</string>
 	<string name="notification_anonymous_message">Mensagem recebida</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
-	<string name="notification_muc_message">%1$s in %2$s</string>
+	<string name="notification_muc_message">%1$s em %2$s</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Reply</string>
+	<string name="notification_reply">Responder</string>
 	<!-- notification button: mark as read (make SHORT string) -->
-	<string name="notification_mark_read">Mark Read</string>
+	<string name="notification_mark_read">Marcar como lida</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Erro ao enviar mensagem!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Configurações de Notificação</string>
 	<string name="preftitle_notify_msg">Notificação de Mensagens</string>
-	<string name="preftitle_notify_muc">Group Chat Notification</string>
-	<string name="notification_custom">Custom Ringtone</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
-	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
+	<string name="preftitle_notify_muc">Notificações de chat em grupo</string>
+	<string name="notification_custom">Toque personalizado</string>
+	<string name="muc_highlight_title">Notificar somente quando mencionado</string>
+	<string name="muc_highlight_sum">Notificar quando seu apelido for mencionado em uma sala</string>
 	<string name="led_title">Piscar LED</string>
 	<string name="led_summ">Piscar luz LED do celular quando receber mensagens</string>
 	<string name="vibr_title">Vibração</string>
@@ -78,22 +76,22 @@
 	</string-array>
 	<string name="ringtone_title">Toque de chamada</string>
 	<string name="ringtone_summ">Toque para mensagens recebidas</string>
-	<string name="ticker_title">Preview da Mensagem</string>
+	<string name="ticker_title">Prévia da mensagem</string>
 	<string name="ticker_summ">Mostrar remetente e mensagem na barra de status</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_general">General Settings</string>
-	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
+	<string name="preftitle_general">Configurações Gerais</string>
+	<string name="pref_dnd_when_silent">\"Não perturbe\" no modo silencioso</string>
+	<string name="pref_dnd_when_silent_summ">definir statis como \"Não perturbe\"</string>
 	<string name="statuspopup_name">Definir o seu status</string>
 	<string name="showOffline_summ">Sempre mostrar todos os contatos na lista</string>
-	<string name="showOffline_title">Mostra contatos que estão offline</string>
+	<string name="showOffline_title">Mostra contatos desconectados</string>
 	<string name="enableGroups_summ">Organizar contatos por grupo</string>
 	<string name="enableGroups_title">Mostrar grupos de contato</string>
-	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">Manter o aplicativo na memória para garantir conexão constante (serviço em primeiro plano)</string>
 	<string name="foregroundService_title">Ícone na barra de status</string>
 
-	<string name="preftitle_debug">Debugging</string>
+	<string name="preftitle_debug">Depuração</string>
 	<string name="smackdebug_summ">Saída de depuração e pacotes de dados com logcat (pode conter informações pessoais)</string>
 	<string name="smackdebug_title">Depuração SMACK</string>
 
@@ -114,8 +112,8 @@
 	<string name="pref_theme">Tema</string>
 	<string name="pref_theme_dark">Escuro</string>
 	<string name="pref_theme_light">Claro</string>
-	<string name="pref_theme_pine">Pine</string>
-	<string name="pref_theme_ice">Ice</string>
+	<string name="pref_theme_pine">Pinho</string>
+	<string name="pref_theme_ice">Gelo</string>
 	<string name="preftitle_ui">Aparência</string>
 	<string-array name="fontSizesChat">
 		<item>pequeno</item>
@@ -125,22 +123,22 @@
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add contact</string>
-	<string name="Menu_addClipboard">Add %s</string>
-	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_addFriend">Adicionar contato</string>
+	<string name="Menu_addClipboard">Adicionar %s</string>
+	<string name="Menu_ShowOff">Mostrar desconectados</string>
+	<string name="Menu_HideOff">Ocultar deconectados</string>
+	<string name="Menu_AccSettings">Editar conta</string>
 	<string name="Menu_Settings">Configurações</string>
 	<string name="Menu_Status">Status</string>
 	<string name="Menu_connect">Conectar</string>
 	<string name="Menu_disconnect">Desconectar</string>
 	<string name="Menu_about">Sobre o yaxim</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
-	<string name="Menu_mark_all_as_read">Mark all as read</string>
-	<string name="Menu_send_invitation">Create invitation</string>
-    <string name="Menu_userlist">Participants</string>
+	<string name="Menu_about_bruno">Sobre Bruno</string>
+	<string name="Menu_muc">Adicionar / navergar...</string>
+	<string name="Menu_matrix">Entre na Matrix...</string>
+	<string name="Menu_mark_all_as_read">Marcar todas como lidas</string>
+	<string name="Menu_send_invitation">Criar convite</string>
+    <string name="Menu_userlist">Participantes</string>
 
 
 	<!-- AddFriend -->
@@ -152,24 +150,24 @@
 
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_group_rename">Renomear grupo</string>
-	<string name="roster_contextmenu_contact_mark_as_read">Marcar como lido</string>
-	<string name="roster_contextmenu_contact_delete">Delete contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Marcar como lida</string>
+	<string name="roster_contextmenu_contact_delete">Excluir contato</string>
+	<string name="roster_contextmenu_contact_delmsg">Deletar histórico de conversas</string>
 	<string name="roster_contextmenu_contact_rename">Renomear</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
-	<string name="roster_contextmenu_contact_change_group">Change group</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_request_auth">Solicitar autorização</string>
+	<string name="roster_contextmenu_contact_change_group">Alterar grupo</string>
+	<string name="roster_contextmenu_contact_share">Compartilhar endereço</string>
 	<string name="roster_contextmenu_contact_ringtone">Toque de chamada</string>
-	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
-	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
-	<string name="muc_leave_question">Really leave %s?</string>
+	<string name="roster_contextmenu_muc_edit">Editar grupo de bate papo</string>
+	<string name="roster_contextmenu_muc_leave">Deixar este bate papo</string>
+	<string name="muc_leave_question">Deseja realmente sair %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Informações de Login</string>
 	<string name="account_settings_title">Configurações da Conta</string>
 	<string name="account_options_title">Opções de conexão</string>
 	<string name="account_options_advanced">Opções Avançadas</string>
-	<string name="carbons_title">Message Carbons (XEP-0280)</string>
+	<string name="carbons_title">Mensagem Carbono (XEP-0280)</string>
 	<string name="carbons_summ">Pedir cópias de mensagens de seu(s) outro(s ) cliente(s)</string>
 	<string name="account_jabberID_title">ID do Jabber</string>
 	<string name="account_jabberID_sum">exemplo: eu@xmpp.exemplo.org</string>
@@ -178,64 +176,64 @@
 	<string name="account_jabberPW_sum">Senha da sua conta do Jabber</string>
 	<string name="account_jabberPW_change_on_server">Mudar senha no servidor</string>
 	<string name="account_jabberPW_password_old">Senha antiga:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
+	<string name="account_jabberPW_password_new">Nova senha:</string>
 	<string name="account_jabberPW_warning">AVISO! Para conseguir acessar você também precisa usar a mesma senha no servidor!</string>
-	<string name="account_jabberPW_progress">Favor esperar um pouco, mudando a senha...</string>
+	<string name="account_jabberPW_progress">Aguarde, alterando a senha...</string>
 	<string name="account_jabberPW_finished">Senha alterada com sucesso.</string>
 	<string name="account_jabberPW_error">Erro mudando a senha: %s</string>
-	<string name="account_nickname_title">Display Name</string>
-	<string name="account_nickname_summ">Your nickname displayed to other users</string>
+	<string name="account_nickname_title">Mostrar Nome</string>
+	<string name="account_nickname_summ">Seu apelido exibido aos demais usuários</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Cliente: Recurso</string>
 	<string name="account_resource_summ">Padrão: yaxim</string>
 	<string name="account_resource_dialog_title">Escolha seu recurso:</string>
 	<string name="account_resource_hint">yaxim</string>
-	<string name="account_prio_title">Client Priority</string>
-	<string name="account_prio_summ">Default: 0 (allowed: -128 .. 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
-	<string name="account_prio_dialog_title">Enter your priority:</string>
-	<string name="account_port_title">Server Port</string>
-	<string name="account_port_sum">Default: 5222</string>
-	<string name="account_port_dialog_title">Enter the server port:</string>
+	<string name="account_prio_title">Prioridade do cliente</string>
+	<string name="account_prio_summ">Padrão: 0 (permitido: -128 .. 127)</string>
+	<string name="account_prio_error">Valores permitidos: -128 .. 127</string>
+	<string name="account_prio_dialog_title">Digite sua prioridade:</string>
+	<string name="account_port_title">Porta do servidor</string>
+	<string name="account_port_sum">Padrão: 5222</string>
+	<string name="account_port_dialog_title">Digite a porta do servidor</string>
 	<string name="account_port_hint">5222</string>
-	<string name="account_customserver_title">Custom Server</string>
-	<string name="account_customserver_summ">(Optional) alternative server hostname</string>
-	<string name="account_customserver_dialog_title">Enter server hostname:</string>
-	<string name="account_customserver_hint">host.example.com</string>
-	<string name="require_ssl_title">Require SSL/TLS</string>
-	<string name="require_ssl_summ">Always encrypt server connection</string>
+	<string name="account_customserver_title">Servidor personalizado</string>
+	<string name="account_customserver_summ">(Opcional) nome do servidor alternativo</string>
+	<string name="account_customserver_dialog_title">Digite o nome do servidor:</string>
+	<string name="account_customserver_hint">servidor.exemplo.com</string>
+	<string name="require_ssl_title">Solicitar SSL/TLS</string>
+	<string name="require_ssl_summ">Sempre criptografar conexão com o servidor</string>
 
 	<!--StatusPopUp-->
-	<string name="AddContact_SpinnerPrompt">Choose Group</string>
-	<string name="setStatusmsgHint">Your status message</string>
+	<string name="AddContact_SpinnerPrompt">Escolher grupo</string>
+	<string name="setStatusmsgHint">Sua mensagem de status</string>
 	<string name="setStatusTitle">Definir o seu status</string>
-	<string name="RenameGroup_summ">Rename group %s to:</string>
+	<string name="RenameGroup_summ">Renomear grupo %s para:</string>
 	<string name="RenameGroup_title">Renomear grupo</string>
-	<string name="RenameEntry_summ">Rename %1$s (%2$s) to: </string>
-	<string name="RenameEntry_title">Rename contact</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">Select a group from the spinner below</string>
-	<string name="MoveRosterEntryToGroupDialog_title">Change group</string>
-	<string name="deleteRosterItem_text">Really remove %1$s (%2$s)?</string>
+	<string name="RenameEntry_summ">Renomear %1$s (%2$s) para:</string>
+	<string name="RenameEntry_title">Renomear contaro</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">Selecione um grupo do seletor abaixo</string>
+	<string name="MoveRosterEntryToGroupDialog_title">Alterar grupo</string>
+	<string name="deleteRosterItem_text">Deseja realmente remover %1$s (%2$s)?</string>
 	<string name="deleteRosterItem_title">Apagar Contato</string>
-	<string name="deleteChatHistory_text">Really remove all messages with %1$s (%2$s)?</string>
+	<string name="deleteChatHistory_text">Deseja realmente remover todas as mensagens de %1$s (%2$s)?</string>
 	<string name="deleteChatHistory_title">Apagar Histórico do Chat</string>
-	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
-	<string name="subscription_accept">Accept</string>
-	<string name="subscription_reject">Reject</string>
-	<string name="subscription_reject_all">Reject all</string>
-	<string name="subscription_status_from">can see your status</string>
+	<string name="subscriptionRequest_text">%1$s deseja lhe adionar como contato: \"%2$s\"</string>
+	<string name="subscriptionRequest_title">Solicitação de Inscrição</string>
+	<string name="subscription_accept">Aceitar</string>
+	<string name="subscription_reject">Recusar</string>
+	<string name="subscription_reject_all">Recusar todas</string>
+	<string name="subscription_status_from">podem ver seu status</string>
 
 	<!-- CHATWINDOW -->
-	<string name="chat_from_me">Me:</string>
-	<string name="toast_stored_offline">The message has been stored for transmission.</string>
-	<string name="chat_enterMsgHint">Enter message</string> 
+	<string name="chat_from_me">Eu:</string>
+	<string name="toast_stored_offline">A mensagem foi armazenada para transmissão.</string>
+	<string name="chat_enterMsgHint">Digite a mensagem</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Citar</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Editar mensagem</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -246,137 +244,79 @@
 
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">Sobre o yaxim</string>
-	<string name="AboutDialog_DevelopersTitle">Developers</string>
+	<string name="AboutDialog_DevelopersTitle">Desenvolvedores</string>
 	<!-- Contact the developer button -->
-	<string name="AboutDialog_DevelopersText">Contact</string>
-	<string name="AboutDialog_LicenceTitle">Licensing</string>
-	<string name="AboutDialog_Vote">Rate app</string>
-	<string name="AboutDialog_LicenceText">
-		This program is free software; you can redistribute
-		it and/or
-		modify it under the terms of the GNU General Public License
-		version 2
-		as published by the Free Software Foundation.
-		Link:
-		http://www.gnu.org/licenses/gpl-2.0.html\n
-		\n
-		Parts of this software are
-		provided under the MIT License:\n
-		\n
-		Copyright © 2009 Mads
-		Kristiansen, Nullwire ApS\n
-		\n
-		Permission is hereby granted, free of
-		charge, to any person obtaining
-		a copy
-		of this software and associated
-		documentation files (the
-		"Software"), to deal
-		in the Software without
-		restriction, including
-		without limitation the rights
-		to use, copy,
-		modify, merge, publish,
-		distribute, sublicense, and/or sell
-		copies of
-		the Software, and to
-		permit persons to whom the Software is
-		furnished to
-		do so, subject to
-		the following conditions:
-		\n
-		The above copyright notice
-		and this permission notice shall be
-		included in all
-		copies or
-		substantial portions of the Software.
-		\n
-		THE SOFTWARE IS PROVIDED "AS
-		IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT
-		LIMITED TO THE WARRANTIES OF
-		MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR
-		PURPOSE AND NONINFRINGEMENT.
-		IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY
-		CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN
-		AN ACTION OF CONTRACT,
-		TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN
-		CONNECTION WITH THE
-		SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-    </string>
+	<string name="AboutDialog_DevelopersText">Contato</string>
+	<string name="AboutDialog_LicenceTitle">Licensa</string>
+	<string name="AboutDialog_Vote">Avalie este app</string>
+	<string name="AboutDialog_LicenceText">Este programa é um software livre; você poderá redistribuí-lo, e/ou modificá-lo sob os termos da Licensa Pública Geral (GNU) versão 2 como publicada pela Fundação de Software Livre. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n  Partes deste software são providas sob a licensa MIT: \n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n A permissão aqui concedida, livre de encargos, para qualquer pessoa que obtenha uma cópia deste software e os arquivos de documentação associada (o "software"), para trabalhar no software sem qualquer restrição, incluindo sem limitações os direitos de uso, cópia, modificação, junção, publicação, sub-licensiamento, e/ou venda das cópias do Software, e permissão para qualquer pessoa que o tenha remodelado a fazê-lo, seguindo as seguintes condições:\n O aviso de direitos e de permissões acima deverá estar incluso em todas as cópias ou porções substanciais do Software.\n O SOFTWARE É DISPONIBILIZADO "COMO TAL", SEM QUALQUER GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO MAS NÃO LIMITADAS AS GARANTIAS COMERCIAIS, DE ADAPATAÇÃO PARA PROPÓSITOS PARTICULARES E NÃO INFRIGIMENTOS. SOB HIPÓTESE NENHUMA OS DETENTORES DOS DIREITOS DE USO SERÃO CULPÁVEIS DE QUAISQUER QUEIXAS DANOS OU OUTROS, SEJA POR AÇÃO CONTRATUAL, PERDAS E DANOS OU QUALQUER OUTRO, EXIMINDO-OS DE QUALQUER CONEXÃO COM O SOFTWARE OU SEU USO E OUTRAS ALTERAÇÕES NO MESMO.</string>
 
 	<string name="status_available">Online</string>
-	<string name="status_away">Away</string>
-	<string name="status_chat">Free for chat</string>
-	<string name="status_dnd">Do not disturb</string>
-	<string name="status_xa">Not available</string>
+	<string name="status_away">Ausente</string>
+	<string name="status_chat">Disponível</string>
+	<string name="status_dnd">Não Perturbe</string>
+	<string name="status_xa">Indisponível</string>
 	<string name="status_offline">Offline</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Dedeco https://launchpad.net/~dedeco
-  M. https://launchpad.net/~nbkhope</string>
+  M. https://launchpad.net/~nbkhope
+  ThiagoRyuuga https://launchpad.net/~thiagoryuuga</string>
 
 	<!-- default roster group with no name -->
-	<string name="default_group">General</string>
-	<string name="all_contacts_group">All contacts</string>
-	<string name="muc_group">Group Chats</string>
+	<string name="default_group">Geral</string>
+	<string name="all_contacts_group">Todos os contatos</string>
+	<string name="muc_group">Conversa em grupo</string>
 
 	<!-- SEND listener popup -->
-	<string name="chooseContact">Choose contact</string>
+	<string name="chooseContact">Escolher contato</string>
 	<string name="action_settings">Configurações</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Group chat JID</string>
-	<string name="muc_nickname_hint">Nickname</string>
-	<string name="muc_password_hint">Password (optional)</string>
-	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_jid_hint">ID do grupo de bate papo</string>
+	<string name="muc_nickname_hint">Apelido</string>
+	<string name="muc_password_hint">Senha (opcional)</string>
+	<string name="title_activity_muc_invite">Convites de bate papo em grupo</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">Convite de %s</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s (%2$d participantes)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
-	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="muc_invitation_join">Entrar como %s</string>
+	<string name="muc_synchronizing">Sincronizando...</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="chat_muc_userlist">Participantes do chat (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked">Removido: %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_kicked_by">Removido por %1$s: %2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">Banido: %s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+	<string name="muc_banned_by">Banido por %1$s: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
-	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="roster_contextmenu_send">Enviar...</string>
+	<string name="roster_contextmenu_take_image">Tirar uma foto</string>
+	<string name="roster_contextmenu_send_image">Escolher imagem</string>
+	<string name="roster_contextmenu_send_file">Enviar arquivo</string>
+	<string name="upload_compress">Compactando imagem...</string>
+	<string name="upload_uploading">Enviando...</string>
+	<string name="upload_too_large">Arquivo muito grande!</string>
+	<string name="storage_permission">%s necessita acesso ao armazenamento para enviar arquivos!</string>
 
 	<!-- Search -->
-	<string name="search_msg_hint">Message content</string>
+	<string name="search_msg_hint">Conteúdo da mensagem</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">Meus grupos de bate papo</string>
+	<string name="group_mucsearch">Grupos de bate papo publicos</string>
 	<!-- Service Discovery -->
-	<string name="title_service_disco">Browser: %s</string>
+	<string name="title_service_disco">Navegador: %s</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
-	<string name="notification_status">Foreground service</string>
+	<string name="notification_status">serviço em execução</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">Mensagens</string>
 
 </resources>
