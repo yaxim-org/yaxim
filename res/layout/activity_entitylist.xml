@@ -16,7 +16,7 @@
 		android:cacheColorHint="#0000"
 		android:divider="#0000"/>
 
-	<TextView android:id="@+id/android:empty"
+	<TextView android:id="@android:id/empty"
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
 		android:gravity="center"
