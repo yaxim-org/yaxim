@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
+
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.StanzaError;
@@ -20,20 +22,17 @@ import org.yaxim.androidclient.util.XMPPHelper;
 public class InvitationTask extends AsyncTask<Void, String, InvitationTask.InvitationResponse> {
     private static final String TAG = "yaxim.InvitationTask";
 
-    private Activity ctx;
+    private WeakReference<Activity> ctx;
     private YaximConfiguration config;
     private Smackable smackable;
     private Toast status;
 
     public InvitationTask(Activity ctx, YaximConfiguration config, Smackable smackable) {
-        this.ctx = ctx;
+        this.ctx = new WeakReference(ctx);
         this.config = config;
         this.smackable = smackable;
     }
 
-    private void publishProgress(int res_id) {
-        publishProgress(ctx.getString(res_id));
-    }
     @Override
     protected InvitationResponse doInBackground(Void... params) {
         try {
@@ -61,12 +60,21 @@ public class InvitationTask extends AsyncTask<Void, String, InvitationTask.Invit
 		}
     }
 
+    private void showLongToast(String toast, boolean is_error) {
+        Activity act = ctx.get();
+        if (act != null) {
+            if (is_error)
+                toast = act.getString(R.string.conn_error, toast);
+            status = Toast.makeText(act, toast, Toast.LENGTH_LONG);
+            status.show();
+        }
+    }
+
     @Override
     protected void onProgressUpdate(String... values) {
         if (status != null)
             status.cancel();
-        status = Toast.makeText(ctx, values[0], Toast.LENGTH_LONG);
-        status.show();
+        showLongToast(values[0], false);
     }
 
     @Override
@@ -81,11 +89,13 @@ public class InvitationTask extends AsyncTask<Void, String, InvitationTask.Invit
             landing_page = response.response;
         } else {
             if (response.response != null)
-                Toast.makeText(ctx, response.toString(), Toast.LENGTH_LONG).show();
+                showLongToast(response.response, !response.success);
             landing_page = XMPPHelper.createInvitationLinkHTTPS(config.jabberID,
                     config.createInvitationCode());
         }
-        ChatHelper.showQrDialog(ctx, config.jabberID, landing_page, ctx.getString(R.string.Menu_send_invitation));
+        Activity act = ctx.get();
+        if (act != null && !act.isFinishing())
+            ChatHelper.showQrDialog(act, config.jabberID, landing_page, act.getString(R.string.Menu_send_invitation));
     }
 
     private InvitationResponse failResponse(String reason) {
@@ -106,12 +116,6 @@ public class InvitationTask extends AsyncTask<Void, String, InvitationTask.Invit
             this.response = response;
             if (!success)
                 Log.e("yaxim.InvitationTask", this.toString());
-        }
-
-        public String toString() {
-            if (success)
-                return response;
-            else return ctx.getString(R.string.conn_error, response);
         }
     }
 }
