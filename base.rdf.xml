@@ -3,13 +3,16 @@
 <rdf:RDF xmlns="http://usefulinc.com/ns/doap#"
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#"
-        xmlns:foaf="http://xmlns.com/foaf/0.1/">
+        xmlns:foaf="http://xmlns.com/foaf/0.1/"
+        xmlns:schema="https://schema.org/">
   <Project>
 
     <name>${NAME}</name>
 
     <shortdesc xml:lang="en">${SHORTDESC}</shortdesc>
     <description xml:lang="en">${DESCRIPTION}</description>
+    <schema:logo rdf:resource="${LOGO}"/>
+    <schema:screenshot rdf:resource="${SCREENSHOT}"/>
 
     <homepage rdf:resource="${HOMEPAGE}" />
     <wiki rdf:resource="https://github.com/yaxim-org/yaxim/wiki" />
