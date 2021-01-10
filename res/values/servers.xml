@@ -3,7 +3,7 @@
 	<string-array name="xmpp_servers">
 		<item>yax.im</item>
 		<!-- snip -->
-		<!-- :r!curl -s http://xmpp.net/services.xml | xml2 | awk -F= '/@jid=/ { print "\t\t<item>" $2 "</item>" }' | sort -n -->
+		<item>a3.pm</item>
 		<item>0nl1ne.at</item>
 		<item>blah.im</item>
 		<item>boese-ban.de</item>
@@ -127,7 +127,7 @@
 		<!-- snip -->
 		<item>chat.jabberfr.org</item>
 		<item>conference.1big.ru</item>
-		<item>conference.allegro.pl</item>
+		<item>conference.a3.pm</item>
 		<item>conference.boese-ban.de</item>
 		<item>conference.chat.bytemark.co.uk</item>
 		<item>conference.chatme.im</item>
