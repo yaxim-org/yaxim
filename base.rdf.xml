@@ -13,6 +13,7 @@
     <description xml:lang="en">${DESCRIPTION}</description>
     <schema:logo rdf:resource="${LOGO}"/>
     <schema:screenshot rdf:resource="${SCREENSHOT}"/>
+    <schema:documentation rdf:resource="https://github.com/yaxim-org/yaxim/wiki"/>
 
     <homepage rdf:resource="${HOMEPAGE}" />
     <wiki rdf:resource="https://github.com/yaxim-org/yaxim/wiki" />
