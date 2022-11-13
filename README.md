@@ -57,7 +57,7 @@ To compile yaxim, the following steps need to be taken:
 
 ## License
 
- * yaxim is licensed under GNU GPLv2 (see LICENSE.txt)
+ * yaxim is licensed under GNU GPLv3 (see LICENSE.txt)
 
  * [MemorizingTrustManager](https://github.com/ge0rg/memorizingtrustmanager) is MIT licensed.
 
