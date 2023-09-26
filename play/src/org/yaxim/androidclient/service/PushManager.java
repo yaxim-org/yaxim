@@ -61,18 +61,39 @@ public class PushManager {
 	}
 
 	public boolean disableAccountPush() {
-		try {
-			if (connection.isAuthenticated()) {
-				Jid push_service = JidCreate.from(service.getString(R.string.push_service));
-				PushNotificationsManager.getInstanceFor(connection).disableAll(push_service);
-				Log.i(TAG, "Successfully disabled push for " + push_service + " on account.");
-				return true;
+		FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+			@Override
+			public void onComplete(@NonNull Task<InstanceIdResult> task) {
+				if (!task.isSuccessful()) {
+					Log.w(TAG, "FCM token retrieval failed.");
+					task.getException().printStackTrace();
+					return false;
+				}
+				try {
+					InstanceIdResult result = task.getResult();
+					pushToken = result.getToken();
+					Log.d(TAG, "FCM token: " + pushToken);
+				} catch (Exception e) {
+					Log.e(TAG, "Error obtaining FCM token!");
+					e.printStackTrace();
+					return false;
+				}
+				if(connection.isAuthenticated()) {
+					Log.i(TAG, "Not connected to server, not unregistering from FCM push.");
+					return false;
+				}
+				try {
+					Jid push_service = JidCreate.from(service.getString(R.string.push_service));
+					PushNotificationsManager.getInstanceFor(connection).disable(push_service, pushToken);
+					Log.i(TAG, "Successfully disabled push for " + push_service + " on account.");
+					return true;
+				} catch (Exception e) {
+					Log.e(TAG, "Error obtaining FCM token!");
+					e.printStackTrace();
+				}
+				return false;
 			}
-		} catch (Exception e) {
-			Log.e(TAG, "Error obtaining FCM token!");
-			e.printStackTrace();
-		}
-		return false;
+		});
 	}
 
 	private void getFcmPushToken() {
@@ -93,34 +114,25 @@ public class PushManager {
 				} catch (Exception e) {
 					Log.e(TAG, "Error obtaining FCM token!");
 					e.printStackTrace();
+					return;
+				}
+				if(connection.isAuthenticated()) {
+					Log.i(TAG, "Not connected to server, not registering for FCM push.");
+					return;
 				}
 				try {
-					if (connection.isAuthenticated()) {
-						Jid push_service = JidCreate.from(service.getString(R.string.push_service));
-						AdHocCommandManager ahcm = AdHocCommandManager.getAddHocCommandsManager(connection);
-						RemoteCommand rc = ahcm.getRemoteCommand(push_service, NODE);
-						DataForm df = new DataForm(DataForm.Type.submit);
-						df.addField(new FormField("type", "fcm"));
-						df.addField(new FormField("node", deviceId));
-						df.addField(new FormField("token", pushToken));
-						rc.execute(new Form(df));
-						if (rc.getForm().hasField("node") && rc.getForm().hasField("secret")) {
-							String node = rc.getForm().getField("node").getFirstValue();
-							String secret = rc.getForm().getField("secret").getFirstValue();
-							HashMap<String, String> pub_opts = new HashMap<>();
-							pub_opts.put("secret", secret);
-							PushNotificationsManager.getInstanceFor(connection)
-									.enable(push_service, node, pub_opts);
-						}
-						Log.i(TAG, "Successfully registered push for " + push_service + " on account.");
-					} else
-						Log.i(TAG, "Not connected to server, not registering for FCM push.");
+					Jid push_service = JidCreate.from(service.getString(R.string.push_service));
+					Jid push_module = service.getString(R.string.push_module);
+					HashMap<String, String> pub_opts = new HashMap<>();
+					pub_opts.put("pushModule", push_module);
+					PushNotificationsManager.getInstanceFor(connection)
+							.enable(push_service, pushToken, pub_opts);
+					Log.i(TAG, "Enabled push via " + push_service + " using pushModule " + push_module + " on account.");
 				} catch (Exception e) {
 					Log.e(TAG, "Error obtaining FCM token!");
 					e.printStackTrace();
 				}
 			}
 		});
-
 	}
 }
