@@ -220,9 +220,9 @@ public class SmackableImp implements Smackable {
 
 		mLastOnline = mLastOffline = System.currentTimeMillis();
 		mPingAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPingAlarmIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
 		DiscoverInfo.Identity yaxim_identity = new DiscoverInfo.Identity("client",
 				service.getString(R.string.app_name),

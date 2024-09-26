@@ -107,7 +107,7 @@ public class XMPPService extends GenericService {
 		createServiceMucStub();
 
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM));
 		registerReceiver(mRingerModeReceiver, new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION));
 		configureSmartAwayMode();

@@ -281,12 +281,12 @@ public abstract class GenericService extends Service {
 					getApplicationContext(),
 					notifications.get(fromJid).id,
 					msgHeardIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 		PendingIntent msgResponsePendingIntent = PendingIntent.getBroadcast(
 					getApplicationContext(),
 					notifications.get(fromJid).id,
 					msgResponseIntent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
+					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_MUTABLE);
 		RemoteInput remoteInput = new RemoteInput.Builder("voicereply")
 			.setLabel(getString(R.string.notification_reply))
 			.build();
@@ -310,7 +310,7 @@ public abstract class GenericService extends Service {
 		//need to set flag FLAG_UPDATE_CURRENT to get extras transferred
 		PendingIntent pi = TaskStackBuilder.create(this)
 			.addNextIntentWithParentStack(chatIntent)
-			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+			.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
 		String notification_channel = mConfig.getEffectiveNotificationChannelId(nd.isMuc, fromJid);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
