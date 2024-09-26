@@ -120,7 +120,8 @@
 				  android:label="@string/preftitle_notify">
 		</activity>
 
-		<service android:name=".service.XMPPService">
+		<service android:name=".service.XMPPService"
+			android:foregroundServiceType="dataSync|remoteMessaging">
 			<intent-filter>
 				<action android:name="de.hdmstuttgart.yaxim.XMPPSERVICE" />
 			</intent-filter>
