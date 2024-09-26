@@ -7,7 +7,7 @@ svg2png() {
 	height=$3
 	dest=$4
 	api=$5
-	inkscape --export-png=res/$dest$api/$basename.png --export-width=$width --export-height=$height --export-background-opacity=0,0 -C -z asset-graphics/$basename$api.svg
+	inkscape --export-png=res/$dest$api/$basename.png --export-width=$width --export-height=$height --export-background-opacity=0 -C -z asset-graphics/$basename$api.svg
 }
 
 # convert a single svg into a group of PNGs for all DPIs
