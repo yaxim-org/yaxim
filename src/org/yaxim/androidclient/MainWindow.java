@@ -317,9 +317,12 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 	@SuppressWarnings("deprecation") /* recent ClipboardManager only available since API 11 */
 	public Uri xmppUriFromClipboard() {
 		ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-		if (cm.getText() == null)
+		CharSequence clipcs = cm.getText();
+		if (clipcs == null)
 			return null;
-		String clip = cm.getText().toString();
+		String clip = clipcs.toString();
+		if (clip == null || "".equals(clip))
+			return null;
 		if (clip.contains("@") && XMPPHelper.XMPP_PATTERN.matcher("xmpp:" + clip).matches()) {
 			return new Uri.Builder().scheme("xmpp").authority(clip).build();
 		}
