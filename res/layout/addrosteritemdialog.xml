@@ -9,24 +9,24 @@
 		android:orientation="vertical"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
-		android:paddingBottom="15dp"
-		android:paddingTop="10dp">
+		android:paddingLeft="10sp"
+		android:paddingRight="10sp"
+		android:paddingBottom="15sp"
+		android:paddingTop="10sp">
 
 	<TextView
 			android:id="@+id/Addcontact_Title"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/addFriend_Summ"
-			android:paddingBottom="20dp"
+			android:paddingBottom="20sp"
 			style="?attr/dialogTextColor"
 		/>
 	<org.yaxim.androidclient.widget.AutoCompleteJidEdit
 			android:id="@+id/AddContact_EditTextField"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="20dp"
+			android:layout_marginBottom="20sp"
 			android:gravity="left"
 			android:singleLine="true"
 			android:imeOptions="actionNext"
@@ -41,7 +41,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:gravity="left"
-			android:layout_marginBottom="20dp"
+			android:layout_marginBottom="20sp"
 			android:singleLine="true"
 			android:textSize="18sp"
 			android:maxWidth="200sp"

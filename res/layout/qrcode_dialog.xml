@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/layout_root" android:orientation="vertical"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:paddingLeft="15dp"
-	android:paddingStart="15dp"
-	android:paddingRight="15dp"
-	android:paddingEnd="15dp"
-	android:paddingBottom="15dp"
-	android:paddingTop="10dp"
+	android:paddingLeft="15sp"
+	android:paddingStart="15sp"
+	android:paddingRight="15sp"
+	android:paddingEnd="15sp"
+	android:paddingBottom="15sp"
+	android:paddingTop="10sp"
 	android:layout_gravity="top">
 
 	<ImageView
@@ -24,6 +24,6 @@
 		style="?attr/dialogTextColor"
 		android:gravity="center"
 		android:textSize="20sp"
-		android:paddingTop="20dp"
-		android:paddingBottom="20dp"/>
+		android:paddingTop="20sp"
+		android:paddingBottom="20sp"/>
 </LinearLayout>

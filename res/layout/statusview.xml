@@ -9,10 +9,10 @@
 		android:layout_width="fill_parent" 
 		android:minWidth="240sp" 
 		android:layout_height="fill_parent"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
-		android:paddingBottom="15dp"
-		android:paddingTop="10dp"
+		android:paddingLeft="10sp"
+		android:paddingRight="10sp"
+		android:paddingBottom="15sp"
+		android:paddingTop="10sp"
 		>
 
 	<CheckBox
@@ -27,13 +27,13 @@
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:prompt="@string/setStatusTitle"
-		android:layout_marginBottom="15dp"
+		android:layout_marginBottom="15sp"
 	/>
 
 	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="15dp"
+	    android:layout_marginBottom="15sp"
 	    >
 	  <AutoCompleteTextView android:id="@+id/statusview_message"
 		android:layout_height="wrap_content"

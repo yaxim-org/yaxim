@@ -3,13 +3,13 @@
 	android:orientation="horizontal" android:layout_width="fill_parent"
 	android:layout_height="wrap_content" android:gravity="center_vertical">
 
-	<RelativeLayout android:layout_width="52dp" android:layout_height="wrap_content">
+	<RelativeLayout android:layout_width="52sp" android:layout_height="wrap_content">
 		<TextView android:id="@+id/roster_unreadmsg_cnt"
 			style="@style/RosterMessageCounter" />
 		<ImageView android:id="@+id/roster_icon"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginEnd="4dp"
-			android:layout_marginRight="4dp"
+			android:layout_marginEnd="4sp"
+			android:layout_marginRight="4sp"
 			android:longClickable="false"
 			android:paddingStart="12sp"
 			android:paddingLeft="12sp"
@@ -18,7 +18,7 @@
 
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="vertical"
-		android:minHeight="52dp" android:layout_gravity="center_vertical"
+		android:minHeight="52sp" android:layout_gravity="center_vertical"
 		android:gravity="center_vertical">
 
 		<LinearLayout android:layout_width="fill_parent"
@@ -28,8 +28,8 @@
 
 			<TextView android:id="@+id/roster_screenname"
 				style="?attr/MainChild"
-				android:paddingStart="10dp"
-				android:paddingLeft="10dp" android:longClickable="false"
+				android:paddingStart="10sp"
+				android:paddingLeft="10sp" android:longClickable="false"
 				android:layout_weight="1"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:singleLine="true" />
@@ -42,8 +42,8 @@
 		</LinearLayout>
 
 		<TextView android:id="@+id/roster_statusmsg"
-			android:paddingStart="10dp"
-			android:paddingLeft="10dp"
+			android:paddingStart="10sp"
+			android:paddingLeft="10sp"
 			android:textSize="13sp" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:singleLine="true"
 			android:ellipsize="end" android:visibility="gone" 

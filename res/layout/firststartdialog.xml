@@ -4,12 +4,12 @@
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:paddingLeft="10dp"
-		android:paddingStart="10dp"
-		android:paddingRight="10dp"
-		android:paddingEnd="10dp"
-		android:paddingBottom="15dp"
-		android:paddingTop="10dp" >
+		android:paddingLeft="10sp"
+		android:paddingStart="10sp"
+		android:paddingRight="10sp"
+		android:paddingEnd="10sp"
+		android:paddingBottom="15sp"
+		android:paddingTop="10sp" >
     <LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"

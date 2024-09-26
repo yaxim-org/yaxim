@@ -22,8 +22,8 @@
 	<ImageView android:id="@+id/action_bar_status"
 		android:layout_gravity="center_vertical|left"
 		android:layout_width="wrap_content"
-		android:paddingRight="4dp"
-		android:paddingEnd="4dp"
+		android:paddingRight="4sp"
+		android:paddingEnd="4sp"
 		android:layout_height="wrap_content" />
 
 	<LinearLayout android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
 		<TextView android:id="@+id/action_bar_subtitle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="-3dp"
+			android:layout_marginTop="-3sp"
 			android:layout_marginBottom="5dip"
 			android:singleLine="true"
 			android:ellipsize="end"

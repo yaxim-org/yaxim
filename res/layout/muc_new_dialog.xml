@@ -3,24 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingBottom="15dp"
-    android:paddingTop="10dp"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp"
+    android:paddingBottom="15sp"
+    android:paddingTop="10sp"
     >
 
     <TextView
 	android:id="@+id/muc_invitation"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_marginBottom="15dp"
+	android:layout_marginBottom="15sp"
 	android:visibility="gone"
 	/>
     <org.yaxim.androidclient.widget.AutoCompleteJidEdit
 	android:id="@+id/muc_new_jid"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_marginBottom="15dp"
+	android:layout_marginBottom="15sp"
 	android:singleLine="true"
 	android:hint="@string/muc_jid_hint"
 	android:contentDescription="@string/muc_jid_hint"
@@ -31,14 +31,14 @@
 	android:id="@+id/muc_status"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_marginBottom="15dp"
+	android:layout_marginBottom="15sp"
 	android:visibility="gone"
 	/>
     <EditText
 	android:id="@+id/muc_new_nick"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_marginBottom="15dp"
+	android:layout_marginBottom="15sp"
 	android:singleLine="true"
 	android:contentDescription="@string/muc_nickname_hint"
 	android:hint="@string/muc_nickname_hint" />
