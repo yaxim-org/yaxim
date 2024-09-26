@@ -427,7 +427,7 @@ public class XMPPService extends GenericService {
 			.setOngoing(true)
 			.setOnlyAlertOnce(true)
 			.setContentIntent(PendingIntent.getActivity(this, 0, notificationIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT))
+				PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE))
 			.setContentTitle(getString(R.string.conn_title, mConfig.jabberID))
 			.setContentText(getStatusTitle(cs))
 			.build();
@@ -624,7 +624,7 @@ public class XMPPService extends GenericService {
 				b.appendQueryParameter("body", body);
 				intent.setData(Uri.parse(uri + b.toString()));
 				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, 
-						intent, 0);
+						intent, PendingIntent.FLAG_IMMUTABLE);
 				Notification invNotify = new NotificationCompat.Builder(getApplicationContext(), "msg")
 						 .setContentTitle(roomname)
 						 .setContentText(body)
