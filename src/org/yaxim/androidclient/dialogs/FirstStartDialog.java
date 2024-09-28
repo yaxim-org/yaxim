@@ -147,7 +147,7 @@ public class FirstStartDialog extends AlertDialog implements DialogInterface.OnC
 		case BUTTON_POSITIVE:
 			verifyAndSavePreferences();
 			boolean create_account = mCreateAccount.isChecked();
-			mainWindow.startConnection(create_account);
+			mainWindow.startConnectionWithNotificationPermission(create_account);
 			break;
 		case BUTTON_NEUTRAL:
 			verifyAndSavePreferences();

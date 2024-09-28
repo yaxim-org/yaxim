@@ -27,6 +27,10 @@ import org.yaxim.androidclient.util.PreferenceConstants;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.ComponentName;
@@ -73,6 +77,9 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 public class MainWindow extends ThemedActivity implements ExpandableListView.OnChildClickListener {
 
 	private static final String TAG = "yaxim.MainWindow";
+	private static final int REQUEST_NOTIFICATION_UPGRADE = 1;
+	private static final int REQUEST_NOTIFICATION_LOGIN = 2;
+	private static final int REQUEST_NOTIFICATION_REGISTER = 3;
 
 	ExpandableListView elv;
 
@@ -789,6 +796,45 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		startService(xmppServiceIntent);
 	}
 
+	public void startConnectionWithNotificationPermission(boolean create_account) {
+		requestNotificationPermission(create_account ? REQUEST_NOTIFICATION_REGISTER : REQUEST_NOTIFICATION_LOGIN);
+	}
+	public void requestNotificationPermission(final int requestCode) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+			onNotificationPermissionGrantedOrDenied(requestCode);
+			return;
+		}
+		if (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.POST_NOTIFICATIONS)
+				!= PackageManager.PERMISSION_GRANTED) {
+			ActivityCompat.requestPermissions(MainWindow.this,
+					new String[]{Manifest.permission.POST_NOTIFICATIONS},
+					requestCode);
+		} else {
+			// Permission has already been granted
+			onNotificationPermissionGrantedOrDenied(requestCode);
+		}
+	}
+
+	public void onNotificationPermissionGrantedOrDenied(int requestCode) {
+		if (requestCode != REQUEST_NOTIFICATION_UPGRADE)
+			startConnection(requestCode == REQUEST_NOTIFICATION_REGISTER);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode,
+										   String permissions[], int[] grantResults) {
+		if (grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+					Manifest.permission.POST_NOTIFICATIONS)) {
+				/* we don't show the dialog, just pass through - we can't re-request from here anyway */
+			}
+			else {
+				Toast.makeText(this, getString(R.string.notification_permission_denied), Toast.LENGTH_LONG).show();
+			}
+		}
+		onNotificationPermissionGrantedOrDenied(requestCode);
+	}
 	// this function changes the prefs to keep the connection
 	// according to the requested state
 	private void toggleConnection() {
@@ -804,7 +850,7 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 			serviceAdapter.disconnect();
 			stopService(xmppServiceIntent);
 		} else
-			startConnection(false);
+			startConnectionWithNotificationPermission(false);
 	}
 
 	private String getConnectDisconnectText() {
