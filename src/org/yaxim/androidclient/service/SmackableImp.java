@@ -2133,7 +2133,7 @@ public class SmackableImp implements Smackable {
 		// messages with no timestamp are always new, and always come after join is completed
 		if (timestamp == null) {
 			Log.d(TAG, "checkAddMucMessage(" + fromJid[0] + "): " + nick + "/" + packet_id  + " without timestamp --> isSync=true");
-			completeMucSync(fromJid[0], msg.getSubject());
+			completeMucSync(fromJid[0], null);
 			return true;
 		}
 		// messages after we have joined and synchronized the MUC are always new
