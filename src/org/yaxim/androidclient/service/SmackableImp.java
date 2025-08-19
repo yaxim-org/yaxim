@@ -1594,9 +1594,9 @@ public class SmackableImp implements Smackable {
 		public void onReceive(Context ctx, Intent i) {
 			try {
 				Log.d(TAG, "PingAlarmReceiver.onReceive");
-				//sendServerPing();
+				sendServerPing();
 				// ping all MUCs. if no ping was received since last attempt, /cycle
-				Iterator<MUCController> muc_it = multiUserChats.values().iterator();
+				Iterator<MUCController> muc_it = new ArrayList<>(multiUserChats.values()).iterator();
 				long ts = System.currentTimeMillis();
 				while (muc_it.hasNext()) {
 					MUCController mucc = muc_it.next();
