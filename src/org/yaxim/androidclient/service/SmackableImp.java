@@ -383,8 +383,13 @@ public class SmackableImp implements Smackable {
 			int loaded = mq.getMessageCount();
 			for (Message m : mq.getPage().getMamResultCarrierMessages())
 				processMessage(m, true);
+			int total = mq.getPage().getMamFinIq().getRSMSet().getCount();
 			while (!mq.isComplete()) {
-				mLastError = "" + (loaded*99/mq.getPage().getMamFinIq().getRSMSet().getCount()) + "%";
+				if (total >= 0) {
+					mLastError = "" + (loaded*99/total) + "%";
+				} else {
+					mLastError = "" + loaded + "/∞";
+				}
 				updateConnectionState(ConnectionState.LOADING);
 				loaded = loaded + mq.pageNext(20).size();
 				for (Message m : mq.getPage().getMamResultCarrierMessages())
