@@ -56,6 +56,8 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="https" android:host="join.jabber.network" android:pathPrefix="/" />
+				<data android:scheme="https" android:host="xmpp.link" android:pathPrefix="/" />
 				<data android:scheme="https" android:host="yax.im" android:pathPrefix="/i/" />
 				<data android:scheme="https" android:host="yax.im" android:pathPrefix="/j/" />
 				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/i/" />

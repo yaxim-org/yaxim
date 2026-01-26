@@ -1,5 +1,6 @@
 package org.yaxim.androidclient.util;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +29,9 @@ import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
 
 public class XMPPHelper {
+
+	// list of well-known invitation landing pages
+	public static final List<String> EASY_INVITE_HOSTS = Arrays.asList("yax.im", "xmpp.link", "join.jabber.network");
 
 	// shameless copy from android/platform_frameworks_base/blob/master/core/java/android/util/Patterns.java
 	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF";
@@ -260,12 +264,13 @@ public class XMPPHelper {
 
 	public static Uri transmogrifyXmppUriHelper(Uri uri) {
 		Uri data = uri;
+		String host = (data.getHost() != null) ? data.getHost() : "";
 		if ("xmpp".equalsIgnoreCase(data.getScheme())) {
 			if (data.isOpaque()) {
 				// cheat around android's unwillingness to parse opaque URIs
 				data = Uri.parse(data.toString().replaceFirst(":", "://").replace(';', '&'));
 			}
-		} else if ("yax.im".equalsIgnoreCase(data.getHost()) && !TextUtils.isEmpty(data.getFragment())) {
+		} else if (EASY_INVITE_HOSTS.contains(host.toLowerCase()) && !TextUtils.isEmpty(data.getFragment())) {
 			// convert URI fragment (after # sign) into xmpp URI
 			String jid = data.getFragment().replace(';', '&');
 			data = Uri.parse("xmpp://" + jid2url(jid));
