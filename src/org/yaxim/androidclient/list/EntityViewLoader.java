@@ -37,7 +37,7 @@ class EntityViewLoader extends AsyncTask<String, EntityInfo, Throwable> {
 		try {
 			smackJid = JidCreate.from(jid);
 		} catch (Exception e) {
-			publishProgress(null);
+			publishProgress((EntityInfo[])null);
 			return;
 		}
 		ServiceDiscoveryManager sm = ServiceDiscoveryManager.getInstanceFor(c);
@@ -47,7 +47,7 @@ class EntityViewLoader extends AsyncTask<String, EntityInfo, Throwable> {
 		} catch (XMPPException.XMPPErrorException e) {
 			switch (e.getStanzaError().getCondition()) {
 			case remote_server_not_found: // user hasn't finished typing yet
-				publishProgress(null);
+				publishProgress((EntityInfo[])null);
 				break;
 			case service_unavailable: // this is maybe a user account
 			case subscription_required: // this is probably a user account (from ejabberd)
@@ -85,7 +85,7 @@ class EntityViewLoader extends AsyncTask<String, EntityInfo, Throwable> {
 			} catch (Exception e) {
 				publishProgress(EntityInfo.fromError(e));
 			}
-		} else publishProgress(null);
+		} else publishProgress((EntityInfo[])null);
 		return null;
 	}
 

@@ -116,7 +116,7 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 
 	void loadServerList(XMPPConnection c, String muc_domains[]) throws Exception {
 		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(c);
-		publishProgress(null);
+		publishProgress((EntityInfo[])null);
 		for (String jid : muc_domains) {
 			boolean is_matrix = jid.equals(XMPPHelper.MATRIX_BRIDGE);
 			if (isCancelled())
@@ -165,7 +165,7 @@ class EntityListLoader extends AsyncTask<String, EntityInfo, Throwable> {
 			throw new XMPPException.XMPPErrorException(result, result.getError());
 		else if (result instanceof MuclumbusResult) {
 			MuclumbusResult r = (MuclumbusResult) result;
-			publishProgress(null);
+			publishProgress((EntityInfo[])null);
 			for (MuclumbusResult.Item muc : r.getItems()) {
 				StatusMode sm = muc.is_open ? StatusMode.available : StatusMode.dnd;
 				String desc = muc.description;
