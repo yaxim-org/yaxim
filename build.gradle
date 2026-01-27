@@ -5,20 +5,14 @@ buildscript {
 		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:3.5.1'
-		// NOTE: Do not place your application dependencies here; they belong
-		// in the individual module build.gradle files
-
-		classpath 'org.ajoberstar:grgit:1.1.0'
-
-		// https://github.com/Triple-T/gradle-play-publisher#usage
-		classpath 'com.github.triplet.gradle:play-publisher:2.4.1'
+		classpath 'com.android.tools.build:gradle:8.13.2'
 	}
 }
 
 plugins {
 	// obtain revision from git
-	id 'org.ajoberstar.grgit' version '1.6.0'
+	id 'org.ajoberstar.grgit' version '5.3.2'
+	id 'com.github.triplet.play' version "3.13.0"
 }
 
 allprojects {
@@ -44,11 +38,12 @@ idea {
 }
 
 ext {
-	build_date = "${new Date().format('yyyy-MM-dd')}"
-	build_revision = "${grgit.describe()}"
-	build_version = "yaxim ${build_revision} ${build_date}"
+	build_date = new Date().format('yyyy-MM-dd')
+	build_revision = grgit.describe(tags: true)
+	build_version = "${build_revision} ${build_date}"
 }
 
+// TODO: replace with new string injector
 task buildVersion (type: Copy) {
 	from("template") {
 		include "version.xml"
@@ -63,17 +58,22 @@ task buildVersion (type: Copy) {
 }
 
 android {
-	compileSdkVersion 33
-	buildToolsVersion "33.0.2"
+	namespace "org.yaxim.androidclient"
+	compileSdk 33
 	useLibrary 'org.apache.http.legacy'
 	flavorDimensions ("style", "distribution")
+	buildFeatures {
+		aidl = true
+		buildConfig = true
+	}
 	defaultConfig {
 		applicationId "org.yaxim"
-		minSdkVersion 14
+		minSdk 14
 		//noinspection ExpiredTargetSdkVersion
-		targetSdkVersion 33
+		targetSdk 33
 		versionName "$build_revision"
 		vectorDrawables.useSupportLibrary = true
+		resValue "string", "application_id", applicationId
 	}
 
 	if (project.hasProperty("RELEASE_KEY_ALIAS")) {
@@ -198,10 +198,3 @@ configurations {
 }
 
 preBuild.dependsOn buildVersion
-
-// required to fill applicationId into prefs XML files
-afterEvaluate {
-	android.applicationVariants.all { variant ->
-		variant.resValue 'string', 'application_id', variant.applicationId
-	}
-}
