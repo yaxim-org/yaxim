@@ -57,12 +57,18 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="https" android:host="join.jabber.network" android:pathPrefix="/" />
-				<data android:scheme="https" android:host="xmpp.link" android:pathPrefix="/" />
-				<data android:scheme="https" android:host="yax.im" android:pathPrefix="/i/" />
-				<data android:scheme="https" android:host="yax.im" android:pathPrefix="/j/" />
-				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/i/" />
-				<data android:scheme="https" android:host="conversations.im" android:pathPrefix="/j/" />
+				<data android:scheme="https" android:host="join.jabber.network" />
+				<data android:scheme="https" android:host="xmpp.link" />
+				<data android:pathPrefix="/" />
+			</intent-filter>
+			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="https" android:host="yax.im" />
+				<data android:scheme="https" android:host="conversations.im" />
+				<data android:pathPrefix="/i/" />
+				<data android:pathPrefix="/j/" />
 			</intent-filter>
 			<intent-filter android:icon="@drawable/icon" android:label="@string/Menu_addFriend">
 				<action android:name="android.nfc.action.NDEF_DISCOVERED"/>
