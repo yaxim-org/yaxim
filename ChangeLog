@@ -1,3 +1,5 @@
+0.9.9c:
+ * Startup: show absolute sync progress instead of broken percent
 0.9.9b:
  * First startup: improve error handling
  * Service: use default DNS server instead of Google
