@@ -225,33 +225,13 @@ public class XMPPHelper {
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setStaticNFC(Activity act, String uri) {
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
-			if (na == null)
-				return;
-			NdefMessage nm = new NdefMessage(NdefRecord.createUri(uri),
-					NdefRecord.createApplicationRecord(act.getPackageName()));
-			na.setNdefPushMessage(nm, act);
-		}
+		// sad trombone for Android killing Beam
+		// TODO: implement ISO/IEC 14443-3/4 NDEF via Host Card Emulation
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setNFCInvitation(final Activity act, final YaximConfiguration config) {
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			NfcAdapter na = NfcAdapter.getDefaultAdapter(act);
-			if (na == null)
-				return;
-			na.setNdefPushMessageCallback(new NfcAdapter.CreateNdefMessageCallback() {
-				@Override
-				public NdefMessage createNdefMessage (NfcEvent event) {
-					// expire NFC codes after 30mins
-					String uri = createInvitationLink(config.jabberID,
-							config.createInvitationCode(30*60));
-					return new NdefMessage(NdefRecord.createUri(uri),
-							NdefRecord.createApplicationRecord(act.getPackageName()));
-				}
-			}, act);
-		}
+		// still sad trombone
 	}
 
 	public static void shareLink(Activity act, int title_id, String link) {
