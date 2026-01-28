@@ -45,7 +45,7 @@ ext {
 
 android {
 	namespace "org.yaxim.androidclient"
-	compileSdk 33
+	compileSdk 35
 	useLibrary 'org.apache.http.legacy'
 	flavorDimensions ("style", "distribution")
 	buildFeatures {
@@ -56,7 +56,7 @@ android {
 		applicationId "org.yaxim"
 		minSdk 14
 		//noinspection ExpiredTargetSdkVersion
-		targetSdk 33
+		targetSdk 35
 		versionName "$build_revision"
 		vectorDrawables.useSupportLibrary = true
 		resValue "string", "application_id", applicationId
