@@ -7,6 +7,7 @@
 		<item name="android:background">#ffe2ff</item> <!-- very light light_pink -->
 	</style>
 	<style name="YaximLightTheme" parent="Theme.AppCompat.Light">
+		<item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
 		<item name="android:windowBackground">@color/light_pink</item>
 		<item name="ErrorView">@style/StyleErrorView.Light.Pink</item>
 		<item name="colorPrimary">#ffabe7</item> <!-- +50% saturated light_pink -->
@@ -31,6 +32,7 @@
 	</style>
 
 	<style name="YaximDarkTheme" parent="Theme.AppCompat">
+		<item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
 		<item name="android:windowBackground">@color/dark_pink</item>
 		<item name="colorPrimary">#800f5f</item> <!-- 50% saturated dark_pink -->
 		<item name="colorPrimaryDark">#4f0035</item> <!-- 40% saturated dark_pink -->

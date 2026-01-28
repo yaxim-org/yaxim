@@ -7,6 +7,7 @@
 <!--     the unprefixed ones (without android:) are for the Sherlock implementation -->
 
     <style name="YaximLightTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
         <!-- <item name="android:windowBackground">@color/holo_light_bg_color</item> -->
         <item name="MainGroup">@style/RosterGroupName.Light</item>
         <item name="MainChild">@style/RosterGroupItem.Light</item>
@@ -27,6 +28,7 @@
     </style>
 
     <style name="YaximDarkTheme" parent="Theme.AppCompat">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
         <item name="colorPrimary">#404040</item>
         <item name="colorPrimaryDark">#303030</item>
         <item name="colorAccent">#d5e6b3</item>
