@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ServiceInfo;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -433,7 +434,10 @@ public class XMPPService extends GenericService {
 			.build();
 
 
-		startForeground(SERVICE_NOTIFICATION, n);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+			startForeground(SERVICE_NOTIFICATION, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING);
+		else
+			startForeground(SERVICE_NOTIFICATION, n);
 	}
 	private void updateServiceNotification() {
 		ConnectionState cs = ConnectionState.OFFLINE;
