@@ -219,6 +219,8 @@ public class SmackableImp implements Smackable {
 		this.mAlarmManager = (AlarmManager)mService.getSystemService(Context.ALARM_SERVICE);
 
 		mLastOnline = mLastOffline = System.currentTimeMillis();
+		mPingAlarmIntent.setPackage(mService.getPackageName());
+		mPongTimeoutAlarmIntent.setPackage(mService.getPackageName());
 		mPingAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPingAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 		mPongTimeoutAlarmPendIntent = PendingIntent.getBroadcast(mService.getApplicationContext(), 0, mPongTimeoutAlarmIntent,
@@ -1277,8 +1279,8 @@ public class SmackableImp implements Smackable {
 
 	public void registerCallback(XMPPServiceCallback callBack) {
 		this.mServiceCallBack = callBack;
-		mService.registerReceiver(mPingAlarmReceiver, new IntentFilter(PING_ALARM));
-		mService.registerReceiver(mPongTimeoutAlarmReceiver, new IntentFilter(PONG_TIMEOUT_ALARM));
+		mService.registerReceiver(mPingAlarmReceiver, new IntentFilter(PING_ALARM), Context.RECEIVER_NOT_EXPORTED);
+		mService.registerReceiver(mPongTimeoutAlarmReceiver, new IntentFilter(PONG_TIMEOUT_ALARM), Context.RECEIVER_NOT_EXPORTED);
 	}
 
 	public void unRegisterCallback() {

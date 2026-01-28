@@ -10,8 +10,12 @@ import org.yaxim.androidclient.util.JULHandler;
 import org.yaxim.androidclient.util.PreferenceConstants;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 
@@ -65,7 +69,16 @@ public class YaximApplication extends Application {
 
 		// since Android 7, you need to manually register for network changes
 		// https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#MonitorChanges
-		registerReceiver(new YaximBroadcastReceiver(), new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+		registerReceiver(new YaximBroadcastReceiver(), new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION), Context.RECEIVER_EXPORTED);
+	}
+
+	// TODO: remove this when migrating to AndroidX
+	@Override
+	public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, int flags) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+			return super.registerReceiver(receiver, filter, flags);
+		else
+			return super.registerReceiver(receiver, filter);
 	}
 
 	public static YaximApplication getApp() { return app; }
