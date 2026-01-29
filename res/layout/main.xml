@@ -11,6 +11,7 @@
 		style="?ErrorView"
 		android:visibility="gone"
 		android:text=""
+		android:maxLines = "6"
 		android:focusable="true"/>
 
 	<ExpandableListView android:id="@android:id/list"
