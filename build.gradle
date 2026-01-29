@@ -43,6 +43,14 @@ ext {
 	build_version = "${build_revision} ${build_date}"
 }
 
+def versionCodeDate() {
+	if (project.hasProperty("RELEASE_MINOR")) {
+		return new Date().format("yyyyMMdd" + RELEASE_MINOR).toInteger()
+	} else {
+		return new Date().format("yyyyMMdd00").toInteger()
+	}
+}
+
 android {
 	namespace "org.yaxim.androidclient"
 	compileSdk 35
@@ -58,6 +66,7 @@ android {
 		//noinspection ExpiredTargetSdkVersion
 		targetSdk 35
 		versionName "$build_revision"
+		versionCode versionCodeDate()
 		vectorDrawables.useSupportLibrary = true
 		resValue "string", "build_revision", "$build_revision"
 		resValue "string", "build_date", "$build_date"
