@@ -12,6 +12,7 @@
 		android:visibility="gone"
 		android:text=""
 		android:maxLines = "6"
+		android:onClick="onClickClipboard"
 		android:focusable="true"/>
 
 	<ExpandableListView android:id="@android:id/list"

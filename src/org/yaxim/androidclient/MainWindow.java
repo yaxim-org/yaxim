@@ -123,6 +123,15 @@ public class MainWindow extends ThemedActivity implements ExpandableListView.OnC
 		getContentResolver().unregisterContentObserver(mChatObserver);
 	}
 
+	public void onClickClipboard(View v) {
+		ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+		cm.setText(((TextView)v).getText());
+		if (Build.VERSION.SDK_INT < 33) {
+			Toast.makeText(this, "📋", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+
 	public int getStatusActionIcon() {
 		boolean showOffline = !isConnected() || isConnecting()
 					|| getStatusMode() == null;
