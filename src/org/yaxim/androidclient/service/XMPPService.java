@@ -48,7 +48,7 @@ public class XMPPService extends GenericService {
 	private static final String RECONNECT_ALARM = "org.yaxim.androidclient.RECONNECT_ALARM";
 	private int mReconnectTimeout = RECONNECT_AFTER;
 	private String mReconnectInfo = "";
-	private Intent mAlarmIntent = new Intent(RECONNECT_ALARM).setPackage(getPackageName());
+	private Intent mAlarmIntent = new Intent(RECONNECT_ALARM);
 	private PendingIntent mPAlarmIntent;
 	private BroadcastReceiver mAlarmReceiver = new ReconnectAlarmReceiver();
 	private BroadcastReceiver mRingerModeReceiver = new RingerModeReceiver();
@@ -107,6 +107,7 @@ public class XMPPService extends GenericService {
 		createServiceChatStub();
 		createServiceMucStub();
 
+		mAlarmIntent.setPackage(getPackageName());
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM), Context.RECEIVER_EXPORTED);
