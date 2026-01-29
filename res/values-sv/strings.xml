@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">För kort lösenord!</string>
 	<string name="StartupDialog_created_password">Skapade säkert lösenord</string>
 	<string name="StartupDialog_auth_failed">Kontrollera ditt användarnamn och lösenord!</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
 	<string name="StartupDialog_invitation">Du har fått en inbjudan till Jabber.  Var vänlig slutför din registrering.</string>
 	<string name="StartupDialog_no_more_accounts">Flera konton stöds ej!</string>
@@ -303,6 +305,7 @@
 	<string name="upload_uploading">Skickar upp…</string>
 	<string name="upload_too_large">Filen är för stor!</string>
 	<string name="storage_permission">%s behöver tillgång till filsystem för att sända filer!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Meddelandeinnehåll</string>

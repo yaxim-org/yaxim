@@ -6,102 +6,100 @@
 	<!-- Connection state -->
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_title_bruno">Bruno: %s</string>
-	<string name="conn_connecting">正在连接服务器…</string>
-	<string name="conn_disconnecting">断开连接...</string>
+	<string name="conn_connecting">正在连接到服务器…</string>
+	<string name="conn_disconnecting">正在断开连接…</string>
 	<string name="conn_online">在线</string>
 	<string name="conn_offline">离线</string>
-	<string name="conn_empty_roster">没有联系人！</string>
-	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
-		- Android Beam™: touch a friend\'s phone\n\n
-		- Scan a QR code\n\n
-		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
-		- \"Add contact\" if you know the JID</string>
-	<string name="conn_reconnect">%d秒后重新连接</string>
+	<string name="conn_empty_roster">没有可显示的联系人！</string>
+	<string name="conn_empty_roster_hints">添加联系人的方法有多种：\n\n - Android Beam™：使用朋友的手机\n\n - 扫描二维码\n\n - \“创建邀请\”并分享（电子邮件、短信、二维码…）\n\n - 如果您知道 JID，则“添加联系人”</string>
+	<string name="conn_reconnect">%d 秒后尝试下一次连接。</string>
 	<string name="conn_disconnected">连接已关闭</string>
-	<string name="conn_no_network">没有网络连接</string>
-	<string name="conn_ping_timeout">No response</string>
-	<string name="conn_error">Error: %s</string>
+	<string name="conn_no_network">无网络连接</string>
+	<string name="conn_ping_timeout">无响应</string>
+	<string name="conn_error">错误：%s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">退出</string>
 	<string name="Global_authenticate_first">请先连接</string>
 	<string name="Global_JID_hint">user@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">检查地址格式</string>
+	<string name="Global_JID_malformed">请检查地址格式！</string>
 
 	<!-- FirstStartUpDialog -->
-	<string name="StartupDialog_Title">欢迎使用yaxim！</string>
-	<string name="StartupDialog_Summary">你需要先配置yaxim才能使用。请输入你的Jabber标识和密码。</string>
+	<string name="StartupDialog_Title">欢迎使用 yaxim！</string>
+	<string name="StartupDialog_Summary">在使用 yaxim 之前，您需要对其进行配置。请输入您的 Jabber ID 和密码。</string>
 	<string name="StartupDialog_pwHint">输入密码</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
-	<string name="StartupDialog_Username_title">Jabber ID</string>
+	<string name="StartupDialog_pwshowHint">显示密码</string>
+	<string name="StartupDialog_Username_title">Jabber ID:</string>
 	<string name="StartupDialog_passwd_title">密码：</string>
 	<string name="StartupDialog_advanced">高级…</string>
-	<string name="StartupDialog_create_new">注册新账户</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
-	<string name="StartupDialog_created_password">Created secure password</string>
-	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+	<string name="StartupDialog_create_new">注册新账号</string>
+	<string name="StartupDialog_error_password">密码太短！</string>
+	<string name="StartupDialog_created_password">已创建安全密码</string>
+	<string name="StartupDialog_auth_failed">请检查您的用户名和密码！</string>
+	<string name="StartupDialog_server_failed">无法连接到 %s！</string>
+	<string name="StartupDialog_no_registration">服务器不允许注册！</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">您已受邀加入 Jabber。请完成您的注册。</string>
+	<string name="StartupDialog_no_more_accounts">不支持额外账号！</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">来自 %s 的消息</string>
-	<string name="notification_anonymous_message">收到消息</string>
+	<string name="notification_anonymous_message">消息已收到</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
-	<string name="notification_muc_message">%1$s in %2$s</string>
+	<string name="notification_muc_message">%1$s 在 %2$s</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Reply</string>
+	<string name="notification_reply">回复</string>
 	<!-- notification button: mark as read (make SHORT string) -->
-	<string name="notification_mark_read">Mark Read</string>
+	<string name="notification_mark_read">标记为已读</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">消息发送失败</string>
+	<string name="notification_error">发送消息时出错！</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">通知设置</string>
 	<string name="preftitle_notify_msg">消息通知</string>
-	<string name="preftitle_notify_muc">Group Chat Notification</string>
-	<string name="notification_custom">Custom Ringtone</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
-	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
-	<string name="led_title">闪动 LED</string>
-	<string name="led_summ">当有消息时闪动手机LED</string>
+	<string name="preftitle_notify_muc">群聊通知</string>
+	<string name="notification_custom">自定义铃声</string>
+	<string name="muc_highlight_title">仅在提及时通知</string>
+	<string name="muc_highlight_sum">当群聊中提及您的昵称时通知</string>
+	<string name="led_title">闪烁 LED</string>
+	<string name="led_summ">收到消息时手机 LED 闪烁</string>
 	<string name="vibr_title">振动</string>
-	<string name="vibr_summ">当有消息时振动</string>
+	<string name="vibr_summ">收到消息时振动</string>
 	<string-array name="vibr_values_displayed">
-		<item>从不</item>
-		<item>系统设置</item>
-		<item>总是</item>
+		<item>永不</item>
+		<item>系统首选项</item>
+		<item>始终</item>
 	</string-array>
 	<string name="ringtone_title">铃声</string>
-	<string name="ringtone_summ">来信息时响铃</string>
+	<string name="ringtone_summ">收到消息的提示音</string>
 	<string name="ticker_title">消息预览</string>
-	<string name="ticker_summ">在状态栏显示发送者和消息</string>
+	<string name="ticker_summ">在状态栏中显示发送者和消息</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_general">General Settings</string>
-	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
+	<string name="preftitle_general">常规设置</string>
+	<string name="pref_dnd_when_silent">静音模式时“请勿打扰”</string>
+	<string name="pref_dnd_when_silent_summ">当您的手机处于静音模式时，将您的在线状态设置为“请勿打扰”</string>
 	<string name="statuspopup_name">设置您的状态</string>
-	<string name="showOffline_summ">总是显示所有联系人</string>
+	<string name="showOffline_summ">始终显示联系人列表中的所有联系人</string>
 	<string name="showOffline_title">显示离线联系人</string>
-	<string name="enableGroups_summ">移动该联系人到分组中</string>
+	<string name="enableGroups_summ">按联系人所在的组排列联系人</string>
 	<string name="enableGroups_title">显示联系人分组</string>
-	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
+	<string name="foregroundService_summ">将应用保留在内存中以确保始终处于连接状态（前台服务）</string>
 	<string name="foregroundService_title">状态栏图标</string>
 
-	<string name="preftitle_debug">正在调试</string>
-	<string name="smackdebug_summ">使用logcat记录调试数据。（可能有个人敏感信息）</string>
+	<string name="preftitle_debug">调试</string>
+	<string name="smackdebug_summ">通过 logcat 进行数据包和调试输出（可能包含个人信息）</string>
 	<string name="smackdebug_title">SMACK 调试</string>
 
 	<string name="reportcrash_title">发送崩溃报告</string>
-	<string name="reportcrash_summ">给开发者发送崩溃报告(匿名)</string>
+	<string name="reportcrash_summ">向开发人员发送匿名崩溃报告</string>
 
 	<!-- Appearence Strings -->
-	<string name="preftitle_app">界面外观</string>
+	<string name="preftitle_app">外观</string>
 	<string name="FontChat_title">聊天字体大小</string>
 	<string name="FontChat_summ">设置聊天字体大小</string>
 	<string name="FontChat_dialog">聊天字体大小</string>
@@ -114,128 +112,128 @@
 	<string name="pref_theme">主题</string>
 	<string name="pref_theme_dark">深色</string>
 	<string name="pref_theme_light">浅色</string>
-	<string name="pref_theme_pine">Pine</string>
-	<string name="pref_theme_ice">Ice</string>
-	<string name="preftitle_ui">界面外观</string>
+	<string name="pref_theme_pine">松绿</string>
+	<string name="pref_theme_ice">冰蓝</string>
+	<string name="preftitle_ui">外观</string>
 	<string-array name="fontSizesChat">
 		<item>小</item>
-		<item>正常</item>
+		<item>中</item>
 		<item>大</item>
 		<item>巨大</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add contact</string>
-	<string name="Menu_addClipboard">Add %s</string>
-	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_addFriend">添加联系人</string>
+	<string name="Menu_addClipboard">添加 %s</string>
+	<string name="Menu_ShowOff">显示离线</string>
+	<string name="Menu_HideOff">隐藏离线</string>
+	<string name="Menu_AccSettings">编辑账号</string>
 	<string name="Menu_Settings">设置</string>
 	<string name="Menu_Status">状态</string>
 	<string name="Menu_connect">连接</string>
 	<string name="Menu_disconnect">断开连接</string>
 	<string name="Menu_about">关于 yaxim</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
-	<string name="Menu_mark_all_as_read">Mark all as read</string>
-	<string name="Menu_send_invitation">Create invitation</string>
-    <string name="Menu_userlist">Participants</string>
+	<string name="Menu_about_bruno">关于 Bruno</string>
+	<string name="Menu_muc">添加/浏览…</string>
+	<string name="Menu_matrix">进入 Matrix…</string>
+	<string name="Menu_mark_all_as_read">全部标记为已读</string>
+	<string name="Menu_send_invitation">创建邀请</string>
+    <string name="Menu_userlist">参与者</string>
 
 
 	<!-- AddFriend -->
-	<string name="addFriend_Title">添加一个联系人</string>
-	<string name="addFriend_Summ">请输入你朋友的Jabber标识，显示的名字和联系人组</string>
-	<string name="addFriend_aliasHint">显示名字</string>
-	<string name="addrosteritemaddgroupchoice">增加到新的分组</string>
-	<string name="NewGroup_EditTextField_Hint">新的分组名字</string>
+	<string name="addFriend_Title">添加联系人</string>
+	<string name="addFriend_Summ">请输入您好友的 Jabber ID、所需的屏幕名称并选择他们的联系人分组！</string>
+	<string name="addFriend_aliasHint">屏幕名称</string>
+	<string name="addrosteritemaddgroupchoice">添加到新分组</string>
+	<string name="NewGroup_EditTextField_Hint">新的分组名</string>
 
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_group_rename">重命名分组</string>
 	<string name="roster_contextmenu_contact_mark_as_read">标记为已读</string>
-	<string name="roster_contextmenu_contact_delete">Delete contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_delete">删除联系人</string>
+	<string name="roster_contextmenu_contact_delmsg">删除聊天记录</string>
 	<string name="roster_contextmenu_contact_rename">重命名</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
-	<string name="roster_contextmenu_contact_change_group">改变分组</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_request_auth">请求授权</string>
+	<string name="roster_contextmenu_contact_change_group">更改分组</string>
+	<string name="roster_contextmenu_contact_share">分享地址</string>
 	<string name="roster_contextmenu_contact_ringtone">铃声</string>
-	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
-	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
-	<string name="muc_leave_question">Really leave %s?</string>
+	<string name="roster_contextmenu_muc_edit">编辑群聊</string>
+	<string name="roster_contextmenu_muc_leave">离开群聊</string>
+	<string name="muc_leave_question">确定离开 %s？</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">登录信息</string>
-	<string name="account_settings_title">帐号设置</string>
+	<string name="account_settings_title">账号设置</string>
 	<string name="account_options_title">连接选项</string>
 	<string name="account_options_advanced">高级选项</string>
-	<string name="carbons_title">消息复制（XEP-0280）</string>
-	<string name="carbons_summ">从你的其他客户端获取消息拷贝</string>
+	<string name="carbons_title">消息抄送（XEP-0280）</string>
+	<string name="carbons_summ">从其他客户端请求消息副本</string>
 	<string name="account_jabberID_title">Jabber ID</string>
 	<string name="account_jabberID_sum">example: me@jabber.example.com</string>
-	<string name="account_jabberID_dialog_title">输入您的Jabber ID</string>
-	<string name="account_jabberPW_title">帐户密码</string>
-	<string name="account_jabberPW_sum">您的Jabber账户密码</string>
-	<string name="account_jabberPW_change_on_server">修改密码</string>
-	<string name="account_jabberPW_password_old">旧密码</string>
+	<string name="account_jabberID_dialog_title">输入 Jabber ID：</string>
+	<string name="account_jabberPW_title">账号密码</string>
+	<string name="account_jabberPW_sum">您的 Jabber 账号密码</string>
+	<string name="account_jabberPW_change_on_server">在服务器上更改密码</string>
+	<string name="account_jabberPW_password_old">旧密码：</string>
 	<string name="account_jabberPW_password_new">新密码：</string>
-	<string name="account_jabberPW_warning">警告!你设置的密码必须和服务端保持一致才能登录成功.</string>
-	<string name="account_jabberPW_progress">请稍候, 正在修改密码...</string>
-	<string name="account_jabberPW_finished">密码修改成功</string>
-	<string name="account_jabberPW_error">密码: %s 修改失败</string>
-	<string name="account_nickname_title">Display Name</string>
-	<string name="account_nickname_summ">Your nickname displayed to other users</string>
+	<string name="account_jabberPW_warning">警告！要成功登录，您还必须在服务器上设置相同的密码！</string>
+	<string name="account_jabberPW_progress">请稍候，正在更改密码…</string>
+	<string name="account_jabberPW_finished">密码已成功更改。</string>
+	<string name="account_jabberPW_error">更改密码时出错：%s</string>
+	<string name="account_nickname_title">显示名称</string>
+	<string name="account_nickname_summ">您向其他用户显示的昵称</string>
 	
 	<!-- accountprefs -->
-	<string name="account_resource_title">客户来源</string>
-	<string name="account_resource_summ">默认: yaxim</string>
-	<string name="account_resource_dialog_title">输入你的来源</string>
+	<string name="account_resource_title">客户端资源</string>
+	<string name="account_resource_summ">默认：yaxim</string>
+	<string name="account_resource_dialog_title">输入资源：</string>
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">客户端优先级</string>
-	<string name="account_prio_summ">默认：０（允许范围：-128..127）</string>
-	<string name="account_prio_error">输入范围: -128 .. 127</string>
-	<string name="account_prio_dialog_title">输入您的优先级</string>
+	<string name="account_prio_summ">默认：0（允许：-128 … 127）</string>
+	<string name="account_prio_error">允许值：-128 … 127</string>
+	<string name="account_prio_dialog_title">输入优先级：</string>
 	<string name="account_port_title">服务器端口</string>
 	<string name="account_port_sum">默认：5222</string>
-	<string name="account_port_dialog_title">输入服务器端口</string>
+	<string name="account_port_dialog_title">输入服务器端口：</string>
 	<string name="account_port_hint">5222</string>
-	<string name="account_customserver_title">配置服务器</string>
-	<string name="account_customserver_summ">（可选）手工设置服务器名</string>
-	<string name="account_customserver_dialog_title">输入服务器名</string>
+	<string name="account_customserver_title">自定义服务器</string>
+	<string name="account_customserver_summ">（可选）备用服务器主机名</string>
+	<string name="account_customserver_dialog_title">输入服务器主机名：</string>
 	<string name="account_customserver_hint">host.example.com</string>
 	<string name="require_ssl_title">需要 SSL/TLS</string>
-	<string name="require_ssl_summ">总是加密服务器连接</string>
+	<string name="require_ssl_summ">始终加密服务器连接</string>
 
 	<!--StatusPopUp-->
 	<string name="AddContact_SpinnerPrompt">选择分组</string>
-	<string name="setStatusmsgHint">您的状态消息</string>
+	<string name="setStatusmsgHint">您的状态信息</string>
 	<string name="setStatusTitle">设置您的状态</string>
-	<string name="RenameGroup_summ">分组 %s 重命名为:</string>
+	<string name="RenameGroup_summ">将分组 %s 重命名为：</string>
 	<string name="RenameGroup_title">重命名分组</string>
-	<string name="RenameEntry_summ">重命名 %1$s (%2$s) 为:</string>
+	<string name="RenameEntry_summ">重命名 %1$s (%2$s) 为：</string>
 	<string name="RenameEntry_title">重命名联系人</string>
-	<string name="MoveRosterEntryToGroupDialog_summ">从下面选择一个分组</string>
-	<string name="MoveRosterEntryToGroupDialog_title">改变分组</string>
-	<string name="deleteRosterItem_text">确定删除%1$s (%2$s)?</string>
+	<string name="MoveRosterEntryToGroupDialog_summ">从下方选择分组</string>
+	<string name="MoveRosterEntryToGroupDialog_title">更改分组</string>
+	<string name="deleteRosterItem_text">确定移除 %1$s (%2$s)？</string>
 	<string name="deleteRosterItem_title">删除联系人</string>
-	<string name="deleteChatHistory_text">确定删除全部信息　%1$s (%2$s)?</string>
+	<string name="deleteChatHistory_text">确定移除所有与 %1$s (%2$s) 的消息？</string>
 	<string name="deleteChatHistory_title">删除聊天记录</string>
-	<string name="subscriptionRequest_text">%1$s 想加你为好友: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">好友请求</string>
-	<string name="subscription_accept">Accept</string>
-	<string name="subscription_reject">Reject</string>
-	<string name="subscription_reject_all">Reject all</string>
-	<string name="subscription_status_from">can see your status</string>
+	<string name="subscriptionRequest_text">%1$s 想将您添加为联系人：“%2$s”</string>
+	<string name="subscriptionRequest_title">订阅请求</string>
+	<string name="subscription_accept">接受</string>
+	<string name="subscription_reject">拒绝</string>
+	<string name="subscription_reject_all">全部拒绝</string>
+	<string name="subscription_status_from">可以看到您的状态</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">我：</string>
-	<string name="toast_stored_offline">消息已经保存随后发送。</string>
+	<string name="toast_stored_offline">此消息已存储以供传输。</string>
 	<string name="chat_enterMsgHint">输入消息</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">引用</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">编辑消息</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -246,80 +244,82 @@
 
 	<!-- About Dialog -->
 	<string name="AboutDialog_title">关于 yaxim</string>
-	<string name="AboutDialog_DevelopersTitle">开发者</string>
+	<string name="AboutDialog_DevelopersTitle">开发人员</string>
 	<!-- Contact the developer button -->
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<string name="AboutDialog_DevelopersText">联系</string>
 	<string name="AboutDialog_LicenceTitle">许可</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">评价此应用</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
 	<string name="status_available">在线</string>
 	<string name="status_away">离开</string>
-	<string name="status_chat">随时可聊</string>
+	<string name="status_chat">有空聊天</string>
 	<string name="status_dnd">请勿打扰</string>
-	<string name="status_xa">不可用</string>
+	<string name="status_xa">没空</string>
 	<string name="status_offline">离线</string>
 
 	<string name="translator_credits">Launchpad Contributions:
   Chasel Li https://launchpad.net/~chasel-java
-  Mariotaku https://launchpad.net/~leeningyuan
-  Road Tang https://launchpad.net/~roadtang
+  Frank Tang https://launchpad.net/~roadtang
+  Mariotaku https://launchpad.net/~mariotaku
+  Strongman6987 https://launchpad.net/~strongman6987
   wangbin https://launchpad.net/~wangbin-zibo</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">常规</string>
 	<string name="all_contacts_group">全部联系人</string>
-	<string name="muc_group">Group Chats</string>
+	<string name="muc_group">群聊</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">选择联系人</string>
 	<string name="action_settings">设置</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Group chat JID</string>
-	<string name="muc_nickname_hint">Nickname</string>
-	<string name="muc_password_hint">Password (optional)</string>
-	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_jid_hint">群聊 JID</string>
+	<string name="muc_nickname_hint">昵称</string>
+	<string name="muc_password_hint">密码（可选）</string>
+	<string name="title_activity_muc_invite">群聊邀请</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">来自 %s 的邀请</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
-	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
+	<string name="muc_invitation_occupants">%1$s（%2$d 位参与者）</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
-	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="muc_invitation_join">作为 %s 加入</string>
+	<string name="muc_synchronizing">正在同步…</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="chat_muc_userlist">群聊参与者（%s）</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
-	<string name="muc_kicked">Kicked: %s</string>
+	<string name="muc_kicked">已踢出：%s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
-	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
+	<string name="muc_kicked_by">由 %1$s 踢出：%2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">已封禁：%s</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
-	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
+	<string name="muc_banned_by">由 %1$s 封禁：%2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
-	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="roster_contextmenu_send">发送…</string>
+	<string name="roster_contextmenu_take_image">拍摄照片</string>
+	<string name="roster_contextmenu_send_image">选择图片</string>
+	<string name="roster_contextmenu_send_file">发送文件</string>
+	<string name="upload_compress">正在压缩图片…</string>
+	<string name="upload_uploading">正在上传…</string>
+	<string name="upload_too_large">文件太大！</string>
+	<string name="storage_permission">%s 需要访问存储权限才能发送文件！</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
-	<string name="search_msg_hint">Message content</string>
+	<string name="search_msg_hint">消息内容</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">我的群聊</string>
+	<string name="group_mucsearch">公开群聊</string>
 	<!-- Service Discovery -->
-	<string name="title_service_disco">Browser: %s</string>
+	<string name="title_service_disco">浏览：%s</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
-	<string name="notification_status">Foreground service</string>
+	<string name="notification_status">前台服务</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">消息</string>
 
 </resources>

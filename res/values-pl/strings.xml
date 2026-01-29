@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">Hasło jest zbyt krótkie!</string>
 	<string name="StartupDialog_created_password">Utworzono bezpieczne hasło</string>
 	<string name="StartupDialog_auth_failed">Prosze sprawdź swóją nazwę użytkownika i hasło</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
 	<string name="StartupDialog_invitation">Zostałeś zaproszony do Jabbera. Ukończ swoją rejestrację.</string>
 	<string name="StartupDialog_no_more_accounts">Dodatkowe konta nie są wspierane!</string>
@@ -305,6 +307,7 @@
 	<string name="upload_uploading">Wysyłanie…</string>
 	<string name="upload_too_large">plik jest zbyt duży!</string>
 	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Message content</string>

@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">ಗುಪ್ತಪದ ತುಂಬಾ ಚಿಕ್ಕದು!</string>
 	<string name="StartupDialog_created_password">ಬದ್ಧ ಗುಪ್ತಪದ ಸೃಷ್ಟಿಸಲಾಯಿತು</string>
 	<string name="StartupDialog_auth_failed">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಳಕೆನಾಮ ಹಾಗು ಗುಪ್ತಪದ ಪರಿಶೀಲಿಸಿ!</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
 	<string name="StartupDialog_invitation">ನಿಮ್ಮನ್ನು Jabberಗೆ ಆಹ್ವಾನಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ನೊಂದಣಿ ಪೂರ್ತಿ ಮಾಡಿ.</string>
 	<string name="StartupDialog_no_more_accounts">ಮತ್ತೊಂದು ಖಾತೆ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ!</string>
@@ -300,6 +302,7 @@
 	<string name="upload_uploading">ಜಾಲಕ್ಕೆ ಏರಿಸುತ್ತಿದೇ…</string>
 	<string name="upload_too_large">ಕಡತ ತುಂಬಾ ದೊಡ್ದದು!</string>
 	<string name="storage_permission">%s ಗೆ ಕಡತಗಳ ಕಳುಹಿಸಲು ಶೇಖರಣಾ ಅನುಮತಿಯು ಅಗತ್ಯ!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">ಸಂದೇಶ ವಿಷಯ</string>

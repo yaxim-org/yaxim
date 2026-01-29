@@ -7,8 +7,8 @@
 	<string name="conn_title">yaxim: %s</string>
 	<string name="conn_title_bruno">Bruno: %s</string>
 	<string name="conn_connecting">Zerbitzarira konektatzen...</string>
-	<string name="conn_disconnecting">Disconnecting…</string>
-	<string name="conn_online">Linean</string>
+	<string name="conn_disconnecting">Deskonektatzen…</string>
+	<string name="conn_online">Konektatuta</string>
 	<string name="conn_offline">Lineaz kanpo</string>
 	<string name="conn_empty_roster">Ez dago kontakturik erakusteko!</string>
 	<string name="conn_empty_roster_hints">There are many ways to add contacts:\n\n
@@ -16,57 +16,59 @@
 		- Scan a QR code\n\n
 		- \"Create invitation\" and share it (e-mail, SMS, QR code, …)\n\n
 		- \"Add contact\" if you know the JID</string>
-	<string name="conn_reconnect">Next connection attempt in %d seconds.</string>
+	<string name="conn_reconnect">Hurrengo konexio-saiakera %d segundotan.</string>
 	<string name="conn_disconnected">Konexioa itxita</string>
-	<string name="conn_no_network">No network connection</string>
-	<string name="conn_ping_timeout">No response</string>
-	<string name="conn_error">Error: %s</string>
+	<string name="conn_no_network">Sareko konexiorik ez.</string>
+	<string name="conn_ping_timeout">Ez dago erantzunik.</string>
+	<string name="conn_error">Errorea: %s</string>
 
 	<!-- Global Strings -->
 	<string name="Global_Exit">Irten</string>
 	<string name="Global_authenticate_first">Mesedez, konektatu lehenik</string>
-	<string name="Global_JID_hint">user@yax.im</string>
+	<string name="Global_JID_hint">erabiltzailea@yax.im</string>
 	<!-- tooltip message when the user entered an invalid XMPP address -->
-	<string name="Global_JID_malformed">Check address format!</string>
+	<string name="Global_JID_malformed">Egiaztatu helbidearen formatua!</string>
 
 	<!-- FirstStartUpDialog -->
 	<string name="StartupDialog_Title">Ongietorri yaxim-era!</string>
 	<string name="StartupDialog_Summary">Erabili aurretik yaxim konfiguratu behar duzu. Mesedez, sartu zure Jabber IDa eta pasahitza.</string>
 	<string name="StartupDialog_pwHint">Sartu pasahitza</string>
-	<string name="StartupDialog_pwshowHint">Show password</string>
+	<string name="StartupDialog_pwshowHint">Pasahitza erakutsi</string>
 	<string name="StartupDialog_Username_title">Jabber IDa:</string>
 	<string name="StartupDialog_passwd_title">Pasahitza:</string>
 	<string name="StartupDialog_advanced">Aurreratua...</string>
 	<string name="StartupDialog_create_new">Erregistratu kontu berria</string>
-	<string name="StartupDialog_error_password">Password is too short!</string>
-	<string name="StartupDialog_created_password">Created secure password</string>
-	<string name="StartupDialog_auth_failed">Please check your username and password!</string>
+	<string name="StartupDialog_error_password">Pasahitza laburregia da!</string>
+	<string name="StartupDialog_created_password">Pasahitz segurua sortu da</string>
+	<string name="StartupDialog_auth_failed">Mesedez, egiaztatu zure erabiltzaile-izena eta pasahitza!</string>
+	<string name="StartupDialog_server_failed">Ezin zen %s-(e)ra konektatu!</string>
+	<string name="StartupDialog_no_registration">Zerbitzariak ez du erregistrorik onartzen!</string>
 
-	<string name="StartupDialog_invitation">You have been invited to Jabber. Please complete your registration.</string>
-	<string name="StartupDialog_no_more_accounts">No additional account supported!</string>
+	<string name="StartupDialog_invitation">Jabber gonbidatu dizute. Mesedez, osatu erregistroa.</string>
+	<string name="StartupDialog_no_more_accounts">Ez dago beste konturik bermatuta!</string>
 
 	<!-- Notifications -->
 	<string name="notification_message">%s-(r)en mezua</string>
 	<string name="notification_anonymous_message">Mezua jasota</string>
 	<!--  Group Chat notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
-	<string name="notification_muc_message">%1$s in %2$s</string>
+	<string name="notification_muc_message">%1$s(e)k %2$s sarreran</string>
 	<!--  Group Group Chat private message notification, %1$s is the user name, %2$s is the room, e.g. "Message from {Ge0rG} in {yaxim Chat}" -->
 	<!--string name="notification_muc_pm">Message from %1$s in %2$s</string-->
 	<!-- notification button: direct reply (make SHORT string) -->
-	<string name="notification_reply">Reply</string>
+	<string name="notification_reply">Erantzun</string>
 	<!-- notification button: mark as read (make SHORT string) -->
-	<string name="notification_mark_read">Mark Read</string>
+	<string name="notification_mark_read">Markatu irakurritako gisa</string>
 
 	<!-- Notifications -->
-	<string name="notification_error">Error while sending message!</string>
+	<string name="notification_error">Errorea mezua bidaltzean!</string>
 
 	<!-- Notification Settings -->
-	<string name="preftitle_notify">Notification Settings</string>
+	<string name="preftitle_notify">Jakinarazpen ezarpenak</string>
 	<string name="preftitle_notify_msg">Mezu jakinarazpena</string>
-	<string name="preftitle_notify_muc">Group Chat Notification</string>
-	<string name="notification_custom">Custom Ringtone</string>
-	<string name="muc_highlight_title">Only notify on mention</string>
-	<string name="muc_highlight_sum">Notify when your nickname is mentioned in a room</string>
+	<string name="preftitle_notify_muc">Taldeko txataren jakinarazpena</string>
+	<string name="notification_custom">Dei-tonu pertsonalizatua</string>
+	<string name="muc_highlight_title">Aipamena jakinarazi besterik ez</string>
+	<string name="muc_highlight_sum">Jakinarazi ezizena gela batean aipatzen denean</string>
 	<string name="led_title">LED keinukaria</string>
 	<string name="led_summ">Egin keinuak telefonoaren LEDarekin sarrerako mezuak iristean</string>
 	<string name="vibr_title">Bibrazioa</string>
@@ -82,15 +84,15 @@
 	<string name="ticker_summ">Erakutsi bidaltzailea eta mezua egoera-barran</string>
 
 	<!-- Startup Setting Strings -->
-	<string name="preftitle_general">General Settings</string>
-	<string name="pref_dnd_when_silent">\"Do not disturb\" in silent mode</string>
-	<string name="pref_dnd_when_silent_summ">Set your online status to \"DND\" when your phone is in silent mode</string>
+	<string name="preftitle_general">Ezarpen Orokorrak</string>
+	<string name="pref_dnd_when_silent">Isilik moduan ez gogaitzea</string>
+	<string name="pref_dnd_when_silent_summ">Zure telefonoa isilik moduan dagoenean, ezarri zure egoera, linean, DNDra</string>
 	<string name="statuspopup_name">Ezarri zure egoera</string>
 	<string name="showOffline_summ">Beti erakutsi zerrendako kontaktu guztiak</string>
 	<string name="showOffline_title">Erakutsi lineaz kanpo dauden kontaktuak</string>
-	<string name="enableGroups_summ">Arrange your contacts by their groups</string>
-	<string name="enableGroups_title">Show contact groups</string>
-	<string name="foregroundService_summ">Keep app in memory to ensure always-on connection (foreground service)</string>
+	<string name="enableGroups_summ">Kontaktuak taldeka antolatzea</string>
+	<string name="enableGroups_title">Bistaratu kontaktu-taldeak</string>
+	<string name="foregroundService_summ">Mantendu aplikazioa memorian konexioa beti piztuta dagoela bermatzeko (lehen mailako zerbitzua)</string>
 	<string name="foregroundService_title">Egoera-barra ikonoa</string>
 
 	<string name="preftitle_debug">Arazketa</string>
@@ -114,33 +116,33 @@
 	<string name="pref_theme">Gaia</string>
 	<string name="pref_theme_dark">Iluna</string>
 	<string name="pref_theme_light">Argia</string>
-	<string name="pref_theme_pine">Pine</string>
-	<string name="pref_theme_ice">Ice</string>
+	<string name="pref_theme_pine">Pinua</string>
+	<string name="pref_theme_ice">Izotza</string>
 	<string name="preftitle_ui">Itxura</string>
 	<string-array name="fontSizesChat">
 		<item>txikia</item>
 		<item>normala</item>
 		<item>handia</item>
-		<item>huge</item>
+		<item>eskerga</item>
 	</string-array>
 
 	<!-- Mainmenu 	-->
-	<string name="Menu_addFriend">Add contact</string>
-	<string name="Menu_addClipboard">Add %s</string>
-	<string name="Menu_ShowOff">Show offline</string>
-	<string name="Menu_HideOff">Hide offline</string>
-	<string name="Menu_AccSettings">Edit account</string>
+	<string name="Menu_addFriend">Gehitu kontaktua</string>
+	<string name="Menu_addClipboard">Gehitu %s</string>
+	<string name="Menu_ShowOff">Erakutsi konexiorik gabe</string>
+	<string name="Menu_HideOff">Ezkutatu saretik kanpo</string>
+	<string name="Menu_AccSettings">Editatu kontua</string>
 	<string name="Menu_Settings">Ezarpenak</string>
 	<string name="Menu_Status">Egoera</string>
 	<string name="Menu_connect">Konektatu</string>
 	<string name="Menu_disconnect">Deskonektatu</string>
 	<string name="Menu_about">yaxim-i buruz</string>
-	<string name="Menu_about_bruno">About Bruno</string>
-	<string name="Menu_muc">Add / browse…</string>
-	<string name="Menu_matrix">Enter the Matrix…</string>
-	<string name="Menu_mark_all_as_read">Mark all as read</string>
-	<string name="Menu_send_invitation">Create invitation</string>
-    <string name="Menu_userlist">Participants</string>
+	<string name="Menu_about_bruno">Brunori buruz</string>
+	<string name="Menu_muc">Gehitu / nabigatu…</string>
+	<string name="Menu_matrix">Sartu matrizea…</string>
+	<string name="Menu_mark_all_as_read">Markatu guztiak irakurrita gisa</string>
+	<string name="Menu_send_invitation">Sortu gonbidaketa</string>
+    <string name="Menu_userlist">Parte-hartzaileak</string>
 
 
 	<!-- AddFriend -->
@@ -152,17 +154,17 @@
 
 	<!-- Roster CONTEXTMENU -->
 	<string name="roster_contextmenu_group_rename">Berrizendatu taldea</string>
-	<string name="roster_contextmenu_contact_mark_as_read">Mark as read</string>
-	<string name="roster_contextmenu_contact_delete">Delete contact</string>
-	<string name="roster_contextmenu_contact_delmsg">Delete chat history</string>
+	<string name="roster_contextmenu_contact_mark_as_read">Markatu irakurrita gisa</string>
+	<string name="roster_contextmenu_contact_delete">Ezabatu kontaktua</string>
+	<string name="roster_contextmenu_contact_delmsg">Ezabatu txataren historia</string>
 	<string name="roster_contextmenu_contact_rename">Berrizendatu</string>
-	<string name="roster_contextmenu_contact_request_auth">Request authorization</string>
+	<string name="roster_contextmenu_contact_request_auth">Baimen-eskaera</string>
 	<string name="roster_contextmenu_contact_change_group">Aldatu taldea</string>
-	<string name="roster_contextmenu_contact_share">Share address</string>
+	<string name="roster_contextmenu_contact_share">Ekintzen zuzendaritza</string>
 	<string name="roster_contextmenu_contact_ringtone">Tonua</string>
-	<string name="roster_contextmenu_muc_edit">Edit group chat</string>
-	<string name="roster_contextmenu_muc_leave">Leave group chat</string>
-	<string name="muc_leave_question">Really leave %s?</string>
+	<string name="roster_contextmenu_muc_edit">Editatu txat-taldea</string>
+	<string name="roster_contextmenu_muc_leave">Txat taldetik irten</string>
+	<string name="muc_leave_question">Benetan irten nahi duzu %s?</string>
 
 	<!-- Accountprefs -->
 	<string name="account_settings_login">Saio hasieraren informazioa</string>
@@ -170,21 +172,21 @@
 	<string name="account_options_title">Konexioaren aukerak</string>
 	<string name="account_options_advanced">Aukera aurreratuak</string>
 	<string name="carbons_title">Message Carbons (XEP-0280)</string>
-	<string name="carbons_summ">Request message copies from your other client(s)</string>
+	<string name="carbons_summ">Eskatu beste bezeroaren mezuaren kopiak</string>
 	<string name="account_jabberID_title">Jabber IDa</string>
 	<string name="account_jabberID_sum">adibidea: ni@jabber.adibidea.com</string>
 	<string name="account_jabberID_dialog_title">Sartu zure Jabber IDa:</string>
 	<string name="account_jabberPW_title">Kontuaren pasahitza</string>
 	<string name="account_jabberPW_sum">Zure Jabber kontuaren pasahitza</string>
-	<string name="account_jabberPW_change_on_server">Change password on server</string>
-	<string name="account_jabberPW_password_old">Old Password:</string>
-	<string name="account_jabberPW_password_new">New Password:</string>
-	<string name="account_jabberPW_warning">WARNING! For successful login you must also set the same password on the server!</string>
-	<string name="account_jabberPW_progress">Please wait, changing password…</string>
-	<string name="account_jabberPW_finished">Password successfully changed.</string>
-	<string name="account_jabberPW_error">Error changing password: %s</string>
-	<string name="account_nickname_title">Display Name</string>
-	<string name="account_nickname_summ">Your nickname displayed to other users</string>
+	<string name="account_jabberPW_change_on_server">Aldatu pasahitza zerbitzarian</string>
+	<string name="account_jabberPW_password_old">Pasahitz zaharra:</string>
+	<string name="account_jabberPW_password_new">Pasahitz berria:</string>
+	<string name="account_jabberPW_warning">OHARRA! Saioa behar bezala hasteko, pasahitz bera ezarri behar duzu zerbitzarian!</string>
+	<string name="account_jabberPW_progress">Mesedez, itxaron, pasahitza aldatzen…</string>
+	<string name="account_jabberPW_finished">Pasahitza ondo aldatu da.</string>
+	<string name="account_jabberPW_error">Errorea pasahitza aldatzean: %s</string>
+	<string name="account_nickname_title">Bistaratzeko izena</string>
+	<string name="account_nickname_summ">Beste erabiltzaileei erakutsitako ezizena</string>
 	
 	<!-- accountprefs -->
 	<string name="account_resource_title">Bezeroaren baliabidea</string>
@@ -193,7 +195,7 @@
 	<string name="account_resource_hint">yaxim</string>
 	<string name="account_prio_title">Bezeroaren lehentasuna</string>
 	<string name="account_prio_summ">Lehenetsia: 0 (baimenduak: -128 .. 127)</string>
-	<string name="account_prio_error">Allowed values: -128 .. 127</string>
+	<string name="account_prio_error">Baimendutako balioak: -128 ... 127</string>
 	<string name="account_prio_dialog_title">Sartu zure lehentasuna:</string>
 	<string name="account_port_title">Zerbitzariaren ataka</string>
 	<string name="account_port_sum">Lehenetsia: 5222</string>
@@ -221,11 +223,11 @@
 	<string name="deleteChatHistory_text">Ziur zaude %1$s (%2$s) duten mezu guztiak kendu nahi dituzula?</string>
 	<string name="deleteChatHistory_title">Ezabatu berriketa historia</string>
 	<string name="subscriptionRequest_text">%1$s wants to add you as a contact: \"%2$s\"</string>
-	<string name="subscriptionRequest_title">Subscription Request</string>
-	<string name="subscription_accept">Accept</string>
-	<string name="subscription_reject">Reject</string>
-	<string name="subscription_reject_all">Reject all</string>
-	<string name="subscription_status_from">can see your status</string>
+	<string name="subscriptionRequest_title">Harpidetza-eskaera</string>
+	<string name="subscription_accept">Onetsi</string>
+	<string name="subscription_reject">Errefusatu</string>
+	<string name="subscription_reject_all">Baztertu denak</string>
+	<string name="subscription_status_from">zure egoera ikus dezakezu</string>
 
 	<!-- CHATWINDOW -->
 	<string name="chat_from_me">Ni:</string>
@@ -233,9 +235,9 @@
 	<string name="chat_enterMsgHint">Sartu mezua</string> 
 
 	<!-- Message context menu; use the verb form (to quote) -->
-	<string name="chatmenu_quote">Quote</string>
+	<string name="chatmenu_quote">Aipua</string>
 	<!-- Message context menu: repeat the same message -->
-	<string name="chatmenu_resend">Edit message</string>
+	<string name="chatmenu_resend">Editatu mezua</string>
 
 	<!-- GPS settings -->
 	<!--
@@ -248,12 +250,12 @@
 	<string name="AboutDialog_title">yaxim-i buruz</string>
 	<string name="AboutDialog_DevelopersTitle">Garatzaileak</string>
 	<!-- Contact the developer button -->
-	<string name="AboutDialog_DevelopersText">Contact</string>
+	<string name="AboutDialog_DevelopersText">Ukipena</string>
 	<string name="AboutDialog_LicenceTitle">Lizentzia</string>
-	<string name="AboutDialog_Vote">Rate app</string>
+	<string name="AboutDialog_Vote">Aplikazioa baloratu</string>
 	<string name="AboutDialog_LicenceText">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. Link: http://www.gnu.org/licenses/gpl-2.0.html\n \n Parts of this software are provided under the MIT License:\n \n Copyright © 2009 Mads Kristiansen, Nullwire ApS\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
-	<string name="status_available">Linean</string>
+	<string name="status_available">Konektatuta</string>
 	<string name="status_away">Aldendua</string>
 	<string name="status_chat">Libre berriketarako</string>
 	<string name="status_dnd">Ez eragotzi</string>
@@ -262,62 +264,64 @@
 
 	<string name="translator_credits">Launchpad Contributions:
   Asier Iturralde Sarasola https://launchpad.net/~asier-iturralde
-  Georg Lukas https://launchpad.net/~ge0rg</string>
+  Georg Lukas https://launchpad.net/~ge0rg
+  Guillermo https://launchpad.net/~willyx96</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Orokorra</string>
-	<string name="all_contacts_group">All contacts</string>
-	<string name="muc_group">Group Chats</string>
+	<string name="all_contacts_group">Kontaktu guztiak</string>
+	<string name="muc_group">Txat-taldeak</string>
 
 	<!-- SEND listener popup -->
 	<string name="chooseContact">Aukeratu kontaktua</string>
 	<string name="action_settings">Ezarpenak</string>
 
 	<!-- MUC strings -->
-	<string name="muc_jid_hint">Group chat JID</string>
-	<string name="muc_nickname_hint">Nickname</string>
-	<string name="muc_password_hint">Password (optional)</string>
-	<string name="title_activity_muc_invite">Group Chat Invitation</string>
+	<string name="muc_jid_hint">JID txat-taldea</string>
+	<string name="muc_nickname_hint">Ezizena</string>
+	<string name="muc_password_hint">Pasahitza (aukerakoa)</string>
+	<string name="title_activity_muc_invite">Taldeko txat-gonbidapena</string>
 	<!-- Groupchat invitation: "Invitation from {contact name}" -->
-	<string name="muc_invitation_from">Invitation from %s</string>
+	<string name="muc_invitation_from">%s-aren gonbidapena</string>
 	<!-- Groupchat info: {description} ({number} participants) -->
 	<string name="muc_invitation_occupants">%1$s (%2$d participants)</string>
 	<!-- Notification button: "Join as {default nickname}" (make SHORT string) -->
-	<string name="muc_invitation_join">Join as %s</string>
-	<string name="muc_synchronizing">Synchronizing…</string>
+	<string name="muc_invitation_join">Bat egin %s gisa</string>
+	<string name="muc_synchronizing">Sinkronizatzen…</string>
 	<!-- Title of user list, contains JID -->
-	<string name="chat_muc_userlist">Group Chat Participants (%s)</string>
+	<string name="chat_muc_userlist">Chat taldeko parte-hartzaileak (%s)</string>
 	<!-- Kicked from groupchat: "Kicked: {reason} -->
 	<string name="muc_kicked">Kicked: %s</string>
 	<!-- Kicked from groupchat: "Kicked by {admin name}: {reason} -->
 	<string name="muc_kicked_by">Kicked by %1$s: %2$s</string>
 	<!-- Banned from groupchat: "Banned: {reason} -->
-	<string name="muc_banned">Banned: %s</string>
+	<string name="muc_banned">%s debekatua</string>
 	<!-- Banned from groupchat: "Banned by {admin name}: {reason} -->
 	<string name="muc_banned_by">Banned by %1$s: %2$s</string>
 
 	<!-- File upload -->
-	<string name="roster_contextmenu_send">Send…</string>
-	<string name="roster_contextmenu_take_image">Take picture</string>
-	<string name="roster_contextmenu_send_image">Choose picture</string>
-	<string name="roster_contextmenu_send_file">Send file</string>
-	<string name="upload_compress">Compressing picture…</string>
-	<string name="upload_uploading">Uploading…</string>
-	<string name="upload_too_large">file too large!</string>
-	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="roster_contextmenu_send">Bidali…</string>
+	<string name="roster_contextmenu_take_image">Argazkia atera</string>
+	<string name="roster_contextmenu_send_image">Aukeratu irudia</string>
+	<string name="roster_contextmenu_send_file">Bidali fitxategia</string>
+	<string name="upload_compress">Irudia konprimitzen...</string>
+	<string name="upload_uploading">Igotzen…</string>
+	<string name="upload_too_large">fitxategia handiegia da!</string>
+	<string name="storage_permission">%s fitxategiak bidaltzeko biltegiratze-sarbidea behar du!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
-	<string name="search_msg_hint">Message content</string>
+	<string name="search_msg_hint">Mezuaren edukia</string>
 
 	<!-- MUC bookmarks -->
-	<string name="group_bookmarks">My group chats</string>
-	<string name="group_mucsearch">Public group chats</string>
+	<string name="group_bookmarks">Nire taldeko txatak</string>
+	<string name="group_mucsearch">Talde publikoetako txatak</string>
 	<!-- Service Discovery -->
-	<string name="title_service_disco">Browser: %s</string>
+	<string name="title_service_disco">%s nabigatzailea</string>
 
 	<!-- Android 9 notification preferences: permanent notification -->
-	<string name="notification_status">Foreground service</string>
+	<string name="notification_status">Zerbitzu aurreratua</string>
 	<!-- Android 9 notification preferences: message notifications -->
-	<string name="notification_msg">Messages</string>
+	<string name="notification_msg">Mezuak</string>
 
 </resources>

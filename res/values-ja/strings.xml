@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">パスワードが短すぎます!</string>
 	<string name="StartupDialog_created_password">安全なパスワードを作成しました</string>
 	<string name="StartupDialog_auth_failed">ユーザー名とパスワードを確認してください!</string>
+	<string name="StartupDialog_server_failed">%s に接続できませんでした!</string>
+	<string name="StartupDialog_no_registration">サーバーが登録を許可していません!</string>
 
 	<string name="StartupDialog_invitation">Jabber に招待されました。登録を完了してください。</string>
 	<string name="StartupDialog_no_more_accounts">追加のアカウントはサポートされていません!</string>
@@ -301,6 +303,7 @@
 	<string name="upload_uploading">アップロードしています…</string>
 	<string name="upload_too_large">ファイルが大きすぎます!</string>
 	<string name="storage_permission">%s はファイルを送信するためにストレージのアクセスが必要です!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">メッセージの内容</string>

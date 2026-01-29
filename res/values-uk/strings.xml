@@ -37,8 +37,8 @@
 	<string name="StartupDialog_error_password">Пароль занадто короткий</string>
 	<string name="StartupDialog_created_password">Створено надійний пароль</string>
 	<string name="StartupDialog_auth_failed">Перевірте облікові дані і пароль!</string>
-	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
-	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
+	<string name="StartupDialog_server_failed">Не вдалося підключитися до %s!</string>
+	<string name="StartupDialog_no_registration">Сервер не дозволяє реєстрацію!</string>
 
 	<string name="StartupDialog_invitation">Вас запросили в Jabber. Будь ласка, завершіть реєстрацію.</string>
 	<string name="StartupDialog_no_more_accounts">Додатковий обліковий запис не дозволений!</string>
@@ -302,6 +302,7 @@
 	<string name="upload_uploading">Вивантаження...</string>
 	<string name="upload_too_large">Занадто великий файл!</string>
 	<string name="storage_permission">%s потрібен доступ до сховища для відправки файлів!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Вміст повідомлення</string>

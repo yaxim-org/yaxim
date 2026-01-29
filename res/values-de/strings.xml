@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">Passwort ist zu kurz!</string>
 	<string name="StartupDialog_created_password">Sicheres Passwort erzeugt</string>
 	<string name="StartupDialog_auth_failed">Bitte Benutzername und Passwort prüfen!</string>
+	<string name="StartupDialog_server_failed">Konnte nicht mit %s verbinden!</string>
+	<string name="StartupDialog_no_registration">Server erlaubt keine Registrierung!</string>
 
 	<string name="StartupDialog_invitation">Sie wurden zu Jabber eingeladen. Bitte schließen Sie Ihre Registrierung ab.</string>
 	<string name="StartupDialog_no_more_accounts">Keine Unterstützung für mehrere Konten!</string>
@@ -307,6 +309,7 @@
 	<string name="upload_uploading">Lade hoch...</string>
 	<string name="upload_too_large">Datei zu groß!</string>
 	<string name="storage_permission">%s braucht Speicherzugriff, um Dateien zu versenden!</string>
+	<string name="notification_permission_denied">Benachrichtigungen sind in den Android-App-Einstellungen deaktiviert.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Nachrichteninhalt</string>

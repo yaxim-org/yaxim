@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">Пароль слишком короткий!</string>
 	<string name="StartupDialog_created_password">Создан надёжный пароль</string>
 	<string name="StartupDialog_auth_failed">Проверьте учётные данные и пароль!</string>
+	<string name="StartupDialog_server_failed">Не могу подключиться к %s!</string>
+	<string name="StartupDialog_no_registration">Сервер не поддерживает регистрацию!</string>
 
 	<string name="StartupDialog_invitation">Вас пригласили в Jabber. Пожалуйста, завершите регистрацию.</string>
 	<string name="StartupDialog_no_more_accounts">Дополнительная учетная запись не поддерживается!</string>
@@ -262,10 +264,11 @@
   Georg Lukas https://launchpad.net/~ge0rg
   Ilya https://launchpad.net/~me-detected
   Paul F. https://launchpad.net/~ultimius
+  Sergey Ponomarev https://launchpad.net/~stokito
   Xiong Sung https://launchpad.net/~xiongsung
   snm https://launchpad.net/~zastava-boty
-  Кощеев https://launchpad.net/~zowenko
-  Сейд https://launchpad.net/~sejd</string>
+  Кощеев https://launchpad.net/~kashcheyeu
+  Кощеев https://launchpad.net/~zowenko</string>
 
 	<!-- default roster group with no name -->
 	<string name="default_group">Общие</string>
@@ -308,6 +311,7 @@
 	<string name="upload_uploading">Загрузка...</string>
 	<string name="upload_too_large">Слишком большой файл!</string>
 	<string name="storage_permission">%s нужен доступ к хранилищу для отправки файлов!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Cодержимое сообщения</string>

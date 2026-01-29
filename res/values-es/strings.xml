@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">La contraseña es demasiado corta!</string>
 	<string name="StartupDialog_created_password">Contraseña segura creada</string>
 	<string name="StartupDialog_auth_failed">Por favor, compruebe su nombre de usuario y contraseña!</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
 	<string name="StartupDialog_invitation">Ha sido invitado a Jabber. Por favor complete su registro.</string>
 	<string name="StartupDialog_no_more_accounts">No hay cuentas adicionales compatibles!</string>
@@ -257,7 +259,7 @@
 	<string name="status_offline">Fuera de Línea</string>
 
 	<string name="translator_credits">Launchpad Contributions:
-  Adolfo Jayme https://launchpad.net/~fitojb
+  Adolfo Jayme Barrientos https://launchpad.net/~fitojb
   Argafål https://launchpad.net/~argafal
   Georg Lukas https://launchpad.net/~ge0rg
   Henry Mata https://launchpad.net/~matahr
@@ -311,6 +313,7 @@
 	<string name="upload_uploading">Subiendo...</string>
 	<string name="upload_too_large">Archivo demasiado grande!</string>
 	<string name="storage_permission">%s needs storage access to send files!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Message content</string>

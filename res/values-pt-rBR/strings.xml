@@ -304,6 +304,7 @@
 	<string name="upload_uploading">Enviando...</string>
 	<string name="upload_too_large">Arquivo muito grande!</string>
 	<string name="storage_permission">%s necessita acesso ao armazenamento para enviar arquivos!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Conteúdo da mensagem</string>

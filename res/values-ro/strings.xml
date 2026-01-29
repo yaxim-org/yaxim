@@ -37,6 +37,8 @@
 	<string name="StartupDialog_error_password">Parola este prea scurtă!</string>
 	<string name="StartupDialog_created_password">Parola securizată a fost creată</string>
 	<string name="StartupDialog_auth_failed">Vă rugăm să verificați numele de utilizator și parola!</string>
+	<string name="StartupDialog_server_failed">Could not connect to %s!</string>
+	<string name="StartupDialog_no_registration">Server does not allow registration!</string>
 
 	<string name="StartupDialog_invitation">Ați fost invitați la Jabber. Vă rugăm să vă completați înregistrarea.</string>
 	<string name="StartupDialog_no_more_accounts">Nu este acceptat niciun cont suplimentar!</string>
@@ -362,6 +364,7 @@ Launchpad Contributions:
 	<string name="upload_uploading">Se încarcă...</string>
 	<string name="upload_too_large">fișier prea mare!</string>
 	<string name="storage_permission">%s are nevoie de acces la stocare pentru a trimite fișiere!</string>
+	<string name="notification_permission_denied">Notifications are disabled in the Android app preferences.</string>
 
 	<!-- Search -->
 	<string name="search_msg_hint">Conținut mesaj</string>
