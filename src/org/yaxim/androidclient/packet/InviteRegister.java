@@ -6,7 +6,8 @@ import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.xmlpull.v1.XmlPullParser;
 
 public class InviteRegister implements ExtensionElement {
-	public final static String NAMESPACE = "urn:xmpp:invite";
+	public final static String NAMESPACE_LEGACY = "urn:xmpp:invite";
+	public final static String NAMESPACE = "urn:xmpp:ibr-token:0";
 	public final static String ELEMENT = "register";
 	@Override
 	public String getNamespace() {
