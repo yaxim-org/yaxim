@@ -161,6 +161,7 @@ public class SmackableImp implements Smackable {
 		ProviderManager.addIQProvider(MamFinIQ.ELEMENT, MamElements.NAMESPACE, new MamFinIQProvider());
 		ProviderManager.addIQProvider(MuclumbusIQ.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusIQ.Provider());
 		ProviderManager.addIQProvider(MuclumbusResult.ELEMENT, MuclumbusIQ.NAMESPACE, new MuclumbusResult.Provider());
+		ProviderManager.addStreamFeatureProvider(InviteRegister.ELEMENT, InviteRegister.NAMESPACE_LEGACY, new InviteRegister.StreamFeatureProvider());
 		ProviderManager.addStreamFeatureProvider(InviteRegister.ELEMENT, InviteRegister.NAMESPACE, new InviteRegister.StreamFeatureProvider());
 		PingManager.setDefaultPingInterval(14*60);
 	}
@@ -857,7 +858,9 @@ public class SmackableImp implements Smackable {
 				debugLog("connectAndLogin: within synchronized mXMPPConnection");
 				mXMPPConnection.connect();
 				if (create_account) {
-					if (!TextUtils.isEmpty(mConfig.initialPreAuth) && mXMPPConnection.hasFeature("register", "urn:xmpp:invite")) {
+					if (!TextUtils.isEmpty(mConfig.initialPreAuth) &&
+					    (mXMPPConnection.hasFeature(InviteRegister.ELEMENT, InviteRegister.NAMESPACE) ||
+					     mXMPPConnection.hasFeature(InviteRegister.ELEMENT, InviteRegister.NAMESPACE_LEGACY))) {
 						Log.d(TAG, "sending pre-auth token to server: " + mConfig.initialPreAuth);
 						PreAuth.PreAuthIQ preauth = new PreAuth.PreAuthIQ(mConfig.initialPreAuth);
 						mXMPPConnection.createStanzaCollectorAndSend(new StanzaIdFilter(preauth.getStanzaId()), preauth)
