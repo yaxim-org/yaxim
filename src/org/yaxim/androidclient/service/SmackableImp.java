@@ -2396,7 +2396,7 @@ public class SmackableImp implements Smackable {
 			PubSubManager psm = PubSubManager.getInstance(mXMPPConnection, mXMPPConnection.getUser().asEntityBareJid());
 			String pepNickname = null;
 			try {
-				LeafNode n = psm.createUnverifiedLeafNode(Nick.NAMESPACE);
+				LeafNode n = psm.getLeafNode(Nick.NAMESPACE);
 				List<?> ln = n.getItems();
 				if (ln.size() > 0)
 					pepNickname = ((PayloadItem<Nick>)ln.get(0)).getPayload().getName();
