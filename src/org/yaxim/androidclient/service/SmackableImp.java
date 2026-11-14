@@ -2809,7 +2809,8 @@ public class SmackableImp implements Smackable {
 		if(muc.isJoined()) {
 			String roomname = room.split("@")[0];
 			try {
-				String rn = muc.getRoomInfo().getName();
+				RoomInfo roomInfo = MultiUserChatManager.getInstanceFor(mXMPPConnection).getRoomInfo(JidCreate.entityBareFrom(room));
+				String rn = roomInfo.getName();
 				if (rn != null && rn.length() > 0)
 					roomname = rn;
 				Log.d(TAG, "MUC name after disco: " + roomname);
@@ -2911,7 +2912,13 @@ public class SmackableImp implements Smackable {
 			return null;
 		}
 		MultiUserChat muc = mucc.muc;
-		boolean non_anon = (muc.getRoomInfo() != null) && muc.getRoomInfo().isNonanonymous();
+		boolean non_anon = false;
+		try {
+			RoomInfo roomInfo = MultiUserChatManager.getInstanceFor(mXMPPConnection).getRoomInfo(JidCreate.entityBareFromOrNull(jid));
+			non_anon = roomInfo != null && roomInfo.isNonanonymous();
+		} catch (Exception e) {
+			Log.d(TAG, "MUC room IQ failed: " + jid);
+		}
 		Log.d(TAG, "MUC instance: " + jid + " " + muc);
 		Iterator<EntityFullJid> occIter = muc.getOccupants().iterator();
 		ArrayList<EntityInfo> tmpList = new ArrayList<EntityInfo>();
