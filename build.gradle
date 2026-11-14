@@ -5,14 +5,14 @@ buildscript {
 		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:8.13.2'
+		classpath 'com.android.tools.build:gradle:9.4.0'
 	}
 }
 
 plugins {
 	// obtain revision from git
-	id 'org.ajoberstar.grgit' version '5.3.2'
-	id 'com.github.triplet.play' version "3.13.0"
+	id 'org.ajoberstar.grgit' version '5.3.3'
+	id 'com.github.triplet.play' version "4.1.2" apply false
 }
 
 allprojects {
@@ -53,12 +53,13 @@ def versionCodeDate() {
 
 android {
 	namespace "org.yaxim.androidclient"
-	compileSdk 35
+	compileSdk 37
 	useLibrary 'org.apache.http.legacy'
 	flavorDimensions ("style", "distribution")
 	buildFeatures {
 		aidl = true
 		buildConfig = true
+		resValues = true
 	}
 	defaultConfig {
 		applicationId "org.yaxim"
@@ -92,11 +93,11 @@ android {
 	buildTypes {
 		debug {
 			minifyEnabled true
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg'
 		}
 		release {
 			minifyEnabled true
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg'
 		}
 	}
 	productFlavors {
@@ -114,9 +115,14 @@ android {
 		free {
 			dimension "distribution"
 		}
+	}
 
-		applicationVariants.all { variant ->
-			variant.resValue "string", "application_id", "${variant.properties.applicationId}"
+	androidComponents {
+		onVariants(selector().all()) { variant ->
+			variant.resValues.put(
+				variant.makeResValueKey("string", "application_id"),
+				new com.android.build.api.variant.ResValue(variant.applicationId.get(), null)
+			)
 		}
 	}
 
@@ -149,7 +155,7 @@ android {
 			java.srcDirs = ['free/src']
 		}
 	}
-	lintOptions {
+	lint {
 		disable 'MissingTranslation'
 	}
 }
@@ -159,9 +165,9 @@ play {
 }
 
 dependencies {
-	def SMACK_VERSION = "4.3.5-SNAPSHOT"
+	def SMACK_VERSION = "4.3.5"
 	// Google Push via FCM
-	playImplementation('com.google.firebase:firebase-messaging:17.3.4') {
+	playImplementation('com.google.firebase:firebase-messaging:26.0.2') {
 		exclude group: 'com.google.firebase', module: 'firebase-core'
 		exclude group: 'com.google.firebase', module: 'firebase-analytics'
 		exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -174,17 +180,11 @@ dependencies {
 	implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
 	implementation 'org.hsluv:hsluv:0.2'
 	implementation 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
-	implementation 'com.google.zxing:core:3.3.3'
+	implementation 'com.google.zxing:core:3.5.4'
 
 	// play referrer
 	playImplementation 'com.android.installreferrer:installreferrer:1.1'
-	// smack4
-	//compile project("Smack:smack-android-extensions")
-	//compile project("Smack:smack-tcp")
-	//compile project("Smack:smack-im")
-	//// for Carbons, and other
-	//compile project("Smack:smack-experimental")
-	implementation 'org.jxmpp:jxmpp-jid:0.6.4-SNAPSHOT'
+	implementation 'org.jxmpp:jxmpp-jid:0.6.4'
 	implementation "org.igniterealtime.smack:smack-android-extensions:$SMACK_VERSION"
 	implementation "org.igniterealtime.smack:smack-tcp:$SMACK_VERSION"
 	implementation "org.igniterealtime.smack:smack-im:$SMACK_VERSION"

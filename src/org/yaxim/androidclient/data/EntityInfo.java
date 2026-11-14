@@ -7,8 +7,9 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.StanzaError;
 import org.jivesoftware.smackx.disco.packet.DiscoverInfo;
 import org.jivesoftware.smackx.disco.packet.DiscoverItems;
-import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.muc.packet.MUCInitialPresence;
+import org.jivesoftware.smackx.xdata.Form;
+import org.jivesoftware.smackx.xdata.FormField;
 import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
@@ -92,14 +93,14 @@ public class EntityInfo {
 				ei.type = EnumSet.of(EntityInfo.Type.Domain);
 			}
 			try {
-				RoomInfo ri = new RoomInfo(di);
-				ei.name = ri.getName();
-				ei.status = ri.getDescription();
+				Form form = Form.getFormFrom(di);
+				ei.name = getFormValue(form, "muc#roominfo_name");
+				ei.status = getFormValue(form, "muc#roominfo_description");
 				if (TextUtils.isEmpty(ei.status))
-					ei.status = ri.getSubject();
+					ei.status = getFormValue(form, "muc#roominfo_subject");
 				if (TextUtils.isEmpty(ei.status))
 					ei.status = jid;
-				ei.users = ri.getOccupantsCount();
+				ei.users = getFormIntValue(form, "muc#roominfo_occupants");
 				if (ei.users < 0)
 					ei.users = 0;
 			} catch (Exception e) { /* ignore */ }
@@ -116,6 +117,25 @@ public class EntityInfo {
 			ei.type = EnumSet.of(EntityInfo.Type.User);
 		}
 		return ei;
+	}
+
+	private static String getFormValue(Form form, String fieldName) {
+		if (form == null)
+			return null;
+		FormField field = form.getField(fieldName);
+		if (field == null)
+			return null;
+		List<CharSequence> values = field.getValues();
+		if (values == null || values.isEmpty())
+			return null;
+		return values.get(0).toString();
+	}
+
+	private static int getFormIntValue(Form form, String fieldName) {
+		String value = getFormValue(form, fieldName);
+		if (TextUtils.isEmpty(value))
+			return 0;
+		return Integer.parseInt(value);
 	}
 
 	public void setPresenceStatus(Presence p) {

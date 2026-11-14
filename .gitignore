@@ -10,3 +10,5 @@ build.properties
 res/values/version.xml
 lint.xml
 play-publish-credentials.json
+/.gradle/
+/.idea/
